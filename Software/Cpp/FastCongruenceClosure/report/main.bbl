@@ -1,0 +1,35 @@
+\begin{thebibliography}{1}
+
+\bibitem{Cormen:2009:IAT:1614191}
+Thomas~H. Cormen, Charles~E. Leiserson, Ronald~L. Rivest, and Clifford Stein.
+\newblock {\em Introduction to Algorithms, Third Edition}.
+\newblock The MIT Press, 3rd edition, 2009.
+
+\bibitem{craig1957}
+William Craig.
+\newblock Linear reasoning. a new form of the herbrand-gentzen theorem.
+\newblock {\em J. Symbolic Logic}, 22(3):250--268, 09 1957.
+
+\bibitem{DOWLING1984267}
+William~F. Dowling and Jean~H. Gallier.
+\newblock Linear-time algorithms for testing the satisfiability of
+  propositional horn formulae.
+\newblock {\em The Journal of Logic Programming}, 1(3):267 -- 284, 1984.
+
+\bibitem{Downey:1980:VCS:322217.322228}
+Peter~J. Downey, Ravi Sethi, and Robert~Endre Tarjan.
+\newblock Variations on the common subexpression problem.
+\newblock {\em J. ACM}, 27(4):758--771, October 1980.
+
+\bibitem{GALLIER1987233}
+Jean~H. Gallier.
+\newblock Fast algorithms for testing unsatisfiability of ground horn clauses
+  with equations.
+\newblock {\em Journal of Symbolic Computation}, 4(2):233 -- 254, 1987.
+
+\bibitem{Leitsch:1997:RC:260906}
+Alexander Leitsch.
+\newblock {\em The Resolution Calculus}.
+\newblock Springer-Verlag New York, Inc., New York, NY, USA, 1997.
+
+\end{thebibliography}

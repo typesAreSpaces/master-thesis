@@ -1,0 +1,472 @@
+\documentclass[a4paper, 11pt]{article}
+\usepackage{comment} % enables the use of multi-line comments (\ifx \fi) 
+\usepackage{lipsum} %This package just generates Lorem Ipsum filler text. 
+\usepackage{fullpage} % changes the margin
+\usepackage{listings}
+\lstset{tabsize=2}
+
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{amsthm}
+\usepackage{mathtools}
+\DeclarePairedDelimiter\ceil{\lceil}{\rceil}
+\DeclarePairedDelimiter\floor{\lfloor}{\rfloor}
+
+\usepackage{graphicx}
+\graphicspath{ {images/} }
+
+\usepackage{listings}
+
+\usepackage{etoolbox}
+\let\bbordermatrix\bordermatrix
+\patchcmd{\bbordermatrix}{8.75}{4.75}{}{}
+\patchcmd{\bbordermatrix}{\left(}{\left[}{}{}
+\patchcmd{\bbordermatrix}{\right)}{\right]}{}{}
+
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{claim}[theorem]{Claim}
+
+% Asymptotic Notation
+\newcommand{\bigO}[1]{\mathcal{O}(#1)}
+\newcommand{\bigOmega}[1]{\Omega(#1)}
+\newcommand{\bigTheta}[1]{\Theta(#1)}
+\newcommand{\smallO}[1]{o(#1)}
+\newcommand{\smallOmega}[1]{\omega(#1)}
+
+% Bold
+\newcommand{\solution}{\textbf{Solution:}}
+\newcommand{\lOp}{\textbf{L}}
+\newcommand{\brackets}[1]{\langle{#1}\rangle}
+
+\begin{document}
+%Header-Make sure you update this information!!!!
+\noindent
+\large\textbf{Homework 6} \hfill \textbf{Jos\'e Abel Castellanos Joo} \\
+\normalsize CS 561: Algorithms and Data Structures \\
+Prof. Jared Saia \hfill Date: \today \\
+TA: Dejun Jiang \hfill Due Date: 10/10/2016
+
+\section*{Problem 1}
+
+Prove via induction that any tree over $n$ nodes has exactly $n - 1$ edges. Don't forget to include the Base Case (BC), Inductive Hypothesis (IH) and Inductive Step (IS).
+
+\solution
+
+We denote by $V(G)$ the set of nodes of the graph $G$ and by $E(G)$ the set of edges of graph $G$. We define a $path$ to be a sequence of nodes $(u_1, u_2, \dots, u_n)$ such that $(u_i, u_{i + 1}) \in E(G)$ for $i = 1, \dots, n-1$. First we will prove some useful claims:
+
+\begin{claim} \label{first}
+	Let $T$ be a tree, then $\forall u, v \in V(T) \text{ there is a unique path from }  u \text{ to } v.$ 
+\end{claim}
+
+\begin{proof}
+	Suppose by contradiction that there are two distinct paths from $u$ to $v$, i.e. $(u, a_1, \dots, a_m, v)$ and $(u, b_1, \dots, b_n, v)$. Since trees are defined over undirected graph then $(v, b_n, \dots, b_1, u)$ is also a path in $T$. So the path $(u, a_1, \dots, a_m, v, b_n, \dots, b_1, u)$ is also a path in $T$. But this path is a cycle since the path returns to the node $u$. Contradiction. Thus the two path must be equal. 
+\end{proof}
+
+\begin{claim} \label{second}
+	Let $T$ be a tree. If we remove any edge from $T$, we will obtain 2 trees. 
+\end{claim}
+
+\begin{proof}
+	Consider removing edge $(u, v) \in E(T)$. Let us denote $a \rightsquigarrow b$ by `$a$ is reachable from $b$ in 0 or more steps'. We notice that $a \rightsquigarrow b$ is an equivalence relation because: 
+
+	\begin{itemize}
+		\item [] $\rightsquigarrow$ is reflexive. Any node $a$ is reachable in zero steps to itself.
+		\item [] $\rightsquigarrow$ is symmetric. If $a \rightsquigarrow b$ then $b \rightsquigarrow a$ because trees are defined over undirected graphs.
+		\item [] $\rightsquigarrow$ is transitive. Suppose $a \rightsquigarrow b$ and $b \rightsquigarrow c$. So, there are paths $(a, u_1, \dots, u_m, b)$ and $(b, v_1, \dots, v_n, c)$ respectively. Thus the path $(a, u_1, \dots, u_m, b, v_1, \dots, v_n, c)$ is in $T$. So $a \rightsquigarrow c$ as desired.  
+	\end{itemize}
+
+	Since $\rightsquigarrow$ is an equivalence relation over the nodes of $T$, then this relation forms partitions of the set $V(T)$. Let us denote $[a] = \{ b \in V(T) : a \rightsquigarrow b\}$. Then we have that $[u] \neq [v]$ by the following reasoning: suppose $x \in [u]$, so $u \rightsquigarrow x$ and assume by contradiction that $x \in [v]$, so $v \rightsquigarrow x$. By the latter and since $\rightsquigarrow$ is symmetric $x \rightsquigarrow v$. By transitivity of $\rightsquigarrow$ we can see that $u \rightsquigarrow v$, but we have removed the edge $(u, v)$ and by the first claim there is only one path for any pairs of nodes in $T$. Contradiction. So $[u] \neq [v]$.
+
+	Now, we notice that we have two connected components, because if there were more, then the original graph could not have been connected, and thus not a tree. Furthermore, these connected components are acyclic, because otherwise the original graph could not possible be a tree. So the have obtained two trees. 
+\end{proof}
+
+Now we can prove the main statement
+
+\begin{proof}
+	We will prove the statement by induction on the number of nodes.
+	
+	Base Case: $n = 1$. Since the singleton node is a tree, we notice that the number of edges is $0 = 1 - 1$. So the base case holds. 
+
+	Inductive Hypothesis: For all $j < i$, all trees with $j$ nodes have $j - 1$ edges.
+
+	Inductive Step: Let us prove that the tree with $i \geq 1$ nodes has $i - 1$ edges. Let $v \in V(T)$ and let us denote $S = \{ u \in V(T) : (v, u) \in E(T)\}$. If we remove the node $v$ and the edges in $S$ we will obtain $|S|$ trees, by applying $|S|$ times Claim \ref{second}. Each of these trees have $\{k_1, k_2, \dots, k_{|S|}\}$ nodes. Clearly $\sum_{l = 1}^{|S|} k_l = i - 1$, since we remove the node $v$,  and $k_l < i$ for $l = 1, \dots, |S|$. Applying the Inductive Hypothesis to each of these trees, the total number of edges in the graph $T$ is 
+
+	\begin{equation*}
+		\begin{split}
+			|E(T)| &=|S| + \sum_{l = 1}^{|S|} k_l - 1 \\
+			&\text{(we add the edges removed and the edges from the |S| trees obtained using the I.H.)} \\
+			&= |S| + \sum_{l = 1}^{|S|} k_l - \sum_{l = 1}^{|S|} 1 \\
+			&= |S| + (i - 1) - |S| = i - 1.
+		\end{split}
+	\end{equation*}
+
+So for the tree with $i$ nodes, we have $i - 1$ edges. This completes the inductive proof.
+
+\end{proof}
+
+\section*{Problem 2}
+
+Prove Claim 1 from Single Source Shortest Paths Lecture (Lecture 10).
+
+For all $v \in V$, if $dist(v) \neq \infty$, then $dist(v)$ is the total weight of the predecessor chain ending at $v:$
+
+\begin{equation*}
+	s \rightarrow \dots \rightarrow pred(pred(v)) \rightarrow pred(v) \rightarrow v
+\end{equation*}
+
+\solution
+
+\begin{proof}
+	We will prove the statement by induction on the number of edges in the path from $s$ to $v$.
+
+	Base case: $n = 0$. Then the only possible node with a path with $0$ edges from $s$ is the node $s$ itself. Since the algorithm initially defined $dist(s) = 0$, the statement holds since the sum of an empty set is $0$ by convention.
+
+	To enunciate the Inductive Hypothesis, we find necessary to define the following recursive function abou the predecessor nodes:
+
+	\begin{itemize}
+		\item[] $pred^0(v) = v$
+		\item[] $pred^{j + 1}(v) = pred(pred^{j}(v))$
+	\end{itemize}
+
+	Inductive Hypothesis: $(\forall i < j \in \mathbb{N})(\forall v \in V$ if the path from $s$ to $v$ contains $i$ edges, then $dist(v) = \sum_{k = 0}^{i-1} w(pred^{k + 1}(v), pred^{k}(v)))$. 
+
+	Inductive Step: Take any node $v \in V$ such that there are $j$ edges in the path from $s$ to $v$. We notice that the path from $s$ to $pred(v)$ is in the path from $s$ to $v$ and it has $j - 1$ edges. Since $j - 1 < j$, we see that: 
+
+	\begin{equation*}
+		\begin{split}
+			dist(pred(v)) &= \sum_{k = 0}^{j-2} w(pred^{k + 1}(pred(v)), pred^{k}(pred(v)))) \text { by the Inductive Hypothesis} \\
+			&= \sum_{k = 0}^{j-2} w(pred^{k + 2}(v), pred^{k+1}(v))) \text{ by definition of $pred^j$}
+		\end{split}
+	\end{equation*}
+
+On the other hand, we see that $dist(v) = dist(u) + w(u, v)$ where $u = pred(v)$ by the relaxation procedure, so:
+
+\begin{equation*}
+	\begin{split}
+		dist(v) &= dist(pred(v)) + w(pred(v), v) \\
+		&= \sum_{k = 0}^{j-2} w(pred^{k + 2}(v), pred^{k+1}(v))) + w(pred(v), v), \text{ due to the last equation} \\
+		&= \sum_{k = 1}^{j-1} w(pred^{k + 1}(v), pred^{k}(v))) + w(pred^1(v), pred^0(v)), \text{ by definition of $pred^j$} \\
+		&= \sum_{k = 0}^{j-1} w(pred^{k + 1}(v), pred^{k}(v))) \\
+	\end{split}
+\end{equation*}
+
+This completes the inductive proof.
+
+\end{proof}
+
+\section*{Problem 3}
+
+Prove Claim 2 from Single Source Shortest Paths Lecture (Lecture 10).
+
+If the algorithm halts, then $dist(v) \leq w(s \rightsquigarrow v)$ for any path $s \rightsquigarrow v$.
+
+\solution
+
+First, we notice two types of nodes, the ones reachable from $s$ and the nodes non reachable from $s$. If $v \in V$ is non reachable from $s$ then there is no path from $s$ to $v$, and by convention $w(s \rightsquigarrow v) = \infty$. Since the algorithm halted, it assigned every node no reachable from $s$ $dist(v) = \infty$. So the statement holds for his kind of nodes. If node $v$ is reachable from $s$ then there exists a path from $s$ to $v$ with a finite amount of edges. For this case we will prove the statement by induction on the number of edges in the path from $s$ to any node $v \in V$. 
+
+Base case: $n = 0$. The only node with a path of zero edges from $s$ is the node $s$ itself. Since the algorithm assigned $dist(s) = 0$, the statement holds since $dist(s) = 0 \leq w(s \rightsquigarrow s) = 0$.
+
+Inductive Hypothesis: For all $i < j \in \mathbb{N}$ and for all nodes $v \in V$, if there there is a path from $s$ to $v$ with $i$ edges, then $dist(v) \leq w(s \rightsquigarrow v)$.
+
+Inductive Step: Pick any node $v$ such that there exists a finite path with $i$ edges from $s$ to $v$. We notice that since $pred(v)$ is in the path from $s$ to $v$, and furthermore the path from $s$ to $pred(v)$ must have $j < i$ edges, otherwise $pred(v)$ such not be in the path from $s$ to $v$ because the algorithm halted, i.e. there are no more tense edges in the graph. Hence, by the Inductive Hypothesis, $dist(pred(v)) \leq w(s \rightsquigarrow pred(v))$.
+
+We notice that, by the relaxation procedure, $dist(v)$ is of the form $dist(v) = dist(u) + w(u, v)$ where $u = pred(v)$, thus:
+
+\begin{equation*}
+	\begin{split}
+		dist(v) &= dist(pred(v)) + w(pred(v), v)\\ 
+		&\leq w(s \rightsquigarrow pred(v)) + w(pred(v), v) \text{ by the Inductive Hypothesis} \\
+		&= w(s \rightsquigarrow v)
+	\end{split}
+\end{equation*}
+
+This completes the inductive proof. 
+
+\section*{Problem 4}
+
+Problem 4 parts (a) and (b) from the 2014 final.
+
+You are in charge of a computer network, which is modeled as a directed graph $G = (V, E)$.
+You find out that there is a node $x$ in the network that has become infected with a virus.
+There is a special node $y$ in the network that you must ensure will never become infected.
+
+For example, the network might be represented as the graph below.
+
+\begin{center}
+	\includegraphics[scale=0.4]{virus}
+\end{center}
+
+\begin{itemize}
+	\item [a)] Assume that every edge $u \rightarrow v \in E$ can be removed at some integer cost $c(u \rightarrow v)$. Give an algorithm that will find a subset of edges with minimum cost, whose removal will prevent the infection at node $x$ from reaching node $y$.
+	\item [b)] Now assume that only nodes can be removed from the network. For each node $v \in V - \{x, y\}$, it is possible to remove $v$ for some integer cost $c(v)$. Give an algorithm that will find a subset of nodes, with minimum cost, whose removal will prevent the infection at node $x$ from reaching node $y$. Illustrate your algorithm using the figure from part (a).
+\end{itemize}
+
+\solution
+
+\begin{itemize}
+	\item [a)] We can use the Edmonds-Karp Algorithm to compute the last residual graph $G_f$ with no augmenting paths from the node $x$ to $y$. Let $S = \{v \in V(G) : \text{ there exists a path from } x \text{ to } v \in G_f\}$, and $T = V(G) - S$. Since there is no augmenting path in $G_f$, clearly $(S, T)$ forms a partition in $V(G)$. By the Max-Flow/Min-Cut Theorem, for the last residual graph we have that if $u \in S$, $v \in T$ and $(u, v) \in E(G)$ then $f(u, v) = c(u, v)$ and if $u \in S$, $v \in T$, and $(v, u) \in E(G)$ then $f(u, v) = 0$. We notice that $(S, T)$ is a cut of $G$ and the capacity of this cut equals the maximum flow in $G$, and by the Max-Flow/Min-Cut theorem the capacity of the cut $(S, T)$ is the minimum-cut in $G$. 
+
+	Thus we can choose the set $C = \{(u, v) \in E(G) : u \in S, v \in T\}$. If we remove all the edges in $C$ to the graph $G$ we will disconnect the vertices $x$ and $y$. We can prove this by contradiction: suppose there exists a path from $x$ to $y$, since $x \in S$ and $y \in T$ there must be an edge $(u, v) \in E(G)$ such that $u \in S$ and $v \in T$, but all these edges were remove, hence there is no path from $x$ to $y$ in $G$. Furthermore the cost for this will be the minimum because the edges of $C$ are pairs of vertices in the cut $(S,T)$ that are in the edges of $G$.
+	
+	\item [b)] We can change such a graph to a be a network flow using the following transformation: For each node $v$ in $V$, replace $v$ by two nodes $v_1$ and $v_2$ connected with an edge of capacity $c(v)$. Also, replace all edges of the form $(x, v)$ by $(x, v_1)$, and replace all edges of the form $(v, x)$ by $(v_2, x)$. The remaining edges with no capacity in the new netflow graph will have capacity equal to the maximum cost of the nodes in $V$. This transformation allows to express the cost of removing any node $v$ in $V$ as an edge with such capacity in order to apply Edmonds-Karp Algorithm. With the last transformation we can be sure that the cut obtained will contain only edges with capacity equal to some cost of a node. The following example is provided:
+
+	\begin{center}
+		\includegraphics[scale=0.1]{example.png}
+	\end{center}	
+
+\end{itemize}
+
+\section*{Problem 5}
+
+Problem 23-4 `Alternative MST Algorithms'.
+
+In this problem, we give pseudocode for three different algorithms. Each one takes a connected graph and a weight function as input and returns a set of edges $T$. For each algorithm, either prove that $T$ is a minimum spanning tree or prove that $T$ is not a minimum spanning tree. Also describe the most efficient implementation of each algorithm, whether or not it computes a minimum spanning tree.
+
+\begin{itemize}
+	\item [a)] MAYBE-MST-A($G$, $w$)
+	\begin{itemize}
+		\item[1] sort the edges into nonincreasing order of edge weights $w$
+		\item[2] $T = E$
+		\item[3] \textbf{for} each edge $e$, taken in nonincreasing order by weight
+		\item[4] $\>\> \text{\textbf{if }}T - \{e\}$ is a connected graph
+		\item[5] $\>\>\>\> T = T - \{e\}$
+		\item[6] \textbf{return} T
+	\end{itemize}
+	
+	\item [b)] MAYBE-MST-B($G$, $w$)
+	\begin{itemize}
+		\item[1] $T = \emptyset$
+		\item[2] \textbf{for} each edge $e$, taken in arbitrary order
+		\item[3] $\>\> \text{\textbf{if }}T \cup \{e\}$ has no cycles
+		\item[4] $\>\>\>\> T = T \cup \{e\}$
+		\item[5] \textbf{return} T
+	\end{itemize}
+
+	\item [c)] MAYBE-MST-C($G$, $w$)
+	\begin{itemize}
+		\item[1] $T = \emptyset$
+		\item[2] \textbf{for} each edge $e$, taken in arbitrary order
+		\item[3] $\>\> T = T \cup \{e\}$
+		\item[4] $\>\> \text{\textbf{if }}T$ has a cycle $c$
+		\item[5] $\>\>\>\> \text{let $e^{'}$ be a maximum-weight edge on $c$}$
+		\item[6] $\>\>\>\> T = T - \{e^{'}\}$
+		\item[7] \textbf{return} T
+	\end{itemize}
+\end{itemize}
+
+\solution
+
+\begin{itemize}
+	\item [a)] First, we prove that $T$ is a spanning tree using the invariant that there exists a tree in $T$ in each iteration of the for loop. For initialization, $T$ is the complete set of edges of $G$, and since there exists a tree for every graph then the proposition is true. 
+
+	For maintenance, assume that at the beginning of the $for$ loop, there is a tree in $T$. Consider the next edge $e$ taken by the algorithm. If the graph without this edge stills connected, then we can remove this edge from the set of $T$ and still having a tree in $T$, otherwise the algorithm does not change the set $T$, and by the invariant the new set $T$ has a  tree. 
+
+	For termination we see that the algorithm exits the for loop when no more edges are to be taken. Since $G$ was assumed to be connected then the resulting tree is a spanning tree of $G$. 
+
+	Let us prove $T$ is a minimum spanning tree by induction on the number of edges on the graph:
+
+	Base case: $|E| = 0$, then the statement vacuously true.
+
+	Inductive Hypothesis: $\forall i < j$ For any graph $G$ with $|E| = i$ then the algorithm returns a minimum spanning tree for $G$.
+
+	Inductive Step: Consider $|E| = j$. Then consider a cut $(S, V - S)$ in $G$. Then, let $G_1$ and $G_2$ be the graph induced by the set of nodes $S$ and $V - S$ respectively. Clearly, the number of edges $|E_1|$ in $G_1$ is less than $j$. Similarly, the number of edges $E_2$ in $G_2$ is less than $i$. Hence, applying the inductive hypothesis to $G_1$ and $G_2$, then the algorithm computes minimum spanning trees $T_1$ and $T_2$ for the graphs $G_1$ and $G_2$ respectively. The edges of $G$ crossing the cut $(S, V - S)$ will be removed in lines 3 - 5 in nonincreasing order until the last crossing edge is processed that can disconnect the graph $G$. Since this last edge has weight less than the weight of any of the previous edges, this is a light edge crossing the cut $(S, V - S)$. Thus, the algorithm always left a safe edge in the set of edges $T$. Therefore, the algorithm returns a minimum spannig tree of the graph $G$.
+
+	To implement this algorithm we can use a Max Priority Queue to enqueue all the edges in line 2. For line 3, we can extract the max edge from the Priority Queue in $O(\log |E|)$. We can check conenctivity in the graph using a BFS search, and counting the number of nodes visited. If this quantity is not equal to the number of nodes in $G$ then the graph is disconnected. This operation can be done in $O(|V|)$. Since we will extract all the edges we will repeat this operation in $O(|V| E \log |E|)$.
+
+	\item [b)] This algorithm does not compute a minimum spanning tree for all cases of $G$. For instance consider the following graph with 4 nodes and 4 edges:
+
+	\begin{center}
+		\includegraphics[scale=0.3]{b.png}
+	\end{center}	
+
+	If the algorithm arbitrarly takes edges $\{(a, b), (a, c), (b, d)\}$ but does not add edge $(c, d)$, otherwise $T$ induces a cycle, then the total weight of the spanning tree is $31$, but clearly the minimum spanning tree for this graph only includes edges $\{(a, c), (c, d)\}$ with total weight 3. 
+
+	To implement this algorithm we can use the Union by Rank data structure with Path compression. First we will do $n$ times the MAKE-SET operation where $n$ is the number of nodes in $V(G)$, and then check for all edges $(u, v)$ in $E(G)$ if there is a cycle between nodes $u$ and $v$. This can be done comparing the representatives of the two nodes. If they are the same then both nodes $u$ and $v$ are connected and thus the new edge will form a cycle in $T$, otherwise $u$ and $v$ are not previously connected, hence it is safe to add the new edge with the UNION operation. The runtime of the algoritm will be $O(E \log V)$.
+
+	\item [c)] This algorithm produces a minimum spanning tree for any input graph $G$. First we will prove that the algorithm computes a spanning tree using the invariant that the set $T$ induces a tree in $G$. For initialization, $T$ is empty and thus the induced graph of $T$ for any graph is a disjoint set of nodes, thus the invariant holds. 
+
+	For maintenance. Assume that $T$ induces a tree in $G$. Then, the algorithm takes any edge in the graph and checks if by adding the new edge to $T$ forms a cycle. Clearly, if the new edge forms a cycle the algorithm breaks the cycle by the removing the maximum-weight edge on the cycle, so the new $T$ still induces a tree in $G$. If the new edge does not form a cycle the algorithm adds it maintaining the invariant. 
+
+	For termination, we notice that there are no more edges to be added. Since $G$ was assumed to be connected then the resulting tree is a spanning tree of $G$.
+
+	To prove that this algorithm computes a minimum spanning tree $T$ of $G$ we will need to prove the following claim:
+
+	\begin{claim}
+		Let $e$ be a maximum-weight edge on some cycle of connected graph $G = (V, E)$. Then there is a minimum spanning tree of $G^{'} = (V, E - \{e\})$ that is also a minimum spanning tree of $G$.
+	\end{claim}
+
+	\begin{proof}
+		Since $e$ is a maximum-weight edge on some cycle $c$ of $G$, we notice that for all cuts $(S, V - S)$ such that $e$ is crossing $(S, V - S)$, w is never a light edge by its definition. Then by the contrapositive of the exercise 8 of homework 5, we can conclude that $w$ is not contained in any minimum spanning tree of $G$. Hence we can remove this edge in $G$ and since $e$ and the minimum spanning tree for this new graph is also a minimum spanning tree for the graph $G$.
+	\end{proof}
+
+	We see that the algorithm is applying this claim removing the heaviest weighted edge on the graph until it produces a spanning tree, which will be minimal due to the latter claim. 
+\end{itemize}
+
+\section*{Problem 6}
+
+Problem 24-2 Nesting Boxes.
+
+A $d-$dimensional box with dimensions $(x_1, x_2, \dots, x_d)$ \textbf{nests} within another box with dimensions $(y_1, y_2, \dots, y_d)$ if there exists a permutation $\pi$ on $\{1, 2, \dots, d \}$ such that $x_{\pi(1)} < y_1, x_{\pi(2)} < y_2, \dots, x_{\pi(d)} < y_d$.
+
+\begin{itemize}
+	\item [a)] Argue that the nesting relation is transitive.
+	\item [b)] Describe an efficient method to determine whether or not one $d-$dimensional box nests inside another.
+	\item [c)] Suppose that you are given a set of $n$ $d-$dimensional boxes $\{B_1, B_2, \dots, B_n\}$. Give an efficient algorithm to find the longest sequence $\langle B_{i_1}, B_{i_2}, \dots, B_{i_k} \rangle$ of boxes such that $B_{i_j}$	nests within $B_{i_{j + 1}}$ for $j = 1, 2, \dots, k - 1$. Express the running time of your algorithm in terms of $n$ and $d$.
+\end{itemize}
+
+\solution
+
+\begin{itemize}
+	\item [a)] Let $x, y, z$ be $d-$dimensional boxes. Assume that $x$ \textbf{nests} with $y$ and $y$ \textbf{nests} with $z$. Hence, there are permutations $pi_1, pi_2$ such that $x_{\pi_1(1)} < y_1, x_{\pi_1(2)} < y_2, \dots, x_{\pi_1(d)} < y_d$ and $y_{\pi_2(1)} < z_1, y_{\pi_2(2)} < z_2, \dots, y_{\pi_2(d)} < z_d$. Then we notice that $x_{\pi_2(\pi_1(1))} < y_{\pi_2(1)} < z_1, x_{\pi_2(\pi_1(2))} < y_{\pi_2(2)} < z_2, \dots, x_{\pi_2(\pi_1(d))} < y_{\pi_2(d)} < z_d$. Thus there exists a permutation $\pi_3 = \pi_2 \circ \pi_1$ such that $x_{\pi_3(1)} < z_1, x_{\pi_3(2)} < z_2, \dots, x_{\pi_3(d)} < z_d$. Hence $x$ \textbf{nests} with $z$. We can conclude that \textbf{nests} is transitive. 
+
+	\item [b)] Given two d-dimensional boxes $x, y$, we sort their components in increasing order. We can prove that $x$ \textbf{nests} with $y$ if and only if $x_j < y_j$ for each $j = i_1, i_2, \dots, i_d$. 
+
+	Let us prove the only if part first. Suppose by contradiction that there exists a $i_k$ such that $x_{i_k} \geq y_{i_k}$ then we cannot have any permutation to satisfy the nesting property since all the components to the right of $x_{i_k}$ are greater than or equal to $x_{i_k}$. Similarly, we cannot exchance any component to the left of $x_{i_k}$ because all the components to the left of $y_{i_k}$ are less than or equal to $y_{i_k}$. 
+
+	Let us prove the if part. If $x$ \textbf{nests} with $y$, then there exists a permutation such that satisfies the properties required by \textbf{nest}. So, we can form a new permutation using the original one, rearranging the element in sorted order. Thus, for all indices $j$ in that new permutation we have that $x_j < y_j$.
+
+	\item [c)] First, we notice that the \textbf{nest} relation is not symmetric. We will prove the last statement by contradiction. Suppose that there are two d-dimensional boxes $x, y$ such that if $x$ \textbf{nests} with $y$ then $y$ \textbf{nests} with $x$. Thus there are permutations $\pi_1, \pi_2$ respectively for each of these nestings. Then, we can create a permutation $\pi_3 = \pi_2 \circ \pi_1$ such that will make $x$ \textbf{nests} with $x$. Since there are $d!$ permutations for a d elements, then we can compose at most $d!$ times the permutation $\pi_3$ to obtain the identity permutation. This entails that for every $i = 1, \dots, d$ we have that $x_i < x_i$ but that is impossible. Thus the \textbf{nest} relation is not symmetric. This fact will be very important for out algorithm. 
+
+	First, we can build a directed graph with nodes $B_i$ from the $n$ d-dimensional boxes. The edge between two nodes $x$ and $y$ indicates that node $x$ \textbf{nests} with node $y$. We can do this by using the algorithm to test if two d-dimensional boxes nest with each other. If $x$ \textbf{nests} with $y$ then we add an edge between $x$ and $y$; if not, we check if $y$ \textbf{nests} with $x$ to add an edge between $y$ and $x$; otherwise we do not add any edge between $x$ and $y$. 
+
+	We can see that there will be no cycles in this graph. To prove this suppose by contradiction that there exists a cycle $(x_1, x_2, \dots, x_k, x_1)$. Since \textbf{nest} is transitive then $x_1$ \textbf{nests} with $x_k$. We see in the last edge of the cycle that $x_k$ \textbf{nests} with $x_1$. But we have proven that \textbf{nest} is not symmetric. Contradiction. Thus, in this graph there can be any cycles. 
+
+	Using this graph we can identify the connected components in the graph and return the largest connected component as the longest sequence of boxes $\langle B_{i_1}, B_{i_2}, \dots, B_{i_k} \rangle$ of boxes such that $B_{i_j}$	nests within $B_{i_{j + 1}}$ for $j = 1, 2, \dots, k - 1$. This is the case since \textbf{nest} is transitive and by the construction of the graph if $B_{i_1}$ \textbf{nests} with $B_{i_2}$, $B_{i_2}$ \textbf{nests} with $B_{i_3}$, $\dots$, $B_{i_{k-1}}$ \textbf{nests} with $B_{i_k}$ then for any $j$ and by transitivy of \textbf{nest} $B_{i_j}$	nests within $B_{i_{j + 1}}$ for $j = 1, 2, \dots, k - 1$. To construct the graph we will need $O(n^2 d \log d)$ time because, we will test $O(n^2)$ if two nodes \textbf{nests} or not, and each test will run in $O(d \log d)$ time. To identify the largest connected component we simply can do a $DFS$ search and keep track of the maximum number of nodes explored in each connected component. This process take $O(n + e)$ where $e$ is the number of edges in the graph. Then the total runtime of the algorithm will be $O(n^2 d \log d)$.
+
+\end{itemize}
+
+\section*{Problem 7}
+
+Problem 24-3 Arbitrage
+
+\textbf{Arbitrage} is the use of discrepancies in currency exchange rates to transform one unit of a currency into more than one unit of the same currency. For example, suppose that 1 U.S. dollar buys 49 Indian rupees, 1 Indian rupee buys 2 Japanese yen, and 1 Japanese yen buys 0.0107 U.S. dollars. Then, by converting currencies, a trader can start with 1 U.S. dollar and buy 49*2*0.0107 = 1.0486 U.S. dollars, thus turning a profit of 4.86 percent.
+Suppose that we are given $n$ currencies $c_1, c_2, \dots, c_n$ and an $n \times n$ table $R$ of exchange rates, such that one unit of currency $c_i$ buys $R[i, j]$ units of currency $c_j$.
+
+\begin{itemize}
+	\item [a)] Give an efficient algorithm to determine whether or not there exists a sequence of curriencies $\langle c_{i_1}, c_{i_2}, \dots, c_{i_k} \rangle$ such that
+	\begin{equation*}
+		R[i_1, i_2] R[i_2, i_3] \dots R[i_{k-1}, i_k] R[i_k, i_1] > 1.
+	\end{equation*}
+	Analyze the running time of your algorithm.
+
+	\item[b)] Give an efficient algorithm to print out such a sequence if one exists. Analyze the running time of your algorithm.
+
+\end{itemize}
+
+\solution
+
+\begin{itemize}
+	\item [a)] Suppose there exists a sequence $\langle c_{i_1}, c_{i_2}, \dots, c_{i_k} \rangle$ such that $R[i_1, i_2]R[i_2, i_3] \dots R[i_{k−1}, i_k]R[i_k, i_1] > 1$. If we apply $\log$ in both sides of the inequality we have that $\log (R[i_1, i_2]R[i_2, i_3] \dots R[i_{k−1}, i_k]R[i_k, i_1]) > \log 1 = 0$. Using some rules for $\log$ we notice that $\log (R[i_1, i_2]R[i_2, i_3] \dots R[i_{k−1}, i_k]R[i_k, i_1]) = \log R[i_1, i_2] + \log R[i_2, i_3] + \dots + \log R[i_{k−1}, i_k] + \log R[i_k, i_1]$. If we multiply by $-1$ both sides of the inequality we obtain that 
+
+	\begin{equation*}
+		-\log R[i_1, i_2] - \log R[i_2, i_3] - \dots - \log R[i_{k−1}, i_k] - \log R[i_k, i_1] < 0
+	\end{equation*}
+
+	We define a function $w : E \rightarrow \mathbb{R}$ such that $w(c_{i_x}, c_{i_y}) = - \log R[i_x, i_y]$ for a graph with nodes representing the currencies and the weight edges by $w$. We notice that this graph is complete, because there is no reason for a edge not connecting any pairs of nodes, because that would mean that there is no exchange between the two currencies. Then the last inequality reduces to 
+
+	\begin{equation*}
+		w(c_{i_1}, c_{i_2}) + w(c_{i_2}, c_{i_3}) + \dots + w(c_{i_{k_1}}, c_{i_k}) + w(c_{i_k}, c_{i_1}) < 0
+	\end{equation*}
+
+	Whick is equivalent to say that the described graph contains a negative cycle. We can use Bellman-Ford algorithm to detect is there are negative cycles in the proposed graph. If so, then there exists a sequence $\langle c_{i_1}, c_{i_2}, \dots, c_{i_k} \rangle$ such that there will be arbitrage. The runtime of this algorithm is the runtime the runtime of the Bellman Ford algorithm, which is $O(n^3)$ since the graph will be complete and thus $|E| = O(n^2)$.
+
+	\item [b)] By using the Bellman Ford algorithm, first we identify and edge $(u, v)$ such that $v.d > u.d + w(u, v)$. Then nodes $u$ and $v$ are in the cycle. We can use the predecesor attributes defined in each node to traverse the cycle until we get back to the original node. We need to run the Bellman Ford algorithm to construct the precesor graph and compute the distance of each node from any given source node. Thus the runtime will be $O(n^3)$.
+
+\end{itemize}
+
+\section*{Problem 8}
+
+Saia Trucking is a very safety conscious (and algorithm loving) trucking company. Given a pair of cities, they always try to find the safest route between that pair. They are thus faced with the following problem.
+There is a directed graph $G = (V,E)$, where the vertices represent cities and the edges represent roads. Each edge has a value associated with it that gives the probability of safe transport on that edge i.e the probability that there will be no accident when driving across that edge. The probability of safe transport along any path in the graph is the product of the probabilities of safe transport on each edge in that path.
+The goal is to find a path from a given node s to a given node $t$ that maximizes the probability of safe transport. Describe an efficient algorithm to solve this problem.
+
+\solution
+
+We can use a Shortest Path Algorithm to solve this problem. Since all the weight between edges are probabilities, then the values for this weights are bounded by 0 and 1. In order to transform products into sums we apply the $\log$ function in each edge of the input graph. Also, since a Shortest Path Algorithm solve a minimization problem, and the original problem is a maximization problem, we conver the first one to the latter by applying multiplying each each with -1. So, we can convert the input graph modifying the weights in the edges with the following transformation: if $(u, v) \in E$ then $w^{'}(u, v) = - \log (w(u, v))$. where $w$ is the function weight of the input graph and $w^{'}$ is the new function weight for the Shortest Path solution.
+
+We notice that no negative weight will appear in the new graph. This happens because since $0 \leq p_i \leq 1$ then $- \infty \leq \log(p_i) \leq 0$, so $\infty \geq - \log (p_i) \geq 0$. Therefore, we can use Dijkstra's Algorithm to compute the safer path since no edge will be negative in this new graph. The runtime of the algorithm is going to be the runnig time of the Dijkstra's Algorithm, which is $O(V \log V + E)$.
+
+\section*{Problem 9}
+
+Exercise 25.2-1 `Run the Floyd-Warshall algorithm'.
+
+Run the Floyd-Warshall algorithm on the weighted, directed graph of Figure 25.2. Show the matrix $D^{(k)}$ that results	for each iteration of the outer loop. 
+
+\begin{figure}
+	\centering
+	\includegraphics[scale=0.5]{flowgraph.png}
+	\caption{A weighted, directed graph for use in Exercises 25.1-1, 25.2-1, and 25.3-1. \cite{Cormen:2009:IAT:1614191}}
+\end{figure}
+
+\solution
+
+We show the matrices $D^{(k)}$ that results for each iteration of the outer loop:
+
+$D^{(0)} = \begin{bmatrix} 
+0 & \infty & \infty & \infty & -1 & \infty\\
+1 & 0 & \infty & 2 & \infty & \infty\\
+\infty & 2 & 0 & \infty & \infty & -8\\
+-4 & \infty & \infty & 0 & 3 & \infty\\
+\infty & 7 & \infty & \infty & 0 & \infty\\
+\infty & \infty & 10 & \infty & \infty & 0\\
+\end{bmatrix}$ 
+
+$D^{(1)} = \begin{bmatrix} 
+0 & \infty & \infty & \infty & -1 & \infty\\
+1 & 0 & \infty & 2 & 0 & \infty\\
+\infty & 2 & 0 & \infty & \infty & -8\\
+-4 & \infty & \infty & 0 & -5 & \infty\\
+\infty & 7 & \infty & \infty & 0 & \infty\\
+\infty & \infty & 10 & \infty & \infty & 0\\
+\end{bmatrix}$ 
+
+$D^{(2)} = \begin{bmatrix} 
+0 & \infty & \infty & \infty & -1 & \infty\\
+1 & 0 & \infty & 2 & 0 & \infty\\
+3 & 2 & 0 & 4 & 2 & -8\\
+-4 & \infty & \infty & 0 & -5 & \infty\\
+8 & 7 & \infty & 9 & 0 & \infty\\
+\infty & \infty & 10 & \infty & \infty & 0\\
+\end{bmatrix}$ 
+
+$D^{(3)} = \begin{bmatrix} 
+0 & \infty & \infty & \infty & -1 & \infty\\
+1 & 0 & \infty & 2 & 0 & \infty\\
+3 & 2 & 0 & 4 & 2 & -8\\
+-4 & \infty & \infty & 0 & -5 & \infty\\
+8 & 7 & \infty & 9 & 0 & \infty\\
+13 & 12 & 10 & 14 & 12 & 0\\
+\end{bmatrix}$ 
+
+$D^{(4)} = \begin{bmatrix} 
+0 & \infty & \infty & \infty & -1 & \infty\\
+-2 & 0 & \infty & 2 & -3 & \infty\\
+0 & 2 & 0 & 4 & -1 & -8\\
+-4 & \infty & \infty & 0 & -5 & \infty\\
+5 & 7 & \infty & 9 & 0 & \infty\\
+10 & 12 & 10 & 14 & 9 & 0\\
+\end{bmatrix}$ 
+
+$D^{(5)} = \begin{bmatrix} 
+0 & 6 & \infty & 8 & -1 & \infty\\
+-2 & 0 & \infty & 2 & -3 & \infty\\
+0 & 2 & 0 & 4 & -1 & -8\\
+-4 & 2 & \infty & 0 & -5 & \infty\\
+5 & 7 & \infty & 9 & 0 & \infty\\
+10 & 12 & 10 & 14 & 9 & 0\\
+\end{bmatrix}$ 
+
+$D^{(6)} = \begin{bmatrix} 
+0 & 6 & \infty & 8 & -1 & \infty\\
+-2 & 0 & \infty & 2 & -3 & \infty\\
+0 & 2 & 0 & 4 & -1 & -8\\
+-4 & 2 & \infty & 0 & -5 & \infty\\
+5 & 7 & \infty & 9 & 0 & \infty\\
+10 & 12 & 10 & 14 & 9 & 0\\
+\end{bmatrix}$ 
+
+\bibliography{references}
+\bibliographystyle{plain}
+
+\end{document}

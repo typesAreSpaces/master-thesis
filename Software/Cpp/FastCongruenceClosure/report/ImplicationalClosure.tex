@@ -1,0 +1,89 @@
+\section{Implicational Closure}
+
+This section discusses the implicational closure algorithm in \cite{DOWLING1984267}.
+The author of the previous paper refers to the problem of satisfiability of
+propositional Horn Clauses. We use the term `implicational closure'
+as the algorithm that solves the satisfiability problem of propositional Horn
+Clauses. Later in the paper, we use implicational closure as part of other
+algorithms.
+
+It is well known from literature that the Boolean satisfiabity problem (SAT)
+for propositional formulas is NP-complete \cite{Cormen:2009:IAT:1614191}.
+Nonetheless, if we restrict the class of propositional formulas to Horn Clauses
+then it is shown in \cite{DOWLING1984267} the existance of linear algorithm
+capable to compute an interpretation for the propositional variables if the
+formula is satisfiable, otherwise it halts returning `unsatisfiable formulas'
+as a result. For a precise explanation of Horn Clauses, let us provide the
+following definitions:
+
+\definition{\cite{Leitsch:1997:RC:260906}} Let $\mathfrak{L}$ be a first-order
+language. If $A$ is an \textit{atomic formula} then $A$ and $\neg A$ are
+called \textit{literals}. An literal formula $A$ is called \textit{positive
+literal} is $A$ is not of the form $\neg B$ for some atomic formula $B$.
+
+\definition{\cite{Leitsch:1997:RC:260906}} A \textit{Horn clause} is a disjunction
+of formulas containing a most one positive literal. A \textit{Horn formula} is a
+conjunction of Horn clauses.
+
+From the last definition, we can notice two trivial classes of Horn clauses:
+
+\begin{itemize}
+\item A does not contain a positive literal: Then $A$ is of the form $\neg P_1
+  \lor \dots \lor \neg P_n$ with $n \geq 1$, where each $P_i$ is an atomic formula.
+  Equivalently, we can express the above formula as $(P_1 \land \dots \land P_n)
+  \rightarrow \bot$ where $bot$ is an unsatisfiable formula (bottom particle).
+\item A contains one positive literal: Then $A$ is of the form $Q \lor \neg P_1
+  \lor \dots \lor \neg P_n$ with $n \geq 0$, where each $P_i$ is an atomic
+  formula. Similarly, we can express $A$ as $(P_1 \land \dots \land P_n)
+  \rightarrow Q$.
+\end{itemize}
+
+We prefer the second `representation' of Horn clauses due to connections
+with logic programming. For convenience, we take standard terminology from
+logic programming including $body(H)$ to denote the set of formulae in the
+precedent of a Horn clause $H$, and $head(H)$ as the formula in the consequent
+of a Horn clause $H$. From this context, a Horn clause with exactly one
+positive literal with $n = 0$ is called a `fact', and if $n > 0$ then the
+Horn clause is denoted as a `rule'.
+
+The key insight of Gallier's algorithm is precisely the observation mentioned
+above about the relation between satisfiability of propositional Horn formulas
+and implicational closure. The latter only implies the computation of the
+following closure $\mathfrak{C}$:
+
+\begin{itemize}
+\item $\text{If } \vdash P \text{ then } P \in \mathfrak{C}$
+  
+\item $\text{If } P_1 \in \mathfrak{C}, P_2 \in \mathfrak{C}, \dots,
+  P_n \in \mathfrak{C} \text{ and } (P_1 \land P_2 \land \dots
+  \land P_n) \rightarrow Q \in \mathfrak{C} \text{ then } Q \in \mathfrak{C}$  
+\end{itemize}
+
+We notice that the latter closure $\mathfrak{C}$ can be understood as the set
+that includes all `facts' of the Horn formula, and successively applies the
+`\textit{Modus Ponens}' rules to include new facts from rules if possible.
+Gallier's algorithm systematically does this process using a `queue' in order
+to avoid unnecessary Modus Ponens calls. Indeed, his algorithm performs this
+process partially. For each atomic formula, the author includes
+atomic formulae extra variable to keep track of its current truth value.
+
+\begin{itemize}
+\item[Step 1.] Initially, all truth values for atomic formulae are set to \texttt{false} 
+  and changed only if such atomic formulae are facts in the Horn formula.
+\item[Step 2.] Any atomic formula that has changed its truth values from \texttt{false} to
+\texttt{true} are pushed into a queue. Two additional data structures keep track
+of which Horn clauses include a given atomic formula, and the number of unsatisfied
+atomic formulae in the body for each Horn clause. Intuitively, if the number of
+unsatisfied formulae in a Horn clause is zero means that the head of the Horn clause
+should be included in the closure.
+\item[Step 3.] If the queue is empty, then halt and indicate that the Horn formula is
+  satisfiable; the truth assignment for each atomic formula is already stored in the
+  extended representation mentioned above. Otherwise, pop the first element
+  from the queue
+  and repeat Step 2.
+\end{itemize}
+
+From the previous description of Gallier's algorithm we can see that the
+time required is $\bigO{n}$ where $n$ is the number of atomic formulae in the
+Horn formula since any atomic formula is never pushed more than once into the
+queue.

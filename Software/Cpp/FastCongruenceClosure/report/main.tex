@@ -1,0 +1,81 @@
+% !TEX root = main.tex
+
+\documentclass[a4paper, 11pt]{article}
+\usepackage[lined]{algorithm2e}
+\usepackage{comment} % enables the use of multi-line comments (\ifx \fi) 
+\usepackage{lipsum} %This package just generates Lorem Ipsum filler text. 
+\usepackage{fullpage} % changes the margin
+\usepackage{listings}
+\lstset{tabsize=2}
+
+\usepackage{bussproofs}
+\usepackage{authblk}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage{stmaryrd}
+\usepackage{amsthm}
+\usepackage{mathtools}
+\usepackage{url}
+\DeclarePairedDelimiter\ceil{\lceil}{\rceil}
+\DeclarePairedDelimiter\floor{\lfloor}{\rfloor}
+
+\usepackage{graphicx}
+\graphicspath{ {images/} }
+
+\usepackage{listings}
+\usepackage{lscape}
+\usepackage{polynom}
+
+\usepackage{etoolbox}
+\let\bbordermatrix\bordermatrix
+\patchcmd{\bbordermatrix}{8.75}{4.75}{}{}
+\patchcmd{\bbordermatrix}{\left(}{\left[}{}{}
+\patchcmd{\bbordermatrix}{\right)}{\right]}{}{}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}{Lemma}
+\newtheorem{claim}{Claim}
+\newtheorem{definition}{Definition}
+\newtheorem{example}{Example}
+
+% Asymptotic Notation
+\newcommand{\bigO}[1]{\mathcal{O}(#1)}
+\newcommand{\bigOmega}[1]{\Omega(#1)}
+\newcommand{\bigTheta}[1]{\Theta(#1)}
+\newcommand{\smallO}[1]{o(#1)}
+\newcommand{\smallOmega}[1]{\omega(#1)}
+\newcommand{\brackett}[1]{\llbracket #1 \rrbracket}
+\newcommand{\bracketts}[1]{\llbracket #1 \rrbracket_2}
+
+% Bold
+\newcommand{\solution}{\textbf{Solution:}}
+\newcommand{\lOp}{\textbf{L}}
+\newcommand{\brackets}[1]{\langle{#1}\rangle}
+\newcommand{\createSet}[1]{\{#1\}}
+\newcommand{\bss}{\backslash}
+\newcommand{\lmd}{\lambda}
+
+\author{Jos\'e Abel Castellanos Joo}
+\title{On Interpolation and Congruence Closure Algorithms \\ Technical Report}
+\affil{Department of Computer Science \\
+  University of New Mexico \\
+  Albuquerque, NM 87131}
+\date{\today}
+
+\begin{document}
+
+\maketitle
+
+\input{Abstract}
+\input{ImplicationalClosure}
+\input{CongruenceClosure}
+\input{KapurInterpolants}
+\input{Implementation}
+%\input{Results}
+\input{Conclusion}
+
+\bibliographystyle{plain}
+\bibliography{references}
+
+\end{document}

@@ -1,0 +1,102 @@
+% !TEX root = main.tex
+
+\documentclass[a4paper, 11pt]{article}
+\usepackage{comment} % enables the use of multi-line comments (\ifx \fi) 
+\usepackage{lipsum} %This package just generates Lorem Ipsum filler text. 
+\usepackage{fullpage} % changes the margin
+\usepackage{listings}
+\lstset{tabsize=2}
+
+\usepackage{bussproofs}
+\usepackage{authblk}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage{stmaryrd}
+\usepackage{amsthm}
+\usepackage{mathtools}
+\usepackage{url}
+\DeclarePairedDelimiter\ceil{\lceil}{\rceil}
+\DeclarePairedDelimiter\floor{\lfloor}{\rfloor}
+
+\usepackage{graphicx}
+\graphicspath{ {images/} }
+
+\usepackage{listings}
+\usepackage{lscape}
+\usepackage{polynom}
+
+\usepackage{etoolbox}
+\let\bbordermatrix\bordermatrix
+\patchcmd{\bbordermatrix}{8.75}{4.75}{}{}
+\patchcmd{\bbordermatrix}{\left(}{\left[}{}{}
+    \patchcmd{\bbordermatrix}{\right)}{\right]}{}{}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}{Lemma}
+\newtheorem{claim}{Claim}
+\newtheorem{definition}{Definition}
+\newtheorem{example}{Example}
+
+% Asymptotic Notation
+\newcommand{\bigO}[1]{\mathcal{O}(#1)}
+\newcommand{\bigOmega}[1]{\Omega(#1)}
+\newcommand{\bigTheta}[1]{\Theta(#1)}
+\newcommand{\smallO}[1]{o(#1)}
+\newcommand{\smallOmega}[1]{\omega(#1)}
+\newcommand{\ifthenelse}[3]{\text{ if } #1 \text{ then } #2 \text { else } #3}
+\newcommand{\brackett}[1]{\llbracket #1 \rrbracket}
+\newcommand{\bracketts}[1]{\llbracket #1 \rrbracket_2}
+
+% Bold
+\newcommand{\solution}{\textbf{Solution:}}
+\newcommand{\lOp}{\textbf{L}}
+\newcommand{\brackets}[1]{\langle{#1}\rangle}
+\newcommand{\createSet}[1]{\{#1\}}
+\newcommand{\bss}{\backslash}
+\newcommand{\lmd}{\lambda}
+
+\author{Jos\'e Abel Castellanos Joo}
+\title{Two weeks of Term Rewriting Systems and Algebra \\ \textit{Master Thesis I} 
+}
+\affil{Department of Computer Science
+
+  University of New Mexico
+
+  Albuquerque, NM 87131}
+\date{\today}
+
+\begin{document}
+
+\maketitle
+
+\section{Introduction}
+
+The last two weeks I've been reading papers regarding term rewriting systems \cite{falke2006inductive, DBLP:conf/rta/Kapur97, DBLP:journals/jar/KapurS96, KAPUR199591}. The material covered in these articles demand basic background on term rewriting system theory. For this reason, I considered mandatory to review the book `Term Rewriting and All That' \cite{Baader:1998:TR:280474} in order to obtain a better understanding of the papers mentioned above.
+
+I covered Chapter 3, which is about Universal Algebra. In my point of view, this theory captures the basic structure of algebraic structures. I noticed the author described two related but different approaches in this chapter: a syntactic one, concerning signatures ($\Sigma$), $\Sigma-terms$, replacements, substitutions, identities, and an interesting reduction relation; and a semantic one, where the author described $\Sigma-algebras$, the relation between homomorphisms of $\Sigma-algebras$ and quotients of those structures through the so-called Fundamental theorems on homomorphisms.
+
+After adquiring a decent understanding on the topic, I was able to go through the papers mentioned above and understand the motivations, basic ideas and intuitions of the articles. My attention was caught by the project RRL, which is a theorem prover capable of handling different methods of reasoning. In particular, many of the papers that I read where about implementing and reason about inductive formulas. Most of the current theorem proving software deals with First-Order Logic formulas. However, the induction principle is a Second-Order predicate, so RRL does a remarkable job as well as having a competitive performance. I would propose to work on a problem related to this topic.
+
+Recently, I took a look to the book `Abstract Algebra' \cite{dummit2004abstract} to review the Buchberger Criterion for computing Grobner bases. Buchberger's observation defines a halting condition for the algorithm to stop adding polynomials if the S-polynomial of any two pairs of polynomials in the current ideal $I$ evaluates to zero. The chapter of this book also mentions the existance of several Grobner basis, as well as minimal Grobner bases and reduced Grobner Bases.  
+
+\section{Universal Algebra}
+
+To my understanding, the static component (syntactic part) of universal algebra concerns mostly on defining its language using signatures, variables and terms, as well some dynamic components using identities and the reduction relation. A signature is a collection of function of several arities which include constants. It seems to be the same languages for First-Order logic without predicate symbols and logical connectors. A set of variables is a collection of elements that should not intersect with signature elements. Finally, the collection of all terms $T(X, \Sigma)$ is defined inductively as the set of variables and the expressions of the form $f^{n}(t_1, \dots, t_n)$ where $f^{n} \in \Sigma$ and $t_1, \dots, t_n \in T(X, \Sigma)$.
+
+This framework can be effective to describe several algebraic structures like groups, rings and fields. In this case, we need two different 2-arity functions (addition and multiplication) as well as the constant values like the additive identity and the multiplicative identity. To describe the axioms of these algebraic structures we use identities, which is a cartesian product of  $T(X, \Sigma) \times T(X, \Sigma)$. Intuitively, the sets of identities describe the set of axioms that tipically characterize the algebraic behaviour of those structures. Given a set of identities $E$, the decidability of the equality of two terms is determined using the reflexive-transitive closure of the following reduction relation:
+
+\begin{equation*}
+  s \rightarrow_E t \text{ iff } \exists (l, r) \in E, p \in Pos(s), \sigma \in Subs(s) \text{ such that } s.p = \sigma(s) \land s[\sigma(r)].p = t 
+\end{equation*}
+
+As we can see, this definition relies on the concept $Pos$, the introduction of a mapping $\sigma : V \rightarrow T(X, \Sigma)$, and the notion of a replacement mechanism. These concepts are relatively simple recursive definitions that indicate the position of a term within the term and a substitution function for variables to terms in $T(X, \Sigma)$. 
+
+\section{The Theorem Prover Rewrite Rule Laboratory}
+
+\section{Buchberger Criterion for Computing Grobner Bases}
+
+\bibliographystyle{plain}
+\bibliography{references}
+
+\end{document}

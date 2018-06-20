@@ -1,0 +1,81 @@
+Example EUF 31
+
+Interpolation example
+Asserted formula A (in group 0): (`and` (`=_X` x2 z3) (`and` (`=_X` x2 (f z2)) (`and` (`=_X` x3 z4) (`and` (`=_X` (f z3) x3) (`and` (`=_X` x2 (f z3)) (`and` (`=_X` z2 x2) (`and` (`=_X` z1 x1) (`=_X` x1 z2))))))))
+Asserted formula B (in group 1): (`and` (`not` (`=_X` z4 y3)) (`and` (`=_X` (f z3) y2) (`and` (`=_X` z2 y2) (`and` (`=_X` z3 y3) (`and` (`=_X` z3 y2) (`and` (`=_X` (f z2) y2) (`and` (`=_X` z1 y1) (`=_X` (f z2) y1))))))))
+
+OK, the interpolant is: (`=_X` z3 z4)
+
+Interpolation example done
+Example EUF 43
+
+Interpolation example
+Asserted formula A (in group 0): (`and` (`=_X` (f x4) z8) (`and` (`=_X` z7 (f x3)) (`and` (`=_X` z6 x4) (`and` (`=_X` x3 z5) (`and` (`=_X` (f x2) z4) (`and` (`=_X` z3 (f x1)) (`and` (`=_X` x1 z1) (`=_X` z2 x2))))))))
+Asserted formula B (in group 1): (`and` (`not` (`=_X` y1 y2)) (`and` (`=_X` z8 y2) (`and` (`=_X` z7 y1) (`and` (`=_X` z6 (f z4)) (`and` (`=_X` z1 z2) (`=_X` z5 (f z3)))))))
+
+OK, the interpolant is: (`and` (`not` (`and` (`=_X` z1 z2) (`not` (`=_X` z3 z4)))) (`not` (`and` (`=_X` z5 z6) (`not` (`=_X` z7 z8)))))
+
+Interpolation example done
+Example EUF 4
+
+Interpolation example
+Asserted formula A (in group 0): (`and` (`=_X` x2 z4) (`and` (`=_X` (f z2) x2) (`and` (`=_X` x1 z1) (`=_X` z3 (f x1)))))
+Asserted formula B (in group 1): (`and` (`not` (`=_X` (f y2) (f y3))) (`and` (`=_X` z4 y3) (`and` (`=_X` z3 y2) (`and` (`=_X` z1 y1) (`=_X` z2 y1)))))
+
+OK, the interpolant is: (`not` (`and` (`=_X` z1 z2) (`not` (`=_X` z3 z4))))
+
+Interpolation example done
+Example Octagon 426
+
+Interpolation example
+Asserted formula A (in group 0): (`and` (`<=_int` -3 (`+_int` x2 x5)) (`and` (`<=_int` 4 (`+_int` x2 x6)) (`and` (`<=_int` -4 (`+_int` x1 (`*_int` -1 x2))) (`<=_int` (`+_int` x2 x3) -5))))
+Asserted formula B (in group 1): (`and` (`<=_int` x5 x4) (`and` (`<=_int` (`+_int` x1 (`*_int` -1 x3)) 2) (`<=_int` (`+_int` x6 x4) 0)))
+
+OK, the interpolant is: (`and` (`<=_int` -5 (`+_int` x1 (`+_int` (`*_int` -1 x3) (`*_int` 2 x5)))) (`<=_int` 9 (`+_int` x1 (`+_int` (`*_int` -1 x3) (`*_int` 2 x6)))))
+
+Interpolation example done
+Example Octagon 417
+
+Interpolation example
+Asserted formula A (in group 0): (`and` (`<=_int` -1 (`+_int` x4 x5)) (`and` (`<=_int` (`+_int` x3 x4) -6) (`and` (`<=_int` (`+_int` x2 x1) 3) (`<=_int` -1 (`+_int` x1 x3)))))
+Asserted formula B (in group 1): (`and` (`<=_int` -4 (`+_int` x4 (`*_int` -1 x6))) (`and` (`<=_int` -3 (`+_int` x2 x3)) (`<=_int` (`+_int` x5 (`*_int` -1 x6)) -1)))
+
+OK, the interpolant is: (`<=_int` (`+_int` x2 (`+_int` x3 (`+_int` x4 (`*_int` -1 x5)))) -7)
+
+Interpolation example done
+Example Octagon 420
+
+Interpolation example
+Asserted formula A (in group 0): (`and` (`<=_int` x5 x4) (`and` (`<=_int` -2 (`+_int` x3 (`*_int` -1 x1))) (`<=_int` (`+_int` x6 x4) 0)))
+Asserted formula B (in group 1): (`and` (`<=_int` -3 (`+_int` x5 x2)) (`and` (`<=_int` 4 (`+_int` x6 x2)) (`and` (`<=_int` -4 (`+_int` x1 (`*_int` -1 x2))) (`<=_int` (`+_int` x3 x2) -5))))
+
+OK, the interpolant is: (`and` (`<=_int` -2 (`+_int` x3 (`*_int` -1 x1))) (`<=_rat` (`+_int` x6 x5) 0))
+
+Interpolation example done
+Example Octagon 422
+
+Interpolation example
+Asserted formula A (in group 0): (`and` (`<=_int` (`+_int` x1 (`*_int` -1 x3)) 2) (`and` (`<=_int` (`+_int` x6 x4) 0) (`and` (`<=_int` -4 (`+_int` x1 (`*_int` -1 x2))) (`<=_int` 4 (`+_int` x2 x6)))))
+Asserted formula B (in group 1): (`and` (`<=_int` x5 x4) (`and` (`<=_int` (`+_int` x2 x3) -5) (`<=_int` -3 (`+_int` x2 x5))))
+
+OK, the interpolant is: (`and` (`<=_int` (`+_int` x2 (`*_int` -1 x3)) 6) (`<=_int` 2 (`+_int` x2 (`+_int` (`*_int` -2 x4) x3))))
+
+Interpolation example done
+Example Octagon 4
+
+Interpolation example
+Asserted formula A (in group 0): (`and` (`<=_int` (`+_int` x2 x3) -5) (`and` (`<=_int` (`+_int` x1 (`*_int` -1 x3)) 2) (`and` (`<=_int` -4 (`+_int` x1 (`*_int` -1 x2))) (`<=_int` 4 (`+_int` x2 x6)))))
+Asserted formula B (in group 1): (`and` (`<=_int` (`+_int` x6 x4) 0) (`and` (`<=_int` -3 (`+_int` x2 x5)) (`<=_int` x5 x4)))
+
+OK, the interpolant is: (`and` (`<=_int` x2 0) (`<=_int` 4 x6))
+
+Interpolation example done
+Example Octagon 424
+
+Interpolation example
+Asserted formula A (in group 0): (`and` (`<=_int` -3 (`+_int` x2 x5)) (`and` (`<=_int` (`+_int` x2 x3) -5) (`and` (`<=_int` (`+_int` x1 (`*_int` -1 x3)) 2) (`and` (`<=_int` -4 (`+_int` x1 (`*_int` -1 x2))) (`<=_int` 4 (`+_int` x2 x6))))))
+Asserted formula B (in group 1): (`and` (`<=_int` (`+_int` x6 x4) 0) (`<=_int` x5 x4))
+
+OK, the interpolant is: (`and` (`<=_int` -3 x5) (`<=_int` 4 x6))
+
+Interpolation example done

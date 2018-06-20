@@ -1,0 +1,173 @@
+\documentclass{beamer}
+
+\usepackage[lined]{algorithm2e}
+\usepackage{amssymb}
+
+% Information to be included in the title page:
+\title{Reviewing Fast Congruence Closure Algorithms}
+\author{Jose Abel Castellanos Joo}
+\institute{University of New Mexico}
+\date{2017}
+
+
+
+\begin{document}
+
+\frame{\titlepage}
+
+\begin{frame}
+  \frametitle{The Algorithm}
+  \scalebox{.7}{
+    \begin{algorithm}[H]
+      $pending = \{v \in V_1 \vert d(v) \geq 1\}$\;
+      \While{$pending \neq \empty$}{
+        $combine = \emptyset$\;
+        \For{each v $\in$ pending}{
+          \eIf{$query(v) = \Lambda$}{
+            enter(v)\;
+          }{
+            add (v, query(v)) to combine\;
+          }
+        }
+        $pending = \emptyset$\;
+        \For{each (v, w) $\in$ combine}{
+          \If{$find(v) \neq find(w)$}{
+            \eIf{$|list(find(v))| < |list(find(w))|$}{
+              \For{each u $\in$ list(find(v))}{
+                delete(u)\;
+                add u to pending\;
+              }
+              union(find(w), find(v))\;
+            }{
+              \For{each u $\in$ list(find(w))}{
+                delete(u)\;
+                add u to pending\;
+              }
+              union(find(v), find(w))
+            }
+          }
+        }
+      }
+    \end{algorithm}
+  }
+\end{frame}
+
+\begin{frame}
+  \frametitle{Example}
+  \begin{itemize}
+  \item $C_0 = \{ \{a, b, f^3 a, f^5 a\}_1 ,\{f a\}_2 ,\{f b\}_3 ,\{f^2 a\}_4 ,\{f^4 a\}_5\}$
+  \item $pending = \{f a, f b, f^2 a, f^3 a, f^4 a, f^5 a\}$
+  \item $list(1) = \{f a, f b, f^4 a\}$; $list(2) = \{f^2 a\}$; $list(3) = \{\}$; $list(4) = \{f^3 a\}$; $list(5) = \{f^ 5 a\}$
+  \item $combine = \{\}$
+  \item $sig\_table = \{(f a, (1))\}$
+  \item $combine = \{(f a, f b)\}$
+  \item $sig\_table = \{(f a , (1)), (f^2 a , (2) )\}$
+  \item $sig\_table = \{(f a , (1)), (f^2 a , (2) ), (f^3 a, (4))\}$
+  \item $combine = \{(fa, fb), (fa, f^4 a)\}$
+  \item $sig\_table = \{(f a , (1)), (f^2 a , (2) ), (f^3 a, (4)), (f^5 a, (5))\}$
+  \end{itemize}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Example (Contd.)}
+  \begin{itemize}
+  \item $pending = \{\}$
+  \item $C_1 = \{\{a, b, f^3 a, f^5 a\}_1 ,\{f a, f b\}_2  ,\{f^2 a\}_4 ,\{f^4 a\}_5\}$
+  \item $sig\_table = \{(f a , (1)), (f^2 a , (2) ), (f^3 a, (4))\}$
+  \item $pending = \{f^5 a\}$
+  \item $C_2 = \{\{a, b, f^3 a, f^5 a\}_1 ,\{f a, f b, f^4 a\}_2  ,\{f^2 a\}_4 \}$
+  \item $list(1) = \{f a, f b, f^4 a\}$; $list(2) = \{f^2 a, f^5 a\}$; $list(3) = \{\}$; $list(4) = \{f^3 a\}$; $list(5) = \{\}$
+  \item $combine = \{\}$
+  \item $combine = \{(f^2 a, f^5 a)\}$
+  \item $pending = \{\}$
+  \item $sig\_table = \{(fa, (1)), (f^2 a, (2))\}$
+  \item $pending = \{f ^ 3 a\}$
+  \item $C_3 = \{\{a, b, f^3 a, f^5 a, f^2 a\}_1 ,\{f a, f b, f^4 a\}_2\}$
+  \end{itemize}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Example (Contd.)}
+  \begin{itemize}
+  \item $list(1) = \{f a, f b, f^4 a, f^3 a\}$; $list(2) = \{f^2 a, f^5 a\}$; $list(3) = \{\}$; $list(4) = \{\}$; $list(5) = \{\}$
+  \item $combine = \{\}$
+  \item $combine = \{(f^3 a, f a)\}$
+  \item $pending = \{\}$
+  \item $sig\_table = \{(fa, (1))\}$
+  \item $pending = \{f^2 a, f^5 a\}$
+  \item $C_4 = \{\{a, b, f^3 a, f^5 a, f a, f b, f^2 a\, f^4 a\}_1\}$
+  \item $combine = \{\}$
+  \item $combine = \{(f^2 a, f a)\}$
+  \item $combine = \{(f^2 a, f a), (f^5 a, f a)\}$
+  \item $pending = \{\}$
+  \item $halt$
+  \end{itemize}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Running Time}
+  \begin{itemize}
+  \item Operations on pending:
+    \begin{itemize}
+    \item There are at most $|V_1|$ initial additions to pending (initial number of equivalence classes)
+    \item There are at most $2 |V_1|$ elements in total in all $list$
+    \item Using the weighted heuristic, the length of one of the predecessor lists at least doubles after merging two equivalence classes
+    \item Thus, there are at most $|V_1| + 2|V_1| \log (2|V_1|)$ for pending
+    \end{itemize}
+  \end{itemize}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Running Time (Contd.)}
+  \begin{itemize}
+  \item Operations on the UNION-FIND data structure:
+    \begin{itemize}
+    \item Union operations: There are at most $|V_1| - 1$ $union$ operations
+    \item The amount of $list$ operations is bounded by a constant times the number of $union$ operations (i.e. $O(|V_1|) = O(m)$)
+    \item The number of operations on the set $combine$ is bounded by the number of additions to $pending$
+    \item The number of $find$ operations is bounded by a constant times the number of $combine$ operations
+    \end{itemize}
+  \item Hence,the number of $find$ operations is $O(m \log m)$
+  \item Using the set-union algorithm, $union$ operations take $O(1) (Amortized)$
+  \item Similarly, $list$ operations take also $O(1)$ adding a circularly linked list of predecessors.
+  \item Therefore, the total work for $find$ operations require $O(m \log m)$ time.
+  \end{itemize}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Running Time (Contd.)}
+  \begin{itemize}
+  \item Operations on the Signature Table:
+  \item Bounded by number of additions to $pending$ (i.e. $O(m \log m)$)
+    \begin{itemize}
+    \item Unary Functions (Requires to store one item per term): We can use an arrat to store the signature of each term. Thus, each operation of this part of the table takes $O(1)$ time
+    \item Binary Functions (Requires to store two items per term):  
+    \end{itemize}
+  \end{itemize}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Running Time (Contd.)}
+  \begin{itemize}
+  \item Balance binary tree:
+    \begin{itemize}
+    \item All operations take $O(\log m)$ time
+    \item Total time needed: $O(m (\log m)^2)$
+    \item Space needed: $O(m)$
+    \end{itemize}
+  \item $n \times O(m)$ array:
+    \begin{itemize}
+    \item All operations take $O(1)$ time
+    \item Total time needed: $O(m \log m)$
+    \item Space needed: $O(m n)$
+    \end{itemize}
+  \item Hash table:
+    \begin{itemize}
+    \item All operations take $O(1)$ time on average
+    \item Total time needed (on average): $O(m \log m)$
+    \item Space needed: $O(m)$
+    \end{itemize}
+  \end{itemize}
+\end{frame}
+
+\end{document}

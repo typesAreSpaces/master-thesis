@@ -1,0 +1,495 @@
+Initial Inequalities:
+Octagonal Formula: - x_1 <= -42
+Octagonal Formula: - x_2 - x_1 <= 24
+Octagonal Formula: + x_2 <= -45
+Octagonal Formula: + x_2 + x_1 <= 31
+Octagonal Formula: - x_3 - x_1 <= -35
+Octagonal Formula: + x_3 + x_0 <= -1
+Octagonal Formula: + x_3 + x_2 <= 39
+Octagonal Formula: - x_4 - x_1 <= -22
+Octagonal Formula: - x_4 - x_2 <= -3
+Octagonal Formula: + x_4 <= -41
+Octagonal Formula: + x_4 + x_0 <= -39
+Octagonal Formula: + x_4 + x_1 <= 40
+Octagonal Formula: + x_4 - x_2 <= -23
+Octagonal Formula: + x_4 + x_2 <= -24
+Octagonal Formula: + x_4 - x_3 <= -30
+Octagonal Formula: + x_4 + x_3 <= 38
+Octagonal Formula: - x_5 - x_3 <= -6
+Octagonal Formula: - x_5 + x_3 <= -36
+Octagonal Formula: - x_5 + x_4 <= -14
+Octagonal Formula: + x_5 + x_0 <= -42
+Octagonal Formula: + x_5 - x_1 <= 1
+Octagonal Formula: + x_5 - x_3 <= -20
+Octagonal Formula: + x_5 - x_4 <= -26
+Octagonal Formula: - x_6 + x_2 <= -1
+Octagonal Formula: - x_6 + x_4 <= 4
+Octagonal Formula: - x_6 - x_5 <= -30
+Octagonal Formula: + x_6 <= -11
+Octagonal Formula: + x_6 - x_0 <= 5
+Octagonal Formula: + x_6 - x_5 <= -6
+Octagonal Formula: + x_6 + x_5 <= -37
+Octagonal Formula: - x_7 - x_0 <= -12
+Octagonal Formula: - x_7 - x_1 <= 23
+Octagonal Formula: - x_7 + x_2 <= -48
+Octagonal Formula: - x_7 - x_5 <= -4
+Octagonal Formula: + x_7 + x_0 <= -46
+Octagonal Formula: + x_7 + x_6 <= -36
+Octagonal Formula: - x_8 + x_2 <= -9
+Octagonal Formula: - x_8 - x_4 <= -37
+Octagonal Formula: - x_8 + x_4 <= -5
+Octagonal Formula: - x_8 + x_5 <= -50
+Octagonal Formula: + x_8 + x_1 <= -7
+Octagonal Formula: + x_8 + x_3 <= 26
+Octagonal Formula: + x_8 + x_4 <= -11
+Octagonal Formula: + x_8 + x_5 <= -10
+Octagonal Formula: - x_9 - x_2 <= 12
+Octagonal Formula: + x_9 + x_5 <= 34
+Octagonal Formula: + x_9 - x_7 <= 14
+Octagonal Formula: - x_10 - x_8 <= 26
+Octagonal Formula: + x_10 + x_3 <= -42
+Octagonal Formula: + x_10 + x_6 <= 28
+Octagonal Formula: + x_10 + x_7 <= -37
+Octagonal Formula: + x_11 - x_4 <= 35
+Octagonal Formula: + x_11 - x_5 <= 15
+Octagonal Formula: - x_12 + x_4 <= -44
+Octagonal Formula: - x_12 + x_5 <= -8
+Octagonal Formula: - x_12 + x_7 <= -17
+Octagonal Formula: + x_12 <= -20
+Octagonal Formula: + x_12 + x_4 <= -42
+Octagonal Formula: - x_13 - x_2 <= 12
+Octagonal Formula: + x_13 + x_4 <= -40
+Octagonal Formula: + x_13 - x_12 <= -31
+Octagonal Formula: - x_14 - x_1 <= -39
+Octagonal Formula: - x_14 + x_2 <= 0
+Octagonal Formula: - x_14 + x_3 <= -30
+Octagonal Formula: + x_14 <= 10
+Octagonal Formula: - x_15 - x_3 <= -8
+Octagonal Formula: + x_15 + x_0 <= -4
+Octagonal Formula: + x_15 - x_10 <= -27
+Octagonal Formula: + x_16 + x_5 <= -24
+Octagonal Formula: - x_17 + x_11 <= -17
+Octagonal Formula: + x_17 - x_7 <= 3
+Octagonal Formula: + x_17 - x_9 <= -16
+Octagonal Formula: - x_18 - x_17 <= -23
+Octagonal Formula: + x_18 - x_8 <= -26
+Octagonal Formula: + x_18 - x_13 <= 6
+Octagonal Formula: - x_19 - x_4 <= 40
+Octagonal Formula: - x_20 - x_3 <= 47
+Octagonal Formula: + x_20 - x_14 <= 27
+Octagonal Formula: - x_21 + x_10 <= -28
+Octagonal Formula: - x_22 - x_1 <= -9
+Octagonal Formula: - x_22 + x_1 <= 38
+Octagonal Formula: - x_22 - x_10 <= -1
+Octagonal Formula: + x_22 + x_19 <= -1
+Octagonal Formula: - x_23 <= -7
+Octagonal Formula: - x_23 - x_4 <= 18
+Octagonal Formula: - x_23 - x_7 <= -6
+Octagonal Formula: + x_23 - x_2 <= -3
+Octagonal Formula: - x_24 + x_5 <= -49
+Octagonal Formula: + x_24 + x_1 <= 22
+Octagonal Formula: + x_24 - x_2 <= 47
+Octagonal Formula: + x_24 + x_12 <= -5
+Octagonal Formula: - x_25 - x_3 <= 37
+Octagonal Formula: - x_26 <= 24
+Octagonal Formula: - x_26 - x_3 <= 41
+Octagonal Formula: - x_28 - x_5 <= 34
+Octagonal Formula: - x_28 + x_6 <= 14
+Octagonal Formula: - x_28 - x_8 <= -47
+Octagonal Formula: - x_28 + x_26 <= -23
+Octagonal Formula: + x_28 - x_4 <= -26
+Octagonal Formula: + x_28 + x_14 <= -43
+Octagonal Formula: + x_29 - x_14 <= 30
+	  
+Eliminating variable x_12
+Taking inequalities:
+Octagonal Formula: + x_24 + x_12 <= -5
+Octagonal Formula: - x_12 + x_5 <= -8
+To produce this
+Octagonal Formula: + x_24 + x_5 <= -13
+
+Taking inequalities:
+Octagonal Formula: + x_24 + x_12 <= -5
+Octagonal Formula: - x_12 + x_7 <= -17
+To produce this
+Octagonal Formula: + x_24 + x_7 <= -22
+
+Taking inequalities:
+Octagonal Formula: + x_24 + x_12 <= -5
+Octagonal Formula: - x_12 + x_5 <= -8
+To produce this
+Octagonal Formula: + x_24 + x_5 <= -13
+
+After Eliminating Variable x_12
+Octagonal Formula: - x_1 <= -42
+Octagonal Formula: - x_2 - x_1 <= 24
+Octagonal Formula: + x_2 <= -45
+Octagonal Formula: + x_2 + x_1 <= 31
+Octagonal Formula: - x_3 - x_1 <= -35
+Octagonal Formula: + x_3 + x_0 <= -1
+Octagonal Formula: + x_3 + x_2 <= 39
+Octagonal Formula: - x_4 - x_1 <= -22
+Octagonal Formula: - x_4 - x_2 <= -3
+Octagonal Formula: + x_4 <= -41
+Octagonal Formula: + x_4 + x_0 <= -39
+Octagonal Formula: + x_4 + x_1 <= 40
+Octagonal Formula: + x_4 - x_2 <= -23
+Octagonal Formula: + x_4 + x_2 <= -24
+Octagonal Formula: + x_4 - x_3 <= -30
+Octagonal Formula: + x_4 + x_3 <= 38
+Octagonal Formula: - x_5 + x_3 <= -36
+Octagonal Formula: - x_5 + x_4 <= -14
+Octagonal Formula: + x_5 + x_0 <= -42
+Octagonal Formula: + x_5 - x_1 <= 1
+Octagonal Formula: + x_5 - x_3 <= -20
+Octagonal Formula: + x_5 - x_4 <= -26
+Octagonal Formula: - x_6 + x_2 <= -1
+Octagonal Formula: - x_6 + x_4 <= 4
+Octagonal Formula: - x_6 - x_5 <= -30
+Octagonal Formula: + x_6 <= -11
+Octagonal Formula: + x_6 - x_0 <= 5
+Octagonal Formula: + x_6 - x_5 <= -6
+Octagonal Formula: - x_7 - x_0 <= -12
+Octagonal Formula: - x_7 - x_1 <= 23
+Octagonal Formula: - x_7 + x_2 <= -48
+Octagonal Formula: - x_7 - x_5 <= -4
+Octagonal Formula: + x_7 + x_0 <= -46
+Octagonal Formula: + x_7 + x_6 <= -36
+Octagonal Formula: - x_8 + x_2 <= -9
+Octagonal Formula: - x_8 - x_4 <= -37
+Octagonal Formula: - x_8 + x_4 <= -5
+Octagonal Formula: - x_8 + x_5 <= -50
+Octagonal Formula: + x_8 + x_1 <= -7
+Octagonal Formula: + x_8 + x_3 <= 26
+Octagonal Formula: + x_8 + x_4 <= -11
+Octagonal Formula: + x_8 + x_5 <= -10
+Octagonal Formula: - x_9 - x_2 <= 12
+Octagonal Formula: + x_9 + x_5 <= 34
+Octagonal Formula: + x_9 - x_7 <= 14
+Octagonal Formula: - x_10 - x_8 <= 26
+Octagonal Formula: + x_10 + x_3 <= -42
+Octagonal Formula: + x_10 + x_6 <= 28
+Octagonal Formula: + x_10 + x_7 <= -37
+Octagonal Formula: + x_11 - x_4 <= 35
+Octagonal Formula: + x_11 - x_5 <= 15
+Octagonal Formula: - x_12 + x_4 <= -44
+Octagonal Formula: + x_12 <= -20
+Octagonal Formula: + x_12 + x_4 <= -42
+Octagonal Formula: + x_13 + x_4 <= -40
+Octagonal Formula: + x_13 - x_12 <= -31
+Octagonal Formula: - x_14 - x_1 <= -39
+Octagonal Formula: - x_14 + x_2 <= 0
+Octagonal Formula: - x_14 + x_3 <= -30
+Octagonal Formula: + x_14 <= 10
+Octagonal Formula: - x_15 - x_3 <= -8
+Octagonal Formula: + x_15 + x_0 <= -4
+Octagonal Formula: + x_15 - x_10 <= -27
+Octagonal Formula: + x_16 + x_5 <= -24
+Octagonal Formula: - x_17 + x_11 <= -17
+Octagonal Formula: + x_17 - x_7 <= 3
+Octagonal Formula: + x_17 - x_9 <= -16
+Octagonal Formula: - x_18 - x_17 <= -23
+Octagonal Formula: + x_18 - x_8 <= -26
+Octagonal Formula: + x_18 - x_13 <= 6
+Octagonal Formula: - x_19 - x_4 <= 40
+Octagonal Formula: - x_20 - x_3 <= 47
+Octagonal Formula: + x_20 - x_14 <= 27
+Octagonal Formula: - x_21 + x_10 <= -28
+Octagonal Formula: - x_22 - x_1 <= -9
+Octagonal Formula: - x_22 + x_1 <= 38
+Octagonal Formula: - x_22 - x_10 <= -1
+Octagonal Formula: + x_22 + x_19 <= -1
+Octagonal Formula: - x_23 <= -7
+Octagonal Formula: - x_23 - x_4 <= 18
+Octagonal Formula: - x_23 - x_7 <= -6
+Octagonal Formula: + x_23 - x_2 <= -3
+Octagonal Formula: - x_24 + x_5 <= -49
+Octagonal Formula: + x_24 + x_1 <= 22
+Octagonal Formula: + x_24 - x_2 <= 47
+Octagonal Formula: + x_24 + x_5 <= -13
+Octagonal Formula: + x_24 + x_7 <= -22
+Octagonal Formula: - x_25 - x_3 <= 37
+Octagonal Formula: - x_26 <= 24
+Octagonal Formula: - x_26 - x_3 <= 41
+Octagonal Formula: - x_28 - x_5 <= 34
+Octagonal Formula: - x_28 + x_6 <= 14
+Octagonal Formula: - x_28 - x_8 <= -47
+Octagonal Formula: - x_28 + x_26 <= -23
+Octagonal Formula: + x_28 - x_4 <= -26
+Octagonal Formula: + x_28 + x_14 <= -43
+Octagonal Formula: + x_29 - x_14 <= 30
+Eliminating variable x_17
+Taking inequalities:
+Octagonal Formula: + x_17 - x_9 <= -16
+Octagonal Formula: + x_17 - x_7 <= 3
+To produce this
+Octagonal Formula: - x_9 - x_7 <= -13
+
+Taking inequalities:
+Octagonal Formula: + x_17 - x_9 <= -16
+Octagonal Formula: - x_18 - x_17 <= -23
+To produce this
+Octagonal Formula: - x_18 - x_9 <= -39
+
+After Eliminating Variable x_17
+Octagonal Formula: - x_1 <= -42
+Octagonal Formula: - x_2 - x_1 <= 24
+Octagonal Formula: + x_2 <= -45
+Octagonal Formula: + x_2 + x_1 <= 31
+Octagonal Formula: - x_3 - x_1 <= -35
+Octagonal Formula: + x_3 + x_0 <= -1
+Octagonal Formula: + x_3 + x_2 <= 39
+Octagonal Formula: - x_4 - x_1 <= -22
+Octagonal Formula: + x_4 <= -41
+Octagonal Formula: + x_4 + x_0 <= -39
+Octagonal Formula: + x_4 + x_1 <= 40
+Octagonal Formula: + x_4 - x_2 <= -23
+Octagonal Formula: + x_4 + x_2 <= -24
+Octagonal Formula: + x_4 - x_3 <= -30
+Octagonal Formula: - x_5 + x_3 <= -36
+Octagonal Formula: - x_5 + x_4 <= -14
+Octagonal Formula: + x_5 + x_0 <= -42
+Octagonal Formula: + x_5 - x_1 <= 1
+Octagonal Formula: + x_5 - x_3 <= -20
+Octagonal Formula: + x_5 - x_4 <= -26
+Octagonal Formula: - x_6 + x_2 <= -1
+Octagonal Formula: - x_6 + x_4 <= 4
+Octagonal Formula: - x_6 - x_5 <= -30
+Octagonal Formula: + x_6 <= -11
+Octagonal Formula: + x_6 - x_0 <= 5
+Octagonal Formula: + x_6 - x_5 <= -6
+Octagonal Formula: - x_7 - x_0 <= -12
+Octagonal Formula: - x_7 - x_1 <= 23
+Octagonal Formula: - x_7 + x_2 <= -48
+Octagonal Formula: - x_7 - x_5 <= -4
+Octagonal Formula: + x_7 + x_0 <= -46
+Octagonal Formula: + x_7 + x_6 <= -36
+Octagonal Formula: - x_8 + x_2 <= -9
+Octagonal Formula: - x_8 - x_4 <= -37
+Octagonal Formula: - x_8 + x_4 <= -5
+Octagonal Formula: - x_8 + x_5 <= -50
+Octagonal Formula: + x_8 + x_1 <= -7
+Octagonal Formula: + x_8 + x_3 <= 26
+Octagonal Formula: + x_8 + x_4 <= -11
+Octagonal Formula: + x_8 + x_5 <= -10
+Octagonal Formula: - x_9 - x_2 <= 12
+Octagonal Formula: - x_9 - x_7 <= -13
+Octagonal Formula: + x_9 + x_5 <= 34
+Octagonal Formula: + x_9 - x_7 <= 14
+Octagonal Formula: - x_10 - x_8 <= 26
+Octagonal Formula: + x_10 + x_3 <= -42
+Octagonal Formula: + x_10 + x_6 <= 28
+Octagonal Formula: + x_10 + x_7 <= -37
+Octagonal Formula: + x_11 - x_4 <= 35
+Octagonal Formula: + x_11 - x_5 <= 15
+Octagonal Formula: - x_12 + x_4 <= -44
+Octagonal Formula: + x_12 <= -20
+Octagonal Formula: + x_12 + x_4 <= -42
+Octagonal Formula: + x_13 + x_4 <= -40
+Octagonal Formula: + x_13 - x_12 <= -31
+Octagonal Formula: - x_14 - x_1 <= -39
+Octagonal Formula: - x_14 + x_2 <= 0
+Octagonal Formula: - x_14 + x_3 <= -30
+Octagonal Formula: + x_14 <= 10
+Octagonal Formula: - x_15 - x_3 <= -8
+Octagonal Formula: + x_15 + x_0 <= -4
+Octagonal Formula: + x_15 - x_10 <= -27
+Octagonal Formula: + x_16 + x_5 <= -24
+Octagonal Formula: - x_17 + x_11 <= -17
+Octagonal Formula: - x_18 - x_9 <= -39
+Octagonal Formula: + x_18 - x_8 <= -26
+Octagonal Formula: + x_18 - x_13 <= 6
+Octagonal Formula: - x_19 - x_4 <= 40
+Octagonal Formula: - x_20 - x_3 <= 47
+Octagonal Formula: + x_20 - x_14 <= 27
+Octagonal Formula: - x_21 + x_10 <= -28
+Octagonal Formula: - x_22 - x_1 <= -9
+Octagonal Formula: - x_22 + x_1 <= 38
+Octagonal Formula: - x_22 - x_10 <= -1
+Octagonal Formula: + x_22 + x_19 <= -1
+Octagonal Formula: - x_23 <= -7
+Octagonal Formula: - x_23 - x_4 <= 18
+Octagonal Formula: - x_23 - x_7 <= -6
+Octagonal Formula: + x_23 - x_2 <= -3
+Octagonal Formula: - x_24 + x_5 <= -49
+Octagonal Formula: + x_24 + x_1 <= 22
+Octagonal Formula: + x_24 - x_2 <= 47
+Octagonal Formula: + x_24 + x_5 <= -13
+Octagonal Formula: + x_24 + x_7 <= -22
+Octagonal Formula: - x_25 - x_3 <= 37
+Octagonal Formula: - x_26 <= 24
+Octagonal Formula: - x_26 - x_3 <= 41
+Octagonal Formula: - x_28 - x_5 <= 34
+Octagonal Formula: - x_28 + x_6 <= 14
+Octagonal Formula: - x_28 - x_8 <= -47
+Octagonal Formula: - x_28 + x_26 <= -23
+Octagonal Formula: + x_28 - x_4 <= -26
+Octagonal Formula: + x_28 + x_14 <= -43
+Octagonal Formula: + x_29 - x_14 <= 30
+Eliminating variable x_1
+Taking inequalities:
+Octagonal Formula: - x_3 - x_1 <= -35
+Octagonal Formula: + x_2 + x_1 <= 31
+To produce this
+Octagonal Formula: - x_3 + x_2 <= -4
+
+Taking inequalities:
+Octagonal Formula: - x_3 - x_1 <= -35
+Octagonal Formula: - x_14 - x_1 <= -39
+To produce this
+Octagonal Formula: - x_14 - x_3 <= -74
+
+Taking inequalities:
+Octagonal Formula: - x_3 - x_1 <= -35
+Octagonal Formula: - x_2 - x_1 <= 24
+To produce this
+Octagonal Formula: - x_3 - x_2 <= -11
+
+Taking inequalities:
+Octagonal Formula: - x_3 - x_1 <= -35
+Octagonal Formula: - x_22 - x_1 <= -9
+To produce this
+Octagonal Formula: - x_22 - x_3 <= -44
+
+Taking inequalities:
+Octagonal Formula: - x_22 + x_1 <= 38
+Octagonal Formula: + x_2 + x_1 <= 31
+To produce this
+Octagonal Formula: - x_22 + x_2 <= 69
+
+Taking inequalities:
+Octagonal Formula: - x_22 + x_1 <= 38
+Octagonal Formula: - x_14 - x_1 <= -39
+To produce this
+Octagonal Formula: - x_22 - x_14 <= -1
+
+Taking inequalities:
+Octagonal Formula: - x_22 + x_1 <= 38
+Octagonal Formula: - x_2 - x_1 <= 24
+To produce this
+Octagonal Formula: - x_22 - x_2 <= 62
+
+Taking inequalities:
+Octagonal Formula: - x_22 + x_1 <= 38
+Octagonal Formula: - x_22 - x_1 <= -9
+To produce this
+Octagonal Formula: - x_22 <= 14
+
+Taking inequalities:
+Octagonal Formula: + x_24 + x_1 <= 22
+Octagonal Formula: + x_2 + x_1 <= 31
+To produce this
+Octagonal Formula: + x_24 + x_2 <= 53
+
+Taking inequalities:
+Octagonal Formula: + x_24 + x_1 <= 22
+Octagonal Formula: - x_14 - x_1 <= -39
+To produce this
+Octagonal Formula: + x_24 - x_14 <= -17
+
+Taking inequalities:
+Octagonal Formula: + x_24 + x_1 <= 22
+Octagonal Formula: - x_2 - x_1 <= 24
+To produce this
+Octagonal Formula: + x_24 - x_2 <= 46
+
+Taking inequalities:
+Octagonal Formula: + x_24 + x_1 <= 22
+Octagonal Formula: - x_22 - x_1 <= -9
+To produce this
+Octagonal Formula: + x_24 - x_22 <= 13
+
+After Eliminating Variable x_1
+Octagonal Formula: - x_1 <= -42
+Octagonal Formula: - x_3 - x_2 <= -11
+Octagonal Formula: - x_3 + x_2 <= -4
+Octagonal Formula: + x_3 + x_0 <= -1
+Octagonal Formula: + x_3 + x_2 <= 39
+Octagonal Formula: - x_4 - x_1 <= -22
+Octagonal Formula: + x_4 + x_1 <= 40
+Octagonal Formula: + x_4 - x_2 <= -23
+Octagonal Formula: + x_4 + x_2 <= -24
+Octagonal Formula: + x_4 - x_3 <= -30
+Octagonal Formula: + x_5 + x_0 <= -42
+Octagonal Formula: + x_5 - x_1 <= 1
+Octagonal Formula: + x_5 - x_3 <= -20
+Octagonal Formula: + x_5 - x_4 <= -26
+Octagonal Formula: - x_6 + x_2 <= -1
+Octagonal Formula: - x_6 + x_4 <= 4
+Octagonal Formula: - x_6 - x_5 <= -30
+Octagonal Formula: + x_6 <= -11
+Octagonal Formula: + x_6 - x_0 <= 5
+Octagonal Formula: + x_6 - x_5 <= -6
+Octagonal Formula: - x_7 - x_0 <= -12
+Octagonal Formula: - x_7 - x_1 <= 23
+Octagonal Formula: - x_7 + x_2 <= -48
+Octagonal Formula: - x_7 - x_5 <= -4
+Octagonal Formula: + x_7 + x_0 <= -46
+Octagonal Formula: + x_7 + x_6 <= -36
+Octagonal Formula: - x_8 + x_2 <= -9
+Octagonal Formula: - x_8 - x_4 <= -37
+Octagonal Formula: - x_8 + x_4 <= -5
+Octagonal Formula: - x_8 + x_5 <= -50
+Octagonal Formula: + x_8 + x_1 <= -7
+Octagonal Formula: + x_8 + x_3 <= 26
+Octagonal Formula: + x_8 + x_4 <= -11
+Octagonal Formula: + x_8 + x_5 <= -10
+Octagonal Formula: - x_9 - x_2 <= 12
+Octagonal Formula: - x_9 - x_7 <= -13
+Octagonal Formula: + x_9 + x_5 <= 34
+Octagonal Formula: + x_9 - x_7 <= 14
+Octagonal Formula: - x_10 - x_8 <= 26
+Octagonal Formula: + x_10 + x_3 <= -42
+Octagonal Formula: + x_10 + x_6 <= 28
+Octagonal Formula: + x_10 + x_7 <= -37
+Octagonal Formula: + x_11 - x_4 <= 35
+Octagonal Formula: + x_11 - x_5 <= 15
+Octagonal Formula: - x_12 + x_4 <= -44
+Octagonal Formula: + x_12 <= -20
+Octagonal Formula: + x_12 + x_4 <= -42
+Octagonal Formula: + x_13 + x_4 <= -40
+Octagonal Formula: + x_13 - x_12 <= -31
+Octagonal Formula: - x_14 + x_2 <= 0
+Octagonal Formula: - x_14 - x_3 <= -74
+Octagonal Formula: - x_14 + x_3 <= -30
+Octagonal Formula: + x_14 <= 10
+Octagonal Formula: - x_15 - x_3 <= -8
+Octagonal Formula: + x_15 + x_0 <= -4
+Octagonal Formula: + x_15 - x_10 <= -27
+Octagonal Formula: + x_16 + x_5 <= -24
+Octagonal Formula: - x_17 + x_11 <= -17
+Octagonal Formula: - x_18 - x_9 <= -39
+Octagonal Formula: + x_18 - x_8 <= -26
+Octagonal Formula: + x_18 - x_13 <= 6
+Octagonal Formula: - x_19 - x_4 <= 40
+Octagonal Formula: - x_20 - x_3 <= 47
+Octagonal Formula: + x_20 - x_14 <= 27
+Octagonal Formula: - x_21 + x_10 <= -28
+Octagonal Formula: - x_22 <= 14
+Octagonal Formula: - x_22 - x_2 <= 62
+Octagonal Formula: - x_22 + x_2 <= 69
+Octagonal Formula: - x_22 - x_3 <= -44
+Octagonal Formula: - x_22 - x_10 <= -1
+Octagonal Formula: - x_22 - x_14 <= -1
+Octagonal Formula: + x_22 + x_19 <= -1
+Octagonal Formula: - x_23 <= -7
+Octagonal Formula: - x_23 - x_4 <= 18
+Octagonal Formula: - x_23 - x_7 <= -6
+Octagonal Formula: + x_23 - x_2 <= -3
+Octagonal Formula: - x_24 + x_5 <= -49
+Octagonal Formula: + x_24 - x_2 <= 46
+Octagonal Formula: + x_24 + x_2 <= 53
+Octagonal Formula: + x_24 + x_5 <= -13
+Octagonal Formula: + x_24 + x_7 <= -22
+Octagonal Formula: + x_24 - x_14 <= -17
+Octagonal Formula: + x_24 - x_22 <= 13
+Octagonal Formula: - x_25 - x_3 <= 37
+Octagonal Formula: - x_26 <= 24
+Octagonal Formula: - x_26 - x_3 <= 41
+Octagonal Formula: - x_28 - x_5 <= 34
+Octagonal Formula: - x_28 + x_6 <= 14
+Octagonal Formula: - x_28 - x_8 <= -47
+Octagonal Formula: - x_28 + x_26 <= -23
+Octagonal Formula: + x_28 - x_4 <= -26
+Octagonal Formula: + x_28 + x_14 <= -43
+Octagonal Formula: + x_29 - x_14 <= 30

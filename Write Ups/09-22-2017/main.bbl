@@ -1,0 +1,37 @@
+\begin{thebibliography}{1}
+
+\bibitem{Baader:1998:TR:280474}
+Franz Baader and Tobias Nipkow.
+\newblock {\em Term Rewriting and All That}.
+\newblock Cambridge University Press, New York, NY, USA, 1998.
+
+\bibitem{dummit2004abstract}
+D.S. Dummit and R.M. Foote.
+\newblock {\em Abstract Algebra}.
+\newblock Wiley, 2004.
+
+\bibitem{falke2006inductive}
+Stephan Falke and Deepak Kapur.
+\newblock Inductive decidability using implicit induction.
+\newblock In {\em LPAR}, volume~6, pages 45--59. Springer, 2006.
+
+\bibitem{KAPUR199591}
+D.~Kapur and H.~Zhang.
+\newblock An overview of rewrite rule laboratory (rrl).
+\newblock {\em Computers and Mathematics with Applications}, 29(2):91 -- 114,
+  1995.
+
+\bibitem{DBLP:conf/rta/Kapur97}
+Deepak Kapur.
+\newblock Shostak's congruence closure as completion.
+\newblock In {\em Rewriting Techniques and Applications, 8th International
+  Conference, RTA-97, Sitges, Spain, June 2-5, 1997, Proceedings}, pages
+  23--37, 1997.
+
+\bibitem{DBLP:journals/jar/KapurS96}
+Deepak Kapur and Mahadevan Subramaniam.
+\newblock New uses of linear arithmetic in automated theorem proving by
+  induction.
+\newblock {\em J. Autom. Reasoning}, 16(1-2):39--78, 1996.
+
+\end{thebibliography}

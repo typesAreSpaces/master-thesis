@@ -1,0 +1,111 @@
+\section{Interpolation Algorithms for quantifier-free EUF and octagonal formulas}
+
+In this section we discuss the novel algorithms by Prof. Kapur. First of all,
+we will explain basic notions of interpolants will the goal to understand
+the key ideas for Kapur's algorithms.
+
+\definition{} Given formulas $\alpha, \beta$ for some theory $T$ such that
+$\vdash \alpha \rightarrow \beta$, then a formula $\gamma$ is called
+an \textit{interpolant} of the pair $(\alpha, \beta)$ if
+$\vdash \alpha \rightarrow \gamma$, $\vdash \gamma \rightarrow \beta$,
+and $\gamma$ contains only common symbols of $\alpha$ and $\beta$. A theory
+$T$ is \textit{interpolating} if for all pair of formulas $(\alpha, \beta)$
+such that $\vdash \alpha \rightarrow \beta$, and interpolant $\gamma$ of
+$(\alpha, \beta)$ can be computed.
+
+In 1957, Craig \cite{craig1957} proved that any theory in first-order logic
+is interpolating. An equivalent formulation of the interpolating
+property as suggested by Prof. Kapur in one of his talks is that for a
+pair $(\alpha, \beta)$ such that $\alpha \land \beta$ is unsatisfiable
+(i.e. $\vdash \alpha \rightarrow \neg \beta$),
+a formula $\gamma$ is an interpolant of $(\alpha, \beta)$ if
+$\vdash \alpha \rightarrow \gamma$ and $\vdash \neg (\gamma \land \beta)$.
+
+From the latter interpolant formula point of view, we can characterize
+Prof. Kapur's approach in both of his algorithm as follows. In hindsight, the basic
+idea is to perform a collection of `reductions' to the formula $\alpha \land \beta$
+until a fixed point is found. Any sequence of these reductions keep the
+invariant that for the `current interpolant formula' $\gamma$ with respect
+to the pair $(\alpha, \beta)$ it satisfies $\vdash \alpha \rightarrow \gamma$ and
+$\vdash \neg(\gamma \land \beta)$, on the other hand the requirement for
+$\gamma$ to only contain common symbols of $\alpha, \beta$ is achieved only
+when there are no more sequence of reductions to be performed.
+
+Initially, Prof. Kapur's algorithm choose as initial formula the conjunction
+$\gamma = \alpha \land \neg\beta$ as the current interpolant formula. This formula satisfies
+the invariant proposed above since $\vdash \alpha \rightarrow \alpha$ (tautology),
+and $\vdash \alpha \rightarrow \neg\beta$ (by assumption), thus $\vdash \alpha \rightarrow \gamma$.
+Similary, we can see that $(\alpha \land \neg \beta \land \beta)$ is unsatisfiable for any $\alpha, \beta$.
+Any sequence of reductions satisfy the invariant below because
+$\vdash \gamma \rightarrow \gamma^{'}$, where $\gamma^{'}$ is a reduced formula from $\gamma$.
+It is worth mentioning that Kapur's algorithm guarantees to remove all uncommon symbols
+in the current interpolanting formula. With the latter fact and the invariant
+mentioned below we can conclude that the current interpolating formula will
+become an interpolant formula of the pairs $(\alpha, \beta)$.
+
+\subsection{Interpolation algorithm for quantifier-free EUF}
+
+This algorithm requires six steps. The first one (preprocessing) performs a flattening process,
+which is similar to a well-known algorithm known as the Tseytin transform \cite{Tseitin1983}.
+The equations obtained after performing this process are of the form: $f(c_1, \dots, c_k) = d, c = d, c \neq d$,
+where $f$ is a functional symbol and each $c_i$, $c$ and $d$ are constants. It is important to mention
+that flattening might introduce new symbols, hence in order to distinguish these symbols if they are common
+or uncommon symbol Kapur introduced a definition where a new symbol is common if and only all the symbols
+in the other term of the equation are common symbols.
+
+The second step generates equivalence classes using the equations obtained in the last step. Using the
+UNION-FIND data structure we keep track of the representatives of these classes, prefering common expressions (
+expression with only common symbols) as representatives. The last step might require performing
+rotations in the three representation, so the UNION-FIND data structure maintains its properties and running
+times. For the congruence relation components the algorithm mentioned above is used. The algorithm then replaces
+all terms in the set of expressions by their representative in the equivalence class they belong to. If
+we obtained equivalence classes with non-common representatives (by construction
+the rest of the elements in this class are non-common as well) we can delete it.
+
+The third step involves eliminating uncommon functions symbols. This happens when a functional symbol
+$f$ is non-common. Thus, we take all expressions containing the functional symbol $f$ of the form
+$f(c_1, \dots, c_k) = c, f(d_1, \dots, d_k) = d$ and we remove them from the set of expression, introducing
+the expression $(c_1 = d_1, \dots, c_k = d_k) \rightarrow c = d$. Since this expression is a Horn clause,
+many of the algorithms studied before play a crucial role in this algorithm. A forth step exposes uncommon
+constants inside functional symbols. Essentially the same process as in step 3 is done.
+
+The fifth step we eliminate uncommon symbols conditionally, i.e. we include the conditions (body of the
+Horn clause) needed for a specific equality (head of the respective Horn clause)
+to occurs. There are several cases:
+
+\begin{itemize}
+\item The body of Horn clause $C$ consists of common expressions and the head of $C$
+  contains an uncommon term $u$ on only one side of the equation. We conditionally eliminate
+  $u$ in the rest of Horn clauses that contain $u$. We then eliminate $C$ from the current
+  interpolant formula since there is no way to eliminate the uncommon expression $u$.
+\item The body of Horn clause $C$ consists of common expressions and the head of $C$
+  contains only uncommon terms. Then, we can do the same as in the previous case with the
+  difference that we replace the equation in the head of the Horn clause $C$ by a symbol $\top$
+  which means satisfiable (true). 
+\end{itemize}
+
+The last step only states that the obtained current interpolating formula is the interpolant
+of the pair $(\alpha, \beta)$.
+
+\subsection{Interpolation algorithm for octagonal formulas}
+
+Contrary to the last interpolantion algorithm, this algorithm uses the
+simplification rules:
+
+\begin{equation*}
+  \AxiomC{$a x_i + b y_j \leq c$} \AxiomC{$-a x_i + b^{'} y_k \leq d$}
+  \AxiomC{$x_i \text{ is an uncommon symbol}$}
+  \TrinaryInfC{$b y_j + b^{'} y_k \leq c + d$}
+  \DisplayProof
+\end{equation*}
+
+\begin{equation*}
+  \AxiomC{$a x + a y \leq a c$}
+  \UnaryInfC{$x + y \leq c$}
+  \DisplayProof
+\end{equation*}
+
+Applying these rules as necessary to eliminate uncommon symbols might take at most $\bigO{n^2}$
+steps. Additionally, this algorithm terminates since the algorithm remove one uncommon symbol
+at a time, and, assuming there is a finite number of uncommon symbols, then the algorithm
+terminates. 
