@@ -33,7 +33,6 @@ int main() {
     //kapur_example_1a();
     //std::cout << "\n";
     //interpolant_example3();
-
     context c;
     Z3_ast a = Z3_parse_smtlib2_string(c, "(and p q)", 0, 0, 0, 0, 0, 0);
     //std::cout << a;
