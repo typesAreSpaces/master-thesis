@@ -6,12 +6,56 @@
 #include<vector>
 #include"z3++.h"
 
-void proveFromFile(Z3_string);
-void interpolantFromFile(Z3_string);
+void proveFromFile(std::string);
+void interpolantFromFile(std::string);
+enum option {EXIT_, INTERPOLANT_, PROVE_};
+
+std::istream& operator>>(std::istream& is, option& i){
+  int temp;
+  if (is >> temp)
+    i = static_cast<option>(temp);
+  return is;
+}
 
 int main() {
 
-  try {
+  option input;
+  std::string file;
+
+  do{
+    std::cout << "Menu:" << std::endl;
+    std::cout << "1. Interpolant" << std::endl;
+    std::cout << "2. Prove" << std::endl;
+    std::cout << "0. Exit" << std::endl;
+    std::cin >> input;
+    switch(input){
+    case INTERPOLANT_:
+      std::cout << "Name of the file: ";
+      std::cin >> file;
+      try{
+	interpolantFromFile("./Testing/" + file);
+      }
+      catch(z3::exception & ex){
+	std::cout << "unexpected error: " << ex << "\n";
+      }
+      break;
+    case PROVE_:
+      std::cout << "Name of the file: ";
+      std::cin >> file;
+      try{
+	proveFromFile("./Testing/" + file);
+      }
+      catch(z3::exception & ex){
+	std::cout << "unexpected error: " << ex << "\n";
+      }
+      break;
+    case EXIT_:
+      break;
+    }
+  }
+  while(input != EXIT_);
+
+  /*
     interpolantFromFile("./Testing/interpolantExample1.smt2");
     interpolantFromFile("./Testing/interpolantExample2.smt2");
     interpolantFromFile("./Testing/interpolantKapurExample1.smt2");
@@ -20,15 +64,12 @@ int main() {
     interpolantFromFile("./Testing/treeInterpolantExample1.smt2");
     proveFromFile("./Testing/proveExample1.smt2");
     proveFromFile("./Testing/proveExample2.smt2");
-  }
-  catch (z3::exception & ex) {
-    std::cout << "unexpected error: " << ex << "\n";
-  }
-    
+   */
+  
   return 0;
 }
 
-void proveFromFile(Z3_string file){
+void proveFromFile(std::string file){
   std::cout << "Proving from file: " << file << std::endl;
 
   z3::config cfg;
@@ -36,8 +77,10 @@ void proveFromFile(Z3_string file){
   cfg.set("MODEL", true);
   cfg.set("TRACE", true);
   z3::context ctx(cfg);
-  Z3_ast inputFormula = Z3_parse_smtlib2_file(ctx, file, 0, 0, 0, 0, 0, 0);
+  Z3_ast inputFormula = Z3_parse_smtlib2_file(ctx, (Z3_string)file.c_str(), 0, 0, 0, 0, 0, 0);
   z3::expr _inputFormula(ctx, inputFormula);
+
+  std::cout << "What? " << _inputFormula << std::endl;
   
   z3::solver s(ctx);
   s.add(!_inputFormula);
@@ -49,7 +92,7 @@ void proveFromFile(Z3_string file){
     std::cout << "counterexample:\n" << m << "\n";
   }
 }
-void interpolantFromFile(Z3_string file){
+void interpolantFromFile(std::string file){
   std::cout << "Compute Interpolant from file: " << file << std::endl;
 
   z3::config cfg;
@@ -57,7 +100,7 @@ void interpolantFromFile(Z3_string file){
   cfg.set("MODEL", true);
   cfg.set("TRACE", true);
   z3::context ctx(cfg);
-  Z3_ast inputFormula = Z3_parse_smtlib2_file(ctx, file, 0, 0, 0, 0, 0, 0);
+  Z3_ast inputFormula = Z3_parse_smtlib2_file(ctx, (Z3_string)file.c_str(), 0, 0, 0, 0, 0, 0);
   z3::expr _inputFormula(ctx, inputFormula);
 
   z3::params param_(ctx);
