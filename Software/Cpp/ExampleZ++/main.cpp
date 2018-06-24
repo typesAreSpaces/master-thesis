@@ -9,6 +9,7 @@
 void proveFromFile(std::string);
 void interpolantFromFile(std::string);
 enum option {EXIT_, INTERPOLANT_, PROVE_};
+const bool debug = false;
 
 std::istream& operator>>(std::istream& is, option& i){
   int temp;
@@ -33,7 +34,10 @@ int main() {
       std::cout << "Name of the file: ";
       std::cin >> file;
       try{
-	interpolantFromFile("./Testing/" + file);
+	if(debug)
+	  interpolantFromFile("./Testing/" + file);
+	else
+	  interpolantFromFile(file);
       }
       catch(z3::exception & ex){
 	std::cout << "unexpected error: " << ex << "\n";
@@ -43,7 +47,10 @@ int main() {
       std::cout << "Name of the file: ";
       std::cin >> file;
       try{
-	proveFromFile("./Testing/" + file);
+	if(debug)
+	  proveFromFile("./Testing/" + file);
+	else
+	  proveFromFile(file);
       }
       catch(z3::exception & ex){
 	std::cout << "unexpected error: " << ex << "\n";
