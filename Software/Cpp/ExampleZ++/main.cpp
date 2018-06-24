@@ -54,17 +54,6 @@ int main() {
     }
   }
   while(input != EXIT_);
-
-  /*
-    interpolantFromFile("./Testing/interpolantExample1.smt2");
-    interpolantFromFile("./Testing/interpolantExample2.smt2");
-    interpolantFromFile("./Testing/interpolantKapurExample1.smt2");
-    interpolantFromFile("./Testing/interpolantKapurExample1a.smt2");
-    interpolantFromFile("./Testing/sequenceInterpolantExample1.smt2");
-    interpolantFromFile("./Testing/treeInterpolantExample1.smt2");
-    proveFromFile("./Testing/proveExample1.smt2");
-    proveFromFile("./Testing/proveExample2.smt2");
-   */
   
   return 0;
 }
@@ -79,8 +68,6 @@ void proveFromFile(std::string file){
   z3::context ctx(cfg);
   Z3_ast inputFormula = Z3_parse_smtlib2_file(ctx, (Z3_string)file.c_str(), 0, 0, 0, 0, 0, 0);
   z3::expr _inputFormula(ctx, inputFormula);
-
-  std::cout << "What? " << _inputFormula << std::endl;
   
   z3::solver s(ctx);
   s.add(!_inputFormula);
