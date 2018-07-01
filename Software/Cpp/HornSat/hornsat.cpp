@@ -38,9 +38,7 @@ int main(){
   std::cin >> k >> m;
   
   initialize(A, k, m, numpos, numargs, poslitlist, Queue);
-  
   satisfiable(A, Queue, consistent, numpos, numargs, poslitlist);
-
   if(consistent){
     std::cout << "Satisfiable Horn Clause\nAssignment:" << std::endl;
     for(int i = 1; i <= k; ++i)
