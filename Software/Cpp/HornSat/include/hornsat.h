@@ -34,7 +34,7 @@ class Hornclause{
   void addClauseToLiteral(int, int);
   void satisfiable();
   bool isConsistent();
-  void printAssignment();
+  std::ostream & printAssignment(std::ostream &);
 };
 
 #endif

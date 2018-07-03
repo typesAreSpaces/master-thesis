@@ -12,7 +12,7 @@ int main(){
   
   if(A.isConsistent()){
     std::cout << "Satisfiable Horn Clause" << std::endl;
-    A.printAssignment();
+    A.printAssignment(std::cout);
   }
   else
     std::cout << "Unsatisfiable Horn Clause" << std::endl;

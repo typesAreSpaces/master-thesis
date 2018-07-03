@@ -83,10 +83,9 @@ bool Hornclause::isConsistent(){
   return this->consistent;
 }
 
-
-void Hornclause::printAssignment(){
-  std::cout << "Assignment:" << std::endl;
+std::ostream & Hornclause::printAssignment(std::ostream & os){
+  os << "Assignment:" << std::endl;
   for(int i = 1; i <= this->numDisPosLiterals; ++i)
-    std::cout << "Literal " << i
-	      << ": " << this->listOfLiterals[i].val << std::endl;
+    os << "Literal " << i << ": " << this->listOfLiterals[i].val << std::endl;
+  return os;
 }
