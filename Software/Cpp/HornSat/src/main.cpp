@@ -12,9 +12,8 @@ int main(int argc, char ** argv){
     A = new Hornclause(file);
     file.close();
   }
-  else if(argc == 1){
+  else if(argc == 1)
     A = new Hornclause(std::cin);
-  }
   else
     return 0;
   

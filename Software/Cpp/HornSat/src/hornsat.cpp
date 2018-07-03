@@ -33,7 +33,7 @@ Hornclause::~Hornclause(){
   clause * ptr;
   for(int i = 1; i <= this->numBasicHornClauses; ++i){
     ptr = this->listOfLiterals[i].clauselist;
-    while(this->listOfLiterals[i].clauselist){
+    while(ptr){
       this->listOfLiterals[i].clauselist = this->listOfLiterals[i].clauselist->next;
       delete ptr;
       ptr = this->listOfLiterals[i].clauselist;
