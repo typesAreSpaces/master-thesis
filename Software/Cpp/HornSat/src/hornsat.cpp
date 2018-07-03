@@ -1,23 +1,24 @@
 #include "hornsat.h"
 
-Hornclause::Hornclause(int numDisPosLiterals, int numBasicHornClauses){
+// numDisPosLiterals = number of distinct positive literals in A
+// numBasicHornClauses = number of basic Horn Clauses in A
+Hornclause::Hornclause(std::istream & in){
   int input;
   this->consistent = true;
   this->numpos = 0;
-  this->numDisPosLiterals = numDisPosLiterals;
-  this->numBasicHornClauses = numBasicHornClauses;
+  in >> this->numDisPosLiterals >> this->numBasicHornClauses;
 
   for(int i = 1; i <= this->numDisPosLiterals; ++i)
     this->listOfLiterals[i] = (literal) {false, NULL};
   
   for(int i = 1; i <= this->numBasicHornClauses; ++i){
-    std::cin >> input;
+    in >> input;
     this->numargs.listOfClauses[i] = input - 1;
     for(int j = this->numargs.listOfClauses[i]; j > 0; --j){
-      std::cin >> input;
+      in >> input;
       this->addClauseToLiteral(input, i);
     }
-    std::cin >> input;
+    in >> input;
     this->poslitlist.listOfClauses[i] = input;
     // This checks if the Horn Clause is a fact
     if(this->numargs.listOfClauses[i] == 0){

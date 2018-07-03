@@ -29,7 +29,7 @@ class Hornclause{
   bool consistent;
   int numpos, numDisPosLiterals, numBasicHornClauses;
  public:
-  Hornclause(int, int);
+  Hornclause(std::istream &);
   ~Hornclause();
   void addClauseToLiteral(int, int);
   void satisfiable();

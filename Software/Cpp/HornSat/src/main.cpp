@@ -1,21 +1,33 @@
 #include <iostream>
+#include <fstream>
 #include "hornsat.h"
 
-int main(){
-  // numDisPosLiterals = number of distinct positive literals in A
-  // numBasicHornClauses = number of basic Horn Clauses in A
-  int numDisPosLiterals, numBasicHornClauses;
+int main(int argc, char ** argv){
   
-  std::cin >> numDisPosLiterals >> numBasicHornClauses;
-  Hornclause A = Hornclause(numDisPosLiterals, numBasicHornClauses);
-  A.satisfiable();
+  Hornclause * A;
   
-  if(A.isConsistent()){
+  if(argc == 2){
+    std::ifstream file;
+    file.open(argv[1], std::ifstream::in);
+    A = new Hornclause(file);
+    file.close();
+  }
+  else if(argc == 1){
+    A = new Hornclause(std::cin);
+  }
+  else
+    return 0;
+  
+  A->satisfiable();
+  
+  if(A->isConsistent()){
     std::cout << "Satisfiable Horn Clause" << std::endl;
-    A.printAssignment(std::cout);
+    A->printAssignment(std::cout);
   }
   else
     std::cout << "Unsatisfiable Horn Clause" << std::endl;
+
+  delete A;
   
   return 0;
 }
