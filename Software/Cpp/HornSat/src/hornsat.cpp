@@ -1,7 +1,7 @@
 #include "hornsat.h"
 
 Hornclause::Hornclause(int numDisPosLiterals, int numBasicHornClauses){
-  int s, temp;
+  int input;
   this->consistent = true;
   this->numpos = 0;
   this->numDisPosLiterals = numDisPosLiterals;
@@ -11,18 +11,17 @@ Hornclause::Hornclause(int numDisPosLiterals, int numBasicHornClauses){
     this->listOfLiterals[i] = (literal) {false, NULL};
   
   for(int i = 1; i <= this->numBasicHornClauses; ++i){
-    std::cin >> s;
-    this->numargs.listOfClauses[i] = s - 1;
-    int j = s - 1;
-    while(j > 0){
-      std::cin >> temp;
-      this->addClauseToLiteral(temp, i);
-      --j;
+    std::cin >> input;
+    this->numargs.listOfClauses[i] = input - 1;
+    for(int j = this->numargs.listOfClauses[i]; j > 0; --j){
+      std::cin >> input;
+      this->addClauseToLiteral(input, i);
     }
-    std::cin >> temp;
-    this->poslitlist.listOfClauses[i] = temp;
-    if(s == 1){
-      this->listOfLiterals[temp].val = true;
+    std::cin >> input;
+    this->poslitlist.listOfClauses[i] = input;
+    // This checks if the Horn Clause is a fact
+    if(this->numargs.listOfClauses[i] == 0){
+      this->listOfLiterals[input].val = true;
       this->q.push(i);
       ++this->numpos;
     }
@@ -49,15 +48,17 @@ void Hornclause::addClauseToLiteral(int lit, int clau){
 }
 
 void Hornclause::satisfiable(){
-  int clause1, clause2, n, nextpos, oldnumclause = this->numpos, newnumclause;
+  int clause1, clause2, n, nextpos,
+    oldnumclause = this->numpos, newnumclause;
   while(!this->q.empty() && this->consistent){
     newnumclause = 0;
     for(int i = 1; i <= oldnumclause && this->consistent; ++i){
       clause1 = this->q.front();
       this->q.pop();
       nextpos = this->poslitlist.listOfClauses[clause1];
-      clause * p = this->listOfLiterals[nextpos].clauselist;
-      for(; p != NULL; p = p->next){
+      for(clause * p = this->listOfLiterals[nextpos].clauselist;
+	  p != NULL;
+	  p = p->next){
 	clause2 = p->clauseno;
 	--this->numargs.listOfClauses[clause2];
 	if(this->numargs.listOfClauses[clause2] == 0){
@@ -86,5 +87,6 @@ bool Hornclause::isConsistent(){
 void Hornclause::printAssignment(){
   std::cout << "Assignment:" << std::endl;
   for(int i = 1; i <= this->numDisPosLiterals; ++i)
-    std::cout << "Literal " << i << ": " << this->listOfLiterals[i].val << std::endl;
+    std::cout << "Literal " << i
+	      << ": " << this->listOfLiterals[i].val << std::endl;
 }

@@ -16,8 +16,6 @@ int main(){
   }
   else
     std::cout << "Unsatisfiable Horn Clause" << std::endl;
-
-  
   
   return 0;
 }

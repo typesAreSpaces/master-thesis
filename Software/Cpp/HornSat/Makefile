@@ -23,5 +23,6 @@ clean:
 
 test:
 	for test in $(TESTS); do\
+		echo 'Test: '$$test; \
 		./main < $$test; \
 	done
