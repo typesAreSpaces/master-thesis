@@ -4,7 +4,9 @@ int Vertex::totalNumVertex = 0;
 Vertex::Vertex(std::string name, int arity) : name(name), arity(arity), id(totalNumVertex){
   ++totalNumVertex;
 }
-Vertex::Vertex(){};
+Vertex::Vertex() : id(totalNumVertex){
+  ++totalNumVertex;
+};
 Vertex::~Vertex(){};
 void Vertex::setName(std::string _name){
   name = _name;
@@ -17,6 +19,10 @@ void Vertex::addSuccessor(Vertex * v){
 }
 std::vector<Vertex*> & Vertex::getSuccessors(){
   return successors;
+}
+
+int Vertex::getId(){
+  return id;
 }
 
 std::string Vertex::to_string(){

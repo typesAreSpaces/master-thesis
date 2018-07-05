@@ -8,6 +8,7 @@
 class GTerms{
  private:
   std::vector<Vertex*> terms;
+  std::vector<Vertex*> additionalTerms;
  public:
   GTerms(std::istream &);
   ~GTerms();

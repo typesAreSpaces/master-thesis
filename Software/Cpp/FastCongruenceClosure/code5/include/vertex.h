@@ -18,6 +18,7 @@ class Vertex{
   void setArity(int);
   void addSuccessor(Vertex *);
   std::vector<Vertex*> & getSuccessors();
+  int getId();
   std::string to_string();
   friend std::ostream & operator << (std::ostream &, Vertex &);
 };

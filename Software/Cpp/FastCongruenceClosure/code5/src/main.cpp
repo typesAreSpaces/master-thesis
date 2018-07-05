@@ -52,9 +52,8 @@ int main(int argc, char ** argv){
   file.open(argv[1], std::ifstream::in);
   
   GTerms terms = GTerms(file);
-
   file.close();
-
+  
   terms.print(std::cout);
   
   return 0;
