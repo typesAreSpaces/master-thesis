@@ -3,81 +3,42 @@
 
 #include <vector>
 #include "node.h"
+#include "LinkedList.h"
+#include "LinkedList.cpp"
+#include "Circular.h"
+#include "CircularList.cpp"
 
-class UF{
+class UnionFind{
 private:
   std::vector<int> parent, rank;
-  std::vector<circularList> preds;
-  int count;
+  std::vector<CircularList<int> > preds;
+  int length;
 public:
-  UF(int N){
-    parent.resize(N);
-    rank.resize(N);
-    preds.resize(N);
-    count = N;
-    for(int i = 0; i < N; ++i){
-      parent[i] = i;
-      rank[i] = 0;
-      preds[i] = circularList();
-    }
-  }
-  void setPreds(linkedList & x){
-    node * temp = x.getList();
-    int vertex, succ;
-    vertex = temp->data;
-    temp = temp->next;
-    while(temp != nullptr){
-      succ = temp->data;
-      preds[succ].add(vertex);
-      temp = temp->next;
-    }
-  }
+  UnionFind(int);
+  void setPreds(LinkedList &);
   void addPred(int x, int y){
     preds[x].add(y);
   }
-  void mergeCircularList(int x, circularList & y){
-    if(y.size() > 0){
-      node * temp = y.tail->next;
-      do {
-	preds[x].add(temp->data);
-	temp = temp->next;
-      } while(temp != y.tail->next);
-    }
+  void merge(int x, int y){
+    link(find(x), find(y));
+    --length;
   }
-  void merge(int x, int y, int lx, int ly){
-    link(find(x), find(y), lx, ly);
-    --count;
-  }
-  void link(int x, int y, int lx, int ly){
+  void link(int x, int y){
     parent[y] = x;
-    /*
-    if(rank[x] >= rank[y]){
-      parent[y] = x;
-      if(rank[x] == rank[y]){
-	if(lx >= ly)
-	  ++rank[x];
-	else
-	  ++rank[y];
-      }
-    }
-    else{
-      parent[x] = y;
-    }
-    */
   }
   int find(int x){
     if(parent[x] != x)
       parent[x] = find(parent[x]);
     return parent[x];
   }
-  circularList list(int x){
+  CircularList<int> list(int x){
     return preds[x];
   }
   int getRank(int x){
     return rank[find(x)];
   }
   int size(){
-    return count;
+    return length;
   }
 };
 

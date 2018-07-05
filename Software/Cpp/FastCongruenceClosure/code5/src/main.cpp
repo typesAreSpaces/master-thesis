@@ -1,118 +1,62 @@
 #include <iostream>
 #include <fstream>
-#include <string>
-#include <ctime>
-#include "unionfind.hpp"
-#include "signatureTable.hpp"
-#include "congruenceClosure.hpp"
-#include "produceRandomEqs.hpp"
+#include "GTerms.h"
 
-void correctnessCheck(){
-  // Generation of Input Files
-  int numTerms, numEqs;
-  std::string name;
-  generateInputFile(numTerms, numEqs, name);
+int main(int argc, char ** argv){
 
-  // Fast Congruence Closure Algorithm
-  term terms;
-  UF uf = initializeUF(numTerms, numEqs, terms, name);
-  signatureTable sigTable = signatureTable();
+  /*
+  CircularList<char> * l = new CircularList<char>;
+  l->add('a'), l->add('b'), l->add('c');
+  CircularList<char> * l2 = new CircularList<char>;
+  l2->add('d'), l2->add('e'), l2->add('f');
+  l->mergeCircularList(l2);
+  l2->add('a');
 
-  std::cout << "Checking Equivalence Classes Before Congruence Closure\n";
-  for(int i = 0; i < numTerms; ++i)
-    std::cout << i << " " << uf.find(i) << std::endl;
-  congruenceClosureAlgorithm(terms, numTerms, uf, sigTable);
-  std::cout << "Checking Equivalence Classes After Congruence Closure\n";
-  for(int i = 0; i < numTerms; ++i)
-    std::cout << i << " " << uf.find(i) << std::endl;
+  l->print(std::cout), l2->print(std::cout);
+
+  delete l, delete l2;
+
+  CircularList<int> l3 = CircularList<int>();
+  */
+  /*
+  Vertex
+    v1 = Vertex("x", 0),
+    v2 = Vertex("f", 1),
+    v3 = Vertex("f", 1);
   
-  std::ifstream file ("tests/" + name);
-  int temp1, temp2, temp3, temp4, lhs, rhs, check = 1;
-  file >> temp1 >> temp4;
-  for(int i = 0; i < temp1; ++i){
-    // Parsing the vertex
-    file >> temp2;
-    // Parsing the number of args
-    file >> temp2;
-    while(temp2 > 0){
-      file >> temp3;
-      --temp2;
-    }
-  }
-  for(int i = 0; i < temp4; ++i){
-    file >> lhs >> rhs;
-    if(uf.find(lhs) != uf.find(rhs)){
-      check = 0;
-      std::cout << lhs << " " << rhs << std::endl;
-      break;
-    }
-  }
-  if (check == 1)
-    std::cout << "Soundness Check\n";
-  else
-    std::cout << "There is a problem with the algorithm 1\n";
+  v2.addSuccessor(&v1);
+  v3.addSuccessor(&v2);
  
-  int check3 = 1;
-  for(int i = 0; i < (numTerms - 1); ++i)
-    for(int j = i + 1; j < numTerms; ++j){
-      if(terms[i].size() == terms[j].size() && terms[i].size() > 1){
-	node * temp1 = terms[i].getList(), * temp2 = terms[j].getList();
-	int check2 = 1, node1 = temp1->data, node2 = temp2->data;
-	temp1 = temp1->next; temp2 = temp2->next;
-	for(; temp1 != nullptr; temp1 = temp1->next){
-	  int x = temp1->data, y = temp2->data;
-	  if(uf.find(x) != uf.find(y)){
-	    check2 = 0;
-	    break;
-	  }
-	  temp2 = temp2->next;
-	}
-	if(check2 == 1)
-	  if(uf.find(node1) != uf.find(node2)){
-	    check3 = 0;
-	    std::cout << "Problematic vertices: " << node1 << " and  " << node2 << std::endl;
-	    terms[i].print();
-	    std::cout << std::endl;
-	    terms[j].print();
-	    std::cout << std::endl;
-	  }	
-      }
-    }
-  if(check3 == 1)
-    std::cout << "Congratulations!" << std::endl;
-  else
-    std::cout << "There is a problem with the algorithm 2" << std::endl;
-}
+  std::cout << v1 << std::endl;
+  std::cout << v2 << std::endl;
+  std::cout << v3 << std::endl;
 
-void performanceTest(){
-  // Generation of Input Files
-  int numEqs, repetitions = 1, limit = 10000;
-  double average;
-  std::string name;
+  Vertex
+    u1 = Vertex("y", 0),
+    u2 = Vertex("g", 2),
+    u3 = Vertex("g", 2);
+  u2.addSuccessor(&u1), u2.addSuccessor(&u1);
+  u3.addSuccessor(&u1), u3.addSuccessor(&u2);
 
-  for(int i = 10; i < limit; ++i){
-    average = 0;
-    for(int j = 0; j < repetitions; ++j){
-      name = "test" + std::to_string(i) + "Performance";
-      generateInputFile2(i, numEqs, name);
+  std::cout << u1 << std::endl;
+  std::cout << u2 << std::endl;
+  std::cout << u3 << std::endl;
 
-      // Fast Congruence Closure Algorithm
-      term terms;
-      UF uf = initializeUF(i, numEqs, terms, name);
-      signatureTable sigTable = signatureTable();
-      clock_t begin = clock();
-      congruenceClosureAlgorithm(terms, i, uf, sigTable);
-      clock_t end = clock();
-      average += double(end - begin) / CLOCKS_PER_SEC;
-    }
-    std::cout << i << "," << average/repetitions << std::endl;
-  }
-}
+  Vertex u4 = Vertex("h", 3);
+  u4.addSuccessor(&v1), u4.addSuccessor(&v3), u4.addSuccessor(&u3);
 
-int main(){
+  std::cout << u4 << std::endl;
+  */
   
-  //correctnessCheck();
-  performanceTest();
+  std::ifstream file;
+  file.open(argv[1], std::ifstream::in);
+  
+  GTerms terms = GTerms(file);
+
+  file.close();
+
+  terms.print(std::cout);
   
   return 0;
+  
 }
