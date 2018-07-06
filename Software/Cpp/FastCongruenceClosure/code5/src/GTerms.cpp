@@ -61,10 +61,5 @@ GTerms::~GTerms(){
 std::ostream & GTerms::print(std::ostream & os){
   for(std::vector<Vertex*>::iterator it = terms.begin(); it != terms.end(); ++it)
     os << **it << std::endl;
-  /*
-  std::cout << "OK done" << std::endl;
-  for(std::vector<Vertex*>::iterator it = additionalTerms.begin(); it != additionalTerms.end(); ++it)
-    os << **it << std::endl;
-  */
   return os;
 }

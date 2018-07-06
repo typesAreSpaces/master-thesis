@@ -40,10 +40,15 @@ std::string Vertex::to_string(){
 }
 
 std::ostream & operator << (std::ostream & os, Vertex & v){
-  os << "Symbol name: " << v.name << std::endl;
+  int _counter = 0;
+  os << "Symbol: " << v.to_string() << std::endl;
   os << "ID: " << v.id << std::endl;
   os << "Successors:" << std::endl;
-  for(std::vector<Vertex*>::iterator it = v.successors.begin(); it != v.successors.end(); ++it)
-    os << (*it)->to_string() << " ";
+  for(std::vector<Vertex*>::iterator it = v.successors.begin(); it != v.successors.end(); ++it){
+    os << (*it)->to_string();
+    ++_counter;
+    if(_counter < v.arity)
+      os << ", ";
+  }
   return os;
 }
