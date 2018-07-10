@@ -1,9 +1,11 @@
 #include <iostream>
 #include <fstream>
-#include "GTerms.h"
+//#include "GTerms.h"
+//#include "unionfind.h"
+#include "signatureTable.h"
 
 int main(int argc, char ** argv){
-
+  
   /*
   CircularList<char> * l = new CircularList<char>;
   l->add('a'), l->add('b'), l->add('c');
@@ -18,6 +20,7 @@ int main(int argc, char ** argv){
 
   CircularList<int> l3 = CircularList<int>();
   */
+  
   /*
   Vertex
     v1 = Vertex("x", 0),
@@ -47,7 +50,7 @@ int main(int argc, char ** argv){
 
   std::cout << u4 << std::endl;
   */
-  
+  /*
   std::ifstream file;
   file.open(argv[1], std::ifstream::in);
   
@@ -55,7 +58,16 @@ int main(int argc, char ** argv){
   file.close();
   
   terms.print(std::cout);
+  */
+  /*
+  UnionFind uf = UnionFind(5);
+  uf.merge(1, 2), uf.merge(3, 2);
+  uf.print(std::cout);
+  std::cout << (uf.find(2) == uf.find(3)) << std::endl;
+  uf.print(std::cout);
+  */
+
+  SignatureTable sigTable = SignatureTable();
   
   return 0;
-  
 }

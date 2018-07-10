@@ -1,6 +1,10 @@
 #include "vertex.h"
 
 int Vertex::totalNumVertex = 0;
+
+void Vertex::addPredecessor(int i){
+  predecessors.add(i);
+}
 Vertex::Vertex(std::string name, int arity) : name(name), arity(arity), id(totalNumVertex){
   ++totalNumVertex;
 }
@@ -16,6 +20,7 @@ void Vertex::setArity(int _arity){
 }
 void Vertex::addSuccessor(Vertex * v){
   successors.push_back(v);
+  v->addPredecessor(id);
 }
 std::vector<Vertex*> & Vertex::getSuccessors(){
   return successors;
@@ -23,6 +28,10 @@ std::vector<Vertex*> & Vertex::getSuccessors(){
 
 int Vertex::getId(){
   return id;
+}
+
+int Vertex::getArity(){
+  return arity;
 }
 
 std::string Vertex::to_string(){
@@ -43,6 +52,8 @@ std::ostream & operator << (std::ostream & os, Vertex & v){
   int _counter = 0;
   os << "Symbol: " << v.to_string() << std::endl;
   os << "ID: " << v.id << std::endl;
+  os << "Predecessors:" << std::endl;
+  v.predecessors.print(os);
   os << "Successors:" << std::endl;
   for(std::vector<Vertex*>::iterator it = v.successors.begin(); it != v.successors.end(); ++it){
     os << (*it)->to_string();

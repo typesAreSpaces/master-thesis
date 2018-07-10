@@ -1,25 +1,36 @@
 #include "unionfind.h"
 
-UnionFind::UnionFind(int N){
-  parent.resize(N);
-  rank.resize(N);
-  preds.resize(N);
-  length = N;
-  for(int i = 0; i < N; ++i){
+UnionFind::UnionFind(int n) : numEquivalenceClasses(n){
+  parent.resize(n);
+  for(int i = 0; i < n; ++i)
     parent[i] = i;
-    rank[i] = 0;
-    preds[i] = CircularList<int>();
-  }
 }
 
-void UnionFind::setPreds(LinkedList & x){
-  node * temp = x.getList();
-  int vertex, succ;
-  vertex = temp->data;
-  temp = temp->next;
-  while(temp != nullptr){
-    succ = temp->data;
-    preds[succ].add(vertex);
-    temp = temp->next;
+UnionFind::~UnionFind(){};
+
+void UnionFind::merge(int i, int j){
+  link(find(i), find(j));
+}
+
+void UnionFind::link(int i, int j){
+  parent[j] = i;
+}
+
+int UnionFind::find(int i){
+  if(i != parent[i])
+    parent[i] = find(parent[i]);
+  return parent[i];
+}
+
+int UnionFind::size(){
+  return numEquivalenceClasses;
+}
+
+std::ostream & UnionFind::print(std::ostream & os){
+  int i = 0;
+  for(std::vector<int>::iterator it = parent.begin(); it != parent.end(); ++it){
+    os << "ID: " << i << " Parent: " << *it << std::endl;
+    ++i;
   }
+  return os;
 }

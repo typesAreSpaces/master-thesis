@@ -3,6 +3,8 @@
 
 #include <iostream>
 #include <vector>
+#include <CircularList.h>
+#include <CircularList.cpp>
 
 class Vertex{
  private:
@@ -10,6 +12,8 @@ class Vertex{
   std::string name;
   int id, arity;
   std::vector<Vertex*> successors;
+  CircularList<int> predecessors;
+  void addPredecessor(int);
  public:
   Vertex(std::string, int);
   Vertex();
@@ -19,6 +23,7 @@ class Vertex{
   void addSuccessor(Vertex *);
   std::vector<Vertex*> & getSuccessors();
   int getId();
+  int getArity();
   std::string to_string();
   friend std::ostream & operator << (std::ostream &, Vertex &);
 };
