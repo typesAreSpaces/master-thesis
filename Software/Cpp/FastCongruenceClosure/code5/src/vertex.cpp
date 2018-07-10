@@ -30,6 +30,10 @@ std::vector<Vertex*> & Vertex::getSuccessors(){
   return successors;
 }
 
+CircularList<int> * Vertex::getPredecessors(){
+  return &predecessors;
+}
+
 int Vertex::getId(){
   return id;
 }
@@ -40,6 +44,10 @@ int Vertex::getArity(){
 
 std::string Vertex::getName(){
   return name;
+}
+
+void Vertex::mergePredecessors(Vertex * v){
+  this->predecessors.mergeCircularList(v->getPredecessors());
 }
 
 std::string Vertex::to_string(){

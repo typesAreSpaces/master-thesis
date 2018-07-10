@@ -67,6 +67,16 @@ UnionFind & GTerms::getEC(){
   return EC;
 }
 
+Vertex * GTerms::find(Vertex * v){
+  return terms[EC.find(v->getId())];
+}
+
+void GTerms::merge(Vertex * u, Vertex * v){
+  EC.merge(u->getId(), v->getId());
+  // Merge the predecessor's list too!
+  find(u)->mergePredecessors(find(v));
+}
+
 std::ostream & GTerms::print(std::ostream & os){
   for(std::vector<Vertex*>::iterator it = terms.begin(); it != terms.end(); ++it)
     os << **it << std::endl;

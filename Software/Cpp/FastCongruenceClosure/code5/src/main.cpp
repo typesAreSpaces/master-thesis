@@ -3,6 +3,7 @@
 #include "GTerms.h"
 //#include "unionfind.h"
 #include "signatureTable.h"
+#include "CircularList.h"
 
 int main(int argc, char ** argv){
   

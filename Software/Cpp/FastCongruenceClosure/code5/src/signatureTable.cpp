@@ -13,7 +13,8 @@ void SignatureTable::enter(Vertex* v){
     table1.insert(std::make_pair(
 				 signatureArg1(
 					       v->getName(),
-					       gterms.getEC().find(_successors[0]->getId())
+					       //gterms.getEC().find(_successors[0]->getId())
+					       gterms.find(_successors[0])->getId()
 					      ),
 				 v));
   }
@@ -22,8 +23,8 @@ void SignatureTable::enter(Vertex* v){
     table2.insert(std::make_pair(
 				 signatureArg2(
 					       v->getName(),
-					       gterms.getEC().find(_successors[0]->getId()),
-					       gterms.getEC().find(_successors[1]->getId())
+					       gterms.find(_successors[0])->getId(),
+					       gterms.find(_successors[1])->getId()
 					      ),
 				 v));
   }

@@ -16,6 +16,8 @@ class GTerms{
   ~GTerms();
   Vertex * getTerm(int);
   UnionFind & getEC();
+  Vertex* find(Vertex*);
+  void merge(Vertex*, Vertex*);
   std::ostream & print(std::ostream &);
 };
 

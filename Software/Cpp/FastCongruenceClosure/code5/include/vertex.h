@@ -22,9 +22,11 @@ class Vertex{
   void setArity(int);
   void addSuccessor(Vertex *);
   std::vector<Vertex*> & getSuccessors();
+  CircularList<int> * getPredecessors();
   int getId();
   int getArity();
   std::string getName();
+  void mergePredecessors(Vertex *);
   std::string to_string();
   static int getTotalNumVertex();
   friend std::ostream & operator << (std::ostream &, Vertex &);
