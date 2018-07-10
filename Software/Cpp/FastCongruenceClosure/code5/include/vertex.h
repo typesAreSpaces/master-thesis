@@ -24,7 +24,9 @@ class Vertex{
   std::vector<Vertex*> & getSuccessors();
   int getId();
   int getArity();
+  std::string getName();
   std::string to_string();
+  static int getTotalNumVertex();
   friend std::ostream & operator << (std::ostream &, Vertex &);
 };
 

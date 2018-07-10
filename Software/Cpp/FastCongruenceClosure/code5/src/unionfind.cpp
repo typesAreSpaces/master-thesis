@@ -6,6 +6,8 @@ UnionFind::UnionFind(int n) : numEquivalenceClasses(n){
     parent[i] = i;
 }
 
+UnionFind::UnionFind(){};
+
 UnionFind::~UnionFind(){};
 
 void UnionFind::merge(int i, int j){

@@ -1,6 +1,6 @@
 #include <iostream>
 #include <fstream>
-//#include "GTerms.h"
+#include "GTerms.h"
 //#include "unionfind.h"
 #include "signatureTable.h"
 
@@ -50,15 +50,16 @@ int main(int argc, char ** argv){
 
   std::cout << u4 << std::endl;
   */
-  /*
+
+  
   std::ifstream file;
   file.open(argv[1], std::ifstream::in);
   
   GTerms terms = GTerms(file);
   file.close();
   
-  terms.print(std::cout);
-  */
+  //terms.print(std::cout);
+  
   /*
   UnionFind uf = UnionFind(5);
   uf.merge(1, 2), uf.merge(3, 2);
@@ -67,7 +68,15 @@ int main(int argc, char ** argv){
   uf.print(std::cout);
   */
 
-  SignatureTable sigTable = SignatureTable();
+  SignatureTable sigTable = SignatureTable(terms);
+  sigTable.enter(terms.getTerm(0));
+  sigTable.enter(terms.getTerm(1));
+  sigTable.enter(terms.getTerm(2));
+  sigTable.remove(terms.getTerm(2));
+
+  std::cout << "Print Signature Table" << std::endl;
+  sigTable.print(std::cout);
+  
   
   return 0;
 }

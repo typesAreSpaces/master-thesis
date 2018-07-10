@@ -17,6 +17,9 @@ all:
 	done 
 	g++ -o main $(OBJST) $(CFLAGS)
 
+run:
+	./main test/example2.txt
+
 #$(ODIR)/%.o: $(SDIR)/%.cpp $(DEPS) \
 	$(CC) -c -o $@ $< $(CFLAGS) \
 main: $(OBJS) \

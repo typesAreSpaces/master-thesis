@@ -10,6 +10,7 @@ struct signatureArg1 {
   signatureArg1(std::string, int);
   ~signatureArg1();
   bool operator==(const signatureArg1 &) const;
+  friend std::ostream & operator << (std::ostream &, signatureArg1 &);
 };
 
 struct signatureArg1::Hash {
@@ -23,6 +24,7 @@ struct signatureArg2 {
   signatureArg2(std::string, int, int);
   ~signatureArg2();
   bool operator==(const signatureArg2 &) const;
+  friend std::ostream & operator << (std::ostream &, signatureArg2 &);
 };
 
 struct signatureArg2::Hash {

@@ -50,12 +50,21 @@ GTerms::GTerms(std::istream & in){
       }
     }
   }
+  EC = UnionFind(Vertex::getTotalNumVertex());
 }
 
 GTerms::~GTerms(){
   for(std::vector<Vertex*>::iterator it = terms.begin();
       it != terms.end(); ++it)
     delete *it;
+}
+
+Vertex * GTerms::getTerm(int i){
+  return terms[i];
+}
+
+UnionFind & GTerms::getEC(){
+  return EC;
 }
 
 std::ostream & GTerms::print(std::ostream & os){

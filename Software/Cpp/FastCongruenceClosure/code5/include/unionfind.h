@@ -10,6 +10,7 @@ private:
   int numEquivalenceClasses;
 public:
   UnionFind(int);
+  UnionFind();
   ~UnionFind();
   void merge(int, int);
   void link(int, int);

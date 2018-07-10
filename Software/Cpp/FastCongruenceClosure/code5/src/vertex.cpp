@@ -2,6 +2,10 @@
 
 int Vertex::totalNumVertex = 0;
 
+int Vertex::getTotalNumVertex(){
+  return totalNumVertex;
+}
+
 void Vertex::addPredecessor(int i){
   predecessors.add(i);
 }
@@ -32,6 +36,10 @@ int Vertex::getId(){
 
 int Vertex::getArity(){
   return arity;
+}
+
+std::string Vertex::getName(){
+  return name;
 }
 
 std::string Vertex::to_string(){
