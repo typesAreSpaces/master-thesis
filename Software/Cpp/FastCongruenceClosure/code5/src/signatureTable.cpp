@@ -11,21 +11,17 @@ void SignatureTable::enter(Vertex* v){
   if(_arity == 1){
     //<signatureArg1, Vertex*>
     table1.insert(std::make_pair(
-				 signatureArg1(
-					       v->getName(),
+				 signatureArg1(v->getName(),
 					       //gterms.getEC().find(_successors[0]->getId())
-					       gterms.find(_successors[0])->getId()
-					      ),
+					       gterms.find(_successors[0])->getId()),
 				 v));
   }
   if(_arity == 2){
     //<signatureArg2, Vertex*>
     table2.insert(std::make_pair(
-				 signatureArg2(
-					       v->getName(),
+				 signatureArg2(v->getName(),
 					       gterms.find(_successors[0])->getId(),
-					       gterms.find(_successors[1])->getId()
-					      ),
+					       gterms.find(_successors[1])->getId()),
 				 v));
   }
   return;
@@ -37,10 +33,8 @@ void SignatureTable::remove(Vertex * v){
   if(_arity == 1){
     try{
       Vertex * _temp = query(v);
-      table1.erase(signatureArg1(
-				 v->getName(),
-				 gterms.getEC().find(_successors[0]->getId())
-				));
+      table1.erase(signatureArg1(v->getName(),
+				 gterms.find(_successors[0])->getId()));
     }
     catch(const char* msg){
     }
@@ -48,11 +42,9 @@ void SignatureTable::remove(Vertex * v){
   if(_arity == 2){
     try{
       Vertex * _temp = query(v);
-      table2.erase(signatureArg2(
-				 v->getName(),
-				 gterms.getEC().find(_successors[0]->getId()),
-				 gterms.getEC().find(_successors[1]->getId())
-				));
+      table2.erase(signatureArg2(v->getName(),
+				 gterms.find(_successors[0])->getId(),
+				 gterms.find(_successors[1])->getId()));
     }
     catch(const char* msg){
     }
@@ -64,21 +56,17 @@ Vertex * SignatureTable::query(Vertex * v){
   int _arity = v->getArity();
   std::vector<Vertex*> _successors = v->getSuccessors();
   if(_arity == 1){
-    treeArg1::iterator it = table1.find(signatureArg1(
-						      v->getName(),
-						      gterms.getEC().find(_successors[0]->getId())
-						     ));
+    treeArg1::iterator it = table1.find(signatureArg1(v->getName(),
+						      gterms.find(_successors[0])->getId()));
     if(it == table1.end())
       throw "Element not found";
     return it->second;
   }
   else{
     if(_arity == 2){
-    treeArg2::iterator it = table2.find(signatureArg2(
-						      v->getName(),
-						      gterms.getEC().find(_successors[0]->getId()),
-						      gterms.getEC().find(_successors[1]->getId())
-						     ));
+    treeArg2::iterator it = table2.find(signatureArg2(v->getName(),
+						      gterms.find(_successors[0])->getId(),
+						      gterms.find(_successors[1])->getId()));
     if(it == table2.end())
       throw "Element not found";
     return it->second;

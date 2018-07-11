@@ -2,14 +2,18 @@
 
 CongruenceClosure::CongruenceClosure(GTerms & terms, SignatureTable & sigTable, std::istream & in) :
   terms(terms), sigTable(sigTable) {
-  int numEq, a, b;
+  int numEq, lhs, rhs;
+  Vertex * lhsVertex, *rhsVertex;
   in >> numEq;
   for(int i = 0; i < numEq; ++i){
-    in >> a >> b;
-    terms.merge(terms.getTerm(a), terms.getTerm(b));
+    in >> lhs >> rhs;
+    lhsVertex = terms.getTerm(lhs);
+    rhsVertex = terms.getTerm(rhs);
+    if(lhsVertex->getLength() < rhsVertex->getLength())
+      terms.merge(terms.getTerm(rhs), terms.getTerm(lhs));
+    else
+      terms.merge(terms.getTerm(lhs), terms.getTerm(rhs));
   }
-  std::cout << "Terms: " << std::endl;
-  terms.print(std::cout);
 }
 
 CongruenceClosure::~CongruenceClosure(){}
@@ -57,6 +61,7 @@ void CongruenceClosure::algorithm(){
 	    } while(_temp != listFindV->getList()->next);
 	  }
 	  // ==================================================
+	  terms.merge(findW, findV);
 	}
 	else{
 	  CircularList<int> * listFindW = findW->getPredecessors();
@@ -74,6 +79,7 @@ void CongruenceClosure::algorithm(){
 	    } while(_temp != listFindW->getList()->next);
 	  }
 	  // ==================================================
+	  terms.merge(findV, findW);
 	}
       }
     }

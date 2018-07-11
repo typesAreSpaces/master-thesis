@@ -53,8 +53,6 @@ int main(int argc, char ** argv){
   std::cout << u4 << std::endl;
   */
   
-  //terms.print(std::cout);
-  
   /*
   UnionFind uf = UnionFind(5);
   uf.merge(1, 2), uf.merge(3, 2);
@@ -67,6 +65,7 @@ int main(int argc, char ** argv){
   file.open(argv[1], std::ifstream::in);
   
   GTerms terms = GTerms(file);
+  //terms.print(std::cout);
   
   SignatureTable sigTable = SignatureTable(terms);
 

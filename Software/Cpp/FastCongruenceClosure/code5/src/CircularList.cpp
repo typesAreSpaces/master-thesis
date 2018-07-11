@@ -63,11 +63,13 @@ void CircularList<T>::setLength(int x){
 
 template <typename T>
 void CircularList<T>::mergeCircularList(CircularList * l){
-  node<T> * lTemp = l->getList(), * ptr;
-  ptr = this->tail->next;
-  this->tail->next = lTemp->next;   
-  lTemp->next = ptr;
-  l->setLength(0);
+  if(l->size() > 0){
+    node<T> * lTemp = l->getList(), * ptr;
+    ptr = this->tail->next;
+    this->tail->next = lTemp->next;   
+    lTemp->next = ptr;
+    l->setLength(0);
+  }
 }
 
 template <typename T>

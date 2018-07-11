@@ -72,9 +72,9 @@ Vertex * GTerms::find(Vertex * v){
 }
 
 void GTerms::merge(Vertex * u, Vertex * v){
-  EC.merge(u->getId(), v->getId());
   // Merge the predecessor's list too!
   find(u)->mergePredecessors(find(v));
+  EC.merge(u->getId(), v->getId());
 }
 
 std::ostream & GTerms::print(std::ostream & os){

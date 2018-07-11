@@ -10,12 +10,17 @@ DEPS=$(wildcard $(IDIR)*.h)
 
 all: main
 
-$(ODIR)%.o: $(SDIR)%.cpp $(DEPS) $(SRC)
+$(ODIR)%.o: $(SDIR)%.cpp $(DEPS)
 	$(CC) -c -o $@ $< -I$(SDIR) $(CFLAGS) 
 main: $(OBJS)
 	$(CC) -o $@ $^ $(CFLAGS) 
 run:
-	./main test/example2.txt
+	for x in test/*; do\
+		./main $$x; \
+	done
+test1:
+	./main test/example4.txt
+
 .PHONY: clean
 clean:
 	rm *\~ $(ODIR)*
