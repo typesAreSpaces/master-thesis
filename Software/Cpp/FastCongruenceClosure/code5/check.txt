@@ -1,0 +1,354 @@
+1========================================================
+Signature
+Name: h First: 2 Second: 14 Symbol: h(x,h(y,h(z,x3)))
+ID: 3
+Predecessors:
+
+Successors:
+x, h(y,h(z,x3))
+2========================================================
+1========================================================
+Signature
+Name: f First: 2 Symbol: f(x)
+ID: 4
+Predecessors:
+16 18 
+Successors:
+x
+Signature
+Name: h First: 2 Second: 14 Symbol: h(x,h(y,h(z,x3)))
+ID: 3
+Predecessors:
+
+Successors:
+x, h(y,h(z,x3))
+2========================================================
+1========================================================
+Signature
+Name: f First: 2 Symbol: f(x)
+ID: 4
+Predecessors:
+16 18 
+Successors:
+x
+Signature
+Name: g First: 2 Second: 16 Symbol: g(h(x,h(y,h(z,x3))),g(f(x),x2))
+ID: 5
+Predecessors:
+6 
+Successors:
+h(x,h(y,h(z,x3))), g(f(x),x2)
+Signature
+Name: h First: 2 Second: 14 Symbol: h(x,h(y,h(z,x3)))
+ID: 3
+Predecessors:
+
+Successors:
+x, h(y,h(z,x3))
+2========================================================
+1========================================================
+Signature
+Name: f First: 2 Symbol: f(x)
+ID: 4
+Predecessors:
+16 18 
+Successors:
+x
+Signature
+Name: h First: 5 Second: 17 Symbol: h(g(h(x,h(y,h(z,x3))),g(f(x),x2)),h(z,h(f(x),x3)))
+ID: 6
+Predecessors:
+
+Successors:
+g(h(x,h(y,h(z,x3))),g(f(x),x2)), h(z,h(f(x),x3))
+Signature
+Name: g First: 2 Second: 16 Symbol: g(h(x,h(y,h(z,x3))),g(f(x),x2))
+ID: 5
+Predecessors:
+6 
+Successors:
+h(x,h(y,h(z,x3))), g(f(x),x2)
+Signature
+Name: h First: 2 Second: 14 Symbol: h(x,h(y,h(z,x3)))
+ID: 3
+Predecessors:
+
+Successors:
+x, h(y,h(z,x3))
+2========================================================
+1========================================================
+Signature
+Name: f First: 2 Symbol: f(x)
+ID: 4
+Predecessors:
+16 18 
+Successors:
+x
+Signature
+Name: h First: 2 Second: 15 Symbol: h(y,h(z,x3))
+ID: 14
+Predecessors:
+3 
+Successors:
+y, h(z,x3)
+Signature
+Name: h First: 5 Second: 17 Symbol: h(g(h(x,h(y,h(z,x3))),g(f(x),x2)),h(z,h(f(x),x3)))
+ID: 6
+Predecessors:
+
+Successors:
+g(h(x,h(y,h(z,x3))),g(f(x),x2)), h(z,h(f(x),x3))
+Signature
+Name: g First: 2 Second: 16 Symbol: g(h(x,h(y,h(z,x3))),g(f(x),x2))
+ID: 5
+Predecessors:
+6 
+Successors:
+h(x,h(y,h(z,x3))), g(f(x),x2)
+Signature
+Name: h First: 2 Second: 14 Symbol: h(x,h(y,h(z,x3)))
+ID: 3
+Predecessors:
+
+Successors:
+x, h(y,h(z,x3))
+2========================================================
+1========================================================
+Signature
+Name: f First: 2 Symbol: f(x)
+ID: 4
+Predecessors:
+16 18 
+Successors:
+x
+Signature
+Name: h First: 2 Second: 10 Symbol: h(z,x3)
+ID: 15
+Predecessors:
+14 
+Successors:
+z, x3
+Signature
+Name: h First: 2 Second: 15 Symbol: h(y,h(z,x3))
+ID: 14
+Predecessors:
+3 
+Successors:
+y, h(z,x3)
+Signature
+Name: h First: 5 Second: 17 Symbol: h(g(h(x,h(y,h(z,x3))),g(f(x),x2)),h(z,h(f(x),x3)))
+ID: 6
+Predecessors:
+
+Successors:
+g(h(x,h(y,h(z,x3))),g(f(x),x2)), h(z,h(f(x),x3))
+Signature
+Name: g First: 2 Second: 16 Symbol: g(h(x,h(y,h(z,x3))),g(f(x),x2))
+ID: 5
+Predecessors:
+6 
+Successors:
+h(x,h(y,h(z,x3))), g(f(x),x2)
+Signature
+Name: h First: 2 Second: 14 Symbol: h(x,h(y,h(z,x3)))
+ID: 3
+Predecessors:
+
+Successors:
+x, h(y,h(z,x3))
+2========================================================
+1========================================================
+Signature
+Name: f First: 2 Symbol: f(x)
+ID: 4
+Predecessors:
+16 18 
+Successors:
+x
+Signature
+Name: g First: 4 Second: 9 Symbol: g(f(x),x2)
+ID: 16
+Predecessors:
+5 
+Successors:
+f(x), x2
+Signature
+Name: h First: 2 Second: 10 Symbol: h(z,x3)
+ID: 15
+Predecessors:
+14 
+Successors:
+z, x3
+Signature
+Name: h First: 2 Second: 15 Symbol: h(y,h(z,x3))
+ID: 14
+Predecessors:
+3 
+Successors:
+y, h(z,x3)
+Signature
+Name: h First: 5 Second: 17 Symbol: h(g(h(x,h(y,h(z,x3))),g(f(x),x2)),h(z,h(f(x),x3)))
+ID: 6
+Predecessors:
+
+Successors:
+g(h(x,h(y,h(z,x3))),g(f(x),x2)), h(z,h(f(x),x3))
+Signature
+Name: g First: 2 Second: 16 Symbol: g(h(x,h(y,h(z,x3))),g(f(x),x2))
+ID: 5
+Predecessors:
+6 
+Successors:
+h(x,h(y,h(z,x3))), g(f(x),x2)
+Signature
+Name: h First: 2 Second: 14 Symbol: h(x,h(y,h(z,x3)))
+ID: 3
+Predecessors:
+
+Successors:
+x, h(y,h(z,x3))
+2========================================================
+1========================================================
+Signature
+Name: f First: 2 Symbol: f(x)
+ID: 4
+Predecessors:
+16 18 
+Successors:
+x
+Signature
+Name: h First: 2 Second: 18 Symbol: h(z,h(f(x),x3))
+ID: 17
+Predecessors:
+6 
+Successors:
+z, h(f(x),x3)
+Signature
+Name: g First: 4 Second: 9 Symbol: g(f(x),x2)
+ID: 16
+Predecessors:
+5 
+Successors:
+f(x), x2
+Signature
+Name: h First: 2 Second: 10 Symbol: h(z,x3)
+ID: 15
+Predecessors:
+14 
+Successors:
+z, x3
+Signature
+Name: h First: 2 Second: 15 Symbol: h(y,h(z,x3))
+ID: 14
+Predecessors:
+3 
+Successors:
+y, h(z,x3)
+Signature
+Name: h First: 5 Second: 17 Symbol: h(g(h(x,h(y,h(z,x3))),g(f(x),x2)),h(z,h(f(x),x3)))
+ID: 6
+Predecessors:
+
+Successors:
+g(h(x,h(y,h(z,x3))),g(f(x),x2)), h(z,h(f(x),x3))
+Signature
+Name: g First: 2 Second: 16 Symbol: g(h(x,h(y,h(z,x3))),g(f(x),x2))
+ID: 5
+Predecessors:
+6 
+Successors:
+h(x,h(y,h(z,x3))), g(f(x),x2)
+Signature
+Name: h First: 2 Second: 14 Symbol: h(x,h(y,h(z,x3)))
+ID: 3
+Predecessors:
+
+Successors:
+x, h(y,h(z,x3))
+2========================================================
+1========================================================
+Signature
+Name: f First: 2 Symbol: f(x)
+ID: 4
+Predecessors:
+16 18 
+Successors:
+x
+Signature
+Name: h First: 2 Second: 18 Symbol: h(z,h(f(x),x3))
+ID: 17
+Predecessors:
+6 
+Successors:
+z, h(f(x),x3)
+Signature
+Name: g First: 4 Second: 9 Symbol: g(f(x),x2)
+ID: 16
+Predecessors:
+5 
+Successors:
+f(x), x2
+Signature
+Name: h First: 2 Second: 10 Symbol: h(z,x3)
+ID: 15
+Predecessors:
+14 
+Successors:
+z, x3
+Signature
+Name: h First: 2 Second: 15 Symbol: h(y,h(z,x3))
+ID: 14
+Predecessors:
+3 
+Successors:
+y, h(z,x3)
+Signature
+Name: h First: 5 Second: 17 Symbol: h(g(h(x,h(y,h(z,x3))),g(f(x),x2)),h(z,h(f(x),x3)))
+ID: 6
+Predecessors:
+
+Successors:
+g(h(x,h(y,h(z,x3))),g(f(x),x2)), h(z,h(f(x),x3))
+Signature
+Name: h First: 4 Second: 10 Symbol: h(f(x),x3)
+ID: 18
+Predecessors:
+17 
+Successors:
+f(x), x3
+Signature
+Name: g First: 2 Second: 16 Symbol: g(h(x,h(y,h(z,x3))),g(f(x),x2))
+ID: 5
+Predecessors:
+6 
+Successors:
+h(x,h(y,h(z,x3))), g(f(x),x2)
+Signature
+Name: h First: 2 Second: 14 Symbol: h(x,h(y,h(z,x3)))
+ID: 3
+Predecessors:
+
+Successors:
+x, h(y,h(z,x3))
+2========================================================
+Congruence Closure:
+Vertex: x, Representative: z
+Vertex: y, Representative: z
+Vertex: z, Representative: z
+Vertex: h(x,h(y,h(z,x3))), Representative: z
+Vertex: f(x), Representative: f(x)
+Vertex: g(h(x,h(y,h(z,x3))),g(f(x),x2)), Representative: g(h(x,h(y,h(z,x3))),g(f(x),x2))
+Vertex: h(g(h(x,h(y,h(z,x3))),g(f(x),x2)),h(z,h(f(x),x3))), Representative: h(g(h(x,h(y,h(z,x3))),g(f(x),x2)),h(z,h(f(x),x3)))
+Vertex: x0, Representative: x0
+Vertex: x1, Representative: x1
+Vertex: x2, Representative: x2
+Vertex: x3, Representative: x3
+Vertex: x4, Representative: x4
+Vertex: x5, Representative: x5
+Vertex: x6, Representative: x6
+Vertex: h(y,h(z,x3)), Representative: h(y,h(z,x3))
+Vertex: h(z,x3), Representative: h(z,x3)
+Vertex: g(f(x),x2), Representative: g(f(x),x2)
+Vertex: h(z,h(f(x),x3)), Representative: h(z,h(f(x),x3))
+Vertex: h(f(x),x3), Representative: h(f(x),x3)
+

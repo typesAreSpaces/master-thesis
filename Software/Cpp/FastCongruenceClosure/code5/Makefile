@@ -19,7 +19,7 @@ run:
 		./main $$x; \
 	done
 test1:
-	./main test/example4.txt
+	./main test/example7.txt
 
 .PHONY: clean
 clean:
