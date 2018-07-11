@@ -68,6 +68,7 @@ void CircularList<T>::mergeCircularList(CircularList * l){
     ptr = this->tail->next;
     this->tail->next = lTemp->next;   
     lTemp->next = ptr;
+    this->length += l->size();
     l->setLength(0);
   }
 }

@@ -1,0 +1,217 @@
+./main test/example4.txt
+==========================================================
+Symbol: x
+ID: 0
+Predecessors:
+1 8 2 10 
+Successors:
+
+Symbol: g(x,w21(x,x2))
+ID: 1
+Predecessors:
+9 3 
+Successors:
+x, w21(x,x2)
+x g(x,w21(x,x2))
+4 2
+==========================================================
+==========================================================
+Symbol: x
+ID: 0
+Predecessors:
+9 3 1 8 2 10 
+Successors:
+
+Symbol: x
+ID: 0
+Predecessors:
+9 3 1 8 2 10 
+Successors:
+
+x g(x,w21(x,x2))
+6 0
+==========================================================
+From pending: g(x,w21(x,x2))
+To sigTable g(x,w21(x,x2))
+1!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+Signature
+Name: g First: 0 Second: 8 Symbol: g(x,w21(x,x2))
+ID: 1
+Predecessors:
+
+Successors:
+x, w21(x,x2)
+2!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+From pending: g(x,w22(g(x,w21(x,x2)),x2))
+To sigTable g(x,w22(g(x,w21(x,x2)),x2))
+1!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+Signature
+Name: g First: 0 Second: 9 Symbol: g(x,w22(g(x,w21(x,x2)),x2))
+ID: 2
+Predecessors:
+
+Successors:
+x, w22(g(x,w21(x,x2)),x2)
+Signature
+Name: g First: 0 Second: 8 Symbol: g(x,w21(x,x2))
+ID: 1
+Predecessors:
+
+Successors:
+x, w21(x,x2)
+2!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+From pending: g(g(x,w21(x,x2)),w23(x,x2))
+To sigTable g(g(x,w21(x,x2)),w23(x,x2))
+1!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+Signature
+Name: g First: 0 Second: 10 Symbol: g(g(x,w21(x,x2)),w23(x,x2))
+ID: 3
+Predecessors:
+
+Successors:
+g(x,w21(x,x2)), w23(x,x2)
+Signature
+Name: g First: 0 Second: 9 Symbol: g(x,w22(g(x,w21(x,x2)),x2))
+ID: 2
+Predecessors:
+
+Successors:
+x, w22(g(x,w21(x,x2)),x2)
+Signature
+Name: g First: 0 Second: 8 Symbol: g(x,w21(x,x2))
+ID: 1
+Predecessors:
+
+Successors:
+x, w21(x,x2)
+2!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+From pending: w21(x,x2)
+To sigTable w21(x,x2)
+1!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+Signature
+Name: g First: 0 Second: 10 Symbol: g(g(x,w21(x,x2)),w23(x,x2))
+ID: 3
+Predecessors:
+
+Successors:
+g(x,w21(x,x2)), w23(x,x2)
+Signature
+Name: w21 First: 0 Second: 6 Symbol: w21(x,x2)
+ID: 8
+Predecessors:
+1 
+Successors:
+x, x2
+Signature
+Name: g First: 0 Second: 9 Symbol: g(x,w22(g(x,w21(x,x2)),x2))
+ID: 2
+Predecessors:
+
+Successors:
+x, w22(g(x,w21(x,x2)),x2)
+Signature
+Name: g First: 0 Second: 8 Symbol: g(x,w21(x,x2))
+ID: 1
+Predecessors:
+
+Successors:
+x, w21(x,x2)
+2!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+From pending: w22(g(x,w21(x,x2)),x2)
+To sigTable w22(g(x,w21(x,x2)),x2)
+1!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+Signature
+Name: w22 First: 0 Second: 6 Symbol: w22(g(x,w21(x,x2)),x2)
+ID: 9
+Predecessors:
+2 
+Successors:
+g(x,w21(x,x2)), x2
+Signature
+Name: g First: 0 Second: 10 Symbol: g(g(x,w21(x,x2)),w23(x,x2))
+ID: 3
+Predecessors:
+
+Successors:
+g(x,w21(x,x2)), w23(x,x2)
+Signature
+Name: w21 First: 0 Second: 6 Symbol: w21(x,x2)
+ID: 8
+Predecessors:
+1 
+Successors:
+x, x2
+Signature
+Name: g First: 0 Second: 9 Symbol: g(x,w22(g(x,w21(x,x2)),x2))
+ID: 2
+Predecessors:
+
+Successors:
+x, w22(g(x,w21(x,x2)),x2)
+Signature
+Name: g First: 0 Second: 8 Symbol: g(x,w21(x,x2))
+ID: 1
+Predecessors:
+
+Successors:
+x, w21(x,x2)
+2!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+From pending: w23(x,x2)
+To sigTable w23(x,x2)
+1!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+Signature
+Name: w23 First: 0 Second: 6 Symbol: w23(x,x2)
+ID: 10
+Predecessors:
+3 
+Successors:
+x, x2
+Signature
+Name: w22 First: 0 Second: 6 Symbol: w22(g(x,w21(x,x2)),x2)
+ID: 9
+Predecessors:
+2 
+Successors:
+g(x,w21(x,x2)), x2
+Signature
+Name: g First: 0 Second: 10 Symbol: g(g(x,w21(x,x2)),w23(x,x2))
+ID: 3
+Predecessors:
+
+Successors:
+g(x,w21(x,x2)), w23(x,x2)
+Signature
+Name: w21 First: 0 Second: 6 Symbol: w21(x,x2)
+ID: 8
+Predecessors:
+1 
+Successors:
+x, x2
+Signature
+Name: g First: 0 Second: 9 Symbol: g(x,w22(g(x,w21(x,x2)),x2))
+ID: 2
+Predecessors:
+
+Successors:
+x, w22(g(x,w21(x,x2)),x2)
+Signature
+Name: g First: 0 Second: 8 Symbol: g(x,w21(x,x2))
+ID: 1
+Predecessors:
+
+Successors:
+x, w21(x,x2)
+2!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+Congruence Closure:
+Vertex: x, Representative: x
+Vertex: g(x,w21(x,x2)), Representative: x
+Vertex: g(x,w22(g(x,w21(x,x2)),x2)), Representative: g(x,w22(g(x,w21(x,x2)),x2))
+Vertex: g(g(x,w21(x,x2)),w23(x,x2)), Representative: g(g(x,w21(x,x2)),w23(x,x2))
+Vertex: x0, Representative: x0
+Vertex: x1, Representative: x1
+Vertex: x2, Representative: x2
+Vertex: x3, Representative: x3
+Vertex: w21(x,x2), Representative: w21(x,x2)
+Vertex: w22(g(x,w21(x,x2)),x2), Representative: w22(g(x,w21(x,x2)),x2)
+Vertex: w23(x,x2), Representative: w23(x,x2)
+

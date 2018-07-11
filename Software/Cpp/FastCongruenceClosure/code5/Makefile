@@ -23,4 +23,4 @@ test1:
 
 .PHONY: clean
 clean:
-	rm *\~ $(ODIR)*
+	rm $(ODIR)*
