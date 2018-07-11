@@ -46,6 +46,10 @@ std::string Vertex::getName(){
   return name;
 }
 
+int Vertex::getLength(){
+  return predecessors.size();
+}
+
 void Vertex::mergePredecessors(Vertex * v){
   this->predecessors.mergeCircularList(v->getPredecessors());
 }

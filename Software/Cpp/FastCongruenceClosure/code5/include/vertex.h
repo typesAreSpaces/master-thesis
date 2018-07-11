@@ -26,6 +26,7 @@ class Vertex{
   int getId();
   int getArity();
   std::string getName();
+  int getLength();
   void mergePredecessors(Vertex *);
   std::string to_string();
   static int getTotalNumVertex();
