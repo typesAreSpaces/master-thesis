@@ -14,13 +14,10 @@ $(ODIR)%.o: $(SDIR)%.cpp $(DEPS)
 	$(CC) -c -o $@ $< -I$(SDIR) $(CFLAGS) 
 main: $(OBJS)
 	$(CC) -o $@ $^ $(CFLAGS) 
-run:
-	for x in test/*; do\
+test_old:
+	for x in test/old/*; do\
 		./main $$x; \
 	done
-test1:
-	./main test/example7.txt
-
 .PHONY: clean
 clean:
 	rm $(ODIR)*

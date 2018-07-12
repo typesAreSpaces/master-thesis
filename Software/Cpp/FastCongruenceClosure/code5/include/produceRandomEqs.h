@@ -6,8 +6,10 @@
 #include <cstdlib>
 #include <ctime>
 #include <string>
+#include <map>
+#include <utility>
 
-void generateInputFile (int &, int &, std::string &);
-void generateInputFile2(int &, int &, std::string &);
+void generateFile(int, int , int, int, int);
+void generateFileAndTest(int, int , int, int, int);
 
 #endif
