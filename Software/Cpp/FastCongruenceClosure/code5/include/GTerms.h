@@ -3,8 +3,8 @@
 
 #include <iostream>
 #include <vector>
-#include "vertex.h"
-#include "unionfind.h"
+#include "Vertex.h"
+#include "UnionFind.h"
 
 class GTerms{
  private:

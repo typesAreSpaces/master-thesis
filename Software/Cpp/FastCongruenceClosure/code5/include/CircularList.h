@@ -2,7 +2,7 @@
 #define _CIRCULAR_LIST_
 
 #include <iostream>
-#include "node.h"
+#include "Node.h"
 
 template <typename T>
 class CircularList{

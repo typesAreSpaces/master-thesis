@@ -1,4 +1,4 @@
-#include "congruenceClosure.h"
+#include "CongruenceClosure.h"
 
 CongruenceClosure::CongruenceClosure(GTerms & terms, SignatureTable & sigTable, std::istream & in) :
   terms(terms), sigTable(sigTable) {

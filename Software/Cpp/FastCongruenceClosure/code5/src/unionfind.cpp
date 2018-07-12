@@ -1,4 +1,4 @@
-#include "unionfind.h"
+#include "UnionFind.h"
 
 UnionFind::UnionFind(int n) : numEquivalenceClasses(n){
   parent.resize(n);

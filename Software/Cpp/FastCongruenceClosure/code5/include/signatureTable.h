@@ -4,8 +4,8 @@
 #include<iostream>
 #include <utility>
 #include <unordered_map>
-#include "vertex.h"
-#include "signature.h"
+#include "Vertex.h"
+#include "Signature.h"
 #include "GTerms.h"
 
 typedef std::unordered_map<signatureArg1, Vertex*, signatureArg1::Hash> treeArg1;

@@ -2,7 +2,7 @@
 #define _LINKED_LIST_
 
 #include <iostream>
-#include "node.h"
+#include "Node.h"
 
 template <typename T>
 class LinkedList{

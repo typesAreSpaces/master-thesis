@@ -1,4 +1,4 @@
-#include "vertex.h"
+#include "Vertex.h"
 
 int Vertex::totalNumVertex = 0;
 

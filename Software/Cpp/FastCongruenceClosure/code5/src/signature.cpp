@@ -1,4 +1,4 @@
-#include "signature.h"
+#include "Signature.h"
 
 signatureArg1::signatureArg1(std::string name, int first) :
   name(name), first(first){}

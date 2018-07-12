@@ -2,7 +2,7 @@
 #define UNIONFIND_H
 
 #include <vector>
-#include "node.h"
+#include "Node.h"
 
 class UnionFind{
 private:

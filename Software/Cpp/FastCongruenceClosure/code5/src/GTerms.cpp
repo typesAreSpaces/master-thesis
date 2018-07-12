@@ -14,7 +14,8 @@ GTerms::GTerms(std::istream & in){
   // Adding {x_j | 0 <= j < n} vertices
   // where n is the number of original vertices
   for(int i = 0; i < numTerms; ++i){
-    terms[numTerms + i] = new Vertex("x" + std::to_string(i), 0);
+    //terms[numTerms + i] = new Vertex("x" + std::to_string(i), 0);
+    terms[numTerms + i] = new Vertex("_x" + std::to_string(i), 0);
     additionalTerms[i] = terms[numTerms + i];
   }
 

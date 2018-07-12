@@ -4,8 +4,8 @@
 #include <iostream>
 #include <set>
 #include "GTerms.h"
-#include "signatureTable.h"
-#include "vertex.h"
+#include "SignatureTable.h"
+#include "Vertex.h"
 
 typedef std::set<Vertex*> Pending;
 typedef std::set<std::pair<Vertex*, Vertex*> > Combine;

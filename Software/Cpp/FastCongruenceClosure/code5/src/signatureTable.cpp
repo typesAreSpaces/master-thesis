@@ -1,4 +1,4 @@
-#include "signatureTable.h"
+#include "SignatureTable.h"
 
 SignatureTable::SignatureTable(GTerms & gterms):
   gterms(gterms) {}
