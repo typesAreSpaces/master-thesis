@@ -33,7 +33,7 @@ int main(int argc, char ** argv){
 
   if(argc == 1){
     float averageTime;
-    for(int i = 10; i < 1000000; i *= 10){
+    for(int i = 10; i < 15; ++i){
       int numTest = 100, numConstantSyms = 6, numFunctionSyms = 4,
 	numTerms = i, numEqs = rand() % i + 1;
       averageTime = generateFileAndTest(numTest, numConstantSyms, numFunctionSyms, numTerms, numEqs);

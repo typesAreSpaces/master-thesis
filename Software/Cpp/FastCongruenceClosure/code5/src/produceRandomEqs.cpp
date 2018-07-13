@@ -56,5 +56,7 @@ float generateFileAndTest(int numTest, int numConstantSyms, int numFunctionSyms,
   clock_t time_begin = clock();
   for(int i = 0; i < numTest; ++i)
     system(("./main " + directoryName + "/" + std::to_string(i) + ".txt").c_str());
-  return ((float)(clock() - time_begin))/CLOCKS_PER_SEC/numTest;
+  clock_t time_end() = cloc();
+  system("rm test/test*");
+  return ((float)(time_end - time_begin))/CLOCKS_PER_SEC;
 }
