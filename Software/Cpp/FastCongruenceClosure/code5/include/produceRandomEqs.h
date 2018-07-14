@@ -10,6 +10,6 @@
 #include <utility>
 
 void generateFile(int, int , int, int, int);
-float generateFileAndTest(int, int , int, int, int);
+void generateFileAndTest(int, int , int, int, int);
 
 #endif

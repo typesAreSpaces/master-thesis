@@ -45,7 +45,7 @@ void generateFile(int numTest, int numConstantSyms, int numFunctionSyms, int num
   }   
 }
 
-float generateFileAndTest(int numTest, int numConstantSyms, int numFunctionSyms, int numTerms, int numEqs){
+void generateFileAndTest(int numTest, int numConstantSyms, int numFunctionSyms, int numTerms, int numEqs){
   generateFile(numTest, numConstantSyms, numFunctionSyms, numTerms, numEqs);
   std::string directoryName = "test/test_"
     + std::to_string(numTest) + "_"
@@ -53,10 +53,11 @@ float generateFileAndTest(int numTest, int numConstantSyms, int numFunctionSyms,
     + std::to_string(numFunctionSyms) + "_"
     + std::to_string(numTerms) + "_"
     + std::to_string(numEqs);
-  clock_t time_begin = clock();
-  for(int i = 0; i < numTest; ++i)
+  for(int i = 0; i < numTest; ++i){
+    std::clock_t time_begin = std::clock();
     system(("./main " + directoryName + "/" + std::to_string(i) + ".txt").c_str());
-  clock_t time_end() = cloc();
-  system("rm test/test*");
-  return ((float)(time_end - time_begin))/CLOCKS_PER_SEC;
+    std::clock_t time_end = std::clock();
+    std::cout << (numConstantSyms + numTerms) << ", " << ((time_end - time_begin)/(double)CLOCKS_PER_SEC) << std::endl;
+  }
+  system("rm -r test/test*");
 }
