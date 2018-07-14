@@ -7,34 +7,23 @@ SignatureTable::~SignatureTable(){}
 
 void SignatureTable::enter(Vertex* v){
   int _arity = v->getArity();  
-  std::vector<Vertex*> _successors = v->getSuccessors();
   if(_arity == 1){
     //<signatureArg1, Vertex*>
-    table1.insert(std::make_pair(
-				 signatureArg1(v->getName(),
-					       //gterms.getEC().find(_successors[0]->getId())
-					       gterms.find(_successors[0])->getId()),
-				 v));
+    table1.insert(std::make_pair(getSignatureArg1(v), v));
   }
   if(_arity == 2){
     //<signatureArg2, Vertex*>
-    table2.insert(std::make_pair(
-				 signatureArg2(v->getName(),
-					       gterms.find(_successors[0])->getId(),
-					       gterms.find(_successors[1])->getId()),
-				 v));
+    table2.insert(std::make_pair(getSignatureArg2(v), v));
   }
   return;
 }
 
 void SignatureTable::remove(Vertex * v){
   int _arity = v->getArity();
-  std::vector<Vertex*> _successors = v->getSuccessors();
   if(_arity == 1){
     try{
       Vertex * _temp = query(v);
-      table1.erase(signatureArg1(v->getName(),
-				 gterms.find(_successors[0])->getId()));
+      table1.erase(getSignatureArg1(v));
     }
     catch(const char* msg){
     }
@@ -42,9 +31,7 @@ void SignatureTable::remove(Vertex * v){
   if(_arity == 2){
     try{
       Vertex * _temp = query(v);
-      table2.erase(signatureArg2(v->getName(),
-				 gterms.find(_successors[0])->getId(),
-				 gterms.find(_successors[1])->getId()));
+      table2.erase(getSignatureArg2(v));
     }
     catch(const char* msg){
     }
@@ -56,17 +43,14 @@ Vertex * SignatureTable::query(Vertex * v){
   int _arity = v->getArity();
   std::vector<Vertex*> _successors = v->getSuccessors();
   if(_arity == 1){
-    treeArg1::iterator it = table1.find(signatureArg1(v->getName(),
-						      gterms.find(_successors[0])->getId()));
+    treeArg1::iterator it = table1.find(getSignatureArg1(v));
     if(it == table1.end())
       throw "Element not found";
     return it->second;
   }
   else{
     if(_arity == 2){
-    treeArg2::iterator it = table2.find(signatureArg2(v->getName(),
-						      gterms.find(_successors[0])->getId(),
-						      gterms.find(_successors[1])->getId()));
+    treeArg2::iterator it = table2.find(getSignatureArg2(v));
     if(it == table2.end())
       throw "Element not found";
     return it->second;
@@ -74,6 +58,21 @@ Vertex * SignatureTable::query(Vertex * v){
     else
       throw "Wrong arity";
   }
+}
+
+signatureArg1 SignatureTable::getSignatureArg1(Vertex * v){
+  int _arity = v->getArity();
+  std::vector<Vertex*> _successors = v->getSuccessors();
+  return signatureArg1(v->getName(),
+		       gterms.find(_successors[0])->getId());
+}
+
+signatureArg2 SignatureTable::getSignatureArg2(Vertex * v){
+  int _arity = v->getArity();
+  std::vector<Vertex*> _successors = v->getSuccessors();
+  return signatureArg2(v->getName(),
+		       gterms.find(_successors[0])->getId(),
+		       gterms.find(_successors[1])->getId());
 }
 
 std::ostream & SignatureTable::print(std::ostream & os){

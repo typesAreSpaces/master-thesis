@@ -22,6 +22,8 @@ public:
   void enter(Vertex*);
   void remove(Vertex*);
   Vertex* query(Vertex*);
+  signatureArg1 getSignatureArg1(Vertex*);
+  signatureArg2 getSignatureArg2(Vertex*);
   std::ostream & print(std::ostream &);
 };
 

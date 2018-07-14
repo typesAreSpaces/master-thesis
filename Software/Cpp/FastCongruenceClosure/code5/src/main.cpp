@@ -1,6 +1,7 @@
 #include <iostream>
 #include <fstream>
 #include <cstdlib>
+#include "Vertex.h"
 #include "GTerms.h"
 #include "SignatureTable.h"
 #include "CongruenceClosure.h"
@@ -18,7 +19,16 @@ int main(int argc, char ** argv){
     file.close();
   
     cc.algorithm();
-    //cc.print(std::cout);
+    /*
+    for(int i = 0; i < Vertex::getTotalNumVertex() - 1; ++i){
+      for(int j = i + 1; j < Vertex::getTotalNumVertex(); ++j){
+	//terms.getTerm(i);
+	//terms.getTerm(j);
+      }
+    }
+    */
+    
+    cc.print(std::cout);
   }
   
   if(argc == 7){
@@ -34,7 +44,7 @@ int main(int argc, char ** argv){
 
   if(argc == 1){
     float averageTime;
-    for(int i = 10; i < 1000000; i += 10){
+    for(int i = 10; i < 100; i += 10){
       
       // =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
       // Pararemeters 
@@ -42,7 +52,7 @@ int main(int argc, char ** argv){
 	numTerms = i, numEqs = rand() % i + 1;
       // =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
       
-       generateFileAndTest(numTest, numConstantSyms, numFunctionSyms, numTerms, numEqs);
+      generateFileAndTest(numTest, numConstantSyms, numFunctionSyms, numTerms, numEqs);
       /*
       averageTime = generateFileAndTest(numTest, numConstantSyms, numFunctionSyms, numTerms, numEqs);
       std::cout << numTest << " " << numConstantSyms << " " << numFunctionSyms
