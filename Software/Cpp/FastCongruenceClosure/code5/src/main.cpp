@@ -21,7 +21,6 @@ int main(int argc, char ** argv){
     //cc.print(std::cout);
     //checkCorrectness(terms, sigTable);
   }
-  
   if(argc == 7){
     if(atoi(argv[6]) == 0)
       generateFile(atoi(argv[1]), atoi(argv[2]), atoi(argv[3]), atoi(argv[4]), atoi(argv[5]));
@@ -31,19 +30,15 @@ int main(int argc, char ** argv){
   }
 
   // Checking Performance
-  if(argc == 1){
-    float averageTime;
-    for(int i = 10; i < 100; i += 10){
-      
+  if(argc == 1)
+    for(int i = 10; i < 10000; i += 10){   
       // =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
       // Pararemeters 
-      int numTest = 1, numConstantSyms = 3, numFunctionSyms = 4,
+      int numTest = 10, numConstantSyms = 3, numFunctionSyms = 4,
 	numTerms = i, numEqs = rand() % i + 1;
       // =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
-      
       worstCaseFileAndTest(numTest, numConstantSyms, numFunctionSyms, numTerms, numEqs);
     }
-  }
   
   return 0;
 }

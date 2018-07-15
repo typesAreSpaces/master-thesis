@@ -111,7 +111,9 @@ void run(int numTest, int numConstantSyms, int numFunctionSyms, int numTerms, in
     std::clock_t time_begin = std::clock();
     system(("./main " + directoryName + "/" + std::to_string(i) + ".txt").c_str());
     std::clock_t time_end = std::clock();
-    std::cout << (numConstantSyms + numTerms) << ", " << ((time_end - time_begin)/(double)CLOCKS_PER_SEC) << std::endl;
+    std::cout << numTest << ", " << numConstantSyms << ", " << numFunctionSyms
+	      << ", " << numTerms << ", " << numEqs << ", "
+	      << ((time_end - time_begin)/(double)CLOCKS_PER_SEC) << std::endl;
   }
   system("rm -r test/test*");
 }
