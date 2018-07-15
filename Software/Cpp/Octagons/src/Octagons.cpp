@@ -222,8 +222,6 @@ void Octagons::operate(std::ostream & fileOut, int elim, OctagonalFormula x, Oct
       printMessage(fileOut, debug, x, y, temp);
     }
   }
-  //inequalities[position(x)] = INF;
-  //inequalities[position(y)] = INF;
 }
 
 void Octagons::interpolation(std::ostream & os){
