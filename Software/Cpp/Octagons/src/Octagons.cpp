@@ -233,8 +233,8 @@ void Octagons::interpolation(std::ostream & os){
 	OctagonalFormula(i).print(os);
 	os << " <= " << inequalities[i] << std::endl;
       }
+    os << std::endl;
   }
-  os << std::endl;
 
   // ----------------------------------------------------------------------------------------------------------------
   // Interpolation Algorithm
@@ -244,13 +244,10 @@ void Octagons::interpolation(std::ostream & os){
     if(debug)
       os << "Eliminating variable x_" << *it << "\n";    
 
-    for(vi::iterator x = pos[*it].begin(); x != pos[*it].end(); ++x){
-      for(vi::iterator y = neg[*it].begin(); y != neg[*it].end(); ++y){
-	if(inequalities[*x] != INF && inequalities[*y] != INF){
+    for(vi::iterator x = pos[*it].begin(); x != pos[*it].end(); ++x)
+      for(vi::iterator y = neg[*it].begin(); y != neg[*it].end(); ++y)
+	if(inequalities[*x] != INF && inequalities[*y] != INF)
 	  operate(os, *it, OctagonalFormula(*x), OctagonalFormula(*y));
-	}
-      }
-    }
     
     for(vi::iterator x = pos[*it].begin(); x != pos[*it].end(); ++x)
       inequalities[*x] = INF;
