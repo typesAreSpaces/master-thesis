@@ -1,12 +1,12 @@
 #include "produceRandomEqs.h"
 
 void generateFile(int numTest, int numConstantSyms, int numFunctionSyms, int numTerms, int numEqs){
-  system("mkdir test");
+  system("mkdir tests");
   int counter;
   char _temp;
   std::string fileName;
   std::ofstream file;
-  std::string directoryName = "test/test_"
+  std::string directoryName = "tests/test_"
     + std::to_string(numTest) + "_"
     + std::to_string(numConstantSyms) + "_"
     + std::to_string(numFunctionSyms) + "_"
@@ -56,7 +56,7 @@ void worstCaseFile(int numTest, int numConstantSyms, int numFunctionSyms, int nu
   char _temp;
   std::string fileName;
   std::ofstream file;
-  std::string directoryName = "test/test_"
+  std::string directoryName = "tests/test_"
     + std::to_string(numTest) + "_"
     + std::to_string(numConstantSyms) + "_"
     + std::to_string(numFunctionSyms) + "_"
@@ -101,7 +101,7 @@ void worstCaseFileAndTest(int numTest, int numConstantSyms, int numFunctionSyms,
 }
 
 void run(int numTest, int numConstantSyms, int numFunctionSyms, int numTerms, int numEqs){
-  std::string directoryName = "test/test_"
+  std::string directoryName = "tests/test_"
     + std::to_string(numTest) + "_"
     + std::to_string(numConstantSyms) + "_"
     + std::to_string(numFunctionSyms) + "_"
@@ -115,7 +115,7 @@ void run(int numTest, int numConstantSyms, int numFunctionSyms, int numTerms, in
 	      << ", " << numTerms << ", " << numEqs << ", "
 	      << ((time_end - time_begin)/(double)CLOCKS_PER_SEC) << std::endl;
   }
-  system("rm -r test/test*");
+  system("rm -r tests/test*");
 }
 
 void checkCorrectness(GTerms & terms, SignatureTable & sigTable){
