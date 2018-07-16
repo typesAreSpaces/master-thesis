@@ -156,7 +156,7 @@ std::ostream & CongruenceClosure::print(std::ostream & os){
   int totalNumVertex = Vertex::getTotalNumVertex();
   for(int i = 0; i < totalNumVertex; ++i){
     os << "Vertex: " << terms.getTerm(i)->to_string() <<
-      ", Representative: " << terms.find(terms.getTerm(i))->to_string() << std::endl; 
+      ", Representative: " << terms.find(terms.getTerm(i))->to_string() << std::endl;
   }
   os << std::endl;
   return os;

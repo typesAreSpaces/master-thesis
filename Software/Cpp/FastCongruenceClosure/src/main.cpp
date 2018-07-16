@@ -18,8 +18,8 @@ int main(int argc, char ** argv){
     file.close();
   
     cc.algorithm();
-    //cc.print(std::cout);
-    //checkCorrectness(terms, sigTable);
+    cc.print(std::cout);
+    checkCorrectness(terms, sigTable);
   }
   if(argc == 7){
     if(atoi(argv[6]) == 0)
