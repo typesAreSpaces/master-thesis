@@ -6,4 +6,4 @@ y2 = 0.0003947 + (1.677e-07)*x + (6.083e-07)*x.*log(x);
 
 plot(x, y1);
 hold;
-plot(x, y2, 'b--o');
+plot(x, y2, 'g--o');
