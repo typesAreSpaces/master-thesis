@@ -51,7 +51,7 @@ void generateFileAndTest(int numTest, int numConstantSyms, int numFunctionSyms, 
 }
 
 void worstCaseFile(int numTest, int numConstantSyms, int numFunctionSyms, int numTerms, int numEqs){
-  system("mkdir test");
+  system("mkdir tests");
   int counter;
   char _temp;
   std::string fileName;
