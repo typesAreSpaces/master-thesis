@@ -36,10 +36,10 @@ int main(int argc, char ** argv){
 
   // Checking Performance
   if(argc == 1)
-    for(int i = 10; i < 100000; i += 10){   
+    for(int i = 10; i < 100000; i += 100){   
       // =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
       // Pararemeters 
-      int numTest = 10, numConstantSyms = 3, numFunctionSyms = 4,
+      int numTest = 2, numConstantSyms = 3, numFunctionSyms = 4,
 	numTerms = i, numEqs = rand() % i + 1;
       // =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
       worstCaseFileAndTest(numTest, numConstantSyms, numFunctionSyms, numTerms, numEqs);

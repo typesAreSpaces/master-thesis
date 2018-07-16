@@ -14,7 +14,7 @@ $(ODIR)%.o: $(SDIR)%.cpp $(DEPS)
 	$(CC) -c -o $@ $< $(CFLAGS)
 
 main: $(OBJS)
-	$(CC) -o $@ $^ $(CFLAGS)
+	$(CC) -o $@ $^
 
 clean:
 	rm -f $(OBJS)

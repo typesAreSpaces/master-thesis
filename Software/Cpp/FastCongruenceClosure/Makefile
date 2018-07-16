@@ -13,7 +13,7 @@ all: main
 $(ODIR)%.o: $(SDIR)%.cpp $(DEPS)
 	$(CC) -c -o $@ $< -I$(SDIR) $(CFLAGS) 
 main: $(OBJS)
-	$(CC) -o $@ $^ $(CFLAGS) 
+	$(CC) -o $@ $^
 test_old:
 	for x in test/old/*; do\
 		./main $$x; \
