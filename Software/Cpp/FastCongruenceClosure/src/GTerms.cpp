@@ -28,7 +28,8 @@ GTerms::GTerms(std::istream & in){
       // Adding w_j(v) vertices
       for(int j = 2; j <= _arity; ++j){
 	//Vertex * temp = new Vertex("w" + std::to_string(j) + std::to_string(terms[i]->getId()), 2);
-	Vertex * temp = new Vertex(terms[i]->getName(), 2);
+	//Vertex * temp = new Vertex(terms[i]->getName(), 2);
+	Vertex * temp = new Vertex("_c", 2);
 	terms.push_back(temp);
 	additionalTerms.push_back(temp);
       }

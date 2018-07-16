@@ -87,6 +87,7 @@ void worstCaseFile(int numTest, int numConstantSyms, int numFunctionSyms, int nu
       file << std::endl;
       ++counter;
     }
+    // Making the hardest case
     file << numEqs << std::endl;
     for(int i = 0; i < (numConstantSyms + numTerms) - 1; ++i)
       file << i << " " << (i + 1) << std::endl;
@@ -107,15 +108,9 @@ void run(int numTest, int numConstantSyms, int numFunctionSyms, int numTerms, in
     + std::to_string(numFunctionSyms) + "_"
     + std::to_string(numTerms) + "_"
     + std::to_string(numEqs);
-  for(int i = 0; i < numTest; ++i){
-    std::clock_t time_begin = std::clock();
+  for(int i = 0; i < numTest; ++i)    
     system(("./main " + directoryName + "/" + std::to_string(i) + ".txt").c_str());
-    std::clock_t time_end = std::clock();
-    std::cout << numTest << ", " << numConstantSyms << ", " << numFunctionSyms
-	      << ", " << numTerms << ", " << numEqs << ", "
-	      << ((time_end - time_begin)/(double)CLOCKS_PER_SEC) << std::endl;
-  }
-  system("rm -r tests/test*");
+  //system("rm -r tests/test*");
 }
 
 void checkCorrectness(GTerms & terms, SignatureTable & sigTable){

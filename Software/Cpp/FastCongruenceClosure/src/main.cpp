@@ -5,23 +5,28 @@
 #include "SignatureTable.h"
 #include "CongruenceClosure.h"
 #include "produceRandomEqs.h"
+#include <ctime>
 
 int main(int argc, char ** argv){
 
   if(argc == 2){  
     std::ifstream file;
     file.open(argv[1], std::ifstream::in);
-  
+    
     GTerms terms = GTerms(file);
     SignatureTable sigTable = SignatureTable(terms);
     CongruenceClosure cc = CongruenceClosure(terms, sigTable, file);
     file.close();
-  
+    std::clock_t start = std::clock(); 
     cc.algorithm();
-    cc.print(std::cout);
-    checkCorrectness(terms, sigTable);
+    std::clock_t end = std::clock();
+    int numTerms = Vertex::getTotalNumVertex();
+    std::cout << numTerms << "," << (end - start)/(double)CLOCKS_PER_SEC << std::endl;
+    //cc.print(std::cout);
+    //checkCorrectness(terms, sigTable);
   }
   if(argc == 7){
+    // void generateFile(int numTest, int numConstantSyms, int numFunctionSyms, int numTerms, int numEqs){
     if(atoi(argv[6]) == 0)
       generateFile(atoi(argv[1]), atoi(argv[2]), atoi(argv[3]), atoi(argv[4]), atoi(argv[5]));
     
@@ -31,7 +36,7 @@ int main(int argc, char ** argv){
 
   // Checking Performance
   if(argc == 1)
-    for(int i = 10; i < 10000; i += 10){   
+    for(int i = 10; i < 100000; i += 10){   
       // =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
       // Pararemeters 
       int numTest = 10, numConstantSyms = 3, numFunctionSyms = 4,
