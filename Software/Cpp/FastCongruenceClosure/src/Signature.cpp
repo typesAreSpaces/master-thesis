@@ -17,7 +17,8 @@ std::ostream & operator << (std::ostream & os, signatureArg1 & x){
 
 std::size_t signatureArg1::Hash::operator()(const signatureArg1 & x) const {
   std::size_t res = std::hash<std::string>()(x.name);
-  res = res * 31 ^ std::hash<int>()(x.first);
+  //res = res * 31 ^ std::hash<int>()(x.first);
+  res ^= std::hash<int>()(x.first) + 0x9e3779b9 + (res << 6) + (res >> 2);
   return res;
 }
 

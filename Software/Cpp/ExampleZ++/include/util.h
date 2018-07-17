@@ -4,6 +4,7 @@
 #include <iostream>
 #include <cstring>
 #include "z3++.h"
+#include "z3.h"
 
 void proveFromFile(std::string);
 void interpolantFromFile(std::string);

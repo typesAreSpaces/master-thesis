@@ -3,8 +3,6 @@
 
   --*/
 
-#include <vector>
-#include "z3++.h"
 #include "util.h"
 
 enum option {EXIT_, INTERPOLANT_, PROVE_};

@@ -17,13 +17,13 @@ int main(int argc, char ** argv){
     SignatureTable sigTable = SignatureTable(terms);
     CongruenceClosure cc = CongruenceClosure(terms, sigTable, file);
     file.close();
-    std::clock_t start = std::clock(); 
+    //std::clock_t start = std::clock(); 
     cc.algorithm();
-    std::clock_t end = std::clock();
-    int numTerms = Vertex::getTotalNumVertex();
-    std::cout << numTerms << "," << (end - start)/(double)CLOCKS_PER_SEC << std::endl;
-    //cc.print(std::cout);
-    //checkCorrectness(terms, sigTable);
+    //std::clock_t end = std::clock();
+    //int numTerms = Vertex::getTotalNumVertex();
+    //std::cout << numTerms << "," << (end - start)/(double)CLOCKS_PER_SEC << std::endl;
+    cc.print(std::cout);
+    checkCorrectness(terms, sigTable);
   }
   if(argc == 7){
     // void generateFile(int numTest, int numConstantSyms, int numFunctionSyms, int numTerms, int numEqs){
