@@ -85,3 +85,30 @@ std::ostream & CircularList<T>::print(std::ostream & os){
   os << std::endl;
   return os;
 }
+
+template <typename T>
+CircularList<T>::iterator::iterator(node<T> * n) : _it(n){};
+
+template <typename T>
+CircularList<T>::iterator::~iterator(){};
+
+template <typename T>
+typename CircularList<T>::iterator& CircularList<T>::iterator::operator++(){
+  _it = _it->next;
+  return *this;
+}
+
+template <typename T>
+bool CircularList<T>::iterator:: operator ==(node<T> * n) const{
+  return (_it == n);
+}
+
+template <typename T>
+bool CircularList<T>::iterator:: operator !=(node<T> * n) const{
+  return (_it != n);
+}
+
+template <typename T>
+node<T>& CircularList<T>::iterator:: operator *(){
+  return *_it;
+}

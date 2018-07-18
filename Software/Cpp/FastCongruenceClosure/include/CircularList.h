@@ -20,6 +20,17 @@ class CircularList{
   void setLength(int);
   void mergeCircularList(CircularList *);
   std::ostream & print(std::ostream &);
+  class iterator{
+  private:
+    node<T> * _it;
+  public:
+    iterator(node<T>*);
+    ~iterator();
+    iterator& operator++();
+    bool operator==(node<T> *) const;
+    bool operator!=(node<T> *) const;
+    node<T>& operator*();
+  };
 };
 
 #endif
