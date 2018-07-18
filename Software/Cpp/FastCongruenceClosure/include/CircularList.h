@@ -17,6 +17,8 @@ class CircularList{
   void add(T x);
   int size();
   node<T> * getList();
+  node<T> * begin();
+  node<T> * end();
   void setLength(int);
   void mergeCircularList(CircularList *);
   std::ostream & print(std::ostream &);

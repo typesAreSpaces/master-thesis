@@ -57,6 +57,16 @@ node<T> * CircularList<T>::getList(){
 }
 
 template <typename T>
+node<T> * CircularList<T>::begin(){
+  return tail->next;
+}
+
+template <typename T>
+node<T> * CircularList<T>::end(){
+  return tail;
+}
+
+template <typename T>
 void CircularList<T>::setLength(int x){
   length = x;
 }

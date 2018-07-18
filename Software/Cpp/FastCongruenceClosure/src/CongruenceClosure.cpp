@@ -96,20 +96,15 @@ void CongruenceClosure::algorithm(){
       if(findV->getId() != findW->getId()){
 	if(findV->getLength() < findW->getLength()){
 	  CircularList<int> * listFindV = findV->getPredecessors();
-	  // ==================================================
-	  // Traversing the CircularList
-	  // TODO: Implement an iterator for
-	  // the CircularList class
 	  if(findV->getLength() != 0){
-	    node<int> * _temp = listFindV->getList()->next;
+	    CircularList<int>::iterator it = listFindV->begin();
 	    do{
-	      Vertex * u = terms.getTerm(_temp->data);
+	      Vertex * u = terms.getTerm((*it).data);
 	      sigTable.remove(u);
 	      pending.insert(u);
-	      _temp = _temp->next;
-	    } while(_temp != listFindV->getList()->next);
+	      ++it;
+	    } while(it != listFindV->begin());
 	  }
-	  // ==================================================
 	  if(traceMerge){
 	    std::cout << "==========================================" << std::endl;
 	    std::cout << "Merging " << std::endl;
@@ -122,20 +117,15 @@ void CongruenceClosure::algorithm(){
 	}
 	else{
 	  CircularList<int> * listFindW = findW->getPredecessors();
-	  // ==================================================
-	  // Traversing the CircularList
-	  // TODO: Implement an iterator for
-	  // the CircularList class
 	  if(findW->getLength() != 0){
-	    node<int> * _temp = listFindW->getList()->next;
+	    CircularList<int>::iterator it = listFindW->begin();
 	    do{
-	      Vertex * u = terms.getTerm(_temp->data);
+	      Vertex * u = terms.getTerm((*it).data);
 	      sigTable.remove(u);
 	      pending.insert(u);
-	      _temp = _temp->next;
-	    } while(_temp != listFindW->getList()->next);
+	      ++it;
+	    } while(it != listFindW->begin());
 	  }
-	  // ==================================================
 	  if(traceMerge){
 	    std::cout << "==========================================" << std::endl;
 	    std::cout << "Merging " << std::endl;
