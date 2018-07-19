@@ -4,7 +4,7 @@
   --*/
 
 #include "z3++.h"
-#include "z3.h"
+#include "z3.h" 
 #include "util.h"
 #include "traversal.h"
 #include "constructors.h"
@@ -19,18 +19,6 @@ void tst_display_ast() {
   display_ast(c, stdout, f);
 }
 
-void tst_visit() {
-    std::cout << "visit example\n";
-    z3::context c;
-
-    z3::expr x = c.int_const("x");
-    z3::expr y = c.int_const("y");
-    z3::expr z = c.int_const("z");
-    z3::expr f = x*x - y*y >= 0;
-
-    visit(f);
-}
-
 int main(int argc, char ** argv) {
 
   //testSMT2(argc, argv);
@@ -43,15 +31,11 @@ int main(int argc, char ** argv) {
   cfg.set("TRACE", true);
   z3::context ctx(cfg);
 
-  //Z3_ast inputFormula = Z3_parse_smtlib2_file(ctx, (Z3_string)file.c_str(), 0, 0, 0, 0, 0, 0);
-  //z3::expr _inputFormula = z3::expr(ctx, inputFormula);
-  z3::expr _inputFormula = ctx.parse_file((Z3_string)file.c_str());
-  
-  //tst_visit();
+  Z3_ast inputFormula = Z3_parse_smtlib2_file(ctx, (Z3_string)file.c_str(), 0, 0, 0, 0, 0, 0);
+ 
   //tst_display_ast();
   //std::cout << std::endl;
-  visit(_inputFormula);
-  //display_ast(ctx, stdout, inputFormula);
-  //std::cout << std::endl;
+  display_ast(ctx, stdout, inputFormula);
+  std::cout << std::endl;
   return 0;
 }
