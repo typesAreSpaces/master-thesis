@@ -1,19 +1,23 @@
-IDIR = ./include/
-ODIR = ./obj/
-SDIR = ./src/
-CC = g++
-CFLAGS = -I$(IDIR) -std=c++11
-
-SRC=$(wildcard $(SDIR)*.cpp)
+include config.mk
+IDIR=./include/
+ODIR=./obj/
+SDIR=./src/
+SRC =$(wildcard $(SDIR)*.cpp)
 OBJS=$(patsubst $(SDIR)%.cpp, $(ODIR)%.o, $(SRC))
 DEPS=$(wildcard $(IDIR)*.h)
+TESTS=$(wildcard ~/Documents/QF_UF/*/*.smt2)
 
 all: main
 
-$(ODIR)%.o: $(SDIR)%.cpp $(DEPS)
-	$(CC) -c -o $@ $< -I$(SDIR) $(CFLAGS) 
-main: $(OBJS)
-	$(CC) -o $@ $^ $(CFLAGS) 
+$(ODIR)%$(OBJ_EXT): $(SDIR)%.cpp $(DEPS)
+	$(CXX) $(CXXFLAGS) $(OS_DEFINES) $(EXAMP_DEBUG_FLAG) $(CXX_OUT_FLAG)$@ $(LINK_FLAGS) -I$(IDIR) -I$(PREFIX)/src/api -I$(PREFIX)/src/api/c++ $<
+
+main: $(OBJS) $(PREFIX)/build/libz3$(SO_EXT)
+	$(LINK) $(LINK_OUT_FLAG)$@$(EXE_EXT) $(LINK_FLAGS) $^  $(PREFIX)/build/libz3$(SO_EXT) $(LINK_EXTRA_FLAGS)
+
 .PHONY: clean
+
 clean:
-	rm $(ODIR)*
+	rm -f $(ODIR)*.o
+
+
