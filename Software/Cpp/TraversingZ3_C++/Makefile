@@ -16,7 +16,9 @@ main: $(OBJS) $(PREFIX)/build/libz3$(SO_EXT)
 	$(LINK) $(LINK_OUT_FLAG)$@$(EXE_EXT) $(LINK_FLAGS) $^ $(PREFIX)/build/libz3$(SO_EXT) $(LINK_EXTRA_FLAGS)
 
 run_test: $(TESTS)
-	./main $^
+	for x in $(TESTS); do\
+		./main $$x; \
+	done
 
 .PHONY: clean
 

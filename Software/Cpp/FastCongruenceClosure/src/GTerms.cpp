@@ -1,38 +1,36 @@
 #include "GTerms.h"
 
-void visitWithStack(z3::expr const & e){
+/* WORK IN PROGRESS
+GTerms::GTerms(z3::expr const & e){
+  int numTerms, mark, counter = 0;
+  std::set<unsigned> nodeHashes;
   std::stack<z3::expr> s;
+
   s.push(e);
   while(!s.empty()){
-    z3::expr temp = s.top();
+    z3::expr node = s.top();
     s.pop();
-    if(temp.is_app()){
-      unsigned num = temp.num_args();
+    if(node.is_app()){
+      unsigned num = node.num_args();
       for(unsigned i = 0; i < num; ++i)
-	s.push(temp.arg(i));
+	s.push(node.arg(i));
       // do something
-      // Example: print the visited expression
-      z3::func_decl f = e.decl();
-      std::cout << "Application of " << f.name() << ": " << temp << "\nHash: " << temp.hash() <<"\n";
+      if(nodeHashes.find(node.hash()) == nodeHashes.end()){
+	nodeHashes.insert(node.hash());
+	
+      }
     }
-    else if (temp.is_quantifier()){
-      s.push(temp.body());
+    else if (node.is_quantifier()){
+      s.push(node.body());
       // do something
     }
     else{
-      assert(temp.is_var());
+      assert(node.is_var());
       // do something
     }
   }
 }
-
-GTerms::GTerms(z3::expr const & e){
-  terms.resize(1);
-  additionalTerms.resize(1);
-  terms[0] = new Vertex();
-  additionalTerms[0] = new Vertex();
-  visitWithStack(e);
-}
+*/
 
 GTerms::GTerms(std::istream & in){
   int numTerms, _arity, _successor, mark;

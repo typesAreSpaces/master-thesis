@@ -4,6 +4,7 @@
 #include <iostream>
 #include <vector>
 #include <stack>
+#include <set>
 #include "z3++.h"
 #include "Vertex.h"
 #include "UnionFind.h"
