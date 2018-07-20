@@ -1,11 +1,11 @@
 #include <iostream>
 #include <fstream>
 #include <cstdlib>
+#include <ctime>
 #include "GTerms.h"
 #include "SignatureTable.h"
 #include "CongruenceClosure.h"
 #include "produceRandomEqs.h"
-#include <ctime>
 
 int main(int argc, char ** argv){
 

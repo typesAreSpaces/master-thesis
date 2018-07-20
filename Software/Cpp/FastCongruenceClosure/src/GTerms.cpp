@@ -1,9 +1,43 @@
 #include "GTerms.h"
 
+void visitWithStack(z3::expr const & e){
+  std::stack<z3::expr> s;
+  s.push(e);
+  while(!s.empty()){
+    z3::expr temp = s.top();
+    s.pop();
+    if(temp.is_app()){
+      unsigned num = temp.num_args();
+      for(unsigned i = 0; i < num; ++i)
+	s.push(temp.arg(i));
+      // do something
+      // Example: print the visited expression
+      z3::func_decl f = e.decl();
+      std::cout << "Application of " << f.name() << ": " << temp << "\nHash: " << temp.hash() <<"\n";
+    }
+    else if (temp.is_quantifier()){
+      s.push(temp.body());
+      // do something
+    }
+    else{
+      assert(temp.is_var());
+      // do something
+    }
+  }
+}
+
+GTerms::GTerms(z3::expr const & e){
+  terms.resize(1);
+  additionalTerms.resize(1);
+  terms[0] = new Vertex();
+  additionalTerms[0] = new Vertex();
+  visitWithStack(e);
+}
+
 GTerms::GTerms(std::istream & in){
   int numTerms, _arity, _successor, mark;
   std::string _name;
-
+  
   in >> numTerms;
   terms.resize(2*numTerms);
   additionalTerms.resize(numTerms);

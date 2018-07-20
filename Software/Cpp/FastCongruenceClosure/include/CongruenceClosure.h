@@ -3,6 +3,7 @@
 
 #include <iostream>
 #include <set>
+#include "z3++.h"
 #include "GTerms.h"
 #include "SignatureTable.h"
 #include "Vertex.h"

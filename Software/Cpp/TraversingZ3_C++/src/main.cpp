@@ -34,6 +34,8 @@ int main(int argc, char ** argv) {
   z3::expr inputFormula = ctx.parse_file(file.c_str());
   
   //tst_visit();
-  visit(inputFormula);
+  visitWithStack(inputFormula);
+  //visit(inputFormula);
+  
   return 0;
 }

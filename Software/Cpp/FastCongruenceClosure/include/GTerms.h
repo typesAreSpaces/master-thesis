@@ -3,6 +3,8 @@
 
 #include <iostream>
 #include <vector>
+#include <stack>
+#include "z3++.h"
 #include "Vertex.h"
 #include "UnionFind.h"
 
@@ -12,6 +14,7 @@ class GTerms{
   std::vector<Vertex*> additionalTerms;
   UnionFind EC;
  public:
+  GTerms(z3::expr const &);
   GTerms(std::istream &);
   ~GTerms();
   Vertex * getTerm(int);
