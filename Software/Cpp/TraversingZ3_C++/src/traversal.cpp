@@ -82,6 +82,7 @@ void visitPostOrderWithStack(z3::expr const & e){
   while(!s.empty()){  
     z3::expr _e = s.top();
     s.pop();
+    
     if(gas[_e.hash()] == 0){
       // do something
       if(_e.is_app()){
