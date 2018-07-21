@@ -8,7 +8,15 @@ void visit(z3::expr const & e) {
     // do something
     // Example: print the visited expression
     z3::func_decl f = e.decl();
-    std::cout << "Application of " << f.name() << ": " << e << "\nHash: " << e.hash() << " Arity: " << e.num_args() <<"\n";
+    /*
+    // Uncommet the following and run it on the file
+    // /Users/joseabelcastellanosjoo/Documents/QF_UF/2018-Goel-hwbench/QF_UF_firewire_tree.1.prop1_ab_cti_max.smt2
+    // to see a hash collision
+    if(e.hash() == 331654019){
+      std::cout << "Application of " << f.name() << std::endl;
+    }
+    */
+    std::cout << "Application of " << f.name() << std::endl;
   }
   else if (e.is_quantifier()) {
     visit(e.body());
@@ -57,7 +65,7 @@ void insert(z3::expr const & e, std::stack<z3::expr> & s, std::map<unsigned, int
     gas.insert(std::make_pair(e.arg(0).hash(), e.arg(0).num_args()));
   }
   else{
-    for(int i = _na - 1; i > 0; --i){
+    for(unsigned i = _na - 1; i > 0; --i){
       s.push(e.arg(i));
       gas.insert(std::make_pair(e.arg(i).hash(), e.arg(i).num_args()));
     }
@@ -74,6 +82,11 @@ void move(std::stack<z3::expr> & s){
   s.push(_e), s.push(_e2);
 }
 
+// Problem: Since hash can have collisions, this
+// isn't safe to use
+// Example: hash = 331654019 in
+// file
+// "/Users/joseabelcastellanosjoo/Documents/QF_UF/2018-Goel-hwbench/QF_UF_firewire_tree.1.prop1_ab_cti_max.smt2"
 void visitPostOrderWithStack(z3::expr const & e){
   std::stack<z3::expr> s;
   std::map<unsigned, int> gas;
@@ -82,7 +95,7 @@ void visitPostOrderWithStack(z3::expr const & e){
   while(!s.empty()){  
     z3::expr _e = s.top();
     s.pop();
-    
+
     if(gas[_e.hash()] == 0){
       // do something
       if(_e.is_app()){
@@ -103,8 +116,10 @@ void visitPostOrderWithStack(z3::expr const & e){
 	  move(s);
       }
     }
-    else
-      insert(_e, s, gas);
+    else{
+      if(gas[_e.hash()] > 0)
+	insert(_e, s, gas);
+    }
   }
 }
 

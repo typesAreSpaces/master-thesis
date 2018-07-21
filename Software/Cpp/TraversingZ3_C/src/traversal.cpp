@@ -20,7 +20,7 @@ void unreachable()
 /**
    \brief Display a symbol in the given output stream.
 */
-void display_symbol(Z3_context c, FILE * out, Z3_symbol s)
+void visit_symbol(Z3_context c, FILE * out, Z3_symbol s)
 {
     switch (Z3_get_symbol_kind(c, s)) {
     case Z3_INT_SYMBOL:
@@ -37,11 +37,11 @@ void display_symbol(Z3_context c, FILE * out, Z3_symbol s)
 /**
    \brief Display the given type.
 */
-void display_sort(Z3_context c, FILE * out, Z3_sort ty)
+void visit_sort(Z3_context c, FILE * out, Z3_sort ty)
 {
     switch (Z3_get_sort_kind(c, ty)) {
     case Z3_UNINTERPRETED_SORT:
-        display_symbol(c, out, Z3_get_sort_name(c, ty));
+        visit_symbol(c, out, Z3_get_sort_name(c, ty));
         break;
     case Z3_BOOL_SORT:
         fprintf(out, "bool");
@@ -57,9 +57,9 @@ void display_sort(Z3_context c, FILE * out, Z3_sort ty)
         break;
     case Z3_ARRAY_SORT:
         fprintf(out, "[");
-        display_sort(c, out, Z3_get_array_sort_domain(c, ty));
+        visit_sort(c, out, Z3_get_array_sort_domain(c, ty));
         fprintf(out, "->");
-        display_sort(c, out, Z3_get_array_sort_range(c, ty));
+        visit_sort(c, out, Z3_get_array_sort_range(c, ty));
         fprintf(out, "]");
         break;
     case Z3_DATATYPE_SORT:
@@ -77,14 +77,14 @@ void display_sort(Z3_context c, FILE * out, Z3_sort ty)
             if (i > 0) {
                 fprintf(out, ", ");
             }
-            display_sort(c, out, Z3_get_range(c, field));
+            visit_sort(c, out, Z3_get_range(c, field));
         }
         fprintf(out, ")");
         break;
     }
     default:
         fprintf(out, "unknown[");
-        display_symbol(c, out, Z3_get_sort_name(c, ty));
+        visit_symbol(c, out, Z3_get_sort_name(c, ty));
         fprintf(out, "]");
         break;
     }
@@ -95,7 +95,7 @@ void display_sort(Z3_context c, FILE * out, Z3_sort ty)
 
    This function demonstrates how to use the API to navigate terms.
 */
-void display_ast(Z3_context c, FILE * out, Z3_ast v)
+void visit(Z3_context c, FILE * out, Z3_ast v)
 {
     switch (Z3_get_ast_kind(c, v)) {
     case Z3_NUMERAL_AST: {
@@ -103,25 +103,27 @@ void display_ast(Z3_context c, FILE * out, Z3_ast v)
         fprintf(out, "%s", Z3_get_numeral_string(c, v));
         t = Z3_get_sort(c, v);
         fprintf(out, ":");
-        display_sort(c, out, t);
+        visit_sort(c, out, t);
         break;
     }
     case Z3_APP_AST: {
         unsigned i;
         Z3_app app = Z3_to_app(c, v);
         unsigned num_fields = Z3_get_app_num_args(c, app);
-        Z3_func_decl d = Z3_get_app_decl(c, app);
-        fprintf(out, "%s", Z3_func_decl_to_string(c, d));
-        if (num_fields > 0) {
-            fprintf(out, "[");
-            for (i = 0; i < num_fields; i++) {
-                if (i > 0) {
-                    fprintf(out, ", ");
-                }
-                display_ast(c, out, Z3_get_app_arg(c, app, i));
-            }
-            fprintf(out, "]");
-        }
+        
+        for (i = 0; i < num_fields; i++)
+	  visit(c, out, Z3_get_app_arg(c, app, i));
+
+	//--------------------------------------------------
+	// do something
+	Z3_func_decl d = Z3_get_app_decl(c, app);
+	fprintf(out, "Application of ");
+	visit_symbol(c, out, Z3_get_decl_name(c, d));
+	//fprintf(out, " Id: %d ", Z3_get_ast_id(c, v));
+	//fprintf(out, " Hash: %d \n", Z3_get_ast_hash(c, v));
+	fprintf(out, "\n");
+	//--------------------------------------------------
+	
         break;
     }
     case Z3_QUANTIFIER_AST: {

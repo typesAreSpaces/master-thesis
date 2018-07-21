@@ -1,36 +1,76 @@
 #include "GTerms.h"
 
-/* WORK IN PROGRESS
-GTerms::GTerms(z3::expr const & e){
-  int numTerms, mark, counter = 0;
-  std::set<unsigned> nodeHashes;
-  std::stack<z3::expr> s;
+void GTerms::visit(z3::expr const & e, std::map<unsigned, int> & nodeHashes) {
+  if (e.is_app()) {
+    unsigned num = e.num_args();
+    for (unsigned i = 0; i < num; i++)
+      visit(e.arg(i), nodeHashes);
 
-  s.push(e);
-  while(!s.empty()){
-    z3::expr node = s.top();
-    s.pop();
-    if(node.is_app()){
-      unsigned num = node.num_args();
-      for(unsigned i = 0; i < num; ++i)
-	s.push(node.arg(i));
-      // do something
-      if(nodeHashes.find(node.hash()) == nodeHashes.end()){
-	nodeHashes.insert(node.hash());
-	
+    // -----------------------------------------------------------------------------------------------------------------------
+    // do something
+    z3::func_decl f = e.decl();
+    int _id = Vertex::getTotalNumVertex();
+    nodeHashes.insert(std::make_pair(e.hash(), _id));
+    terms.push_back(new Vertex());
+    terms[_id]->setName(f.name());
+    if(num >== 2){
+      // Check this 'mark'
+      mark = terms.size();
+      terms[_id]->setArity(2);
+      // Adding w_j(v) vertices
+      for(int j = 2; j <= num; ++j){
+	Vertex * temp = new Vertex("_c", 2);
+	terms.push_back(temp);
       }
-    }
-    else if (node.is_quantifier()){
-      s.push(node.body());
-      // do something
+
+      // -------------------------------------------------------------
+      // Successors
+      for(int j = 2; j < num - 2; ++j){
+	terms[mark + j - 2]->addSuccessor(terms[nodeHashes[e.arg(j).has()]]);
+	terms[mark + j - 2]->addSuccessor(terms[mark + j - 1]);
+      }
+      /*
+      in >> _successor;
+      terms[_id]->addSuccessor(terms[_successor]);
+      terms[_id]->addSuccessor(terms[mark]);
+      for(int j = 0; j < num - 2; ++j){
+	in >> _successor;
+	terms[mark + j]->addSuccessor(terms[_successor]);
+	terms[mark + j]->addSuccessor(terms[mark + j + 1]);
+      }
+      in >> _successor;
+      terms[mark + num - 2]->addSuccessor(terms[_successor]);
+      terms[mark + num - 2]->addSuccessor(terms[numTerms + _arity]);
+      */
+      // -------------------------------------------------------------
     }
     else{
-      assert(node.is_var());
-      // do something
+      terms[_id]->setArity(num);
+      for(int j = 0; j < _arity; ++j){
+	terms[_id]->addSuccessor(terms[nodeHashes[e.arg(i).hash()]]);
+      }
     }
+    //std::cout << "Application of " << f.name() << ": " << e << "\nHash: " << e.hash() << " Arity: " << e.num_args() <<"\n";
+    // do something
+    // -----------------------------------------------------------------------------------------------------------------------
+  }
+  else if (e.is_quantifier()) {
+    //visit(e.body(), nodeHashes, counter);
+    // do something
+  }
+  else {
+    assert(e.is_var());
+    // do something
   }
 }
-*/
+
+GTerms::GTerms(z3::expr const & e){
+  int numTerms, mark, counter = 0;
+  std::map<unsigned, int> nodeHashes;
+
+  visit(e, nodeHashes); 
+}
+
 
 GTerms::GTerms(std::istream & in){
   int numTerms, _arity, _successor, mark;
@@ -38,7 +78,6 @@ GTerms::GTerms(std::istream & in){
   
   in >> numTerms;
   terms.resize(2*numTerms);
-  additionalTerms.resize(numTerms);
 
   for(int i = 0; i < numTerms; ++i)
     terms[i] = new Vertex();
@@ -48,7 +87,6 @@ GTerms::GTerms(std::istream & in){
   for(int i = 0; i < numTerms; ++i){
     //terms[numTerms + i] = new Vertex("x" + std::to_string(i), 0);
     terms[numTerms + i] = new Vertex("_x" + std::to_string(i), 0);
-    additionalTerms[i] = terms[numTerms + i];
   }
 
   for(int i = 0; i < numTerms; ++i){
@@ -63,7 +101,6 @@ GTerms::GTerms(std::istream & in){
 	//Vertex * temp = new Vertex(terms[i]->getName(), 2);
 	Vertex * temp = new Vertex("_c", 2);
 	terms.push_back(temp);
-	additionalTerms.push_back(temp);
       }
       in >> _successor;
       terms[i]->addSuccessor(terms[_successor]);

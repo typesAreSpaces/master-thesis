@@ -2,13 +2,14 @@
 #include <fstream>
 #include <cstdlib>
 #include <ctime>
+#include "Vertex.h"
 #include "GTerms.h"
 #include "SignatureTable.h"
 #include "CongruenceClosure.h"
 #include "produceRandomEqs.h"
 
 int main(int argc, char ** argv){
-
+  
   if(argc == 2){  
     std::ifstream file;
     file.open(argv[1], std::ifstream::in);
@@ -43,7 +44,7 @@ int main(int argc, char ** argv){
 	numTerms = i, numEqs = rand() % i + 1;
       // =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
       worstCaseFileAndTest(numTest, numConstantSyms, numFunctionSyms, numTerms, numEqs);
-    }
+    }  
   
   return 0;
 }
