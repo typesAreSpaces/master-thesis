@@ -8,11 +8,12 @@
 #include "util.h"
 #include "traversal.h"
 #include "constructors.h"
+#include "api_util.h"
 
 int main(int argc, char ** argv) {
   
-  //std::string file = "./SMT2_files/interpolantExample1.smt2";
-  std::string file = "/Users/joseabelcastellanosjoo/Documents/QF_UF/2018-Goel-hwbench/QF_UF_firewire_tree.1.prop1_ab_cti_max.smt2";
+  std::string file = "./SMT2_files/interpolantKapurExample1.smt2";
+  //std::string file = "/Users/joseabelcastellanosjoo/Documents/QF_UF/2018-Goel-hwbench/QF_UF_firewire_tree.1.prop1_ab_cti_max.smt2";
 
   z3::config cfg;
   cfg.set("PROOF", true);
@@ -22,6 +23,7 @@ int main(int argc, char ** argv) {
 
   Z3_ast inputFormula = Z3_parse_smtlib2_file(ctx, (Z3_string)file.c_str(), 0, 0, 0, 0, 0, 0);
   visit(ctx, stdout, inputFormula);
-  
+  // This now works!
+  //std::cout << to_expr(inputFormula)->get_ref_count() << std::endl;
   return 0;
 }

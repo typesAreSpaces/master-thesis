@@ -6,7 +6,7 @@
 #include "z3++.h"
 #include "util.h"
 #include "traversal.h"
-//#include "api_util.h"
+#include "api_util.h"
 
 /*
 void tst_visit() {
@@ -38,6 +38,5 @@ int main(int argc, char ** argv) {
 
   z3::expr inputFormula = ctx.parse_file(file.c_str());
   visit(inputFormula);
-  
   return 0;
 }

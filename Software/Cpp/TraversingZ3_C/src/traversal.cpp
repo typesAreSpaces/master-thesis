@@ -99,11 +99,7 @@ void visit(Z3_context c, FILE * out, Z3_ast v)
 {
     switch (Z3_get_ast_kind(c, v)) {
     case Z3_NUMERAL_AST: {
-        Z3_sort t;
-        fprintf(out, "%s", Z3_get_numeral_string(c, v));
-        t = Z3_get_sort(c, v);
-        fprintf(out, ":");
-        visit_sort(c, out, t);
+        fprintf(out, "Application of %s\n", Z3_get_numeral_string(c, v));
         break;
     }
     case Z3_APP_AST: {
@@ -119,7 +115,8 @@ void visit(Z3_context c, FILE * out, Z3_ast v)
 	Z3_func_decl d = Z3_get_app_decl(c, app);
 	fprintf(out, "Application of ");
 	visit_symbol(c, out, Z3_get_decl_name(c, d));
-	//fprintf(out, " Id: %d ", Z3_get_ast_id(c, v));
+	//fprintf(out, "%s", Z3_get_name(c, v));
+	fprintf(out, " Id: %d ", Z3_get_ast_id(c, v));
 	//fprintf(out, " Hash: %d \n", Z3_get_ast_hash(c, v));
 	fprintf(out, "\n");
 	//--------------------------------------------------

@@ -1,4 +1,4 @@
-PREFIX=~/Documents/Applications/z3
+PREFIX=/Users/joseabelcastellanosjoo/Documents/Applications/z3
 CC=gcc
 CXX=g++
 CXXFLAGS= -D_MP_INTERNAL -D_AMD64_ -DNDEBUG -D_EXTERNAL_RELEASE  -fvisibility=hidden -c -mfpmath=sse -msse -msse2 -D_NO_OMP_ -O3 -D _EXTERNAL_RELEASE \
