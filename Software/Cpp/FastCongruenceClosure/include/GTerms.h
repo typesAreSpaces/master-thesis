@@ -12,9 +12,9 @@ class GTerms{
  private:
   std::vector<Vertex*> terms;
   UnionFind EC;
-  void visit(z3::expr const &, std::map<unsigned, int> &);
+  void visit(Z3_context, Z3_ast);
  public:
-  GTerms(z3::expr const &);
+  GTerms(Z3_context, Z3_ast);
   GTerms(std::istream &);
   ~GTerms();
   Vertex * getTerm(int);

@@ -1,74 +1,47 @@
 #include "GTerms.h"
 
-void GTerms::visit(z3::expr const & e, std::map<unsigned, int> & nodeHashes) {
-  if (e.is_app()) {
-    unsigned num = e.num_args();
-    for (unsigned i = 0; i < num; i++)
-      visit(e.arg(i), nodeHashes);
-
-    // -----------------------------------------------------------------------------------------------------------------------
+void GTerms::visit(Z3_context c, Z3_ast v){
+  switch (Z3_get_ast_kind(c, v)) {
+  case Z3_NUMERAL_AST: {
     // do something
-    z3::func_decl f = e.decl();
-    int _id = Vertex::getTotalNumVertex();
-    nodeHashes.insert(std::make_pair(e.hash(), _id));
-    terms.push_back(new Vertex());
-    terms[_id]->setName(f.name());
-    if(num >== 2){
-      // Check this 'mark'
-      mark = terms.size();
-      terms[_id]->setArity(2);
-      // Adding w_j(v) vertices
-      for(int j = 2; j <= num; ++j){
-	Vertex * temp = new Vertex("_c", 2);
-	terms.push_back(temp);
-      }
-
-      // -------------------------------------------------------------
-      // Successors
-      for(int j = 2; j < num - 2; ++j){
-	terms[mark + j - 2]->addSuccessor(terms[nodeHashes[e.arg(j).has()]]);
-	terms[mark + j - 2]->addSuccessor(terms[mark + j - 1]);
-      }
-      /*
-      in >> _successor;
-      terms[_id]->addSuccessor(terms[_successor]);
-      terms[_id]->addSuccessor(terms[mark]);
-      for(int j = 0; j < num - 2; ++j){
-	in >> _successor;
-	terms[mark + j]->addSuccessor(terms[_successor]);
-	terms[mark + j]->addSuccessor(terms[mark + j + 1]);
-      }
-      in >> _successor;
-      terms[mark + num - 2]->addSuccessor(terms[_successor]);
-      terms[mark + num - 2]->addSuccessor(terms[numTerms + _arity]);
-      */
-      // -------------------------------------------------------------
-    }
-    else{
-      terms[_id]->setArity(num);
-      for(int j = 0; j < _arity; ++j){
-	terms[_id]->addSuccessor(terms[nodeHashes[e.arg(i).hash()]]);
-      }
-    }
-    //std::cout << "Application of " << f.name() << ": " << e << "\nHash: " << e.hash() << " Arity: " << e.num_args() <<"\n";
-    // do something
-    // -----------------------------------------------------------------------------------------------------------------------
+    //fprintf(out, "%s", Z3_get_numeral_string(c, v));
+    break;
   }
-  else if (e.is_quantifier()) {
-    //visit(e.body(), nodeHashes, counter);
+  case Z3_APP_AST: {
+    unsigned i;
+    Z3_app app = Z3_to_app(c, v);
+    unsigned num_fields = Z3_get_app_num_args(c, app);
+        
+    for (i = 0; i < num_fields; i++)
+      visit(c, Z3_get_app_arg(c, app, i));
+
+    //--------------------------------------------------
     // do something
+    Z3_func_decl d = Z3_get_app_decl(c, app);
+    //fprintf(out, "Application of ");
+    //visit_symbol(c, Z3_get_decl_name(c, d));
+    //fprintf(out, " Id: %d ", Z3_get_ast_id(c, v));
+    //fprintf(out, " Hash: %d \n", Z3_get_ast_hash(c, v));
+    //fprintf(out, "\n");
+    //--------------------------------------------------
+	
+    break;
   }
-  else {
-    assert(e.is_var());
+  case Z3_QUANTIFIER_AST: {
     // do something
+    //fprintf(out, "quantifier");
+    break;
+  }
+  default:
+    //fprintf(out, "#unknown");
+    break;
   }
 }
 
-GTerms::GTerms(z3::expr const & e){
+GTerms::GTerms(Z3_context c, Z3_ast v){
   int numTerms, mark, counter = 0;
-  std::map<unsigned, int> nodeHashes;
-
-  visit(e, nodeHashes); 
+  //std::map<unsigned, int> nodeHashes;
+  visit(c, v); 
 }
 
 
