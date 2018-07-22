@@ -2,9 +2,7 @@
 #include <fstream>
 #include <cstdlib>
 #include <ctime>
-#include "Vertex.h"
-#include "GTerms.h"
-#include "SignatureTable.h"
+
 #include "CongruenceClosure.h"
 #include "produceRandomEqs.h"
 
