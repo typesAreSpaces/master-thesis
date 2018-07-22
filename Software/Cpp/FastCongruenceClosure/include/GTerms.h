@@ -9,9 +9,10 @@
 #include "UnionFind.h"
 
 class GTerms{
- private:
+ protected:
   std::vector<Vertex*> terms;
   UnionFind EC;
+ private:
   void visit(Z3_context, Z3_ast);
  public:
   GTerms(Z3_context, Z3_ast);

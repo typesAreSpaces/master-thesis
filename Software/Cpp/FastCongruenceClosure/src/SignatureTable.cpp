@@ -1,7 +1,7 @@
 #include "SignatureTable.h"
 
-SignatureTable::SignatureTable(GTerms & gterms):
-  gterms(gterms) {}
+SignatureTable::SignatureTable(std::istream & in) :
+  GTerms(in) {}
 
 SignatureTable::~SignatureTable(){}
 
@@ -64,15 +64,15 @@ signatureArg1 SignatureTable::getSignatureArg1(Vertex * v){
   int _arity = v->getArity();
   std::vector<Vertex*> _successors = v->getSuccessors();
   return signatureArg1(v->getName(),
-		       gterms.find(_successors[0])->getId());
+		       find(_successors[0])->getId());
 }
 
 signatureArg2 SignatureTable::getSignatureArg2(Vertex * v){
   int _arity = v->getArity();
   std::vector<Vertex*> _successors = v->getSuccessors();
   return signatureArg2(v->getName(),
-		       gterms.find(_successors[0])->getId(),
-		       gterms.find(_successors[1])->getId());
+		       find(_successors[0])->getId(),
+		       find(_successors[1])->getId());
 }
 
 std::ostream & SignatureTable::print(std::ostream & os){

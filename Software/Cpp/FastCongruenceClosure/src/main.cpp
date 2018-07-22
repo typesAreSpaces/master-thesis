@@ -14,9 +14,7 @@ int main(int argc, char ** argv){
     std::ifstream file;
     file.open(argv[1], std::ifstream::in);
     
-    GTerms terms = GTerms(file);
-    SignatureTable sigTable = SignatureTable(terms);
-    CongruenceClosure cc = CongruenceClosure(terms, sigTable, file);
+    CongruenceClosure cc = CongruenceClosure(file);
     file.close();
     //std::clock_t start = std::clock(); 
     cc.algorithm();
@@ -24,7 +22,10 @@ int main(int argc, char ** argv){
     //int numTerms = Vertex::getTotalNumVertex();
     //std::cout << numTerms << "," << (end - start)/(double)CLOCKS_PER_SEC << std::endl;
     cc.print(std::cout);
-    checkCorrectness(terms, sigTable);
+    if(cc.checkCorrectness())
+      std::cout << "Success!" << std::endl;
+    else
+      std::cout << "There is a problem :(" << std::endl;
   }
   if(argc == 7){
     // void generateFile(int numTest, int numConstantSyms, int numFunctionSyms, int numTerms, int numEqs){

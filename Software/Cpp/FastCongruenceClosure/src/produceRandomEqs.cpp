@@ -112,24 +112,3 @@ void run(int numTest, int numConstantSyms, int numFunctionSyms, int numTerms, in
     system(("./main " + directoryName + "/" + std::to_string(i) + ".txt").c_str());
   //system("rm -r tests/test*");
 }
-
-void checkCorrectness(GTerms & terms, SignatureTable & sigTable){
-  bool check = true;
-  for(int i = 0; i < Vertex::getTotalNumVertex() - 1; ++i)
-    for(int j = i + 1; j < Vertex::getTotalNumVertex(); ++j){
-      Vertex * u = terms.getTerm(i), * v = terms.getTerm(j);
-      if(u->getArity() == v->getArity()){
-	if(u->getArity() == 1){
-	  if(sigTable.getSignatureArg1(u) == sigTable.getSignatureArg1(v) && terms.find(u)->getId() != terms.find(v)->getId())
-	    check = false;
-	}
-	if(u->getArity() == 2)
-	  if(sigTable.getSignatureArg2(u) == sigTable.getSignatureArg2(v) && terms.find(u)->getId() != terms.find(v)->getId())
-	    check = false;
-      }
-    }
-  if(check)
-    std::cout << "Success!" << std::endl;
-  else
-    std::cout << "There is a problem :(" << std::endl;
-}

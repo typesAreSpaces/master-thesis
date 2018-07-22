@@ -17,5 +17,5 @@ void generateFileAndTest(int, int , int, int, int);
 void worstCaseFile(int, int , int, int, int);
 void worstCaseFileAndTest(int, int , int, int, int);
 void run(int, int , int, int, int);
-void checkCorrectness(GTerms &, SignatureTable &);
+
 #endif

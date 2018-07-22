@@ -16,15 +16,13 @@ extern bool tracePending;
 extern bool traceEC;
 extern bool traceSigTable;
 
-class CongruenceClosure{
- private:
-  GTerms & terms;
-  SignatureTable & sigTable;
+class CongruenceClosure : public SignatureTable {
  public:
-  CongruenceClosure(GTerms &, SignatureTable &, std::istream &);
+  CongruenceClosure(std::istream &);
   ~CongruenceClosure();
   void algorithm();
   std::ostream & print(std::ostream &);
+  bool checkCorrectness();
 };
 
 #endif

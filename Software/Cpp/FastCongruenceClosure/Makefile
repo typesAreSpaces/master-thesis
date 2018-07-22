@@ -23,4 +23,4 @@ test_old:
 	done
 .PHONY: clean
 clean:
-	rm $(ODIR)*
+	rm $(ODIR)/*
