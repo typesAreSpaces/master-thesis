@@ -1,4 +1,4 @@
-Z3DIR=~/Documents/Applications/z3
+Z3DIR=/Users/joseabelcastellanosjoo/Documents/Applications/z3
 IDIR = ./include
 ODIR = ./obj
 SDIR = ./src
@@ -14,7 +14,7 @@ DEPS=$(wildcard $(IDIR)/*.h)
 all: main
 
 $(ODIR)/%.o: $(SDIR)/%.cpp $(DEPS)
-	$(CC) $(CXXFLAGS) -o $@ -I$(SDIR)/ $(FLAGS) $< 
+	$(CC) $(CXXFLAGS) -o$@ -I$(SDIR)/ $(FLAGS) $< 
 main: $(OBJS) $(Z3DIR)/build/libz3.dylib
 	$(CC) -o $@ $^ $(Z3DIR)/build/libz3.dylib -lpthread
 test_old:
@@ -23,4 +23,4 @@ test_old:
 	done
 .PHONY: clean
 clean:
-	rm $(ODIR)/*
+	rm $(ODIR)/* main

@@ -18,7 +18,7 @@
 )
 ;; Definition of formula B
 (define-fun B () Bool
-	    (and (= (g a) v) (= (g d) w) (= (g v) b) (= (g w) c) (= a d) (distinct c d))
+	    (and (= (g a) v) (= (g d) w) (= (g v) b) (= (g w) c) (= a d) (!= c d))
 )
 ;; Assertion of [interp] A and B
 (assert (interp A))

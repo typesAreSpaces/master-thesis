@@ -14,7 +14,9 @@ class GTerms{
   std::vector<Vertex*> terms;
   UnionFind EC;
  private:
-  void visit(Z3_context, Z3_ast);
+  void visit(Z3_context, Z3_ast, unsigned, unsigned &);
+  void exitf(const char *);
+  void unreachable();
  public:
   GTerms(Z3_context, Z3_ast);
   GTerms(std::istream &);
