@@ -1,0 +1,17 @@
+[mk-app] #0 undef
+[mk-app] #1 true
+[mk-app] #2 false
+[mk-app] #0 undef
+[mk-app] #1 true
+[mk-app] #2 false
+[mk-app] #3 pi
+[mk-app] #4 euler
+[mk-app] #5 0^0-int
+[mk-app] #6 0^0-real
+[mk-app] #7 x
+[mk-app] #8 g #7 #7
+[mk-app] #9 = #7 #8
+[mk-app] #10 and #9
+[mk-app] #11 interp #10
+[mk-app] #12 and #11 #10
+[eof]

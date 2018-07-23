@@ -1,11 +1,7 @@
 #ifndef CONG_CLOSURE
 #define CONG_CLOSURE
 
-#include <iostream>
-#include <set>
-#include "GTerms.h"
 #include "SignatureTable.h"
-#include "Vertex.h"
 
 typedef std::set<Vertex*> Pending;
 typedef std::set<std::pair<Vertex*, Vertex*> > Combine;
@@ -17,6 +13,7 @@ extern bool traceSigTable;
 
 class CongruenceClosure : public SignatureTable {
  public:
+  CongruenceClosure(Z3_context, Z3_ast);
   CongruenceClosure(std::istream &);
   ~CongruenceClosure();
   void algorithm();

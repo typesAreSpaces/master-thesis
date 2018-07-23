@@ -13,7 +13,7 @@
 
 int main(int argc, char ** argv) {
 
-  std::string file = "./SMT2_files/interpolantExample2.smt2";
+  std::string file = "./SMT2_files/interpolantExample4.smt2";
   //std::string file = "./SMT2_files/proveExample1a.smt2";
   //std::string file = "./SMT2_files/interpolantKapurExample1.smt2";
   //std::string file = "/Users/joseabelcastellanosjoo/Documents/QF_UF/2018-Goel-hwbench/QF_UF_firewire_tree.1.prop1_ab_cti_max.smt2";

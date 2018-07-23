@@ -4,6 +4,28 @@
 #include <ctime>
 
 #include "CongruenceClosure.h"
+
+int main(){
+
+  std::string file = "./tests/smt2lib/example4.smt2";
+  //std::string file = "/Users/joseabelcastellanosjoo/Documents/QF_UF/2018-Goel-hwbench/QF_UF_firewire_tree.5.prop3_ab_reg_max.smt2";
+  
+  z3::config cfg;
+  cfg.set("PROOF", true);
+  cfg.set("MODEL", true);
+  cfg.set("TRACE", true);
+  z3::context ctx(cfg);
+
+  Z3_ast inputFormula = Z3_parse_smtlib2_file(ctx, file.c_str(), 0, 0, 0, 0, 0, 0);
+  
+  CongruenceClosure cc(ctx, inputFormula);
+  cc.algorithm();
+  cc.print(std::cout);
+  return 0;
+}
+
+/*
+#include "CongruenceClosure.h"
 #include "produceRandomEqs.h"
 
 int main(int argc, char ** argv){
@@ -47,3 +69,4 @@ int main(int argc, char ** argv){
   
   return 0;
 }
+*/

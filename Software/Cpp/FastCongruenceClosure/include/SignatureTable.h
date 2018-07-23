@@ -1,10 +1,8 @@
 #ifndef SIG_TABLE_H
 #define SIG_TABLE_H
 
-#include <iostream>
 #include <utility>
 #include <unordered_map>
-#include "Vertex.h"
 #include "Signature.h"
 #include "GTerms.h"
 
@@ -16,6 +14,7 @@ protected:
   treeArg1 table1;
   treeArg2 table2;
 public:
+  SignatureTable(Z3_context, Z3_ast);
   SignatureTable(std::istream &);
   ~SignatureTable();
   void enter(Vertex*);

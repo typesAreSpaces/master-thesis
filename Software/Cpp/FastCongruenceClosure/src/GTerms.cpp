@@ -1,5 +1,7 @@
 #include "GTerms.h"
 
+bool debugVisit = false;
+
 /**
    \brief exit gracefully in case of error.
 */
@@ -15,21 +17,25 @@ void GTerms::unreachable(){
   exitf("unreachable code was reached");
 }
 
-void GTerms::visit(Z3_context c, Z3_ast v, unsigned numTerms, unsigned & counterExtraTerms){
+void GTerms::visit(Z3_context c, Z3_ast v,
+		   unsigned numTerms, unsigned & counterExtraTerms, std::set<std::string> & symbols){
   unsigned id = Z3_get_ast_id(c, v);
   switch (Z3_get_ast_kind(c, v)) {
   case Z3_NUMERAL_AST: {
     // do something
     terms[id]->setName(Z3_get_numeral_string(c, v));
+    symbols.insert(Z3_get_numeral_string(c, v));
     terms[id]->setArity(0);
+    if(debugVisit){
+      std::cout << "Application of " << terms[id]->getName() << " ID: " << id << std::endl;
+    }
     break;
   }
   case Z3_APP_AST: {
-    unsigned i, _successor;
     Z3_app app = Z3_to_app(c, v);
-    unsigned num_args = Z3_get_app_num_args(c, app);
+    unsigned i, _successor, mark, num_args = Z3_get_app_num_args(c, app);
     for (i = 0; i < num_args; ++i)
-      visit(c, Z3_get_app_arg(c, app, i), numTerms, counterExtraTerms);
+      visit(c, Z3_get_app_arg(c, app, i), numTerms, counterExtraTerms, symbols);
     //----------------------------------------------------------------------------------------
     // do something
     Z3_func_decl d = Z3_get_app_decl(c, app);
@@ -37,15 +43,23 @@ void GTerms::visit(Z3_context c, Z3_ast v, unsigned numTerms, unsigned & counter
     switch (Z3_get_symbol_kind(c, s)) {
     case Z3_INT_SYMBOL:
       terms[id]->setName(std::to_string(Z3_get_symbol_int(c, s)));
+      symbols.insert(std::to_string(Z3_get_symbol_int(c, s)));
       break;
     case Z3_STRING_SYMBOL:
       terms[id]->setName(Z3_get_symbol_string(c, s));
+      symbols.insert(Z3_get_symbol_string(c, s));
+      if(terms[id]->getName() == "=")
+	equations.push_back(std::make_pair(Z3_get_ast_id(c, Z3_get_app_arg(c, app, 0)),
+					   Z3_get_ast_id(c, Z3_get_app_arg(c, app, 1))));
+      if(terms[id]->getName() == "distinct")
+	disEquations.push_back(std::make_pair(Z3_get_ast_id(c, Z3_get_app_arg(c, app, 0)),
+					      Z3_get_ast_id(c, Z3_get_app_arg(c, app, 1))));
       break;
     default:
       unreachable();
     }
-    if(num_args >= 2){
-      unsigned mark = terms.size();
+    if(num_args > 2){
+      mark = terms.size();
       terms[id]->setArity(2);
       // Adding w_j(v) vertices
       for(unsigned j = 2; j <= num_args; ++j){
@@ -57,7 +71,7 @@ void GTerms::visit(Z3_context c, Z3_ast v, unsigned numTerms, unsigned & counter
       terms[id]->addSuccessor(terms[_successor]);
       terms[id]->addSuccessor(terms[mark]);
       for(unsigned j = 0; j < num_args - 2; ++j){
-	_successor = Z3_get_ast_id(c, Z3_get_app_arg(c, app, j));
+	_successor = Z3_get_ast_id(c, Z3_get_app_arg(c, app, j + 1));
 	terms[mark + j]->addSuccessor(terms[_successor]);
 	terms[mark + j]->addSuccessor(terms[mark + j + 1]);
       }
@@ -71,6 +85,50 @@ void GTerms::visit(Z3_context c, Z3_ast v, unsigned numTerms, unsigned & counter
 	_successor = Z3_get_ast_id(c, Z3_get_app_arg(c, app, j));
 	terms[id]->addSuccessor(terms[_successor]);
       }
+    }
+    //----------------------------------------------------------------------------------------
+    if(debugVisit){
+      std::cout << "Application of " << terms[id]->getName() << " ID: " << id << std::endl;
+    }
+    break;
+  }
+  case Z3_QUANTIFIER_AST: {
+    //fprintf(out, "quantifier");
+    break;
+  }
+  default:{
+    //fprintf(out, "#unknown");
+    break;
+  }
+  }
+}
+
+void GTerms::visit(Z3_context c, Z3_ast v, std::set<std::string> & symbols){
+  unsigned id = Z3_get_ast_id(c, v);
+  switch (Z3_get_ast_kind(c, v)) {
+  case Z3_NUMERAL_AST: {
+    // do something
+    symbols.insert(Z3_get_numeral_string(c, v));
+    break;
+  }
+  case Z3_APP_AST: {
+    Z3_app app = Z3_to_app(c, v);
+    unsigned i, num_args = Z3_get_app_num_args(c, app);
+    for (i = 0; i < num_args; ++i)
+      visit(c, Z3_get_app_arg(c, app, i), symbols);
+    //----------------------------------------------------------------------------------------
+    // do something
+    Z3_func_decl d = Z3_get_app_decl(c, app);
+    Z3_symbol s = Z3_get_decl_name(c, d);
+    switch (Z3_get_symbol_kind(c, s)) {
+    case Z3_INT_SYMBOL:
+      symbols.insert(std::to_string(Z3_get_symbol_int(c, s)));
+      break;
+    case Z3_STRING_SYMBOL:
+      symbols.insert(Z3_get_symbol_string(c, s));
+      break;
+    default:
+      unreachable();
     }
     //----------------------------------------------------------------------------------------
     break;
@@ -87,50 +145,72 @@ void GTerms::visit(Z3_context c, Z3_ast v, unsigned numTerms, unsigned & counter
 }
 
 GTerms::GTerms(Z3_context ctx, Z3_ast v){
-  unsigned counterExtraTerms = 0, & refCounterExtraTerms = counterExtraTerms;
-  Z3_goal g = Z3_mk_goal(ctx, true, false, false);
-  Z3_goal_assert(ctx, g, v);
-  unsigned numTerms = Z3_goal_num_exprs(ctx, g), mark, counter = 0;
+  Z3_app app = Z3_to_app(ctx, v);
+  // Update: let's take as number of terms the
+  // max id in the first conjunction of the input
+  // formula, which is the ID of the root of
+  // the first conjunction under the hypothesis
+  // that IDs are given by a PostOrder traversing
+  // of the graph
+  // Update 2: The general format for the SMT2 file is the following:
+  // <declarations>
+  // definition of formula A
+  // definition of formula B
+  // assert [Interp] formula A
+  // assert formula B
+  unsigned numTerms = Z3_get_ast_id(ctx, Z3_get_app_arg(ctx, app, 0)),
+    counterExtraTerms = 0,
+    & refCounterExtraTerms = counterExtraTerms;
+  std::set<std::string> symbolsA, symbolsB;
   terms.resize(2*numTerms);
+
+  // The order of the next two for loops is
+  // important due to the side-effect of the
+  // new Vertex() object
+  for(unsigned i = 0; i < numTerms; ++i)
+    terms[i] = new Vertex();
   // Adding {x_j | 0 <= j < n} vertices
   // where n is the number of original vertices
-  for(int i = 0; i < numTerms; ++i){
-    terms[i] = new Vertex();
+  for(unsigned i = 0; i < numTerms; ++i)
     terms[numTerms + i] = new Vertex("_x" + std::to_string(i), 0);
-  }
-  visit(ctx, v, numTerms, refCounterExtraTerms);
-  // ? I'm not sure about the next line
-  // UPDATE: Ok, now it's better. Nonetheless, this
-  // method needs to be tested
-  EC = UnionFind(numTerms + counterExtraTerms);
+  
+  //Extracting first formula
+  visit(ctx, Z3_get_app_arg(ctx, app, 0), numTerms, refCounterExtraTerms, symbolsA);  
+  //Extracting second formula
+  visit(ctx, Z3_get_app_arg(ctx, app, 1), symbolsB);
+  
+  std::set_difference(symbolsA.begin(), symbolsA.end(),
+		      symbolsB.begin(), symbolsB.end(),
+		      std::inserter(symbolsToElim, symbolsToElim.end()));
+  EC = UnionFind(2*numTerms + counterExtraTerms);
 }
 
 
 GTerms::GTerms(std::istream & in){
-  int numTerms, _arity, _successor, mark;
+  unsigned numTerms, _arity, _successor, mark;
   std::string _name;
   
   in >> numTerms;
   terms.resize(2*numTerms);
 
-  for(int i = 0; i < numTerms; ++i)
+  for(unsigned i = 0; i < numTerms; ++i)
     terms[i] = new Vertex();
 
   // Adding {x_j | 0 <= j < n} vertices
   // where n is the number of original vertices
-  for(int i = 0; i < numTerms; ++i){
+  for(unsigned i = 0; i < numTerms; ++i){
     //terms[numTerms + i] = new Vertex("x" + std::to_string(i), 0);
     terms[numTerms + i] = new Vertex("_x" + std::to_string(i), 0);
   }
 
-  for(int i = 0; i < numTerms; ++i){
+  for(unsigned i = 0; i < numTerms; ++i){
     in >> _name >> _arity;
     terms[i]->setName(_name);
-    if(_arity >= 2){
+    if(_arity > 2){
       mark = terms.size();
       terms[i]->setArity(2);
       // Adding w_j(v) vertices
-      for(int j = 2; j <= _arity; ++j){
+      for(unsigned j = 2; j <= _arity; ++j){
 	//Vertex * temp = new Vertex("w" + std::to_string(j) + std::to_string(terms[i]->getId()), 2);
 	//Vertex * temp = new Vertex(terms[i]->getName(), 2);
 	Vertex * temp = new Vertex("_c", 2);
@@ -139,7 +219,7 @@ GTerms::GTerms(std::istream & in){
       in >> _successor;
       terms[i]->addSuccessor(terms[_successor]);
       terms[i]->addSuccessor(terms[mark]);
-      for(int j = 0; j < _arity - 2; ++j){
+      for(unsigned j = 0; j < _arity - 2; ++j){
 	in >> _successor;
 	terms[mark + j]->addSuccessor(terms[_successor]);
 	terms[mark + j]->addSuccessor(terms[mark + j + 1]);
@@ -150,7 +230,7 @@ GTerms::GTerms(std::istream & in){
     }
     else{
       terms[i]->setArity(_arity);
-      for(int j = 0; j < _arity; ++j){
+      for(unsigned j = 0; j < _arity; ++j){
 	in >> _successor;       
 	terms[i]->addSuccessor(terms[_successor]);
       }
@@ -165,7 +245,7 @@ GTerms::~GTerms(){
     delete *it;
 }
 
-Vertex * GTerms::getTerm(int i){
+Vertex * GTerms::getTerm(unsigned i){
   return terms[i];
 }
 
