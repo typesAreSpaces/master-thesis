@@ -1,6 +1,7 @@
 #include "GTerms.h"
 
 bool debugVisit = false;
+bool debugVisit2 = false;
 
 /**
    \brief exit gracefully in case of error.
@@ -20,6 +21,9 @@ void GTerms::unreachable(){
 void GTerms::visit(Z3_context c, Z3_ast v,
 		   unsigned numTerms, unsigned & counterExtraTerms, std::set<std::string> & symbols){
   unsigned id = Z3_get_ast_id(c, v);
+  if(debugVisit2){
+    std::cout << "Just checking the id " << " ID: " << id << std::endl;
+  }
   switch (Z3_get_ast_kind(c, v)) {
   case Z3_NUMERAL_AST: {
     // do something
@@ -168,7 +172,7 @@ GTerms::GTerms(Z3_context ctx, Z3_ast v){
   // important due to the side-effect of the
   // new Vertex() object
   for(unsigned i = 0; i < numTerms; ++i)
-    terms[i] = new Vertex();
+    terms[i] = new Vertex("_", 0);
   // Adding {x_j | 0 <= j < n} vertices
   // where n is the number of original vertices
   for(unsigned i = 0; i < numTerms; ++i)
@@ -194,7 +198,7 @@ GTerms::GTerms(std::istream & in){
   terms.resize(2*numTerms);
 
   for(unsigned i = 0; i < numTerms; ++i)
-    terms[i] = new Vertex();
+    terms[i] = new Vertex("_", 0);
 
   // Adding {x_j | 0 <= j < n} vertices
   // where n is the number of original vertices

@@ -7,11 +7,11 @@
 (declare-fun h (A A A) A)
 
 (define-fun A () Bool
-	    (and (= x y) (= z (h x y z) (= z x)))
+	    (and (= x y) (= z (h x y z)) (= z x))
 )
 (define-fun B () Bool
-	    (and (= x y) (= z (h x y z) (= z x)))
-)
+	    (and (= x y) (= z (h x y z)) (= z x))
+)	 
 (assert (interp A))
 (assert B)
 ;; Terms:

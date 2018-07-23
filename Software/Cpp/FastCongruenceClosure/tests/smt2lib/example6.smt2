@@ -6,11 +6,11 @@
 (declare-fun g (A A) A)
 (declare-fun h (A A A) A)
 
-(define-fun A () Bool
-	    (and (= x y) (= z (h x y z) (= z x)))
+(define-fun A1 () Bool
+	    (and (= x y) (= z (h x y z)) (= z x))
 )
-(define-fun B () Bool
-	    (and (= x y) (= z (h x y z) (= z x)))
+(define-fun B1 () Bool
+	    (and (= x y) (= z (h x y z)) (= z x))
 )
-(assert (interp A))
-(assert B)
+(assert (interp A1))
+(assert B1)

@@ -191,8 +191,10 @@ std::ostream & CongruenceClosure::print(std::ostream & os){
   os << "Congruence Closure:" << std::endl;
   unsigned totalNumVertex = Vertex::getTotalNumVertex();
   for(unsigned i = 0; i < totalNumVertex; ++i){
-    os << "Vertex: " << getTerm(i)->to_string() <<
-      ", Representative: " << find(getTerm(i))->to_string() << std::endl;
+    // Just print non-extra nodes
+    if(getTerm(i)->getName()[0] != '_')
+      os << "Vertex: " << getTerm(i)->to_string() <<
+	", Representative: " << find(getTerm(i))->to_string() << std::endl;
   }
   os << std::endl;
   return os;

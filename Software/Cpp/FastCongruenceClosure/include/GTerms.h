@@ -12,6 +12,7 @@
 #include "z3.h"
 
 extern bool debugVisit;
+extern bool debugVisit2;
 
 class GTerms{
  protected:
