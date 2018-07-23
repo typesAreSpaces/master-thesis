@@ -8,7 +8,7 @@
 int main(int argc, char ** argv){
 
   //std::string file = "./tests/smt2lib/example4.smt2";
-  std::string file = "/Users/joseabelcastellanosjoo/Documents/QF_UF/2018-Goel-hwbench/QF_UF_firewire_tree.5.prop3_ab_reg_max.smt2";
+  //std::string file = "/Users/joseabelcastellanosjoo/Documents/QF_UF/2018-Goel-hwbench/QF_UF_firewire_tree.5.prop3_ab_reg_max.smt2";
   
   z3::config cfg;
   cfg.set("PROOF", true);
@@ -16,8 +16,8 @@ int main(int argc, char ** argv){
   cfg.set("TRACE", true);
   z3::context ctx(cfg);
 
-  Z3_ast inputFormula = Z3_parse_smtlib2_file(ctx, file.c_str(), 0, 0, 0, 0, 0, 0);
-  //Z3_ast inputFormula = Z3_parse_smtlib2_file(ctx, argv[1], 0, 0, 0, 0, 0, 0);
+  //Z3_ast inputFormula = Z3_parse_smtlib2_file(ctx, file.c_str(), 0, 0, 0, 0, 0, 0);
+  Z3_ast inputFormula = Z3_parse_smtlib2_file(ctx, argv[1], 0, 0, 0, 0, 0, 0);
   
   CongruenceClosure cc(ctx, inputFormula);
   cc.algorithm();
