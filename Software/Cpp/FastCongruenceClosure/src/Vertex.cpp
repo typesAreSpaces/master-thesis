@@ -1,15 +1,15 @@
 #include "Vertex.h"
 
-int Vertex::totalNumVertex = 0;
+unsigned Vertex::totalNumVertex = 0;
 
-int Vertex::getTotalNumVertex(){
+unsigned Vertex::getTotalNumVertex(){
   return totalNumVertex;
 }
 
-void Vertex::addPredecessor(int i){
+void Vertex::addPredecessor(unsigned i){
   predecessors.add(i);
 }
-Vertex::Vertex(std::string name, int arity) : name(name), arity(arity), id(totalNumVertex){
+Vertex::Vertex(std::string name, unsigned arity) : name(name), arity(arity), id(totalNumVertex){
   ++totalNumVertex;
 }
 Vertex::Vertex() : id(totalNumVertex){
@@ -19,7 +19,7 @@ Vertex::~Vertex(){};
 void Vertex::setName(std::string _name){
   name = _name;
 }
-void Vertex::setArity(int _arity){
+void Vertex::setArity(unsigned _arity){
   arity = _arity;
 }
 void Vertex::addSuccessor(Vertex * v){
@@ -30,15 +30,15 @@ std::vector<Vertex*> & Vertex::getSuccessors(){
   return successors;
 }
 
-CircularList<int> * Vertex::getPredecessors(){
+CircularList<unsigned> * Vertex::getPredecessors(){
   return &predecessors;
 }
 
-int Vertex::getId(){
+unsigned Vertex::getId(){
   return id;
 }
 
-int Vertex::getArity(){
+unsigned Vertex::getArity(){
   return arity;
 }
 
@@ -46,7 +46,7 @@ std::string Vertex::getName(){
   return name;
 }
 
-int Vertex::getLength(){
+unsigned Vertex::getLength(){
   return predecessors.size();
 }
 
@@ -58,7 +58,7 @@ std::string Vertex::to_string(){
   if(arity == 0)
     return name;
   std::string _temp = name + "(";
-  int _counter = 0;
+  unsigned _counter = 0;
   for(std::vector<Vertex*>::iterator it = successors.begin(); it != successors.end(); ++it){
     _temp += (*it)->to_string();
     ++_counter;
@@ -69,7 +69,7 @@ std::string Vertex::to_string(){
 }
 
 std::ostream & operator << (std::ostream & os, Vertex & v){
-  int _counter = 0;
+  unsigned _counter = 0;
   os << "Symbol: " << v.to_string() << std::endl;
   os << "ID: " << v.id << std::endl;
   os << "Predecessors:" << std::endl;

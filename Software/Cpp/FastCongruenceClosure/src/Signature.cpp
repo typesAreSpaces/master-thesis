@@ -1,6 +1,6 @@
 #include "Signature.h"
 
-signatureArg1::signatureArg1(std::string name, int first) :
+signatureArg1::signatureArg1(std::string name, unsigned first) :
   name(name), first(first){}
 
 signatureArg1::~signatureArg1(){}
@@ -18,11 +18,11 @@ std::ostream & operator << (std::ostream & os, signatureArg1 & x){
 std::size_t signatureArg1::Hash::operator()(const signatureArg1 & x) const {
   std::size_t res = std::hash<std::string>()(x.name);
   //res = res * 31 ^ std::hash<int>()(x.first);
-  res ^= std::hash<int>()(x.first) + 0x9e3779b9 + (res << 6) + (res >> 2);
+  res ^= std::hash<unsigned>()(x.first) + 0x9e3779b9 + (res << 6) + (res >> 2);
   return res;
 }
 
-signatureArg2::signatureArg2(std::string name, int first, int second) :
+signatureArg2::signatureArg2(std::string name, unsigned first, unsigned second) :
   name(name), first(first), second(second){}
 
 signatureArg2::~signatureArg2(){}
@@ -39,7 +39,7 @@ std::ostream & operator << (std::ostream & os, signatureArg2 & x){
 
 std::size_t signatureArg2::Hash::operator()(const signatureArg2 & x) const {
   std::size_t res = std::hash<std::string>()(x.name);
-  res = res * 31 ^ std::hash<int>()(x.first);
-  res = res * 31 ^ std::hash<int>()(x.second);
+  res ^= std::hash<unsigned>()(x.first) + 0x9e3779b9 + (res << 6) + (res >> 2);
+  res ^= std::hash<unsigned>()(x.second) + 0x9e3779b9 + (res << 6) + (res >> 2);
   return res;
 }

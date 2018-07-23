@@ -8,28 +8,28 @@
 
 class Vertex{
  private:
-  static int totalNumVertex;
+  static unsigned totalNumVertex;
   std::string name;
-  int id, arity;
+  unsigned id, arity;
   std::vector<Vertex*> successors;
-  CircularList<int> predecessors;
-  void addPredecessor(int);
+  CircularList<unsigned> predecessors;
+  void addPredecessor(unsigned);
  public:
-  Vertex(std::string, int);
+  Vertex(std::string, unsigned);
   Vertex();
   ~Vertex();
   void setName(std::string);
-  void setArity(int);
+  void setArity(unsigned);
   void addSuccessor(Vertex *);
   std::vector<Vertex*> & getSuccessors();
-  CircularList<int> * getPredecessors();
-  int getId();
-  int getArity();
+  CircularList<unsigned> * getPredecessors();
+  unsigned getId();
+  unsigned getArity();
   std::string getName();
-  int getLength();
+  unsigned getLength();
   void mergePredecessors(Vertex *);
   std::string to_string();
-  static int getTotalNumVertex();
+  static unsigned getTotalNumVertex();
   friend std::ostream & operator << (std::ostream &, Vertex &);
 };
 

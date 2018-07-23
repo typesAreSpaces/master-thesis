@@ -9,7 +9,7 @@ SignatureTable::SignatureTable(std::istream & in) :
 SignatureTable::~SignatureTable(){}
 
 void SignatureTable::enter(Vertex* v){
-  int _arity = v->getArity();  
+  unsigned _arity = v->getArity();  
   if(_arity == 1){
     //<signatureArg1, Vertex*>
     table1.insert(std::make_pair(getSignatureArg1(v), v));
@@ -22,7 +22,7 @@ void SignatureTable::enter(Vertex* v){
 }
 
 void SignatureTable::remove(Vertex * v){
-  int _arity = v->getArity();
+  unsigned _arity = v->getArity();
   if(_arity == 1){
     try{
       Vertex * _temp = query(v);
@@ -43,7 +43,7 @@ void SignatureTable::remove(Vertex * v){
 }
 
 Vertex * SignatureTable::query(Vertex * v){
-  int _arity = v->getArity();
+  unsigned _arity = v->getArity();
   std::vector<Vertex*> _successors = v->getSuccessors();
   if(_arity == 1){
     treeArg1::iterator it = table1.find(getSignatureArg1(v));
@@ -64,14 +64,14 @@ Vertex * SignatureTable::query(Vertex * v){
 }
 
 signatureArg1 SignatureTable::getSignatureArg1(Vertex * v){
-  int _arity = v->getArity();
+  unsigned _arity = v->getArity();
   std::vector<Vertex*> _successors = v->getSuccessors();
   return signatureArg1(v->getName(),
 		       find(_successors[0])->getId());
 }
 
 signatureArg2 SignatureTable::getSignatureArg2(Vertex * v){
-  int _arity = v->getArity();
+  unsigned _arity = v->getArity();
   std::vector<Vertex*> _successors = v->getSuccessors();
   return signatureArg2(v->getName(),
 		       find(_successors[0])->getId(),

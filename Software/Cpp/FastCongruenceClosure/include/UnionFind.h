@@ -6,16 +6,16 @@
 
 class UnionFind{
 private:
-  std::vector<int> parent;
-  int numEquivalenceClasses;
+  std::vector<unsigned> parent;
+  unsigned numEquivalenceClasses;
 public:
-  UnionFind(int);
+  UnionFind(unsigned);
   UnionFind();
   ~UnionFind();
-  void merge(int, int);
-  void link(int, int);
-  int find(int);
-  int size();
+  void merge(unsigned, unsigned);
+  void link(unsigned, unsigned);
+  unsigned find(unsigned);
+  unsigned size();
   std::ostream & print(std::ostream &);
 };
 

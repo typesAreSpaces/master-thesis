@@ -12,10 +12,10 @@
 #include "SignatureTable.h"
 #include "Vertex.h"
 
-void generateFile(int, int , int, int, int);
-void generateFileAndTest(int, int , int, int, int);
-void worstCaseFile(int, int , int, int, int);
-void worstCaseFileAndTest(int, int , int, int, int);
-void run(int, int , int, int, int);
+void generateFile(unsigned, unsigned , unsigned, unsigned, unsigned);
+void generateFileAndTest(unsigned, unsigned , unsigned, unsigned, unsigned);
+void worstCaseFile(unsigned, unsigned , unsigned, unsigned, unsigned);
+void worstCaseFileAndTest(unsigned, unsigned , unsigned, unsigned, unsigned);
+void run(unsigned, unsigned , unsigned, unsigned, unsigned);
 
 #endif
