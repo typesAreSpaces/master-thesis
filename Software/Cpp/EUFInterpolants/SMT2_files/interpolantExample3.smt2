@@ -6,17 +6,19 @@
 (declare-fun b () A)
 (declare-fun c () A)
 (declare-fun d () A)
-(declare-fun f (A A) A)
-(declare-fun g (A A A) A)
-(declare-fun h (A A A A A) A)
+(declare-fun u () A)
+(declare-fun v () A)
+(declare-fun w () A)
+(declare-fun f (A) A)
+(declare-fun g (A) A)
 
 ;; Definition of formula A
 (define-fun A () Bool
-	    (and (= a b) (= a c) (= (f a b) b) (= (f b b) (g c b a)) (= a (h a b c d a)))
+	    (and (= (f a) u) (= (f b) c) (= (f c) u) (= (f d) d))
 )
 ;; Definition of formula B
 (define-fun B () Bool
-	    (and (= b d) (not (= c d)))
+	    (and (= (g a) v) (= (g d) w) (= (g v) b) (= (g w) c) (= a d) (!= c d))
 )
 ;; Assertion of [interp] A and B
 (assert (interp A))

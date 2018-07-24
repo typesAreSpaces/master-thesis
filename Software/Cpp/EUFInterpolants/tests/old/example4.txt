@@ -1,0 +1,11 @@
+4
+x 0
+g 2 0 0
+g 2 0 1
+g 2 1 0
+1
+0 1
+// Terms:
+// x, g(x, x), g(x, g(x, x)), g(g(x, x), x)
+// Equations:
+// x = g(x, x)
