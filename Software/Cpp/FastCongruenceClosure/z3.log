@@ -8,14 +8,32 @@
 [mk-app] #4 euler
 [mk-app] #5 0^0-int
 [mk-app] #6 0^0-real
-[mk-app] #7 x
-[mk-app] #8 y
-[mk-app] #9 = #7 #8
-[mk-app] #10 z
-[mk-app] #11 h #7 #8 #10
-[mk-app] #12 = #10 #11
-[mk-app] #13 = #10 #7
-[mk-app] #14 and #9 #12 #13
-[mk-app] #15 interp #14
-[mk-app] #16 and #15 #14
+[mk-app] #7 z1
+[mk-app] #8 v
+[mk-app] #9 f #7 #8
+[mk-app] #10 s1
+[mk-app] #11 = #9 #10
+[mk-app] #12 z2
+[mk-app] #13 f #12 #8
+[mk-app] #14 s2
+[mk-app] #15 = #13 #14
+[mk-app] #16 y1
+[mk-app] #17 f #16 #8
+[mk-app] #18 y2
+[mk-app] #19 f #18 #8
+[mk-app] #20 f #17 #19
+[mk-app] #21 t
+[mk-app] #22 = #20 #21
+[mk-app] #23 and #11 #15 #22
+[mk-app] #24 f #7 #7
+[mk-app] #25 = #24 #10
+[mk-app] #26 f #12 #7
+[mk-app] #27 = #26 #14
+[mk-app] #28 f #16 #7
+[mk-app] #29 f #18 #7
+[mk-app] #30 f #28 #29
+[mk-app] #31 = #30 #21
+[mk-app] #32 and #25 #27 #31
+[mk-app] #33 interp #23
+[mk-app] #34 and #33 #32
 [eof]
