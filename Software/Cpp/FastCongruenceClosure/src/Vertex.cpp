@@ -68,6 +68,23 @@ std::string Vertex::to_string(){
   return _temp + ")";
 }
 
+std::ostream & Vertex::ss (std::ostream & os){
+  if(arity == 0){
+    os << name;
+    return os;
+  }
+  os << name << "(";
+  unsigned _counter = 0;
+  for(std::vector<Vertex*>::iterator it = successors.begin(); it != successors.end(); ++it){
+    (*it)->ss(os);
+    ++_counter;
+    if(_counter < arity)
+      os << ",";
+  }
+  os << ")";
+  return os;
+}
+
 std::ostream & operator << (std::ostream & os, Vertex & v){
   unsigned _counter = 0;
   os << "Symbol: " << v.to_string() << std::endl;

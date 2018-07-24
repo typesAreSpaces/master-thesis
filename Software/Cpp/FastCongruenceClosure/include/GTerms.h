@@ -16,6 +16,7 @@ extern bool debugVisit2;
 
 class GTerms{
  protected:
+  bool commonQ;
   std::vector<Vertex*> terms;
   UnionFind EC;
   std::set<std::string> symbolsToElim; 
@@ -27,6 +28,7 @@ class GTerms{
   void unreachable();
  public:
   GTerms(Z3_context, Z3_ast);
+  GTerms(Z3_context, Z3_ast, std::set<std::string> &);
   GTerms(std::istream &);
   ~GTerms();
   Vertex * getTerm(unsigned);

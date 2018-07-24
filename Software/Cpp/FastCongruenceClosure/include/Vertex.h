@@ -29,6 +29,7 @@ class Vertex{
   unsigned getLength();
   void mergePredecessors(Vertex *);
   std::string to_string();
+  std::ostream & ss (std::ostream &);
   static unsigned getTotalNumVertex();
   friend std::ostream & operator << (std::ostream &, Vertex &);
 };

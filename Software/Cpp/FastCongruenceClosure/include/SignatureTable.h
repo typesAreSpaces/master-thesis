@@ -15,6 +15,7 @@ protected:
   treeArg2 table2;
 public:
   SignatureTable(Z3_context, Z3_ast);
+  SignatureTable(Z3_context, Z3_ast, std::set<std::string> &);
   SignatureTable(std::istream &);
   ~SignatureTable();
   void enter(Vertex*);

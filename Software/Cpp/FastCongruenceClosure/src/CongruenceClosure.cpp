@@ -6,7 +6,7 @@ bool tracePending = false;
 bool traceEC = false;
 bool traceSigTable = false;
 
-CongruenceClosure::CongruenceClosure(Z3_context c, Z3_ast v) : SignatureTable(c, v) {
+void CongruenceClosure::init(){
   unsigned numEqs, lhs, rhs;
   Vertex * lhsVertex, *rhsVertex;
   numEqs = equations.size();
@@ -51,6 +51,16 @@ CongruenceClosure::CongruenceClosure(Z3_context c, Z3_ast v) : SignatureTable(c,
       std::cout << "==========================================" << std::endl;
     }
   }
+}
+
+CongruenceClosure::CongruenceClosure(Z3_context c, Z3_ast v, std::set<std::string> & symbolsToElim) :
+  SignatureTable(c, v, symbolsToElim) {
+  init();
+}
+
+CongruenceClosure::CongruenceClosure(Z3_context c, Z3_ast v) :
+  SignatureTable(c, v) {
+  init();
 }
 
 CongruenceClosure::CongruenceClosure(std::istream & in) : SignatureTable(in) {
@@ -190,11 +200,12 @@ void CongruenceClosure::algorithm(){
 std::ostream & CongruenceClosure::print(std::ostream & os){
   os << "Congruence Closure:" << std::endl;
   unsigned totalNumVertex = Vertex::getTotalNumVertex();
+  //std::cout << totalNumVertex << " " << EC.size() << " " << terms.max_size() << std::endl;
   for(unsigned i = 0; i < totalNumVertex; ++i){
     // Just print non-extra nodes
     if(getTerm(i)->getName()[0] != '_')
-      os << "Vertex: " << getTerm(i)->to_string() <<
-	", Representative: " << find(getTerm(i))->to_string() << std::endl;
+      os << "Vertex: " << getTerm(i)->to_string() << std::endl << 
+	"Representative: " << find(getTerm(i))->to_string() << std::endl;
   }
   os << std::endl;
   return os;
@@ -202,8 +213,9 @@ std::ostream & CongruenceClosure::print(std::ostream & os){
 
 bool CongruenceClosure::checkCorrectness(){
   bool check = true;
-  for(unsigned i = 0; i < Vertex::getTotalNumVertex() - 1; ++i)
-    for(unsigned j = i + 1; j < Vertex::getTotalNumVertex(); ++j){
+  unsigned totalNumVertex = Vertex::getTotalNumVertex();
+  for(unsigned i = 0; i < totalNumVertex - 1; ++i)
+    for(unsigned j = i + 1; j < totalNumVertex; ++j){
       Vertex * u = getTerm(i), * v = getTerm(j);
       if(u->getArity() == v->getArity()){
 	if(u->getArity() == 1){

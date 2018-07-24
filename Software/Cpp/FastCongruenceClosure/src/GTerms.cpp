@@ -148,7 +148,7 @@ void GTerms::visit(Z3_context c, Z3_ast v, std::set<std::string> & symbols){
   }
 }
 
-GTerms::GTerms(Z3_context ctx, Z3_ast v){
+GTerms::GTerms(Z3_context ctx, Z3_ast v) : commonQ(true){
   Z3_app app = Z3_to_app(ctx, v);
   // Update: let's take as number of terms the
   // max id in the first conjunction of the input
@@ -189,8 +189,33 @@ GTerms::GTerms(Z3_context ctx, Z3_ast v){
   EC = UnionFind(2*numTerms + counterExtraTerms);
 }
 
+GTerms::GTerms(Z3_context ctx, Z3_ast v, std::set<std::string> & symbolsToElim) :
+  symbolsToElim(symbolsToElim),
+  commonQ(true){
+  unsigned numTerms = Z3_get_ast_id(ctx, v),
+    counterExtraTerms = 0,
+    & refCounterExtraTerms = counterExtraTerms;
+  std::set<std::string> symbolsA, symbolsB;
+  terms.resize(2*numTerms);
 
-GTerms::GTerms(std::istream & in){
+  // The order of the next two for loops is
+  // important due to the side-effect of the
+  // new Vertex() object
+  for(unsigned i = 0; i < numTerms; ++i)
+    terms[i] = new Vertex("_", 0);
+  // Adding {x_j | 0 <= j < n} vertices
+  // where n is the number of original vertices
+  for(unsigned i = 0; i < numTerms; ++i)
+    terms[numTerms + i] = new Vertex("_x" + std::to_string(i), 0);
+  
+  //Extracting the formula
+  visit(ctx, v, numTerms, refCounterExtraTerms, symbolsA);
+  
+  EC = UnionFind(2*numTerms + counterExtraTerms);
+}
+
+
+GTerms::GTerms(std::istream & in) : commonQ(true){
   unsigned numTerms, _arity, _successor, mark;
   std::string _name;
   

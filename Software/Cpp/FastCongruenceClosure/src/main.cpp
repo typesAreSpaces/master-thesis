@@ -7,6 +7,38 @@
 
 int main(int argc, char ** argv){
 
+  //std::string file = "./tests/smt2lib_2/kapurEUFExample.smt2";
+  //std::string file = "/Users/joseabelcastellanosjoo/Documents/QF_UF/2018-Goel-hwbench/QF_UF_firewire_tree.5.prop3_ab_reg_max.smt2";
+  //std::string file = "/Users/joseabelcastellanosjoo/Documents/QF_UF/2018-Goel-hwbench/QF_UF_firewire_tree.3.prop2_ab_reg_max.smt2";
+  std::string file = "/Users/joseabelcastellanosjoo/Documents/QF_UF/2018-Goel-hwbench/QF_UF_needham.3.prop4_ab_reg_max.smt2";
+    
+  z3::config cfg;
+  cfg.set("PROOF", true);
+  cfg.set("MODEL", true);
+  cfg.set("TRACE", false);
+  z3::context ctx(cfg);
+  Z3_ast inputFormula = Z3_parse_smtlib2_file(ctx, file.c_str(), 0, 0, 0, 0, 0, 0);
+  std::set<std::string> symbolsToElim = {"v"};
+  
+  CongruenceClosure cc(ctx, inputFormula, symbolsToElim);
+  cc.algorithm();
+
+  // If the input smt2 file is too large
+  // print usually segment faults since
+  // it stores the formula to be printed
+  // using a std::string
+  // I.E. Don't print if you don't need to
+  cc.print(std::cout);
+  cc.checkCorrectness() ? std::cout << "Success!" << std::endl : std::cout << "There is a problem :(" << std::endl;
+  
+  return 0;
+}
+
+/*
+#include "CongruenceClosure.h"
+
+int main(int argc, char ** argv){
+
   std::string file = "./tests/smt2lib/kapurEUFExample.smt2";
   //std::string file = "/Users/joseabelcastellanosjoo/Documents/QF_UF/2018-Goel-hwbench/QF_UF_firewire_tree.5.prop3_ab_reg_max.smt2";
   
@@ -15,7 +47,6 @@ int main(int argc, char ** argv){
   cfg.set("MODEL", true);
   cfg.set("TRACE", false);
   z3::context ctx(cfg);
-
   Z3_ast inputFormula = Z3_parse_smtlib2_file(ctx, file.c_str(), 0, 0, 0, 0, 0, 0);
   //Z3_ast inputFormula = Z3_parse_smtlib2_file(ctx, argv[1], 0, 0, 0, 0, 0, 0);
   
@@ -28,6 +59,7 @@ int main(int argc, char ** argv){
     std::cout << "There is a problem :(" << std::endl;
   return 0;
 }
+*/
 
 /*
 #include "CongruenceClosure.h"

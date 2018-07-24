@@ -3,6 +3,9 @@
 SignatureTable::SignatureTable(Z3_context c, Z3_ast v) :
   GTerms(c, v) {}
 
+SignatureTable::SignatureTable(Z3_context c, Z3_ast v, std::set<std::string> & symbolsToElim) :
+  GTerms(c, v, symbolsToElim) {}
+
 SignatureTable::SignatureTable(std::istream & in) :
   GTerms(in) {}
 
