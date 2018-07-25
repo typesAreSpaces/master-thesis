@@ -38,8 +38,10 @@ void GTerms::visit(Z3_context c, Z3_ast v,
   case Z3_APP_AST: {
     Z3_app app = Z3_to_app(c, v);
     unsigned i, _successor, mark, num_args = Z3_get_app_num_args(c, app);
+    
     for (i = 0; i < num_args; ++i)
       visit(c, Z3_get_app_arg(c, app, i), numTerms, counterExtraTerms, symbols);
+
     //----------------------------------------------------------------------------------------
     // do something
     Z3_func_decl d = Z3_get_app_decl(c, app);

@@ -148,7 +148,7 @@ void GTerms::visit(Z3_context c, Z3_ast v, std::set<std::string> & symbols){
   }
 }
 
-GTerms::GTerms(Z3_context ctx, Z3_ast v) : commonQ(true){
+GTerms::GTerms(Z3_context ctx, Z3_ast v){
   Z3_app app = Z3_to_app(ctx, v);
   // Update: let's take as number of terms the
   // max id in the first conjunction of the input
@@ -190,8 +190,7 @@ GTerms::GTerms(Z3_context ctx, Z3_ast v) : commonQ(true){
 }
 
 GTerms::GTerms(Z3_context ctx, Z3_ast v, std::set<std::string> & symbolsToElim) :
-  symbolsToElim(symbolsToElim),
-  commonQ(true){
+  symbolsToElim(symbolsToElim){
   unsigned numTerms = Z3_get_ast_id(ctx, v),
     counterExtraTerms = 0,
     & refCounterExtraTerms = counterExtraTerms;
@@ -215,7 +214,7 @@ GTerms::GTerms(Z3_context ctx, Z3_ast v, std::set<std::string> & symbolsToElim) 
 }
 
 
-GTerms::GTerms(std::istream & in) : commonQ(true){
+GTerms::GTerms(std::istream & in){
   unsigned numTerms, _arity, _successor, mark;
   std::string _name;
   

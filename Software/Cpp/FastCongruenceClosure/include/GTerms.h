@@ -16,7 +16,6 @@ extern bool debugVisit2;
 
 class GTerms{
  protected:
-  bool commonQ;
   std::vector<Vertex*> terms;
   UnionFind EC;
   std::set<std::string> symbolsToElim; 

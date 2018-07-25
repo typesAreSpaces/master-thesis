@@ -1,12 +1,15 @@
 #include "EUFInterpolant.h"
 
-EUFInterpolant::EUFInterpolant{
+EUFInterpolant::EUFInterpolant(CongruenceClosure & cc) : cc(cc){
+  return;
 }
 
-EUFInterpolant::~EUFInterpolant{
+EUFInterpolant::~EUFInterpolant(){
+  return;
 }
 
 void EUFInterpolant::algorithm(){
+  return ;
 }
 
 std::ostream & EUFInterpolant::print(std::ostream & os){

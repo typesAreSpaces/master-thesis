@@ -7,10 +7,10 @@ class EUFInterpolant {
  private:
   CongruenceClosure & cc;
  public:
-  EUFInterpolant();
+  EUFInterpolant(CongruenceClosure &);
   ~EUFInterpolant();
   void algorithm();
-  void print(std::ostream &);
+  std::ostream & print(std::ostream &);
 };
 
 #endif

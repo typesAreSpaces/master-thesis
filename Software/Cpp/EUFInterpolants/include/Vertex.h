@@ -18,14 +18,14 @@ class Vertex{
   Vertex(std::string, unsigned);
   Vertex();
   ~Vertex();
+  std::string getName();
   void setName(std::string);
+  unsigned getArity();
   void setArity(unsigned);
   void addSuccessor(Vertex *);
   std::vector<Vertex*> & getSuccessors();
   CircularList<unsigned> * getPredecessors();
   unsigned getId();
-  unsigned getArity();
-  std::string getName();
   unsigned getLength();
   void mergePredecessors(Vertex *);
   std::string to_string();
