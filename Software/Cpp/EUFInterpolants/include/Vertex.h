@@ -10,6 +10,7 @@ class Vertex{
  private:
   static unsigned totalNumVertex;
   std::string name;
+  bool symbolCommonQ;
   unsigned id, arity;
   std::vector<Vertex*> successors;
   CircularList<unsigned> predecessors;
@@ -27,6 +28,8 @@ class Vertex{
   CircularList<unsigned> * getPredecessors();
   unsigned getId();
   unsigned getLength();
+  bool getSymbolCommonQ();
+  void setSymbolCommonQ(bool);
   void mergePredecessors(Vertex *);
   std::string to_string();
   std::ostream & ss (std::ostream &);

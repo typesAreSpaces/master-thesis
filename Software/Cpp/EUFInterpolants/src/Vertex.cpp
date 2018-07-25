@@ -9,10 +9,10 @@ unsigned Vertex::getTotalNumVertex(){
 void Vertex::addPredecessor(unsigned i){
   predecessors.add(i);
 }
-Vertex::Vertex(std::string name, unsigned arity) : name(name), arity(arity), id(totalNumVertex){
+Vertex::Vertex(std::string name, unsigned arity) : symbolCommonQ(true), name(name), arity(arity), id(totalNumVertex){
   ++totalNumVertex;
 }
-Vertex::Vertex() : id(totalNumVertex){
+Vertex::Vertex() : symbolCommonQ(true), id(totalNumVertex){
   ++totalNumVertex;
 };
 Vertex::~Vertex(){};
@@ -48,6 +48,13 @@ std::string Vertex::getName(){
 
 unsigned Vertex::getLength(){
   return predecessors.size();
+}
+
+bool Vertex::getSymbolCommonQ(){
+  return symbolCommonQ;
+}
+void Vertex::setSymbolCommonQ(bool b){
+  symbolCommonQ = b;
 }
 
 void Vertex::mergePredecessors(Vertex * v){
