@@ -61,6 +61,14 @@ void Vertex::mergePredecessors(Vertex * v){
   this->predecessors.mergeCircularList(v->getPredecessors());
 }
 
+Vertex * Vertex::getLeftChild(){
+  return successors[0];
+}
+
+Vertex * Vertex::getRightChild(){
+  return successors[1];
+}
+
 std::string Vertex::to_string(){
   if(arity == 0)
     return name;

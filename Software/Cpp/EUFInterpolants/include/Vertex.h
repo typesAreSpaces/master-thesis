@@ -31,6 +31,8 @@ class Vertex{
   bool getSymbolCommonQ();
   void setSymbolCommonQ(bool);
   void mergePredecessors(Vertex *);
+  Vertex * getRightChild();
+  Vertex * getLeftChild();
   std::string to_string();
   std::ostream & ss (std::ostream &);
   static unsigned getTotalNumVertex();

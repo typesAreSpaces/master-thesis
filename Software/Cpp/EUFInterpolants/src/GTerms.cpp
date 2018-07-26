@@ -19,7 +19,8 @@ void GTerms::unreachable(){
 }
 
 void GTerms::visit(Z3_context c, Z3_ast v,
-		   unsigned numTerms, unsigned & counterExtraTerms, std::set<std::string> & symbols){
+		   unsigned numTerms, unsigned & counterExtraTerms,
+		   std::set<std::string> & symbols){
   unsigned id = Z3_get_ast_id(c, v);
   if(debugVisit2){
     std::cout << "Just checking the id " << " ID: " << id << std::endl;
@@ -150,7 +151,7 @@ void GTerms::visit(Z3_context c, Z3_ast v, std::set<std::string> & symbols){
   }
 }
 
-GTerms::GTerms(Z3_context ctx, Z3_ast v) : commonQ(true){
+GTerms::GTerms(Z3_context ctx, Z3_ast v){
   Z3_app app = Z3_to_app(ctx, v);
   // Update: let's take as number of terms the
   // max id in the first conjunction of the input
@@ -165,8 +166,10 @@ GTerms::GTerms(Z3_context ctx, Z3_ast v) : commonQ(true){
   // assert [Interp] formula A
   // assert formula B
   unsigned numTerms = Z3_get_ast_id(ctx, Z3_get_app_arg(ctx, app, 0)),
-    counterExtraTerms = 0,
-    & refCounterExtraTerms = counterExtraTerms;
+    counterExtraTerms = 0, counter = 0,
+    & refCounterExtraTerms = counterExtraTerms, &refCounter = counter;
+  this->rootNum = numTerms;
+  
   std::set<std::string> symbolsA, symbolsB;
   terms.resize(2*numTerms);
 
@@ -181,7 +184,7 @@ GTerms::GTerms(Z3_context ctx, Z3_ast v) : commonQ(true){
     terms[numTerms + i] = new Vertex("_x" + std::to_string(i), 0);
   
   //Extracting first formula
-  visit(ctx, Z3_get_app_arg(ctx, app, 0), numTerms, refCounterExtraTerms, symbolsA);  
+  visit(ctx, Z3_get_app_arg(ctx, app, 0), numTerms, refCounterExtraTerms, symbolsA);
   //Extracting second formula
   visit(ctx, Z3_get_app_arg(ctx, app, 1), symbolsB);
   
@@ -192,11 +195,11 @@ GTerms::GTerms(Z3_context ctx, Z3_ast v) : commonQ(true){
 }
 
 GTerms::GTerms(Z3_context ctx, Z3_ast v, std::set<std::string> & symbolsToElim) :
-  symbolsToElim(symbolsToElim),
-  commonQ(true){
+  symbolsToElim(symbolsToElim){
   unsigned numTerms = Z3_get_ast_id(ctx, v),
     counterExtraTerms = 0,
     & refCounterExtraTerms = counterExtraTerms;
+  this->rootNum = numTerms;
   std::set<std::string> symbolsA, symbolsB;
   terms.resize(2*numTerms);
 
@@ -217,11 +220,12 @@ GTerms::GTerms(Z3_context ctx, Z3_ast v, std::set<std::string> & symbolsToElim) 
 }
 
 
-GTerms::GTerms(std::istream & in) : commonQ(true){
-  unsigned numTerms, _arity, _successor, mark;
+GTerms::GTerms(std::istream & in){
+  unsigned numTerms, _arity, _successor, mark, rootNumber;
   std::string _name;
   
   in >> numTerms;
+  rootNumber = numTerms;
   terms.resize(2*numTerms);
 
   for(unsigned i = 0; i < numTerms; ++i)
@@ -292,6 +296,14 @@ void GTerms::merge(Vertex * u, Vertex * v){
   // Merge the predecessor's list too!
   find(u)->mergePredecessors(find(v));
   EC.merge(u->getId(), v->getId());
+}
+
+unsigned GTerms::getRootNum(){
+  return rootNum;
+}
+
+std::set<std::string> & GTerms::getSymbolsToElim(){
+  return symbolsToElim;
 }
 
 std::ostream & GTerms::print(std::ostream & os){

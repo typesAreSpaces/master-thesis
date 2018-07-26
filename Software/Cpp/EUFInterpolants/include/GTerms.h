@@ -16,7 +16,7 @@ extern bool debugVisit2;
 
 class GTerms{
  protected:
-  bool commonQ;
+  unsigned rootNum;
   std::vector<Vertex*> terms;
   UnionFind EC;
   std::set<std::string> symbolsToElim; 
@@ -35,6 +35,8 @@ class GTerms{
   UnionFind & getEC();
   Vertex* find(Vertex*);
   void merge(Vertex*, Vertex*);
+  unsigned getRootNum();
+  std::set<std::string> & getSymbolsToElim();
   std::ostream & print(std::ostream &);
 };
 
