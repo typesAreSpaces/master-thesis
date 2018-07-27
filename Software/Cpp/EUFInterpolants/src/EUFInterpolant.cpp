@@ -15,22 +15,7 @@ void EUFInterpolant::algorithm(){
   identifyCommonSymbols();
   cc.algorithm();
   setCommonRepresentatives();
-  eliminationOfUncommonFSyms();
-  //cc.print(std::cout);
-  for(std::map<std::string, std::set<int> >::iterator it = symbolPos.begin();
-      it != symbolPos.end(); ++it){
-    std::cout << it->first;
-    for(std::set<int>::iterator it2 = it->second.begin(); it2 != it->second.end(); ++it2){
-      std::cout << " " << *it2;
-    }
-    std::cout << std::endl;
-  }
-  
-  unsigned total = Vertex::getTotalNumVertex();
-  for(unsigned i = 0; i < total; ++i){
-    std::cout << cc.getTerm(i)->to_string() << " " << cc.getTerm(i)->getId() << " " << cc.getTerm(i)->getSymbolCommonQ() << std::endl;
-  }
-  
+  eliminationOfUncommonFSyms(); 
 }
 
 void EUFInterpolant::identifyCommonSymbols(){
@@ -107,7 +92,13 @@ void EUFInterpolant::setCommonRepresentatives(){
 }
 
 void EUFInterpolant::eliminationOfUncommonFSyms(){
-  
+  for(symbolLoc::iterator it = symbolPos.begin(); it != symbolPos.end(); ++it){
+    for(std::set<int>::iterator it2 = it->second.begin();
+	it2 != it->second.end(); ++it2){
+      // TODO
+      std::cout << *it2 << std::endl;
+    }
+  }
 }
 
 std::ostream & EUFInterpolant::print(std::ostream & os){

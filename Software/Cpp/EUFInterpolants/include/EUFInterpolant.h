@@ -6,13 +6,15 @@
 #include <map>
 #include <set>
 
+typedef std::map<std::string, std::set<int> > symbolLoc;
+
 class EUFInterpolant {
  private:
   CongruenceClosure cc;
   void identifyCommonSymbols();
   void setCommonRepresentatives();
   void eliminationOfUncommonFSyms();
-  std::map<std::string, std::set<int> > symbolPos;
+  symbolLoc symbolPos;
  public:
   EUFInterpolant(Z3_context, Z3_ast);
   EUFInterpolant(Z3_context, Z3_ast, std::set<std::string> &);
