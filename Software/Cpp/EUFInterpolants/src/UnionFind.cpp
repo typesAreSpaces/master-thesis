@@ -18,6 +18,10 @@ void UnionFind::link(unsigned i, unsigned j){
   parent[j] = i;
 }
 
+void UnionFind::reset(unsigned i){
+  parent[i] = i;
+}
+
 unsigned UnionFind::find(unsigned i){
   if(i != parent[i])
     parent[i] = find(parent[i]);

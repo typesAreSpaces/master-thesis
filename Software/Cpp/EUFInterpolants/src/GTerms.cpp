@@ -293,9 +293,20 @@ Vertex * GTerms::find(Vertex * v){
 }
 
 void GTerms::merge(Vertex * u, Vertex * v){
+  // Precondition, find(u) and find(v) should be different
   // Merge the predecessor's list too!
-  find(u)->mergePredecessors(find(v));
-  EC.merge(u->getId(), v->getId());
+  if(find(u)->getId() != find(v)->getId()){
+    find(u)->mergePredecessors(find(v));
+    EC.merge(u->getId(), v->getId());
+  }
+}
+
+void GTerms::rotate(Vertex * u, Vertex * v){
+  // Force vertex u to become
+  // vertex v's parent  
+  u->mergePredecessors(find(v));
+  EC.link(u->getId(), find(v)->getId());
+  EC.reset(u->getId());
 }
 
 unsigned GTerms::getRootNum(){

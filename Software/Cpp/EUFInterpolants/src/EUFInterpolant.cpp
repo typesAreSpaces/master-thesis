@@ -1,50 +1,36 @@
 #include "EUFInterpolant.h"
 
 EUFInterpolant::EUFInterpolant(Z3_context c, Z3_ast v) : cc(c, v) {
-
-  unsigned rootNum = cc.getRootNum();
-
-  // Traversing the graph to compute 
-  // if a term is common or not
-  
-  /*
-    for(unsigned i = 0; i < totalNumVertex; ++i){
-    Vertex * _tempVertex = cc.getTerm(i);
-    if(_tempVertex->getId() == find(_tempVertex)->getId()){
-      
-    }
-    }
-  */
-
-  
+  algorithm();
 }
 
-EUFInterpolant::EUFInterpolant(Z3_context c, Z3_ast v, std::set<std::string> & symbolsToElim) :
-  cc(c, v, symbolsToElim){
-  
-  identifyCommonSymbols();
-
-  unsigned total = Vertex::getTotalNumVertex();
-  for(unsigned i = 0; i < total; ++i){
-    std::cout << cc.getTerm(i)->to_string() << " " << cc.getTerm(i)->getSymbolCommonQ() << std::endl;
-  }
-  
-  
-  /*
-    for(unsigned i = 0; i < totalNumVertex; ++i){
-    Vertex * _tempVertex = cc.getTerm(i);
-    if(_tempVertex->getId() == find(_tempVertex)->getId()){
-      
-    }
-    }
-  */
-  
+EUFInterpolant::EUFInterpolant(Z3_context c, Z3_ast v, std::set<std::string> & symbolsToElim) : cc(c, v, symbolsToElim){
+  algorithm();
 }
 
 EUFInterpolant::~EUFInterpolant(){
 }
 
 void EUFInterpolant::algorithm(){
+  identifyCommonSymbols();
+  cc.algorithm();
+  setCommonRepresentatives();
+  eliminationOfUncommonFSyms();
+  //cc.print(std::cout);
+  for(std::map<std::string, std::set<int> >::iterator it = symbolPos.begin();
+      it != symbolPos.end(); ++it){
+    std::cout << it->first;
+    for(std::set<int>::iterator it2 = it->second.begin(); it2 != it->second.end(); ++it2){
+      std::cout << " " << *it2;
+    }
+    std::cout << std::endl;
+  }
+  
+  unsigned total = Vertex::getTotalNumVertex();
+  for(unsigned i = 0; i < total; ++i){
+    std::cout << cc.getTerm(i)->to_string() << " " << cc.getTerm(i)->getId() << " " << cc.getTerm(i)->getSymbolCommonQ() << std::endl;
+  }
+  
 }
 
 void EUFInterpolant::identifyCommonSymbols(){
@@ -88,6 +74,7 @@ void EUFInterpolant::identifyCommonSymbols(){
       // do something with root
       //std::cout << *root << std::endl;
       std::string _tempName = root->getName();
+      symbolPos[_tempName].insert(root->getId());
       bool _tempCSQ = (sTE.find(_tempName) == sTE.end()) ? true : false;
       std::vector<Vertex*> _tempSuccessors = root->getSuccessors();
       for(unsigned i = 0; i < _arity; ++i){
@@ -99,6 +86,28 @@ void EUFInterpolant::identifyCommonSymbols(){
       root = nullptr;
     }
   } while(!s.empty());
+
+  // Just to check
+  /*
+  unsigned total = Vertex::getTotalNumVertex();
+  for(unsigned i = 0; i < total; ++i){
+    std::cout << cc.getTerm(i)->to_string() << " " << cc.getTerm(i)->getSymbolCommonQ() << std::endl;
+  }
+  */
+}
+
+void EUFInterpolant::setCommonRepresentatives(){
+  unsigned totalNV = Vertex::getTotalNumVertex();
+  
+  for(unsigned i = 0; i < totalNV; ++i){
+    Vertex * _temp = cc.getTerm(i);
+    if(!cc.find(_temp)->getSymbolCommonQ() && _temp->getSymbolCommonQ())
+      cc.rotate(_temp, cc.find(_temp));
+  }
+}
+
+void EUFInterpolant::eliminationOfUncommonFSyms(){
+  
 }
 
 std::ostream & EUFInterpolant::print(std::ostream & os){

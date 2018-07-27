@@ -35,6 +35,7 @@ class GTerms{
   UnionFind & getEC();
   Vertex* find(Vertex*);
   void merge(Vertex*, Vertex*);
+  void rotate(Vertex*, Vertex*);
   unsigned getRootNum();
   std::set<std::string> & getSymbolsToElim();
   std::ostream & print(std::ostream &);

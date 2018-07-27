@@ -14,6 +14,7 @@ public:
   ~UnionFind();
   void merge(unsigned, unsigned);
   void link(unsigned, unsigned);
+  void reset(unsigned);
   unsigned find(unsigned);
   unsigned size();
   std::ostream & print(std::ostream &);

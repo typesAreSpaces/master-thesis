@@ -1,0 +1,329 @@
+Ok lol
+Symbol: _
+ID: 0
+Predecessors:
+
+Successors:
+
+Symbol: _
+ID: 1
+Predecessors:
+
+Successors:
+
+Symbol: _
+ID: 2
+Predecessors:
+
+Successors:
+
+Symbol: _
+ID: 3
+Predecessors:
+
+Successors:
+
+Symbol: _
+ID: 4
+Predecessors:
+
+Successors:
+
+Symbol: _
+ID: 5
+Predecessors:
+
+Successors:
+
+Symbol: _
+ID: 6
+Predecessors:
+
+Successors:
+
+Symbol: z1
+ID: 7
+Predecessors:
+9 
+Successors:
+
+Symbol: v
+ID: 8
+Predecessors:
+9 13 17 19 
+Successors:
+
+Symbol: f(z1,v)
+ID: 9
+Predecessors:
+11 11 
+Successors:
+z1, v
+Symbol: s1
+ID: 10
+Predecessors:
+
+Successors:
+
+Symbol: =(f(z1,v),s1)
+ID: 11
+Predecessors:
+23 
+Successors:
+f(z1,v), s1
+Symbol: z2
+ID: 12
+Predecessors:
+13 
+Successors:
+
+Symbol: f(z2,v)
+ID: 13
+Predecessors:
+15 15 
+Successors:
+z2, v
+Symbol: s2
+ID: 14
+Predecessors:
+
+Successors:
+
+Symbol: =(f(z2,v),s2)
+ID: 15
+Predecessors:
+46 
+Successors:
+f(z2,v), s2
+Symbol: y1
+ID: 16
+Predecessors:
+17 
+Successors:
+
+Symbol: f(y1,v)
+ID: 17
+Predecessors:
+20 
+Successors:
+y1, v
+Symbol: y2
+ID: 18
+Predecessors:
+19 
+Successors:
+
+Symbol: f(y2,v)
+ID: 19
+Predecessors:
+20 
+Successors:
+y2, v
+Symbol: f(f(y1,v),f(y2,v))
+ID: 20
+Predecessors:
+22 22 
+Successors:
+f(y1,v), f(y2,v)
+Symbol: t
+ID: 21
+Predecessors:
+
+Successors:
+
+Symbol: =(f(f(y1,v),f(y2,v)),t)
+ID: 22
+Predecessors:
+47 
+Successors:
+f(f(y1,v),f(y2,v)), t
+Symbol: and(=(f(z1,v),s1),_c(=(f(z2,v),s2),_c(=(f(f(y1,v),f(y2,v)),t),_x3)))
+ID: 23
+Predecessors:
+
+Successors:
+=(f(z1,v),s1), _c(=(f(z2,v),s2),_c(=(f(f(y1,v),f(y2,v)),t),_x3))
+Symbol: _x1
+ID: 24
+Predecessors:
+
+Successors:
+
+Symbol: _x2
+ID: 25
+Predecessors:
+
+Successors:
+
+Symbol: _x3
+ID: 26
+Predecessors:
+47 
+Successors:
+
+Symbol: _x4
+ID: 27
+Predecessors:
+
+Successors:
+
+Symbol: _x5
+ID: 28
+Predecessors:
+
+Successors:
+
+Symbol: _x6
+ID: 29
+Predecessors:
+
+Successors:
+
+Symbol: _x7
+ID: 30
+Predecessors:
+
+Successors:
+
+Symbol: _x8
+ID: 31
+Predecessors:
+
+Successors:
+
+Symbol: _x9
+ID: 32
+Predecessors:
+
+Successors:
+
+Symbol: _x10
+ID: 33
+Predecessors:
+
+Successors:
+
+Symbol: _x11
+ID: 34
+Predecessors:
+
+Successors:
+
+Symbol: _x12
+ID: 35
+Predecessors:
+
+Successors:
+
+Symbol: _x13
+ID: 36
+Predecessors:
+
+Successors:
+
+Symbol: _x14
+ID: 37
+Predecessors:
+
+Successors:
+
+Symbol: _x15
+ID: 38
+Predecessors:
+
+Successors:
+
+Symbol: _x16
+ID: 39
+Predecessors:
+
+Successors:
+
+Symbol: _x17
+ID: 40
+Predecessors:
+
+Successors:
+
+Symbol: _x18
+ID: 41
+Predecessors:
+
+Successors:
+
+Symbol: _x19
+ID: 42
+Predecessors:
+
+Successors:
+
+Symbol: _x20
+ID: 43
+Predecessors:
+
+Successors:
+
+Symbol: _x21
+ID: 44
+Predecessors:
+
+Successors:
+
+Symbol: _x22
+ID: 45
+Predecessors:
+
+Successors:
+
+Symbol: _c(=(f(z2,v),s2),_c(=(f(f(y1,v),f(y2,v)),t),_x3))
+ID: 46
+Predecessors:
+23 
+Successors:
+=(f(z2,v),s2), _c(=(f(f(y1,v),f(y2,v)),t),_x3)
+Symbol: _c(=(f(f(y1,v),f(y2,v)),t),_x3)
+ID: 47
+Predecessors:
+46 
+Successors:
+=(f(f(y1,v),f(y2,v)),t), _x3
+
+
+
+Congruence Closure
+Congruence Closure:
+Vertex: z1
+Representative: z1
+Vertex: v
+Representative: v
+Vertex: f(z1,v)
+Representative: f(z1,v)
+Vertex: s1
+Representative: f(z1,v)
+Vertex: =(f(z1,v),s1)
+Representative: =(f(z1,v),s1)
+Vertex: z2
+Representative: z2
+Vertex: f(z2,v)
+Representative: f(z2,v)
+Vertex: s2
+Representative: f(z2,v)
+Vertex: =(f(z2,v),s2)
+Representative: =(f(z2,v),s2)
+Vertex: y1
+Representative: y1
+Vertex: f(y1,v)
+Representative: f(y1,v)
+Vertex: y2
+Representative: y2
+Vertex: f(y2,v)
+Representative: f(y2,v)
+Vertex: f(f(y1,v),f(y2,v))
+Representative: f(f(y1,v),f(y2,v))
+Vertex: t
+Representative: f(f(y1,v),f(y2,v))
+Vertex: =(f(f(y1,v),f(y2,v)),t)
+Representative: =(f(f(y1,v),f(y2,v)),t)
+Vertex: and(=(f(z1,v),s1),_c(=(f(z2,v),s2),_c(=(f(f(y1,v),f(y2,v)),t),_x3)))
+Representative: and(=(f(z1,v),s1),_c(=(f(z2,v),s2),_c(=(f(f(y1,v),f(y2,v)),t),_x3)))
+
