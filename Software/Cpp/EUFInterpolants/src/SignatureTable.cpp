@@ -28,7 +28,7 @@ void SignatureTable::remove(Vertex * v){
   unsigned _arity = v->getArity();
   if(_arity == 1){
     try{
-      Vertex * _temp = query(v);
+      query(v);
       table1.erase(getSignatureArg1(v));
     }
     catch(const char* msg){
@@ -36,7 +36,7 @@ void SignatureTable::remove(Vertex * v){
   }
   if(_arity == 2){
     try{
-      Vertex * _temp = query(v);
+      query(v);
       table2.erase(getSignatureArg2(v));
     }
     catch(const char* msg){
@@ -67,14 +67,12 @@ Vertex * SignatureTable::query(Vertex * v){
 }
 
 signatureArg1 SignatureTable::getSignatureArg1(Vertex * v){
-  unsigned _arity = v->getArity();
   std::vector<Vertex*> _successors = v->getSuccessors();
   return signatureArg1(v->getName(),
 		       find(_successors[0])->getId());
 }
 
 signatureArg2 SignatureTable::getSignatureArg2(Vertex * v){
-  unsigned _arity = v->getArity();
   std::vector<Vertex*> _successors = v->getSuccessors();
   return signatureArg2(v->getName(),
 		       find(_successors[0])->getId(),

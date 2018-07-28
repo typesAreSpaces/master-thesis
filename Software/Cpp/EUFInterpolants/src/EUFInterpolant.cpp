@@ -15,7 +15,7 @@ void EUFInterpolant::algorithm(){
   identifyCommonSymbols();
   cc.algorithm();
   setCommonRepresentatives();
-  eliminationOfUncommonFSyms(); 
+  eliminationOfUncommonFSyms();
 }
 
 void EUFInterpolant::identifyCommonSymbols(){
@@ -97,6 +97,7 @@ void EUFInterpolant::eliminationOfUncommonFSyms(){
 	it2 != it->second.end(); ++it2){
       // TODO
       std::cout << *it2 << std::endl;
+      
     }
   }
 }
@@ -104,4 +105,3 @@ void EUFInterpolant::eliminationOfUncommonFSyms(){
 std::ostream & EUFInterpolant::print(std::ostream & os){
   return os;
 }
-

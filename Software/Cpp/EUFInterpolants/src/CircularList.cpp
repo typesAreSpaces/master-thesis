@@ -2,7 +2,7 @@
 #include "CircularList.h"
 
 template <typename T>
-CircularList<T>::CircularList() : tail(nullptr), length(0) {}
+CircularList<T>::CircularList() : length(0), tail(nullptr) {}
 
 template <typename T>
 CircularList<T>::~CircularList(){

@@ -111,7 +111,6 @@ void GTerms::visit(Z3_context c, Z3_ast v,
 }
 
 void GTerms::visit(Z3_context c, Z3_ast v, std::set<std::string> & symbols){
-  unsigned id = Z3_get_ast_id(c, v);
   switch (Z3_get_ast_kind(c, v)) {
   case Z3_NUMERAL_AST: {
     // do something
@@ -166,8 +165,7 @@ GTerms::GTerms(Z3_context ctx, Z3_ast v){
   // assert [Interp] formula A
   // assert formula B
   unsigned numTerms = Z3_get_ast_id(ctx, Z3_get_app_arg(ctx, app, 0)),
-    counterExtraTerms = 0, counter = 0,
-    & refCounterExtraTerms = counterExtraTerms, &refCounter = counter;
+    counterExtraTerms = 0, & refCounterExtraTerms = counterExtraTerms;
   this->rootNum = numTerms;
   
   std::set<std::string> symbolsA, symbolsB;

@@ -9,7 +9,7 @@ unsigned Vertex::getTotalNumVertex(){
 void Vertex::addPredecessor(unsigned i){
   predecessors.add(i);
 }
-Vertex::Vertex(std::string name, unsigned arity) : symbolCommonQ(true), name(name), arity(arity), id(totalNumVertex){
+Vertex::Vertex(std::string name, unsigned arity) : name(name), symbolCommonQ(true), id(totalNumVertex), arity(arity){
   ++totalNumVertex;
 }
 Vertex::Vertex() : symbolCommonQ(true), id(totalNumVertex){
