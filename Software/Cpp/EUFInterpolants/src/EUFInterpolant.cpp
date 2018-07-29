@@ -1,10 +1,12 @@
 #include "EUFInterpolant.h"
 
-EUFInterpolant::EUFInterpolant(Z3_context c, Z3_ast v) : cc(c, v) {
+EUFInterpolant::EUFInterpolant(Z3_context c, Z3_ast v) :
+  cc(c, v) {
   algorithm();
 }
 
-EUFInterpolant::EUFInterpolant(Z3_context c, Z3_ast v, std::set<std::string> & symbolsToElim) : cc(c, v, symbolsToElim){
+EUFInterpolant::EUFInterpolant(Z3_context c, Z3_ast v, std::set<std::string> & symbolsToElim) :
+  cc(c, v, symbolsToElim){
   algorithm();
 }
 
@@ -16,6 +18,8 @@ void EUFInterpolant::algorithm(){
   cc.algorithm();
   setCommonRepresentatives();
   eliminationOfUncommonFSyms();
+  std::cout << hC << std::endl;
+  hC.conditionalElimination();
 }
 
 void EUFInterpolant::identifyCommonSymbols(){
@@ -49,7 +53,8 @@ void EUFInterpolant::identifyCommonSymbols(){
     } 
     root = s.top(), s.pop();
     _arity = root->getArity();
-    if(_arity == 2 && !s.empty() && root->getRightChild()->getId() == s.top()->getId()){
+    if(_arity == 2 && !s.empty()
+       && root->getRightChild()->getId() == s.top()->getId()){
       _tempRoot = s.top();
       s.pop();
       s.push(root);
@@ -57,7 +62,6 @@ void EUFInterpolant::identifyCommonSymbols(){
     }
     else{
       // do something with root
-      //std::cout << *root << std::endl;
       std::string _tempName = root->getName();
       symbolPos[_tempName].insert(root->getId());
       bool _tempCSQ = (sTE.find(_tempName) == sTE.end()) ? true : false;
@@ -71,14 +75,6 @@ void EUFInterpolant::identifyCommonSymbols(){
       root = nullptr;
     }
   } while(!s.empty());
-
-  // Just to check
-  /*
-  unsigned total = Vertex::getTotalNumVertex();
-  for(unsigned i = 0; i < total; ++i){
-    std::cout << cc.getTerm(i)->to_string() << " " << cc.getTerm(i)->getSymbolCommonQ() << std::endl;
-  }
-  */
 }
 
 void EUFInterpolant::setCommonRepresentatives(){
@@ -92,13 +88,25 @@ void EUFInterpolant::setCommonRepresentatives(){
 }
 
 void EUFInterpolant::eliminationOfUncommonFSyms(){
-  for(symbolLoc::iterator it = symbolPos.begin(); it != symbolPos.end(); ++it){
-    for(std::set<int>::iterator it2 = it->second.begin();
+  bool expose = false;
+  for(symbolLoc::iterator it = symbolPos.begin();
+      it != symbolPos.end(); ++it){
+    for(std::set<unsigned>::iterator it2 = it->second.begin();
 	it2 != it->second.end(); ++it2){
-      // TODO
-      std::cout << *it2 << std::endl;
-      
+      if(!cc.getTerm(*it2)->getSymbolCommonQ()){
+	expose = true;
+	break;
+      }
     }
+    if(expose){
+      unsigned l = (it->second).size();
+      std::vector<unsigned> _temp(l);
+      std::copy(it->second.begin(), it->second.end(), _temp.begin());
+      for(unsigned i = 0; i < l - 1; ++i)
+	for(unsigned j = i + 1; j < l; ++j)
+	  hC.addHornClause(cc.getEC(), cc.getTerm(_temp[i]), cc.getTerm(_temp[j]));
+    }
+    expose = false;
   }
 }
 

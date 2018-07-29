@@ -2,15 +2,17 @@
 #define _EUF_INTERPOLANT_
 
 #include "CongruenceClosure.h"
+#include "HornClauses.h"
 #include <stack>
 #include <map>
 #include <set>
 
-typedef std::map<std::string, std::set<int> > symbolLoc;
+typedef std::map<std::string, std::set<unsigned> > symbolLoc;
 
 class EUFInterpolant {
  private:
   CongruenceClosure cc;
+  HornClauses hC;
   void identifyCommonSymbols();
   void setCommonRepresentatives();
   void eliminationOfUncommonFSyms();
