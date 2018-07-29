@@ -12,8 +12,8 @@ HornClauses::~HornClauses(){
   }
 }
 
-void HornClauses::addHornClause(UnionFind & uf, Vertex* u, Vertex* v){
-  HornClause * hc = new HornClause(uf, u, v);
+void HornClauses::addHornClause(UnionFind & uf, Vertex* u, Vertex* v, std::vector<Vertex*> & terms){
+  HornClause * hc = new HornClause(uf, u, v, terms);
   hc->normalize();
   if(hc->checkTrivial())
     delete hc;

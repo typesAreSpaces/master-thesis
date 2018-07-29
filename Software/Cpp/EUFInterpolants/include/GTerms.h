@@ -32,6 +32,7 @@ class GTerms{
   GTerms(std::istream &);
   ~GTerms();
   Vertex * getTerm(unsigned);
+  std::vector<Vertex*> & getTerms();
   UnionFind & getEC();
   Vertex* find(Vertex*);
   void merge(Vertex*, Vertex*);

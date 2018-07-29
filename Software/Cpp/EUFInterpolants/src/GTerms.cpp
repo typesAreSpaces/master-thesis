@@ -282,6 +282,10 @@ Vertex * GTerms::getTerm(unsigned i){
   return terms[i];
 }
 
+std::vector<Vertex*> & GTerms::getTerms(){
+  return terms;
+}
+
 UnionFind & GTerms::getEC(){
   return EC;
 }

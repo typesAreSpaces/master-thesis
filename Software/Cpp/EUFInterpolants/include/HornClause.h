@@ -4,9 +4,10 @@
 #include "UnionFind.h"
 #include "Vertex.h"
 #include <set>
+#include <vector>
 #include <utility>
 
-typedef std::pair<unsigned, unsigned> equality;
+typedef std::pair<Vertex*, Vertex*> equality;
 
 class HornClause{
  private:
@@ -14,7 +15,7 @@ class HornClause{
   std::set<equality> antecedent;
   equality consequent;
  public:
-  HornClause(UnionFind &, Vertex*, Vertex*);
+  HornClause(UnionFind &, Vertex*, Vertex*, std::vector<Vertex*> &);
   ~HornClause();
   void normalize();
   bool checkTrivial();
