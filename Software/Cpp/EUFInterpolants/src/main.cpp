@@ -22,17 +22,6 @@ int main(int argc, char ** argv){
   Z3_ast inputFormula = Z3_parse_smtlib2_file(ctx, file.c_str(), 0, 0, 0, 0, 0, 0);
   std::set<std::string> symbolsToElim = {"v"};
 
-  /*
-  CongruenceClosure cc(ctx, inputFormula, symbolsToElim);
-  UnionFind & uf = cc.getEC();
-  
-  HornClauses hC;
-  hC.addHornClause(uf, cc.getTerm(9), cc.getTerm(13));
-  hC.addHornClause(uf, cc.getTerm(17), cc.getTerm(19));
-
-  //std::cout << hC << std::endl;
-  */
-
   EUFInterpolant eufI (ctx, inputFormula, symbolsToElim);
   
   return 0;

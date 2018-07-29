@@ -24,6 +24,7 @@ void HornClauses::addHornClause(UnionFind & uf, Vertex* u, Vertex* v){
 void HornClauses::conditionalElimination(){
   //TODO: Finish this method
   std::cout << numHornClauses << std::endl;
+  
 }
 
 std::ostream & operator << (std::ostream & os, HornClauses & hcs){
