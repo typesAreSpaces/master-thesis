@@ -7,7 +7,10 @@
 class HornClauses{
  private:
   static unsigned numHornClauses;
-  std::vector<HornClause*> hornClauses;
+  std::vector<HornClause*> hornClausesType1;
+  std::vector<HornClause*> hornClausesType2;
+  std::vector<HornClause*> hornClausesType3;
+  std::vector<HornClause*> hornClausesType4;
  public:
   HornClauses();
   ~HornClauses();

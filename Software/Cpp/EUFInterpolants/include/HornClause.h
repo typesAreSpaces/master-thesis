@@ -3,7 +3,6 @@
 
 #include "UnionFind.h"
 #include "Vertex.h"
-#include <set>
 #include <vector>
 #include <utility>
 
@@ -12,13 +11,16 @@ typedef std::pair<Vertex*, Vertex*> equality;
 class HornClause{
  private:
   UnionFind localUF;
-  std::set<equality> antecedent;
+  std::vector<equality> antecedent;
   equality consequent;
+  bool antecedentQ, consequentQ;
  public:
   HornClause(UnionFind &, Vertex*, Vertex*, std::vector<Vertex*> &);
   ~HornClause();
   void normalize();
   bool checkTrivial();
+  bool getAntecedentQ();
+  bool getConsequentQ();
   friend std::ostream & operator << (std::ostream &, HornClause &);
 };
 
