@@ -2,12 +2,10 @@
 
 EUFInterpolant::EUFInterpolant(Z3_context c, Z3_ast v) :
   cc(c, v) {
-  algorithm();
 }
 
 EUFInterpolant::EUFInterpolant(Z3_context c, Z3_ast v, std::set<std::string> & symbolsToElim) :
   cc(c, v, symbolsToElim){
-  algorithm();
 }
 
 EUFInterpolant::~EUFInterpolant(){

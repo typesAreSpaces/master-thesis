@@ -12,6 +12,7 @@ class HornClauses{
   HornClauses();
   ~HornClauses();
   void addHornClause(UnionFind &, Vertex*, Vertex*, std::vector<Vertex*> &);
+  void dependencyAnalysis();
   void conditionalElimination();
   friend std::ostream & operator << (std::ostream &, HornClauses &);
 };

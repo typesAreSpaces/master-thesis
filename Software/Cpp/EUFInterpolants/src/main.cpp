@@ -23,6 +23,7 @@ int main(int argc, char ** argv){
   std::set<std::string> symbolsToElim = {"v"};
 
   EUFInterpolant eufI (ctx, inputFormula, symbolsToElim);
+  eufI.algorithm();
   
   return 0;
 }

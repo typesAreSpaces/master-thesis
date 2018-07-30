@@ -9,3 +9,4 @@
 
 ;; Assertion of A
 (assert conjecture1)
+(check-sat)

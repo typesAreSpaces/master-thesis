@@ -21,6 +21,10 @@ void HornClauses::addHornClause(UnionFind & uf, Vertex* u, Vertex* v, std::vecto
   ++numHornClauses;
 }
 
+void HornClauses::dependencyAnalysis(){
+  
+}
+
 void HornClauses::conditionalElimination(){
   
 }
