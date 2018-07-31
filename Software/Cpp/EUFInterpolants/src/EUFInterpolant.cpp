@@ -77,11 +77,9 @@ void EUFInterpolant::identifyCommonSymbols(){
 
 void EUFInterpolant::setCommonRepresentatives(){
   unsigned totalNV = Vertex::getTotalNumVertex();
-  
   for(unsigned i = 0; i < totalNV; ++i){
     Vertex * _temp = cc.getTerm(i);
-    // The following three conditions will
-    // allow a rotation between the current 
+    // A rotation between the current 
     // representative and the current term if:
     // 1) the current term is common
     // 2) the current term has a smaller arity
