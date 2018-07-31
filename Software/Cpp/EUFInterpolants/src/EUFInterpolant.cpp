@@ -80,7 +80,13 @@ void EUFInterpolant::setCommonRepresentatives(){
   
   for(unsigned i = 0; i < totalNV; ++i){
     Vertex * _temp = cc.getTerm(i);
-    if(!cc.find(_temp)->getSymbolCommonQ() && _temp->getSymbolCommonQ())
+    // The following three conditions will
+    // allow a rotation between the current 
+    // representative and the current term if:
+    // 1) the current term is common
+    // 2) the current term has a smaller arity
+    if(_temp->getSymbolCommonQ()
+       && _temp->getArity() < cc.find(_temp)->getArity())
       cc.rotate(_temp, cc.find(_temp));
   }
 }
