@@ -7,19 +7,22 @@ HornClause::HornClause(UnionFind & uf, Vertex* u, Vertex* v,
   std::vector<Vertex*> & successorsU = u->getSuccessors(),
     & successorsV = v->getSuccessors();
   for(unsigned i = 0; i < _arity; ++i){
-    antecedent.push_back(std::make_pair(terms[localUF.find(successorsU[i]->getId())],
-					terms[localUF.find(successorsV[i]->getId())]));
-    antecedentQ = antecedentQ && terms[localUF.find(successorsU[i]->getId())]->getSymbolCommonQ();
-    antecedentQ = antecedentQ && terms[localUF.find(successorsV[i]->getId())]->getSymbolCommonQ();
+    Vertex * _u = terms[localUF.find(successorsU[i]->getId())],
+      * _v = terms[localUF.find(successorsV[i]->getId())];
+    if(_u >= _v)
+      antecedent.push_back(std::make_pair(_u, _v));
+    else
+      antecedent.push_back(std::make_pair(_v, _u));
+    antecedentQ = antecedentQ && _u->getSymbolCommonQ() && _v->getSymbolCommonQ();
   }
-  if(terms[localUF.find(u->getId())]->getSymbolCommonQ())
-    consequent = std::make_pair(terms[localUF.find(v->getId())],
-				terms[localUF.find(u->getId())]);
+  Vertex * _u = terms[localUF.find(u->getId())],
+    * _v = terms[localUF.find(v->getId())];
+  
+  if(*_u > *_v)
+    consequent = std::make_pair(_u, _v);
   else
-    consequent = std::make_pair(terms[localUF.find(u->getId())],
-				terms[localUF.find(v->getId())]);
-  consequentQ = consequentQ && terms[localUF.find(u->getId())]->getSymbolCommonQ();
-  consequentQ = consequentQ && terms[localUF.find(v->getId())]->getSymbolCommonQ();
+    consequent = std::make_pair(_v, _u);
+  consequentQ = consequentQ && _u->getSymbolCommonQ() && _v->getSymbolCommonQ();
 }
 
 HornClause::~HornClause(){
@@ -33,8 +36,8 @@ void HornClause::normalize(){
       antecedent.erase(it);
     else{
       localUF.merge(it->first->getId(), it->second->getId());
-      antecedentQ = antecedentQ && it->first->getSymbolCommonQ();
-      antecedentQ = antecedentQ && it->second->getSymbolCommonQ();
+      antecedentQ = antecedentQ && it->first->getSymbolCommonQ()
+	&& it->second->getSymbolCommonQ();
       ++it;
     }
   }

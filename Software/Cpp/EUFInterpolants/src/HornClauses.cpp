@@ -40,6 +40,7 @@ void HornClauses::addHornClause(UnionFind & uf, Vertex* u, Vertex* v, std::vecto
   ++numHornClauses;
 }
 
+//TODO: Complete this method
 void HornClauses::conditionalElimination(){
   unsigned l = hornClausesType2.size();
   while(l > 0){

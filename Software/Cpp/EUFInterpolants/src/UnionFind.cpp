@@ -12,6 +12,7 @@ UnionFind::~UnionFind(){};
 
 void UnionFind::merge(unsigned i, unsigned j){
   link(find(i), find(j));
+  --numEquivalenceClasses;
 }
 
 void UnionFind::link(unsigned i, unsigned j){

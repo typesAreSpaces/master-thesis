@@ -115,3 +115,41 @@ std::ostream & operator << (std::ostream & os, Vertex & v){
   }
   return os;
 }
+
+bool operator ==(Vertex & u, Vertex & v){
+  return (u.id == v.id);
+}
+
+bool operator !=(Vertex & u, Vertex & v){
+  return !(u == v);
+}
+
+bool operator < (Vertex & u, Vertex & v){
+  if (u.symbolCommonQ < v.symbolCommonQ)
+    return true;
+  else{
+    if(u.symbolCommonQ > v.symbolCommonQ)
+      return false;
+    else{
+      if(u.arity <  v.arity)
+	return true;
+      else{
+	if(u.arity > v.arity)
+	  return false;
+	else
+	  return (u.id < v.id);
+      }
+    }
+  }
+}
+
+bool operator <= (Vertex & u, Vertex & v){
+  return (u == v || u < v);
+}
+
+bool operator >(Vertex & u, Vertex & v){
+  return (v < u);
+}
+bool operator >=(Vertex & u, Vertex & v){
+  return (u == v || u > v);
+}

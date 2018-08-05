@@ -18,6 +18,7 @@ void EUFInterpolant::algorithm(){
   eliminationOfUncommonFSyms();
   std::cout << hC << std::endl;
   hC.conditionalElimination();
+  std::cout << cc.getEC().size() << std::endl;
   // for(unsigned i = 0; i < Vertex::getTotalNumVertex(); ++i){
   //   if(!cc.getTerm(i)->getSymbolCommonQ()){
   //     std::cout << "++++++++++++++++++++++++++++++++++++++++++" << std::endl;
