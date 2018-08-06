@@ -21,6 +21,7 @@ class HornClause{
   bool checkTrivial();
   bool getAntecedentQ();
   bool getConsequentQ();
+  bool getMaximalConsequentQ();
   friend std::ostream & operator << (std::ostream &, HornClause &);
 };
 

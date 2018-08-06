@@ -37,12 +37,12 @@ class Vertex{
   std::ostream & ss (std::ostream &);
   static unsigned getTotalNumVertex();
   friend std::ostream & operator << (std::ostream &, Vertex &);
-  friend bool operator ==(Vertex &, Vertex &);
-  friend bool operator !=(Vertex &, Vertex &);
-  friend bool operator <(Vertex &, Vertex &);
-  friend bool operator <=(Vertex &, Vertex &);
-  friend bool operator >(Vertex &, Vertex &);
-  friend bool operator >=(Vertex &, Vertex &);
+  friend bool operator ==(const Vertex &, const Vertex &);
+  friend bool operator !=(const Vertex &, const Vertex &);
+  friend bool operator <(const Vertex &, const Vertex &);
+  friend bool operator <=(const Vertex &, const Vertex &);
+  friend bool operator >(const Vertex &, const Vertex &);
+  friend bool operator >=(const Vertex &, const Vertex &);
 };
 
 #endif

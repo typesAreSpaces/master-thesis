@@ -56,6 +56,10 @@ bool HornClause::getConsequentQ(){
   return consequentQ;
 }
 
+bool HornClause::getMaximalConsequentQ(){
+  return consequent.first->getSymbolCommonQ();
+}
+
 std::ostream & operator << (std::ostream & os, HornClause & hc){
   bool flag = true;
   for(std::vector<equality>::iterator it = hc.antecedent.begin(); it != hc.antecedent.end(); ++it){

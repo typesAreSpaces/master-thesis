@@ -12,6 +12,9 @@ HornClauses::~HornClauses(){
   for(std::vector<HornClause*>::iterator it = hornClausesType2.begin();
       it != hornClausesType2.end(); ++it)
     delete *it;
+  for(std::vector<HornClause*>::iterator it = hornClausesType2_1.begin();
+      it != hornClausesType2_1.end(); ++it)
+    delete *it;
   for(std::vector<HornClause*>::iterator it = hornClausesType3.begin();
       it != hornClausesType3.end(); ++it)
     delete *it;
@@ -28,8 +31,12 @@ void HornClauses::addHornClause(UnionFind & uf, Vertex* u, Vertex* v, std::vecto
   if(hc->getAntecedentQ()){
     if(hc->getConsequentQ())
       hornClausesType1.push_back(hc);
-    else
-      hornClausesType2.push_back(hc);
+    else{
+      if(!hc->getMaximalConsequentQ())
+	hornClausesType2_1.push_back(hc);
+      else
+	hornClausesType2.push_back(hc);
+    }
   }
   else{
     if(hc->getConsequentQ())
@@ -60,7 +67,6 @@ void HornClauses::conditionalElimination(){
 	it != hornClausesType4.end(); ++it){
       
     }
-    
     delete _temp;
   }
 }
@@ -73,6 +79,10 @@ std::ostream & operator << (std::ostream & os, HornClauses & hcs){
   std::cout << "Type 2" << std::endl;
   for(std::vector<HornClause*>::iterator it = hcs.hornClausesType2.begin();
       it != hcs.hornClausesType2.end(); ++it)
+    os << **it << std::endl;
+  std::cout << "Type 2_1" << std::endl;
+  for(std::vector<HornClause*>::iterator it = hcs.hornClausesType2_1.begin();
+      it != hcs.hornClausesType2_1.end(); ++it)
     os << **it << std::endl;
   std::cout << "Type 3" << std::endl;
   for(std::vector<HornClause*>::iterator it = hcs.hornClausesType3.begin();
