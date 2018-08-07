@@ -81,7 +81,7 @@ void HornClauses::conditionalElimination(){
 	for(std::vector<unsigned>::iterator it3 = mc2A[it->first].begin();
 	    it3 != mc2A[it->first].end(); ++it3){
 	  if(prevCombinations.find(std::make_pair(*it2, *it3)) == prevCombinations.end()){
-	    std::cout << "Combine " << std::endl << *hornClauses[*it2] << std::endl
+	    std::cout << "1. Combine " << std::endl << *hornClauses[*it2] << std::endl
 		      << " with " << std::endl << *hornClauses[*it3]
 		      << std::endl << std::endl;
 	    prevCombinations.insert(std::make_pair(*it2, *it3));
@@ -99,14 +99,15 @@ void HornClauses::conditionalElimination(){
 	it != mc1C.end(); ++it)
       for(std::vector<unsigned>::iterator it2 = it->second.begin();
 	  it2 != it->second.end(); ++it2)
-	for(std::vector<unsigned>::iterator it3 = mc2A[it->first].begin();
-	    it3 != mc2A[it->first].end(); ++it3){
+	for(std::vector<unsigned>::iterator it3 = mc1A[it->first].begin();
+	    it3 != mc1A[it->first].end(); ++it3){
 	  if(prevCombinations.find(std::make_pair(*it2, *it3)) == prevCombinations.end()){
-	    std::cout << "Combine " << std::endl << *hornClauses[*it2] << std::endl
+	    std::cout << "2. Combine " << std::endl << *hornClauses[*it2] << std::endl
 		      << " with " << std::endl << *hornClauses[*it3]
 		      << std::endl << std::endl;
 	    prevCombinations.insert(std::make_pair(*it2, *it3));
-	    mergeType2_1AndType3(hornClauses[*it2], hornClauses[*it3]);
+	    // Change the next line
+	    //mergeType2_1AndType3(hornClauses[*it2], hornClauses[*it3]);
 	    change = true;
 	  }
 	}
@@ -119,18 +120,24 @@ void HornClauses::conditionalElimination(){
     for(match1::iterator it = mc1C.begin();
 	it != mc1C.end(); ++it)
       for(std::vector<unsigned>::iterator it2 = it->second.begin();
-	  it2 != it->second.end(); ++it2)
-	for(std::vector<unsigned>::iterator it3 = mc2A[it->first].begin();
-	    it3 != mc2A[it->first].end(); ++it3){
-	  if(prevCombinations.find(std::make_pair(*it2, *it3)) == prevCombinations.end()){
-	    std::cout << "Combine " << std::endl << *hornClauses[*it2] << std::endl
-		      << " with " << std::endl << *hornClauses[*it3]
-		      << std::endl << std::endl;
-	    prevCombinations.insert(std::make_pair(*it2, *it3));
-	    mergeType2_1AndType3(hornClauses[*it2], hornClauses[*it3]);
-	    change = true;
-	  }
+	  it2 != it->second.end(); ++it2){
+	for(match2::iterator it_2 = mc2A.begin();
+	    it_2 != mc2A.end(); ++it_2){
+	  if(it_2->first.first == it->first || it_2->first.second == it->first)
+	    for(std::vector<unsigned>::iterator it3 = mc2A[it_2->first].begin();
+		it3 != mc2A[it_2->first].end(); ++it3){
+	      if(prevCombinations.find(std::make_pair(*it2, *it3)) == prevCombinations.end()){
+		std::cout << "3. Combine " << std::endl << *hornClauses[*it2] << std::endl
+			  << " with " << std::endl << *hornClauses[*it3]
+			  << std::endl << std::endl;
+		prevCombinations.insert(std::make_pair(*it2, *it3));
+		// Change the next line
+		//mergeType2_1AndType3(hornClauses[*it2], hornClauses[*it3]);
+		change = true;
+	      }
+	    }
 	}
+      }
   }
 }
 
@@ -168,7 +175,6 @@ void HornClauses::makeMatches(HornClause * hc, unsigned i){
 }
 
 void HornClauses::mergeType2_1AndType3(HornClause * h1, HornClause * h2){
-  // TODO
   UnionFind _h1LocalUf = h1->getLocalUF(),
     _h2LocalUf = h2->getLocalUF();
   equality _h1Consequent = h1->getConsequent(),
