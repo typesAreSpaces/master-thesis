@@ -28,46 +28,111 @@ void HornClauses::addHornClause(UnionFind & uf, Vertex* u, Vertex* v, std::vecto
   hc->normalize();
   if(hc->checkTrivial())
     delete hc;
+  
   if(hc->getAntecedentQ()){
-    if(hc->getConsequentQ())
+    if(hc->getConsequentQ()){
       hornClausesType1.push_back(hc);
+    }
     else{
-      if(!hc->getMaximalConsequentQ())
+      if(!hc->getMaximalConsequentQ()){
 	hornClausesType2_1.push_back(hc);
-      else
+      }
+      else{
 	hornClausesType2.push_back(hc);
+      }
     }
   }
   else{
-    if(hc->getConsequentQ())
+    if(hc->getConsequentQ()){
       hornClausesType3.push_back(hc);
-    else
+    }
+    else{
       hornClausesType4.push_back(hc);
+    }
   }
+
+  makeMatches(hc, numHornClauses);
   ++numHornClauses;
 }
 
-//TODO: Complete this method
 void HornClauses::conditionalElimination(){
-  unsigned l = hornClausesType2.size();
-  while(l > 0){
-    HornClause * _temp = hornClausesType2[l - 1];
-    hornClausesType2.erase(--hornClausesType2.end());
-    --l;
 
-    for(std::vector<HornClause*>::iterator it = hornClausesType2.begin();
-	it != hornClausesType2.end(); ++it){
-      
+  // // Let's just print all the matches data
+  // // structures to check consistency
+  // // typedef std::map<Vertex*, std::vector<unsigned> > match1;
+  // std::cout << "mc1A-------------------------------------" << std::endl;
+  // for(match1::iterator it = mc1A.begin(); it != mc1A.end(); ++it){
+  //   std::cout << it->first->to_string() << std::endl;
+  //   for(std::vector<unsigned>::iterator it2 = it->second.begin();
+  //       it2 != it->second.end(); ++it2)
+  //     std::cout << *it2 << " ";
+  //   std::cout << std::endl;
+  // }
+  // std::cout << "mc1A-------------------------------------" << std::endl;
+  // std::cout << "mc1C-------------------------------------" << std::endl;
+  // for(match1::iterator it = mc1C.begin(); it != mc1C.end(); ++it){
+  //   std::cout << it->first->to_string() << std::endl;
+  //   for(std::vector<unsigned>::iterator it2 = it->second.begin();
+  //       it2 != it->second.end(); ++it2)
+  //     std::cout << *it2 << " ";
+  //   std::cout << std::endl;
+  // }
+  // std::cout << "mc1C-------------------------------------" << std::endl;
+  // std::cout << "mc2A-------------------------------------" << std::endl;
+  // for(match2::iterator it = mc2A.begin(); it != mc2A.end(); ++it){
+  //   std::cout << it->first.first->to_string() << ", " << it->first.second->to_string() << std::endl;
+  //   for(std::vector<unsigned>::iterator it2 = it->second.begin();
+  //       it2 != it->second.end(); ++it2)
+  //     std::cout << *it2 << " ";
+  //   std::cout << std::endl;
+  // }
+  // std::cout << "mc2A-------------------------------------" << std::endl;
+  // std::cout << "mc2C-------------------------------------" << std::endl;
+  // for(match2::iterator it = mc2C.begin(); it != mc2C.end(); ++it){
+  //   std::cout << it->first.first->to_string() << ", " << it->first.second->to_string() << std::endl;
+  //   for(std::vector<unsigned>::iterator it2 = it->second.begin();
+  //       it2 != it->second.end(); ++it2)
+  //     std::cout << *it2 << " ";
+  //   std::cout << std::endl;
+  // }
+  // std::cout << "mc2C-------------------------------------" << std::endl;
+
+  bool change = true;
+  std::set<std::pair<unsigned, unsigned> > prevCombinations;
+  while(change){
+    change = false;
+    
+  }
+}
+
+// Precondition: 
+// All HornClauses here are assumed to be normalized
+void HornClauses::makeMatches(HornClause * hc, unsigned i){
+  std::vector<equality> & _antecedent = hc->getAntecedent();
+  equality & _consequent = hc->getConsequent();
+  for(std::vector<equality>::iterator it = _antecedent.begin();
+      it != _antecedent.end(); ++it){
+    // If the first term is uncommon,
+    // then the equality is uncommon due to
+    // the normalizing ordering used
+    if(!it->first->getSymbolCommonQ())
+      mc2A[std::make_pair(it->first, it->second)].push_back(i);
+    else{
+      // If the first term is common and
+      // the second term is common, then
+      // there is nothing to do!
+      if(!it->second->getSymbolCommonQ())
+	mc1A[it->second].push_back(i);
     }
-    for(std::vector<HornClause*>::iterator it = hornClausesType3.begin();
-	it != hornClausesType3.end(); ++it){
-      
-    }
-    for(std::vector<HornClause*>::iterator it = hornClausesType4.begin();
-	it != hornClausesType4.end(); ++it){
-      
-    }
-    delete _temp;
+  }
+  if(!_consequent.first->getSymbolCommonQ())
+    mc2C[std::make_pair(_consequent.first, _consequent.second)].push_back(i);
+  else{
+    // If the first term is common and
+    // the second term is common, then
+    // there is nothing to do!
+    if(!_consequent.second->getSymbolCommonQ())
+      mc1C[_consequent.second].push_back(i);
   }
 }
 

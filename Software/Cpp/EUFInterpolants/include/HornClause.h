@@ -22,6 +22,8 @@ class HornClause{
   bool getAntecedentQ();
   bool getConsequentQ();
   bool getMaximalConsequentQ();
+  std::vector<equality> & getAntecedent();
+  equality & getConsequent();
   friend std::ostream & operator << (std::ostream &, HornClause &);
 };
 
