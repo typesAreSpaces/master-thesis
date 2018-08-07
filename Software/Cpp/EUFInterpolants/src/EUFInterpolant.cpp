@@ -1,11 +1,11 @@
 #include "EUFInterpolant.h"
 
 EUFInterpolant::EUFInterpolant(Z3_context c, Z3_ast v) :
-  cc(c, v) {
+  cc(c, v), hC(cc.getTerms()) {
 }
 
 EUFInterpolant::EUFInterpolant(Z3_context c, Z3_ast v, std::set<std::string> & symbolsToElim) :
-  cc(c, v, symbolsToElim){
+  cc(c, v, symbolsToElim), hC(cc.getTerms()){
 }
 
 EUFInterpolant::~EUFInterpolant(){
@@ -16,9 +16,7 @@ void EUFInterpolant::algorithm(){
   cc.algorithm();
   setCommonRepresentatives();
   eliminationOfUncommonFSyms();
-  std::cout << hC << std::endl;
   hC.conditionalElimination();
-  std::cout << cc.getEC().size() << std::endl;
   // for(unsigned i = 0; i < Vertex::getTotalNumVertex(); ++i){
   //   if(!cc.getTerm(i)->getSymbolCommonQ()){
   //     std::cout << "++++++++++++++++++++++++++++++++++++++++++" << std::endl;
@@ -116,7 +114,7 @@ void EUFInterpolant::eliminationOfUncommonFSyms(){
       std::copy(it->second.begin(), it->second.end(), _temp.begin());
       for(unsigned i = 0; i < l - 1; ++i)
 	for(unsigned j = i + 1; j < l; ++j)
-	  hC.addHornClause(cc.getEC(), cc.getTerm(_temp[i]), cc.getTerm(_temp[j]), cc.getTerms());
+	  hC.addHornClause(cc.getEC(), cc.getTerm(_temp[i]), cc.getTerm(_temp[j]));
     }
     expose = false;
   }

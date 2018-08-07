@@ -15,20 +15,21 @@ typedef std::map<equality, std::vector<unsigned> > match2;
 class HornClauses{
  private:
   static unsigned numHornClauses;
-  std::vector<HornClause*> hornClausesType1;
-  std::vector<HornClause*> hornClausesType2;
-  std::vector<HornClause*> hornClausesType2_1;
-  std::vector<HornClause*> hornClausesType3;
-  std::vector<HornClause*> hornClausesType4;
+  std::vector<HornClause*> hornClauses;
   match1 mc1A, mc1C;
   match2 mc2A, mc2C;
- public:
-  HornClauses();
-  ~HornClauses();
-  void addHornClause(UnionFind &, Vertex*, Vertex*, std::vector<Vertex*> &);
-  void dependencyAnalysis();
-  void conditionalElimination();
+  std::vector<Vertex*> & localTerms;
+  void mergeType2_1AndType3(HornClause *, HornClause *);
+  void mergeType2_1AndType4(HornClause *, HornClause *);
+  void mergeType2AndType2(HornClause *, HornClause *);
+  void mergeType2AndType3(HornClause *, HornClause *);
+  void mergeType2AndType4(HornClause *, HornClause *);
   void makeMatches(HornClause * hc, unsigned);
+ public:
+  HornClauses(std::vector<Vertex*> &);
+  ~HornClauses();
+  void addHornClause(UnionFind &, Vertex*, Vertex*);
+  void conditionalElimination();
   friend std::ostream & operator << (std::ostream &, HornClauses &);
 };
 

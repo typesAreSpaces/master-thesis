@@ -2,55 +2,24 @@
 
 unsigned HornClauses::numHornClauses = 0;
 
-HornClauses::HornClauses(){
+HornClauses::HornClauses(std::vector<Vertex*> & terms) : localTerms(terms) {
 }
 
 HornClauses::~HornClauses(){
-  for(std::vector<HornClause*>::iterator it = hornClausesType1.begin();
-      it != hornClausesType1.end(); ++it)
-    delete *it;
-  for(std::vector<HornClause*>::iterator it = hornClausesType2.begin();
-      it != hornClausesType2.end(); ++it)
-    delete *it;
-  for(std::vector<HornClause*>::iterator it = hornClausesType2_1.begin();
-      it != hornClausesType2_1.end(); ++it)
-    delete *it;
-  for(std::vector<HornClause*>::iterator it = hornClausesType3.begin();
-      it != hornClausesType3.end(); ++it)
-    delete *it;
-  for(std::vector<HornClause*>::iterator it = hornClausesType4.begin();
-      it != hornClausesType4.end(); ++it)
+  for(std::vector<HornClause*>::iterator it = hornClauses.begin();
+      it != hornClauses.end(); ++it)
     delete *it;
 }
 
-void HornClauses::addHornClause(UnionFind & uf, Vertex* u, Vertex* v, std::vector<Vertex*> & terms){
-  HornClause * hc = new HornClause(uf, u, v, terms);
+void HornClauses::addHornClause(UnionFind & uf,
+				Vertex* u, Vertex* v){
+  HornClause * hc = new HornClause(uf, u, v, localTerms);
   hc->normalize();
-  if(hc->checkTrivial())
+  if(hc->checkTrivial()){
     delete hc;
-  
-  if(hc->getAntecedentQ()){
-    if(hc->getConsequentQ()){
-      hornClausesType1.push_back(hc);
-    }
-    else{
-      if(!hc->getMaximalConsequentQ()){
-	hornClausesType2_1.push_back(hc);
-      }
-      else{
-	hornClausesType2.push_back(hc);
-      }
-    }
+    return;
   }
-  else{
-    if(hc->getConsequentQ()){
-      hornClausesType3.push_back(hc);
-    }
-    else{
-      hornClausesType4.push_back(hc);
-    }
-  }
-
+  hornClauses.push_back(hc);
   makeMatches(hc, numHornClauses);
   ++numHornClauses;
 }
@@ -101,7 +70,21 @@ void HornClauses::conditionalElimination(){
   std::set<std::pair<unsigned, unsigned> > prevCombinations;
   while(change){
     change = false;
-    
+
+    for(match2::iterator it = mc2C.begin();
+	it != mc2C.end(); ++it)
+      for(std::vector<unsigned>::iterator it2 = it->second.begin();
+	  it2 != it->second.end(); ++it2)
+	for(std::vector<unsigned>::iterator it3 = mc2A[it->first].begin();
+	    it3 != mc2A[it->first].end(); ++it3){
+	  if(prevCombinations.find(std::make_pair(*it2, *it3)) == prevCombinations.end()){
+	    std::cout << "Combine " << *hornClauses[*it2]
+		      << " with " << *hornClauses[*it3]
+		      << std::endl;
+	    prevCombinations.insert(std::make_pair(*it2, *it3));
+	    change = true;
+	  }
+	}
   }
 }
 
@@ -116,7 +99,8 @@ void HornClauses::makeMatches(HornClause * hc, unsigned i){
     // then the equality is uncommon due to
     // the normalizing ordering used
     if(!it->first->getSymbolCommonQ())
-      mc2A[std::make_pair(it->first, it->second)].push_back(i);
+      mc2A[std::make_pair(it->first,
+			  it->second)].push_back(i);
     else{
       // If the first term is common and
       // the second term is common, then
@@ -126,7 +110,8 @@ void HornClauses::makeMatches(HornClause * hc, unsigned i){
     }
   }
   if(!_consequent.first->getSymbolCommonQ())
-    mc2C[std::make_pair(_consequent.first, _consequent.second)].push_back(i);
+    mc2C[std::make_pair(_consequent.first,
+			_consequent.second)].push_back(i);
   else{
     // If the first term is common and
     // the second term is common, then
@@ -136,26 +121,25 @@ void HornClauses::makeMatches(HornClause * hc, unsigned i){
   }
 }
 
+void HornClauses::mergeType2_1AndType3(HornClause * h1, HornClause * h2){
+  
+}
+void HornClauses::mergeType2_1AndType4(HornClause * h1, HornClause * h2){
+  
+}
+void HornClauses::mergeType2AndType2(HornClause * h1, HornClause * h2){
+  
+}
+void HornClauses::mergeType2AndType3(HornClause * h1, HornClause * h2){
+  
+}
+void HornClauses::mergeType2AndType4(HornClause * h1, HornClause * h2){
+  
+}
+
 std::ostream & operator << (std::ostream & os, HornClauses & hcs){
-  std::cout << "Type 1" << std::endl;
-  for(std::vector<HornClause*>::iterator it = hcs.hornClausesType1.begin();
-      it != hcs.hornClausesType1.end(); ++it)
-    os << **it << std::endl;
-  std::cout << "Type 2" << std::endl;
-  for(std::vector<HornClause*>::iterator it = hcs.hornClausesType2.begin();
-      it != hcs.hornClausesType2.end(); ++it)
-    os << **it << std::endl;
-  std::cout << "Type 2_1" << std::endl;
-  for(std::vector<HornClause*>::iterator it = hcs.hornClausesType2_1.begin();
-      it != hcs.hornClausesType2_1.end(); ++it)
-    os << **it << std::endl;
-  std::cout << "Type 3" << std::endl;
-  for(std::vector<HornClause*>::iterator it = hcs.hornClausesType3.begin();
-      it != hcs.hornClausesType3.end(); ++it)
-    os << **it << std::endl;
-  std::cout << "Type 4" << std::endl;
-  for(std::vector<HornClause*>::iterator it = hcs.hornClausesType4.begin();
-      it != hcs.hornClausesType4.end(); ++it)
+  for(std::vector<HornClause*>::iterator it = hcs.hornClauses.begin();
+      it != hcs.hornClauses.end(); ++it)
     os << **it << std::endl;
   return os;
 }

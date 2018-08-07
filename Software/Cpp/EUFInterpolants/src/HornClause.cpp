@@ -68,6 +68,10 @@ equality & HornClause::getConsequent(){
   return consequent;
 }
 
+UnionFind & HornClause::getLocalUF(){
+  return localUF;
+}
+
 std::ostream & operator << (std::ostream & os, HornClause & hc){
   bool flag = true;
   for(std::vector<equality>::iterator it = hc.antecedent.begin(); it != hc.antecedent.end(); ++it){
