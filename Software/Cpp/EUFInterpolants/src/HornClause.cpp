@@ -1,5 +1,21 @@
 #include "HornClause.h"
 
+HornClause::HornClause(UnionFind & uf,
+		       std::vector<equality> & antecedent, equality & consequent,
+		       std::vector<Vertex*> & terms) :
+  localUF(uf), antecedent(antecedent), consequent(consequent){
+  antecedentQ = true, consequentQ = true;
+  for(std::vector<equality>::iterator it = antecedent.begin();
+      it != antecedent.end(); ++it){
+    antecedentQ = antecedentQ &&
+      terms[localUF.find(it->first->getId())]->getSymbolCommonQ() &&
+      terms[localUF.find(it->second->getId())]->getSymbolCommonQ();
+  }
+  consequentQ = consequentQ &&
+    terms[localUF.find(consequent.first->getId())]->getSymbolCommonQ() &&
+    terms[localUF.find(consequent.first->getId())]->getSymbolCommonQ();
+}
+
 HornClause::HornClause(UnionFind & uf, Vertex* u, Vertex* v,
 		       std::vector<Vertex*> & terms) :
   localUF(uf), antecedentQ(true), consequentQ(true) {
