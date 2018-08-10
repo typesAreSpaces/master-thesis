@@ -7,9 +7,11 @@
 #include <set>
 #include <map>
 
+extern bool debugHornClauses;
+
 // match1 : Uncommon Vertex -> Positions of Horn Clauses
 typedef std::map<Vertex*, std::vector<unsigned> > match1;
-// match1 : (Uncommon Vertex, Uncommon Vertex) -> Positions of Horn Clauses
+// match2 : (Uncommon Vertex, Uncommon Vertex) -> Positions of Horn Clauses
 typedef std::map<equality, std::vector<unsigned> > match2;
 
 class HornClauses{
