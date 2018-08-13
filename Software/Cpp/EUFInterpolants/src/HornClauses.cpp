@@ -115,7 +115,7 @@ void HornClauses::conditionalElimination(){
     // This part covers cases:
     // 3. Type 2 + Type 2
     // 4. Type 2 + Type 3
-    // 5. Type 2 + TypeE 4
+    // 5. Type 2 + Type 4
     // with mc1C x mc2A
     for(match1::iterator it = mc1C.begin();
 	it != mc1C.end(); ++it)
