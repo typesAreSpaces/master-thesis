@@ -109,11 +109,6 @@ void HornClauses::conditionalElimination(){
 												<< " with " << std::endl << *hornClauses[*it3]
 												<< std::endl << std::endl;
 						prevCombinations.insert(std::make_pair(*it2, *it3));
-						// Change the next line						
-						std::cout << "2. Combine " << std::endl << *hornClauses[*it2] << std::endl
-											<< " with " << std::endl << *hornClauses[*it3]
-											<< std::endl << std::endl;
-						prevCombinations.insert(std::make_pair(*it2, *it3));
 						// Change the next line
 						//mergeType2_1AndType3(hornClauses[*it2], hornClauses[*it3]);
 						change = true;
@@ -157,7 +152,7 @@ void HornClauses::conditionalElimination(){
 						it3 != mc1A[it->first].end(); ++it3){
 					if(prevCombinations.find(std::make_pair(*it2, *it3)) == prevCombinations.end()){
 						if(debugHornClauses)
-							std::cout << "2. Combine " << std::endl << *hornClauses[*it2] << std::endl
+							std::cout << "4. Combine " << std::endl << *hornClauses[*it2] << std::endl
 												<< " with " << std::endl << *hornClauses[*it3]
 												<< std::endl << std::endl;
 						prevCombinations.insert(std::make_pair(*it2, *it3));
