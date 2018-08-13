@@ -75,6 +75,7 @@ void HornClauses::conditionalElimination(){
     // This part covers cases:
     // 1. Type 2.1 + Type 3
     // 2. Type 2.1 + Type 4
+		// Some Type 4 + Type 3 || Type 4
     // with mc2C x mc2A
     for(match2::iterator it = mc2C.begin(); it != mc2C.end(); ++it)
       for(std::vector<unsigned>::iterator it2 = it->second.begin();
@@ -82,17 +83,17 @@ void HornClauses::conditionalElimination(){
 				for(std::vector<unsigned>::iterator it3 = mc2A[it->first].begin();
 						it3 != mc2A[it->first].end(); ++it3){
 					if(prevCombinations.find(std::make_pair(*it2, *it3)) == prevCombinations.end()){
-						std::cout << "1. Combine " << std::endl << *hornClauses[*it2] << std::endl
-											<< " with " << std::endl << *hornClauses[*it3]
-											<< std::endl << std::endl;
+						if(debugHornClauses)
+							std::cout << "1. Combine " << std::endl << *hornClauses[*it2] << std::endl
+												<< " with " << std::endl << *hornClauses[*it3]
+												<< std::endl << std::endl;
 						prevCombinations.insert(std::make_pair(*it2, *it3));
 						mergeType2_1AndType3(hornClauses[*it2], hornClauses[*it3]);
 						change = true;
 					}
 				}
-    // TODO
+    // TODO 1
     // This part covers cases:
-    // 3. Type 2 + Type 2
     // 4. Type 2 + Type 3
     // 5. Type 2 + Type 4
     // with mc1C x mc1A
@@ -104,17 +105,16 @@ void HornClauses::conditionalElimination(){
 					if(prevCombinations.find(std::make_pair(*it2, *it3)) == prevCombinations.end()){
 						if(debugHornClauses)
 							std::cout << "2. Combine " << std::endl << *hornClauses[*it2] << std::endl
-											<< " with " << std::endl << *hornClauses[*it3]
-											<< std::endl << std::endl;
+												<< " with " << std::endl << *hornClauses[*it3]
+												<< std::endl << std::endl;
 						prevCombinations.insert(std::make_pair(*it2, *it3));
-						// Change the next line
+						// Change the next line						
 						//mergeType2_1AndType3(hornClauses[*it2], hornClauses[*it3]);
 						change = true;
 					}
 				}
-    // TODO
+    // TODO 2
     // This part covers cases:
-    // 3. Type 2 + Type 2
     // 4. Type 2 + Type 3
     // 5. Type 2 + TypeE 4
     // with mc1C x mc2A
@@ -129,8 +129,8 @@ void HornClauses::conditionalElimination(){
 							if(prevCombinations.find(std::make_pair(*it2, *it3)) == prevCombinations.end()){
 								if(debugHornClauses)
 									std::cout << "3. Combine " << std::endl << *hornClauses[*it2] << std::endl
-													<< " with " << std::endl << *hornClauses[*it3]
-													<< std::endl << std::endl;
+														<< " with " << std::endl << *hornClauses[*it3]
+														<< std::endl << std::endl;
 								prevCombinations.insert(std::make_pair(*it2, *it3));
 								// Change the next line
 								//mergeType2_1AndType3(hornClauses[*it2], hornClauses[*it3]);
@@ -139,6 +139,26 @@ void HornClauses::conditionalElimination(){
 						}
 				}
       }
+		// TODO 3
+    // This part covers cases:
+		// 3. Type 2 + Type 2
+    // with mc1C x mc1C
+    for(match1::iterator it = mc1C.begin(); it != mc1C.end(); ++it)
+      for(std::vector<unsigned>::iterator it2 = it->second.begin();
+					it2 != it->second.end(); ++it2)
+				for(std::vector<unsigned>::iterator it3 = mc1A[it->first].begin();
+						it3 != mc1A[it->first].end(); ++it3){
+					if(prevCombinations.find(std::make_pair(*it2, *it3)) == prevCombinations.end()){
+						if(debugHornClauses)
+							std::cout << "2. Combine " << std::endl << *hornClauses[*it2] << std::endl
+												<< " with " << std::endl << *hornClauses[*it3]
+												<< std::endl << std::endl;
+						prevCombinations.insert(std::make_pair(*it2, *it3));
+						// Change the next line						
+						//mergeType2_1AndType3(hornClauses[*it2], hornClauses[*it3]);
+						change = true;
+					}
+				}
   }
 }
 
@@ -149,7 +169,8 @@ void HornClauses::makeMatches(HornClause * hc, unsigned i){
   equality & _consequent = hc->getConsequent();
   for(std::vector<equality>::iterator it = _antecedent.begin();
       it != _antecedent.end(); ++it){
-    // If the first term is uncommon,
+		// Pay attention to this part !!!
+		// If the first term is uncommon,
     // then the equality is uncommon due to
     // the normalizing ordering used
     if(!it->first->getSymbolCommonQ())
