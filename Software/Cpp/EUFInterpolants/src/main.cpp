@@ -19,7 +19,7 @@ int main(int argc, char ** argv){
   cfg.set("MODEL", true);
   cfg.set("TRACE", false);
   z3::context ctx(cfg);
-  Z3_ast inputFormula = Z3_parse_smtlib2_file(ctx, file.c_str(), 0, 0, 0, 0, 0, 0);
+  Z3_ast inputFormula = Z3_ast_vector_get(ctx, Z3_parse_smtlib2_file(ctx, file.c_str(), 0, 0, 0, 0, 0, 0), 0);
   std::set<std::string> symbolsToElim = {"v"};
 
   EUFInterpolant eufI (ctx, inputFormula, symbolsToElim);

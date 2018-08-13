@@ -7,9 +7,8 @@ bool traceEC = false;
 bool traceSigTable = false;
 
 void CongruenceClosure::init(){
-  unsigned numEqs, lhs, rhs;
+  unsigned lhs, rhs;
   Vertex * lhsVertex, *rhsVertex;
-  numEqs = equations.size();
   for(std::vector<std::pair<unsigned, unsigned> >::iterator it = equations.begin();
       it != equations.end(); ++it){
     lhs = it->first;

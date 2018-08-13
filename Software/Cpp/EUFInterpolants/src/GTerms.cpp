@@ -219,11 +219,10 @@ GTerms::GTerms(Z3_context ctx, Z3_ast v, std::set<std::string> & symbolsToElim) 
 
 
 GTerms::GTerms(std::istream & in){
-  unsigned numTerms, _arity, _successor, mark, rootNumber;
+  unsigned numTerms, _arity, _successor, mark;
   std::string _name;
   
   in >> numTerms;
-  rootNumber = numTerms;
   terms.resize(2*numTerms);
 
   for(unsigned i = 0; i < numTerms; ++i)
