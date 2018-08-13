@@ -77,85 +77,55 @@ void HornClauses::conditionalElimination(){
     // 2. Type 2.1 + Type 4
 		// Some Type 4 + Type 3 || Type 4
     // with mc2C x mc2A
-<<<<<<< HEAD
-    for(match2::iterator it = mc2C.begin(); it != mc2C.end(); ++it)
-=======
     for(match2::iterator it = mc2C.begin();
 				it != mc2C.end(); ++it)
->>>>>>> e88d5eb02d9a3fa6439ac0c5561d56b32ff1d44f
       for(std::vector<unsigned>::iterator it2 = it->second.begin();
 					it2 != it->second.end(); ++it2)
 				for(std::vector<unsigned>::iterator it3 = mc2A[it->first].begin();
 						it3 != mc2A[it->first].end(); ++it3){
 					if(prevCombinations.find(std::make_pair(*it2, *it3)) == prevCombinations.end()){
-<<<<<<< HEAD
 						if(debugHornClauses)
 							std::cout << "1. Combine " << std::endl << *hornClauses[*it2] << std::endl
 												<< " with " << std::endl << *hornClauses[*it3]
 												<< std::endl << std::endl;
-=======
-						std::cout << "1. Combine " << std::endl << *hornClauses[*it2] << std::endl
-											<< " with " << std::endl << *hornClauses[*it3]
-											<< std::endl << std::endl;
->>>>>>> e88d5eb02d9a3fa6439ac0c5561d56b32ff1d44f
 						prevCombinations.insert(std::make_pair(*it2, *it3));
 						mergeType2_1AndType3(hornClauses[*it2], hornClauses[*it3]);
 						change = true;
 					}
 				}
-<<<<<<< HEAD
     // TODO 1
-=======
-    // TODO
->>>>>>> e88d5eb02d9a3fa6439ac0c5561d56b32ff1d44f
     // This part covers cases:
     // 4. Type 2 + Type 3
     // 5. Type 2 + Type 4
     // with mc1C x mc1A
-<<<<<<< HEAD
     for(match1::iterator it = mc1C.begin(); it != mc1C.end(); ++it)
-=======
-    for(match1::iterator it = mc1C.begin();
-				it != mc1C.end(); ++it)
->>>>>>> e88d5eb02d9a3fa6439ac0c5561d56b32ff1d44f
       for(std::vector<unsigned>::iterator it2 = it->second.begin();
 					it2 != it->second.end(); ++it2)
 				for(std::vector<unsigned>::iterator it3 = mc1A[it->first].begin();
 						it3 != mc1A[it->first].end(); ++it3){
 					if(prevCombinations.find(std::make_pair(*it2, *it3)) == prevCombinations.end()){
-<<<<<<< HEAD
 						if(debugHornClauses)
 							std::cout << "2. Combine " << std::endl << *hornClauses[*it2] << std::endl
 												<< " with " << std::endl << *hornClauses[*it3]
 												<< std::endl << std::endl;
 						prevCombinations.insert(std::make_pair(*it2, *it3));
 						// Change the next line						
-=======
 						std::cout << "2. Combine " << std::endl << *hornClauses[*it2] << std::endl
 											<< " with " << std::endl << *hornClauses[*it3]
 											<< std::endl << std::endl;
 						prevCombinations.insert(std::make_pair(*it2, *it3));
 						// Change the next line
->>>>>>> e88d5eb02d9a3fa6439ac0c5561d56b32ff1d44f
 						//mergeType2_1AndType3(hornClauses[*it2], hornClauses[*it3]);
 						change = true;
 					}
 				}
-<<<<<<< HEAD
     // TODO 2
-=======
-    // TODO
->>>>>>> e88d5eb02d9a3fa6439ac0c5561d56b32ff1d44f
     // This part covers cases:
     // 4. Type 2 + Type 3
     // 5. Type 2 + Type 4
     // with mc1C x mc2A
-<<<<<<< HEAD
-    for(match1::iterator it = mc1C.begin(); it != mc1C.end(); ++it)
-=======
     for(match1::iterator it = mc1C.begin();
 				it != mc1C.end(); ++it)
->>>>>>> e88d5eb02d9a3fa6439ac0c5561d56b32ff1d44f
       for(std::vector<unsigned>::iterator it2 = it->second.begin();
 					it2 != it->second.end(); ++it2){
 				for(match2::iterator it_2 = mc2A.begin();
@@ -164,16 +134,10 @@ void HornClauses::conditionalElimination(){
 						for(std::vector<unsigned>::iterator it3 = mc2A[it_2->first].begin();
 								it3 != mc2A[it_2->first].end(); ++it3){
 							if(prevCombinations.find(std::make_pair(*it2, *it3)) == prevCombinations.end()){
-<<<<<<< HEAD
 								if(debugHornClauses)
 									std::cout << "3. Combine " << std::endl << *hornClauses[*it2] << std::endl
 														<< " with " << std::endl << *hornClauses[*it3]
 														<< std::endl << std::endl;
-=======
-								std::cout << "3. Combine " << std::endl << *hornClauses[*it2] << std::endl
-													<< " with " << std::endl << *hornClauses[*it3]
-													<< std::endl << std::endl;
->>>>>>> e88d5eb02d9a3fa6439ac0c5561d56b32ff1d44f
 								prevCombinations.insert(std::make_pair(*it2, *it3));
 								// Change the next line
 								//mergeType2_1AndType3(hornClauses[*it2], hornClauses[*it3]);
