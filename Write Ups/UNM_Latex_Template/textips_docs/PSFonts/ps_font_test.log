@@ -1,0 +1,1538 @@
+This is TeX, Version 3.1415 (C version 6.1) (format=lplain 95.7.12)  22 JUN 1996 13:24
+**ps_font_test.tex
+(ps_font_test.tex
+LaTeX2e <1995/06/01> patch level 1
+(/usr/local/texmf/lib/tex/latex/inputs/classes/article.cls
+Document Class: article 1995/06/26 v1.3g Standard LaTeX document class
+(/usr/local/texmf/lib/tex/latex/inputs/classes/size10.clo
+File: size10.clo 1995/06/26 v1.3g Standard LaTeX file (size option)
+)
+\c@part=\count82
+\c@section=\count83
+\c@subsection=\count84
+\c@subsubsection=\count85
+\c@paragraph=\count86
+\c@subparagraph=\count87
+\c@figure=\count88
+\c@table=\count89
+\abovecaptionskip=\skip41
+\belowcaptionskip=\skip42
+\bibindent=\dimen102
+) (ps_font_test.aux)
+LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 10.
+LaTeX Font Info:    ... okay on input line 10.
+LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 10.
+LaTeX Font Info:    ... okay on input line 10.
+LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 10.
+LaTeX Font Info:    ... okay on input line 10.
+LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 10.
+LaTeX Font Info:    ... okay on input line 10.
+LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 10.
+LaTeX Font Info:    ... okay on input line 10.
+LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 10.
+LaTeX Font Info:    ... okay on input line 10.
+LaTeX Font Info:    Try loading font information for OT1+ptm on input line 23.
+
+(/usr/local/texmf/lib/tex/latex/inputs/fontdef/OT1ptm.fd
+File: OT1ptm.fd 1995/05/27 Fontinst v1.335 font definitions for OT1/ptm.
+)
+LaTeX Font Info:    Try loading font information for OT1+ppl on input line 32.
+
+(/usr/local/texmf/lib/tex/latex/inputs/fontdef/OT1ppl.fd
+File: OT1ppl.fd 1995/05/10 Fontinst v1.335 font definitions for OT1/ppl.
+)
+LaTeX Font Info:    Try loading font information for OT1+pnc on input line 41.
+
+(/usr/local/texmf/lib/tex/latex/inputs/fontdef/OT1pnc.fd
+File: OT1pnc.fd 1995/05/10 Fontinst v1.335 font definitions for OT1/pnc.
+)
+LaTeX Font Info:    Try loading font information for OT1+pbk on input line 50.
+
+(/usr/local/texmf/lib/tex/latex/inputs/fontdef/OT1pbk.fd
+File: OT1pbk.fd 1995/05/10 Fontinst v1.335 font definitions for OT1/pbk.
+)
+LaTeX Font Info:    Font shape `OT1/pbk/m/n' in size <10> not available
+(Font)              Font shape `OT1/pbk/l/n' tried instead on input line 50.
+LaTeX Font Info:    Try loading font information for OT1+put on input line 59.
+
+(/usr/local/texmf/lib/tex/latex/inputs/fontdef/OT1put.fd
+File: OT1put.fd 1995/05/27 Fontinst v1.335 font definitions for OT1/put.
+)
+LaTeX Font Info:    Try loading font information for OT1+phv on input line 68.
+
+(/usr/local/texmf/lib/tex/latex/inputs/fontdef/OT1phv.fd
+File: OT1phv.fd 1996/01/28 Fontinst v1.504 font definitions for OT1/phv.
+)
+LaTeX Font Info:    Try loading font information for OT1+pag on input line 77.
+
+(/usr/local/texmf/lib/tex/latex/inputs/fontdef/OT1pag.fd
+File: OT1pag.fd 1995/05/10 Fontinst v1.335 font definitions for OT1/pag.
+)
+LaTeX Font Info:    Try loading font information for OT1+pcr on input line 86.
+
+(/usr/local/texmf/lib/tex/latex/inputs/fontdef/OT1pcr.fd
+File: OT1pcr.fd 1995/05/10 Fontinst v1.335 font definitions for OT1/pcr.
+)
+LaTeX Font Info:    Try loading font information for OT1+pzc on input line 95.
+
+(/usr/local/texmf/lib/tex/latex/inputs/fontdef/OT1pzc.fd
+File: OT1pzc.fd 1995/05/10 Fontinst v1.335 font definitions for OT1/pzc.
+)
+
+LaTeX Font Warning: Font shape `OT1/pzc/m/sl ' undefined
+(Font)              using `OT1/cmr/m/n' instead on input line 99.
+
+LaTeX Font Info:    External font `cmex10' loaded for size
+(Font)              <7> on input line 100.
+LaTeX Font Info:    External font `cmex10' loaded for size
+(Font)              <5> on input line 100.
+LaTeX Font Info:    External font `cmex10' loaded for size
+(Font)              <8> on input line 101.
+LaTeX Font Info:    External font `cmex10' loaded for size
+(Font)              <6> on input line 101.
+LaTeX Font Info:    Try loading font information for OMS+cmr on input line 104.
+
+(/usr/local/texmf/lib/tex/latex/inputs/fontdef/OMScmr.fd
+File: OMScmr.fd 1995/04/22 v2.3f Standard LaTeX font definitions
+)
+LaTeX Font Info:    Font shape `OMS/cmr/m/n' in size <10> not available
+(Font)              Font shape `OMS/cmsy/m/n' tried instead on input line 104.
+ [1
+
+] [2]
+
+LaTeX Font Warning: Font shape `OT1/cmss/m/it' in size <10> not available
+(Font)              Font shape `OT1/cmss/m/sl' tried instead on input line 160.
+
+
+[3]
+LaTeX Font Info:    Try loading font information for OT1+ccr on input line 199.
+
+ (/usr/local/texmf/lib/tex/latex/inputs/fontdef/OT1ccr.fd
+File: OT1ccr.fd 1995/04/22 v2.3f Standard LaTeX font definitions
+)
+LaTeX Font Info:    Font shape `OT1/ccr/bx/n' in size <10> not available
+(Font)              Font shape `OT1/cmss/sbc/n' tried instead on input line 204
+.
+LaTeX Font Info:    Font shape `OT1/ccr/bx/it' in size <10> not available
+(Font)              Font shape `OT1/cmss/sbc/it' tried instead on input line 21
+4.
+LaTeX Font Info:    Font shape `OT1/cmss/sbc/it' in size <10> not available
+(Font)              Font shape `OT1/cmss/sbc/n' tried instead on input line 214
+.
+LaTeX Font Info:    Font shape `OT1/ccr/bx/sl' in size <10> not available
+(Font)              Font shape `OT1/cmss/sbc/sl' tried instead on input line 22
+4.
+LaTeX Font Info:    Font shape `OT1/cmss/sbc/sl' in size <10> not available
+(Font)              Font shape `OT1/cmss/sbc/n' tried instead on input line 224
+.
+ [4]
+LaTeX Font Info:    Try loading font information for OT1+panr on input line 238
+.
+
+(/usr/local/texmf/lib/tex/latex/inputs/fontdef/OT1panr.fd
+File: OT1panr.fd 1994/05/27 v2.1gPandora roman font definitions
+)
+
+LaTeX Font Warning: Font shape `OT1/panr/bx/n' in size <10> not available
+(Font)              Font shape `OT1/panr/b/n' tried instead on input line 243.
+
+LaTeX Font Info:    Try loading font information for OT1+pss on input line 253.
+
+(/usr/local/texmf/lib/tex/latex/inputs/fontdef/OT1pss.fd
+File: OT1pss.fd 1994/05/27 v2.1gPandora sans font definitions
+)
+
+LaTeX Font Warning: Font shape `OT1/pss/bx/n' in size <10> not available
+(Font)              Font shape `OT1/pss/b/n' tried instead on input line 258.
+
+[5]
+LaTeX Font Info:    Try loading font information for OT1+cmfib on input line 27
+5.
+ (/usr/local/texmf/lib/tex/latex/inputs/fontdef/OT1cmfib.fd
+File: OT1cmfib.fd 1995/04/22 v2.3f Standard LaTeX font definitions
+)
+
+LaTeX Font Warning: Font shape `OT1/cmfib/m/n' in size <10> not available
+(Font)              size <8> substituted on input line 275.
+
+LaTeX Font Info:    Try loading font information for OT1+cmdh on input line 282
+.
+(/usr/local/texmf/lib/tex/latex/inputs/fontdef/OT1cmdh.fd
+File: OT1cmdh.fd 1995/04/22 v2.3f Standard LaTeX font definitions
+)
+LaTeX Font Info:    Try loading font information for OT1+cmfr on input line 289
+.
+
+(/usr/local/texmf/lib/tex/latex/inputs/fontdef/OT1cmfr.fd
+File: OT1cmfr.fd 1995/04/22 v2.3f Standard LaTeX font definitions
+)
+
+LaTeX Font Warning: Font shape `OT1/cmfr/m/sl ' undefined
+(Font)              using `OT1/cmfr/m/n' instead on input line 298.
+
+[6]
+LaTeX Font Info:    Font shape `OT1/ptm/bx/n' in size <10> not available
+(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 313.
+LaTeX Font Info:    Font shape `OT1/ptm/bx/it' in size <10> not available
+(Font)              Font shape `OT1/ptm/b/it' tried instead on input line 323.
+LaTeX Font Info:    Font shape `OT1/ptm/bx/sl' in size <10> not available
+(Font)              Font shape `OT1/ptm/b/sl' tried instead on input line 327.
+ [7]
+LaTeX Font Info:    Font shape `OT1/ppl/bx/n' in size <10> not available
+(Font)              Font shape `OT1/ppl/b/n' tried instead on input line 362.
+LaTeX Font Info:    Font shape `OT1/ppl/bx/it' in size <10> not available
+(Font)              Font shape `OT1/ppl/b/it' tried instead on input line 372.
+LaTeX Font Info:    Font shape `OT1/ppl/bx/sl' in size <10> not available
+(Font)              Font shape `OT1/ppl/b/sl' tried instead on input line 376.
+ [8]
+LaTeX Font Info:    Font shape `OT1/pnc/bx/n' in size <10> not available
+(Font)              Font shape `OT1/pnc/b/n' tried instead on input line 411.
+LaTeX Font Info:    Font shape `OT1/pnc/bx/it' in size <10> not available
+(Font)              Font shape `OT1/pnc/b/it' tried instead on input line 421.
+LaTeX Font Info:    Font shape `OT1/pnc/bx/sl' in size <10> not available
+(Font)              Font shape `OT1/pnc/b/sl' tried instead on input line 425.
+ [9]
+LaTeX Font Info:    Font shape `OT1/pbk/bx/n' in size <10> not available
+(Font)              Font shape `OT1/pbk/b/n' tried instead on input line 450.
+LaTeX Font Info:    Font shape `OT1/pbk/b/n' in size <10> not available
+(Font)              Font shape `OT1/pbk/db/n' tried instead on input line 450.
+LaTeX Font Info:    Font shape `OT1/pbk/m/it' in size <10> not available
+(Font)              Font shape `OT1/pbk/l/it' tried instead on input line 455.
+LaTeX Font Info:    Font shape `OT1/pbk/m/sl' in size <10> not available
+(Font)              Font shape `OT1/pbk/l/sl' tried instead on input line 459.
+LaTeX Font Info:    Font shape `OT1/pbk/bx/it' in size <10> not available
+(Font)              Font shape `OT1/pbk/b/it' tried instead on input line 460.
+LaTeX Font Info:    Font shape `OT1/pbk/b/it' in size <10> not available
+(Font)              Font shape `OT1/pbk/db/it' tried instead on input line 460.
+
+LaTeX Font Info:    Font shape `OT1/pbk/bx/sl' in size <10> not available
+(Font)              Font shape `OT1/pbk/b/sl' tried instead on input line 464.
+LaTeX Font Info:    Font shape `OT1/pbk/b/sl' in size <10> not available
+(Font)              Font shape `OT1/pbk/db/sl' tried instead on input line 464.
+
+LaTeX Font Info:    Font shape `OT1/pbk/m/sc' in size <10> not available
+(Font)              Font shape `OT1/pbk/l/sc' tried instead on input line 475.
+ [10]
+LaTeX Font Info:    Font shape `OT1/put/bx/n' in size <10> not available
+(Font)              Font shape `OT1/put/b/n' tried instead on input line 489.
+LaTeX Font Info:    Font shape `OT1/put/bx/it' in size <10> not available
+(Font)              Font shape `OT1/put/b/it' tried instead on input line 499.
+LaTeX Font Info:    Font shape `OT1/put/bx/sl' in size <10> not available
+(Font)              Font shape `OT1/put/b/sl' tried instead on input line 503.
+ [11]
+LaTeX Font Info:    Font shape `OT1/phv/bx/n' in size <10> not available
+(Font)              Font shape `OT1/phv/b/n' tried instead on input line 528.
+LaTeX Font Info:    Font shape `OT1/phv/m/it' in size <10> not available
+(Font)              Font shape `OT1/phv/m/sl' tried instead on input line 533.
+LaTeX Font Info:    Font shape `OT1/phv/bx/it' in size <10> not available
+(Font)              Font shape `OT1/phv/b/it' tried instead on input line 538.
+LaTeX Font Info:    Font shape `OT1/phv/b/it' in size <10> not available
+(Font)              Font shape `OT1/phv/b/sl' tried instead on input line 538.
+LaTeX Font Info:    Font shape `OT1/phv/bx/sl' in size <10> not available
+(Font)              Font shape `OT1/phv/b/sl' tried instead on input line 542.
+ [12]
+LaTeX Font Info:    Font shape `OT1/pag/bx/n' in size <10> not available
+(Font)              Font shape `OT1/pag/b/n' tried instead on input line 572.
+LaTeX Font Info:    Font shape `OT1/pag/b/n' in size <10> not available
+(Font)              Font shape `OT1/pag/db/n' tried instead on input line 572.
+LaTeX Font Info:    Font shape `OT1/pag/m/it' in size <10> not available
+(Font)              Font shape `OT1/pag/m/sl' tried instead on input line 577.
+LaTeX Font Info:    Font shape `OT1/pag/bx/it' in size <10> not available
+(Font)              Font shape `OT1/pag/b/it' tried instead on input line 582.
+LaTeX Font Info:    Font shape `OT1/pag/b/it' in size <10> not available
+(Font)              Font shape `OT1/pag/db/it' tried instead on input line 582.
+
+LaTeX Font Info:    Font shape `OT1/pag/db/it' in size <10> not available
+(Font)              Font shape `OT1/pag/db/sl' tried instead on input line 582.
+
+LaTeX Font Info:    Font shape `OT1/pag/bx/sl' in size <10> not available
+(Font)              Font shape `OT1/pag/b/sl' tried instead on input line 586.
+LaTeX Font Info:    Font shape `OT1/pag/b/sl' in size <10> not available
+(Font)              Font shape `OT1/pag/db/sl' tried instead on input line 586.
+
+ [13]
+LaTeX Font Info:    Font shape `OT1/pcr/bx/n' in size <10> not available
+(Font)              Font shape `OT1/pcr/b/n' tried instead on input line 611.
+LaTeX Font Info:    Font shape `OT1/pcr/m/it' in size <10> not available
+(Font)              Font shape `OT1/pcr/m/sl' tried instead on input line 616.
+LaTeX Font Info:    Font shape `OT1/pcr/bx/it' in size <10> not available
+(Font)              Font shape `OT1/pcr/b/it' tried instead on input line 621.
+LaTeX Font Info:    Font shape `OT1/pcr/b/it' in size <10> not available
+(Font)              Font shape `OT1/pcr/b/sl' tried instead on input line 621.
+LaTeX Font Info:    Font shape `OT1/pcr/bx/sl' in size <10> not available
+(Font)              Font shape `OT1/pcr/b/sl' tried instead on input line 625.
+ [14]
+Missing character: There is no ^^80 in font cmr10!
+Missing character: There is no ^^81 in font cmr10!
+Missing character: There is no ^^82 in font cmr10!
+Missing character: There is no ^^83 in font cmr10!
+Missing character: There is no ^^84 in font cmr10!
+Missing character: There is no ^^85 in font cmr10!
+Missing character: There is no ^^86 in font cmr10!
+Missing character: There is no ^^87 in font cmr10!
+Missing character: There is no ^^88 in font cmr10!
+Missing character: There is no ^^89 in font cmr10!
+Missing character: There is no ^^8a in font cmr10!
+Missing character: There is no ^^8b in font cmr10!
+Missing character: There is no ^^8c in font cmr10!
+Missing character: There is no ^^8d in font cmr10!
+Missing character: There is no ^^8e in font cmr10!
+Missing character: There is no ^^8f in font cmr10!
+Missing character: There is no ^^90 in font cmr10!
+Missing character: There is no ^^91 in font cmr10!
+Missing character: There is no ^^92 in font cmr10!
+Missing character: There is no ^^93 in font cmr10!
+Missing character: There is no ^^94 in font cmr10!
+Missing character: There is no ^^95 in font cmr10!
+Missing character: There is no ^^96 in font cmr10!
+Missing character: There is no ^^97 in font cmr10!
+Missing character: There is no ^^98 in font cmr10!
+Missing character: There is no ^^99 in font cmr10!
+Missing character: There is no ^^9a in font cmr10!
+Missing character: There is no ^^9b in font cmr10!
+Missing character: There is no ^^9c in font cmr10!
+Missing character: There is no ^^9d in font cmr10!
+Missing character: There is no ^^9e in font cmr10!
+Missing character: There is no ^^9f in font cmr10!
+Missing character: There is no ^^a0 in font cmr10!
+Missing character: There is no ^^a1 in font cmr10!
+Missing character: There is no ^^a2 in font cmr10!
+Missing character: There is no ^^a3 in font cmr10!
+Missing character: There is no ^^a4 in font cmr10!
+Missing character: There is no ^^a5 in font cmr10!
+Missing character: There is no ^^a6 in font cmr10!
+Missing character: There is no ^^a7 in font cmr10!
+Missing character: There is no ^^a8 in font cmr10!
+Missing character: There is no ^^a9 in font cmr10!
+Missing character: There is no ^^aa in font cmr10!
+Missing character: There is no ^^ab in font cmr10!
+Missing character: There is no ^^ac in font cmr10!
+Missing character: There is no ^^ad in font cmr10!
+Missing character: There is no ^^ae in font cmr10!
+Missing character: There is no ^^af in font cmr10!
+Missing character: There is no ^^b0 in font cmr10!
+Missing character: There is no ^^b1 in font cmr10!
+Missing character: There is no ^^b2 in font cmr10!
+Missing character: There is no ^^b3 in font cmr10!
+Missing character: There is no ^^b4 in font cmr10!
+Missing character: There is no ^^b5 in font cmr10!
+Missing character: There is no ^^b6 in font cmr10!
+Missing character: There is no ^^b7 in font cmr10!
+Missing character: There is no ^^b8 in font cmr10!
+Missing character: There is no ^^b9 in font cmr10!
+Missing character: There is no ^^ba in font cmr10!
+Missing character: There is no ^^bb in font cmr10!
+Missing character: There is no ^^bc in font cmr10!
+Missing character: There is no ^^bd in font cmr10!
+Missing character: There is no ^^be in font cmr10!
+Missing character: There is no ^^bf in font cmr10!
+Missing character: There is no ^^c0 in font cmr10!
+Missing character: There is no ^^c1 in font cmr10!
+Missing character: There is no ^^c2 in font cmr10!
+Missing character: There is no ^^c3 in font cmr10!
+Missing character: There is no ^^c4 in font cmr10!
+Missing character: There is no ^^c5 in font cmr10!
+Missing character: There is no ^^c6 in font cmr10!
+Missing character: There is no ^^c7 in font cmr10!
+Missing character: There is no ^^c8 in font cmr10!
+Missing character: There is no ^^c9 in font cmr10!
+Missing character: There is no ^^ca in font cmr10!
+Missing character: There is no ^^cb in font cmr10!
+Missing character: There is no ^^cc in font cmr10!
+Missing character: There is no ^^cd in font cmr10!
+Missing character: There is no ^^ce in font cmr10!
+Missing character: There is no ^^cf in font cmr10!
+Missing character: There is no ^^d0 in font cmr10!
+Missing character: There is no ^^d1 in font cmr10!
+Missing character: There is no ^^d2 in font cmr10!
+Missing character: There is no ^^d3 in font cmr10!
+Missing character: There is no ^^d4 in font cmr10!
+Missing character: There is no ^^d5 in font cmr10!
+Missing character: There is no ^^d6 in font cmr10!
+Missing character: There is no ^^d7 in font cmr10!
+Missing character: There is no ^^d8 in font cmr10!
+Missing character: There is no ^^d9 in font cmr10!
+Missing character: There is no ^^da in font cmr10!
+Missing character: There is no ^^db in font cmr10!
+Missing character: There is no ^^dc in font cmr10!
+Missing character: There is no ^^dd in font cmr10!
+Missing character: There is no ^^de in font cmr10!
+Missing character: There is no ^^df in font cmr10!
+Missing character: There is no ^^e0 in font cmr10!
+Missing character: There is no ^^e1 in font cmr10!
+Missing character: There is no ^^e2 in font cmr10!
+Missing character: There is no ^^e3 in font cmr10!
+Missing character: There is no ^^e4 in font cmr10!
+Missing character: There is no ^^e5 in font cmr10!
+Missing character: There is no ^^e6 in font cmr10!
+Missing character: There is no ^^e7 in font cmr10!
+Missing character: There is no ^^e8 in font cmr10!
+Missing character: There is no ^^e9 in font cmr10!
+Missing character: There is no ^^ea in font cmr10!
+Missing character: There is no ^^eb in font cmr10!
+Missing character: There is no ^^ec in font cmr10!
+Missing character: There is no ^^ed in font cmr10!
+Missing character: There is no ^^ee in font cmr10!
+Missing character: There is no ^^ef in font cmr10!
+Missing character: There is no ^^f0 in font cmr10!
+Missing character: There is no ^^f1 in font cmr10!
+Missing character: There is no ^^f2 in font cmr10!
+Missing character: There is no ^^f3 in font cmr10!
+Missing character: There is no ^^f4 in font cmr10!
+Missing character: There is no ^^f5 in font cmr10!
+Missing character: There is no ^^f6 in font cmr10!
+Missing character: There is no ^^f7 in font cmr10!
+Missing character: There is no ^^f8 in font cmr10!
+Missing character: There is no ^^f9 in font cmr10!
+Missing character: There is no ^^fa in font cmr10!
+Missing character: There is no ^^fb in font cmr10!
+Missing character: There is no ^^fc in font cmr10!
+Missing character: There is no ^^fd in font cmr10!
+Missing character: There is no ^^fe in font cmr10!
+Missing character: There is no ^^ff in font cmr10!
+Missing character: There is no ^^80 in font ccr10!
+Missing character: There is no ^^81 in font ccr10!
+Missing character: There is no ^^82 in font ccr10!
+Missing character: There is no ^^83 in font ccr10!
+Missing character: There is no ^^84 in font ccr10!
+Missing character: There is no ^^85 in font ccr10!
+Missing character: There is no ^^86 in font ccr10!
+Missing character: There is no ^^87 in font ccr10!
+Missing character: There is no ^^88 in font ccr10!
+Missing character: There is no ^^89 in font ccr10!
+Missing character: There is no ^^8a in font ccr10!
+Missing character: There is no ^^8b in font ccr10!
+Missing character: There is no ^^8c in font ccr10!
+Missing character: There is no ^^8d in font ccr10!
+Missing character: There is no ^^8e in font ccr10!
+Missing character: There is no ^^8f in font ccr10!
+Missing character: There is no ^^90 in font ccr10!
+Missing character: There is no ^^91 in font ccr10!
+Missing character: There is no ^^92 in font ccr10!
+Missing character: There is no ^^93 in font ccr10!
+Missing character: There is no ^^94 in font ccr10!
+Missing character: There is no ^^95 in font ccr10!
+Missing character: There is no ^^96 in font ccr10!
+Missing character: There is no ^^97 in font ccr10!
+Missing character: There is no ^^98 in font ccr10!
+Missing character: There is no ^^99 in font ccr10!
+Missing character: There is no ^^9a in font ccr10!
+Missing character: There is no ^^9b in font ccr10!
+Missing character: There is no ^^9c in font ccr10!
+Missing character: There is no ^^9d in font ccr10!
+Missing character: There is no ^^9e in font ccr10!
+Missing character: There is no ^^9f in font ccr10!
+Missing character: There is no ^^a0 in font ccr10!
+Missing character: There is no ^^a1 in font ccr10!
+Missing character: There is no ^^a2 in font ccr10!
+Missing character: There is no ^^a3 in font ccr10!
+Missing character: There is no ^^a4 in font ccr10!
+Missing character: There is no ^^a5 in font ccr10!
+Missing character: There is no ^^a6 in font ccr10!
+Missing character: There is no ^^a7 in font ccr10!
+Missing character: There is no ^^a8 in font ccr10!
+Missing character: There is no ^^a9 in font ccr10!
+Missing character: There is no ^^aa in font ccr10!
+Missing character: There is no ^^ab in font ccr10!
+Missing character: There is no ^^ac in font ccr10!
+Missing character: There is no ^^ad in font ccr10!
+Missing character: There is no ^^ae in font ccr10!
+Missing character: There is no ^^af in font ccr10!
+Missing character: There is no ^^b0 in font ccr10!
+Missing character: There is no ^^b1 in font ccr10!
+Missing character: There is no ^^b2 in font ccr10!
+Missing character: There is no ^^b3 in font ccr10!
+Missing character: There is no ^^b4 in font ccr10!
+Missing character: There is no ^^b5 in font ccr10!
+Missing character: There is no ^^b6 in font ccr10!
+Missing character: There is no ^^b7 in font ccr10!
+Missing character: There is no ^^b8 in font ccr10!
+Missing character: There is no ^^b9 in font ccr10!
+Missing character: There is no ^^ba in font ccr10!
+Missing character: There is no ^^bb in font ccr10!
+Missing character: There is no ^^bc in font ccr10!
+Missing character: There is no ^^bd in font ccr10!
+Missing character: There is no ^^be in font ccr10!
+Missing character: There is no ^^bf in font ccr10!
+Missing character: There is no ^^c0 in font ccr10!
+Missing character: There is no ^^c1 in font ccr10!
+Missing character: There is no ^^c2 in font ccr10!
+Missing character: There is no ^^c3 in font ccr10!
+Missing character: There is no ^^c4 in font ccr10!
+Missing character: There is no ^^c5 in font ccr10!
+Missing character: There is no ^^c6 in font ccr10!
+Missing character: There is no ^^c7 in font ccr10!
+Missing character: There is no ^^c8 in font ccr10!
+Missing character: There is no ^^c9 in font ccr10!
+Missing character: There is no ^^ca in font ccr10!
+Missing character: There is no ^^cb in font ccr10!
+Missing character: There is no ^^cc in font ccr10!
+Missing character: There is no ^^cd in font ccr10!
+Missing character: There is no ^^ce in font ccr10!
+Missing character: There is no ^^cf in font ccr10!
+Missing character: There is no ^^d0 in font ccr10!
+Missing character: There is no ^^d1 in font ccr10!
+Missing character: There is no ^^d2 in font ccr10!
+Missing character: There is no ^^d3 in font ccr10!
+Missing character: There is no ^^d4 in font ccr10!
+Missing character: There is no ^^d5 in font ccr10!
+Missing character: There is no ^^d6 in font ccr10!
+Missing character: There is no ^^d7 in font ccr10!
+Missing character: There is no ^^d8 in font ccr10!
+Missing character: There is no ^^d9 in font ccr10!
+Missing character: There is no ^^da in font ccr10!
+Missing character: There is no ^^db in font ccr10!
+Missing character: There is no ^^dc in font ccr10!
+Missing character: There is no ^^dd in font ccr10!
+Missing character: There is no ^^de in font ccr10!
+Missing character: There is no ^^df in font ccr10!
+Missing character: There is no ^^e0 in font ccr10!
+Missing character: There is no ^^e1 in font ccr10!
+Missing character: There is no ^^e2 in font ccr10!
+Missing character: There is no ^^e3 in font ccr10!
+Missing character: There is no ^^e4 in font ccr10!
+Missing character: There is no ^^e5 in font ccr10!
+Missing character: There is no ^^e6 in font ccr10!
+Missing character: There is no ^^e7 in font ccr10!
+Missing character: There is no ^^e8 in font ccr10!
+Missing character: There is no ^^e9 in font ccr10!
+Missing character: There is no ^^ea in font ccr10!
+Missing character: There is no ^^eb in font ccr10!
+Missing character: There is no ^^ec in font ccr10!
+Missing character: There is no ^^ed in font ccr10!
+Missing character: There is no ^^ee in font ccr10!
+Missing character: There is no ^^ef in font ccr10!
+Missing character: There is no ^^f0 in font ccr10!
+Missing character: There is no ^^f1 in font ccr10!
+Missing character: There is no ^^f2 in font ccr10!
+Missing character: There is no ^^f3 in font ccr10!
+Missing character: There is no ^^f4 in font ccr10!
+Missing character: There is no ^^f5 in font ccr10!
+Missing character: There is no ^^f6 in font ccr10!
+Missing character: There is no ^^f7 in font ccr10!
+Missing character: There is no ^^f8 in font ccr10!
+Missing character: There is no ^^f9 in font ccr10!
+Missing character: There is no ^^fa in font ccr10!
+Missing character: There is no ^^fb in font ccr10!
+Missing character: There is no ^^fc in font ccr10!
+Missing character: There is no ^^fd in font ccr10!
+Missing character: There is no ^^fe in font ccr10!
+Missing character: There is no ^^ff in font ccr10!
+ [15]
+Missing character: There is no ^^80 in font pnr10!
+Missing character: There is no ^^81 in font pnr10!
+Missing character: There is no ^^82 in font pnr10!
+Missing character: There is no ^^83 in font pnr10!
+Missing character: There is no ^^84 in font pnr10!
+Missing character: There is no ^^85 in font pnr10!
+Missing character: There is no ^^86 in font pnr10!
+Missing character: There is no ^^87 in font pnr10!
+Missing character: There is no ^^88 in font pnr10!
+Missing character: There is no ^^89 in font pnr10!
+Missing character: There is no ^^8a in font pnr10!
+Missing character: There is no ^^8b in font pnr10!
+Missing character: There is no ^^8c in font pnr10!
+Missing character: There is no ^^8d in font pnr10!
+Missing character: There is no ^^8e in font pnr10!
+Missing character: There is no ^^8f in font pnr10!
+Missing character: There is no ^^90 in font pnr10!
+Missing character: There is no ^^91 in font pnr10!
+Missing character: There is no ^^92 in font pnr10!
+Missing character: There is no ^^93 in font pnr10!
+Missing character: There is no ^^94 in font pnr10!
+Missing character: There is no ^^95 in font pnr10!
+Missing character: There is no ^^96 in font pnr10!
+Missing character: There is no ^^97 in font pnr10!
+Missing character: There is no ^^98 in font pnr10!
+Missing character: There is no ^^99 in font pnr10!
+Missing character: There is no ^^9a in font pnr10!
+Missing character: There is no ^^9b in font pnr10!
+Missing character: There is no ^^9c in font pnr10!
+Missing character: There is no ^^9d in font pnr10!
+Missing character: There is no ^^9e in font pnr10!
+Missing character: There is no ^^9f in font pnr10!
+Missing character: There is no ^^a0 in font pnr10!
+Missing character: There is no ^^a1 in font pnr10!
+Missing character: There is no ^^a2 in font pnr10!
+Missing character: There is no ^^a3 in font pnr10!
+Missing character: There is no ^^a4 in font pnr10!
+Missing character: There is no ^^a5 in font pnr10!
+Missing character: There is no ^^a6 in font pnr10!
+Missing character: There is no ^^a7 in font pnr10!
+Missing character: There is no ^^a8 in font pnr10!
+Missing character: There is no ^^a9 in font pnr10!
+Missing character: There is no ^^aa in font pnr10!
+Missing character: There is no ^^ab in font pnr10!
+Missing character: There is no ^^ac in font pnr10!
+Missing character: There is no ^^ad in font pnr10!
+Missing character: There is no ^^ae in font pnr10!
+Missing character: There is no ^^af in font pnr10!
+Missing character: There is no ^^b0 in font pnr10!
+Missing character: There is no ^^b1 in font pnr10!
+Missing character: There is no ^^b2 in font pnr10!
+Missing character: There is no ^^b3 in font pnr10!
+Missing character: There is no ^^b4 in font pnr10!
+Missing character: There is no ^^b5 in font pnr10!
+Missing character: There is no ^^b6 in font pnr10!
+Missing character: There is no ^^b7 in font pnr10!
+Missing character: There is no ^^b8 in font pnr10!
+Missing character: There is no ^^b9 in font pnr10!
+Missing character: There is no ^^ba in font pnr10!
+Missing character: There is no ^^bb in font pnr10!
+Missing character: There is no ^^bc in font pnr10!
+Missing character: There is no ^^bd in font pnr10!
+Missing character: There is no ^^be in font pnr10!
+Missing character: There is no ^^bf in font pnr10!
+Missing character: There is no ^^c0 in font pnr10!
+Missing character: There is no ^^c1 in font pnr10!
+Missing character: There is no ^^c2 in font pnr10!
+Missing character: There is no ^^c3 in font pnr10!
+Missing character: There is no ^^c4 in font pnr10!
+Missing character: There is no ^^c5 in font pnr10!
+Missing character: There is no ^^c6 in font pnr10!
+Missing character: There is no ^^c7 in font pnr10!
+Missing character: There is no ^^c8 in font pnr10!
+Missing character: There is no ^^c9 in font pnr10!
+Missing character: There is no ^^ca in font pnr10!
+Missing character: There is no ^^cb in font pnr10!
+Missing character: There is no ^^cc in font pnr10!
+Missing character: There is no ^^cd in font pnr10!
+Missing character: There is no ^^ce in font pnr10!
+Missing character: There is no ^^cf in font pnr10!
+Missing character: There is no ^^d0 in font pnr10!
+Missing character: There is no ^^d1 in font pnr10!
+Missing character: There is no ^^d2 in font pnr10!
+Missing character: There is no ^^d3 in font pnr10!
+Missing character: There is no ^^d4 in font pnr10!
+Missing character: There is no ^^d5 in font pnr10!
+Missing character: There is no ^^d6 in font pnr10!
+Missing character: There is no ^^d7 in font pnr10!
+Missing character: There is no ^^d8 in font pnr10!
+Missing character: There is no ^^d9 in font pnr10!
+Missing character: There is no ^^da in font pnr10!
+Missing character: There is no ^^db in font pnr10!
+Missing character: There is no ^^dc in font pnr10!
+Missing character: There is no ^^dd in font pnr10!
+Missing character: There is no ^^de in font pnr10!
+Missing character: There is no ^^df in font pnr10!
+Missing character: There is no ^^e0 in font pnr10!
+Missing character: There is no ^^e1 in font pnr10!
+Missing character: There is no ^^e2 in font pnr10!
+Missing character: There is no ^^e3 in font pnr10!
+Missing character: There is no ^^e4 in font pnr10!
+Missing character: There is no ^^e5 in font pnr10!
+Missing character: There is no ^^e6 in font pnr10!
+Missing character: There is no ^^e7 in font pnr10!
+Missing character: There is no ^^e8 in font pnr10!
+Missing character: There is no ^^e9 in font pnr10!
+Missing character: There is no ^^ea in font pnr10!
+Missing character: There is no ^^eb in font pnr10!
+Missing character: There is no ^^ec in font pnr10!
+Missing character: There is no ^^ed in font pnr10!
+Missing character: There is no ^^ee in font pnr10!
+Missing character: There is no ^^ef in font pnr10!
+Missing character: There is no ^^f0 in font pnr10!
+Missing character: There is no ^^f1 in font pnr10!
+Missing character: There is no ^^f2 in font pnr10!
+Missing character: There is no ^^f3 in font pnr10!
+Missing character: There is no ^^f4 in font pnr10!
+Missing character: There is no ^^f5 in font pnr10!
+Missing character: There is no ^^f6 in font pnr10!
+Missing character: There is no ^^f7 in font pnr10!
+Missing character: There is no ^^f8 in font pnr10!
+Missing character: There is no ^^f9 in font pnr10!
+Missing character: There is no ^^fa in font pnr10!
+Missing character: There is no ^^fb in font pnr10!
+Missing character: There is no ^^fc in font pnr10!
+Missing character: There is no ^^fd in font pnr10!
+Missing character: There is no ^^fe in font pnr10!
+Missing character: There is no ^^ff in font pnr10!
+ [16]
+Missing character: There is no ^^80 in font cmfib8!
+Missing character: There is no ^^81 in font cmfib8!
+Missing character: There is no ^^82 in font cmfib8!
+Missing character: There is no ^^83 in font cmfib8!
+Missing character: There is no ^^84 in font cmfib8!
+Missing character: There is no ^^85 in font cmfib8!
+Missing character: There is no ^^86 in font cmfib8!
+Missing character: There is no ^^87 in font cmfib8!
+Missing character: There is no ^^88 in font cmfib8!
+Missing character: There is no ^^89 in font cmfib8!
+Missing character: There is no ^^8a in font cmfib8!
+Missing character: There is no ^^8b in font cmfib8!
+Missing character: There is no ^^8c in font cmfib8!
+Missing character: There is no ^^8d in font cmfib8!
+Missing character: There is no ^^8e in font cmfib8!
+Missing character: There is no ^^8f in font cmfib8!
+Missing character: There is no ^^90 in font cmfib8!
+Missing character: There is no ^^91 in font cmfib8!
+Missing character: There is no ^^92 in font cmfib8!
+Missing character: There is no ^^93 in font cmfib8!
+Missing character: There is no ^^94 in font cmfib8!
+Missing character: There is no ^^95 in font cmfib8!
+Missing character: There is no ^^96 in font cmfib8!
+Missing character: There is no ^^97 in font cmfib8!
+Missing character: There is no ^^98 in font cmfib8!
+Missing character: There is no ^^99 in font cmfib8!
+Missing character: There is no ^^9a in font cmfib8!
+Missing character: There is no ^^9b in font cmfib8!
+Missing character: There is no ^^9c in font cmfib8!
+Missing character: There is no ^^9d in font cmfib8!
+Missing character: There is no ^^9e in font cmfib8!
+Missing character: There is no ^^9f in font cmfib8!
+Missing character: There is no ^^a0 in font cmfib8!
+Missing character: There is no ^^a1 in font cmfib8!
+Missing character: There is no ^^a2 in font cmfib8!
+Missing character: There is no ^^a3 in font cmfib8!
+Missing character: There is no ^^a4 in font cmfib8!
+Missing character: There is no ^^a5 in font cmfib8!
+Missing character: There is no ^^a6 in font cmfib8!
+Missing character: There is no ^^a7 in font cmfib8!
+Missing character: There is no ^^a8 in font cmfib8!
+Missing character: There is no ^^a9 in font cmfib8!
+Missing character: There is no ^^aa in font cmfib8!
+Missing character: There is no ^^ab in font cmfib8!
+Missing character: There is no ^^ac in font cmfib8!
+Missing character: There is no ^^ad in font cmfib8!
+Missing character: There is no ^^ae in font cmfib8!
+Missing character: There is no ^^af in font cmfib8!
+Missing character: There is no ^^b0 in font cmfib8!
+Missing character: There is no ^^b1 in font cmfib8!
+Missing character: There is no ^^b2 in font cmfib8!
+Missing character: There is no ^^b3 in font cmfib8!
+Missing character: There is no ^^b4 in font cmfib8!
+Missing character: There is no ^^b5 in font cmfib8!
+Missing character: There is no ^^b6 in font cmfib8!
+Missing character: There is no ^^b7 in font cmfib8!
+Missing character: There is no ^^b8 in font cmfib8!
+Missing character: There is no ^^b9 in font cmfib8!
+Missing character: There is no ^^ba in font cmfib8!
+Missing character: There is no ^^bb in font cmfib8!
+Missing character: There is no ^^bc in font cmfib8!
+Missing character: There is no ^^bd in font cmfib8!
+Missing character: There is no ^^be in font cmfib8!
+Missing character: There is no ^^bf in font cmfib8!
+Missing character: There is no ^^c0 in font cmfib8!
+Missing character: There is no ^^c1 in font cmfib8!
+Missing character: There is no ^^c2 in font cmfib8!
+Missing character: There is no ^^c3 in font cmfib8!
+Missing character: There is no ^^c4 in font cmfib8!
+Missing character: There is no ^^c5 in font cmfib8!
+Missing character: There is no ^^c6 in font cmfib8!
+Missing character: There is no ^^c7 in font cmfib8!
+Missing character: There is no ^^c8 in font cmfib8!
+Missing character: There is no ^^c9 in font cmfib8!
+Missing character: There is no ^^ca in font cmfib8!
+Missing character: There is no ^^cb in font cmfib8!
+Missing character: There is no ^^cc in font cmfib8!
+Missing character: There is no ^^cd in font cmfib8!
+Missing character: There is no ^^ce in font cmfib8!
+Missing character: There is no ^^cf in font cmfib8!
+Missing character: There is no ^^d0 in font cmfib8!
+Missing character: There is no ^^d1 in font cmfib8!
+Missing character: There is no ^^d2 in font cmfib8!
+Missing character: There is no ^^d3 in font cmfib8!
+Missing character: There is no ^^d4 in font cmfib8!
+Missing character: There is no ^^d5 in font cmfib8!
+Missing character: There is no ^^d6 in font cmfib8!
+Missing character: There is no ^^d7 in font cmfib8!
+Missing character: There is no ^^d8 in font cmfib8!
+Missing character: There is no ^^d9 in font cmfib8!
+Missing character: There is no ^^da in font cmfib8!
+Missing character: There is no ^^db in font cmfib8!
+Missing character: There is no ^^dc in font cmfib8!
+Missing character: There is no ^^dd in font cmfib8!
+Missing character: There is no ^^de in font cmfib8!
+Missing character: There is no ^^df in font cmfib8!
+Missing character: There is no ^^e0 in font cmfib8!
+Missing character: There is no ^^e1 in font cmfib8!
+Missing character: There is no ^^e2 in font cmfib8!
+Missing character: There is no ^^e3 in font cmfib8!
+Missing character: There is no ^^e4 in font cmfib8!
+Missing character: There is no ^^e5 in font cmfib8!
+Missing character: There is no ^^e6 in font cmfib8!
+Missing character: There is no ^^e7 in font cmfib8!
+Missing character: There is no ^^e8 in font cmfib8!
+Missing character: There is no ^^e9 in font cmfib8!
+Missing character: There is no ^^ea in font cmfib8!
+Missing character: There is no ^^eb in font cmfib8!
+Missing character: There is no ^^ec in font cmfib8!
+Missing character: There is no ^^ed in font cmfib8!
+Missing character: There is no ^^ee in font cmfib8!
+Missing character: There is no ^^ef in font cmfib8!
+Missing character: There is no ^^f0 in font cmfib8!
+Missing character: There is no ^^f1 in font cmfib8!
+Missing character: There is no ^^f2 in font cmfib8!
+Missing character: There is no ^^f3 in font cmfib8!
+Missing character: There is no ^^f4 in font cmfib8!
+Missing character: There is no ^^f5 in font cmfib8!
+Missing character: There is no ^^f6 in font cmfib8!
+Missing character: There is no ^^f7 in font cmfib8!
+Missing character: There is no ^^f8 in font cmfib8!
+Missing character: There is no ^^f9 in font cmfib8!
+Missing character: There is no ^^fa in font cmfib8!
+Missing character: There is no ^^fb in font cmfib8!
+Missing character: There is no ^^fc in font cmfib8!
+Missing character: There is no ^^fd in font cmfib8!
+Missing character: There is no ^^fe in font cmfib8!
+Missing character: There is no ^^ff in font cmfib8!
+ [17]
+Missing character: There is no ^^80 in font cmdunh10!
+Missing character: There is no ^^81 in font cmdunh10!
+Missing character: There is no ^^82 in font cmdunh10!
+Missing character: There is no ^^83 in font cmdunh10!
+Missing character: There is no ^^84 in font cmdunh10!
+Missing character: There is no ^^85 in font cmdunh10!
+Missing character: There is no ^^86 in font cmdunh10!
+Missing character: There is no ^^87 in font cmdunh10!
+Missing character: There is no ^^88 in font cmdunh10!
+Missing character: There is no ^^89 in font cmdunh10!
+Missing character: There is no ^^8a in font cmdunh10!
+Missing character: There is no ^^8b in font cmdunh10!
+Missing character: There is no ^^8c in font cmdunh10!
+Missing character: There is no ^^8d in font cmdunh10!
+Missing character: There is no ^^8e in font cmdunh10!
+Missing character: There is no ^^8f in font cmdunh10!
+Missing character: There is no ^^90 in font cmdunh10!
+Missing character: There is no ^^91 in font cmdunh10!
+Missing character: There is no ^^92 in font cmdunh10!
+Missing character: There is no ^^93 in font cmdunh10!
+Missing character: There is no ^^94 in font cmdunh10!
+Missing character: There is no ^^95 in font cmdunh10!
+Missing character: There is no ^^96 in font cmdunh10!
+Missing character: There is no ^^97 in font cmdunh10!
+Missing character: There is no ^^98 in font cmdunh10!
+Missing character: There is no ^^99 in font cmdunh10!
+Missing character: There is no ^^9a in font cmdunh10!
+Missing character: There is no ^^9b in font cmdunh10!
+Missing character: There is no ^^9c in font cmdunh10!
+Missing character: There is no ^^9d in font cmdunh10!
+Missing character: There is no ^^9e in font cmdunh10!
+Missing character: There is no ^^9f in font cmdunh10!
+Missing character: There is no ^^a0 in font cmdunh10!
+Missing character: There is no ^^a1 in font cmdunh10!
+Missing character: There is no ^^a2 in font cmdunh10!
+Missing character: There is no ^^a3 in font cmdunh10!
+Missing character: There is no ^^a4 in font cmdunh10!
+Missing character: There is no ^^a5 in font cmdunh10!
+Missing character: There is no ^^a6 in font cmdunh10!
+Missing character: There is no ^^a7 in font cmdunh10!
+Missing character: There is no ^^a8 in font cmdunh10!
+Missing character: There is no ^^a9 in font cmdunh10!
+Missing character: There is no ^^aa in font cmdunh10!
+Missing character: There is no ^^ab in font cmdunh10!
+Missing character: There is no ^^ac in font cmdunh10!
+Missing character: There is no ^^ad in font cmdunh10!
+Missing character: There is no ^^ae in font cmdunh10!
+Missing character: There is no ^^af in font cmdunh10!
+Missing character: There is no ^^b0 in font cmdunh10!
+Missing character: There is no ^^b1 in font cmdunh10!
+Missing character: There is no ^^b2 in font cmdunh10!
+Missing character: There is no ^^b3 in font cmdunh10!
+Missing character: There is no ^^b4 in font cmdunh10!
+Missing character: There is no ^^b5 in font cmdunh10!
+Missing character: There is no ^^b6 in font cmdunh10!
+Missing character: There is no ^^b7 in font cmdunh10!
+Missing character: There is no ^^b8 in font cmdunh10!
+Missing character: There is no ^^b9 in font cmdunh10!
+Missing character: There is no ^^ba in font cmdunh10!
+Missing character: There is no ^^bb in font cmdunh10!
+Missing character: There is no ^^bc in font cmdunh10!
+Missing character: There is no ^^bd in font cmdunh10!
+Missing character: There is no ^^be in font cmdunh10!
+Missing character: There is no ^^bf in font cmdunh10!
+Missing character: There is no ^^c0 in font cmdunh10!
+Missing character: There is no ^^c1 in font cmdunh10!
+Missing character: There is no ^^c2 in font cmdunh10!
+Missing character: There is no ^^c3 in font cmdunh10!
+Missing character: There is no ^^c4 in font cmdunh10!
+Missing character: There is no ^^c5 in font cmdunh10!
+Missing character: There is no ^^c6 in font cmdunh10!
+Missing character: There is no ^^c7 in font cmdunh10!
+Missing character: There is no ^^c8 in font cmdunh10!
+Missing character: There is no ^^c9 in font cmdunh10!
+Missing character: There is no ^^ca in font cmdunh10!
+Missing character: There is no ^^cb in font cmdunh10!
+Missing character: There is no ^^cc in font cmdunh10!
+Missing character: There is no ^^cd in font cmdunh10!
+Missing character: There is no ^^ce in font cmdunh10!
+Missing character: There is no ^^cf in font cmdunh10!
+Missing character: There is no ^^d0 in font cmdunh10!
+Missing character: There is no ^^d1 in font cmdunh10!
+Missing character: There is no ^^d2 in font cmdunh10!
+Missing character: There is no ^^d3 in font cmdunh10!
+Missing character: There is no ^^d4 in font cmdunh10!
+Missing character: There is no ^^d5 in font cmdunh10!
+Missing character: There is no ^^d6 in font cmdunh10!
+Missing character: There is no ^^d7 in font cmdunh10!
+Missing character: There is no ^^d8 in font cmdunh10!
+Missing character: There is no ^^d9 in font cmdunh10!
+Missing character: There is no ^^da in font cmdunh10!
+Missing character: There is no ^^db in font cmdunh10!
+Missing character: There is no ^^dc in font cmdunh10!
+Missing character: There is no ^^dd in font cmdunh10!
+Missing character: There is no ^^de in font cmdunh10!
+Missing character: There is no ^^df in font cmdunh10!
+Missing character: There is no ^^e0 in font cmdunh10!
+Missing character: There is no ^^e1 in font cmdunh10!
+Missing character: There is no ^^e2 in font cmdunh10!
+Missing character: There is no ^^e3 in font cmdunh10!
+Missing character: There is no ^^e4 in font cmdunh10!
+Missing character: There is no ^^e5 in font cmdunh10!
+Missing character: There is no ^^e6 in font cmdunh10!
+Missing character: There is no ^^e7 in font cmdunh10!
+Missing character: There is no ^^e8 in font cmdunh10!
+Missing character: There is no ^^e9 in font cmdunh10!
+Missing character: There is no ^^ea in font cmdunh10!
+Missing character: There is no ^^eb in font cmdunh10!
+Missing character: There is no ^^ec in font cmdunh10!
+Missing character: There is no ^^ed in font cmdunh10!
+Missing character: There is no ^^ee in font cmdunh10!
+Missing character: There is no ^^ef in font cmdunh10!
+Missing character: There is no ^^f0 in font cmdunh10!
+Missing character: There is no ^^f1 in font cmdunh10!
+Missing character: There is no ^^f2 in font cmdunh10!
+Missing character: There is no ^^f3 in font cmdunh10!
+Missing character: There is no ^^f4 in font cmdunh10!
+Missing character: There is no ^^f5 in font cmdunh10!
+Missing character: There is no ^^f6 in font cmdunh10!
+Missing character: There is no ^^f7 in font cmdunh10!
+Missing character: There is no ^^f8 in font cmdunh10!
+Missing character: There is no ^^f9 in font cmdunh10!
+Missing character: There is no ^^fa in font cmdunh10!
+Missing character: There is no ^^fb in font cmdunh10!
+Missing character: There is no ^^fc in font cmdunh10!
+Missing character: There is no ^^fd in font cmdunh10!
+Missing character: There is no ^^fe in font cmdunh10!
+Missing character: There is no ^^ff in font cmdunh10!
+ [18]
+Missing character: There is no ^^Q in font ptmr!
+Missing character: There is no ^^8b in font ptmr!
+Missing character: There is no ^^8c in font ptmr!
+Missing character: There is no ^^8d in font ptmr!
+Missing character: There is no ^^8e in font ptmr!
+Missing character: There is no ^^8f in font ptmr!
+Missing character: There is no ^^90 in font ptmr!
+Missing character: There is no ^^91 in font ptmr!
+Missing character: There is no ^^93 in font ptmr!
+Missing character: There is no ^^94 in font ptmr!
+Missing character: There is no ^^95 in font ptmr!
+Missing character: There is no ^^96 in font ptmr!
+Missing character: There is no ^^97 in font ptmr!
+Missing character: There is no ^^99 in font ptmr!
+Missing character: There is no ^^9b in font ptmr!
+Missing character: There is no ^^9c in font ptmr!
+Missing character: There is no ^^9d in font ptmr!
+Missing character: There is no ^^9e in font ptmr!
+Missing character: There is no ^^9f in font ptmr!
+Missing character: There is no ^^a0 in font ptmr!
+Missing character: There is no ^^a1 in font ptmr!
+Missing character: There is no ^^b5 in font ptmr!
+Missing character: There is no ^^be in font ptmr!
+Missing character: There is no ^^bf in font ptmr!
+Missing character: There is no ^^c6 in font ptmr!
+Missing character: There is no ^^d7 in font ptmr!
+Missing character: There is no ^^d8 in font ptmr!
+Missing character: There is no ^^df in font ptmr!
+Missing character: There is no ^^e6 in font ptmr!
+Missing character: There is no ^^f0 in font ptmr!
+Missing character: There is no ^^f7 in font ptmr!
+ [19]
+Missing character: There is no ^^@ in font pplr!
+Missing character: There is no ^^A in font pplr!
+Missing character: There is no ^^B in font pplr!
+Missing character: There is no ^^C in font pplr!
+Missing character: There is no ^^D in font pplr!
+Missing character: There is no ^^E in font pplr!
+Missing character: There is no ^^F in font pplr!
+Missing character: There is no ^^G in font pplr!
+Missing character: There is no ^^H in font pplr!
+Missing character: There is no ^^I in font pplr!
+Missing character: There is no 
+ in font pplr!
+Missing character: There is no ^^K in font pplr!
+Missing character: There is no ^^L in font pplr!
+Missing character: There is no ^^Q in font pplr!
+Missing character: There is no ^^8b in font pplr!
+Missing character: There is no ^^8c in font pplr!
+Missing character: There is no ^^8d in font pplr!
+Missing character: There is no ^^8e in font pplr!
+Missing character: There is no ^^8f in font pplr!
+Missing character: There is no ^^90 in font pplr!
+Missing character: There is no ^^91 in font pplr!
+Missing character: There is no ^^93 in font pplr!
+Missing character: There is no ^^94 in font pplr!
+Missing character: There is no ^^95 in font pplr!
+Missing character: There is no ^^96 in font pplr!
+Missing character: There is no ^^97 in font pplr!
+Missing character: There is no ^^99 in font pplr!
+Missing character: There is no ^^9b in font pplr!
+Missing character: There is no ^^9c in font pplr!
+Missing character: There is no ^^9d in font pplr!
+Missing character: There is no ^^9e in font pplr!
+Missing character: There is no ^^9f in font pplr!
+Missing character: There is no ^^a0 in font pplr!
+Missing character: There is no ^^a1 in font pplr!
+Missing character: There is no ^^b5 in font pplr!
+Missing character: There is no ^^be in font pplr!
+Missing character: There is no ^^bf in font pplr!
+Missing character: There is no ^^c6 in font pplr!
+Missing character: There is no ^^d7 in font pplr!
+Missing character: There is no ^^d8 in font pplr!
+Missing character: There is no ^^df in font pplr!
+Missing character: There is no ^^e6 in font pplr!
+Missing character: There is no ^^f0 in font pplr!
+Missing character: There is no ^^f7 in font pplr!
+ [20]
+Missing character: There is no ^^@ in font pncr!
+Missing character: There is no ^^A in font pncr!
+Missing character: There is no ^^B in font pncr!
+Missing character: There is no ^^C in font pncr!
+Missing character: There is no ^^D in font pncr!
+Missing character: There is no ^^E in font pncr!
+Missing character: There is no ^^F in font pncr!
+Missing character: There is no ^^G in font pncr!
+Missing character: There is no ^^H in font pncr!
+Missing character: There is no ^^I in font pncr!
+Missing character: There is no 
+ in font pncr!
+Missing character: There is no ^^K in font pncr!
+Missing character: There is no ^^L in font pncr!
+Missing character: There is no ^^Q in font pncr!
+Missing character: There is no ^^8b in font pncr!
+Missing character: There is no ^^8c in font pncr!
+Missing character: There is no ^^8d in font pncr!
+Missing character: There is no ^^8e in font pncr!
+Missing character: There is no ^^8f in font pncr!
+Missing character: There is no ^^90 in font pncr!
+Missing character: There is no ^^91 in font pncr!
+Missing character: There is no ^^93 in font pncr!
+Missing character: There is no ^^94 in font pncr!
+Missing character: There is no ^^95 in font pncr!
+Missing character: There is no ^^96 in font pncr!
+Missing character: There is no ^^97 in font pncr!
+Missing character: There is no ^^99 in font pncr!
+Missing character: There is no ^^9b in font pncr!
+Missing character: There is no ^^9c in font pncr!
+Missing character: There is no ^^9d in font pncr!
+Missing character: There is no ^^9e in font pncr!
+Missing character: There is no ^^9f in font pncr!
+Missing character: There is no ^^a0 in font pncr!
+Missing character: There is no ^^a1 in font pncr!
+Missing character: There is no ^^b5 in font pncr!
+Missing character: There is no ^^be in font pncr!
+Missing character: There is no ^^bf in font pncr!
+Missing character: There is no ^^c6 in font pncr!
+Missing character: There is no ^^d7 in font pncr!
+Missing character: There is no ^^d8 in font pncr!
+Missing character: There is no ^^df in font pncr!
+Missing character: There is no ^^e6 in font pncr!
+Missing character: There is no ^^f0 in font pncr!
+Missing character: There is no ^^f7 in font pncr!
+ [21]
+Missing character: There is no ^^@ in font pbkl!
+Missing character: There is no ^^A in font pbkl!
+Missing character: There is no ^^B in font pbkl!
+Missing character: There is no ^^C in font pbkl!
+Missing character: There is no ^^D in font pbkl!
+Missing character: There is no ^^E in font pbkl!
+Missing character: There is no ^^F in font pbkl!
+Missing character: There is no ^^G in font pbkl!
+Missing character: There is no ^^H in font pbkl!
+Missing character: There is no ^^I in font pbkl!
+Missing character: There is no 
+ in font pbkl!
+Missing character: There is no ^^K in font pbkl!
+Missing character: There is no ^^L in font pbkl!
+Missing character: There is no ^^Q in font pbkl!
+Missing character: There is no ^^8b in font pbkl!
+Missing character: There is no ^^8c in font pbkl!
+Missing character: There is no ^^8d in font pbkl!
+Missing character: There is no ^^8e in font pbkl!
+Missing character: There is no ^^8f in font pbkl!
+Missing character: There is no ^^90 in font pbkl!
+Missing character: There is no ^^91 in font pbkl!
+Missing character: There is no ^^93 in font pbkl!
+Missing character: There is no ^^94 in font pbkl!
+Missing character: There is no ^^95 in font pbkl!
+Missing character: There is no ^^96 in font pbkl!
+Missing character: There is no ^^97 in font pbkl!
+Missing character: There is no ^^99 in font pbkl!
+Missing character: There is no ^^9b in font pbkl!
+Missing character: There is no ^^9c in font pbkl!
+Missing character: There is no ^^9d in font pbkl!
+Missing character: There is no ^^9e in font pbkl!
+Missing character: There is no ^^9f in font pbkl!
+Missing character: There is no ^^a0 in font pbkl!
+Missing character: There is no ^^a1 in font pbkl!
+Missing character: There is no ^^b5 in font pbkl!
+Missing character: There is no ^^be in font pbkl!
+Missing character: There is no ^^bf in font pbkl!
+Missing character: There is no ^^c6 in font pbkl!
+Missing character: There is no ^^d7 in font pbkl!
+Missing character: There is no ^^d8 in font pbkl!
+Missing character: There is no ^^df in font pbkl!
+Missing character: There is no ^^e6 in font pbkl!
+Missing character: There is no ^^f0 in font pbkl!
+Missing character: There is no ^^f7 in font pbkl!
+
+[22]
+Missing character: There is no ^^@ in font putr!
+Missing character: There is no ^^A in font putr!
+Missing character: There is no ^^B in font putr!
+Missing character: There is no ^^C in font putr!
+Missing character: There is no ^^D in font putr!
+Missing character: There is no ^^E in font putr!
+Missing character: There is no ^^F in font putr!
+Missing character: There is no ^^G in font putr!
+Missing character: There is no ^^H in font putr!
+Missing character: There is no ^^I in font putr!
+Missing character: There is no 
+ in font putr!
+Missing character: There is no ^^K in font putr!
+Missing character: There is no ^^L in font putr!
+Missing character: There is no ^^Q in font putr!
+Missing character: There is no ^^8b in font putr!
+Missing character: There is no ^^8c in font putr!
+Missing character: There is no ^^8d in font putr!
+Missing character: There is no ^^8e in font putr!
+Missing character: There is no ^^8f in font putr!
+Missing character: There is no ^^90 in font putr!
+Missing character: There is no ^^91 in font putr!
+Missing character: There is no ^^93 in font putr!
+Missing character: There is no ^^94 in font putr!
+Missing character: There is no ^^95 in font putr!
+Missing character: There is no ^^96 in font putr!
+Missing character: There is no ^^97 in font putr!
+Missing character: There is no ^^99 in font putr!
+Missing character: There is no ^^9b in font putr!
+Missing character: There is no ^^9c in font putr!
+Missing character: There is no ^^9d in font putr!
+Missing character: There is no ^^9e in font putr!
+Missing character: There is no ^^9f in font putr!
+Missing character: There is no ^^a0 in font putr!
+Missing character: There is no ^^a1 in font putr!
+Missing character: There is no ^^b5 in font putr!
+Missing character: There is no ^^be in font putr!
+Missing character: There is no ^^bf in font putr!
+Missing character: There is no ^^c6 in font putr!
+Missing character: There is no ^^d7 in font putr!
+Missing character: There is no ^^d8 in font putr!
+Missing character: There is no ^^df in font putr!
+Missing character: There is no ^^e6 in font putr!
+Missing character: There is no ^^f0 in font putr!
+Missing character: There is no ^^f7 in font putr!
+ [23]
+Missing character: There is no ^^@ in font phvr!
+Missing character: There is no ^^A in font phvr!
+Missing character: There is no ^^B in font phvr!
+Missing character: There is no ^^C in font phvr!
+Missing character: There is no ^^D in font phvr!
+Missing character: There is no ^^E in font phvr!
+Missing character: There is no ^^F in font phvr!
+Missing character: There is no ^^G in font phvr!
+Missing character: There is no ^^H in font phvr!
+Missing character: There is no ^^I in font phvr!
+Missing character: There is no 
+ in font phvr!
+Missing character: There is no ^^K in font phvr!
+Missing character: There is no ^^L in font phvr!
+Missing character: There is no ^^Q in font phvr!
+Missing character: There is no ^^8b in font phvr!
+Missing character: There is no ^^8c in font phvr!
+Missing character: There is no ^^8d in font phvr!
+Missing character: There is no ^^8e in font phvr!
+Missing character: There is no ^^8f in font phvr!
+Missing character: There is no ^^90 in font phvr!
+Missing character: There is no ^^91 in font phvr!
+Missing character: There is no ^^93 in font phvr!
+Missing character: There is no ^^94 in font phvr!
+Missing character: There is no ^^95 in font phvr!
+Missing character: There is no ^^96 in font phvr!
+Missing character: There is no ^^97 in font phvr!
+Missing character: There is no ^^99 in font phvr!
+Missing character: There is no ^^9b in font phvr!
+Missing character: There is no ^^9c in font phvr!
+Missing character: There is no ^^9d in font phvr!
+Missing character: There is no ^^9e in font phvr!
+Missing character: There is no ^^9f in font phvr!
+Missing character: There is no ^^a0 in font phvr!
+Missing character: There is no ^^a1 in font phvr!
+Missing character: There is no ^^b5 in font phvr!
+Missing character: There is no ^^be in font phvr!
+Missing character: There is no ^^bf in font phvr!
+Missing character: There is no ^^c6 in font phvr!
+Missing character: There is no ^^d7 in font phvr!
+Missing character: There is no ^^d8 in font phvr!
+Missing character: There is no ^^df in font phvr!
+Missing character: There is no ^^e6 in font phvr!
+Missing character: There is no ^^f0 in font phvr!
+Missing character: There is no ^^f7 in font phvr!
+ [24]
+Missing character: There is no ^^@ in font pagk!
+Missing character: There is no ^^A in font pagk!
+Missing character: There is no ^^B in font pagk!
+Missing character: There is no ^^C in font pagk!
+Missing character: There is no ^^D in font pagk!
+Missing character: There is no ^^E in font pagk!
+Missing character: There is no ^^F in font pagk!
+Missing character: There is no ^^G in font pagk!
+Missing character: There is no ^^H in font pagk!
+Missing character: There is no ^^I in font pagk!
+Missing character: There is no 
+ in font pagk!
+Missing character: There is no ^^K in font pagk!
+Missing character: There is no ^^L in font pagk!
+Missing character: There is no ^^Q in font pagk!
+Missing character: There is no ^^8b in font pagk!
+Missing character: There is no ^^8c in font pagk!
+Missing character: There is no ^^8d in font pagk!
+Missing character: There is no ^^8e in font pagk!
+Missing character: There is no ^^8f in font pagk!
+Missing character: There is no ^^90 in font pagk!
+Missing character: There is no ^^91 in font pagk!
+Missing character: There is no ^^93 in font pagk!
+Missing character: There is no ^^94 in font pagk!
+Missing character: There is no ^^95 in font pagk!
+Missing character: There is no ^^96 in font pagk!
+Missing character: There is no ^^97 in font pagk!
+Missing character: There is no ^^99 in font pagk!
+Missing character: There is no ^^9b in font pagk!
+Missing character: There is no ^^9c in font pagk!
+Missing character: There is no ^^9d in font pagk!
+Missing character: There is no ^^9e in font pagk!
+Missing character: There is no ^^9f in font pagk!
+Missing character: There is no ^^a0 in font pagk!
+Missing character: There is no ^^a1 in font pagk!
+Missing character: There is no ^^b5 in font pagk!
+Missing character: There is no ^^be in font pagk!
+Missing character: There is no ^^bf in font pagk!
+Missing character: There is no ^^c6 in font pagk!
+Missing character: There is no ^^d7 in font pagk!
+Missing character: There is no ^^d8 in font pagk!
+Missing character: There is no ^^df in font pagk!
+Missing character: There is no ^^e6 in font pagk!
+Missing character: There is no ^^f0 in font pagk!
+Missing character: There is no ^^f7 in font pagk!
+ [25]
+Missing character: There is no ^^@ in font pcrr!
+Missing character: There is no ^^A in font pcrr!
+Missing character: There is no ^^B in font pcrr!
+Missing character: There is no ^^C in font pcrr!
+Missing character: There is no ^^D in font pcrr!
+Missing character: There is no ^^E in font pcrr!
+Missing character: There is no ^^F in font pcrr!
+Missing character: There is no ^^G in font pcrr!
+Missing character: There is no ^^H in font pcrr!
+Missing character: There is no ^^I in font pcrr!
+Missing character: There is no 
+ in font pcrr!
+Missing character: There is no ^^K in font pcrr!
+Missing character: There is no ^^L in font pcrr!
+Missing character: There is no ^^Q in font pcrr!
+Missing character: There is no ^^8b in font pcrr!
+Missing character: There is no ^^8c in font pcrr!
+Missing character: There is no ^^8d in font pcrr!
+Missing character: There is no ^^8e in font pcrr!
+Missing character: There is no ^^8f in font pcrr!
+Missing character: There is no ^^90 in font pcrr!
+Missing character: There is no ^^91 in font pcrr!
+Missing character: There is no ^^93 in font pcrr!
+Missing character: There is no ^^94 in font pcrr!
+Missing character: There is no ^^95 in font pcrr!
+Missing character: There is no ^^96 in font pcrr!
+Missing character: There is no ^^97 in font pcrr!
+Missing character: There is no ^^99 in font pcrr!
+Missing character: There is no ^^9b in font pcrr!
+Missing character: There is no ^^9c in font pcrr!
+Missing character: There is no ^^9d in font pcrr!
+Missing character: There is no ^^9e in font pcrr!
+Missing character: There is no ^^9f in font pcrr!
+Missing character: There is no ^^a0 in font pcrr!
+Missing character: There is no ^^a1 in font pcrr!
+Missing character: There is no ^^b5 in font pcrr!
+Missing character: There is no ^^be in font pcrr!
+Missing character: There is no ^^bf in font pcrr!
+Missing character: There is no ^^c6 in font pcrr!
+Missing character: There is no ^^d7 in font pcrr!
+Missing character: There is no ^^d8 in font pcrr!
+Missing character: There is no ^^df in font pcrr!
+Missing character: There is no ^^e6 in font pcrr!
+Missing character: There is no ^^f0 in font pcrr!
+Missing character: There is no ^^f7 in font pcrr!
+ [26]
+Missing character: There is no ^^@ in font pzcmi!
+Missing character: There is no ^^A in font pzcmi!
+Missing character: There is no ^^B in font pzcmi!
+Missing character: There is no ^^C in font pzcmi!
+Missing character: There is no ^^D in font pzcmi!
+Missing character: There is no ^^E in font pzcmi!
+Missing character: There is no ^^F in font pzcmi!
+Missing character: There is no ^^G in font pzcmi!
+Missing character: There is no ^^H in font pzcmi!
+Missing character: There is no ^^I in font pzcmi!
+Missing character: There is no 
+ in font pzcmi!
+Missing character: There is no ^^K in font pzcmi!
+Missing character: There is no ^^L in font pzcmi!
+Missing character: There is no ^^Q in font pzcmi!
+Missing character: There is no ^^8b in font pzcmi!
+Missing character: There is no ^^8c in font pzcmi!
+Missing character: There is no ^^8d in font pzcmi!
+Missing character: There is no ^^8e in font pzcmi!
+Missing character: There is no ^^8f in font pzcmi!
+Missing character: There is no ^^90 in font pzcmi!
+Missing character: There is no ^^91 in font pzcmi!
+Missing character: There is no ^^93 in font pzcmi!
+Missing character: There is no ^^94 in font pzcmi!
+Missing character: There is no ^^95 in font pzcmi!
+Missing character: There is no ^^96 in font pzcmi!
+Missing character: There is no ^^97 in font pzcmi!
+Missing character: There is no ^^99 in font pzcmi!
+Missing character: There is no ^^9b in font pzcmi!
+Missing character: There is no ^^9c in font pzcmi!
+Missing character: There is no ^^9d in font pzcmi!
+Missing character: There is no ^^9e in font pzcmi!
+Missing character: There is no ^^9f in font pzcmi!
+Missing character: There is no ^^a0 in font pzcmi!
+Missing character: There is no ^^a1 in font pzcmi!
+Missing character: There is no ^^b5 in font pzcmi!
+Missing character: There is no ^^be in font pzcmi!
+Missing character: There is no ^^bf in font pzcmi!
+Missing character: There is no ^^c6 in font pzcmi!
+Missing character: There is no ^^d7 in font pzcmi!
+Missing character: There is no ^^d8 in font pzcmi!
+Missing character: There is no ^^df in font pzcmi!
+Missing character: There is no ^^e6 in font pzcmi!
+Missing character: There is no ^^f0 in font pzcmi!
+Missing character: There is no ^^f7 in font pzcmi!
+ [27]
+Missing character: There is no ^^@ in font psyr!
+Missing character: There is no ^^A in font psyr!
+Missing character: There is no ^^B in font psyr!
+Missing character: There is no ^^C in font psyr!
+Missing character: There is no ^^D in font psyr!
+Missing character: There is no ^^E in font psyr!
+Missing character: There is no ^^F in font psyr!
+Missing character: There is no ^^G in font psyr!
+Missing character: There is no ^^H in font psyr!
+Missing character: There is no ^^I in font psyr!
+Missing character: There is no 
+ in font psyr!
+Missing character: There is no ^^K in font psyr!
+Missing character: There is no ^^L in font psyr!
+Missing character: There is no ^^M in font psyr!
+Missing character: There is no ^^N in font psyr!
+Missing character: There is no ^^O in font psyr!
+Missing character: There is no ^^P in font psyr!
+Missing character: There is no ^^Q in font psyr!
+Missing character: There is no ^^R in font psyr!
+Missing character: There is no ^^S in font psyr!
+Missing character: There is no ^^T in font psyr!
+Missing character: There is no ^^U in font psyr!
+Missing character: There is no ^^V in font psyr!
+Missing character: There is no ^^W in font psyr!
+Missing character: There is no ^^X in font psyr!
+Missing character: There is no ^^Y in font psyr!
+Missing character: There is no ^^Z in font psyr!
+Missing character: There is no ^^[ in font psyr!
+Missing character: There is no ^^\ in font psyr!
+Missing character: There is no ^^] in font psyr!
+Missing character: There is no ^^^ in font psyr!
+Missing character: There is no ^^_ in font psyr!
+Missing character: There is no ^^? in font psyr!
+Missing character: There is no ^^80 in font psyr!
+Missing character: There is no ^^81 in font psyr!
+Missing character: There is no ^^82 in font psyr!
+Missing character: There is no ^^83 in font psyr!
+Missing character: There is no ^^84 in font psyr!
+Missing character: There is no ^^85 in font psyr!
+Missing character: There is no ^^86 in font psyr!
+Missing character: There is no ^^87 in font psyr!
+Missing character: There is no ^^88 in font psyr!
+Missing character: There is no ^^89 in font psyr!
+Missing character: There is no ^^8a in font psyr!
+Missing character: There is no ^^8b in font psyr!
+Missing character: There is no ^^8c in font psyr!
+Missing character: There is no ^^8d in font psyr!
+Missing character: There is no ^^8e in font psyr!
+Missing character: There is no ^^8f in font psyr!
+Missing character: There is no ^^90 in font psyr!
+Missing character: There is no ^^91 in font psyr!
+Missing character: There is no ^^92 in font psyr!
+Missing character: There is no ^^93 in font psyr!
+Missing character: There is no ^^94 in font psyr!
+Missing character: There is no ^^95 in font psyr!
+Missing character: There is no ^^96 in font psyr!
+Missing character: There is no ^^97 in font psyr!
+Missing character: There is no ^^98 in font psyr!
+Missing character: There is no ^^99 in font psyr!
+Missing character: There is no ^^9a in font psyr!
+Missing character: There is no ^^9b in font psyr!
+Missing character: There is no ^^9c in font psyr!
+Missing character: There is no ^^9d in font psyr!
+Missing character: There is no ^^9e in font psyr!
+Missing character: There is no ^^9f in font psyr!
+Missing character: There is no ^^a0 in font psyr!
+Missing character: There is no ^^f0 in font psyr!
+Missing character: There is no ^^ff in font psyr!
+ [28]
+Missing character: There is no ^^@ in font psyro!
+Missing character: There is no ^^A in font psyro!
+Missing character: There is no ^^B in font psyro!
+Missing character: There is no ^^C in font psyro!
+Missing character: There is no ^^D in font psyro!
+Missing character: There is no ^^E in font psyro!
+Missing character: There is no ^^F in font psyro!
+Missing character: There is no ^^G in font psyro!
+Missing character: There is no ^^H in font psyro!
+Missing character: There is no ^^I in font psyro!
+Missing character: There is no 
+ in font psyro!
+Missing character: There is no ^^K in font psyro!
+Missing character: There is no ^^L in font psyro!
+Missing character: There is no ^^M in font psyro!
+Missing character: There is no ^^N in font psyro!
+Missing character: There is no ^^O in font psyro!
+Missing character: There is no ^^P in font psyro!
+Missing character: There is no ^^Q in font psyro!
+Missing character: There is no ^^R in font psyro!
+Missing character: There is no ^^S in font psyro!
+Missing character: There is no ^^T in font psyro!
+Missing character: There is no ^^U in font psyro!
+Missing character: There is no ^^V in font psyro!
+Missing character: There is no ^^W in font psyro!
+Missing character: There is no ^^X in font psyro!
+Missing character: There is no ^^Y in font psyro!
+Missing character: There is no ^^Z in font psyro!
+Missing character: There is no ^^[ in font psyro!
+Missing character: There is no ^^\ in font psyro!
+Missing character: There is no ^^] in font psyro!
+Missing character: There is no ^^^ in font psyro!
+Missing character: There is no ^^_ in font psyro!
+Missing character: There is no ^^? in font psyro!
+Missing character: There is no ^^80 in font psyro!
+Missing character: There is no ^^81 in font psyro!
+Missing character: There is no ^^82 in font psyro!
+Missing character: There is no ^^83 in font psyro!
+Missing character: There is no ^^84 in font psyro!
+Missing character: There is no ^^85 in font psyro!
+Missing character: There is no ^^86 in font psyro!
+Missing character: There is no ^^87 in font psyro!
+Missing character: There is no ^^88 in font psyro!
+Missing character: There is no ^^89 in font psyro!
+Missing character: There is no ^^8a in font psyro!
+Missing character: There is no ^^8b in font psyro!
+Missing character: There is no ^^8c in font psyro!
+Missing character: There is no ^^8d in font psyro!
+Missing character: There is no ^^8e in font psyro!
+Missing character: There is no ^^8f in font psyro!
+Missing character: There is no ^^90 in font psyro!
+Missing character: There is no ^^91 in font psyro!
+Missing character: There is no ^^92 in font psyro!
+Missing character: There is no ^^93 in font psyro!
+Missing character: There is no ^^94 in font psyro!
+Missing character: There is no ^^95 in font psyro!
+Missing character: There is no ^^96 in font psyro!
+Missing character: There is no ^^97 in font psyro!
+Missing character: There is no ^^98 in font psyro!
+Missing character: There is no ^^99 in font psyro!
+Missing character: There is no ^^9a in font psyro!
+Missing character: There is no ^^9b in font psyro!
+Missing character: There is no ^^9c in font psyro!
+Missing character: There is no ^^9d in font psyro!
+Missing character: There is no ^^9e in font psyro!
+Missing character: There is no ^^9f in font psyro!
+Missing character: There is no ^^a0 in font psyro!
+Missing character: There is no ^^f0 in font psyro!
+Missing character: There is no ^^ff in font psyro!
+ [29]
+Missing character: There is no ^^@ in font pzdr!
+Missing character: There is no ^^A in font pzdr!
+Missing character: There is no ^^B in font pzdr!
+Missing character: There is no ^^C in font pzdr!
+Missing character: There is no ^^D in font pzdr!
+Missing character: There is no ^^E in font pzdr!
+Missing character: There is no ^^F in font pzdr!
+Missing character: There is no ^^G in font pzdr!
+Missing character: There is no ^^H in font pzdr!
+Missing character: There is no ^^I in font pzdr!
+Missing character: There is no 
+ in font pzdr!
+Missing character: There is no ^^K in font pzdr!
+Missing character: There is no ^^L in font pzdr!
+Missing character: There is no ^^M in font pzdr!
+Missing character: There is no ^^N in font pzdr!
+Missing character: There is no ^^O in font pzdr!
+Missing character: There is no ^^P in font pzdr!
+Missing character: There is no ^^Q in font pzdr!
+Missing character: There is no ^^R in font pzdr!
+Missing character: There is no ^^S in font pzdr!
+Missing character: There is no ^^T in font pzdr!
+Missing character: There is no ^^U in font pzdr!
+Missing character: There is no ^^V in font pzdr!
+Missing character: There is no ^^W in font pzdr!
+Missing character: There is no ^^X in font pzdr!
+Missing character: There is no ^^Y in font pzdr!
+Missing character: There is no ^^Z in font pzdr!
+Missing character: There is no ^^[ in font pzdr!
+Missing character: There is no ^^\ in font pzdr!
+Missing character: There is no ^^] in font pzdr!
+Missing character: There is no ^^^ in font pzdr!
+Missing character: There is no ^^_ in font pzdr!
+Missing character: There is no ^^? in font pzdr!
+Missing character: There is no ^^80 in font pzdr!
+Missing character: There is no ^^81 in font pzdr!
+Missing character: There is no ^^82 in font pzdr!
+Missing character: There is no ^^83 in font pzdr!
+Missing character: There is no ^^84 in font pzdr!
+Missing character: There is no ^^85 in font pzdr!
+Missing character: There is no ^^86 in font pzdr!
+Missing character: There is no ^^87 in font pzdr!
+Missing character: There is no ^^88 in font pzdr!
+Missing character: There is no ^^89 in font pzdr!
+Missing character: There is no ^^8a in font pzdr!
+Missing character: There is no ^^8b in font pzdr!
+Missing character: There is no ^^8c in font pzdr!
+Missing character: There is no ^^8d in font pzdr!
+Missing character: There is no ^^8e in font pzdr!
+Missing character: There is no ^^8f in font pzdr!
+Missing character: There is no ^^90 in font pzdr!
+Missing character: There is no ^^91 in font pzdr!
+Missing character: There is no ^^92 in font pzdr!
+Missing character: There is no ^^93 in font pzdr!
+Missing character: There is no ^^94 in font pzdr!
+Missing character: There is no ^^95 in font pzdr!
+Missing character: There is no ^^96 in font pzdr!
+Missing character: There is no ^^97 in font pzdr!
+Missing character: There is no ^^98 in font pzdr!
+Missing character: There is no ^^99 in font pzdr!
+Missing character: There is no ^^9a in font pzdr!
+Missing character: There is no ^^9b in font pzdr!
+Missing character: There is no ^^9c in font pzdr!
+Missing character: There is no ^^9d in font pzdr!
+Missing character: There is no ^^9e in font pzdr!
+Missing character: There is no ^^9f in font pzdr!
+Missing character: There is no ^^a0 in font pzdr!
+Missing character: There is no ^^f0 in font pzdr!
+Missing character: There is no ^^ff in font pzdr!
+ [30] [31] (ps_font_test.aux)
+
+LaTeX Font Warning: Size substitutions with differences
+(Font)              up to 2.0pt have occured.
+
+
+LaTeX Font Warning: Some font shapes were not available, defaults substituted.
+
+ ) 
+Here is how much of TeX's memory you used:
+ 942 strings out of 10953
+ 11554 string characters out of 72563
+ 79455 words of memory out of 262141
+ 3663 multiletter control sequences out of 9500
+ 53782 words of font info for 116 fonts, out of 120000 for 255
+ 14 hyphenation exceptions out of 607
+ 24i,8n,18p,202b,170s stack positions out of 300i,40n,60p,3000b,5000s
+
+Output written on ps_font_test.dvi (31 pages, 197780 bytes).
