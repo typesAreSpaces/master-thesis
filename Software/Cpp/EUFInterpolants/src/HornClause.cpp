@@ -25,7 +25,7 @@ HornClause::HornClause(UnionFind & uf, Vertex* u, Vertex* v,
   for(unsigned i = 0; i < _arity; ++i){
     Vertex * _u = terms[localUF.find(successorsU[i]->getId())],
       * _v = terms[localUF.find(successorsV[i]->getId())];
-    if(_u >= _v)
+    if(*_u >= *_v)
       antecedent.push_back(std::make_pair(_u, _v));
     else
       antecedent.push_back(std::make_pair(_v, _u));
@@ -34,7 +34,7 @@ HornClause::HornClause(UnionFind & uf, Vertex* u, Vertex* v,
   Vertex * _u = terms[localUF.find(u->getId())],
     * _v = terms[localUF.find(v->getId())];
   
-  if(*_u > *_v)
+  if(*_u >= *_v)
     consequent = std::make_pair(_u, _v);
   else
     consequent = std::make_pair(_v, _u);
@@ -53,7 +53,7 @@ void HornClause::normalize(){
     else{
       localUF.merge(it->first->getId(), it->second->getId());
       antecedentQ = antecedentQ && it->first->getSymbolCommonQ()
-	&& it->second->getSymbolCommonQ();
+				&& it->second->getSymbolCommonQ();
       ++it;
     }
   }

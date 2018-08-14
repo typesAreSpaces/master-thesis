@@ -217,12 +217,44 @@ void HornClauses::mergeType2_1AndType3(HornClause * h1, HornClause * h2){
 	HornClause * hc = new HornClause(_h2LocalUf, _h1Antecedent, _h2Consequent, localTerms);
   combinationHelper(hc);
 }
+
 void HornClauses::mergeType2_1AndType4(HornClause * h1, HornClause * h2){
   // Same as mergeType2_1AndType4
 }
+
 void HornClauses::mergeType2AndType2(HornClause * h1, HornClause * h2){
-  // TODO
+  UnionFind _h1LocalUf = h1->getLocalUF(),
+    _h2LocalUf = h2->getLocalUF();
+  equality _h1Consequent = h1->getConsequent(),
+    _h2Consequent = h2->getConsequent();
+  std::vector<equality> _h1Antecedent = h1->getAntecedent(),
+    _h2Antecedent = h2->getAntecedent();
+
+	for(std::vector<equality>::iterator it = _h1Antecedent.begin();
+      it != _h1Antecedent.end(); ++it){
+		if(_h2LocalUf.find(_h1LocalUf.find(it->first->getId())) !=
+			 _h2LocalUf.find(_h1LocalUf.find(it->second->getId()))){
+			Vertex * _u = localTerms[_h2LocalUf.find(_h1LocalUf.find(it->first->getId()))],
+				* _v = localTerms[_h2LocalUf.find(_h1LocalUf.find(it->second->getId()))];
+			if(*_u >= *_v)
+				_h2Antecedent.push_back(std::make_pair(_u, _v));
+			else
+				_h2Antecedent.push_back(std::make_pair(_v, _u));
+			_h2LocalUf.merge(_h2LocalUf.find(_h1LocalUf.find(it->first->getId())),
+											 _h2LocalUf.find(_h1LocalUf.find(it->second->getId())));
+		}
+  }
+	Vertex * _u = localTerms[_h2LocalUf.find(_h1Consequent.first->getId())],
+		* _v = localTerms[_h2LocalUf.find(_h2Consequent.first->getId())];
+	if(*_u >= *_v)
+		_h2Consequent = std::make_pair(_u, _v);
+	else
+		_h2Consequent = std::make_pair(_v, _u);
+	
+	HornClause * hc = new HornClause(_h2LocalUf, _h2Antecedent, _h2Consequent, localTerms);
+	combinationHelper(hc);
 }
+
 void HornClauses::mergeType2AndType3(HornClause * h1, HornClause * h2){
 	UnionFind _h1LocalUf = h1->getLocalUF(),
     _h2LocalUf = h2->getLocalUF();
@@ -241,6 +273,7 @@ void HornClauses::mergeType2AndType3(HornClause * h1, HornClause * h2){
 	HornClause * hc = new HornClause(_h2LocalUf, _h1Antecedent, _h2Consequent, localTerms);
 	combinationHelper(hc);
 }
+
 void HornClauses::mergeType2AndType4(HornClause * h1, HornClause * h2){
   // Same as mergeType2AndType3
 }
@@ -261,6 +294,30 @@ void HornClauses::combinationHelper(HornClause * hc){
   hornClauses.push_back(hc);
   makeMatches(hc, numHornClauses);
   ++numHornClauses;
+	orient(hc);
+}
+
+void HornClauses::orient(HornClause * hc){
+	UnionFind & localUF = hc->getLocalUF();
+	std::vector<equality> & antecedent = hc->getAntecedent();
+	equality & consequent = hc->getConsequent();
+	
+  for(std::vector<equality>::iterator it = antecedent.begin();
+			it != antecedent.end(); ++it){
+    Vertex * _u = localTerms[localUF.find(it->first->getId())],
+      * _v = localTerms[localUF.find(it->second->getId())];
+    if(*_u >= *_v)
+			*it = std::make_pair(_u, _v);
+		else
+			*it = std::make_pair(_v, _u);
+  }
+  Vertex * _u = localTerms[localUF.find(consequent.first->getId())],
+    * _v = localTerms[localUF.find(consequent.second->getId())];
+  
+  if(*_u >= *_v)
+		consequent = std::make_pair(_u, _v);
+	else
+		consequent = std::make_pair(_v, _u);
 }
 
 std::ostream & operator << (std::ostream & os, HornClauses & hcs){

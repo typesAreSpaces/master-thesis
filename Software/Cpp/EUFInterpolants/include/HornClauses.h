@@ -28,6 +28,7 @@ class HornClauses{
   void mergeType2AndType4(HornClause *, HornClause *);
   void makeMatches(HornClause * hc, unsigned);
 	void combinationHelper(HornClause *);
+	void orient(HornClause *);
  public:
   HornClauses(std::vector<Vertex*> &);
   ~HornClauses();
