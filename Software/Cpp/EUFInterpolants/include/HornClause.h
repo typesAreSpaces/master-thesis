@@ -10,7 +10,9 @@ typedef std::pair<Vertex*, Vertex*> equality;
 
 class HornClause{
  private:
-  UnionFind localUF;
+	static UnionFind globalUF;
+	static bool change;
+	UnionFind localUF;
   std::vector<equality> antecedent;
   equality consequent;
   bool antecedentQ, consequentQ;
@@ -26,6 +28,7 @@ class HornClause{
   std::vector<equality> & getAntecedent();
   equality & getConsequent();
   UnionFind & getLocalUF();
+	static UnionFind & getGlobalUF();
   friend std::ostream & operator << (std::ostream &, HornClause &);
 };
 

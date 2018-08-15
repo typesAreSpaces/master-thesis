@@ -148,9 +148,11 @@ void HornClauses::conditionalElimination(){
     for(match1::iterator it = mc1C.begin(); it != mc1C.end(); ++it)
       for(std::vector<unsigned>::iterator it2 = it->second.begin();
 					it2 != it->second.end(); ++it2)
-				for(std::vector<unsigned>::iterator it3 = mc1A[it->first].begin();
-						it3 != mc1A[it->first].end(); ++it3){
-					if(prevCombinations.find(std::make_pair(*it2, *it3)) == prevCombinations.end()){
+				for(std::vector<unsigned>::iterator it3 = mc1C[it->first].begin();
+						it3 != mc1C[it->first].end(); ++it3){
+					if(prevCombinations.find(std::make_pair(*it2, *it3)) == prevCombinations.end()
+						 && hornClauses[*it2]->getAntecedentQ()
+						 && hornClauses[*it3]->getAntecedentQ()){
 						if(debugHornClauses)
 							std::cout << "4. Combine " << std::endl << *hornClauses[*it2] << std::endl
 												<< " with " << std::endl << *hornClauses[*it3]
@@ -177,7 +179,7 @@ void HornClauses::makeMatches(HornClause * hc, unsigned i){
     // the normalizing ordering used
     if(!it->first->getSymbolCommonQ()){
 			if(debugHornClauses)
-				std::cout << "to mc2A" << std::endl;
+				std::cout << *hc << "\n was added to mc2A" << std::endl;
       mc2A[std::make_pair(it->first,
 													it->second)].push_back(i);
 		}
@@ -187,14 +189,14 @@ void HornClauses::makeMatches(HornClause * hc, unsigned i){
       // there is nothing to do!
       if(!it->second->getSymbolCommonQ()){
 				if(debugHornClauses)
-					std::cout << "to mc1A" << std::endl;
+					std::cout << *hc << "\n was added to mc1A" << std::endl;
 				mc1A[it->second].push_back(i);
 			}
     }
   }
   if(!_consequent.first->getSymbolCommonQ()){
 		if(debugHornClauses)
-				std::cout << "to mc2C" << std::endl;
+			std::cout << *hc << "\n was added to mc2C" << std::endl;
     mc2C[std::make_pair(_consequent.first,
 												_consequent.second)].push_back(i);
 	}
@@ -204,7 +206,7 @@ void HornClauses::makeMatches(HornClause * hc, unsigned i){
     // there is nothing to do!
     if(!_consequent.second->getSymbolCommonQ()){
 			if(debugHornClauses)
-				std::cout << "to mc1C" << std::endl;
+				std::cout << *hc << "\n was added to mc1C" << std::endl;
       mc1C[_consequent.second].push_back(i);
 		}
   }
@@ -212,7 +214,7 @@ void HornClauses::makeMatches(HornClause * hc, unsigned i){
 
 void HornClauses::mergeType2_1AndType3(HornClause * h1, HornClause * h2){
   UnionFind _h1LocalUf = h1->getLocalUF(),
-    _h2LocalUf = h2->getLocalUF();
+    _h2LocalUf = HornClause::getGlobalUF();
   equality _h1Consequent = h1->getConsequent(),
     _h2Consequent = h2->getConsequent();
   std::vector<equality> _h1Antecedent = h1->getAntecedent(),
@@ -231,29 +233,27 @@ void HornClauses::mergeType2_1AndType3(HornClause * h1, HornClause * h2){
 }
 
 void HornClauses::mergeType2_1AndType4(HornClause * h1, HornClause * h2){
-  // Same as mergeType2_1AndType4
+  // Same as mergeType2_1AndType3
 }
 
 void HornClauses::mergeType2AndType2(HornClause * h1, HornClause * h2){
   UnionFind _h1LocalUf = h1->getLocalUF(),
-    _h2LocalUf = h2->getLocalUF();
+    _h2LocalUf = HornClause::getGlobalUF();
   equality _h1Consequent = h1->getConsequent(),
     _h2Consequent = h2->getConsequent();
   std::vector<equality> _h1Antecedent = h1->getAntecedent(),
     _h2Antecedent = h2->getAntecedent();
-
+	
 	for(std::vector<equality>::iterator it = _h1Antecedent.begin();
       it != _h1Antecedent.end(); ++it){
-		if(_h2LocalUf.find(_h1LocalUf.find(it->first->getId())) !=
-			 _h2LocalUf.find(_h1LocalUf.find(it->second->getId()))){
-			Vertex * _u = localTerms[_h2LocalUf.find(_h1LocalUf.find(it->first->getId()))],
-				* _v = localTerms[_h2LocalUf.find(_h1LocalUf.find(it->second->getId()))];
+		if(_h2LocalUf.find(it->first->getId()) !=
+			 _h2LocalUf.find(it->second->getId())){
+			Vertex * _u = localTerms[_h2LocalUf.find(it->first->getId())],
+				* _v = localTerms[_h2LocalUf.find(it->second->getId())];
 			if(*_u >= *_v)
 				_h2Antecedent.push_back(std::make_pair(_u, _v));
 			else
 				_h2Antecedent.push_back(std::make_pair(_v, _u));
-			_h2LocalUf.merge(_h2LocalUf.find(_h1LocalUf.find(it->first->getId())),
-											 _h2LocalUf.find(_h1LocalUf.find(it->second->getId())));
 		}
   }
 	Vertex * _u = localTerms[_h2LocalUf.find(_h1Consequent.first->getId())],
@@ -269,14 +269,18 @@ void HornClauses::mergeType2AndType2(HornClause * h1, HornClause * h2){
 
 void HornClauses::mergeType2AndType3(HornClause * h1, HornClause * h2){
 	UnionFind _h1LocalUf = h1->getLocalUF(),
-    _h2LocalUf = h2->getLocalUF();
+    _h2LocalUf = HornClause::getGlobalUF();
   equality _h1Consequent = h1->getConsequent(),
     _h2Consequent = h2->getConsequent();
   std::vector<equality> _h1Antecedent = h1->getAntecedent(),
     _h2Antecedent = h2->getAntecedent();
-
+	
 	for(std::vector<equality>::iterator it = _h2Antecedent.begin();
       it != _h2Antecedent.end(); ++it){
+		if(it->first->getId() == _h1Consequent.second->getId())
+			it->first = _h1Consequent.first;
+		if(it->second->getId() == _h1Consequent.second->getId())
+			it->second = _h1Consequent.first;
 		_h1Antecedent.push_back(*it);
   }
   _h2LocalUf.merge(_h1LocalUf.find(_h1Consequent.first->getId()),
@@ -291,6 +295,8 @@ void HornClauses::mergeType2AndType4(HornClause * h1, HornClause * h2){
 }
 
 void HornClauses::combinationHelper(HornClause * hc){
+	if(debugHornClauses)
+		std::cout << "Temporal Horn Clause " << *hc << std::endl;
 	hc->normalize();
 	if(debugHornClauses)
 		std::cout << "New Horn Clause" << std::endl
@@ -298,21 +304,19 @@ void HornClauses::combinationHelper(HornClause * hc){
   if(hc->checkTrivial()){
     delete hc;
 		if(debugHornClauses)
-			std::cout << "It was deleted" << std::endl;
-		std::cout << std::endl;
+			std::cout << "It was deleted" << std::endl << std::endl;
     return;
   }
 	if(debugHornClauses)
-		std::cout << "It was added!" << std::endl;
+		std::cout << "It was added!" << std::endl << std::endl;
 	orient(hc);
 	hornClauses.push_back(hc);
   makeMatches(hc, numHornClauses);
   ++numHornClauses;
-	std::cout << std::endl;
 }
 
 void HornClauses::orient(HornClause * hc){
-	UnionFind & localUF = hc->getLocalUF();
+	UnionFind & localUF = HornClause::getGlobalUF();
 	std::vector<equality> & antecedent = hc->getAntecedent();
 	equality & consequent = hc->getConsequent();
 	

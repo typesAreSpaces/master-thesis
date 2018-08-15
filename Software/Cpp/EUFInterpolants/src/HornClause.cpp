@@ -1,5 +1,8 @@
 #include "HornClause.h"
 
+UnionFind HornClause::globalUF = UnionFind();
+bool HornClause::change = true;
+
 HornClause::HornClause(UnionFind & uf,
 		       std::vector<equality> & antecedent, equality & consequent,
 		       std::vector<Vertex*> & terms) :
@@ -19,6 +22,10 @@ HornClause::HornClause(UnionFind & uf,
 HornClause::HornClause(UnionFind & uf, Vertex* u, Vertex* v,
 		       std::vector<Vertex*> & terms) :
   localUF(uf), antecedentQ(true), consequentQ(true) {
+	if(change){
+		change = false;
+		globalUF = uf;
+	}
   unsigned _arity = u->getArity();
   std::vector<Vertex*> & successorsU = u->getSuccessors(),
     & successorsV = v->getSuccessors();
@@ -44,10 +51,16 @@ HornClause::HornClause(UnionFind & uf, Vertex* u, Vertex* v,
 HornClause::~HornClause(){
 }
 
+// Joins the proper elements to the
+// UnionFind data structure
 void HornClause::normalize(){
   antecedentQ = true;
   for(std::vector<equality>::iterator it = antecedent.begin();
       it != antecedent.end();){
+		//std::cout << "The Equivalence Class" << std::endl;
+		//localUF.print(std::cout);
+		//std::cout << it->first->getId() << " , " <<  it->second->getId() << std::endl;
+		//std::cout << localUF.find(it->first->getId()) << " , " <<  localUF.find(it->second->getId()) << std::endl;
     if(localUF.find(it->first->getId()) == localUF.find(it->second->getId()))
       antecedent.erase(it);
     else{
@@ -86,6 +99,10 @@ equality & HornClause::getConsequent(){
 
 UnionFind & HornClause::getLocalUF(){
   return localUF;
+}
+
+UnionFind & HornClause::getGlobalUF(){
+  return globalUF;
 }
 
 std::ostream & operator << (std::ostream & os, HornClause & hc){

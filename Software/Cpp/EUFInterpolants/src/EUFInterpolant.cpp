@@ -42,19 +42,19 @@ void EUFInterpolant::identifyCommonSymbols(){
       _arity = root->getArity();
       switch(_arity){
       case 0:
-	s.push(root);
-	root = nullptr;
-	break;
+				s.push(root);
+				root = nullptr;
+				break;
       case 1:
-	s.push(root);
-	root = root->getLeftChild();
-	break;
+				s.push(root);
+				root = root->getLeftChild();
+				break;
       case 2:
-	s.push(root->getRightChild()), s.push(root);
-	root = root->getLeftChild();
-	break;
+				s.push(root->getRightChild()), s.push(root);
+				root = root->getLeftChild();
+				break;
       default:
-	break;
+				break;
       }
     } 
     root = s.top(), s.pop();
@@ -73,9 +73,9 @@ void EUFInterpolant::identifyCommonSymbols(){
       bool _tempCSQ = (sTE.find(_tempName) == sTE.end()) ? true : false;
       std::vector<Vertex*> _tempSuccessors = root->getSuccessors();
       for(unsigned i = 0; i < _arity; ++i){
-	if(!_tempCSQ)
-	  break;
-	_tempCSQ = _tempCSQ && _tempSuccessors[i]->getSymbolCommonQ();
+				if(!_tempCSQ)
+					break;
+				_tempCSQ = _tempCSQ && _tempSuccessors[i]->getSymbolCommonQ();
       }
       root->setSymbolCommonQ(_tempCSQ);
       root = nullptr;
@@ -102,10 +102,10 @@ void EUFInterpolant::eliminationOfUncommonFSyms(){
   for(symbolLoc::iterator it = symbolPos.begin();
       it != symbolPos.end(); ++it){
     for(std::set<unsigned>::iterator it2 = it->second.begin();
-	it2 != it->second.end(); ++it2){
+				it2 != it->second.end(); ++it2){
       if(!cc.getTerm(*it2)->getSymbolCommonQ()){
-	expose = true;
-	break;
+				expose = true;
+				break;
       }
     }
     if(expose){
@@ -113,8 +113,8 @@ void EUFInterpolant::eliminationOfUncommonFSyms(){
       std::vector<unsigned> _temp(l);
       std::copy(it->second.begin(), it->second.end(), _temp.begin());
       for(unsigned i = 0; i < l - 1; ++i)
-	for(unsigned j = i + 1; j < l; ++j)
-	  hC.addHornClause(cc.getEC(), cc.getTerm(_temp[i]), cc.getTerm(_temp[j]));
+				for(unsigned j = i + 1; j < l; ++j)
+					hC.addHornClause(cc.getEC(), cc.getTerm(_temp[i]), cc.getTerm(_temp[j]));
     }
     expose = false;
   }
