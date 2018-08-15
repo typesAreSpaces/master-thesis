@@ -87,20 +87,20 @@ void HornClauses::conditionalElimination(){
 						if(debugHornClauses)
 							std::cout << "1. Combine " << std::endl << *hornClauses[*it2] << std::endl
 												<< " with " << std::endl << *hornClauses[*it3]
-												<< std::endl << std::endl;
+												<< std::endl;
 						prevCombinations.insert(std::make_pair(*it2, *it3));
 						mergeType2_1AndType3(hornClauses[*it2], hornClauses[*it3]);
 						change = true;
 					}
 				}
-    // TODO 1
     // This part covers cases:
     // 4. Type 2 + Type 3
     // 5. Type 2 + Type 4
     // with mc1C x mc1A
-    for(match1::iterator it = mc1C.begin(); it != mc1C.end(); ++it)
+		match1::iterator itEnd = mc1C.end();
+    for(match1::iterator it = mc1C.begin(); it != itEnd; ++it){
       for(std::vector<unsigned>::iterator it2 = it->second.begin();
-					it2 != it->second.end(); ++it2)
+					it2 != it->second.end(); ++it2){
 				for(std::vector<unsigned>::iterator it3 = mc1A[it->first].begin();
 						it3 != mc1A[it->first].end(); ++it3){
 					if(prevCombinations.find(std::make_pair(*it2, *it3)) == prevCombinations.end()
@@ -108,13 +108,14 @@ void HornClauses::conditionalElimination(){
 						if(debugHornClauses)
 							std::cout << "2. Combine " << std::endl << *hornClauses[*it2] << std::endl
 												<< " with " << std::endl << *hornClauses[*it3]
-												<< std::endl << std::endl;
+												<< std::endl;
 						prevCombinations.insert(std::make_pair(*it2, *it3));
 						mergeType2AndType3(hornClauses[*it2], hornClauses[*it3]);
 						change = true;
 					}
 				}
-    // TODO 2
+			}
+		}
     // This part covers cases:
     // 4. Type 2 + Type 3
     // 5. Type 2 + Type 4
@@ -128,20 +129,19 @@ void HornClauses::conditionalElimination(){
 					if(it_2->first.first == it->first || it_2->first.second == it->first)
 						for(std::vector<unsigned>::iterator it3 = mc2A[it_2->first].begin();
 								it3 != mc2A[it_2->first].end(); ++it3){
-							if(prevCombinations.find(std::make_pair(*it2, *it3)) == prevCombinations.end()){
+							if(prevCombinations.find(std::make_pair(*it2, *it3)) == prevCombinations.end()
+								 && hornClauses[*it2]->getAntecedentQ()){
 								if(debugHornClauses)
 									std::cout << "3. Combine " << std::endl << *hornClauses[*it2] << std::endl
 														<< " with " << std::endl << *hornClauses[*it3]
-														<< std::endl << std::endl;
+														<< std::endl;
 								prevCombinations.insert(std::make_pair(*it2, *it3));
-								// Change the next line
-								//mergeType2_1AndType3(hornClauses[*it2], hornClauses[*it3]);
+								mergeType2AndType3(hornClauses[*it2], hornClauses[*it3]);
 								change = true;
 							}
 						}
 				}
       }
-		// TODO 3
     // This part covers cases:
 		// 3. Type 2 + Type 2
     // with mc1C x mc1C
@@ -154,10 +154,9 @@ void HornClauses::conditionalElimination(){
 						if(debugHornClauses)
 							std::cout << "4. Combine " << std::endl << *hornClauses[*it2] << std::endl
 												<< " with " << std::endl << *hornClauses[*it3]
-												<< std::endl << std::endl;
+												<< std::endl;
 						prevCombinations.insert(std::make_pair(*it2, *it3));
-						// Change the next line						
-						//mergeType2_1AndType3(hornClauses[*it2], hornClauses[*it3]);
+						mergeType2AndType2(hornClauses[*it2], hornClauses[*it3]);
 						change = true;
 					}
 				}
@@ -166,6 +165,7 @@ void HornClauses::conditionalElimination(){
 
 // Precondition: 
 // All HornClauses here are assumed to be normalized
+// and oriented!
 void HornClauses::makeMatches(HornClause * hc, unsigned i){
   std::vector<equality> & _antecedent = hc->getAntecedent();
   equality & _consequent = hc->getConsequent();
@@ -175,26 +175,38 @@ void HornClauses::makeMatches(HornClause * hc, unsigned i){
 		// If the first term is uncommon,
     // then the equality is uncommon due to
     // the normalizing ordering used
-    if(!it->first->getSymbolCommonQ())
+    if(!it->first->getSymbolCommonQ()){
+			if(debugHornClauses)
+				std::cout << "to mc2A" << std::endl;
       mc2A[std::make_pair(it->first,
 													it->second)].push_back(i);
+		}
     else{
       // If the first term is common and
       // the second term is common, then
       // there is nothing to do!
-      if(!it->second->getSymbolCommonQ())
+      if(!it->second->getSymbolCommonQ()){
+				if(debugHornClauses)
+					std::cout << "to mc1A" << std::endl;
 				mc1A[it->second].push_back(i);
+			}
     }
   }
-  if(!_consequent.first->getSymbolCommonQ())
+  if(!_consequent.first->getSymbolCommonQ()){
+		if(debugHornClauses)
+				std::cout << "to mc2C" << std::endl;
     mc2C[std::make_pair(_consequent.first,
 												_consequent.second)].push_back(i);
+	}
   else{
     // If the first term is common and
     // the second term is common, then
     // there is nothing to do!
-    if(!_consequent.second->getSymbolCommonQ())
+    if(!_consequent.second->getSymbolCommonQ()){
+			if(debugHornClauses)
+				std::cout << "to mc1C" << std::endl;
       mc1C[_consequent.second].push_back(i);
+		}
   }
 }
 
@@ -287,14 +299,16 @@ void HornClauses::combinationHelper(HornClause * hc){
     delete hc;
 		if(debugHornClauses)
 			std::cout << "It was deleted" << std::endl;
+		std::cout << std::endl;
     return;
   }
 	if(debugHornClauses)
 		std::cout << "It was added!" << std::endl;
-  hornClauses.push_back(hc);
+	orient(hc);
+	hornClauses.push_back(hc);
   makeMatches(hc, numHornClauses);
   ++numHornClauses;
-	orient(hc);
+	std::cout << std::endl;
 }
 
 void HornClauses::orient(HornClause * hc){
