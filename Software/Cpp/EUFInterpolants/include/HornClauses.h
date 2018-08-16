@@ -35,6 +35,8 @@ class HornClauses{
   void addHornClause(UnionFind &, Vertex*, Vertex*);
   void conditionalElimination();
   friend std::ostream & operator << (std::ostream &, HornClauses &);
+	std::ostream & printMatch1(std::ostream &, match1 &);
+	std::ostream & printMatch2(std::ostream &, match2 &);
 };
 
 #endif
