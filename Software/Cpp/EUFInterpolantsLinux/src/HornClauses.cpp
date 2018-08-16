@@ -67,11 +67,12 @@ void HornClauses::conditionalElimination(){
   //   std::cout << std::endl;
   // }
   // std::cout << "mc2C-------------------------------------" << std::endl;
-
   bool change = true;
   std::set<std::pair<unsigned, unsigned> > prevCombinations;
   while(change){
     change = false;
+		unsigned oldSize = hornClauses.size(), newSize;
+		
     // This part covers cases:
     // 1. Type 2.1 + Type 3
     // 2. Type 2.1 + Type 4
@@ -97,19 +98,15 @@ void HornClauses::conditionalElimination(){
     // 4. Type 2 + Type 3
     // 5. Type 2 + Type 4
     // with mc1C x mc1A
-		match1::iterator itEnd = mc1C.end();
-    for(match1::iterator it = mc1C.begin(); it != itEnd; ++it){
+    for(match1::iterator it = mc1C.begin(); it != mc1C.end(); ++it){
       for(std::vector<unsigned>::iterator it2 = it->second.begin();
 					it2 != it->second.end(); ++it2){
-				std::cout << "Ahhhhhhhh--------------------------------------" << std::endl;
-				std::cout << it->second.size() << std::endl;
-				std::cout << *it2 << std::endl;
 				for(std::vector<unsigned>::iterator it3 = mc1A[it->first].begin();
 						it3 != mc1A[it->first].end(); ++it3){
 					if(prevCombinations.find(std::make_pair(*it2, *it3)) == prevCombinations.end()
 						 && hornClauses[*it2]->getAntecedentQ()){
 						if(debugHornClauses)
-							std::cout << "2. Combine " << std::endl << *hornClauses[*it2] << std::endl
+							std::cout << "2. Combine " << *it2 << " , " << *it3 << std::endl << *hornClauses[*it2] << std::endl
 												<< " with " << std::endl << *hornClauses[*it3]
 												<< std::endl;
 						prevCombinations.insert(std::make_pair(*it2, *it3));
@@ -165,6 +162,9 @@ void HornClauses::conditionalElimination(){
 						change = true;
 					}
 				}
+		newSize = hornClauses.size();
+		for(unsigned i = oldSize; i < newSize; ++i)
+			makeMatches(hornClauses[i], i);
   }
 }
 
@@ -174,26 +174,26 @@ void HornClauses::conditionalElimination(){
 void HornClauses::makeMatches(HornClause * hc, unsigned i){
   std::vector<equality> & _antecedent = hc->getAntecedent();
   equality & _consequent = hc->getConsequent();
-  for(std::vector<equality>::iterator it = _antecedent.begin();
-      it != _antecedent.end(); ++it){
+  for(std::vector<equality>::iterator _it = _antecedent.begin();
+      _it != _antecedent.end(); ++_it){
 		// Pay attention to this part !!!
 		// If the first term is uncommon,
     // then the equality is uncommon due to
     // the normalizing ordering used
-    if(!it->first->getSymbolCommonQ()){
+    if(!_it->first->getSymbolCommonQ()){
 			if(debugHornClauses)
 				std::cout << *hc << "\n was added to mc2A" << std::endl;
-      mc2A[std::make_pair(it->first,
-													it->second)].push_back(i);
+      mc2A[std::make_pair(_it->first,
+													_it->second)].push_back(i);
 		}
     else{
       // If the first term is common and
       // the second term is common, then
       // there is nothing to do!
-      if(!it->second->getSymbolCommonQ()){
+      if(!_it->second->getSymbolCommonQ()){
 				if(debugHornClauses)
 					std::cout << *hc << "\n was added to mc1A" << std::endl;
-				mc1A[it->second].push_back(i);
+				mc1A[_it->second].push_back(i);
 			}
     }
   }
@@ -211,7 +211,6 @@ void HornClauses::makeMatches(HornClause * hc, unsigned i){
 			if(debugHornClauses)
 				std::cout << *hc << "\n was added to mc1C" << std::endl;
       mc1C[_consequent.second].push_back(i);
-			printMatch1(std::cout, mc1C);
 		}
   }
 }
@@ -224,10 +223,10 @@ void HornClauses::mergeType2_1AndType3(HornClause * h1, HornClause * h2){
   std::vector<equality> _h1Antecedent = h1->getAntecedent(),
     _h2Antecedent = h2->getAntecedent();
 
-	for(std::vector<equality>::iterator it = _h2Antecedent.begin();
-      it != _h2Antecedent.end(); ++it){
-    if(*it != _h1Consequent)
-      _h1Antecedent.push_back(*it);
+	for(std::vector<equality>::iterator _it = _h2Antecedent.begin();
+      _it != _h2Antecedent.end(); ++_it){
+    if(*_it != _h1Consequent)
+      _h1Antecedent.push_back(*_it);
   }
   _h2LocalUf.merge(_h1LocalUf.find(_h1Consequent.first->getId()),
 									 _h1LocalUf.find(_h1Consequent.second->getId()));
@@ -248,12 +247,12 @@ void HornClauses::mergeType2AndType2(HornClause * h1, HornClause * h2){
   std::vector<equality> _h1Antecedent = h1->getAntecedent(),
     _h2Antecedent = h2->getAntecedent();
 	
-	for(std::vector<equality>::iterator it = _h1Antecedent.begin();
-      it != _h1Antecedent.end(); ++it){
-		if(_h2LocalUf.find(it->first->getId()) !=
-			 _h2LocalUf.find(it->second->getId())){
-			Vertex * _u = localTerms[_h2LocalUf.find(it->first->getId())],
-				* _v = localTerms[_h2LocalUf.find(it->second->getId())];
+	for(std::vector<equality>::iterator _it = _h1Antecedent.begin();
+      _it != _h1Antecedent.end(); ++_it){
+		if(_h2LocalUf.find(_it->first->getId()) !=
+			 _h2LocalUf.find(_it->second->getId())){
+			Vertex * _u = localTerms[_h2LocalUf.find(_it->first->getId())],
+				* _v = localTerms[_h2LocalUf.find(_it->second->getId())];
 			if(*_u >= *_v)
 				_h2Antecedent.push_back(std::make_pair(_u, _v));
 			else
@@ -279,13 +278,13 @@ void HornClauses::mergeType2AndType3(HornClause * h1, HornClause * h2){
   std::vector<equality> _h1Antecedent = h1->getAntecedent(),
     _h2Antecedent = h2->getAntecedent();
 	
-	for(std::vector<equality>::iterator it = _h2Antecedent.begin();
-      it != _h2Antecedent.end(); ++it){
-		if(it->first->getId() == _h1Consequent.second->getId())
-			it->first = _h1Consequent.first;
-		if(it->second->getId() == _h1Consequent.second->getId())
-			it->second = _h1Consequent.first;
-		_h1Antecedent.push_back(*it);
+	for(std::vector<equality>::iterator _it = _h2Antecedent.begin();
+      _it != _h2Antecedent.end(); ++_it){
+		if(_it->first->getId() == _h1Consequent.second->getId())
+			_it->first = _h1Consequent.first;
+		if(_it->second->getId() == _h1Consequent.second->getId())
+			_it->second = _h1Consequent.first;
+		_h1Antecedent.push_back(*_it);
   }
   _h2LocalUf.merge(_h1LocalUf.find(_h1Consequent.first->getId()),
 									 _h1LocalUf.find(_h1Consequent.second->getId()));
@@ -315,7 +314,7 @@ void HornClauses::combinationHelper(HornClause * hc){
 		std::cout << "It was added!" << std::endl << std::endl;
 	orient(hc);
 	hornClauses.push_back(hc);
-  makeMatches(hc, numHornClauses);
+  //makeMatches(hc, numHornClauses);
   ++numHornClauses;
 }
 
@@ -324,14 +323,14 @@ void HornClauses::orient(HornClause * hc){
 	std::vector<equality> & antecedent = hc->getAntecedent();
 	equality & consequent = hc->getConsequent();
 	
-  for(std::vector<equality>::iterator it = antecedent.begin();
-			it != antecedent.end(); ++it){
-    Vertex * _u = localTerms[localUF.find(it->first->getId())],
-      * _v = localTerms[localUF.find(it->second->getId())];
+  for(std::vector<equality>::iterator _it = antecedent.begin();
+			_it != antecedent.end(); ++_it){
+    Vertex * _u = localTerms[localUF.find(_it->first->getId())],
+      * _v = localTerms[localUF.find(_it->second->getId())];
     if(*_u >= *_v)
-			*it = std::make_pair(_u, _v);
+			*_it = std::make_pair(_u, _v);
 		else
-			*it = std::make_pair(_v, _u);
+			*_it = std::make_pair(_v, _u);
   }
   Vertex * _u = localTerms[localUF.find(consequent.first->getId())],
     * _v = localTerms[localUF.find(consequent.second->getId())];
@@ -343,28 +342,28 @@ void HornClauses::orient(HornClause * hc){
 }
 
 std::ostream & HornClauses::printMatch1(std::ostream & os, match1 & m1){
-	for(match1::iterator it = m1.begin(); it != m1.end(); ++it){
-		os << it->first->to_string() << std::endl;
-		for(std::vector<unsigned>::iterator it2 = m1[it->first].begin(); it2 != m1[it->first].end(); ++it2)
-			os << *it2 << " ";
+	for(match1::iterator _it = m1.begin(); _it != m1.end(); ++_it){
+		os << _it->first->to_string() << std::endl;
+		for(std::vector<unsigned>::iterator _it2 = m1[_it->first].begin(); _it2 != m1[_it->first].end(); ++_it2)
+			os << *_it2 << " ";
 		os << std::endl;
 	}
 	return os;
 }
 
 std::ostream & HornClauses::printMatch2(std::ostream & os, match2 & m1){
-	for(match2::iterator it = m1.begin(); it != m1.end(); ++it){
-		os << it->first.first->to_string() << " = " << it->first.second->to_string() << std::endl;
-		for(std::vector<unsigned>::iterator it2 = m1[it->first].begin(); it2 != m1[it->first].end(); ++it2)
-			std::cout << *it2 << " ";
+	for(match2::iterator _it = m1.begin(); _it != m1.end(); ++_it){
+		os << _it->first.first->to_string() << " = " << _it->first.second->to_string() << std::endl;
+		for(std::vector<unsigned>::iterator _it2 = m1[_it->first].begin(); _it2 != m1[_it->first].end(); ++_it2)
+			std::cout << *_it2 << " ";
 		std::cout << std::endl;
 	}
 	return os;
 }
 
 std::ostream & operator << (std::ostream & os, HornClauses & hcs){
-  for(std::vector<HornClause*>::iterator it = hcs.hornClauses.begin();
-      it != hcs.hornClauses.end(); ++it)
-    os << **it << std::endl;
+  for(std::vector<HornClause*>::iterator _it = hcs.hornClauses.begin();
+      _it != hcs.hornClauses.end(); ++_it)
+    os << **_it << std::endl;
   return os;
 }
