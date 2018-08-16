@@ -19,8 +19,8 @@ void GTerms::unreachable(){
 }
 
 void GTerms::visit(Z3_context c, Z3_ast v,
-		   unsigned numTerms, unsigned & counterExtraTerms,
-		   std::set<std::string> & symbols){
+									 unsigned numTerms, unsigned & counterExtraTerms,
+									 std::set<std::string> & symbols){
   unsigned id = Z3_get_ast_id(c, v);
   if(debugVisit2){
     std::cout << "Just checking the id " << " ID: " << id << std::endl;
@@ -56,11 +56,11 @@ void GTerms::visit(Z3_context c, Z3_ast v,
       terms[id]->setName(Z3_get_symbol_string(c, s));
       symbols.insert(Z3_get_symbol_string(c, s));
       if(terms[id]->getName() == "=")
-	equations.push_back(std::make_pair(Z3_get_ast_id(c, Z3_get_app_arg(c, app, 0)),
-					   Z3_get_ast_id(c, Z3_get_app_arg(c, app, 1))));
+				equations.push_back(std::make_pair(Z3_get_ast_id(c, Z3_get_app_arg(c, app, 0)),
+																					 Z3_get_ast_id(c, Z3_get_app_arg(c, app, 1))));
       if(terms[id]->getName() == "distinct")
-	disEquations.push_back(std::make_pair(Z3_get_ast_id(c, Z3_get_app_arg(c, app, 0)),
-					      Z3_get_ast_id(c, Z3_get_app_arg(c, app, 1))));
+				disEquations.push_back(std::make_pair(Z3_get_ast_id(c, Z3_get_app_arg(c, app, 0)),
+																							Z3_get_ast_id(c, Z3_get_app_arg(c, app, 1))));
       break;
     default:
       unreachable();
@@ -70,17 +70,17 @@ void GTerms::visit(Z3_context c, Z3_ast v,
       terms[id]->setArity(2);
       // Adding w_j(v) vertices
       for(unsigned j = 2; j <= num_args; ++j){
-	Vertex * temp = new Vertex("_c", 2);
-	terms.push_back(temp);
-	++counterExtraTerms;
+				Vertex * temp = new Vertex("_c", 2);
+				terms.push_back(temp);
+				++counterExtraTerms;
       }
       _successor = Z3_get_ast_id(c, Z3_get_app_arg(c, app, 0));
       terms[id]->addSuccessor(terms[_successor]);
       terms[id]->addSuccessor(terms[mark]);
       for(unsigned j = 0; j < num_args - 2; ++j){
-	_successor = Z3_get_ast_id(c, Z3_get_app_arg(c, app, j + 1));
-	terms[mark + j]->addSuccessor(terms[_successor]);
-	terms[mark + j]->addSuccessor(terms[mark + j + 1]);
+				_successor = Z3_get_ast_id(c, Z3_get_app_arg(c, app, j + 1));
+				terms[mark + j]->addSuccessor(terms[_successor]);
+				terms[mark + j]->addSuccessor(terms[mark + j + 1]);
       }
       _successor = Z3_get_ast_id(c, Z3_get_app_arg(c, app, num_args - 1));
       terms[mark + num_args - 2]->addSuccessor(terms[_successor]);
@@ -89,8 +89,8 @@ void GTerms::visit(Z3_context c, Z3_ast v,
     else{
       terms[id]->setArity(num_args);
       for(unsigned j = 0; j < num_args; ++j){
-	_successor = Z3_get_ast_id(c, Z3_get_app_arg(c, app, j));
-	terms[id]->addSuccessor(terms[_successor]);
+				_successor = Z3_get_ast_id(c, Z3_get_app_arg(c, app, j));
+				terms[id]->addSuccessor(terms[_successor]);
       }
     }
     //----------------------------------------------------------------------------------------
@@ -187,8 +187,8 @@ GTerms::GTerms(Z3_context ctx, Z3_ast v){
   visit(ctx, Z3_get_app_arg(ctx, app, 1), symbolsB);
   
   std::set_difference(symbolsA.begin(), symbolsA.end(),
-		      symbolsB.begin(), symbolsB.end(),
-		      std::inserter(symbolsToElim, symbolsToElim.end()));
+											symbolsB.begin(), symbolsB.end(),
+											std::inserter(symbolsToElim, symbolsToElim.end()));
   EC = UnionFind(2*numTerms + counterExtraTerms);
 }
 
@@ -243,18 +243,18 @@ GTerms::GTerms(std::istream & in){
       terms[i]->setArity(2);
       // Adding w_j(v) vertices
       for(unsigned j = 2; j <= _arity; ++j){
-	//Vertex * temp = new Vertex("w" + std::to_string(j) + std::to_string(terms[i]->getId()), 2);
-	//Vertex * temp = new Vertex(terms[i]->getName(), 2);
-	Vertex * temp = new Vertex("_c", 2);
-	terms.push_back(temp);
+				//Vertex * temp = new Vertex("w" + std::to_string(j) + std::to_string(terms[i]->getId()), 2);
+				//Vertex * temp = new Vertex(terms[i]->getName(), 2);
+				Vertex * temp = new Vertex("_c", 2);
+				terms.push_back(temp);
       }
       in >> _successor;
       terms[i]->addSuccessor(terms[_successor]);
       terms[i]->addSuccessor(terms[mark]);
       for(unsigned j = 0; j < _arity - 2; ++j){
-	in >> _successor;
-	terms[mark + j]->addSuccessor(terms[_successor]);
-	terms[mark + j]->addSuccessor(terms[mark + j + 1]);
+				in >> _successor;
+				terms[mark + j]->addSuccessor(terms[_successor]);
+				terms[mark + j]->addSuccessor(terms[mark + j + 1]);
       }
       in >> _successor;
       terms[mark + _arity - 2]->addSuccessor(terms[_successor]);
@@ -263,8 +263,8 @@ GTerms::GTerms(std::istream & in){
     else{
       terms[i]->setArity(_arity);
       for(unsigned j = 0; j < _arity; ++j){
-	in >> _successor;       
-	terms[i]->addSuccessor(terms[_successor]);
+				in >> _successor;       
+				terms[i]->addSuccessor(terms[_successor]);
       }
     }
   }

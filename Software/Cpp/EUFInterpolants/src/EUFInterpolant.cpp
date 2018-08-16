@@ -17,15 +17,7 @@ void EUFInterpolant::algorithm(){
   setCommonRepresentatives();
   eliminationOfUncommonFSyms();
   hC.conditionalElimination();
-  // for(unsigned i = 0; i < Vertex::getTotalNumVertex(); ++i){
-  //   if(!cc.getTerm(i)->getSymbolCommonQ()){
-  //     std::cout << "++++++++++++++++++++++++++++++++++++++++++" << std::endl;
-  //     std::cout << *cc.find(cc.getTerm(i)) << std::endl;
-  //     std::cout << "******************************************" << std::endl;
-  //     std::cout << *cc.getTerm(i) << std::endl;
-  //     std::cout << "------------------------------------------" << std::endl;
-  //   }
-  // }
+	//std::cout << hC << std::endl;
 }
 
 void EUFInterpolant::identifyCommonSymbols(){
@@ -108,7 +100,9 @@ void EUFInterpolant::eliminationOfUncommonFSyms(){
 				break;
       }
     }
-    if(expose){
+		// We don't include in the Exposure method new introduced symbols
+		// nor equalities, disequalities
+    if(expose && (it->first != "=" && it->first != "distinct" && it->first[0] != '_')){
       unsigned l = (it->second).size();
       std::vector<unsigned> _temp(l);
       std::copy(it->second.begin(), it->second.end(), _temp.begin());

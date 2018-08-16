@@ -20,12 +20,14 @@ class HornClauses{
   std::vector<HornClause*> hornClauses;
   match1 mc1A, mc1C;
   match2 mc2A, mc2C;
+	match2 rewriting;
   std::vector<Vertex*> & localTerms;
   void mergeType2_1AndType3(HornClause *, HornClause *);
   void mergeType2_1AndType4(HornClause *, HornClause *);
   void mergeType2AndType2(HornClause *, HornClause *);
   void mergeType2AndType3(HornClause *, HornClause *);
   void mergeType2AndType4(HornClause *, HornClause *);
+	void rewrite();
   void makeMatches(HornClause * hc, unsigned);
 	void combinationHelper(HornClause *);
 	void orient(HornClause *);
@@ -34,6 +36,7 @@ class HornClauses{
   ~HornClauses();
   void addHornClause(UnionFind &, Vertex*, Vertex*);
   void conditionalElimination();
+	unsigned size();
   friend std::ostream & operator << (std::ostream &, HornClauses &);
 	std::ostream & printMatch1(std::ostream &, match1 &);
 	std::ostream & printMatch2(std::ostream &, match2 &);
