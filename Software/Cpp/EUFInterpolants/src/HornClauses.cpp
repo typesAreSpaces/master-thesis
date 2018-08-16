@@ -27,46 +27,7 @@ void HornClauses::addHornClause(UnionFind & uf,
 }
 
 void HornClauses::conditionalElimination(){
-
-  // // Let's just print all the matches data
-  // // structures to check consistency
-  // // typedef std::map<Vertex*, std::vector<unsigned> > match1;
-  // std::cout << "mc1A-------------------------------------" << std::endl;
-  // for(match1::iterator it = mc1A.begin(); it != mc1A.end(); ++it){
-  //   std::cout << it->first->to_string() << std::endl;
-  //   for(std::vector<unsigned>::iterator it2 = it->second.begin();
-  //       it2 != it->second.end(); ++it2)
-  //     std::cout << *it2 << " ";
-  //   std::cout << std::endl;
-  // }
-  // std::cout << "mc1A-------------------------------------" << std::endl;
-  // std::cout << "mc1C-------------------------------------" << std::endl;
-  // for(match1::iterator it = mc1C.begin(); it != mc1C.end(); ++it){
-  //   std::cout << it->first->to_string() << std::endl;
-  //   for(std::vector<unsigned>::iterator it2 = it->second.begin();
-  //       it2 != it->second.end(); ++it2)
-  //     std::cout << *it2 << " ";
-  //   std::cout << std::endl;
-  // }
-  // std::cout << "mc1C-------------------------------------" << std::endl;
-  // std::cout << "mc2A-------------------------------------" << std::endl;
-  // for(match2::iterator it = mc2A.begin(); it != mc2A.end(); ++it){
-  //   std::cout << it->first.first->to_string() << ", " << it->first.second->to_string() << std::endl;
-  //   for(std::vector<unsigned>::iterator it2 = it->second.begin();
-  //       it2 != it->second.end(); ++it2)
-  //     std::cout << *it2 << " ";
-  //   std::cout << std::endl;
-  // }
-  // std::cout << "mc2A-------------------------------------" << std::endl;
-  // std::cout << "mc2C-------------------------------------" << std::endl;
-  // for(match2::iterator it = mc2C.begin(); it != mc2C.end(); ++it){
-  //   std::cout << it->first.first->to_string() << ", " << it->first.second->to_string() << std::endl;
-  //   for(std::vector<unsigned>::iterator it2 = it->second.begin();
-  //       it2 != it->second.end(); ++it2)
-  //     std::cout << *it2 << " ";
-  //   std::cout << std::endl;
-  // }
-  // std::cout << "mc2C-------------------------------------" << std::endl;
+	
   bool change = true;
   std::set<std::pair<unsigned, unsigned> > prevCombinations;
   while(change){
