@@ -3,6 +3,7 @@
 
 #include "CongruenceClosure.h"
 #include "HornClauses.h"
+#include "displayAST.h"
 #include <stack>
 #include <map>
 #include <set>
@@ -13,6 +14,7 @@ class EUFInterpolant {
  private:
   CongruenceClosure cc;
   HornClauses hC;
+	Z3_context ctx;
   void identifyCommonSymbols();
   void setCommonRepresentatives();
   void eliminationOfUncommonFSyms();

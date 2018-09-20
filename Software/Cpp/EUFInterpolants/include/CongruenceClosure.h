@@ -13,7 +13,7 @@ extern bool traceSigTable;
 
 class CongruenceClosure : public SignatureTable {
  private:
-  void init();
+  void init(Z3_context);
  public:
   CongruenceClosure(Z3_context, Z3_ast);
   CongruenceClosure(Z3_context, Z3_ast, std::set<std::string> &);

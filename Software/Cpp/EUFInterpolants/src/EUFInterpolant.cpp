@@ -1,11 +1,11 @@
 #include "EUFInterpolant.h"
 
 EUFInterpolant::EUFInterpolant(Z3_context c, Z3_ast v) :
-  cc(c, v), hC(cc.getTerms()) {
+  cc(c, v), hC(cc.getTerms()), ctx(c) {
 }
 
 EUFInterpolant::EUFInterpolant(Z3_context c, Z3_ast v, std::set<std::string> & symbolsToElim) :
-  cc(c, v, symbolsToElim), hC(cc.getTerms()){
+  cc(c, v, symbolsToElim), hC(cc.getTerms()), ctx(c) {
 }
 
 EUFInterpolant::~EUFInterpolant(){
@@ -17,7 +17,36 @@ void EUFInterpolant::algorithm(){
   setCommonRepresentatives();
   eliminationOfUncommonFSyms();
   hC.conditionalElimination();
-	//std::cout << hC << std::endl;
+	
+	std::vector<HornClause*> hCS = hC.getHornClauses();
+	std::cout << "Horn equations produced:" << std::endl;
+	for(std::vector<HornClause*>::iterator it = hCS.begin();
+			it != hCS.end(); ++it){
+		std::cout << **it << std::endl;
+	}
+	
+	std::cout << "Original Equations:" << std::endl;
+	std::vector<std::pair<Z3_ast, Z3_ast> > a = cc.getEquations();
+	for(std::vector<std::pair<Z3_ast, Z3_ast> >::iterator it = a.begin();
+			it != a.end(); ++it){
+	  display_ast(ctx, stdout, it->first);
+		std::cout << " = ";
+		display_ast(ctx, stdout, it->second);
+	}
+
+	std::cout << "Original Disequations:" << std::endl;
+	std::vector<std::pair<Z3_ast, Z3_ast> > b = cc.getDisequations();
+	for(std::vector<std::pair<Z3_ast, Z3_ast> >::iterator it = b.begin();
+			it != b.end(); ++it){
+		/*
+		std::cout << cc.getTerm(it->first)->to_string()
+							<< " = "
+							<< cc.getTerm(it->second)->to_string() << std::endl;
+		*/
+	}
+
+	// Continue Here
+	
 }
 
 void EUFInterpolant::identifyCommonSymbols(){

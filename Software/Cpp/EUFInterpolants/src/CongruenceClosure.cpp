@@ -6,13 +6,13 @@ bool tracePending = false;
 bool traceEC = false;
 bool traceSigTable = false;
 
-void CongruenceClosure::init(){
+void CongruenceClosure::init(Z3_context c){
   unsigned lhs, rhs;
-  Vertex * lhsVertex, *rhsVertex;
-  for(std::vector<std::pair<unsigned, unsigned> >::iterator it = equations.begin();
+  Vertex * lhsVertex, * rhsVertex;
+  for(std::vector<std::pair<Z3_ast, Z3_ast> >::iterator it = equations.begin();
       it != equations.end(); ++it){
-    lhs = it->first;
-    rhs = it->second;
+    lhs = Z3_get_ast_id(c, it->first);
+    rhs = Z3_get_ast_id(c, it->second);
     lhsVertex = getTerm(lhs);
     rhsVertex = getTerm(rhs);
     
@@ -54,12 +54,12 @@ void CongruenceClosure::init(){
 
 CongruenceClosure::CongruenceClosure(Z3_context c, Z3_ast v, std::set<std::string> & symbolsToElim) :
   SignatureTable(c, v, symbolsToElim) {
-  init();
+  init(c);
 }
 
 CongruenceClosure::CongruenceClosure(Z3_context c, Z3_ast v) :
   SignatureTable(c, v) {
-  init();
+  init(c);
 }
 
 CongruenceClosure::CongruenceClosure(std::istream & in) : SignatureTable(in) {

@@ -16,7 +16,7 @@ HornClause::HornClause(UnionFind & uf,
   }
   consequentQ = consequentQ &&
     terms[localUF.find(consequent.first->getId())]->getSymbolCommonQ() &&
-    terms[localUF.find(consequent.first->getId())]->getSymbolCommonQ();
+    terms[localUF.find(consequent.second->getId())]->getSymbolCommonQ();
 }
 
 HornClause::HornClause(UnionFind & uf, Vertex* u, Vertex* v,
@@ -117,3 +117,26 @@ std::ostream & operator << (std::ostream & os, HornClause & hc){
   os << " -> " << hc.consequent.first->to_string() << " = " << hc.consequent.second->to_string();
   return os;
 }
+
+// This comparison assumes the consequent of
+// hc1 and hc2 are equal
+bool operator > (HornClause & hc1, HornClause & hc2){
+	std::vector<equality> & hc1Antecedent = hc1.getAntecedent();
+	UnionFind & hc2UF = hc2.getLocalUF();
+	for(std::vector<equality>::iterator it = hc1Antecedent.begin();
+			it != hc1Antecedent.end(); ++it){
+
+		//std::cout << it->first->getId() << ", " << it->second->getId() << std::endl;
+		//std::cout << hc2UF.find(it->first->getId()) << ", " << hc2UF.find(it->second->getId()) << std::endl;
+		
+		if(hc2UF.find(it->first->getId()) != hc2UF.find(it->second->getId()))
+			return false;
+	}
+	return true;
+}
+
+bool operator < (HornClause & hc1, HornClause & hc2){
+	return hc2 > hc1;
+}
+
+

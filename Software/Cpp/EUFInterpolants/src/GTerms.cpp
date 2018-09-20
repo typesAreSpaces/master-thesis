@@ -55,12 +55,13 @@ void GTerms::visit(Z3_context c, Z3_ast v,
     case Z3_STRING_SYMBOL:
       terms[id]->setName(Z3_get_symbol_string(c, s));
       symbols.insert(Z3_get_symbol_string(c, s));
-      if(terms[id]->getName() == "=")
-				equations.push_back(std::make_pair(Z3_get_ast_id(c, Z3_get_app_arg(c, app, 0)),
-																					 Z3_get_ast_id(c, Z3_get_app_arg(c, app, 1))));
+			if(terms[id]->getName() == "=")
+				equations.push_back(std::make_pair(Z3_get_app_arg(c, app, 0),
+																					 Z3_get_app_arg(c, app, 1)));
       if(terms[id]->getName() == "distinct")
-				disEquations.push_back(std::make_pair(Z3_get_ast_id(c, Z3_get_app_arg(c, app, 0)),
-																							Z3_get_ast_id(c, Z3_get_app_arg(c, app, 1))));
+				disEquations.push_back(std::make_pair(Z3_get_app_arg(c, app, 0),
+																							Z3_get_app_arg(c, app, 1)));
+		
       break;
     default:
       unreachable();
@@ -316,6 +317,14 @@ unsigned GTerms::getRootNum(){
 
 std::set<std::string> & GTerms::getSymbolsToElim(){
   return symbolsToElim;
+}
+
+std::vector<std::pair<Z3_ast, Z3_ast> > & GTerms::getEquations(){
+	return equations;
+}
+
+std::vector<std::pair<Z3_ast, Z3_ast> > & GTerms::getDisequations(){
+	return disEquations;
 }
 
 std::ostream & GTerms::print(std::ostream & os){

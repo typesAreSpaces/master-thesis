@@ -20,7 +20,7 @@ class GTerms{
   std::vector<Vertex*> terms;
   UnionFind EC;
   std::set<std::string> symbolsToElim; 
-  std::vector<std::pair<unsigned, unsigned> > equations, disEquations;
+  std::vector<std::pair<Z3_ast, Z3_ast> > equations, disEquations;
  private:
   void visit(Z3_context, Z3_ast, unsigned, unsigned &, std::set<std::string> &);
   void visit(Z3_context, Z3_ast, std::set<std::string> &);
@@ -39,6 +39,8 @@ class GTerms{
   void rotate(Vertex*, Vertex*);
   unsigned getRootNum();
   std::set<std::string> & getSymbolsToElim();
+	std::vector<std::pair<Z3_ast, Z3_ast> > & getEquations();
+	std::vector<std::pair<Z3_ast, Z3_ast> > & getDisequations();
   std::ostream & print(std::ostream &);
 };
 

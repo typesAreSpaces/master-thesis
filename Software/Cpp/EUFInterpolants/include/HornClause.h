@@ -30,6 +30,8 @@ class HornClause{
   UnionFind & getLocalUF();
 	static UnionFind & getGlobalUF();
   friend std::ostream & operator << (std::ostream &, HornClause &);
+	friend bool operator <(HornClause &, HornClause &);
+	friend bool operator >(HornClause &, HornClause &);
 };
 
 #endif

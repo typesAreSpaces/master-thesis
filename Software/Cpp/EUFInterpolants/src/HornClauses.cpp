@@ -134,29 +134,54 @@ void HornClauses::conditionalElimination(){
   }
 
 	rewrite();
-	printMatch2(std::cout, rewriting);
+ 
+	if(debugHornClauses){
+		std::cout << "Horn Clauses produced:" << std::endl;
+		for(match2::iterator it = rewriting.begin(); it != rewriting.end(); ++it)
+			for(unsigned i = 0; i < rewritingLength[it->first] + 1; ++i)
+				std::cout << *hornClauses[it->second[i]] << std::endl;
+	}
 }
 
+// This method removes unnecessary extra Horn Clauses
+// Implements the following rule:
+// C, D -> a     C -> a
+// ---------------------
+//       C -> a
 void HornClauses::rewrite(){
 	unsigned position = 0;
+	bool change = false;
+	
 	for(std::vector<HornClause*>::iterator it = hornClauses.begin();
 			it != hornClauses.end(); ++it){
-		if((*it)->getAntecedentQ())
+		// Filter: Only Type 2 or Type 2.1 are allowed here
+		if((*it)->getAntecedentQ()
+			 && localTerms[(*it)->getConsequent().first->getId()]->getSymbolCommonQ())
 			rewriting[(*it)->getConsequent()].push_back(position);
 		++position;
 	}
 
 	for(match2::iterator it = rewriting.begin();
 			it != rewriting.end(); ++it){
-		for(std::vector<unsigned>::iterator it2 = it->second.begin();
-				it2 != --it->second.end(); ++it2){
-			for(std::vector<unsigned>::iterator it3 = std::next(it2, 1);
-					it3 != it->second.end(); ++it3){
-				std::cout << *it2 << ", " << *it3 << std::endl;
+		unsigned length = it->second.size();
+		for(unsigned i = 0; i + 1 < length; ++i)
+			for(unsigned j = i + 1; j < length; ++j){
+				do{
+					if(*hornClauses[it->second[i]] > *hornClauses[it->second[j]]){
+						swap(hornClauses, j, length - 1);
+						change = true;
+						--length;
+					}
+					else if(*hornClauses[it->second[i]] < *hornClauses[it->second[j]]){
+						swap(hornClauses, i, j);
+						swap(hornClauses, j, length - 1);
+						change = true;
+						--length;
+					}
+				} while(change && (i < length));
+				rewritingLength[it->first] = length;
 			}
-		}
 	}
-	
 }
 
 // Precondition: 
@@ -312,6 +337,14 @@ unsigned HornClauses::size(){
 	return numHornClauses;
 }
 
+std::vector<HornClause*> HornClauses::getHornClauses(){
+	std::vector<HornClause*> _hc;
+	for(match2::iterator it = rewriting.begin(); it != rewriting.end(); ++it)
+		for(unsigned i = 0; i < rewritingLength[it->first] + 1; ++i)
+			_hc.push_back(hornClauses[it->second[i]]);
+	return _hc;
+}
+
 void HornClauses::orient(HornClause * hc){
 	UnionFind & localUF = HornClause::getGlobalUF();
 	std::vector<equality> & antecedent = hc->getAntecedent();
@@ -333,6 +366,13 @@ void HornClauses::orient(HornClause * hc){
 		consequent = std::make_pair(_u, _v);
 	else
 		consequent = std::make_pair(_v, _u);
+}
+
+template<typename A>
+void HornClauses::swap(std::vector<A> & a, unsigned i, unsigned j){
+	A temp = a[i];
+	a[i] = a[j];
+	a[j] = temp;
 }
 
 std::ostream & HornClauses::printMatch1(std::ostream & os, match1 & m1){
