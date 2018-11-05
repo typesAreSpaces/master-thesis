@@ -1,5 +1,5 @@
-#ifndef CONG_CLOSURE
-#define CONG_CLOSURE
+#ifndef _CONG_CLOSURE
+#define _CONG_CLOSURE
 
 #include "SignatureTable.h"
 
@@ -15,8 +15,8 @@ class CongruenceClosure : public SignatureTable {
  private:
   void init(Z3_context);
  public:
+	CongruenceClosure(Z3_context, Z3_ast, std::set<std::string> &);
   CongruenceClosure(Z3_context, Z3_ast);
-  CongruenceClosure(Z3_context, Z3_ast, std::set<std::string> &);
   CongruenceClosure(std::istream &);
   ~CongruenceClosure();
   void algorithm();

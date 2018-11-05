@@ -2,7 +2,6 @@
 #define _DISPLAY_AST_
 
 #include <iostream>
-#include "z3++.h"
 #include "z3.h"
 
 // Taken from the Z3 project

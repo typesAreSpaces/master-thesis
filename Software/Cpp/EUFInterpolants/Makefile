@@ -14,7 +14,7 @@ all: main
 $(ODIR)/%.o: $(SDIR)/%.cpp $(DEPS)
 	$(CC) -c -o$@  $(FLAGS) $< -Wall
 main: $(OBJS) $(Z3DIR)/build/libz3.dylib
-	$(CC) -o $@ $^ $(Z3DIR)/build/libz3.dylib -lpthread -Wall
+	$(CC) -o$@ $^ -lpthread -Wall
 test_old:
 	for x in ./tests/old/*; do echo $$x; ./main $$x; done
 test_smt2:

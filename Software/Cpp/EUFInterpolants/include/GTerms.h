@@ -8,7 +8,6 @@
 #include <vector>
 #include "Vertex.h"
 #include "UnionFind.h"
-#include "z3++.h"
 #include "z3.h"
 
 extern bool debugVisit;
