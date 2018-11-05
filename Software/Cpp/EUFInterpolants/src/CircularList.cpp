@@ -29,10 +29,8 @@ void CircularList<T>::add(T x){
 
 template <typename T>
 void CircularList<T>::addEmpty(T x){
-  tail = nullptr;
   node<T> * temp = new node<T>;
   temp->data = x;
-  temp->next = nullptr;
   temp->next = temp;
   tail = temp;
 }
@@ -79,10 +77,10 @@ void CircularList<T>::mergeCircularList(CircularList * l){
       this->tail = l->tail;
     }
     else{
-      node<T> * lTemp = l->getList(), * ptr;
+      node<T> * temp = l->getList(), * ptr;
       ptr = this->tail->next;
-      this->tail->next = lTemp->next;   
-      lTemp->next = ptr;
+      this->tail->next = temp->next;   
+      temp->next = ptr;
       this->length += l->size();
     }
     l->tail = nullptr;
@@ -93,9 +91,9 @@ void CircularList<T>::mergeCircularList(CircularList * l){
 template <typename T>
 std::ostream & CircularList<T>::print(std::ostream & os){
   if(length != 0){
-		iterator it = this->begin();
+		CircularList<T>::iterator it = this->begin();
 		do{
-			os << *it << " ";
+			os << (*it).data << " ";
 			++it;
 		} while(it != this->begin());
   }
