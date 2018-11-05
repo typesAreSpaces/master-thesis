@@ -93,11 +93,11 @@ void CircularList<T>::mergeCircularList(CircularList * l){
 template <typename T>
 std::ostream & CircularList<T>::print(std::ostream & os){
   if(length != 0){
-    node<T> * temp = tail->next;
-    do{
-      os << temp->data << " ";
-      temp = temp->next;
-    } while(temp != tail->next);
+		iterator it = this->begin();
+		do{
+			os << *it << " ";
+			++it;
+		} while(it != this->begin());
   }
   os << std::endl;
   return os;

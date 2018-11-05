@@ -11,6 +11,7 @@ class CircularList{
   node<T> * tail;
   void addEmpty(T x);
   void addNonEmpty(T x);
+	void setLength(int);
  public:
   CircularList();
   ~CircularList();
@@ -19,7 +20,6 @@ class CircularList{
   node<T> * getList();
   node<T> * begin();
   node<T> * end();
-  void setLength(int);
   void mergeCircularList(CircularList *);
   std::ostream & print(std::ostream &);
   class iterator{
