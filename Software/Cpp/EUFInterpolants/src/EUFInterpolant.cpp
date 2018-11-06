@@ -32,17 +32,17 @@ void EUFInterpolant::algorithm(){
 	  display_ast(ctx, stdout, it->first);
 		std::cout << " = ";
 		display_ast(ctx, stdout, it->second);
+		std::cout << std::endl;
 	}
 
 	std::cout << "Original Disequations:" << std::endl;
 	std::vector<std::pair<Z3_ast, Z3_ast> > b = cc.getDisequations();
 	for(std::vector<std::pair<Z3_ast, Z3_ast> >::iterator it = b.begin();
 			it != b.end(); ++it){
-		/*
-		std::cout << cc.getTerm(it->first)->to_string()
-							<< " = "
-							<< cc.getTerm(it->second)->to_string() << std::endl;
-		*/
+		display_ast(ctx, stdout, it->first);
+		std::cout << " ~= ";
+		display_ast(ctx, stdout, it->second);
+		std::cout << std::endl;
 	}
 
 	// Continue Here

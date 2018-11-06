@@ -1,1 +1,6 @@
-Complete void HornClauses::conditionalElimination()
+HornClauses.cpp:
+	Complete void HornClauses::conditionalElimination()
+
+displayAST.cpp:
+	Change display_ast() method: Specifically line 115
+	so it shows symbol names only
