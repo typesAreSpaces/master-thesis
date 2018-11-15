@@ -1,2 +1,2 @@
-HornClauses.cpp:
-	Complete void HornClauses::conditionalElimination()
+EUFInterpolant.cpp:
+	- Finish void EUFInterpolant::addNegativeHornClauses()

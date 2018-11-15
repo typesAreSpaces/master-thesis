@@ -154,17 +154,16 @@ void EUFInterpolant::addNegativeHornClauses(){
 			it != b.end(); ++it){
 		lhs = Z3_get_ast_id(ctx, it->first);
 		rhs = Z3_get_ast_id(ctx, it->second);
-		lhsVertex = cc.getTerm(lhs);
-		rhsVertex = cc.getTerm(rhs);
-		std::cout << *lhsVertex << std::endl;
-		std::cout << *rhsVertex << std::endl;
-		std::cout << "Cut" << std::endl;
-		
-		display_ast(ctx, stdout, it->first);
-		std::cout << std::endl;
-		display_ast(ctx, stdout, it->second);
-		std::cout << std::endl;
-		
+		lhsVertex = cc.find(cc.getTerm(lhs));
+		rhsVertex = cc.find(cc.getTerm(rhs));
+		// It's assumed function symbol names
+		// have unique arities
+		if(lhsVertex->getName() == rhsVertex->getName()){
+			// Add HornClauses unfolding arguments
+		}
+		else{
+			// Just add HornClauses using the representative
+		}
 	}
 	return;
 }
