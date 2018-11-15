@@ -18,6 +18,7 @@ class EUFInterpolant {
   void identifyCommonSymbols();
   void setCommonRepresentatives();
   void eliminationOfUncommonFSyms();
+	void addNegativeHornClauses();
   symbolLoc symbolPos;
  public:
   EUFInterpolant(Z3_context, Z3_ast);

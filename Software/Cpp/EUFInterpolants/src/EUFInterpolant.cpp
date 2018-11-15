@@ -17,6 +17,7 @@ void EUFInterpolant::algorithm(){
   cc.algorithm();
   setCommonRepresentatives();
   eliminationOfUncommonFSyms();
+	addNegativeHornClauses();
   hC.conditionalElimination();
 	
 	std::vector<HornClause*> hCS = hC.getHornClauses();
@@ -114,8 +115,9 @@ void EUFInterpolant::setCommonRepresentatives(){
     // 1) the current term is common
     // 2) the current term has a smaller arity
     if(_temp->getSymbolCommonQ()
-       && _temp->getArity() < cc.find(_temp)->getArity())
+       && _temp->getArity() < cc.find(_temp)->getArity()){
       cc.rotate(_temp, cc.find(_temp));
+		}
   }
 }
 
@@ -142,6 +144,29 @@ void EUFInterpolant::eliminationOfUncommonFSyms(){
     }
     expose = false;
   }
+}
+
+void EUFInterpolant::addNegativeHornClauses(){
+	std::vector<std::pair<Z3_ast, Z3_ast> > b = cc.getDisequations();
+	unsigned lhs, rhs;
+	Vertex * lhsVertex, * rhsVertex;
+	for(std::vector<std::pair<Z3_ast, Z3_ast> >::iterator it = b.begin();
+			it != b.end(); ++it){
+		lhs = Z3_get_ast_id(ctx, it->first);
+		rhs = Z3_get_ast_id(ctx, it->second);
+		lhsVertex = cc.getTerm(lhs);
+		rhsVertex = cc.getTerm(rhs);
+		std::cout << *lhsVertex << std::endl;
+		std::cout << *rhsVertex << std::endl;
+		std::cout << "Cut" << std::endl;
+		
+		display_ast(ctx, stdout, it->first);
+		std::cout << std::endl;
+		display_ast(ctx, stdout, it->second);
+		std::cout << std::endl;
+		
+	}
+	return;
 }
 
 std::ostream & EUFInterpolant::print(std::ostream & os){

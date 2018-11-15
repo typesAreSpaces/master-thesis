@@ -1,6 +1,6 @@
 #include "GTerms.h"
 
-bool debugVisit = false;
+bool debugVisit  = false;
 bool debugVisit2 = false;
 
 /**
@@ -108,6 +108,10 @@ void GTerms::visit(Z3_context c, Z3_ast v,
     //fprintf(out, "#unknown");
     break;
   }
+  }
+	terms[id]->define();
+	if(debugVisit2){
+    std::cout << "Just checking the final vertex " << *terms[id] << std::endl;
   }
 }
 

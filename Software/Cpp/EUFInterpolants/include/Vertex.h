@@ -11,6 +11,7 @@ class Vertex{
   static unsigned totalNumVertex;
   std::string name;
   bool symbolCommonQ;
+	bool defined;
   unsigned id, arity;
   std::vector<Vertex*> successors;
   CircularList<unsigned> predecessors;
@@ -43,6 +44,7 @@ class Vertex{
   friend bool operator <=(const Vertex &, const Vertex &);
   friend bool operator >(const Vertex &, const Vertex &);
   friend bool operator >=(const Vertex &, const Vertex &);
+	void define();
 };
 
 #endif

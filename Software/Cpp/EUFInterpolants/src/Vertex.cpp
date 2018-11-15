@@ -7,12 +7,15 @@ unsigned Vertex::getTotalNumVertex(){
 }
 
 void Vertex::addPredecessor(unsigned i){
-  predecessors.add(i);
+	if(!defined)
+		predecessors.add(i);
 }
-Vertex::Vertex(std::string name, unsigned arity) : name(name), symbolCommonQ(true), id(totalNumVertex), arity(arity){
+Vertex::Vertex(std::string name, unsigned arity) : name(name), symbolCommonQ(true), defined(false),
+																									 id(totalNumVertex), arity(arity){
   ++totalNumVertex;
 }
-Vertex::Vertex() : symbolCommonQ(true), id(totalNumVertex){
+Vertex::Vertex() : symbolCommonQ(true), defined(false),
+									 id(totalNumVertex){
   ++totalNumVertex;
 };
 Vertex::~Vertex(){};
@@ -23,8 +26,10 @@ void Vertex::setArity(unsigned _arity){
   arity = _arity;
 }
 void Vertex::addSuccessor(Vertex * v){
-  successors.push_back(v);
-  v->addPredecessor(id);
+	if(!defined){
+		successors.push_back(v);
+		v->addPredecessor(id);
+	}
 }
 std::vector<Vertex*> & Vertex::getSuccessors(){
   return successors;
@@ -152,4 +157,8 @@ bool operator >(const Vertex & u, const Vertex & v){
 }
 bool operator >=(const Vertex & u, const Vertex & v){
   return (u == v || u > v);
+}
+
+void Vertex::define(){
+	defined = true;
 }
