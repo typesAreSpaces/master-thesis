@@ -3,8 +3,7 @@
 /**
    \brief exit gracefully in case of error.
 */
-void exitf(const char* message)
-{
+void exitf(const char* message){
   fprintf(stderr,"BUG: %s.\n", message);
   exit(1);
 }
@@ -12,16 +11,14 @@ void exitf(const char* message)
 /**
    \brief exit if unreachable code was reached.
 */
-void unreachable()
-{
+void unreachable(){
 	exitf("unreachable code was reached");
 }
 
 /**
    \brief Display a symbol in the given output stream.
 */
-void display_symbol(Z3_context c, FILE * out, Z3_symbol s)
-{
+void display_symbol(Z3_context c, FILE * out, Z3_symbol s){
 	switch (Z3_get_symbol_kind(c, s)) {
 	case Z3_INT_SYMBOL:
 		fprintf(out, "#%d", Z3_get_symbol_int(c, s));
@@ -37,8 +34,7 @@ void display_symbol(Z3_context c, FILE * out, Z3_symbol s)
 /**
    \brief Display the given type.
 */
-void display_sort(Z3_context c, FILE * out, Z3_sort ty)
-{
+void display_sort(Z3_context c, FILE * out, Z3_sort ty){
 	switch (Z3_get_sort_kind(c, ty)) {
 	case Z3_UNINTERPRETED_SORT:
 		display_symbol(c, out, Z3_get_sort_name(c, ty));
@@ -95,8 +91,7 @@ void display_sort(Z3_context c, FILE * out, Z3_sort ty)
 
    This function demonstrates how to use the API to navigate terms.
 */
-void display_ast(Z3_context c, FILE * out, Z3_ast v)
-{
+void display_ast(Z3_context c, FILE * out, Z3_ast v){
 	switch (Z3_get_ast_kind(c, v)) {
 	case Z3_NUMERAL_AST: {
 		//Z3_sort t;
@@ -113,14 +108,14 @@ void display_ast(Z3_context c, FILE * out, Z3_ast v)
 		Z3_func_decl d = Z3_get_app_decl(c, app);
 		Z3_symbol d2 = Z3_get_decl_name(c, d);
 		//fprintf(out, "%s", Z3_func_decl_to_string(c, d));
-		display_symbol(c, stdout, d2);
+		display_symbol(c, out, d2);
 		if (num_fields > 0) {
 			fprintf(out, "(");
 			for (i = 0; i < num_fields; i++) {
 				if (i > 0) {
-					fprintf(stdout, ", ");
+					fprintf(out, ", ");
 				}
-				display_ast(c, stdout, Z3_get_app_arg(c, app, i));
+				display_ast(c, out, Z3_get_app_arg(c, app, i));
 			}
 			fprintf(out, ")");
 		}

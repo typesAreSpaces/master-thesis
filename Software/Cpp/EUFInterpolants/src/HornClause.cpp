@@ -73,9 +73,7 @@ void HornClause::normalize(){
 }
 
 bool HornClause::checkTrivial(){
-  if(localUF.find(consequent.first->getId()) == localUF.find(consequent.second->getId()))
-    return true;
-  return false;
+  return (localUF.find(consequent.first->getId()) == localUF.find(consequent.second->getId()));
 }
 
 bool HornClause::getAntecedentQ(){

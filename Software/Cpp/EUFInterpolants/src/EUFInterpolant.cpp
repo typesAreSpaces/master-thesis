@@ -13,6 +13,7 @@ EUFInterpolant::~EUFInterpolant(){
 
 void EUFInterpolant::algorithm(){
   identifyCommonSymbols();
+	// Congruence Closure Algorithm
   cc.algorithm();
   setCommonRepresentatives();
   eliminationOfUncommonFSyms();
