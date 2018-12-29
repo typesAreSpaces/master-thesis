@@ -18,7 +18,7 @@ class HornClause{
   bool antecedentQ, consequentQ;
  public:
   HornClause(UnionFind &, std::vector<equality> &, equality &, std::vector<Vertex*> &);
-  HornClause(UnionFind &, Vertex*, Vertex*, std::vector<Vertex*> &);
+  HornClause(UnionFind &, Vertex*, Vertex*, std::vector<Vertex*> &, bool);
   ~HornClause();
   void normalize();
   bool checkTrivial();

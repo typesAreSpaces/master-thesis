@@ -140,7 +140,7 @@ void EUFInterpolant::eliminationOfUncommonFSyms(){
       std::copy(it->second.begin(), it->second.end(), _temp.begin());
       for(unsigned i = 0; i < l - 1; ++i)
 				for(unsigned j = i + 1; j < l; ++j)
-					hC.addHornClause(cc.getEC(), cc.getTerm(_temp[i]), cc.getTerm(_temp[j]));
+					hC.addHornClause(cc.getEC(), cc.getTerm(_temp[i]), cc.getTerm(_temp[j]), false);
     }
     expose = false;
   }
@@ -160,9 +160,18 @@ void EUFInterpolant::addNegativeHornClauses(){
 		// have unique arities
 		if(lhsVertex->getName() == rhsVertex->getName()){
 			// Add HornClauses unfolding arguments
+			// Let's check anyways
+			if(lhsVertex->getArity() != rhsVertex->getArity())
+				std::cout << "Fatal error: Different arities from EUFInterpolant.cpp::addNegativeHornClauses" << std::endl;
+		  hC.addHornClause(cc.getEC(), lhsVertex, rhsVertex, true);
 		}
 		else{
 			// Just add HornClauses using the representative
+			unsigned _sizeCC = Vertex::getTotalNumVertex();
+			equality fFalse = std::make_pair(cc.getTerm(_sizeCC - 1), cc.getTerm(_sizeCC - 1));
+			std::vector<equality> _antecedent;
+			_antecedent.push_back(std::make_pair(lhsVertex, rhsVertex));
+			hC.addHornClause(cc.getEC(), _antecedent, fFalse, true);
 		}
 	}
 	return;

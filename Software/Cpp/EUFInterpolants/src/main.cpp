@@ -10,7 +10,7 @@
 
 int main(int argc, char ** argv){
   
-  std::string file = "./tests/smt2lib_2/kapurEUFExample2.smt2";
+  std::string file = "./tests/smt2lib_2/kapurEUFExample2_2.smt2";
   //std::string file = "/Users/joseabelcastellanosjoo/Documents/QF_UF/2018-Goel-hwbench/QF_UF_firewire_tree.5.prop3_ab_reg_max.smt2";
   //std::string file = "/Users/joseabelcastellanosjoo/Documents/QF_UF/2018-Goel-hwbench/QF_UF_firewire_tree.3.prop2_ab_reg_max.smt2";
   //std::string file = "/Users/joseabelcastellanosjoo/Documents/QF_UF/2018-Goel-hwbench/QF_UF_needham.3.prop4_ab_reg_max.smt2";
@@ -21,7 +21,7 @@ int main(int argc, char ** argv){
   cfg.set("TRACE", false);
   z3::context ctx(cfg);
   Z3_ast inputFormula = Z3_ast_vector_get(ctx, Z3_parse_smtlib2_file(ctx, file.c_str(), 0, 0, 0, 0, 0, 0), 0);
-  std::set<std::string> symbolsToElim = {"v"};
+  std::set<std::string> symbolsToElim = {"f"};
 
   EUFInterpolant eufI (ctx, inputFormula, symbolsToElim);
   eufI.algorithm();

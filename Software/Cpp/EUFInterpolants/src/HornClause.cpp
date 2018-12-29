@@ -4,8 +4,8 @@ UnionFind HornClause::globalUF = UnionFind();
 bool HornClause::change = true;
 
 HornClause::HornClause(UnionFind & uf,
-		       std::vector<equality> & antecedent, equality & consequent,
-		       std::vector<Vertex*> & terms) :
+											 std::vector<equality> & antecedent, equality & consequent,
+											 std::vector<Vertex*> & terms) :
   localUF(uf), antecedent(antecedent), consequent(consequent){
   antecedentQ = true, consequentQ = true;
   for(std::vector<equality>::iterator it = antecedent.begin();
@@ -20,7 +20,7 @@ HornClause::HornClause(UnionFind & uf,
 }
 
 HornClause::HornClause(UnionFind & uf, Vertex* u, Vertex* v,
-		       std::vector<Vertex*> & terms) :
+											 std::vector<Vertex*> & terms, bool isDisequation) :
   localUF(uf), antecedentQ(true), consequentQ(true) {
 	if(change){
 		change = false;
@@ -38,14 +38,21 @@ HornClause::HornClause(UnionFind & uf, Vertex* u, Vertex* v,
       antecedent.push_back(std::make_pair(_v, _u));
     antecedentQ = antecedentQ && _u->getSymbolCommonQ() && _v->getSymbolCommonQ();
   }
-  Vertex * _u = terms[localUF.find(u->getId())],
-    * _v = terms[localUF.find(v->getId())];
+	if(isDisequation){
+		consequent = std::make_pair(terms[Vertex::getTotalNumVertex() - 1],
+																terms[Vertex::getTotalNumVertex() - 1]);
+		consequentQ = true;
+	}
+	else{
+		  Vertex * _u = terms[localUF.find(u->getId())],
+				* _v = terms[localUF.find(v->getId())];
   
-  if(*_u >= *_v)
-    consequent = std::make_pair(_u, _v);
-  else
-    consequent = std::make_pair(_v, _u);
-  consequentQ = consequentQ && _u->getSymbolCommonQ() && _v->getSymbolCommonQ();
+			if(*_u >= *_v)
+				consequent = std::make_pair(_u, _v);
+			else
+				consequent = std::make_pair(_v, _u);
+			consequentQ = consequentQ && _u->getSymbolCommonQ() && _v->getSymbolCommonQ();
+	}
 }
 
 HornClause::~HornClause(){

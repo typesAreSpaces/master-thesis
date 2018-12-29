@@ -37,7 +37,8 @@ class HornClauses{
  public:
   HornClauses(std::vector<Vertex*> &);
   ~HornClauses();
-  void addHornClause(UnionFind &, Vertex*, Vertex*);
+  void addHornClause(UnionFind &, Vertex*, Vertex*, bool);
+	void addHornClause(UnionFind &, std::vector<equality> &, equality &, bool);
   void conditionalElimination();
 	unsigned size();
 	std::vector<HornClause*> getHornClauses();

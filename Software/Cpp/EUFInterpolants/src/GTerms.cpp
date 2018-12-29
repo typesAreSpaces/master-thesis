@@ -194,7 +194,12 @@ GTerms::GTerms(Z3_context ctx, Z3_ast v){
   std::set_difference(symbolsA.begin(), symbolsA.end(),
 											symbolsB.begin(), symbolsB.end(),
 											std::inserter(symbolsToElim, symbolsToElim.end()));
-  EC = UnionFind(2*numTerms + counterExtraTerms);
+
+	// This symbol will be used to encode the False particle
+	terms.push_back(new Vertex("incomparable", 0));
+	terms[Vertex::getTotalNumVertex() - 1]->define();
+
+	EC = UnionFind(Vertex::getTotalNumVertex());
 }
 
 GTerms::GTerms(Z3_context ctx, Z3_ast v, std::set<std::string> & symbolsToElim) :
@@ -218,8 +223,12 @@ GTerms::GTerms(Z3_context ctx, Z3_ast v, std::set<std::string> & symbolsToElim) 
   
   //Extracting the formula
   visit(ctx, v, numTerms, refCounterExtraTerms, symbolsA);
-  
-  EC = UnionFind(2*numTerms + counterExtraTerms);
+
+	// This symbol will be used to encode the False particle
+	terms.push_back(new Vertex("incomparable", 0));
+	terms[Vertex::getTotalNumVertex() - 1]->define();
+
+	EC = UnionFind(Vertex::getTotalNumVertex());
 }
 
 
@@ -273,6 +282,11 @@ GTerms::GTerms(std::istream & in){
       }
     }
   }
+
+	// This symbol will be used to encode the False particle
+	terms.push_back(new Vertex("incomparable", 0));
+	terms[Vertex::getTotalNumVertex() - 1]->define();
+	
   EC = UnionFind(Vertex::getTotalNumVertex());
 }
 

@@ -13,14 +13,31 @@ HornClauses::~HornClauses(){
     delete *it;
 }
 
-void HornClauses::addHornClause(UnionFind & uf,
-																Vertex* u, Vertex* v){
-  HornClause * hc = new HornClause(uf, u, v, localTerms);
-  hc->normalize();
-  if(hc->checkTrivial()){
-    delete hc;
-    return;
-  }
+void HornClauses::addHornClause(UnionFind & uf, Vertex* u,
+																Vertex* v, bool isDisequation){
+  HornClause * hc = new HornClause(uf, u, v, localTerms, isDisequation);
+	if(!isDisequation){
+		hc->normalize();
+		if(hc->checkTrivial()){
+			delete hc;
+			return;
+		}
+	}
+  hornClauses.push_back(hc);
+  makeMatches(hc, numHornClauses);
+  ++numHornClauses;
+}
+
+void HornClauses::addHornClause(UnionFind & uf, std::vector<equality> & antecedent,
+																equality & consequent, bool isDisequation){
+  HornClause * hc = new HornClause(uf, antecedent, consequent, localTerms);
+	if(!isDisequation){
+		hc->normalize();
+		if(hc->checkTrivial()){
+			delete hc;
+			return;
+		}
+	}
   hornClauses.push_back(hc);
   makeMatches(hc, numHornClauses);
   ++numHornClauses;
