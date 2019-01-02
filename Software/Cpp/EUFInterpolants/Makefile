@@ -21,4 +21,4 @@ test_smt2:
 	for x in ./tests/smt2lib/*; do echo $$x; ./main $$x; done
 .PHONY: clean
 clean:
-	rm $(ODIR)/* main
+	rm -rf $(ODIR)/* main

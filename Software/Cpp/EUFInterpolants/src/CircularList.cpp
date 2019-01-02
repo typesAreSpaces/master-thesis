@@ -2,46 +2,37 @@
 #include "CircularList.h"
 
 template <typename T>
-CircularList<T>::CircularList() : length(0), tail(nullptr) {}
-
-template <typename T>
-CircularList<T>::~CircularList(){
-  node<T> * ptr;
-  if(length != 0){
-    ptr = tail->next;
-    while(ptr != ptr->next){
-      tail->next = ptr->next;
-      delete ptr;
-      ptr = tail->next;
-    }
-   delete ptr; 
-  }
-}
-
-template <typename T>
-void CircularList<T>::add(T x){
-  if(length == 0)
-    addEmpty(x);
-  else
-    addNonEmpty(x);
-  ++length;
-}
-
-template <typename T>
 void CircularList<T>::addEmpty(T x){
   node<T> * temp = new node<T>;
   temp->data = x;
   temp->next = temp;
-  tail = temp;
+	list = temp;
 }
 
 template <typename T>
 void CircularList<T>::addNonEmpty(T x){
   node<T> * temp = new node<T>;
   temp->data = x;
-  temp->next = tail->next;
-  tail->next = temp;
-  tail = temp;
+	temp->next = list->next;
+  list->next = temp;
+	list = temp;
+}
+
+template <typename T>
+CircularList<T>::CircularList() : length(0), list(nullptr) {}
+
+template <typename T>
+CircularList<T>::~CircularList(){
+  node<T> * ptr;
+  if(list != nullptr){
+    ptr = list->next;
+    while(ptr != ptr->next){
+      list->next = ptr->next;
+      delete ptr;
+      ptr = list->next;
+    }
+   delete ptr; 
+  }
 }
 
 template <typename T>
@@ -50,55 +41,45 @@ int CircularList<T>::size(){
 }
 
 template <typename T>
+void CircularList<T>::add(T x){
+  if(this->list == nullptr)
+    addEmpty(x);
+  else
+    addNonEmpty(x);
+  ++length;
+}
+
+template <typename T>
 node<T> * CircularList<T>::getList(){
-  return tail;
+  return list;
 }
 
 template <typename T>
 node<T> * CircularList<T>::begin(){
-  return tail->next;
+  return list->next;
 }
 
 template <typename T>
 node<T> * CircularList<T>::end(){
-  return tail;
+  return list;
 }
 
 template <typename T>
-void CircularList<T>::setLength(int x){
-  length = x;
-}
-
-template <typename T>
-void CircularList<T>::mergeCircularList(CircularList * l){
-  if(l->size() > 0){
-    if(this->tail == nullptr){
-      this->length = l->size();
-      this->tail = l->tail;
+void CircularList<T>::merge(CircularList<T> * l){
+	if(l->list != nullptr){
+    if(this->list == nullptr){
+      this->length = l->length;
+      this->list = l->list;
     }
     else{
-      node<T> * temp = l->getList(), * ptr;
-      ptr = this->tail->next;
-      this->tail->next = temp->next;   
-      temp->next = ptr;
-      this->length += l->size();
+      node<T> * ptr = this->list->next;
+      this->list->next = l->list->next;   
+      l->list->next = ptr;
+      this->length += l->length;
     }
-    l->tail = nullptr;
-    l->setLength(0);
+    l->list = nullptr;
+    l->length = 0;
   }
-}
-
-template <typename T>
-std::ostream & CircularList<T>::print(std::ostream & os){
-  if(length != 0){
-		CircularList<T>::iterator it = this->begin();
-		do{
-			os << (*it).data << " ";
-			++it;
-		} while(it != this->begin());
-  }
-  os << std::endl;
-  return os;
 }
 
 template <typename T>
@@ -126,4 +107,17 @@ bool CircularList<T>::iterator:: operator !=(node<T> * n) const{
 template <typename T>
 node<T>& CircularList<T>::iterator:: operator *(){
   return *_it;
+}
+
+template <typename T>
+std::ostream & CircularList<T>::print(std::ostream & os){
+  if(list != nullptr){
+		CircularList<T>::iterator it = this->begin();
+		do{
+			os << (*it).data << " ";
+			++it;
+		} while(it != this->begin());
+  }
+  os << std::endl;
+  return os;
 }

@@ -8,18 +8,16 @@ template <typename T>
 class CircularList{
  private:
   int length;
-  node<T> * tail;
+  node<T> * list;
   void addEmpty(T x);
   void addNonEmpty(T x);
-	void setLength(int);
  public:
   CircularList();
   ~CircularList();
-  void add(T x);
   int size();
-  node<T> * getList();
-  void mergeCircularList(CircularList *);
-  std::ostream & print(std::ostream &);
+	void add(T x);
+  void merge(CircularList *);
+	node<T> * getList();
 	node<T> * begin();
   node<T> * end();
   class iterator{
@@ -33,6 +31,7 @@ class CircularList{
     bool operator!=(node<T> *) const;
     node<T>& operator*();
   };
+	std::ostream & print(std::ostream &);
 };
 
 #endif

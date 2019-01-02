@@ -63,7 +63,7 @@ void Vertex::setSymbolCommonQ(bool b){
 }
 
 void Vertex::mergePredecessors(Vertex * v){
-  this->predecessors.mergeCircularList(v->getPredecessors());
+  this->predecessors.merge(v->getPredecessors());
 }
 
 Vertex * Vertex::getLeftChild(){
