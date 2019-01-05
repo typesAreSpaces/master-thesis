@@ -9,6 +9,16 @@
 #include "z3++.h"
 
 int main(int argc, char ** argv){
+
+	CircularList<int> a;
+	a.add(10), a.add(11), a.add(13);
+	std::cout << a << std::endl;
+	CircularList<int> b;
+	b.add(14), b.add(15), b.add(16);
+	std::cout << b << std::endl;
+	a.merge(&b);
+	std::cout << a << std::endl;
+	std::cout << b << std::endl;
   
   std::string file = "./tests/smt2lib_2/kapurEUFExample2_2.smt2";
   //std::string file = "/Users/joseabelcastellanosjoo/Documents/QF_UF/2018-Goel-hwbench/QF_UF_firewire_tree.5.prop3_ab_reg_max.smt2";
