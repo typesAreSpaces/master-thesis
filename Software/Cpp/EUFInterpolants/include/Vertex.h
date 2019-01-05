@@ -3,8 +3,7 @@
 
 #include <iostream>
 #include <vector>
-#include <CircularList.h>
-#include <CircularList.cpp>
+#include "CircularList.h"
 
 class Vertex{
  private:

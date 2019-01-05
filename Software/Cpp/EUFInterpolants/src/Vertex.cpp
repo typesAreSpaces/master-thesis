@@ -110,7 +110,8 @@ std::ostream & operator << (std::ostream & os, Vertex & v){
   os << "Symbol: " << v.to_string() << std::endl;
   os << "ID: " << v.id << std::endl;
   os << "Predecessors:" << std::endl;
-  v.predecessors.print(os);
+  //v.predecessors.print(os);
+	//os << v.predecessors << std::endl;
   os << "Successors:" << std::endl;
   for(std::vector<Vertex*>::iterator it = v.successors.begin(); it != v.successors.end(); ++it){
     os << (*it)->to_string();

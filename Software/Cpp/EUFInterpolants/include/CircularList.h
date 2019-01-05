@@ -5,6 +5,12 @@
 #include "Node.h"
 
 template <typename T>
+class CircularList;
+
+template <typename T>
+std::ostream & operator << (std::ostream &, CircularList<T> &);
+
+template <typename T>
 class CircularList{
  private:
   int length;
@@ -31,7 +37,10 @@ class CircularList{
     bool operator!=(node<T> *) const;
     node<T>& operator*();
   };
-	std::ostream & print(std::ostream &);
+	template <typename U>
+	friend std::ostream & operator << (std::ostream &, CircularList<U> &);
 };
+
+#include "CircularList.tpp"
 
 #endif
