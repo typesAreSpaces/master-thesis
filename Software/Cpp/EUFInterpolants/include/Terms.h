@@ -1,5 +1,5 @@
-#ifndef _GTERMS_
-#define _GTERMS_
+#ifndef _TERMS_
+#define _TERMS_
 
 #include <iostream>
 #include <algorithm>
@@ -13,26 +13,29 @@
 extern bool debugVisit;
 extern bool debugVisit2;
 
-class GTerms{
+class Terms{
+	
  protected:
   unsigned rootNum;
   std::vector<Vertex*> terms;
-  UnionFind EC;
   std::set<std::string> symbolsToElim; 
   std::vector<std::pair<Z3_ast, Z3_ast> > equations, disEquations;
+	UnionFind EC;
+	
  private:
+	void exitf(const char *);
+  void unreachable();
   void visit(Z3_context, Z3_ast, unsigned, unsigned &, std::set<std::string> &);
   void visit(Z3_context, Z3_ast, std::set<std::string> &);
-  void exitf(const char *);
-  void unreachable();
+  
  public:
-  GTerms(Z3_context, Z3_ast);
-  GTerms(Z3_context, Z3_ast, std::set<std::string> &);
-  GTerms(std::istream &);
-  ~GTerms();
-  Vertex * getTerm(unsigned);
+  Terms(Z3_context, Z3_ast);
+  Terms(Z3_context, Z3_ast, std::set<std::string> &);
+  Terms(std::istream &);
+  ~Terms();
   std::vector<Vertex*> & getTerms();
   UnionFind & getEC();
+	Vertex * getTerm(unsigned);
   Vertex* find(Vertex*);
   void merge(Vertex*, Vertex*);
   void rotate(Vertex*, Vertex*);
@@ -40,7 +43,7 @@ class GTerms{
   std::set<std::string> & getSymbolsToElim();
 	std::vector<std::pair<Z3_ast, Z3_ast> > & getEquations();
 	std::vector<std::pair<Z3_ast, Z3_ast> > & getDisequations();
-  std::ostream & print(std::ostream &);
+	friend std::ostream & operator <<(std::ostream &, Terms &);
 };
 
 #endif 

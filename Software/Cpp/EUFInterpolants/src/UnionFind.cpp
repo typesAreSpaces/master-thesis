@@ -33,10 +33,10 @@ unsigned UnionFind::size(){
   return numEquivalenceClasses;
 }
 
-std::ostream & UnionFind::print(std::ostream & os){
+std::ostream & operator << (std::ostream & os, UnionFind & uf){
   unsigned i = 0;
-  for(std::vector<unsigned>::iterator it = parent.begin(); it != parent.end(); ++it){
-    os << "ID: " << i << " Parent: " << *it << std::endl;
+  for(std::vector<unsigned>::iterator it = uf.parent.begin(); it != uf.parent.end(); ++it){
+    os << "ID: " << i << " Parent: " << *it << " ";
     ++i;
   }
   return os;

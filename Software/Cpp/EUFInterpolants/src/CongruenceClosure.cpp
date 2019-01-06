@@ -46,7 +46,7 @@ void CongruenceClosure::init(Z3_context c){
       std::cout << "==========================================" << std::endl;
       std::cout << "==========================================" << std::endl;
       std::cout << "Current Equivalence Class" << std::endl;
-      EC.print(std::cout);
+			std::cout << EC << std::endl;
       std::cout << "==========================================" << std::endl;
     }
   }
@@ -101,7 +101,7 @@ CongruenceClosure::CongruenceClosure(std::istream & in) : SignatureTable(in) {
       std::cout << "==========================================" << std::endl;
       std::cout << "==========================================" << std::endl;
       std::cout << "Current Equivalence Class" << std::endl;
-      EC.print(std::cout);
+			std::cout << EC << std::endl;
       std::cout << "==========================================" << std::endl;
     }
   }
@@ -140,7 +140,8 @@ void CongruenceClosure::algorithm(){
 				if(traceSigTable){
 					std::cout << "==========================================" << std::endl;
 					std::cout << "Current Signature Table" << std::endl;
-					SignatureTable::print(std::cout);
+					//SignatureTable::print(std::cout);
+					std::cout << *dynamic_cast<SignatureTable*>(this) << std::endl;
 					std::cout << "==========================================" << std::endl;
 				}
       }

@@ -17,7 +17,7 @@ public:
   void reset(unsigned);
   unsigned find(unsigned);
   unsigned size();
-  std::ostream & print(std::ostream &);
+  friend std::ostream & operator << (std::ostream &, UnionFind &);
 };
 
 #endif

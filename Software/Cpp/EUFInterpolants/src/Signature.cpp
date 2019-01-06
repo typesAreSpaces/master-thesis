@@ -10,7 +10,7 @@ bool signatureArg1::operator==(const signatureArg1 & x) const {
 }
 
 std::ostream & operator << (std::ostream & os, signatureArg1 & x){
-  os << "Signature" << std::endl;
+  os << "Signature ";
   os << "Name: " << x.name << " First: " << x.first;  
   return os;
 }
@@ -32,7 +32,7 @@ bool signatureArg2::operator==(const signatureArg2 & x) const {
 }
 
 std::ostream & operator << (std::ostream & os, signatureArg2 & x){
-  os << "Signature" << std::endl;
+  os << "Signature ";
   os << "Name: " << x.name << " First: " << x.first << " Second: " << x.second;  
   return os;
 }

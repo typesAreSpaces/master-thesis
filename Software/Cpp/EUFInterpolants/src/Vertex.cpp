@@ -2,68 +2,95 @@
 
 unsigned Vertex::totalNumVertex = 0;
 
-unsigned Vertex::getTotalNumVertex(){
-  return totalNumVertex;
-}
-
 void Vertex::addPredecessor(unsigned i){
 	if(!defined)
 		predecessors.add(i);
 }
+
 Vertex::Vertex(std::string name, unsigned arity) : name(name), symbolCommonQ(true), defined(false),
 																									 id(totalNumVertex), arity(arity){
   ++totalNumVertex;
 }
+
 Vertex::Vertex() : symbolCommonQ(true), defined(false),
 									 id(totalNumVertex){
   ++totalNumVertex;
-};
+									 }
+
 Vertex::~Vertex(){};
+
 void Vertex::setName(std::string _name){
   name = _name;
 }
+
 void Vertex::setArity(unsigned _arity){
   arity = _arity;
 }
+
 void Vertex::addSuccessor(Vertex * v){
 	if(!defined){
 		successors.push_back(v);
 		v->addPredecessor(id);
 	}
 }
-std::vector<Vertex*> & Vertex::getSuccessors(){
-  return successors;
-}
 
-CircularList<unsigned> * Vertex::getPredecessors(){
-  return &predecessors;
-}
-
-unsigned Vertex::getId(){
-  return id;
-}
-
-unsigned Vertex::getArity(){
-  return arity;
-}
-
-std::string Vertex::getName(){
-  return name;
-}
-
-unsigned Vertex::getLength(){
-  return predecessors.size();
-}
-
-bool Vertex::getSymbolCommonQ(){
-  return symbolCommonQ;
-}
 void Vertex::setSymbolCommonQ(bool b){
   symbolCommonQ = b;
 }
 
 void Vertex::mergePredecessors(Vertex * v){
   this->predecessors.merge(v->getPredecessors());
+}
+
+void Vertex::define(){
+	defined = true;
+}
+
+std::string Vertex::getName(){
+  return name;
+}
+
+std::string Vertex::to_string(){
+  if(arity == 0)
+    return name;
+  std::string _temp = name + "(";
+  unsigned _counter = 0;
+  for(std::vector<Vertex*>::iterator it = successors.begin();
+			it != successors.end(); ++it){
+    _temp += (*it)->to_string();
+    ++_counter;
+    if(_counter < arity)
+      _temp += ",";
+  }
+  return _temp + ")";
+}
+
+unsigned Vertex::getArity(){
+  return arity;
+}
+
+unsigned Vertex::getId(){
+  return id;
+}
+
+unsigned Vertex::getLength(){
+  return predecessors.size();
+}
+
+unsigned Vertex::getTotalNumVertex(){
+  return totalNumVertex;
+}
+
+bool Vertex::getSymbolCommonQ(){
+  return symbolCommonQ;
+}
+
+std::vector<Vertex*> & Vertex::getSuccessors(){
+  return successors;
+}
+
+CircularList<unsigned> * Vertex::getPredecessors(){
+  return &predecessors;
 }
 
 Vertex * Vertex::getLeftChild(){
@@ -74,21 +101,7 @@ Vertex * Vertex::getRightChild(){
   return successors[1];
 }
 
-std::string Vertex::to_string(){
-  if(arity == 0)
-    return name;
-  std::string _temp = name + "(";
-  unsigned _counter = 0;
-  for(std::vector<Vertex*>::iterator it = successors.begin(); it != successors.end(); ++it){
-    _temp += (*it)->to_string();
-    ++_counter;
-    if(_counter < arity)
-      _temp += ",";
-  }
-  return _temp + ")";
-}
-
-std::ostream & Vertex::ss (std::ostream & os){
+std::ostream & Vertex::functionPrettyPrint (std::ostream & os){
   if(arity == 0){
     os << name;
     return os;
@@ -96,7 +109,7 @@ std::ostream & Vertex::ss (std::ostream & os){
   os << name << "(";
   unsigned _counter = 0;
   for(std::vector<Vertex*>::iterator it = successors.begin(); it != successors.end(); ++it){
-    (*it)->ss(os);
+    (*it)->functionPrettyPrint(os);
     ++_counter;
     if(_counter < arity)
       os << ",";
@@ -110,8 +123,7 @@ std::ostream & operator << (std::ostream & os, Vertex & v){
   os << "Symbol: " << v.to_string() << std::endl;
   os << "ID: " << v.id << std::endl;
   os << "Predecessors:" << std::endl;
-  //v.predecessors.print(os);
-	//os << v.predecessors << std::endl;
+	os << v.predecessors << std::endl;
   os << "Successors:" << std::endl;
   for(std::vector<Vertex*>::iterator it = v.successors.begin(); it != v.successors.end(); ++it){
     os << (*it)->to_string();
@@ -138,12 +150,12 @@ bool operator < (const Vertex & u, const Vertex & v){
       return false;
     else{
       if(u.arity <  v.arity)
-	return true;
+				return true;
       else{
-	if(u.arity > v.arity)
-	  return false;
-	else
-	  return (u.id < v.id);
+				if(u.arity > v.arity)
+					return false;
+				else
+					return (u.id < v.id);
       }
     }
   }
@@ -158,8 +170,4 @@ bool operator >(const Vertex & u, const Vertex & v){
 }
 bool operator >=(const Vertex & u, const Vertex & v){
   return (u == v || u > v);
-}
-
-void Vertex::define(){
-	defined = true;
 }

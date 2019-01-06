@@ -1,4 +1,4 @@
-#include "GTerms.h"
+#include "Terms.h"
 
 bool debugVisit  = false;
 bool debugVisit2 = false;
@@ -6,7 +6,7 @@ bool debugVisit2 = false;
 /**
    \brief exit gracefully in case of error.
 */
-void GTerms::exitf(const char* message){
+void Terms::exitf(const char* message){
   fprintf(stderr,"BUG: %s.\n", message);
   exit(1);
 }
@@ -14,11 +14,11 @@ void GTerms::exitf(const char* message){
 /**
    \brief exit if unreachable code was reached.
 */
-void GTerms::unreachable(){
+void Terms::unreachable(){
   exitf("unreachable code was reached");
 }
 
-void GTerms::visit(Z3_context c, Z3_ast v,
+void Terms::visit(Z3_context c, Z3_ast v,
 									 unsigned numTerms, unsigned & counterExtraTerms,
 									 std::set<std::string> & symbols){
   unsigned id = Z3_get_ast_id(c, v);
@@ -115,7 +115,7 @@ void GTerms::visit(Z3_context c, Z3_ast v,
   }
 }
 
-void GTerms::visit(Z3_context c, Z3_ast v, std::set<std::string> & symbols){
+void Terms::visit(Z3_context c, Z3_ast v, std::set<std::string> & symbols){
   switch (Z3_get_ast_kind(c, v)) {
   case Z3_NUMERAL_AST: {
     // do something
@@ -155,7 +155,7 @@ void GTerms::visit(Z3_context c, Z3_ast v, std::set<std::string> & symbols){
   }
 }
 
-GTerms::GTerms(Z3_context ctx, Z3_ast v){
+Terms::Terms(Z3_context ctx, Z3_ast v){
   Z3_app app = Z3_to_app(ctx, v);
   // Update: let's take as number of terms the
   // max id in the first conjunction of the input
@@ -202,7 +202,7 @@ GTerms::GTerms(Z3_context ctx, Z3_ast v){
 	EC = UnionFind(Vertex::getTotalNumVertex());
 }
 
-GTerms::GTerms(Z3_context ctx, Z3_ast v, std::set<std::string> & symbolsToElim) :
+Terms::Terms(Z3_context ctx, Z3_ast v, std::set<std::string> & symbolsToElim) :
   symbolsToElim(symbolsToElim){
   unsigned numTerms = Z3_get_ast_id(ctx, v),
     counterExtraTerms = 0,
@@ -232,7 +232,7 @@ GTerms::GTerms(Z3_context ctx, Z3_ast v, std::set<std::string> & symbolsToElim) 
 }
 
 
-GTerms::GTerms(std::istream & in){
+Terms::Terms(std::istream & in){
   unsigned numTerms, _arity, _successor, mark;
   std::string _name;
   
@@ -290,29 +290,29 @@ GTerms::GTerms(std::istream & in){
   EC = UnionFind(Vertex::getTotalNumVertex());
 }
 
-GTerms::~GTerms(){
+Terms::~Terms(){
   for(std::vector<Vertex*>::iterator it = terms.begin();
       it != terms.end(); ++it)
     delete *it;
 }
 
-Vertex * GTerms::getTerm(unsigned i){
-  return terms[i];
-}
-
-std::vector<Vertex*> & GTerms::getTerms(){
+std::vector<Vertex*> & Terms::getTerms(){
   return terms;
 }
 
-UnionFind & GTerms::getEC(){
+UnionFind & Terms::getEC(){
   return EC;
 }
 
-Vertex * GTerms::find(Vertex * v){
+Vertex * Terms::getTerm(unsigned i){
+  return terms[i];
+}
+
+Vertex * Terms::find(Vertex * v){
   return terms[EC.find(v->getId())];
 }
 
-void GTerms::merge(Vertex * u, Vertex * v){
+void Terms::merge(Vertex * u, Vertex * v){
   // Precondition, find(u) and find(v) should be different
   // Merge the predecessor's list too!
   if(find(u)->getId() != find(v)->getId()){
@@ -321,7 +321,7 @@ void GTerms::merge(Vertex * u, Vertex * v){
   }
 }
 
-void GTerms::rotate(Vertex * u, Vertex * v){
+void Terms::rotate(Vertex * u, Vertex * v){
   // Force vertex u to become
   // vertex v's parent  
   u->mergePredecessors(find(v));
@@ -329,24 +329,25 @@ void GTerms::rotate(Vertex * u, Vertex * v){
   EC.reset(u->getId());
 }
 
-unsigned GTerms::getRootNum(){
+unsigned Terms::getRootNum(){
   return rootNum;
 }
 
-std::set<std::string> & GTerms::getSymbolsToElim(){
+std::set<std::string> & Terms::getSymbolsToElim(){
   return symbolsToElim;
 }
 
-std::vector<std::pair<Z3_ast, Z3_ast> > & GTerms::getEquations(){
+std::vector<std::pair<Z3_ast, Z3_ast> > & Terms::getEquations(){
 	return equations;
 }
 
-std::vector<std::pair<Z3_ast, Z3_ast> > & GTerms::getDisequations(){
+std::vector<std::pair<Z3_ast, Z3_ast> > & Terms::getDisequations(){
 	return disEquations;
 }
 
-std::ostream & GTerms::print(std::ostream & os){
-  for(std::vector<Vertex*>::iterator it = terms.begin(); it != terms.end(); ++it)
+std::ostream & operator << (std::ostream & os, Terms & gterms){
+	for(std::vector<Vertex*>::iterator it = gterms.terms.begin();
+			it != gterms.terms.end(); ++it)
     os << **it << std::endl;
   return os;
 }

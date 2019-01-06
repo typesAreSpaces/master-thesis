@@ -1,18 +1,18 @@
 #include "SignatureTable.h"
 
 SignatureTable::SignatureTable(Z3_context c, Z3_ast v) :
-  GTerms(c, v) {}
+  Terms(c, v) {}
 
 SignatureTable::SignatureTable(Z3_context c, Z3_ast v, std::set<std::string> & symbolsToElim) :
-  GTerms(c, v, symbolsToElim) {}
+  Terms(c, v, symbolsToElim) {}
 
 SignatureTable::SignatureTable(std::istream & in) :
-  GTerms(in) {}
+  Terms(in) {}
 
 SignatureTable::~SignatureTable(){}
 
 void SignatureTable::enter(Vertex* v){
-  unsigned _arity = v->getArity();  
+  unsigned _arity = v->getArity();
   if(_arity == 1){
     //<signatureArg1, Vertex*>
     table1.insert(std::make_pair(getSignatureArg1(v), v));
@@ -26,20 +26,23 @@ void SignatureTable::enter(Vertex* v){
 
 void SignatureTable::remove(Vertex * v){
   unsigned _arity = v->getArity();
+	query(v);
   if(_arity == 1){
     try{
-      query(v);
       table1.erase(getSignatureArg1(v));
     }
     catch(const char* msg){
+			std::cout << "SignatureTable::remove error" << std::endl;
+			std::cout << msg << std::endl;
     }
   }
   if(_arity == 2){
     try{
-      query(v);
       table2.erase(getSignatureArg2(v));
     }
     catch(const char* msg){
+			std::cout << "SignatureTable::remove error" << std::endl;
+			std::cout << msg << std::endl;
     }
   }
   return;
@@ -79,12 +82,12 @@ signatureArg2 SignatureTable::getSignatureArg2(Vertex * v){
 		       find(_successors[1])->getId());
 }
 
-std::ostream & SignatureTable::print(std::ostream & os){
-  for(treeArg1::iterator it = table1.begin(); it != table1.end(); ++it){
+std::ostream & operator << (std::ostream & os, SignatureTable & st){
+  for(treeArg1::iterator it = st.table1.begin(); it != st.table1.end(); ++it){
     signatureArg1 _temp = it->first;
     os << _temp << " " << *(it->second) << std::endl;
   }
-  for(treeArg2::iterator it = table2.begin(); it != table2.end(); ++it){
+  for(treeArg2::iterator it = st.table2.begin(); it != st.table2.end(); ++it){
     signatureArg2 __temp = it->first;
     os << __temp << " " << *(it->second) << std::endl;
   }
