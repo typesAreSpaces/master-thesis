@@ -20,8 +20,8 @@ class CongruenceClosure : public SignatureTable {
   CongruenceClosure(std::istream &);
   ~CongruenceClosure();
   void algorithm();
-  std::ostream & print(std::ostream &);
   bool checkCorrectness();
+	friend std::ostream & operator << (std::ostream &, CongruenceClosure &);
 };
 
 #endif

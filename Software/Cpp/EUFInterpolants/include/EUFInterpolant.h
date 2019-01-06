@@ -3,7 +3,7 @@
 
 #include "CongruenceClosure.h"
 #include "HornClauses.h"
-#include "displayAST.h"
+#include "DisplayAST.h"
 #include <stack>
 #include <map>
 #include <set>

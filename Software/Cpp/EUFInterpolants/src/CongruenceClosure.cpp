@@ -140,7 +140,6 @@ void CongruenceClosure::algorithm(){
 				if(traceSigTable){
 					std::cout << "==========================================" << std::endl;
 					std::cout << "Current Signature Table" << std::endl;
-					//SignatureTable::print(std::cout);
 					std::cout << *dynamic_cast<SignatureTable*>(this) << std::endl;
 					std::cout << "==========================================" << std::endl;
 				}
@@ -197,21 +196,6 @@ void CongruenceClosure::algorithm(){
   }
 }
 
-std::ostream & CongruenceClosure::print(std::ostream & os){
-  os << "Congruence Closure:" << std::endl;
-  unsigned totalNumVertex = Vertex::getTotalNumVertex();
-  
-  for(unsigned i = 0; i < totalNumVertex; ++i){
-    // Just print non-extra nodes
-    if(getTerm(i)->getName()[0] != '_')
-      os << "Vertex: " << getTerm(i)->to_string() << std::endl << 
-				"Representative: " << find(getTerm(i))->to_string() << std::endl;
-  }
-  
-  os << std::endl;
-  return os;
-}
-
 bool CongruenceClosure::checkCorrectness(){
   bool check = true;
   unsigned totalNumVertex = Vertex::getTotalNumVertex();
@@ -221,13 +205,30 @@ bool CongruenceClosure::checkCorrectness(){
       Vertex * u = getTerm(i), * v = getTerm(j);
       if(u->getArity() == v->getArity()){
 				if(u->getArity() == 1){
-					if(getSignatureArg1(u) == getSignatureArg1(v) && find(u)->getId() != find(v)->getId())
+					if(getSignatureArg1(u) == getSignatureArg1(v)
+						 && find(u)->getId() != find(v)->getId())
 						check = false;
 				}
 				if(u->getArity() == 2)
-					if(getSignatureArg2(u) == getSignatureArg2(v) && find(u)->getId() != find(v)->getId())
+					if(getSignatureArg2(u) == getSignatureArg2(v)
+						 && find(u)->getId() != find(v)->getId())
 						check = false;
       }
     }
   return check;
+}
+
+std::ostream & operator << (std::ostream & os, CongruenceClosure & cc){
+  os << "Congruence Closure:" << std::endl;
+  unsigned totalNumVertex = Vertex::getTotalNumVertex();
+  
+  for(unsigned i = 0; i < totalNumVertex; ++i){
+    // Just print non-extra nodes
+		auto term = cc.getTerm(i);
+    if(term->getName()[0] != '_')
+      os << "Vertex: " << term->to_string() << std::endl << 
+				"Representative: " << cc.find(term)->to_string() << std::endl;
+	}  
+  os << std::endl;
+  return os;
 }
