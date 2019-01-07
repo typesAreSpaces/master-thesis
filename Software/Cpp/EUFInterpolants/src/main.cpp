@@ -12,11 +12,17 @@ int main(int argc, char ** argv){
 	
 	// Test CongruenceClosure algortihm's performance
 	// std::ifstream example("./tests/congruence_closure/example4.txt");
+	
+	std::cout << "Checking sample " << argv[1] << std::endl;
 	std::ifstream example(argv[1]);
+	clock_t begin = clock();
 	CongruenceClosure congruence_closure_test(example);
 	congruence_closure_test.algorithm();
-	std::cout << congruence_closure_test << std::endl;
-	std::cout << (congruence_closure_test.checkCorrectness() ? "Nice" : "Wrong :(") << std::endl;
+	clock_t end = clock();
+	std::cout << double(end - begin) / CLOCKS_PER_SEC << std::endl;
+	
+	// std::cout << congruence_closure_test << std::endl;
+	// std::cout << (congruence_closure_test.checkCorrectness() ? "Nice" : "Wrong :(") << std::endl;
 	
 	// // Testing EUFInterpolant algorithm
   // std::string file = "./tests/smt2lib_2/kapurEUFExample2_2.smt2";
