@@ -198,25 +198,23 @@ void CongruenceClosure::algorithm(){
 }
 
 bool CongruenceClosure::checkCorrectness(){
-  bool check = true;
   unsigned totalNumVertex = Vertex::getTotalNumVertex();
 
   for(unsigned i = 0; i < totalNumVertex - 1; ++i)
     for(unsigned j = i + 1; j < totalNumVertex; ++j){
       Vertex * u = getTerm(i), * v = getTerm(j);
       if(u->getArity() == v->getArity()){
-				if(u->getArity() == 1){
-					if(getSignatureArg1(u) == getSignatureArg1(v)
-						 && find(u)->getId() != find(v)->getId())
-						check = false;
-				}
-				if(u->getArity() == 2)
-					if(getSignatureArg2(u) == getSignatureArg2(v)
-						 && find(u)->getId() != find(v)->getId())
-						check = false;
+				if(u->getArity() == 1
+					 && getSignatureArg1(u) == getSignatureArg1(v)
+					 && find(u)->getId() != find(v)->getId())
+						return false;
+				if(u->getArity() == 2
+					 && getSignatureArg2(u) == getSignatureArg2(v)
+					 && find(u)->getId() != find(v)->getId())
+					return false;
       }
     }
-  return check;
+  return true;
 }
 
 std::ostream & operator << (std::ostream & os, CongruenceClosure & cc){

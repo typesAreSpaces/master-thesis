@@ -16,6 +16,7 @@ int main(int argc, char ** argv){
 	CongruenceClosure congruence_closure_test(example);
 	congruence_closure_test.algorithm();
 	std::cout << congruence_closure_test << std::endl;
+	std::cout << (congruence_closure_test.checkCorrectness() ? "Nice" : "Wrong :(") << std::endl;
 	
 	// // Testing EUFInterpolant algorithm
   // std::string file = "./tests/smt2lib_2/kapurEUFExample2_2.smt2";
