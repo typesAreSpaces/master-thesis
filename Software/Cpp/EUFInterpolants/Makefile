@@ -2,6 +2,7 @@ Z3DIR = /Users/joseabelcastellanosjoo/Documents/Applications/z3
 IDIR = ./include
 ODIR = ./obj
 SDIR = ./src
+CONGRUENCE_CLOSURE_TEST = performance/congruence_closure
 CC = g++
 FLAGS = -I$(SDIR)/ -I$(IDIR)/ -std=c++11
 
@@ -18,23 +19,18 @@ main: $(OBJS) $(Z3DIR)/build/libz3.dylib
 	$(CC) -o $@ $^ -lpthread -Wall
 
 check_performance_congruence_closure:
-	$(CC) -o $@ performance/congruence_closure_performance.cpp -I./include -I./src -std=c++11 obj/CircularList.o obj/CongruenceClosure.o obj/Signature.o obj/SignatureTable.o obj/Terms.o obj/UnionFind.o obj/Vertex.o $(Z3DIR)/build/libz3.dylib
+	$(CC) -o $(CONGRUENCE_CLOSURE_TEST)/$@ $(CONGRUENCE_CLOSURE_TEST)/congruence_closure_performance.cpp -I./include -I./src -std=c++11 obj/CircularList.o obj/CongruenceClosure.o obj/Signature.o obj/SignatureTable.o obj/Terms.o obj/UnionFind.o obj/Vertex.o $(Z3DIR)/build/libz3.dylib
+	rm -rf $(CONGRUENCE_CLOSURE_TEST)/$@.txt
+	touch $(CONGRUENCE_CLOSURE_TEST)/$@.txt
 	for directories in /Users/joseabelcastellanosjoo/Desktop/congruence_closure_performance_samples/*; do \
 		for files in $$directories/*; do \
-			./$@ $$files; \
+			./$(CONGRUENCE_CLOSURE_TEST)/$@ $$files >> $(CONGRUENCE_CLOSURE_TEST)/$@.txt;  \
 		done; \
 	done
-
-test_old:
-	for x in ./tests/old/*; do \
-		echo $$x; \
-		./main $$x; \
-	done
-test_smt2:
-	for x in ./tests/smt2lib/*; do \
-		echo $$x; \
-		./main $$x; \
-	done
+	$(CC) -o $(CONGRUENCE_CLOSURE_TEST)/processing $(CONGRUENCE_CLOSURE_TEST)/processing.cpp
+	rm -rf $(CONGRUENCE_CLOSURE_TEST)/results.txt
+	touch $(CONGRUENCE_CLOSURE_TEST)/results.txt
+	./$(CONGRUENCE_CLOSURE_TEST)/processing $(CONGRUENCE_CLOSURE_TEST)/$@.txt > $(CONGRUENCE_CLOSURE_TEST)/results.txt
 
 .PHONY: clean
 clean:

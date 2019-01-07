@@ -4,9 +4,10 @@
 #include <map>
 #include <string>
 
-int main(){
-  std::ifstream file;
-  file.open("worstCase7.txt");
+int main(int argc, char ** argv){
+	std::string input_info(argv[1]);
+  std::ifstream file(input_info);
+	
   std::string input;
   int i;
   double j;
@@ -25,14 +26,12 @@ int main(){
     }
     else{
       m[i] += j;
-      count[i] += 1;
+      ++count[i];
     }
   }
 
   for(std::map<int, int>::iterator it = count.begin(); it != count.end(); ++it)
     std::cout << it->first << "," << m[it->first]/(double)count[it->first] << std::endl;
-  
-  file.close();
   
   return 0;
 }

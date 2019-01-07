@@ -8,12 +8,13 @@
 int main(int argc, char ** argv){
 	
 	// Testing CongruenceClosure algortihm's performance
-	std::ifstream example(argv[1]);
+	std::string input_info(argv[1]);
+	std::ifstream example(input_info);
 	clock_t begin = clock();
 	CongruenceClosure congruence_closure_test(example);
 	congruence_closure_test.algorithm();
 	clock_t end = clock();
-	std::cout << double(end - begin) / CLOCKS_PER_SEC << std::endl;
+	std::cout << input_info.substr(88, input_info.find("_", 88) - 88) << "," << double(end - begin) / CLOCKS_PER_SEC << std::endl;
 	
   return 0;
 }
