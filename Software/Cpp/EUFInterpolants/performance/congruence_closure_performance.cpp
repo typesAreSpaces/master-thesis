@@ -7,10 +7,7 @@
 
 int main(int argc, char ** argv){
 	
-	// Test CongruenceClosure algortihm's performance
-	// std::ifstream example("./tests/congruence_closure/example4.txt");
-	
-	std::cout << "Checking sample " << argv[1] << std::endl;
+	// Testing CongruenceClosure algortihm's performance
 	std::ifstream example(argv[1]);
 	clock_t begin = clock();
 	CongruenceClosure congruence_closure_test(example);

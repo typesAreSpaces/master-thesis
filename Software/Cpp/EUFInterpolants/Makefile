@@ -18,9 +18,10 @@ main: $(OBJS) $(Z3DIR)/build/libz3.dylib
 	$(CC) -o $@ $^ -lpthread -Wall
 
 check_performance_congruence_closure:
-	for x in /Users/joseabelcastellanosjoo/Desktop/congruence_closure_performance_samples/*; do \
-		for y in $$x/*; do \
-			./main $$y; \
+	$(CC) -o $@ performance/congruence_closure_performance.cpp -I./include -I./src -std=c++11 obj/CircularList.o obj/CongruenceClosure.o obj/Signature.o obj/SignatureTable.o obj/Terms.o obj/UnionFind.o obj/Vertex.o $(Z3DIR)/build/libz3.dylib
+	for directories in /Users/joseabelcastellanosjoo/Desktop/congruence_closure_performance_samples/*; do \
+		for files in $$directories/*; do \
+			./$@ $$files; \
 		done; \
 	done
 
