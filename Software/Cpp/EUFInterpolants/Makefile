@@ -12,13 +12,16 @@ DEPS = $(wildcard $(IDIR)/*.h)
 all: main
 
 $(ODIR)/%.o: $(SDIR)/%.cpp $(DEPS)
-	$(CC) -c -o$@  $(FLAGS) $< -Wall
+	$(CC) -c -o $@  $(FLAGS) $< -Wall
+
 main: $(OBJS) $(Z3DIR)/build/libz3.dylib
-	$(CC) -o$@ $^ -lpthread -Wall
+	$(CC) -o $@ $^ -lpthread -Wall
+
 test_old:
 	for x in ./tests/old/*; do echo $$x; ./main $$x; done
 test_smt2:
 	for x in ./tests/smt2lib/*; do echo $$x; ./main $$x; done
+
 .PHONY: clean
 clean:
 	rm -rf $(ODIR)/* main

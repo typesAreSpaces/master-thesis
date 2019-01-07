@@ -18,13 +18,15 @@ void Terms::unreachable(){
   exitf("unreachable code was reached");
 }
 
+// This method extracts terms and symbols
 void Terms::visit(Z3_context c, Z3_ast v,
 									 unsigned numTerms, unsigned & counterExtraTerms,
 									 std::set<std::string> & symbols){
-  unsigned id = Z3_get_ast_id(c, v);
-  if(debugVisit2){
+
+	unsigned id = Z3_get_ast_id(c, v);
+  if(debugVisit2)
     std::cout << "Just checking the id " << " ID: " << id << std::endl;
-  }
+	
   switch (Z3_get_ast_kind(c, v)) {
   case Z3_NUMERAL_AST: {
     // do something
@@ -71,8 +73,7 @@ void Terms::visit(Z3_context c, Z3_ast v,
       terms[id]->setArity(2);
       // Adding w_j(v) vertices
       for(unsigned j = 2; j <= num_args; ++j){
-				Vertex * temp = new Vertex("_c", 2);
-				terms.push_back(temp);
+				terms.push_back(new Vertex("_" + terms[i]->getName() + "_" + std::to_string(j), 2));
 				++counterExtraTerms;
       }
       _successor = Z3_get_ast_id(c, Z3_get_app_arg(c, app, 0));
@@ -115,8 +116,11 @@ void Terms::visit(Z3_context c, Z3_ast v,
   }
 }
 
-void Terms::visit(Z3_context c, Z3_ast v, std::set<std::string> & symbols){
-  switch (Z3_get_ast_kind(c, v)) {
+// This method extracts symbols
+void Terms::visit(Z3_context c, Z3_ast v,
+									std::set<std::string> & symbols){
+
+	switch (Z3_get_ast_kind(c, v)) {
   case Z3_NUMERAL_AST: {
     // do something
     symbols.insert(Z3_get_numeral_string(c, v));
@@ -179,6 +183,9 @@ Terms::Terms(Z3_context ctx, Z3_ast v){
   // The order of the next two for loops is
   // important due to the side-effect of the
   // new Vertex() object
+	
+	// Adding placeholders for the
+	// actual terms
   for(unsigned i = 0; i < numTerms; ++i)
     terms[i] = new Vertex("_", 0);
   // Adding {x_j | 0 <= j < n} vertices
@@ -214,6 +221,9 @@ Terms::Terms(Z3_context ctx, Z3_ast v, std::set<std::string> & symbolsToElim) :
   // The order of the next two for loops is
   // important due to the side-effect of the
   // new Vertex() object
+	
+	// Adding placeholders for the
+	// actual terms
   for(unsigned i = 0; i < numTerms; ++i)
     terms[i] = new Vertex("_", 0);
   // Adding {x_j | 0 <= j < n} vertices
@@ -239,15 +249,15 @@ Terms::Terms(std::istream & in){
   in >> numTerms;
   terms.resize(2*numTerms);
 
+	// Adding placeholders for the
+	// actual terms
   for(unsigned i = 0; i < numTerms; ++i)
     terms[i] = new Vertex("_", 0);
 
   // Adding {x_j | 0 <= j < n} vertices
   // where n is the number of original vertices
-  for(unsigned i = 0; i < numTerms; ++i){
-    //terms[numTerms + i] = new Vertex("x" + std::to_string(i), 0);
+  for(unsigned i = 0; i < numTerms; ++i)
     terms[numTerms + i] = new Vertex("_x" + std::to_string(i), 0);
-  }
 
   for(unsigned i = 0; i < numTerms; ++i){
     in >> _name >> _arity;
@@ -255,13 +265,11 @@ Terms::Terms(std::istream & in){
     if(_arity > 2){
       mark = terms.size();
       terms[i]->setArity(2);
-      // Adding w_j(v) vertices
-      for(unsigned j = 2; j <= _arity; ++j){
-				//Vertex * temp = new Vertex("w" + std::to_string(j) + std::to_string(terms[i]->getId()), 2);
-				//Vertex * temp = new Vertex(terms[i]->getName(), 2);
-				Vertex * temp = new Vertex("_c", 2);
-				terms.push_back(temp);
-      }
+
+			// Adding w_j(v) vertices
+      for(unsigned j = 2; j <= _arity; ++j)
+				terms.push_back(new Vertex("_" + terms[i]->getName() + "_" + std::to_string(j), 2));
+			
       in >> _successor;
       terms[i]->addSuccessor(terms[_successor]);
       terms[i]->addSuccessor(terms[mark]);
@@ -346,6 +354,7 @@ std::vector<std::pair<Z3_ast, Z3_ast> > & Terms::getDisequations(){
 }
 
 std::ostream & operator << (std::ostream & os, Terms & gterms){
+	os << "Terms" << std::endl;
 	for(std::vector<Vertex*>::iterator it = gterms.terms.begin();
 			it != gterms.terms.end(); ++it)
     os << **it << std::endl;

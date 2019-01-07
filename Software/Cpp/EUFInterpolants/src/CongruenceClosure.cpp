@@ -65,6 +65,7 @@ CongruenceClosure::CongruenceClosure(Z3_context c, Z3_ast v) :
 CongruenceClosure::CongruenceClosure(std::istream & in) : SignatureTable(in) {
   unsigned numEq, lhs, rhs;
   Vertex * lhsVertex, *rhsVertex;
+	
   in >> numEq;
   for(unsigned i = 0; i < numEq; ++i){
     in >> lhs >> rhs;
@@ -113,14 +114,14 @@ void CongruenceClosure::algorithm(){
   Pending pending;
   Combine combine;
   unsigned totalNumVertex = Vertex::getTotalNumVertex();
-  
+
   // Adding functional grounded vertices to pending
   for(unsigned i = 0; i < totalNumVertex; ++i){
     Vertex * _temp = getTerm(i);
     if(_temp->getArity() >= 1)
       pending.insert(_temp);
   }
-  
+	
   while(!pending.empty()){
     combine.clear();
     for(Pending::iterator it = pending.begin(); it != pending.end(); ++it){
@@ -130,7 +131,7 @@ void CongruenceClosure::algorithm(){
 				if(traceCombine){
 					std::cout << "==========================================" << std::endl;
 					std::cout << "Inserting to Combine" << std::endl;
-					std::cout << (*it)->to_string() << "and " << std::endl;
+					std::cout << (*it)->to_string() << " and " << std::endl;
 					std::cout << _temp->to_string() << std::endl;
 					std::cout << "==========================================" << std::endl;
 				}
@@ -219,16 +220,15 @@ bool CongruenceClosure::checkCorrectness(){
 }
 
 std::ostream & operator << (std::ostream & os, CongruenceClosure & cc){
-  os << "Congruence Closure:" << std::endl;
+  os << "Congruence Closure" << std::endl;
   unsigned totalNumVertex = Vertex::getTotalNumVertex();
   
   for(unsigned i = 0; i < totalNumVertex; ++i){
     // Just print non-extra nodes
 		auto term = cc.getTerm(i);
     if(term->getName()[0] != '_')
-      os << "Vertex: " << term->to_string() << std::endl << 
-				"Representative: " << cc.find(term)->to_string() << std::endl;
-	}  
-  os << std::endl;
+      os << "Vertex: " << term->to_string()
+				 << " Representative: " << cc.find(term)->to_string() << std::endl;
+	}
   return os;
 }

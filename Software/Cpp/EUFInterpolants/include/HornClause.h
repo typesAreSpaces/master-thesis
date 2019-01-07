@@ -9,13 +9,15 @@
 typedef std::pair<Vertex*, Vertex*> equality;
 
 class HornClause{
+	
  private:
 	static UnionFind globalUF;
 	static bool change;
-	UnionFind localUF;
+	UnionFind localUF;	
+	bool antecedentQ, consequentQ;
   std::vector<equality> antecedent;
   equality consequent;
-  bool antecedentQ, consequentQ;
+  
  public:
   HornClause(UnionFind &, std::vector<equality> &, equality &, std::vector<Vertex*> &);
   HornClause(UnionFind &, Vertex*, Vertex*, std::vector<Vertex*> &, bool);

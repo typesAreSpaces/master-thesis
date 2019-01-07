@@ -26,25 +26,17 @@ void SignatureTable::enter(Vertex* v){
 
 void SignatureTable::remove(Vertex * v){
   unsigned _arity = v->getArity();
-	query(v);
-  if(_arity == 1){
-    try{
-      table1.erase(getSignatureArg1(v));
-    }
-    catch(const char* msg){
-			std::cout << "SignatureTable::remove error" << std::endl;
-			std::cout << msg << std::endl;
-    }
-  }
-  if(_arity == 2){
-    try{
-      table2.erase(getSignatureArg2(v));
-    }
-    catch(const char* msg){
-			std::cout << "SignatureTable::remove error" << std::endl;
-			std::cout << msg << std::endl;
-    }
-  }
+	try{
+		query(v);
+		if(_arity == 1)
+			table1.erase(getSignatureArg1(v));
+		if(_arity == 2)
+			table2.erase(getSignatureArg2(v));
+	}
+	catch(const char * msg){
+		//std::cerr << "SignatureTable::remove error" << std::endl;
+		//std::cerr << msg << std::endl;
+	}
   return;
 }
 
@@ -59,10 +51,10 @@ Vertex * SignatureTable::query(Vertex * v){
   }
   else{
     if(_arity == 2){
-    treeArg2::iterator it = table2.find(getSignatureArg2(v));
-    if(it == table2.end())
-      throw "Element not found";
-    return it->second;
+			treeArg2::iterator it = table2.find(getSignatureArg2(v));
+			if(it == table2.end())
+				throw "Element not found";
+			return it->second;
     }
     else
       throw "Wrong arity";
@@ -72,17 +64,18 @@ Vertex * SignatureTable::query(Vertex * v){
 signatureArg1 SignatureTable::getSignatureArg1(Vertex * v){
   std::vector<Vertex*> _successors = v->getSuccessors();
   return signatureArg1(v->getName(),
-		       find(_successors[0])->getId());
+											 find(_successors[0])->getId());
 }
 
 signatureArg2 SignatureTable::getSignatureArg2(Vertex * v){
   std::vector<Vertex*> _successors = v->getSuccessors();
   return signatureArg2(v->getName(),
-		       find(_successors[0])->getId(),
-		       find(_successors[1])->getId());
+											 find(_successors[0])->getId(),
+											 find(_successors[1])->getId());
 }
 
 std::ostream & operator << (std::ostream & os, SignatureTable & st){
+	os << "Signature Table" << std::endl;
   for(treeArg1::iterator it = st.table1.begin(); it != st.table1.end(); ++it){
     signatureArg1 _temp = it->first;
     os << _temp << " " << *(it->second) << std::endl;
