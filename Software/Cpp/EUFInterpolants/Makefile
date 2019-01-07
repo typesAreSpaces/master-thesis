@@ -18,7 +18,7 @@ main: $(OBJS) $(Z3DIR)/build/libz3.dylib
 	$(CC) -o $@ $^ -lpthread -Wall
 
 check_performance_congruence_closure:
-	for x in ./performance/congruence_closure_performance_samples/*; do \
+	for x in /Users/joseabelcastellanosjoo/Desktop/congruence_closure_performance_samples/*; do \
 		for y in $$x/*; do \
 			./main $$y; \
 		done; \
