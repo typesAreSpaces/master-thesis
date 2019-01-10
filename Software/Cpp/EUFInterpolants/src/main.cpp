@@ -3,9 +3,7 @@
 #include <cstdlib>
 #include <ctime>
 
-#include "CongruenceClosure.h"
 #include "EUFInterpolant.h"
-#include "HornClauses.h"
 #include "z3++.h"
 
 int main(int argc, char ** argv){

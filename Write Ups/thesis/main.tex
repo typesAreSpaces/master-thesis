@@ -11,6 +11,44 @@
 % Use the following specification for TOP page numbering:
 % \documentclass[fleqn]{unmeethesis}
 
+\usepackage[utf8]{inputenc}
+\usepackage[english]{babel}
+\usepackage{amsthm}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage{graphicx}
+\usepackage{hyperref}
+\usepackage{listings}
+\lstset
+{ %Formatting for code in appendix
+    language=Matlab,
+    basicstyle=\footnotesize,
+    numbers=left,
+    stepnumber=1,
+    showstringspaces=false,
+    tabsize=1,    
+    breaklines=true,
+    breakatwhitespace=false,
+}
+% Keywords command
+\providecommand{\keywords}[1]
+{
+  \small	
+  \textbf{\textit{Keywords---}} #1
+}
+
+\newcommand{\real}[0]{\mathbb{R}}
+\newcommand{\integer}[0]{\mathbb{Z}}
+\newcommand{\nat}[0]{\mathbb{N}}
+\newcommand{\grob}[0]{Gr\"obner }
+
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{corollary}{Corollary}[theorem]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{definition}{Definition}[section]
+\newtheorem{example}{Example}[definition]
+
 \begin{document}
 
 \frontmatter
@@ -21,97 +59,51 @@
 
 % \setlength{\parskip}{0.30cm}
 
+\title{Efficient Implementation of Interpolation Algorithms
+for EUF and Octagonal Theories}
 
-\title{An Awesome Thesis That Will Prove \\ to the Universe
-       That I Really Deserve This Honorable Degree}
+\author{Jos\'e Abel Castellanos Joo}
 
-\author{Albert Richard Einstein, III}
+\degreesubject{M.S., Computer Science}
 
-\degreesubject{M.S., Mathematics}
-
-\degree{Master of Science \\ Mathematics}
+\degree{Master of Science \\ Computer Science}
 
 \documenttype{Thesis}
 
-\previousdegrees{A.A.S., University of Southern Swampland, 1988 \\
-                 M.S., Art Therapy, University of New Mexico, 1991}
+\previousdegrees{B.Tech., Universidad de las Am\'ericas Puebla, 2015}
 
-\date{December, \thisyear}
+\date{January, \thisyear}
 
 \maketitle
 
 %\makecopyright
 %Copyright page is no longer necessary D. Murrell
 
-\begin{dedication}
-   To my parents, Albert II and Gladys, for their support,
-   encouragement and the Corvette they're giving me for graduation. \\[3ex]
-   ``A bird in hand is worth two in the bush''
-         -- Anonymous
-\end{dedication}
-
-\begin{acknowledgments}
-   \vspace{1.1in}
-   I would like to thank my advisor, Professor Martin Sheen, for his support
-   and some great action movies.  I would also like to thank my dog, Spot,
-   who only ate my homework two or three times.  I have several other people
-   I would like to thank, as well.\footnote{To my brother and sister, who
-   are really cool.}
-\end{acknowledgments}
+\input{dedication_acknowledgments}
 
 \maketitleabstract %(required even though there's no abstract title anymore)
 
-\begin{abstract}
-   The theory of relativity is a real ``toughie'' to prove, but with the
-   help of my family and my great grandpa Al, this paper presents the
-   proof in its entirety.  Most of the math is correct, and the
-   part about ``warp speed'' and ``parallel universe'' sounds very high-tech.
-\clearpage %(required for 1-page abstract)
-\end{abstract}
+\input{abstract}
 
 \tableofcontents
 \listoffigures
 \listoftables
 
-\begin{glossary}{Longest  string}
-   \item[$a_{lm}$]
-      Taylor series coefficients, where $l,m = \{0..2\}$
-   \item[$A_{\bf{p}}$]
-      Complex-valued scalar denoting the amplitude and phase.
-   \item[$A^T$]
-      Transpose of some relativity matrix.
-\end{glossary}
+\input{glossary}
 
 \mainmatter
 
-\chapter{Introduction}
-\section{\label{section:overview}Overview}
-   The classic approach to proving a theorem is some really difficult 
-   mathematics.  For the theory of relativity, I asked grandpa Al exactly 
-   how he proved it.  He gave me a few hints, including some stuff about
-   rest mass and big electro-motive force.  I think he is really smart.
-\section{Conclusions}
-   I conclude that this is a really short thesis.
+\input{introduction}
+\input{related_work}
+\input{background}
+\input{euf}
+\input{octagonal}
+\input{combination}
+\input{future_work}
 
-\chapter{Future Work}
-   I'm sure my future work will consist of lots of other famous stuff.
+\input{appendices}
 
-\chapter*{Appendices}
-
-\addcontentsline{toc}{chapter}{Appendices}
- % Next lines duplicated from .toc file and used to create mini
- % "Appendix Table of Contents," if desired:
-   \contentsline {chapter}{\numberline {A}Proving $E=MC^2$}{4}
-   \contentsline {chapter}{\numberline {B}Derivation of $A = \pi r^2$}{5}
- % End mini table of contents
-
-\appendix
-\chapter{Proving $E=MC^2$}
-   I refer the reader to many of grandpa's famous books on this subject.
-\chapter{Derivation of $A = \pi r^2$}
-   A circle is really a square without corners.  QED.
-
-%\bibliographystyle{AMS}
-%\bibliography{bibfile_name}
+\bibliographystyle{plain}
+\bibliography{references}
 
 \end{document}

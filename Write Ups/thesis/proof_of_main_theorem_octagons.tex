@@ -1,0 +1,50 @@
+\begin{theorem}
+  Given a mutually contradictory pair $(\alpha, \beta)$,
+  where $\alpha, \beta$ are finite conjunctions of octagonal
+  atoms, the above algorithm terminates with an interpolant
+  $I_\alpha$ that is a finite conjunction of octagonal atoms
+  and is equivalent to $\exists \vec{x}. \alpha$, where
+  $\vec{x}$ is the symbols in $\alpha$ which are not in
+  $\beta$. Further $I_\alpha$ is he strongest interpolant
+  for $(\alpha, \beta)$.
+\end{theorem}
+
+\begin{proof}
+  First we will prove that $\models \alpha \rightarrow I_\alpha$.
+  The latter follows since the algorithm produces a
+  conjunction of octagonal formulas using the Elim rule,
+  which is a truth-preserving rule of inference, eliminating
+  conjuncts with uncommon symbols.
+  
+  Now, we will prove that $\not\models I_\alpha \land \beta$. We
+  will prove the latter by induction on the number of variables
+  to eliminate ($k$).
+
+  \begin{itemize}
+  \item Base case: $k = 0$. Then the algorithm outputs $\alpha$.
+    Then the statement holds since $(\alpha, \beta)$
+    is unsatisfiable.
+  \item Inductive case: $k = n + 1$. Since the set $S$ of variables to eliminate
+    is non-empty, we just take any variable $x \in S$ and apply the
+    above algorithm to eliminate such variable.
+    Let $X$ be the set of octagonal inequalities of $(\alpha, \beta)$
+    and $X^{'}$ be the set of octagonal inequalities $(\alpha^{'}, \beta)$
+    where $\alpha^{'}$ is the conjunct obtained after removing the
+    variable $x$. We know $X$ and $X^{'}$ are equisatisfiable using
+    a similar argument as in the Fourier-Motzkin elimination
+    method \cite{Schrijver:1986:TLI:17634}. Let us suppose
+    $(\alpha^{'}, \beta)$ is satisfiable, hence $(\alpha, \beta)$
+    is unsatisfiable as well. But the latter entails a contradiction
+    since $(\alpha, \beta)$ is assumed to be unsatisfiable. Hence,
+    $(\alpha^{'}, \beta)$ is unsatisfiable. Since $(\alpha^{'}, \beta)$
+    is an unsatisfiable formula with $n$ variables to eliminate,
+    using the Inductive Hypothesis we conclude that $(I_\alpha, \beta)$
+    is unsatisfiable as well.
+  \end{itemize}
+  
+\end{proof}
+
+%%% Local Variables:
+%%% mode: latex
+%%% TeX-master: "main"
+%%% End:

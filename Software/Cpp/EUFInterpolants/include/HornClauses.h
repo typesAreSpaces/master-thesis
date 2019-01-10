@@ -29,7 +29,7 @@ class HornClauses{
   void mergeType2AndType3(HornClause *, HornClause *);
   void mergeType2AndType4(HornClause *, HornClause *);
 	void rewrite();
-  void makeMatches(HornClause * hc, unsigned);
+  void makeMatches(HornClause *, unsigned);
 	void combinationHelper(HornClause *);
 	void orient(HornClause *);
 	template<typename A>
