@@ -63,21 +63,21 @@ int main(int argc, char ** argv){
 	// Test used:
 	// "./tests/smt2lib_2/kapurEUFExample2_5.smt2"
 	// ---------------------------------------------------------
-	// z3::sort _sort = ctx.uninterpreted_sort("A");
-	// z3::sort_vector _sorts(ctx);
-	// _sorts.push_back(_sort), _sorts.push_back(_sort), _sorts.push_back(_sort);
-	// z3::func_decl f  = z3::function("f", _sorts, _sort);
-	// z3::expr x1 = ctx.constant("x1", _sort);
-	// z3::expr f_x1_x1_x1 = f(x1, x1, x1);
-	// z3::expr x2 = ctx.constant("x2", _sort);
-	// z3::expr f_x1_x2_x1 = f(x1, x2, x1);
+	z3::sort _sort = ctx.uninterpreted_sort("A");
+	z3::sort_vector _sorts(ctx);
+	_sorts.push_back(_sort), _sorts.push_back(_sort), _sorts.push_back(_sort);
+	z3::func_decl f  = z3::function("f", _sorts, _sort);
+	z3::expr x1 = ctx.constant("x1", _sort);
+	z3::expr f_x1_x1_x1 = f(x1, x1, x1);
+	z3::expr x2 = ctx.constant("x2", _sort);
+	z3::expr f_x1_x2_x1 = f(x1, x2, x1);
 
-	// std::cout << f_x1_x1_x1 << std::endl;
-	// std::cout << Z3_get_ast_id(ctx, f_x1_x1_x1) << std::endl;
-	// std::cout << f_x1_x2_x1 << std::endl;
-	// std::cout << Z3_get_ast_id(ctx, f_x1_x2_x1) << std::endl;
-	// std::cout << x2 << std::endl;
-	// std::cout << Z3_get_ast_id(ctx, x2) << std::endl;
+	std::cout << f_x1_x1_x1 << std::endl;
+	std::cout << Z3_get_ast_id(ctx, f_x1_x1_x1) << std::endl;
+	std::cout << f_x1_x2_x1 << std::endl;
+	std::cout << Z3_get_ast_id(ctx, f_x1_x2_x1) << std::endl;
+	std::cout << x2 << std::endl;
+	std::cout << Z3_get_ast_id(ctx, x2) << std::endl;
 	
   return 0;
 }
