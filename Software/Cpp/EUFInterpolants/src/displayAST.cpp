@@ -1,5 +1,8 @@
 #include "DisplayAST.h"
 
+#define DEGUG_DISPLAY(X, Y) if(X) { Y }
+#define D_FLAG false
+
 /**
    \brief exit gracefully in case of error.
 */
@@ -109,6 +112,9 @@ void display_ast(Z3_context c, FILE * out, Z3_ast v){
 		Z3_symbol d2 = Z3_get_decl_name(c, d);
 		//fprintf(out, "%s", Z3_func_decl_to_string(c, d));
 		display_symbol(c, out, d2);
+
+		DEGUG_DISPLAY(D_FLAG, fprintf(out, "_%d", Z3_get_ast_id(c, v)););
+		
 		if (num_fields > 0) {
 			fprintf(out, "(");
 			for (i = 0; i < num_fields; i++) {

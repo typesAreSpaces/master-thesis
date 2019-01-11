@@ -1,10 +1,12 @@
 #include "CongruenceClosure.h"
 
-bool traceMerge = false;
-bool traceCombine = false;
-bool tracePending = false;
-bool traceEC = false;
-bool traceSigTable = false;
+#define traceMerge    false
+#define traceCombine  false
+#define tracePending  false
+#define traceEC       false
+#define traceSigTable false
+
+#define DEBUG_CC(X, Y) if(X) { Y }
 
 void CongruenceClosure::init(Z3_context c){
   unsigned lhs, rhs;
@@ -18,37 +20,34 @@ void CongruenceClosure::init(Z3_context c){
     
     if(lhsVertex->getLength() < rhsVertex->getLength()){
       merge(getTerm(rhs), getTerm(lhs));
-      if(traceMerge){
-				std::cout << "==========================================" << std::endl;
-				std::cout << "Merging " << std::endl;
-				std::cout << lhsVertex->to_string() << std::endl;
-				std::cout << " to " << std::endl;
-				std::cout << rhsVertex->to_string() << std::endl;
-				std::cout << "==========================================" << std::endl;
-      }
+			DEBUG_CC(traceMerge,
+							 std::cout << "==========================================" << std::endl;
+							 std::cout << "Merging " << std::endl;
+							 std::cout << lhsVertex->to_string() << std::endl;
+							 std::cout << " to " << std::endl;
+							 std::cout << rhsVertex->to_string() << std::endl;
+							 std::cout << "==========================================" << std::endl;)
     }
     else{
       merge(getTerm(lhs), getTerm(rhs));
-      if(traceMerge){
-				std::cout << "==========================================" << std::endl;
-				std::cout << "Merging " << std::endl;
-				std::cout << rhsVertex->to_string() << std::endl;
-				std::cout << " to " << std::endl;
-				std::cout << lhsVertex->to_string() << std::endl;
-				std::cout << "==========================================" << std::endl;
-      }
+			DEBUG_CC(traceMerge,
+							 std::cout << "==========================================" << std::endl;
+							 std::cout << "Merging " << std::endl;
+							 std::cout << rhsVertex->to_string() << std::endl;
+							 std::cout << " to " << std::endl;
+							 std::cout << lhsVertex->to_string() << std::endl;
+							 std::cout << "==========================================" << std::endl;)
     }
-    if(traceEC){
-      std::cout << "==========================================" << std::endl;
-      std::cout << "Terms and ID's" << std::endl;
-      for(unsigned i = 0; i < Vertex::getTotalNumVertex(); ++i)
-				std::cout << i << " " << getTerm(i)->to_string() << std::endl;
-      std::cout << "==========================================" << std::endl;
-      std::cout << "==========================================" << std::endl;
-      std::cout << "Current Equivalence Class" << std::endl;
-			std::cout << EC << std::endl;
-      std::cout << "==========================================" << std::endl;
-    }
+		DEBUG_CC(traceEC,
+						 std::cout << "==========================================" << std::endl;
+						 std::cout << "Terms and ID's" << std::endl;
+						 for(unsigned i = 0; i < Vertex::getTotalNumVertex(); ++i)
+							 std::cout << i << " " << getTerm(i)->to_string() << std::endl;
+						 std::cout << "==========================================" << std::endl;
+						 std::cout << "==========================================" << std::endl;
+						 std::cout << "Current Equivalence Class" << std::endl;
+						 std::cout << EC << std::endl;
+						 std::cout << "==========================================" << std::endl;)
   }
 }
 
@@ -74,37 +73,34 @@ CongruenceClosure::CongruenceClosure(std::istream & in) : SignatureTable(in) {
     
     if(lhsVertex->getLength() < rhsVertex->getLength()){
       merge(getTerm(rhs), getTerm(lhs));
-      if(traceMerge){
-				std::cout << "==========================================" << std::endl;
-				std::cout << "Merging " << std::endl;
-				std::cout << lhsVertex->to_string() << std::endl;
-				std::cout << " to " << std::endl;
-				std::cout << rhsVertex->to_string() << std::endl;
-				std::cout << "==========================================" << std::endl;
-      }
+			DEBUG_CC(traceMerge,
+							 std::cout << "==========================================" << std::endl;
+							 std::cout << "Merging " << std::endl;
+							 std::cout << lhsVertex->to_string() << std::endl;
+							 std::cout << " to " << std::endl;
+							 std::cout << rhsVertex->to_string() << std::endl;
+							 std::cout << "==========================================" << std::endl;)
     }
     else{
       merge(getTerm(lhs), getTerm(rhs));
-      if(traceMerge){
-				std::cout << "==========================================" << std::endl;
-				std::cout << "Merging " << std::endl;
-				std::cout << rhsVertex->to_string() << std::endl;
-				std::cout << " to " << std::endl;
-				std::cout << lhsVertex->to_string() << std::endl;
-				std::cout << "==========================================" << std::endl;
-      }
+			DEBUG_CC(traceMerge,
+							 std::cout << "==========================================" << std::endl;
+							 std::cout << "Merging " << std::endl;
+							 std::cout << rhsVertex->to_string() << std::endl;
+							 std::cout << " to " << std::endl;
+							 std::cout << lhsVertex->to_string() << std::endl;
+							 std::cout << "==========================================" << std::endl;)
     }
-    if(traceEC){
-      std::cout << "==========================================" << std::endl;
-      std::cout << "Terms and ID's" << std::endl;
-      for(unsigned i = 0; i < Vertex::getTotalNumVertex(); ++i)
-				std::cout << i << " " << getTerm(i)->to_string() << std::endl;
-      std::cout << "==========================================" << std::endl;
-      std::cout << "==========================================" << std::endl;
-      std::cout << "Current Equivalence Class" << std::endl;
-			std::cout << EC << std::endl;
-      std::cout << "==========================================" << std::endl;
-    }
+		DEBUG_CC(traceEC,
+						 std::cout << "==========================================" << std::endl;
+						 std::cout << "Terms and ID's" << std::endl;
+						 for(unsigned i = 0; i < Vertex::getTotalNumVertex(); ++i)
+							 std::cout << i << " " << getTerm(i)->to_string() << std::endl;
+						 std::cout << "==========================================" << std::endl;
+						 std::cout << "==========================================" << std::endl;
+						 std::cout << "Current Equivalence Class" << std::endl;
+						 std::cout << EC << std::endl;
+						 std::cout << "==========================================" << std::endl;)
   }
 }
 
@@ -128,22 +124,20 @@ void CongruenceClosure::algorithm(){
       try{
 				Vertex * _temp = query(*it);
 				combine.insert(std::make_pair(*it, _temp));
-				if(traceCombine){
-					std::cout << "==========================================" << std::endl;
-					std::cout << "Inserting to Combine" << std::endl;
-					std::cout << (*it)->to_string() << " and " << std::endl;
-					std::cout << _temp->to_string() << std::endl;
-					std::cout << "==========================================" << std::endl;
-				}
+				DEBUG_CC(traceCombine,
+								 std::cout << "==========================================" << std::endl;
+								 std::cout << "Inserting to Combine" << std::endl;
+								 std::cout << (*it)->to_string() << " and " << std::endl;
+								 std::cout << _temp->to_string() << std::endl;
+								 std::cout << "==========================================" << std::endl;)
       }
       catch (const char * msg){
 				enter(*it);
-				if(traceSigTable){
-					std::cout << "==========================================" << std::endl;
-					std::cout << "Current Signature Table" << std::endl;
-					std::cout << *dynamic_cast<SignatureTable*>(this) << std::endl;
-					std::cout << "==========================================" << std::endl;
-				}
+				DEBUG_CC(traceSigTable,
+								 std::cout << "==========================================" << std::endl;
+								 std::cout << "Current Signature Table" << std::endl;
+								 std::cout << *dynamic_cast<SignatureTable*>(this) << std::endl;
+								 std::cout << "==========================================" << std::endl;)
       }
     }
     pending.clear();
@@ -161,14 +155,13 @@ void CongruenceClosure::algorithm(){
 							++it;
 						} while(it != listFindV->begin());
 					}
-					if(traceMerge){
-						std::cout << "==========================================" << std::endl;
-						std::cout << "Merging " << std::endl;
-						std::cout << findW->to_string() << std::endl;
-						std::cout << " to " << std::endl;
-						std::cout << findV->to_string() << std::endl;
-						std::cout << "==========================================" << std::endl;
-					}
+					DEBUG_CC(traceMerge,
+									 std::cout << "==========================================" << std::endl;
+									 std::cout << "Merging " << std::endl;
+									 std::cout << findW->to_string() << std::endl;
+									 std::cout << " to " << std::endl;
+									 std::cout << findV->to_string() << std::endl;
+									 std::cout << "==========================================" << std::endl;)
 					merge(findW, findV);
 				}
 				else{
@@ -182,14 +175,13 @@ void CongruenceClosure::algorithm(){
 							++it;
 						} while(it != listFindW->begin());
 					}
-					if(traceMerge){
-						std::cout << "==========================================" << std::endl;
-						std::cout << "Merging " << std::endl;
-						std::cout << findW->to_string() << std::endl;
-						std::cout << " to " << std::endl;
-						std::cout << findV->to_string() << std::endl;
-						std::cout << "==========================================" << std::endl;
-					}
+					DEBUG_CC(traceMerge,
+									 std::cout << "==========================================" << std::endl;
+									 std::cout << "Merging " << std::endl;
+									 std::cout << findW->to_string() << std::endl;
+									 std::cout << " to " << std::endl;
+									 std::cout << findV->to_string() << std::endl;
+									 std::cout << "==========================================" << std::endl;)
 					merge(findV, findW);
 				}
       }
