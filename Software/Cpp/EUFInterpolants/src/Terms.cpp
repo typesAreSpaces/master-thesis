@@ -1,7 +1,6 @@
 #include "Terms.h"
-
-bool debugVisit  = false;
-bool debugVisit2 = false;
+#define debugVisit  false
+#define debugVisit2 false
 
 /**
    \brief exit gracefully in case of error.
@@ -19,7 +18,7 @@ void Terms::unreachable(){
 }
 
 // This method extracts terms and symbols
-void Terms::visit(Z3_context c, Z3_ast v,
+void Terms::traverse(Z3_context c, Z3_ast v,
 									 unsigned numTerms, unsigned & counterExtraTerms,
 									 std::set<std::string> & symbols){
 
@@ -43,7 +42,7 @@ void Terms::visit(Z3_context c, Z3_ast v,
     unsigned i, _successor, mark, num_args = Z3_get_app_num_args(c, app);
     
     for (i = 0; i < num_args; ++i)
-      visit(c, Z3_get_app_arg(c, app, i), numTerms, counterExtraTerms, symbols);
+      traverse(c, Z3_get_app_arg(c, app, i), numTerms, counterExtraTerms, symbols);
 
     //----------------------------------------------------------------------------------------
     // do something
@@ -117,7 +116,7 @@ void Terms::visit(Z3_context c, Z3_ast v,
 }
 
 // This method extracts symbols
-void Terms::visit(Z3_context c, Z3_ast v,
+void Terms::traverse(Z3_context c, Z3_ast v,
 									std::set<std::string> & symbols){
 
 	switch (Z3_get_ast_kind(c, v)) {
@@ -130,7 +129,7 @@ void Terms::visit(Z3_context c, Z3_ast v,
     Z3_app app = Z3_to_app(c, v);
     unsigned i, num_args = Z3_get_app_num_args(c, app);
     for (i = 0; i < num_args; ++i)
-      visit(c, Z3_get_app_arg(c, app, i), symbols);
+      traverse(c, Z3_get_app_arg(c, app, i), symbols);
     //----------------------------------------------------------------------------------------
     // do something
     Z3_func_decl d = Z3_get_app_decl(c, app);
@@ -194,9 +193,9 @@ Terms::Terms(Z3_context ctx, Z3_ast v){
     terms[numTerms + i] = new Vertex("_x" + std::to_string(i), 0);
   
   //Extracting first formula
-  visit(ctx, Z3_get_app_arg(ctx, app, 0), numTerms, refCounterExtraTerms, symbolsA);
+  traverse(ctx, Z3_get_app_arg(ctx, app, 0), numTerms, refCounterExtraTerms, symbolsA);
   //Extracting second formula
-  visit(ctx, Z3_get_app_arg(ctx, app, 1), symbolsB);
+  traverse(ctx, Z3_get_app_arg(ctx, app, 1), symbolsB);
   
   std::set_difference(symbolsA.begin(), symbolsA.end(),
 											symbolsB.begin(), symbolsB.end(),
@@ -232,7 +231,7 @@ Terms::Terms(Z3_context ctx, Z3_ast v, std::set<std::string> & symbolsToElim) :
     terms[numTerms + i] = new Vertex("_x" + std::to_string(i), 0);
   
   //Extracting the formula
-  visit(ctx, v, numTerms, refCounterExtraTerms, symbolsA);
+  traverse(ctx, v, numTerms, refCounterExtraTerms, symbolsA);
 
 	// This symbol will be used to encode the False particle
 	terms.push_back(new Vertex("incomparable", 0));

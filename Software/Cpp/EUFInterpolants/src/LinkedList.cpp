@@ -42,9 +42,9 @@ node<T> * LinkedList<T>::getList(){
 }
 
 template <typename T>
-std::ostream & LinkedList<T>:: print(std::ostream & os){
+std::ostream & operator << (std::ostream & os, LinkedList<T> & l){
   node<T> * temp;
-  for(temp = head; temp != nullptr; temp = temp->next)
+  for(temp = l.head; temp != nullptr; temp = temp->next)
     os << temp->data << " ";
   os << std::endl;
   return os;

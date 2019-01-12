@@ -10,23 +10,22 @@
 #include "UnionFind.h"
 #include "z3.h"
 
-extern bool debugVisit;
-extern bool debugVisit2;
-
 class Terms{
 	
  protected:
-  unsigned rootNum;
-  std::vector<Vertex*> terms;
-  std::set<std::string> symbolsToElim; 
+  unsigned                                rootNum;
+  std::vector<Vertex*>                    terms;
+  std::set<std::string>                   symbolsToElim; 
   std::vector<std::pair<Z3_ast, Z3_ast> > equations, disEquations;
 	UnionFind EC;
 	
  private:
 	void exitf(const char *);
   void unreachable();
-  void visit(Z3_context, Z3_ast, unsigned, unsigned &, std::set<std::string> &);
-  void visit(Z3_context, Z3_ast, std::set<std::string> &);
+  void traverse(Z3_context, Z3_ast,
+						 unsigned, unsigned &, std::set<std::string> &);
+  void traverse(Z3_context, Z3_ast,
+						 std::set<std::string> &);
   
  public:
   Terms(Z3_context, Z3_ast);

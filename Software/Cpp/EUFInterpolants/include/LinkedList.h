@@ -15,7 +15,7 @@ class LinkedList{
   void add(T x);
   int size();
   node<T> * getList();
-  std::ostream & print(std::ostream &);
+  friend std::ostream & operator << (std::ostream &, LinkedList &);
 };
 
 #endif
