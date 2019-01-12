@@ -8,12 +8,12 @@
 class Vertex{
 
 private:
-  static unsigned totalNumVertex;
-  std::string name;
-  bool symbolCommonQ;
-	bool defined;
-  unsigned id, arity;
-  std::vector<Vertex*> successors;
+  static unsigned        totalNumVertex;
+  std::string            name;
+  bool                   symbolCommonQ;
+	bool                   defined;
+  unsigned               id, arity;
+  std::vector<Vertex*>   successors;
   CircularList<unsigned> predecessors;
   void addPredecessor(unsigned);
 
