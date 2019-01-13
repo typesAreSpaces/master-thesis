@@ -13,6 +13,7 @@ class SignatureTable : public Terms {
 protected:
   treeArg1 table1;
   treeArg2 table2;
+	
 public:
   SignatureTable(Z3_context, Z3_ast);
   SignatureTable(Z3_context, Z3_ast, std::set<std::string> &);

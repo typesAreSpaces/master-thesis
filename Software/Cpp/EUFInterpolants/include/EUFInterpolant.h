@@ -13,13 +13,14 @@ typedef std::map<std::string, std::set<unsigned> > symbolLoc;
 class EUFInterpolant {
  private:
   CongruenceClosure cc;
-  HornClauses hC;
-	Z3_context ctx;
+  HornClauses       hC;
+	Z3_context        ctx;
+	symbolLoc         symbolPos;
   void identifyCommonSymbols();
   void setCommonRepresentatives();
   void eliminationOfUncommonFSyms();
 	void addNegativeHornClauses();
-  symbolLoc symbolPos;
+  
  public:
   EUFInterpolant(Z3_context, Z3_ast);
   EUFInterpolant(Z3_context, Z3_ast, std::set<std::string> &);

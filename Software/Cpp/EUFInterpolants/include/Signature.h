@@ -5,7 +5,7 @@
 
 struct signatureArg1 {
   std::string name;
-  unsigned first;
+  unsigned    first_signature;
   struct Hash;
   signatureArg1(std::string, unsigned);
   ~signatureArg1();
@@ -19,7 +19,7 @@ struct signatureArg1::Hash {
 
 struct signatureArg2 {
   std::string name;
-  unsigned first, second;
+  unsigned    first_signature, second_signature;
   struct Hash;
   signatureArg2(std::string, unsigned, unsigned);
   ~signatureArg2();

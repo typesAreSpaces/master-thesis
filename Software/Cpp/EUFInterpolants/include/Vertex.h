@@ -6,7 +6,6 @@
 #include "CircularList.h"
 
 class Vertex{
-
 private:
   static unsigned        totalNumVertex;
   std::string            name;

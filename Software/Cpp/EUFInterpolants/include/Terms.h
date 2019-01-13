@@ -11,13 +11,12 @@
 #include "z3.h"
 
 class Terms{
-	
  protected:
   unsigned                                rootNum;
   std::vector<Vertex*>                    terms;
   std::set<std::string>                   symbolsToElim; 
   std::vector<std::pair<Z3_ast, Z3_ast> > equations, disEquations;
-	UnionFind EC;
+	UnionFind                               EC;
 	
  private:
 	void exitf(const char *);
@@ -35,7 +34,7 @@ class Terms{
   std::vector<Vertex*> & getTerms();
   UnionFind & getEC();
 	Vertex * getTerm(unsigned);
-  Vertex* find(Vertex*);
+  Vertex * find(Vertex*);
   void merge(Vertex*, Vertex*);
   void rotate(Vertex*, Vertex*);
   unsigned getRootNum();

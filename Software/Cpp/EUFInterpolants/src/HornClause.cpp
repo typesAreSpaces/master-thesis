@@ -8,7 +8,7 @@ HornClause::HornClause(UnionFind & uf,
 											 std::vector<Vertex*> & terms) :
   localUF(uf), antecedent(antecedent), consequent(consequent){
   antecedentQ = true, consequentQ = true;
-  for(std::vector<equality>::iterator it = antecedent.begin();
+  for(auto it = antecedent.begin();
       it != antecedent.end(); ++it){
     antecedentQ = antecedentQ &&
       terms[localUF.find(it->first->getId())]->getSymbolCommonQ() &&

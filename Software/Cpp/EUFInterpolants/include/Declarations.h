@@ -20,6 +20,7 @@ private:
 	void collect_func(const z3::func_decl &);
 	std::string lower_case_fun(z3::symbol const &);
 	std::string sanitize(z3::symbol const &);
+	
 public:
 	Declarations(z3::context &, z3::expr &);
 	~Declarations();

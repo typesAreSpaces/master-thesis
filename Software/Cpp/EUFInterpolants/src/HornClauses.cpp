@@ -1,6 +1,5 @@
 #include "HornClauses.h"
-
-bool debugHornClauses = false;
+#define debugHornClauses false
 
 unsigned HornClauses::numHornClauses = 0;
 

@@ -7,8 +7,9 @@
 template <typename T>
 class LinkedList{
  private:
-  int length;
-  node<T> *head, *tail;
+  int      length;
+  node<T>  * head, * tail;
+	
  public:
   LinkedList();
   ~LinkedList();

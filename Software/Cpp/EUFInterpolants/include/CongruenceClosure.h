@@ -9,6 +9,7 @@ typedef std::set<std::pair<Vertex*, Vertex*> > Combine;
 class CongruenceClosure : public SignatureTable {
  private:
   void init(Z3_context);
+	
  public:
 	CongruenceClosure(Z3_context, Z3_ast, std::set<std::string> &);
   CongruenceClosure(Z3_context, Z3_ast);

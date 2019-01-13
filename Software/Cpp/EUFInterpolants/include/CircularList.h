@@ -13,10 +13,11 @@ std::ostream & operator << (std::ostream &, CircularList<T> &);
 template <typename T>
 class CircularList{
  private:
-  int length;
+  int       length;
   node<T> * list;
   void addEmpty(T x);
   void addNonEmpty(T x);
+	
  public:
   CircularList();
   ~CircularList();
