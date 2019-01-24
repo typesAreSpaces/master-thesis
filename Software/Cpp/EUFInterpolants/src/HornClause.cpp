@@ -1,7 +1,8 @@
 #include "HornClause.h"
 
-UnionFind HornClause::global_UF = UnionFind();
-bool HornClause::change = true;
+UnionFind HornClause::global_UF               = UnionFind();
+bool HornClause::is_first_time                = true;
+std::vector<Vertex*> HornClause::global_terms = std::vector<Vertex*>();
 
 HornClause::HornClause(UnionFind & uf,
 											 std::vector<equality> & antecedent,
@@ -10,6 +11,11 @@ HornClause::HornClause(UnionFind & uf,
   local_UF(uf),
 	antecedent(antecedent),
 	consequent(consequent){
+	if(is_first_time){
+		is_first_time = false;
+		global_UF = uf;
+		global_terms = terms;
+	}
   antecedent_boolean_value = true, consequent_boolean_value = true;
   for(auto it = antecedent.begin();
       it != antecedent.end(); ++it){
@@ -30,10 +36,10 @@ HornClause::HornClause(UnionFind & uf,
   local_UF(uf),
 	antecedent_boolean_value(true),
 	consequent_boolean_value(true){
-	if(change){
-		change = false;
+	if(is_first_time){
+		is_first_time = false;
 		global_UF = uf;
-		localTerms = terms;
+		global_terms = terms;
 	}
   unsigned _arity = u->getArity();
   std::vector<Vertex*> & successorsU = u->getSuccessors(),
@@ -146,9 +152,9 @@ bool operator < (HornClause & hc1, HornClause & hc2){
 }
 
 Vertex * HornClause::getVertex(unsigned i){
-	return localTerms[local_UF.find(i)];
+	return global_terms[local_UF.find(i)];
 }
 
 Vertex * HornClause::getVertex(Vertex * v){
-	return localTerms[local_UF.find(v->getId())];
+	return global_terms[local_UF.find(v->getId())];
 }

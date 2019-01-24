@@ -20,6 +20,7 @@ class HornClauses{
   match2                   mc2A, mc2C;
 	match2                   rewriting;
 	std::map<equality, int>  rewritingLength;
+	std::vector<Vertex*> &   local_terms;
   void mergeType2_1AndType3(HornClause *, HornClause *);
   void mergeType2_1AndType4(HornClause *, HornClause *);
   void mergeType2AndType2(HornClause *, HornClause *);
