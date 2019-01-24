@@ -118,7 +118,6 @@ void Terms::traverse(Z3_context c, Z3_ast v,
 // This method extracts symbols
 void Terms::traverse(Z3_context c, Z3_ast v,
 									std::set<std::string> & symbols){
-
 	switch (Z3_get_ast_kind(c, v)) {
   case Z3_NUMERAL_AST: {
     // do something
@@ -311,19 +310,23 @@ UnionFind & Terms::getEC(){
   return EC;
 }
 
-Vertex * Terms::getTerm(unsigned i){
+Vertex * Terms::getOriginalVertex(unsigned i){
   return terms[i];
 }
 
-Vertex * Terms::find(Vertex * v){
+Vertex * Terms::getVertex(unsigned i){
+  return terms[EC.find(i)];
+}
+
+Vertex * Terms::getVertex(Vertex * v){
   return terms[EC.find(v->getId())];
 }
 
 void Terms::merge(Vertex * u, Vertex * v){
-  // Precondition, find(u) and find(v) should be different
+  // Precondition, getVertex(u) and getVertex(v) should be different
   // Merge the predecessor's list too!
-  if(find(u)->getId() != find(v)->getId()){
-    find(u)->mergePredecessors(find(v));
+  if(getVertex(u) != getVertex(v)){
+    getVertex(u)->mergePredecessors(getVertex(v));
     EC.merge(u->getId(), v->getId());
   }
 }
@@ -331,8 +334,8 @@ void Terms::merge(Vertex * u, Vertex * v){
 void Terms::rotate(Vertex * u, Vertex * v){
   // Force vertex u to become
   // vertex v's parent  
-  u->mergePredecessors(find(v));
-  EC.link(u->getId(), find(v)->getId());
+  u->mergePredecessors(getVertex(v));
+  EC.link(u->getId(), getVertex(v)->getId());
   EC.reset(u->getId());
 }
 

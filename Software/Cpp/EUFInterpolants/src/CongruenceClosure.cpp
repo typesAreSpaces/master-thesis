@@ -15,11 +15,11 @@ void CongruenceClosure::init(Z3_context c){
       it != equations.end(); ++it){
     lhs = Z3_get_ast_id(c, it->first);
     rhs = Z3_get_ast_id(c, it->second);
-    lhsVertex = getTerm(lhs);
-    rhsVertex = getTerm(rhs);
+    lhsVertex = getVertex(lhs);
+    rhsVertex = getVertex(rhs);
     
     if(lhsVertex->getLength() < rhsVertex->getLength()){
-      merge(getTerm(rhs), getTerm(lhs));
+      merge(getVertex(rhs), getVertex(lhs));
 			DEBUG_CC(traceMerge,
 							 std::cout << "==========================================" << std::endl;
 							 std::cout << "Merging " << std::endl;
@@ -29,7 +29,7 @@ void CongruenceClosure::init(Z3_context c){
 							 std::cout << "==========================================" << std::endl;)
     }
     else{
-      merge(getTerm(lhs), getTerm(rhs));
+      merge(getVertex(lhs), getVertex(rhs));
 			DEBUG_CC(traceMerge,
 							 std::cout << "==========================================" << std::endl;
 							 std::cout << "Merging " << std::endl;
@@ -42,7 +42,7 @@ void CongruenceClosure::init(Z3_context c){
 						 std::cout << "==========================================" << std::endl;
 						 std::cout << "Terms and ID's" << std::endl;
 						 for(unsigned i = 0; i < Vertex::getTotalNumVertex(); ++i)
-							 std::cout << i << " " << getTerm(i)->to_string() << std::endl;
+							 std::cout << i << " " << getVertex(i)->to_string() << std::endl;
 						 std::cout << "==========================================" << std::endl;
 						 std::cout << "==========================================" << std::endl;
 						 std::cout << "Current Equivalence Class" << std::endl;
@@ -68,11 +68,11 @@ CongruenceClosure::CongruenceClosure(std::istream & in) : SignatureTable(in) {
   in >> numEq;
   for(unsigned i = 0; i < numEq; ++i){
     in >> lhs >> rhs;
-    lhsVertex = getTerm(lhs);
-    rhsVertex = getTerm(rhs);
+    lhsVertex = getVertex(lhs);
+    rhsVertex = getVertex(rhs);
     
     if(lhsVertex->getLength() < rhsVertex->getLength()){
-      merge(getTerm(rhs), getTerm(lhs));
+      merge(getVertex(rhs), getVertex(lhs));
 			DEBUG_CC(traceMerge,
 							 std::cout << "==========================================" << std::endl;
 							 std::cout << "Merging " << std::endl;
@@ -82,7 +82,7 @@ CongruenceClosure::CongruenceClosure(std::istream & in) : SignatureTable(in) {
 							 std::cout << "==========================================" << std::endl;)
     }
     else{
-      merge(getTerm(lhs), getTerm(rhs));
+      merge(getVertex(lhs), getVertex(rhs));
 			DEBUG_CC(traceMerge,
 							 std::cout << "==========================================" << std::endl;
 							 std::cout << "Merging " << std::endl;
@@ -95,7 +95,7 @@ CongruenceClosure::CongruenceClosure(std::istream & in) : SignatureTable(in) {
 						 std::cout << "==========================================" << std::endl;
 						 std::cout << "Terms and ID's" << std::endl;
 						 for(unsigned i = 0; i < Vertex::getTotalNumVertex(); ++i)
-							 std::cout << i << " " << getTerm(i)->to_string() << std::endl;
+							 std::cout << i << " " << getVertex(i)->to_string() << std::endl;
 						 std::cout << "==========================================" << std::endl;
 						 std::cout << "==========================================" << std::endl;
 						 std::cout << "Current Equivalence Class" << std::endl;
@@ -113,7 +113,7 @@ void CongruenceClosure::algorithm(){
 
   // Adding functional grounded vertices to pending
   for(unsigned i = 0; i < totalNumVertex; ++i){
-    Vertex * _temp = getTerm(i);
+    Vertex * _temp = getVertex(i);
     if(_temp->getArity() >= 1)
       pending.insert(_temp);
   }
@@ -142,14 +142,14 @@ void CongruenceClosure::algorithm(){
     }
     pending.clear();
     for(Combine::iterator it = combine.begin(); it != combine.end(); ++it){
-      Vertex * v = it->first, * w = it->second, * findV = find(v), * findW = find(w);
+      Vertex * v = it->first, * w = it->second, * findV = getVertex(v), * findW = getVertex(w);
       if(findV->getId() != findW->getId()){
 				if(findV->getLength() < findW->getLength()){
 					CircularList<unsigned> * listFindV = findV->getPredecessors();
 					if(findV->getLength() != 0){
 						CircularList<unsigned>::iterator it = listFindV->begin();
 						do{
-							Vertex * u = getTerm((*it).data);
+							Vertex * u = getVertex((*it).data);
 							remove(u);
 							pending.insert(u);
 							++it;
@@ -169,7 +169,7 @@ void CongruenceClosure::algorithm(){
 					if(findW->getLength() != 0){
 						CircularList<unsigned>::iterator it = listFindW->begin();
 						do{
-							Vertex * u = getTerm((*it).data);
+							Vertex * u = getVertex((*it).data);
 							remove(u);
 							pending.insert(u);
 							++it;
@@ -194,15 +194,15 @@ bool CongruenceClosure::checkCorrectness(){
 
   for(unsigned i = 0; i < totalNumVertex - 1; ++i)
     for(unsigned j = i + 1; j < totalNumVertex; ++j){
-      Vertex * u = getTerm(i), * v = getTerm(j);
+      Vertex * u = getVertex(i), * v = getVertex(j);
       if(u->getArity() == v->getArity()){
 				if(u->getArity() == 1
 					 && getSignatureArg1(u) == getSignatureArg1(v)
-					 && find(u)->getId() != find(v)->getId())
+					 && getVertex(u)->getId() != getVertex(v)->getId())
 						return false;
 				if(u->getArity() == 2
 					 && getSignatureArg2(u) == getSignatureArg2(v)
-					 && find(u)->getId() != find(v)->getId())
+					 && getVertex(u)->getId() != getVertex(v)->getId())
 					return false;
       }
     }
@@ -215,10 +215,10 @@ std::ostream & operator << (std::ostream & os, CongruenceClosure & cc){
   
   for(unsigned i = 0; i < totalNumVertex; ++i){
     // Just print non-extra nodes
-		auto term = cc.getTerm(i);
+		auto term = cc.getOriginalVertex(i);
     if(term->getName()[0] != '_')
       os << "Vertex: " << term->to_string()
-				 << " Representative: " << cc.find(term)->to_string() << std::endl;
+				 << " Representative: " << cc.getVertex(term)->to_string() << std::endl;
 	}
   return os;
 }

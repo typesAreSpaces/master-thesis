@@ -64,14 +64,14 @@ Vertex * SignatureTable::query(Vertex * v){
 signatureArg1 SignatureTable::getSignatureArg1(Vertex * v){
   std::vector<Vertex*> _successors = v->getSuccessors();
   return signatureArg1(v->getName(),
-											 find(_successors[0])->getId());
+											 getVertex(_successors[0])->getId());
 }
 
 signatureArg2 SignatureTable::getSignatureArg2(Vertex * v){
   std::vector<Vertex*> _successors = v->getSuccessors();
   return signatureArg2(v->getName(),
-											 find(_successors[0])->getId(),
-											 find(_successors[1])->getId());
+											 getVertex(_successors[0])->getId(),
+											 getVertex(_successors[1])->getId());
 }
 
 std::ostream & operator << (std::ostream & os, SignatureTable & st){

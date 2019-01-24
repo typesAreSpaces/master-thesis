@@ -33,8 +33,9 @@ class Terms{
   ~Terms();
   std::vector<Vertex*> & getTerms();
   UnionFind & getEC();
-	Vertex * getTerm(unsigned);
-  Vertex * find(Vertex*);
+	Vertex * getOriginalVertex(unsigned);
+	Vertex * getVertex(unsigned);
+  Vertex * getVertex(Vertex*);
   void merge(Vertex*, Vertex*);
   void rotate(Vertex*, Vertex*);
   unsigned getRootNum();
@@ -44,4 +45,4 @@ class Terms{
 	friend std::ostream & operator <<(std::ostream &, Terms &);
 };
 
-#endif 
+#endif

@@ -2,7 +2,7 @@
 #define _HORN_CLAUSES_
 
 #include "HornClause.h"
-#include "Vertex.h"
+#include "Terms.h"
 #include <vector>
 #include <set>
 #include <map>
@@ -20,7 +20,6 @@ class HornClauses{
   match2                   mc2A, mc2C;
 	match2                   rewriting;
 	std::map<equality, int>  rewritingLength;
-  std::vector<Vertex*> &   localTerms;
   void mergeType2_1AndType3(HornClause *, HornClause *);
   void mergeType2_1AndType4(HornClause *, HornClause *);
   void mergeType2AndType2(HornClause *, HornClause *);
@@ -32,6 +31,8 @@ class HornClauses{
 	void orient(HornClause *);
 	template<typename A>
 	static void swap(std::vector<A> &, unsigned, unsigned);
+	Vertex * getVertex(unsigned);
+	Vertex * getVertex(Vertex *);
 	
  public:
   HornClauses(std::vector<Vertex*> &);

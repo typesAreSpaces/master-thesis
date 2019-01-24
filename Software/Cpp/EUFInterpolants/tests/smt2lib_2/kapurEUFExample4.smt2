@@ -10,7 +10,7 @@
 (declare-fun f (A A) A)
 (declare-fun g (A) A)
 
-(define-fun A () Bool
+(define-fun formula () Bool
 	    (and (= (f z1 v) (g s1)) (= (f z2 v) (g s2)) (= (f (f (g y1) v) (f (g y2) v)) t))
 )
-(assert A)
+(assert formula)

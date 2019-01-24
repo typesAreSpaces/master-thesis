@@ -1,57 +1,67 @@
 #include "HornClause.h"
 
-UnionFind HornClause::globalUF = UnionFind();
+UnionFind HornClause::global_UF = UnionFind();
 bool HornClause::change = true;
 
 HornClause::HornClause(UnionFind & uf,
-											 std::vector<equality> & antecedent, equality & consequent,
+											 std::vector<equality> & antecedent,
+											 equality & consequent,
 											 std::vector<Vertex*> & terms) :
-  localUF(uf), antecedent(antecedent), consequent(consequent){
-  antecedentQ = true, consequentQ = true;
+  local_UF(uf),
+	antecedent(antecedent),
+	consequent(consequent){
+  antecedent_boolean_value = true, consequent_boolean_value = true;
   for(auto it = antecedent.begin();
       it != antecedent.end(); ++it){
-    antecedentQ = antecedentQ &&
-      terms[localUF.find(it->first->getId())]->getSymbolCommonQ() &&
-      terms[localUF.find(it->second->getId())]->getSymbolCommonQ();
+    antecedent_boolean_value = antecedent_boolean_value &&
+			getVertex(it->first)->getSymbolCommonQ() &&
+			getVertex(it->second)->getSymbolCommonQ();
   }
-  consequentQ = consequentQ &&
-    terms[localUF.find(consequent.first->getId())]->getSymbolCommonQ() &&
-    terms[localUF.find(consequent.second->getId())]->getSymbolCommonQ();
+  consequent_boolean_value = consequent_boolean_value &&		
+		getVertex(consequent.first)->getSymbolCommonQ() &&
+		getVertex(consequent.second)->getSymbolCommonQ();
+
 }
 
-HornClause::HornClause(UnionFind & uf, Vertex* u, Vertex* v,
-											 std::vector<Vertex*> & terms, bool isDisequation) :
-  localUF(uf), antecedentQ(true), consequentQ(true) {
+HornClause::HornClause(UnionFind & uf,
+											 Vertex* u, Vertex* v,
+											 std::vector<Vertex*> & terms,
+											 bool isDisequation) :
+  local_UF(uf),
+	antecedent_boolean_value(true),
+	consequent_boolean_value(true){
 	if(change){
 		change = false;
-		globalUF = uf;
+		global_UF = uf;
+		localTerms = terms;
 	}
   unsigned _arity = u->getArity();
   std::vector<Vertex*> & successorsU = u->getSuccessors(),
     & successorsV = v->getSuccessors();
   for(unsigned i = 0; i < _arity; ++i){
-    Vertex * _u = terms[localUF.find(successorsU[i]->getId())],
-      * _v = terms[localUF.find(successorsV[i]->getId())];
+    Vertex * _u = getVertex(successorsU[i]),
+      * _v = getVertex(successorsV[i]);
     if(*_u >= *_v)
       antecedent.push_back(std::make_pair(_u, _v));
     else
       antecedent.push_back(std::make_pair(_v, _u));
-    antecedentQ = antecedentQ && _u->getSymbolCommonQ() && _v->getSymbolCommonQ();
+    antecedent_boolean_value = antecedent_boolean_value
+			&& _u->getSymbolCommonQ() && _v->getSymbolCommonQ();
   }
 	if(isDisequation){
 		consequent = std::make_pair(terms[Vertex::getTotalNumVertex() - 1],
 																terms[Vertex::getTotalNumVertex() - 1]);
-		consequentQ = true;
+		consequent_boolean_value = true;
 	}
 	else{
-		  Vertex * _u = terms[localUF.find(u->getId())],
-				* _v = terms[localUF.find(v->getId())];
+		Vertex * _u = getVertex(u),
+			* _v = getVertex(v);
   
 			if(*_u >= *_v)
 				consequent = std::make_pair(_u, _v);
 			else
 				consequent = std::make_pair(_v, _u);
-			consequentQ = consequentQ && _u->getSymbolCommonQ() && _v->getSymbolCommonQ();
+			consequent_boolean_value = consequent_boolean_value && _u->getSymbolCommonQ() && _v->getSymbolCommonQ();
 	}
 }
 
@@ -61,36 +71,32 @@ HornClause::~HornClause(){
 // Joins the proper elements to the
 // UnionFind data structure
 void HornClause::normalize(){
-  antecedentQ = true;
+  antecedent_boolean_value = true;
   for(std::vector<equality>::iterator it = antecedent.begin();
       it != antecedent.end();){
-		//std::cout << "The Equivalence Class" << std::endl;
-		//localUF.print(std::cout);
-		//std::cout << it->first->getId() << " , " <<  it->second->getId() << std::endl;
-		//std::cout << localUF.find(it->first->getId()) << " , " <<  localUF.find(it->second->getId()) << std::endl;
-    if(localUF.find(it->first->getId()) == localUF.find(it->second->getId()))
+    if(getVertex(it->first) == getVertex(it->second))
       antecedent.erase(it);
     else{
-      localUF.merge(it->first->getId(), it->second->getId());
-      antecedentQ = antecedentQ && it->first->getSymbolCommonQ()
+      local_UF.merge(it->first->getId(), it->second->getId());
+      antecedent_boolean_value = antecedent_boolean_value && it->first->getSymbolCommonQ()
 				&& it->second->getSymbolCommonQ();
       ++it;
     }
   }
 }
 
-bool HornClause::checkTrivial(){
-  return (localUF.find(consequent.first->getId()) == localUF.find(consequent.second->getId()));
+bool HornClause::checkTriviality(){
+  return (getVertex(consequent.first) == getVertex(consequent.second));
 }
 
-bool HornClause::getAntecedentQ(){
-  return antecedentQ;
+bool HornClause::getAntecedentValue(){
+  return antecedent_boolean_value;
 }
-bool HornClause::getConsequentQ(){
-  return consequentQ;
+bool HornClause::getConsequentValue(){
+  return consequent_boolean_value;
 }
 
-bool HornClause::getMaximalConsequentQ(){
+bool HornClause::getMaximalConsequent(){
   return consequent.first->getSymbolCommonQ();
 }
 
@@ -103,11 +109,11 @@ equality & HornClause::getConsequent(){
 }
 
 UnionFind & HornClause::getLocalUF(){
-  return localUF;
+  return local_UF;
 }
 
 UnionFind & HornClause::getGlobalUF(){
-  return globalUF;
+  return global_UF;
 }
 
 std::ostream & operator << (std::ostream & os, HornClause & hc){
@@ -129,14 +135,9 @@ bool operator > (HornClause & hc1, HornClause & hc2){
 	std::vector<equality> & hc1Antecedent = hc1.getAntecedent();
 	UnionFind & hc2UF = hc2.getLocalUF();
 	for(std::vector<equality>::iterator it = hc1Antecedent.begin();
-			it != hc1Antecedent.end(); ++it){
-
-		//std::cout << it->first->getId() << ", " << it->second->getId() << std::endl;
-		//std::cout << hc2UF.find(it->first->getId()) << ", " << hc2UF.find(it->second->getId()) << std::endl;
-		
+			it != hc1Antecedent.end(); ++it)
 		if(hc2UF.find(it->first->getId()) != hc2UF.find(it->second->getId()))
 			return false;
-	}
 	return true;
 }
 
@@ -144,4 +145,10 @@ bool operator < (HornClause & hc1, HornClause & hc2){
 	return hc2 > hc1;
 }
 
+Vertex * HornClause::getVertex(unsigned i){
+	return localTerms[local_UF.find(i)];
+}
 
+Vertex * HornClause::getVertex(Vertex * v){
+	return localTerms[local_UF.find(v->getId())];
+}
