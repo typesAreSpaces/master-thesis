@@ -1,11 +1,11 @@
 #include "EUFInterpolant.h"
 
 EUFInterpolant::EUFInterpolant(Z3_context c, Z3_ast v) :
-  cc(c, v), hC(cc.getTerms()), ctx(c) {
+  cc(c, v), horn_clauses(cc.getTerms()), ctx(c) {
 }
 
 EUFInterpolant::EUFInterpolant(Z3_context c, Z3_ast v, std::set<std::string> & symbolsToElim) :
-  cc(c, v, symbolsToElim), hC(cc.getTerms()), ctx(c) {
+  cc(c, v, symbolsToElim), horn_clauses(cc.getTerms()), ctx(c) {
 }
 
 EUFInterpolant::~EUFInterpolant(){
@@ -20,11 +20,11 @@ void EUFInterpolant::algorithm(){
 	// TODO: FIX THIS!
   eliminationOfUncommonFSyms();
 	addNegativeHornClauses();
-  hC.conditionalElimination();
+  horn_clauses.conditionalElimination();
 
-	std::cout << hC << std::endl;
+	std::cout << horn_clauses << std::endl;
 	
-	std::vector<HornClause*> hCS = hC.getHornClauses();
+	std::vector<HornClause*> hCS = horn_clauses.getHornClauses();
 	std::cout << "Horn equations produced:" << std::endl;
 	for(std::vector<HornClause*>::iterator it = hCS.begin();
 			it != hCS.end(); ++it){
@@ -60,7 +60,7 @@ void EUFInterpolant::identifyCommonSymbols(){
   std::stack<Vertex*> s;
   Vertex * root = cc.getVertex(rootNum), * _tempRoot;
   unsigned _arity;
-  std::set<std::string> & sTE = cc.getSymbolsToElim();
+  std::set<std::string> & symbols_to_eliminate = cc.getSymbolsToElim();
   
   // Traversing the graph (in post-order) 
   // to determine if a term is common or not
@@ -95,16 +95,18 @@ void EUFInterpolant::identifyCommonSymbols(){
     }
     else{
       // do something with root
-      std::string _tempName = root->getName();
-      symbolPos[_tempName].insert(root->getId());
-      bool _tempCSQ = (sTE.find(_tempName) == sTE.end()) ? true : false;
-      std::vector<Vertex*> _tempSuccessors = root->getSuccessors();
+      std::string root_name = root->getName();
+      symbol_locations[root_name].insert(root->getId());
+      bool is_root_eliminable = (symbols_to_eliminate.find(root_name)
+											 == symbols_to_eliminate.end()) ? true : false;
+      std::vector<Vertex*> root_successors = root->getSuccessors();
       for(unsigned i = 0; i < _arity; ++i){
-				if(!_tempCSQ)
+				if(!is_root_eliminable)
 					break;
-				_tempCSQ = _tempCSQ && _tempSuccessors[i]->getSymbolCommonQ();
+				is_root_eliminable = is_root_eliminable
+					&& root_successors[i]->getSymbolCommonQ();
       }
-      root->setSymbolCommonQ(_tempCSQ);
+      root->setSymbolCommonQ(is_root_eliminable);
       root = nullptr;
     }
   } while(!s.empty());
@@ -113,22 +115,22 @@ void EUFInterpolant::identifyCommonSymbols(){
 void EUFInterpolant::setCommonRepresentatives(){
   unsigned totalNV = Vertex::getTotalNumVertex();
   for(unsigned i = 0; i < totalNV; ++i){
-    Vertex * _temp = cc.getOriginalVertex(i);
+    Vertex * vertex_iterator = cc.getOriginalVertex(i);
     // A rotation between the current 
     // representative and the current term if:
     // 1) the current term is common
     // 2) the current term has a smaller arity
-    if(_temp->getSymbolCommonQ()
-       && _temp->getArity() < cc.getVertex(_temp)->getArity()){
-      cc.rotate(_temp, cc.getVertex(_temp));
+    if(vertex_iterator->getSymbolCommonQ()
+       && vertex_iterator->getArity() < cc.getVertex(vertex_iterator)->getArity()){
+      cc.rotate(vertex_iterator, cc.getVertex(vertex_iterator));
 		}
   }
 }
 
 void EUFInterpolant::eliminationOfUncommonFSyms(){
   bool expose = false;
-  for(symbolLoc::iterator it = symbolPos.begin();
-      it != symbolPos.end(); ++it){
+  for(symbolLocations::iterator it = symbol_locations.begin();
+      it != symbol_locations.end(); ++it){
     for(std::set<unsigned>::iterator it2 = it->second.begin();
 				it2 != it->second.end(); ++it2){
       if(!cc.getVertex(*it2)->getSymbolCommonQ()){
@@ -143,8 +145,9 @@ void EUFInterpolant::eliminationOfUncommonFSyms(){
       std::vector<unsigned> _temp(l);
       std::copy(it->second.begin(), it->second.end(), _temp.begin());
       for(unsigned i = 0; i < l - 1; ++i)
-				for(unsigned j = i + 1; j < l; ++j)
-					hC.addHornClause(cc.getEC(), cc.getVertex(_temp[i]), cc.getVertex(_temp[j]), false);
+				for(unsigned j = i + 1; j < l; ++j){
+					horn_clauses.addHornClause(cc.getEC(), cc.getVertex(_temp[i]), cc.getVertex(_temp[j]), false);
+				}
     }
     expose = false;
   }
@@ -167,7 +170,7 @@ void EUFInterpolant::addNegativeHornClauses(){
 			// Let's check anyways
 			if(lhsVertex->getArity() != rhsVertex->getArity())
 				std::cout << "Fatal error: Different arities from EUFInterpolant.cpp::addNegativeHornClauses" << std::endl;
-		  hC.addHornClause(cc.getEC(), lhsVertex, rhsVertex, true);
+		  horn_clauses.addHornClause(cc.getEC(), lhsVertex, rhsVertex, true);
 		}
 		else{
 			// Just add HornClauses using the representative
@@ -175,7 +178,7 @@ void EUFInterpolant::addNegativeHornClauses(){
 			equality fFalse = std::make_pair(cc.getVertex(_sizeCC - 1), cc.getVertex(_sizeCC - 1));
 			std::vector<equality> _antecedent;
 			_antecedent.push_back(std::make_pair(lhsVertex, rhsVertex));
-			hC.addHornClause(cc.getEC(), _antecedent, fFalse, true);
+			horn_clauses.addHornClause(cc.getEC(), _antecedent, fFalse, true);
 		}
 	}
 	return;

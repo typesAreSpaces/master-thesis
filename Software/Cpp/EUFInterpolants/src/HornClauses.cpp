@@ -170,7 +170,7 @@ void HornClauses::rewrite(){
 	
 	for(std::vector<HornClause*>::iterator it = hornClauses.begin();
 			it != hornClauses.end(); ++it){
-		// Filter: Only Type 2 or Type 2.1 are allowed here
+		// Filter: Only Type 2 or Type 2.1 are allowed here		
 		if((*it)->getAntecedentValue()
 			 && local_terms[(*it)->getConsequent().first->getId()]->getSymbolCommonQ())
 			rewriting[(*it)->getConsequent()].push_back(position);
