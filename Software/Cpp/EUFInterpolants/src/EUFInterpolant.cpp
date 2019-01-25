@@ -1,11 +1,16 @@
 #include "EUFInterpolant.h"
 
 EUFInterpolant::EUFInterpolant(Z3_context c, Z3_ast v) :
-  cc(c, v), horn_clauses(cc.getTerms()), ctx(c) {
+  congruence_closure(c, v),
+	horn_clauses(congruence_closure.getTerms()),
+	ctx(c) {
 }
 
-EUFInterpolant::EUFInterpolant(Z3_context c, Z3_ast v, std::set<std::string> & symbolsToElim) :
-  cc(c, v, symbolsToElim), horn_clauses(cc.getTerms()), ctx(c) {
+EUFInterpolant::EUFInterpolant(Z3_context c, Z3_ast v,
+															 std::set<std::string> & symbolsToElim) :
+  congruence_closure(c, v, symbolsToElim),
+	horn_clauses(congruence_closure.getTerms()),
+	ctx(c) {
 }
 
 EUFInterpolant::~EUFInterpolant(){
@@ -14,7 +19,7 @@ EUFInterpolant::~EUFInterpolant(){
 void EUFInterpolant::algorithm(){
   identifyCommonSymbols();
 	// Congruence Closure Algorithm
-  cc.algorithm();
+  congruence_closure.algorithm();
   setCommonRepresentatives();
 
 	// TODO: FIX THIS!
@@ -32,8 +37,8 @@ void EUFInterpolant::algorithm(){
 	}
 	
 	std::cout << "Original Equations:" << std::endl;
-	std::vector<std::pair<Z3_ast, Z3_ast> > a = cc.getEquations();
-	for(std::vector<std::pair<Z3_ast, Z3_ast> >::iterator it = a.begin();
+	auto a = congruence_closure.getEquations();
+	for(auto it = a.begin();
 			it != a.end(); ++it){
 	  display_ast(ctx, stdout, it->first);
 		std::cout << " = ";
@@ -42,8 +47,8 @@ void EUFInterpolant::algorithm(){
 	}
 
 	std::cout << "Original Disequations:" << std::endl;
-	std::vector<std::pair<Z3_ast, Z3_ast> > b = cc.getDisequations();
-	for(std::vector<std::pair<Z3_ast, Z3_ast> >::iterator it = b.begin();
+	auto b = congruence_closure.getDisequations();
+	for(auto it = b.begin();
 			it != b.end(); ++it){
 		display_ast(ctx, stdout, it->first);
 		std::cout << " ~= ";
@@ -56,11 +61,11 @@ void EUFInterpolant::algorithm(){
 }
 
 void EUFInterpolant::identifyCommonSymbols(){
-  unsigned rootNum = cc.getRootNum();
+  unsigned rootNum = congruence_closure.getRootNum();
   std::stack<Vertex*> s;
-  Vertex * root = cc.getVertex(rootNum), * _tempRoot;
+  Vertex * root = congruence_closure.getVertex(rootNum), * _tempRoot;
   unsigned _arity;
-  std::set<std::string> & symbols_to_eliminate = cc.getSymbolsToElim();
+  auto & symbols_to_eliminate = congruence_closure.getSymbolsToElim();
   
   // Traversing the graph (in post-order) 
   // to determine if a term is common or not
@@ -115,38 +120,43 @@ void EUFInterpolant::identifyCommonSymbols(){
 void EUFInterpolant::setCommonRepresentatives(){
   unsigned totalNV = Vertex::getTotalNumVertex();
   for(unsigned i = 0; i < totalNV; ++i){
-    Vertex * vertex_iterator = cc.getOriginalVertex(i);
+    Vertex * vertex_iterator = congruence_closure.getOriginalVertex(i);
+		Vertex * vertex_representative = congruence_closure.getVertex(vertex_iterator);
     // A rotation between the current 
     // representative and the current term if:
     // 1) the current term is common
     // 2) the current term has a smaller arity
     if(vertex_iterator->getSymbolCommonQ()
-       && vertex_iterator->getArity() < cc.getVertex(vertex_iterator)->getArity()){
-      cc.rotate(vertex_iterator, cc.getVertex(vertex_iterator));
+       && vertex_iterator->getArity() < vertex_representative->getArity()){
+      congruence_closure.rotate(vertex_iterator, vertex_representative);
 		}
   }
 }
 
 void EUFInterpolant::eliminationOfUncommonFSyms(){
   bool expose = false;
-  for(symbolLocations::iterator it = symbol_locations.begin();
+  for(auto it = symbol_locations.begin();
       it != symbol_locations.end(); ++it){
-    for(std::set<unsigned>::iterator it2 = it->second.begin();
+    for(auto it2 = it->second.begin();
 				it2 != it->second.end(); ++it2){
-      if(!cc.getVertex(*it2)->getSymbolCommonQ()){
+      if(!congruence_closure.getVertex(*it2)->getSymbolCommonQ()){
 				expose = true;
 				break;
       }
     }
 		// We don't include in the Exposure method new introduced symbols
 		// nor equalities, disequalities
-    if(expose && (it->first != "=" && it->first != "distinct" && it->first[0] != '_')){
+    if(expose && (it->first != "=" &&
+									it->first != "distinct" && it->first[0] != '_')){
       unsigned l = (it->second).size();
       std::vector<unsigned> _temp(l);
       std::copy(it->second.begin(), it->second.end(), _temp.begin());
       for(unsigned i = 0; i < l - 1; ++i)
 				for(unsigned j = i + 1; j < l; ++j){
-					horn_clauses.addHornClause(cc.getEC(), cc.getVertex(_temp[i]), cc.getVertex(_temp[j]), false);
+					horn_clauses.addHornClause(congruence_closure.getEC(),
+																		 congruence_closure.getVertex(_temp[i]),
+																		 congruence_closure.getVertex(_temp[j]),
+																		 false);
 				}
     }
     expose = false;
@@ -154,15 +164,15 @@ void EUFInterpolant::eliminationOfUncommonFSyms(){
 }
 
 void EUFInterpolant::addNegativeHornClauses(){
-	std::vector<std::pair<Z3_ast, Z3_ast> > b = cc.getDisequations();
+  auto b = congruence_closure.getDisequations();
 	unsigned lhs, rhs;
 	Vertex * lhsVertex, * rhsVertex;
-	for(std::vector<std::pair<Z3_ast, Z3_ast> >::iterator it = b.begin();
+	for(auto it = b.begin();
 			it != b.end(); ++it){
 		lhs = Z3_get_ast_id(ctx, it->first);
 		rhs = Z3_get_ast_id(ctx, it->second);
-		lhsVertex = cc.getVertex(cc.getVertex(lhs));
-		rhsVertex = cc.getVertex(cc.getVertex(rhs));
+		lhsVertex = congruence_closure.getVertex(congruence_closure.getVertex(lhs));
+		rhsVertex = congruence_closure.getVertex(congruence_closure.getVertex(rhs));
 		// It's assumed function symbol names
 		// have unique arities
 		if(lhsVertex->getName() == rhsVertex->getName()){
@@ -170,20 +180,28 @@ void EUFInterpolant::addNegativeHornClauses(){
 			// Let's check anyways
 			if(lhsVertex->getArity() != rhsVertex->getArity())
 				std::cout << "Fatal error: Different arities from EUFInterpolant.cpp::addNegativeHornClauses" << std::endl;
-		  horn_clauses.addHornClause(cc.getEC(), lhsVertex, rhsVertex, true);
+		  horn_clauses.addHornClause(congruence_closure.getEC(),
+																 lhsVertex,
+																 rhsVertex,
+																 true);
 		}
 		else{
 			// Just add HornClauses using the representative
 			unsigned _sizeCC = Vertex::getTotalNumVertex();
-			equality fFalse = std::make_pair(cc.getVertex(_sizeCC - 1), cc.getVertex(_sizeCC - 1));
+			equality fFalse = std::make_pair(congruence_closure.getVertex(_sizeCC - 1),
+																			 congruence_closure.getVertex(_sizeCC - 1));
 			std::vector<equality> _antecedent;
 			_antecedent.push_back(std::make_pair(lhsVertex, rhsVertex));
-			horn_clauses.addHornClause(cc.getEC(), _antecedent, fFalse, true);
+			horn_clauses.addHornClause(congruence_closure.getEC(),
+																 _antecedent,
+																 fFalse,
+																 true);
 		}
 	}
 	return;
 }
 
-std::ostream & EUFInterpolant::print(std::ostream & os){
+// Not implemented yet!
+std::ostream & operator << (std::ostream & os, EUFInterpolant & euf){
   return os;
 }

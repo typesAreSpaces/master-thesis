@@ -12,7 +12,7 @@ typedef std::map<std::string, std::set<unsigned> > symbolLocations;
 
 class EUFInterpolant {
  private:
-  CongruenceClosure cc;
+  CongruenceClosure congruence_closure;
   HornClauses       horn_clauses;
 	Z3_context        ctx;
 	symbolLocations   symbol_locations;
@@ -26,7 +26,7 @@ class EUFInterpolant {
   EUFInterpolant(Z3_context, Z3_ast, std::set<std::string> &);
   ~EUFInterpolant();
   void algorithm();
-  std::ostream & print(std::ostream &);
+  friend std::ostream & operator << (std::ostream &, EUFInterpolant &);
 };
 
 #endif
