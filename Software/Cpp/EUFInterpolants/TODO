@@ -1,2 +1,6 @@
 EUFInterpolant.cpp:
 	- Finish void EUFInterpolant::addNegativeHornClauses()
+
+Use the tag "// Why:" to review sections
+of the code where I was confused about the construction
+used.

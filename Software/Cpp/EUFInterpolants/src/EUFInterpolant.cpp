@@ -139,9 +139,8 @@ void EUFInterpolant::eliminationOfUncommonFSyms(){
       map_symbol_location != symbol_locations.end(); ++map_symbol_location){
 		auto symbol = map_symbol_location->first;
 		auto positions = map_symbol_location->second;
-    for(auto position = positions.begin();
-				position != positions.end(); ++position){
-      if(!congruence_closure.getVertex(*position)->getSymbolCommonQ()){
+    for(auto position : positions){
+      if(!congruence_closure.getVertex(position)->getSymbolCommonQ()){
 				expose = true;
 				break;
       }
@@ -152,11 +151,9 @@ void EUFInterpolant::eliminationOfUncommonFSyms(){
 									symbol != "distinct" &&
 									symbol[0] != '_')){
       unsigned number_of_positions = positions.size();
-			// Why do I need a new vector _temp?
+			// Why: do I need a new vector _temp?
       std::vector<unsigned> _temp(number_of_positions);
-      std::copy(positions.begin(),
-								positions.end(),
-								_temp.begin());
+      std::copy(positions.begin(), positions.end(), _temp.begin());
       for(unsigned i = 0; i < number_of_positions - 1; ++i)
 				for(unsigned j = i + 1; j < number_of_positions; ++j){
 					horn_clauses.addHornClause(congruence_closure.getEquivalenceClass(),
