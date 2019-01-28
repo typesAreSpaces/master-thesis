@@ -32,7 +32,7 @@ HornClause::HornClause(UnionFind & uf,
 HornClause::HornClause(UnionFind & uf,
 											 Vertex* u, Vertex* v,
 											 std::vector<Vertex*> & terms,
-											 bool isDisequation) :
+											 bool is_disequation) :
   local_UF(uf),
 	antecedent_boolean_value(true),
 	consequent_boolean_value(true){
@@ -65,7 +65,7 @@ HornClause::HornClause(UnionFind & uf,
     antecedent_boolean_value = antecedent_boolean_value
 			&& _u->getSymbolCommonQ() && _v->getSymbolCommonQ();
   }
-	if(isDisequation){
+	if(is_disequation){
 		consequent = std::make_pair(terms[Vertex::getTotalNumVertex() - 1],
 																terms[Vertex::getTotalNumVertex() - 1]);
 		consequent_boolean_value = true;
@@ -78,7 +78,8 @@ HornClause::HornClause(UnionFind & uf,
 				consequent = std::make_pair(_u, _v);
 			else
 				consequent = std::make_pair(_v, _u);
-			consequent_boolean_value = consequent_boolean_value && _u->getSymbolCommonQ() && _v->getSymbolCommonQ();
+			consequent_boolean_value = consequent_boolean_value
+				&& _u->getSymbolCommonQ() && _v->getSymbolCommonQ();
 	}
 }
 
@@ -95,7 +96,8 @@ void HornClause::normalize(){
       antecedent.erase(it);
     else{
       local_UF.merge(it->first->getId(), it->second->getId());
-      antecedent_boolean_value = antecedent_boolean_value && it->first->getSymbolCommonQ()
+      antecedent_boolean_value = antecedent_boolean_value
+				&& it->first->getSymbolCommonQ()
 				&& it->second->getSymbolCommonQ();
       ++it;
     }
@@ -135,14 +137,16 @@ UnionFind & HornClause::getGlobalUF(){
 
 std::ostream & operator << (std::ostream & os, HornClause & hc){
   bool flag = true;
-  for(std::vector<equality>::iterator it = hc.antecedent.begin(); it != hc.antecedent.end(); ++it){
+  for(std::vector<equality>::iterator it = hc.antecedent.begin();
+			it != hc.antecedent.end(); ++it){
     if(flag)
       os << it->first->to_string() << " = " << it->second->to_string();
     else
       os << " && " <<  it->first->to_string() << " = " << it->second->to_string();
     flag = false;
   }
-  os << " -> " << hc.consequent.first->to_string() << " = " << hc.consequent.second->to_string();
+  os << " -> " << hc.consequent.first->to_string()
+		 << " = " << hc.consequent.second->to_string();
   return os;
 }
 

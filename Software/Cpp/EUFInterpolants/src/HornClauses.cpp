@@ -13,9 +13,9 @@ HornClauses::~HornClauses(){
 }
 
 void HornClauses::addHornClause(UnionFind & uf, Vertex* u,
-																Vertex* v, bool isDisequation){
-  HornClause * hc = new HornClause(uf, u, v, local_terms, isDisequation);
-	if(!isDisequation){
+																Vertex* v, bool is_disequation){
+  HornClause * hc = new HornClause(uf, u, v, local_terms, is_disequation);
+	if(!is_disequation){
 		hc->normalize();
 		if(hc->checkTriviality()){
 			delete hc;
@@ -28,9 +28,9 @@ void HornClauses::addHornClause(UnionFind & uf, Vertex* u,
 }
 
 void HornClauses::addHornClause(UnionFind & uf, std::vector<equality> & antecedent,
-																equality & consequent, bool isDisequation){
+																equality & consequent, bool is_disequation){
   HornClause * hc = new HornClause(uf, antecedent, consequent, local_terms);
-	if(!isDisequation){
+	if(!is_disequation){
 		hc->normalize();
 		if(hc->checkTriviality()){
 			delete hc;
@@ -45,7 +45,7 @@ void HornClauses::addHornClause(UnionFind & uf, std::vector<equality> & antecede
 void HornClauses::conditionalElimination(){
 	
   bool change = true;
-  std::set<std::pair<unsigned, unsigned> > prevCombinations;
+  std::set<std::pair<unsigned, unsigned> > prev_combinations;
   while(change){
     change = false;
 		unsigned oldSize = horn_clauses.size(), newSize;
@@ -61,13 +61,17 @@ void HornClauses::conditionalElimination(){
 					it2 != it->second.end(); ++it2)
 				for(std::vector<unsigned>::iterator it3 = mc2A[it->first].begin();
 						it3 != mc2A[it->first].end(); ++it3){
-					if(prevCombinations.find(std::make_pair(*it2, *it3)) == prevCombinations.end()
-						 && prevCombinations.find(std::make_pair(*it3, *it2)) == prevCombinations.end()){
+					if(prev_combinations.find(std::make_pair(*it2, *it3))
+						 == prev_combinations.end()
+						 &&
+						 prev_combinations.find(std::make_pair(*it3, *it2))
+						 == prev_combinations.end()){
 						if(debugHornClauses)
-							std::cout << "1. Combine " << std::endl << *horn_clauses[*it2] << std::endl
+							std::cout << "1. Combine " << std::endl
+												<< *horn_clauses[*it2] << std::endl
 												<< " with " << std::endl << *horn_clauses[*it3]
 												<< std::endl;
-						prevCombinations.insert(std::make_pair(*it2, *it3));
+						prev_combinations.insert(std::make_pair(*it2, *it3));
 						mergeType2_1AndType3(horn_clauses[*it2], horn_clauses[*it3]);
 						change = true;
 					}
@@ -81,14 +85,18 @@ void HornClauses::conditionalElimination(){
 					it2 != it->second.end(); ++it2){
 				for(std::vector<unsigned>::iterator it3 = mc1A[it->first].begin();
 						it3 != mc1A[it->first].end(); ++it3){
-					if(prevCombinations.find(std::make_pair(*it2, *it3)) == prevCombinations.end()
-						 && prevCombinations.find(std::make_pair(*it3, *it2)) == prevCombinations.end()
+					if(prev_combinations.find(std::make_pair(*it2, *it3))
+						 == prev_combinations.end()
+						 &&
+						 prev_combinations.find(std::make_pair(*it3, *it2))
+						 == prev_combinations.end()
 						 && horn_clauses[*it2]->getAntecedentValue()){
 						if(debugHornClauses)
-							std::cout << "2. Combine " << *it2 << " , " << *it3 << std::endl << *horn_clauses[*it2] << std::endl
+							std::cout << "2. Combine " << *it2 << " , " << *it3 << std::endl
+												<< *horn_clauses[*it2] << std::endl
 												<< " with " << std::endl << *horn_clauses[*it3]
 												<< std::endl;
-						prevCombinations.insert(std::make_pair(*it2, *it3));
+						prev_combinations.insert(std::make_pair(*it2, *it3));
 						mergeType2AndType3(horn_clauses[*it2], horn_clauses[*it3]);
 						change = true;
 					}
@@ -108,14 +116,18 @@ void HornClauses::conditionalElimination(){
 					if(it_2->first.first == it->first || it_2->first.second == it->first)
 						for(std::vector<unsigned>::iterator it3 = mc2A[it_2->first].begin();
 								it3 != mc2A[it_2->first].end(); ++it3){
-							if(prevCombinations.find(std::make_pair(*it2, *it3)) == prevCombinations.end()
-								 && prevCombinations.find(std::make_pair(*it3, *it2)) == prevCombinations.end()
+							if(prev_combinations.find(std::make_pair(*it2, *it3))
+								 == prev_combinations.end()
+								 &&
+								 prev_combinations.find(std::make_pair(*it3, *it2))
+								 == prev_combinations.end()
 								 && horn_clauses[*it2]->getAntecedentValue()){
 								if(debugHornClauses)
-									std::cout << "3. Combine " << std::endl << *horn_clauses[*it2] << std::endl
+									std::cout << "3. Combine " << std::endl
+														<< *horn_clauses[*it2] << std::endl
 														<< " with " << std::endl << *horn_clauses[*it3]
 														<< std::endl;
-								prevCombinations.insert(std::make_pair(*it2, *it3));
+								prev_combinations.insert(std::make_pair(*it2, *it3));
 								mergeType2AndType3(horn_clauses[*it2], horn_clauses[*it3]);
 								change = true;
 							}
@@ -130,15 +142,19 @@ void HornClauses::conditionalElimination(){
 					it2 != it->second.end(); ++it2)
 				for(std::vector<unsigned>::iterator it3 = mc1C[it->first].begin();
 						it3 != mc1C[it->first].end(); ++it3){
-					if(prevCombinations.find(std::make_pair(*it2, *it3)) == prevCombinations.end()
-						 && prevCombinations.find(std::make_pair(*it3, *it2)) == prevCombinations.end()
+					if(prev_combinations.find(std::make_pair(*it2, *it3))
+						 == prev_combinations.end()
+						 &&
+						 prev_combinations.find(std::make_pair(*it3, *it2))
+						 == prev_combinations.end()
 						 && horn_clauses[*it2]->getAntecedentValue()
 						 && horn_clauses[*it3]->getAntecedentValue()){
 						if(debugHornClauses)
-							std::cout << "4. Combine " << std::endl << *horn_clauses[*it2] << std::endl
+							std::cout << "4. Combine " << std::endl
+												<< *horn_clauses[*it2] << std::endl
 												<< " with " << std::endl << *horn_clauses[*it3]
 												<< std::endl;
-						prevCombinations.insert(std::make_pair(*it2, *it3));
+						prev_combinations.insert(std::make_pair(*it2, *it3));
 						mergeType2AndType2(horn_clauses[*it2], horn_clauses[*it3]);
 						change = true;
 					}
@@ -263,7 +279,8 @@ void HornClauses::mergeType2_1AndType3(HornClause * h1, HornClause * h2){
   _h2LocalUf.merge(_h1LocalUf.find(_h1Consequent.first->getId()),
 									 _h1LocalUf.find(_h1Consequent.second->getId()));
 
-	HornClause * hc = new HornClause(_h2LocalUf, _h1Antecedent, _h2Consequent, local_terms);
+	HornClause * hc = new HornClause(_h2LocalUf, _h1Antecedent,
+																	 _h2Consequent, local_terms);
   combinationHelper(hc);
 }
 
@@ -298,7 +315,8 @@ void HornClauses::mergeType2AndType2(HornClause * h1, HornClause * h2){
 	else
 		_h2Consequent = std::make_pair(_v, _u);
 	
-	HornClause * hc = new HornClause(_h2LocalUf, _h2Antecedent, _h2Consequent, local_terms);
+	HornClause * hc = new HornClause(_h2LocalUf, _h2Antecedent,
+																	 _h2Consequent, local_terms);
 	combinationHelper(hc);
 }
 
@@ -321,7 +339,8 @@ void HornClauses::mergeType2AndType3(HornClause * h1, HornClause * h2){
   _h2LocalUf.merge(_h1LocalUf.find(_h1Consequent.first->getId()),
 									 _h1LocalUf.find(_h1Consequent.second->getId()));
 
-	HornClause * hc = new HornClause(_h2LocalUf, _h1Antecedent, _h2Consequent, local_terms);
+	HornClause * hc = new HornClause(_h2LocalUf, _h1Antecedent,
+																	 _h2Consequent, local_terms);
 	combinationHelper(hc);
 }
 
@@ -404,7 +423,8 @@ std::ostream & HornClauses::printMatch1(std::ostream & os, match1 & m1){
 
 std::ostream & HornClauses::printMatch2(std::ostream & os, match2 & m1){
 	for(match2::iterator _it = m1.begin(); _it != m1.end(); ++_it){
-		os << _it->first.first->to_string() << " = " << _it->first.second->to_string() << std::endl;
+		os << _it->first.first->to_string()
+			 << " = " << _it->first.second->to_string() << std::endl;
 		for(std::vector<unsigned>::iterator _it2 = m1[_it->first].begin();
 				_it2 != m1[_it->first].end(); ++_it2)
 			std::cout << *_it2 << " ";

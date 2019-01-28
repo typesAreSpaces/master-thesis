@@ -7,8 +7,8 @@ EUFInterpolant::EUFInterpolant(Z3_context c, Z3_ast v) :
 }
 
 EUFInterpolant::EUFInterpolant(Z3_context c, Z3_ast v,
-															 std::set<std::string> & symbolsToElim) :
-  congruence_closure(c, v, symbolsToElim),
+															 std::set<std::string> & symbols_to_elim) :
+  congruence_closure(c, v, symbols_to_elim),
 	horn_clauses(congruence_closure.getTerms()),
 	ctx(c) {
 }
@@ -61,9 +61,9 @@ void EUFInterpolant::algorithm(){
 }
 
 void EUFInterpolant::identifyCommonSymbols(){
-  unsigned rootNum = congruence_closure.getRootNum();
+  unsigned root_num = congruence_closure.getRootNum();
   std::stack<Vertex*> stack_vertices;
-  Vertex * root = congruence_closure.getVertex(rootNum), * temp_root;
+  Vertex * root = congruence_closure.getVertex(root_num), * temp_root;
   unsigned arity;
   auto & symbols_to_eliminate = congruence_closure.getSymbolsToElim();
   
@@ -152,6 +152,7 @@ void EUFInterpolant::eliminationOfUncommonFSyms(){
 									symbol != "distinct" &&
 									symbol[0] != '_')){
       unsigned number_of_positions = positions.size();
+			// Why do I need a new vector _temp?
       std::vector<unsigned> _temp(number_of_positions);
       std::copy(positions.begin(),
 								positions.end(),
@@ -171,24 +172,24 @@ void EUFInterpolant::eliminationOfUncommonFSyms(){
 void EUFInterpolant::addNegativeHornClauses(){
   auto disequations = congruence_closure.getDisequations();
 	unsigned lhs, rhs;
-	Vertex * lhsVertex, * rhsVertex;
+	Vertex * lhs_vertex, * rhs_vertex;
 	for(auto disequation = disequations.begin();
 			disequation != disequations.end(); ++disequation){
 		lhs = Z3_get_ast_id(ctx, disequation->first);
 		rhs = Z3_get_ast_id(ctx, disequation->second);
-		lhsVertex = congruence_closure.getVertex(congruence_closure.getVertex(lhs));
-		rhsVertex = congruence_closure.getVertex(congruence_closure.getVertex(rhs));
+		lhs_vertex = congruence_closure.getVertex(lhs);
+		rhs_vertex = congruence_closure.getVertex(rhs);
 		// It's assumed function symbol names
 		// have unique arities
-		if(lhsVertex->getName() == rhsVertex->getName()){
+		if(lhs_vertex->getName() == rhs_vertex->getName()){
 			// Add HornClauses unfolding arguments
 			// Let's check anyways
-			if(lhsVertex->getArity() != rhsVertex->getArity())
+			if(lhs_vertex->getArity() != rhs_vertex->getArity())
 				std::cout << "Fatal error: Different arities from "
 									<< "EUFInterpolant.cpp::addNegativeHornClauses" << std::endl;
 		  horn_clauses.addHornClause(congruence_closure.getEquivalenceClass(),
-																 lhsVertex,
-																 rhsVertex,
+																 lhs_vertex,
+																 rhs_vertex,
 																 true);
 		}
 		else{
@@ -197,7 +198,7 @@ void EUFInterpolant::addNegativeHornClauses(){
 			equality fFalse = std::make_pair(congruence_closure.getVertex(_sizeCC - 1),
 																			 congruence_closure.getVertex(_sizeCC - 1));
 			std::vector<equality> _antecedent;
-			_antecedent.push_back(std::make_pair(lhsVertex, rhsVertex));
+			_antecedent.push_back(std::make_pair(lhs_vertex, rhs_vertex));
 			horn_clauses.addHornClause(congruence_closure.getEquivalenceClass(),
 																 _antecedent,
 																 fFalse,

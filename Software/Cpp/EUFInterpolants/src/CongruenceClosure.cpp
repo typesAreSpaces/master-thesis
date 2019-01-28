@@ -53,8 +53,8 @@ void CongruenceClosure::init(Z3_context c){
 
 CongruenceClosure::CongruenceClosure(Z3_context c,
 																		 Z3_ast v,
-																		 std::set<std::string> & symbolsToElim) :
-  SignatureTable(c, v, symbolsToElim) {
+																		 std::set<std::string> & symbols_to_elim) :
+  SignatureTable(c, v, symbols_to_elim) {
   init(c);
 }
 
@@ -64,11 +64,11 @@ CongruenceClosure::CongruenceClosure(Z3_context c, Z3_ast v) :
 }
 
 CongruenceClosure::CongruenceClosure(std::istream & in) : SignatureTable(in) {
-  unsigned numEq, lhs, rhs;
+  unsigned num_eq, lhs, rhs;
   Vertex * lhs_vertex, *rhs_vertex;
 	
-  in >> numEq;
-  for(unsigned i = 0; i < numEq; ++i){
+  in >> num_eq;
+  for(unsigned i = 0; i < num_eq; ++i){
     in >> lhs >> rhs;
     lhs_vertex = getVertex(lhs);
     rhs_vertex = getVertex(rhs);
@@ -115,9 +115,9 @@ void CongruenceClosure::algorithm(){
 
   // Adding functional grounded vertices to pending
   for(unsigned i = 0; i < total_num_vertex; ++i){
-    Vertex * _temp = getVertex(i);
-    if(_temp->getArity() >= 1)
-      pending.insert(_temp);
+    Vertex * temp_vertex = getVertex(i);
+    if(temp_vertex->getArity() >= 1)
+      pending.insert(temp_vertex);
   }
 	
   while(!pending.empty()){

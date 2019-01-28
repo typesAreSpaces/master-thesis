@@ -35,7 +35,8 @@ unsigned UnionFind::size(){
 
 std::ostream & operator << (std::ostream & os, UnionFind & uf){
   unsigned i = 0;
-  for(std::vector<unsigned>::iterator it = uf.parent.begin(); it != uf.parent.end(); ++it){
+  for(std::vector<unsigned>::iterator it = uf.parent.begin();
+			it != uf.parent.end(); ++it){
     os << "ID: " << i << " Parent: " << *it << " ";
     ++i;
   }

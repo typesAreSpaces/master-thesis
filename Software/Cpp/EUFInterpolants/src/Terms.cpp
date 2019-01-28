@@ -33,7 +33,8 @@ void Terms::traverse(Z3_context c, Z3_ast v,
     symbols.insert(Z3_get_numeral_string(c, v));
     terms[id]->setArity(0);
     if(debugVisit){
-      std::cout << "Application of " << terms[id]->getName() << " ID: " << id << std::endl;
+      std::cout << "Application of " << terms[id]->getName()
+								<< " ID: " << id << std::endl;
     }
     break;
   }
@@ -44,7 +45,7 @@ void Terms::traverse(Z3_context c, Z3_ast v,
     for (i = 0; i < num_args; ++i)
       traverse(c, Z3_get_app_arg(c, app, i), numTerms, counterExtraTerms, symbols);
 
-    //----------------------------------------------------------------------------------------
+    //-----------------------------------------------------------------------
     // do something
     Z3_func_decl d = Z3_get_app_decl(c, app);
     Z3_symbol s = Z3_get_decl_name(c, d);
@@ -72,7 +73,8 @@ void Terms::traverse(Z3_context c, Z3_ast v,
       terms[id]->setArity(2);
       // Adding w_j(v) vertices
       for(unsigned j = 2; j <= num_args; ++j){
-				terms.push_back(new Vertex("_" + terms[i]->getName() + "_" + std::to_string(j), 2));
+				terms.push_back(new Vertex("_" + terms[i]->getName()
+																	 + "_" + std::to_string(j), 2));
 				++counterExtraTerms;
       }
       _successor = Z3_get_ast_id(c, Z3_get_app_arg(c, app, 0));
@@ -94,9 +96,10 @@ void Terms::traverse(Z3_context c, Z3_ast v,
 				terms[id]->addSuccessor(terms[_successor]);
       }
     }
-    //----------------------------------------------------------------------------------------
+    //---------------------------------------------------------------------------------
     if(debugVisit){
-      std::cout << "Application of " << terms[id]->getName() << " ID: " << id << std::endl;
+      std::cout << "Application of " << terms[id]->getName()
+								<< " ID: " << id << std::endl;
     }
     break;
   }
@@ -129,7 +132,7 @@ void Terms::traverse(Z3_context c, Z3_ast v,
     unsigned i, num_args = Z3_get_app_num_args(c, app);
     for (i = 0; i < num_args; ++i)
       traverse(c, Z3_get_app_arg(c, app, i), symbols);
-    //----------------------------------------------------------------------------------------
+    //---------------------------------------------------------------------------
     // do something
     Z3_func_decl d = Z3_get_app_decl(c, app);
     Z3_symbol s = Z3_get_decl_name(c, d);
@@ -143,7 +146,7 @@ void Terms::traverse(Z3_context c, Z3_ast v,
     default:
       unreachable();
     }
-    //----------------------------------------------------------------------------------------
+    //----------------------------------------------------------------------------
     break;
   }
   case Z3_QUANTIFIER_AST: {
@@ -266,7 +269,8 @@ Terms::Terms(std::istream & in){
 
 			// Adding w_j(v) vertices
       for(unsigned j = 2; j <= _arity; ++j)
-				terms.push_back(new Vertex("_" + terms[i]->getName() + "_" + std::to_string(j), 2));
+				terms.push_back(new Vertex("_" + terms[i]->getName() +
+																	 "_" + std::to_string(j), 2));
 			
       in >> _successor;
       terms[i]->addSuccessor(terms[_successor]);
