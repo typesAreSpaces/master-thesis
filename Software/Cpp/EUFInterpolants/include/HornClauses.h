@@ -14,12 +14,12 @@ typedef std::map<equality, std::vector<unsigned> > match2;
 
 class HornClauses{
  private:
-  static unsigned          numHornClauses;
-  std::vector<HornClause*> hornClauses;
+  static unsigned          num_horn_clauses;
+  std::vector<HornClause*> horn_clauses;
   match1                   mc1A, mc1C;
   match2                   mc2A, mc2C;
 	match2                   rewriting;
-	std::map<equality, int>  rewritingLength;
+	std::map<equality, int>  rewriting_length;
 	std::vector<Vertex*> &   local_terms;
   void mergeType2_1AndType3(HornClause *, HornClause *);
   void mergeType2_1AndType4(HornClause *, HornClause *);
