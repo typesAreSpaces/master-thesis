@@ -12,11 +12,11 @@
 
 class Terms{
  protected:
-  unsigned                                rootNum;
+  unsigned                                root_num;
   std::vector<Vertex*>                    terms;
-  std::set<std::string>                   symbolsToElim; 
-  std::vector<std::pair<Z3_ast, Z3_ast> > equations, disEquations;
-	UnionFind                               EC;
+  std::set<std::string>                   symbols_to_elim; 
+  std::vector<std::pair<Z3_ast, Z3_ast> > equations, disequations;
+	UnionFind                               equivalence_class;
 	
  private:
 	void exitf(const char *);
@@ -32,7 +32,7 @@ class Terms{
   Terms(std::istream &);
   ~Terms();
   std::vector<Vertex*> & getTerms();
-  UnionFind & getEC();
+  UnionFind & getEquivalenceClass();
 	Vertex * getOriginalVertex(unsigned);
 	Vertex * getVertex(unsigned);
   Vertex * getVertex(Vertex*);

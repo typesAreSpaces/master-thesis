@@ -1,20 +1,24 @@
 #include "Vertex.h"
 
-unsigned Vertex::totalNumVertex = 0;
+unsigned Vertex::total_num_vertex = 0;
 
 void Vertex::addPredecessor(unsigned i){
 	if(!defined)
 		predecessors.add(i);
 }
 
-Vertex::Vertex(std::string name, unsigned arity) : name(name), symbolCommonQ(true), defined(false),
-																									 id(totalNumVertex), arity(arity){
-  ++totalNumVertex;
+Vertex::Vertex(std::string name, unsigned arity) : name(name),
+																									 is_symbol_common(true),
+																									 defined(false),
+																									 id(total_num_vertex),
+																									 arity(arity){
+  ++total_num_vertex;
 }
 
-Vertex::Vertex() : symbolCommonQ(true), defined(false),
-									 id(totalNumVertex){
-  ++totalNumVertex;
+Vertex::Vertex() : is_symbol_common(true),
+									 defined(false),
+									 id(total_num_vertex){
+  ++total_num_vertex;
 									 }
 
 Vertex::~Vertex(){};
@@ -35,7 +39,7 @@ void Vertex::addSuccessor(Vertex * v){
 }
 
 void Vertex::setSymbolCommonQ(bool b){
-  symbolCommonQ = b;
+  is_symbol_common = b;
 }
 
 void Vertex::mergePredecessors(Vertex * v){
@@ -78,11 +82,11 @@ unsigned Vertex::getLength(){
 }
 
 unsigned Vertex::getTotalNumVertex(){
-  return totalNumVertex;
+  return total_num_vertex;
 }
 
 bool Vertex::getSymbolCommonQ(){
-  return symbolCommonQ;
+  return is_symbol_common;
 }
 
 std::vector<Vertex*> & Vertex::getSuccessors(){
@@ -108,7 +112,7 @@ std::ostream & Vertex::functionPrettyPrint (std::ostream & os){
   }
   os << name << "(";
   unsigned _counter = 0;
-  for(std::vector<Vertex*>::iterator it = successors.begin(); it != successors.end(); ++it){
+  for(auto it = successors.begin(); it != successors.end(); ++it){
     (*it)->functionPrettyPrint(os);
     ++_counter;
     if(_counter < arity)
@@ -125,7 +129,7 @@ std::ostream & operator << (std::ostream & os, Vertex & v){
   os << "Predecessors:" << std::endl;
 	os << v.predecessors << std::endl;
   os << "Successors:" << std::endl;
-  for(std::vector<Vertex*>::iterator it = v.successors.begin(); it != v.successors.end(); ++it){
+  for(auto it = v.successors.begin(); it != v.successors.end(); ++it){
     os << (*it)->to_string();
     ++_counter;
     if(_counter < v.arity)
@@ -143,10 +147,10 @@ bool operator !=(const Vertex & u, const Vertex & v){
 }
 
 bool operator < (const Vertex & u, const Vertex & v){
-  if (u.symbolCommonQ < v.symbolCommonQ)
+  if (u.is_symbol_common < v.is_symbol_common)
     return true;
   else{
-    if(u.symbolCommonQ > v.symbolCommonQ)
+    if(u.is_symbol_common > v.is_symbol_common)
       return false;
     else{
       if(u.arity <  v.arity)

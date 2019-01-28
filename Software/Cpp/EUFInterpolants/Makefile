@@ -18,6 +18,16 @@ $(ODIR)/%.o: $(SDIR)/%.cpp $(DEPS)
 main: $(OBJS) $(Z3DIR)/build/libz3.dylib
 	$(CC) -o $@ $^ -lpthread -Wall
 
+check_correctness_congruence_closure:
+	$(CC) -o $(CONGRUENCE_CLOSURE_TEST)/$@ $(CONGRUENCE_CLOSURE_TEST)/congruence_closure_performance.cpp -I./include -I./src -std=c++11 obj/CircularList.o obj/CongruenceClosure.o obj/Signature.o obj/SignatureTable.o obj/Terms.o obj/UnionFind.o obj/Vertex.o $(Z3DIR)/build/libz3.dylib
+	rm -rf $(CONGRUENCE_CLOSURE_TEST)/$@.txt
+	touch $(CONGRUENCE_CLOSURE_TEST)/$@.txt
+	for directories in /Users/joseabelcastellanosjoo/master-thesis/Software/Cpp/EUFInterpolants/tests/congruence_closure/*; do \
+		for files in $$directories; do \
+			./$(CONGRUENCE_CLOSURE_TEST)/$@ $$files;  \
+		done; \
+	done
+
 check_performance_congruence_closure:
 	$(CC) -o $(CONGRUENCE_CLOSURE_TEST)/$@ $(CONGRUENCE_CLOSURE_TEST)/congruence_closure_performance.cpp -I./include -I./src -std=c++11 obj/CircularList.o obj/CongruenceClosure.o obj/Signature.o obj/SignatureTable.o obj/Terms.o obj/UnionFind.o obj/Vertex.o $(Z3DIR)/build/libz3.dylib
 	rm -rf $(CONGRUENCE_CLOSURE_TEST)/$@.txt

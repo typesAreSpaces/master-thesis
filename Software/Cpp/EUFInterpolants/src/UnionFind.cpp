@@ -1,6 +1,6 @@
 #include "UnionFind.h"
 
-UnionFind::UnionFind(unsigned n) : numEquivalenceClasses(n){
+UnionFind::UnionFind(unsigned n) : num_equivalence_classes(n){
   parent.resize(n);
   for(unsigned i = 0; i < n; ++i)
     parent[i] = i;
@@ -12,7 +12,7 @@ UnionFind::~UnionFind(){};
 
 void UnionFind::merge(unsigned i, unsigned j){
   link(find(i), find(j));
-  --numEquivalenceClasses;
+  --num_equivalence_classes;
 }
 
 void UnionFind::link(unsigned i, unsigned j){
@@ -30,7 +30,7 @@ unsigned UnionFind::find(unsigned i){
 }
 
 unsigned UnionFind::size(){
-  return numEquivalenceClasses;
+  return num_equivalence_classes;
 }
 
 std::ostream & operator << (std::ostream & os, UnionFind & uf){

@@ -7,9 +7,9 @@
 
 class Vertex{
 private:
-  static unsigned        totalNumVertex;
+  static unsigned        total_num_vertex;
   std::string            name;
-  bool                   symbolCommonQ;
+  bool                   is_symbol_common;
 	bool                   defined;
   unsigned               id, arity;
   std::vector<Vertex*>   successors;

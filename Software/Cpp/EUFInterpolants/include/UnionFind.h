@@ -7,7 +7,7 @@
 class UnionFind{
 private:
   std::vector<unsigned> parent;
-  unsigned              numEquivalenceClasses;
+  unsigned              num_equivalence_classes;
 	
 public:
   UnionFind(unsigned);

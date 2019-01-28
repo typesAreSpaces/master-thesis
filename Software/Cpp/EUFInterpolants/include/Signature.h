@@ -3,32 +3,32 @@
 
 #include <iostream>
 
-struct signatureArg1 {
+struct SignatureArg1 {
   std::string name;
   unsigned    first_signature;
   struct Hash;
-  signatureArg1(std::string, unsigned);
-  ~signatureArg1();
-  bool operator==(const signatureArg1 &) const;
-  friend std::ostream & operator << (std::ostream &, signatureArg1 &);
+  SignatureArg1(std::string, unsigned);
+  ~SignatureArg1();
+  bool operator==(const SignatureArg1 &) const;
+  friend std::ostream & operator << (std::ostream &, SignatureArg1 &);
 };
 
-struct signatureArg1::Hash {
-  std::size_t operator()(const signatureArg1 &) const;
+struct SignatureArg1::Hash {
+  std::size_t operator()(const SignatureArg1 &) const;
 };
 
-struct signatureArg2 {
+struct SignatureArg2 {
   std::string name;
   unsigned    first_signature, second_signature;
   struct Hash;
-  signatureArg2(std::string, unsigned, unsigned);
-  ~signatureArg2();
-  bool operator==(const signatureArg2 &) const;
-  friend std::ostream & operator << (std::ostream &, signatureArg2 &);
+  SignatureArg2(std::string, unsigned, unsigned);
+  ~SignatureArg2();
+  bool operator==(const SignatureArg2 &) const;
+  friend std::ostream & operator << (std::ostream &, SignatureArg2 &);
 };
 
-struct signatureArg2::Hash {
-  std::size_t operator()(const signatureArg2 &) const;
+struct SignatureArg2::Hash {
+  std::size_t operator()(const SignatureArg2 &) const;
 };
 
 #endif

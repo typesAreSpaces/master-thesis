@@ -60,7 +60,7 @@ void Terms::traverse(Z3_context c, Z3_ast v,
 				equations.push_back(std::make_pair(Z3_get_app_arg(c, app, 0),
 																					 Z3_get_app_arg(c, app, 1)));
       if(terms[id]->getName() == "distinct")
-				disEquations.push_back(std::make_pair(Z3_get_app_arg(c, app, 0),
+				disequations.push_back(std::make_pair(Z3_get_app_arg(c, app, 0),
 																							Z3_get_app_arg(c, app, 1)));
 		
       break;
@@ -173,7 +173,7 @@ Terms::Terms(Z3_context ctx, Z3_ast v){
   // assert formula B
   unsigned numTerms = Z3_get_ast_id(ctx, Z3_get_app_arg(ctx, app, 0)),
     counterExtraTerms = 0, & refCounterExtraTerms = counterExtraTerms;
-  this->rootNum = numTerms;
+  this->root_num = numTerms;
   
   std::set<std::string> symbolsA, symbolsB;
   terms.resize(2*numTerms);
@@ -198,21 +198,21 @@ Terms::Terms(Z3_context ctx, Z3_ast v){
   
   std::set_difference(symbolsA.begin(), symbolsA.end(),
 											symbolsB.begin(), symbolsB.end(),
-											std::inserter(symbolsToElim, symbolsToElim.end()));
+											std::inserter(symbols_to_elim, symbols_to_elim.end()));
 
 	// This symbol will be used to encode the False particle
 	terms.push_back(new Vertex("incomparable", 0));
 	terms[Vertex::getTotalNumVertex() - 1]->define();
 
-	EC = UnionFind(Vertex::getTotalNumVertex());
+	equivalence_class = UnionFind(Vertex::getTotalNumVertex());
 }
 
-Terms::Terms(Z3_context ctx, Z3_ast v, std::set<std::string> & symbolsToElim) :
-  symbolsToElim(symbolsToElim){
+Terms::Terms(Z3_context ctx, Z3_ast v, std::set<std::string> & symbols_to_elim) :
+  symbols_to_elim(symbols_to_elim){
   unsigned numTerms = Z3_get_ast_id(ctx, v),
     counterExtraTerms = 0,
     & refCounterExtraTerms = counterExtraTerms;
-  this->rootNum = numTerms;
+  this->root_num = numTerms;
   std::set<std::string> symbolsA, symbolsB;
   terms.resize(2*numTerms);
 
@@ -236,7 +236,7 @@ Terms::Terms(Z3_context ctx, Z3_ast v, std::set<std::string> & symbolsToElim) :
 	terms.push_back(new Vertex("incomparable", 0));
 	terms[Vertex::getTotalNumVertex() - 1]->define();
 
-	EC = UnionFind(Vertex::getTotalNumVertex());
+	equivalence_class = UnionFind(Vertex::getTotalNumVertex());
 }
 
 
@@ -293,7 +293,7 @@ Terms::Terms(std::istream & in){
 	terms.push_back(new Vertex("incomparable", 0));
 	terms[Vertex::getTotalNumVertex() - 1]->define();
 	
-  EC = UnionFind(Vertex::getTotalNumVertex());
+  equivalence_class = UnionFind(Vertex::getTotalNumVertex());
 }
 
 Terms::~Terms(){
@@ -306,8 +306,8 @@ std::vector<Vertex*> & Terms::getTerms(){
   return terms;
 }
 
-UnionFind & Terms::getEC(){
-  return EC;
+UnionFind & Terms::getEquivalenceClass(){
+  return equivalence_class;
 }
 
 Vertex * Terms::getOriginalVertex(unsigned i){
@@ -315,11 +315,11 @@ Vertex * Terms::getOriginalVertex(unsigned i){
 }
 
 Vertex * Terms::getVertex(unsigned i){
-  return terms[EC.find(i)];
+  return terms[equivalence_class.find(i)];
 }
 
 Vertex * Terms::getVertex(Vertex * v){
-  return terms[EC.find(v->getId())];
+  return terms[equivalence_class.find(v->getId())];
 }
 
 void Terms::merge(Vertex * u, Vertex * v){
@@ -327,7 +327,7 @@ void Terms::merge(Vertex * u, Vertex * v){
   // Merge the predecessor's list too!
   if(getVertex(u) != getVertex(v)){
     getVertex(u)->mergePredecessors(getVertex(v));
-    EC.merge(u->getId(), v->getId());
+    equivalence_class.merge(u->getId(), v->getId());
   }
 }
 
@@ -335,16 +335,16 @@ void Terms::rotate(Vertex * u, Vertex * v){
   // Force vertex u to become
   // vertex v's parent  
   u->mergePredecessors(getVertex(v));
-  EC.link(u->getId(), getVertex(v)->getId());
-  EC.reset(u->getId());
+  equivalence_class.link(u->getId(), getVertex(v)->getId());
+  equivalence_class.reset(u->getId());
 }
 
 unsigned Terms::getRootNum(){
-  return rootNum;
+  return root_num;
 }
 
 std::set<std::string> & Terms::getSymbolsToElim(){
-  return symbolsToElim;
+  return symbols_to_elim;
 }
 
 std::vector<std::pair<Z3_ast, Z3_ast> > & Terms::getEquations(){
@@ -352,7 +352,7 @@ std::vector<std::pair<Z3_ast, Z3_ast> > & Terms::getEquations(){
 }
 
 std::vector<std::pair<Z3_ast, Z3_ast> > & Terms::getDisequations(){
-	return disEquations;
+	return disequations;
 }
 
 std::ostream & operator << (std::ostream & os, Terms & gterms){

@@ -158,7 +158,7 @@ void EUFInterpolant::eliminationOfUncommonFSyms(){
 								_temp.begin());
       for(unsigned i = 0; i < number_of_positions - 1; ++i)
 				for(unsigned j = i + 1; j < number_of_positions; ++j){
-					horn_clauses.addHornClause(congruence_closure.getEC(),
+					horn_clauses.addHornClause(congruence_closure.getEquivalenceClass(),
 																		 congruence_closure.getVertex(_temp[i]),
 																		 congruence_closure.getVertex(_temp[j]),
 																		 false);
@@ -186,7 +186,7 @@ void EUFInterpolant::addNegativeHornClauses(){
 			if(lhsVertex->getArity() != rhsVertex->getArity())
 				std::cout << "Fatal error: Different arities from "
 									<< "EUFInterpolant.cpp::addNegativeHornClauses" << std::endl;
-		  horn_clauses.addHornClause(congruence_closure.getEC(),
+		  horn_clauses.addHornClause(congruence_closure.getEquivalenceClass(),
 																 lhsVertex,
 																 rhsVertex,
 																 true);
@@ -198,7 +198,7 @@ void EUFInterpolant::addNegativeHornClauses(){
 																			 congruence_closure.getVertex(_sizeCC - 1));
 			std::vector<equality> _antecedent;
 			_antecedent.push_back(std::make_pair(lhsVertex, rhsVertex));
-			horn_clauses.addHornClause(congruence_closure.getEC(),
+			horn_clauses.addHornClause(congruence_closure.getEquivalenceClass(),
 																 _antecedent,
 																 fFalse,
 																 true);

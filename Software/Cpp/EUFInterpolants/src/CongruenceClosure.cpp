@@ -10,34 +10,34 @@
 
 void CongruenceClosure::init(Z3_context c){
   unsigned lhs, rhs;
-  Vertex * lhsVertex, * rhsVertex;
-  for(std::vector<std::pair<Z3_ast, Z3_ast> >::iterator it = equations.begin();
-      it != equations.end(); ++it){
-    lhs = Z3_get_ast_id(c, it->first);
-    rhs = Z3_get_ast_id(c, it->second);
-    lhsVertex = getVertex(lhs);
-    rhsVertex = getVertex(rhs);
+  Vertex * lhs_vertex, * rhs_vertex;
+  for(std::vector<std::pair<Z3_ast, Z3_ast> >::iterator equation = equations.begin();
+      equation != equations.end(); ++equation){
+    lhs = Z3_get_ast_id(c, equation->first);
+    rhs = Z3_get_ast_id(c, equation->second);
+    lhs_vertex = getVertex(lhs);
+    rhs_vertex = getVertex(rhs);
     
-    if(lhsVertex->getLength() < rhsVertex->getLength()){
+    if(lhs_vertex->getLength() < rhs_vertex->getLength()){
       merge(getVertex(rhs), getVertex(lhs));
 			DEBUG_CC(traceMerge,
 							 std::cout << "==========================================" << std::endl;
 							 std::cout << "Merging " << std::endl;
-							 std::cout << lhsVertex->to_string() << std::endl;
+							 std::cout << lhs_vertex->to_string() << std::endl;
 							 std::cout << " to " << std::endl;
-							 std::cout << rhsVertex->to_string() << std::endl;
+							 std::cout << rhs_vertex->to_string() << std::endl;
 							 std::cout << "==========================================" << std::endl;)
-    }
+				}
     else{
       merge(getVertex(lhs), getVertex(rhs));
 			DEBUG_CC(traceMerge,
 							 std::cout << "==========================================" << std::endl;
 							 std::cout << "Merging " << std::endl;
-							 std::cout << rhsVertex->to_string() << std::endl;
+							 std::cout << rhs_vertex->to_string() << std::endl;
 							 std::cout << " to " << std::endl;
-							 std::cout << lhsVertex->to_string() << std::endl;
+							 std::cout << lhs_vertex->to_string() << std::endl;
 							 std::cout << "==========================================" << std::endl;)
-    }
+				}
 		DEBUG_CC(traceEC,
 						 std::cout << "==========================================" << std::endl;
 						 std::cout << "Terms and ID's" << std::endl;
@@ -46,12 +46,14 @@ void CongruenceClosure::init(Z3_context c){
 						 std::cout << "==========================================" << std::endl;
 						 std::cout << "==========================================" << std::endl;
 						 std::cout << "Current Equivalence Class" << std::endl;
-						 std::cout << EC << std::endl;
+						 std::cout << equivalence_class << std::endl;
 						 std::cout << "==========================================" << std::endl;)
-  }
+			}
 }
 
-CongruenceClosure::CongruenceClosure(Z3_context c, Z3_ast v, std::set<std::string> & symbolsToElim) :
+CongruenceClosure::CongruenceClosure(Z3_context c,
+																		 Z3_ast v,
+																		 std::set<std::string> & symbolsToElim) :
   SignatureTable(c, v, symbolsToElim) {
   init(c);
 }
@@ -63,34 +65,34 @@ CongruenceClosure::CongruenceClosure(Z3_context c, Z3_ast v) :
 
 CongruenceClosure::CongruenceClosure(std::istream & in) : SignatureTable(in) {
   unsigned numEq, lhs, rhs;
-  Vertex * lhsVertex, *rhsVertex;
+  Vertex * lhs_vertex, *rhs_vertex;
 	
   in >> numEq;
   for(unsigned i = 0; i < numEq; ++i){
     in >> lhs >> rhs;
-    lhsVertex = getVertex(lhs);
-    rhsVertex = getVertex(rhs);
+    lhs_vertex = getVertex(lhs);
+    rhs_vertex = getVertex(rhs);
     
-    if(lhsVertex->getLength() < rhsVertex->getLength()){
+    if(lhs_vertex->getLength() < rhs_vertex->getLength()){
       merge(getVertex(rhs), getVertex(lhs));
 			DEBUG_CC(traceMerge,
 							 std::cout << "==========================================" << std::endl;
 							 std::cout << "Merging " << std::endl;
-							 std::cout << lhsVertex->to_string() << std::endl;
+							 std::cout << lhs_vertex->to_string() << std::endl;
 							 std::cout << " to " << std::endl;
-							 std::cout << rhsVertex->to_string() << std::endl;
+							 std::cout << rhs_vertex->to_string() << std::endl;
 							 std::cout << "==========================================" << std::endl;)
-    }
+				}
     else{
       merge(getVertex(lhs), getVertex(rhs));
 			DEBUG_CC(traceMerge,
 							 std::cout << "==========================================" << std::endl;
 							 std::cout << "Merging " << std::endl;
-							 std::cout << rhsVertex->to_string() << std::endl;
+							 std::cout << rhs_vertex->to_string() << std::endl;
 							 std::cout << " to " << std::endl;
-							 std::cout << lhsVertex->to_string() << std::endl;
+							 std::cout << lhs_vertex->to_string() << std::endl;
 							 std::cout << "==========================================" << std::endl;)
-    }
+				}
 		DEBUG_CC(traceEC,
 						 std::cout << "==========================================" << std::endl;
 						 std::cout << "Terms and ID's" << std::endl;
@@ -99,9 +101,9 @@ CongruenceClosure::CongruenceClosure(std::istream & in) : SignatureTable(in) {
 						 std::cout << "==========================================" << std::endl;
 						 std::cout << "==========================================" << std::endl;
 						 std::cout << "Current Equivalence Class" << std::endl;
-						 std::cout << EC << std::endl;
+						 std::cout << equivalence_class << std::endl;
 						 std::cout << "==========================================" << std::endl;)
-  }
+			}
 }
 
 CongruenceClosure::~CongruenceClosure(){}
@@ -109,10 +111,10 @@ CongruenceClosure::~CongruenceClosure(){}
 void CongruenceClosure::algorithm(){
   Pending pending;
   Combine combine;
-  unsigned totalNumVertex = Vertex::getTotalNumVertex();
+  unsigned total_num_vertex = Vertex::getTotalNumVertex();
 
   // Adding functional grounded vertices to pending
-  for(unsigned i = 0; i < totalNumVertex; ++i){
+  for(unsigned i = 0; i < total_num_vertex; ++i){
     Vertex * _temp = getVertex(i);
     if(_temp->getArity() >= 1)
       pending.insert(_temp);
@@ -120,100 +122,94 @@ void CongruenceClosure::algorithm(){
 	
   while(!pending.empty()){
     combine.clear();
-    for(Pending::iterator it = pending.begin(); it != pending.end(); ++it){
+    for(Pending::iterator vertex_it = pending.begin();
+				vertex_it != pending.end(); ++vertex_it){
       try{
-				Vertex * _temp = query(*it);
-				combine.insert(std::make_pair(*it, _temp));
+				Vertex * already_there = query(*vertex_it);
+				combine.insert(std::make_pair(*vertex_it, already_there));
 				DEBUG_CC(traceCombine,
 								 std::cout << "==========================================" << std::endl;
 								 std::cout << "Inserting to Combine" << std::endl;
-								 std::cout << (*it)->to_string() << " and " << std::endl;
-								 std::cout << _temp->to_string() << std::endl;
+								 std::cout << (*vertex_it)->to_string() << " and " << std::endl;
+								 std::cout << already_there->to_string() << std::endl;
 								 std::cout << "==========================================" << std::endl;)
-      }
+					}
       catch (const char * msg){
-				enter(*it);
+				enter(*vertex_it);
 				DEBUG_CC(traceSigTable,
 								 std::cout << "==========================================" << std::endl;
 								 std::cout << "Current Signature Table" << std::endl;
 								 std::cout << *dynamic_cast<SignatureTable*>(this) << std::endl;
 								 std::cout << "==========================================" << std::endl;)
-      }
+					}
     }
     pending.clear();
-    for(Combine::iterator it = combine.begin(); it != combine.end(); ++it){
-      Vertex * v = it->first, * w = it->second, * findV = getVertex(v), * findW = getVertex(w);
-      if(findV->getId() != findW->getId()){
-				if(findV->getLength() < findW->getLength()){
-					CircularList<unsigned> * listFindV = findV->getPredecessors();
-					if(findV->getLength() != 0){
-						CircularList<unsigned>::iterator it = listFindV->begin();
-						do{
-							Vertex * u = getVertex((*it).data);
-							remove(u);
-							pending.insert(u);
-							++it;
-						} while(it != listFindV->begin());
-					}
-					DEBUG_CC(traceMerge,
-									 std::cout << "==========================================" << std::endl;
-									 std::cout << "Merging " << std::endl;
-									 std::cout << findW->to_string() << std::endl;
-									 std::cout << " to " << std::endl;
-									 std::cout << findV->to_string() << std::endl;
-									 std::cout << "==========================================" << std::endl;)
-					merge(findW, findV);
+    for(Combine::iterator pair = combine.begin();
+				pair != combine.end(); ++pair){
+      Vertex * v = pair->first,
+				* w = pair->second,
+				* find_v = getVertex(v),
+				* find_w = getVertex(w);
+      if(find_v != find_w){
+				if(find_v->getLength() >= find_w->getLength()){
+					Vertex * temp_swap = find_v;
+					find_v = find_w;
+					find_w = temp_swap;
 				}
-				else{
-					CircularList<unsigned> * listFindW = findW->getPredecessors();
-					if(findW->getLength() != 0){
-						CircularList<unsigned>::iterator it = listFindW->begin();
-						do{
-							Vertex * u = getVertex((*it).data);
-							remove(u);
-							pending.insert(u);
-							++it;
-						} while(it != listFindW->begin());
-					}
-					DEBUG_CC(traceMerge,
-									 std::cout << "==========================================" << std::endl;
-									 std::cout << "Merging " << std::endl;
-									 std::cout << findW->to_string() << std::endl;
-									 std::cout << " to " << std::endl;
-									 std::cout << findV->to_string() << std::endl;
-									 std::cout << "==========================================" << std::endl;)
-					merge(findV, findW);
+				CircularList<unsigned> * list_find_v = find_v->getPredecessors();
+				if(find_v->getLength() != 0){
+					CircularList<unsigned>::iterator predecessor_it = list_find_v->begin();
+					do{
+						Vertex * predecessor = getOriginalVertex((*predecessor_it).data);
+						// Vertex * predecessor = getVertex((*predecessor_it).data);
+						remove(predecessor);
+						pending.insert(predecessor);
+						++predecessor_it;
+					} while(predecessor_it != list_find_v->begin());
 				}
+				merge(find_w, find_v);
+				DEBUG_CC(traceMerge,
+								 std::cout << "========================================" << std::endl;
+								 std::cout << "Merging " << std::endl;
+								 std::cout << find_w->to_string() << std::endl;
+								 std::cout << " to " << std::endl;
+								 std::cout << find_v->to_string() << std::endl;
+								 std::cout << "========================================" << std::endl;)
       }
     }
   }
 }
 
 bool CongruenceClosure::checkCorrectness(){
-  unsigned totalNumVertex = Vertex::getTotalNumVertex();
+  unsigned total_num_vertex = Vertex::getTotalNumVertex();
 
-  for(unsigned i = 0; i < totalNumVertex - 1; ++i)
-    for(unsigned j = i + 1; j < totalNumVertex; ++j){
+  for(unsigned i = 0; i < total_num_vertex - 1; ++i)
+    for(unsigned j = i + 1; j < total_num_vertex; ++j){
       Vertex * u = getVertex(i), * v = getVertex(j);
       if(u->getArity() == v->getArity()){
 				if(u->getArity() == 1
 					 && getSignatureArg1(u) == getSignatureArg1(v)
-					 && getVertex(u)->getId() != getVertex(v)->getId())
-						return false;
+					 && getVertex(u)->getId() != getVertex(v)->getId()){
+					std::cout << "Not Ok" << std::endl;
+					return false;
+				}
 				if(u->getArity() == 2
 					 && getSignatureArg2(u) == getSignatureArg2(v)
-					 && getVertex(u)->getId() != getVertex(v)->getId())
+					 && getVertex(u)->getId() != getVertex(v)->getId()){
+					std::cout << "Not Ok" << std::endl;
 					return false;
+				}
       }
     }
+	std::cout << "Ok" << std::endl;
   return true;
 }
 
 std::ostream & operator << (std::ostream & os, CongruenceClosure & cc){
   os << "Congruence Closure" << std::endl;
-  unsigned totalNumVertex = Vertex::getTotalNumVertex();
+  unsigned total_num_vertex = Vertex::getTotalNumVertex();
   
-  for(unsigned i = 0; i < totalNumVertex; ++i){
+  for(unsigned i = 0; i < total_num_vertex; ++i){
     // Just print non-extra nodes
 		auto term = cc.getOriginalVertex(i);
     if(term->getName()[0] != '_')

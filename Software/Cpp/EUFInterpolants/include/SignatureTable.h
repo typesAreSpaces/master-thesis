@@ -6,8 +6,8 @@
 #include "Signature.h"
 #include "Terms.h"
 
-typedef std::unordered_map<signatureArg1, Vertex*, signatureArg1::Hash> treeArg1;
-typedef std::unordered_map<signatureArg2, Vertex*, signatureArg2::Hash> treeArg2; 
+typedef std::unordered_map<SignatureArg1, Vertex*, SignatureArg1::Hash> treeArg1;
+typedef std::unordered_map<SignatureArg2, Vertex*, SignatureArg2::Hash> treeArg2; 
 
 class SignatureTable : public Terms {
 protected:
@@ -22,8 +22,8 @@ public:
   void enter(Vertex*);
   void remove(Vertex*);
   Vertex* query(Vertex*);
-  signatureArg1 getSignatureArg1(Vertex*);
-  signatureArg2 getSignatureArg2(Vertex*);
+  SignatureArg1 getSignatureArg1(Vertex*);
+  SignatureArg2 getSignatureArg2(Vertex*);
   friend std::ostream & operator << (std::ostream &, SignatureTable &);
 };
 

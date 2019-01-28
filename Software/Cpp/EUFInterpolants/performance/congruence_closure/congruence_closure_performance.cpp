@@ -13,6 +13,7 @@ int main(int argc, char ** argv){
 	clock_t begin = clock();
 	CongruenceClosure congruence_closure_test(example);
 	congruence_closure_test.algorithm();
+	congruence_closure_test.checkCorrectness();
 	clock_t end = clock();
 	std::cout << input_info.substr(88, input_info.find("_", 88) - 88) << "," << double(end - begin) / CLOCKS_PER_SEC << std::endl;
 	
