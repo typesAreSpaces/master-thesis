@@ -135,9 +135,18 @@ void EUFInterpolant::setCommonRepresentatives(){
 
 void EUFInterpolant::eliminationOfUncommonFSyms(){
   bool expose = false;
+
+	for(auto it = symbol_locations.begin();
+			it != symbol_locations.end(); ++it){
+		std::cout << it->first << " ";
+		for(auto it2 : it->second)
+			std::cout << it2 << " ";
+		std::cout << std::endl;
+	}
+	
   for(auto map_symbol_location = symbol_locations.begin();
       map_symbol_location != symbol_locations.end(); ++map_symbol_location){
-		auto symbol = map_symbol_location->first;
+		auto symbol_name = map_symbol_location->first;
 		auto positions = map_symbol_location->second;
     for(auto position : positions){
       if(!congruence_closure.getVertex(position)->getSymbolCommonQ()){
@@ -145,11 +154,12 @@ void EUFInterpolant::eliminationOfUncommonFSyms(){
 				break;
       }
     }
+		
 		// We don't include in the Exposure method new introduced symbols
 		// nor equalities, disequalities
-    if(expose && (symbol[0] != '=' &&
-									symbol != "distinct" &&
-									symbol[0] != '_')){
+    if(expose && (symbol_name[0] != '=' &&
+									symbol_name != "distinct" &&
+									symbol_name[0] != '_')){
       unsigned number_of_positions = positions.size();
 			// Why: do I need a new vector _temp?
       std::vector<unsigned> _temp(number_of_positions);

@@ -29,6 +29,8 @@ HornClause::HornClause(UnionFind & uf,
 
 }
 
+// It's assumed the arities of Vertex * u,
+// Vertex * v are the same
 HornClause::HornClause(UnionFind & uf,
 											 Vertex* u, Vertex* v,
 											 std::vector<Vertex*> & terms,
@@ -46,6 +48,7 @@ HornClause::HornClause(UnionFind & uf,
 	std::cout << *v << std::endl;
 	
   unsigned _arity = u->getArity();
+	assert(_arity == v->getArity());
   std::vector<Vertex*> & successorsU = u->getSuccessors(),
     & successorsV = v->getSuccessors();
   for(unsigned i = 0; i < _arity; ++i){
