@@ -2,6 +2,7 @@
 #define _HORN_CLAUSE_
 
 #include "Terms.h"
+#include <assert.h>
 #include <vector>
 #include <utility>
 
