@@ -16,7 +16,8 @@ class LinkedList{
   void add(T x);
   int size();
   node<T> * getList();
-  friend std::ostream & operator << (std::ostream &, LinkedList &);
+	template<typename U>
+  friend std::ostream & operator << (std::ostream &, LinkedList<U> &);
 };
 
 #endif
