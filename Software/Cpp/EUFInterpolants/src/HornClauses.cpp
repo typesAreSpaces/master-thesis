@@ -12,8 +12,9 @@ HornClauses::~HornClauses(){
     delete *it;
 }
 
-void HornClauses::addHornClause(UnionFind & uf, Vertex* u,
-																Vertex* v, bool is_disequation){
+void HornClauses::addHornClause(UnionFind & uf,
+																Vertex* u, Vertex* v,
+																bool is_disequation){
   HornClause * hc = new HornClause(uf, u, v, local_terms, is_disequation);
 	if(!is_disequation){
 		hc->normalize();
@@ -27,8 +28,10 @@ void HornClauses::addHornClause(UnionFind & uf, Vertex* u,
   ++num_horn_clauses;
 }
 
-void HornClauses::addHornClause(UnionFind & uf, std::vector<equality> & antecedent,
-																equality & consequent, bool is_disequation){
+void HornClauses::addHornClause(UnionFind & uf,
+																std::vector<equality> & antecedent,
+																equality & consequent,
+																bool is_disequation){
   HornClause * hc = new HornClause(uf, antecedent, consequent, local_terms);
 	if(!is_disequation){
 		hc->normalize();

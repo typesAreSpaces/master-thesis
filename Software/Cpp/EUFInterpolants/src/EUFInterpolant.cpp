@@ -135,14 +135,6 @@ void EUFInterpolant::setCommonRepresentatives(){
 
 void EUFInterpolant::eliminationOfUncommonFSyms(){
   bool expose = false;
-
-	for(auto it = symbol_locations.begin();
-			it != symbol_locations.end(); ++it){
-		std::cout << it->first << " ";
-		for(auto it2 : it->second)
-			std::cout << it2 << " ";
-		std::cout << std::endl;
-	}
 	
   for(auto map_symbol_location = symbol_locations.begin();
       map_symbol_location != symbol_locations.end(); ++map_symbol_location){
@@ -160,6 +152,13 @@ void EUFInterpolant::eliminationOfUncommonFSyms(){
     if(expose && (symbol_name[0] != '=' &&
 									symbol_name != "distinct" &&
 									symbol_name[0] != '_')){
+
+			std::cout << "Printing Symbols" << std::endl;
+			std::cout << symbol_name << std::endl;
+			for(auto position : positions)
+				std::cout << position << " ";
+			std::cout << std::endl;
+			
       unsigned number_of_positions = positions.size();
 			// Why: do I need a new vector _temp?
       std::vector<unsigned> _temp(number_of_positions);
@@ -167,8 +166,8 @@ void EUFInterpolant::eliminationOfUncommonFSyms(){
       for(unsigned i = 0; i < number_of_positions - 1; ++i)
 				for(unsigned j = i + 1; j < number_of_positions; ++j){
 					horn_clauses.addHornClause(congruence_closure.getEquivalenceClass(),
-																		 congruence_closure.getVertex(_temp[i]),
-																		 congruence_closure.getVertex(_temp[j]),
+																		 congruence_closure.getOriginalVertex(_temp[i]),
+																		 congruence_closure.getOriginalVertex(_temp[j]),
 																		 false);
 				}
     }
