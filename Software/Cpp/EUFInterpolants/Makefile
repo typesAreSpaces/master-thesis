@@ -1,12 +1,12 @@
 UNAME = $(shell uname)
 WHO = $(shell whoami)
 ifeq ($(UNAME), Linux)
-ifeq($(WHO), jose.castellanosjoo)
-Z3DIR = /nfs/student/j/jose.castellanosjoo/Documents/GitProjects/z3
-endif
-ifeq($(WHO), joseabelcastellanosjoo)
-Z3DIR = /home/jose/Documents/GithubProjects/z3
-endif
+	ifeq ($(WHO), jose.castellanosjoo)
+	Z3DIR = /nfs/student/j/jose.castellanosjoo/Documents/GitProjects/z3
+	endif
+	ifeq ($(WHO), joseabelcastellanosjoo)
+	Z3DIR = /home/jose/Documents/GithubProjects/z3
+	endif
 Z3EXT = so
 endif
 ifeq ($(UNAME), Darwin)
