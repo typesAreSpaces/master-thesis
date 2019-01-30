@@ -21,12 +21,13 @@ void EUFInterpolant::algorithm(){
 	// Congruence Closure Algorithm
   congruence_closure.algorithm();
   setCommonRepresentatives();
-
-	
   eliminationOfUncommonFSyms();
 	addNegativeHornClauses();
+
+	// ------------------------------------
 	// TODO: FIX THIS!
   horn_clauses.conditionalElimination();
+	// ------------------------------------
 	std::cout << horn_clauses << std::endl;
 	
 	auto hCS = horn_clauses.getHornClauses();
@@ -183,9 +184,7 @@ void EUFInterpolant::addNegativeHornClauses(){
 		if(lhs_vertex->getName() == rhs_vertex->getName()){
 			// Add HornClauses unfolding arguments
 			// Let's check anyways
-			if(lhs_vertex->getArity() != rhs_vertex->getArity())
-				std::cout << "Fatal error: Different arities from "
-									<< "EUFInterpolant.cpp::addNegativeHornClauses" << std::endl;
+			assert(lhs_vertex->getArity() != rhs_vertex->getArity());
 		  horn_clauses.addHornClause(congruence_closure.getEquivalenceClass(),
 																 lhs_vertex,
 																 rhs_vertex,
