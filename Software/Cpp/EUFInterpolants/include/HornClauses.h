@@ -14,19 +14,19 @@ typedef std::map<equality, std::vector<unsigned> > match2;
 
 class HornClauses{
  private:
-  static unsigned          num_horn_clauses;
-  std::vector<HornClause*> horn_clauses;
-  match1                   mc1A, mc1C;
-  match2                   mc2A, mc2C;
-	match2                   rewriting;
-	std::map<equality, unsigned>  rewriting_length;
-	std::vector<Vertex*> &   local_terms;
+  static unsigned               num_horn_clauses;
+  std::vector<HornClause*>      horn_clauses;
+  match1                        mc1_antecedent, mc1_consequent;
+  match2                        mc2_antecedent, mc2_consequent;
+	match2                        reduced;
+	std::map<equality, unsigned>  reduced_length;
+	std::vector<Vertex*> &        local_terms;
   void mergeType2_1AndType3(HornClause *, HornClause *);
   void mergeType2_1AndType4(HornClause *, HornClause *);
   void mergeType2AndType2(HornClause *, HornClause *);
   void mergeType2AndType3(HornClause *, HornClause *);
   void mergeType2AndType4(HornClause *, HornClause *);
-	void rewrite();
+	void simplify();
   void makeMatches(HornClause *, unsigned);
 	void combinationHelper(HornClause *);
 	void orient(HornClause *);
