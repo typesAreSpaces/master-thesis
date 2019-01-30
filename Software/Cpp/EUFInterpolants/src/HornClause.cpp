@@ -43,22 +43,12 @@ HornClause::HornClause(UnionFind & uf,
 		global_UF = uf;
 		global_terms = terms;
 	}
-
-	std::cout << *u << std::endl;
-	std::cout << *v << std::endl;
 	
   unsigned _arity = u->getArity();
 	assert(_arity == v->getArity());
   std::vector<Vertex*> & successorsU = u->getSuccessors(),
     & successorsV = v->getSuccessors();
   for(unsigned i = 0; i < _arity; ++i){
-
-		// -------------------------------------------------
-		std::cout << successorsU[i] << std::endl;
-		std::cout << successorsV[i] << std::endl;
-		std::cout << "ok?" << std::endl;
-		// ------------------------------------------------
-
 		Vertex * _u = getVertex(successorsU[i]),
       * _v = getVertex(successorsV[i]);
     if(*_u >= *_v)

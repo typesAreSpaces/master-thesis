@@ -46,10 +46,12 @@ void HornClauses::addHornClause(UnionFind & uf,
 }
 
 void HornClauses::conditionalElimination(){
-	
   bool change = true;
   std::set<std::pair<unsigned, unsigned> > prev_combinations;
+	int i = 0;
   while(change){
+		std::cout << i << std::endl;
+		i++;
     change = false;
 		unsigned oldSize = horn_clauses.size(), newSize;
 		

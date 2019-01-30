@@ -22,11 +22,11 @@ void EUFInterpolant::algorithm(){
   congruence_closure.algorithm();
   setCommonRepresentatives();
 
-	// TODO: FIX THIS!
+	
   eliminationOfUncommonFSyms();
 	addNegativeHornClauses();
+	// TODO: FIX THIS!
   horn_clauses.conditionalElimination();
-
 	std::cout << horn_clauses << std::endl;
 	
 	auto hCS = horn_clauses.getHornClauses();
@@ -152,13 +152,6 @@ void EUFInterpolant::eliminationOfUncommonFSyms(){
     if(expose && (symbol_name[0] != '=' &&
 									symbol_name != "distinct" &&
 									symbol_name[0] != '_')){
-
-			std::cout << "Printing Symbols" << std::endl;
-			std::cout << symbol_name << std::endl;
-			for(auto position : positions)
-				std::cout << position << " ";
-			std::cout << std::endl;
-			
       unsigned number_of_positions = positions.size();
 			// Why: do I need a new vector _temp?
       std::vector<unsigned> _temp(number_of_positions);

@@ -21,7 +21,7 @@ DEPS = $(wildcard $(IDIR)/*.h)
 all: main
 
 $(ODIR)/%.o: $(SDIR)/%.cpp $(DEPS)
-	$(CC) -c -o $@  $(FLAGS) $< -Wall
+	$(CC) -g -c -o $@  $(FLAGS) $< -Wall
 
 main: $(OBJS) $(Z3DIR)/build/libz3.$(Z3EXT)
 	$(CC) -o $@ $^ -lpthread -Wall
