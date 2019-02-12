@@ -112,13 +112,10 @@ void HornClauses::mc2ConsequentAndmc2Antecedent(SetOfUnsignedPairs & prev_combin
 		auto positions_consequent = map_equality_positions->second;
 		for(unsigned position_consequent : positions_consequent)
 			for(unsigned position_antecedent : mc2_antecedent[equality]){
-				if(prev_combinations.find(std::make_pair(position_consequent,
-																								 position_antecedent))
-					 == prev_combinations.end()
-					 &&
-					 prev_combinations.find(std::make_pair(position_antecedent,
-																								 position_consequent))
-					 == prev_combinations.end()){
+				if(existential(prev_combinations, std::make_pair(position_consequent,
+																												 position_antecedent))
+					 && existential(prev_combinations, std::make_pair(position_antecedent,
+																														position_consequent))){
 					if(debugHornClauses)
 						std::cout << "1. Combine " << std::endl
 											<< *horn_clauses[position_consequent] << std::endl
@@ -142,13 +139,11 @@ void HornClauses::mc1ConsequentAndmc1Antecedent(SetOfUnsignedPairs & prev_combin
 		auto positions_consequent = map_vertex_positions->second;
 		for(unsigned position_consequent : positions_consequent){
 			for(unsigned position_antecedent : mc1_antecedent[vertex]){
-				if(prev_combinations.find(std::make_pair(position_consequent,
-																								 position_antecedent))
-					 == prev_combinations.end()
+				if(existential(prev_combinations, std::make_pair(position_consequent,
+																												 position_antecedent))
 					 &&
-					 prev_combinations.find(std::make_pair(position_antecedent,
-																								 position_consequent))
-					 == prev_combinations.end()
+					 existential(prev_combinations, std::make_pair(position_antecedent,
+																												 position_consequent))
 					 && horn_clauses[position_consequent]->getAntecedentValue()){
 					if(debugHornClauses)
 						std::cout << "2. Combine " << position_consequent << " , "
@@ -183,13 +178,11 @@ void HornClauses::mc1ConsequentAndmc2Antecedent(SetOfUnsignedPairs & prev_combin
 				if(equality_antecedent.first == vertex_consequent ||
 					 equality_antecedent.second == vertex_consequent)
 					for(unsigned position_antecedent : mc2_antecedent[equality_antecedent]){
-						if(prev_combinations.find(std::make_pair(position_consequent,
-																										 position_antecedent))
-							 == prev_combinations.end()
+						if(existential(prev_combinations, std::make_pair(position_consequent,
+																												 position_antecedent))
 							 &&
-							 prev_combinations.find(std::make_pair(position_antecedent,
-																										 position_consequent))
-							 == prev_combinations.end()
+							 existential(prev_combinations, std::make_pair(position_antecedent,
+																														 position_consequent))
 							 && horn_clauses[position_consequent]->getAntecedentValue()){
 							if(debugHornClauses)
 								std::cout << "3. Combine " << std::endl
@@ -217,13 +210,11 @@ void HornClauses::mc1ConsequentAndmc1Antecedent2(SetOfUnsignedPairs & prev_combi
 		auto positions_consequent_1 = map_vertex_positions->second;
 		for(unsigned position_consequent_1 : positions_consequent_1)
 			for(unsigned position_consequent_2 : mc1_consequent[vertex_consequent_1]){
-				if(prev_combinations.find(std::make_pair(position_consequent_1,
-																								 position_consequent_2))
-					 == prev_combinations.end()
+				if(existential(prev_combinations, std::make_pair(position_consequent_1,
+																												 position_consequent_2))
 					 &&
-					 prev_combinations.find(std::make_pair(position_consequent_2,
-																								 position_consequent_1))
-					 == prev_combinations.end()
+					 existential(prev_combinations, std::make_pair(position_consequent_2,
+																												 position_consequent_1))
 					 && horn_clauses[position_consequent_1]->getAntecedentValue()
 					 && horn_clauses[position_consequent_2]->getAntecedentValue()){
 					if(debugHornClauses)

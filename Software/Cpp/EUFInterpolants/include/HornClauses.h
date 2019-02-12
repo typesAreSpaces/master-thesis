@@ -1,5 +1,6 @@
 #ifndef _HORN_CLAUSES_
 #define _HORN_CLAUSES_
+#define existential(x, y) x.find(y) == x.end()
 
 #include "HornClause.h"
 #include "Terms.h"
