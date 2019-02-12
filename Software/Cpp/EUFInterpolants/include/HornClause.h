@@ -32,11 +32,11 @@ class HornClause{
   equality & getConsequent();
   UnionFind & getLocalUF();
 	static UnionFind & getGlobalUF();
-  friend std::ostream & operator << (std::ostream &, HornClause &);
-	friend bool operator <(HornClause &, HornClause &);
-	friend bool operator >(HornClause &, HornClause &);
 	Vertex * getVertex(unsigned);
 	Vertex * getVertex(Vertex *);
+	friend bool operator <(HornClause &, HornClause &);
+	friend bool operator >(HornClause &, HornClause &);
+	friend std::ostream & operator << (std::ostream &, HornClause &);
 };
 
 #endif

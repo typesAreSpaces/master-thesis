@@ -53,6 +53,13 @@ void HornClauses::conditionalElimination(){
 		
     change = false;
 		unsigned oldSize = horn_clauses.size(), newSize;
+
+		// DEBUGGING ------------------------------------
+		std::cout << oldSize << "@" << std::endl;
+		for(auto x : horn_clauses)
+			std::cout << *x << std::endl;
+		// DEBUGGING ------------------------------------
+
 		// 1.
     // This part covers cases:
     // 1. Type 2.1 + Type 3
@@ -65,10 +72,12 @@ void HornClauses::conditionalElimination(){
 			auto positions_consequent = map_equality_positions->second;
       for(unsigned position_consequent : positions_consequent)
 				for(unsigned position_antecedent : mc2_antecedent[equality]){
-					if(prev_combinations.find(std::make_pair(position_consequent, position_antecedent))
+					if(prev_combinations.find(std::make_pair(position_consequent,
+																									 position_antecedent))
 						 == prev_combinations.end()
 						 &&
-						 prev_combinations.find(std::make_pair(position_antecedent, position_consequent))
+						 prev_combinations.find(std::make_pair(position_antecedent,
+																									 position_consequent))
 						 == prev_combinations.end()){
 						if(debugHornClauses)
 							std::cout << "1. Combine " << std::endl
@@ -94,10 +103,12 @@ void HornClauses::conditionalElimination(){
 			auto positions_consequent = map_vertex_positions->second;
       for(unsigned position_consequent : positions_consequent){
 				for(unsigned position_antecedent : mc1_antecedent[vertex]){
-					if(prev_combinations.find(std::make_pair(position_consequent, position_antecedent))
+					if(prev_combinations.find(std::make_pair(position_consequent,
+																									 position_antecedent))
 						 == prev_combinations.end()
 						 &&
-						 prev_combinations.find(std::make_pair(position_antecedent, position_consequent))
+						 prev_combinations.find(std::make_pair(position_antecedent,
+																									 position_consequent))
 						 == prev_combinations.end()
 						 && horn_clauses[position_consequent]->getAntecedentValue()){
 						if(debugHornClauses)
@@ -145,7 +156,8 @@ void HornClauses::conditionalElimination(){
 								if(debugHornClauses)
 									std::cout << "3. Combine " << std::endl
 														<< *horn_clauses[position_consequent] << std::endl
-														<< " with " << std::endl << *horn_clauses[position_antecedent]
+														<< " with " << std::endl
+														<< *horn_clauses[position_antecedent]
 														<< std::endl;
 								prev_combinations.insert(std::make_pair(position_consequent,
 																												position_antecedent));

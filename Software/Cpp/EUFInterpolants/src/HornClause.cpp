@@ -128,19 +128,12 @@ UnionFind & HornClause::getGlobalUF(){
   return global_UF;
 }
 
-std::ostream & operator << (std::ostream & os, HornClause & hc){
-  bool flag = true;
-  for(std::vector<equality>::iterator it = hc.antecedent.begin();
-			it != hc.antecedent.end(); ++it){
-    if(flag)
-      os << it->first->to_string() << " = " << it->second->to_string();
-    else
-      os << " && " <<  it->first->to_string() << " = " << it->second->to_string();
-    flag = false;
-  }
-  os << " -> " << hc.consequent.first->to_string()
-		 << " = " << hc.consequent.second->to_string();
-  return os;
+Vertex * HornClause::getVertex(unsigned i){
+	return global_terms[local_UF.find(i)];
+}
+
+Vertex * HornClause::getVertex(Vertex * v){
+	return global_terms[local_UF.find(v->getId())];
 }
 
 // This comparison assumes the consequent of
@@ -159,10 +152,17 @@ bool operator < (HornClause & hc1, HornClause & hc2){
 	return hc2 > hc1;
 }
 
-Vertex * HornClause::getVertex(unsigned i){
-	return global_terms[local_UF.find(i)];
-}
-
-Vertex * HornClause::getVertex(Vertex * v){
-	return global_terms[local_UF.find(v->getId())];
+std::ostream & operator << (std::ostream & os, HornClause & hc){
+  bool flag = true;
+  for(std::vector<equality>::iterator it = hc.antecedent.begin();
+			it != hc.antecedent.end(); ++it){
+    if(flag)
+      os << it->first->to_string() << " = " << it->second->to_string();
+    else
+      os << " && " <<  it->first->to_string() << " = " << it->second->to_string();
+    flag = false;
+  }
+  os << " -> " << hc.consequent.first->to_string()
+		 << " = " << hc.consequent.second->to_string();
+  return os;
 }
