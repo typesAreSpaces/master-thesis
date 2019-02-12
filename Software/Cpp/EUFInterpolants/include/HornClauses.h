@@ -12,6 +12,8 @@ typedef std::map<Vertex*, std::vector<unsigned> > match1;
 // match2 : (Uncommon Vertex, Uncommon Vertex) -> Positions of Horn Clauses
 typedef std::map<equality, std::vector<unsigned> > match2;
 
+typedef std::set<std::pair<unsigned, unsigned> > SetOfUnsignedPairs;
+
 class HornClauses{
  private:
   static unsigned               num_horn_clauses;
@@ -30,6 +32,10 @@ class HornClauses{
   void makeMatches(HornClause *, unsigned);
 	void combinationHelper(HornClause *);
 	void orient(HornClause *);
+	void mc2ConsequentAndmc2Antecedent(SetOfUnsignedPairs &, bool &);
+	void mc1ConsequentAndmc1Antecedent(SetOfUnsignedPairs &, bool &);
+	void mc1ConsequentAndmc2Antecedent(SetOfUnsignedPairs &, bool &);
+	void mc1ConsequentAndmc1Antecedent2(SetOfUnsignedPairs &, bool &);
 	template<typename A>
 	static void swap(std::vector<A> &, unsigned, unsigned);
 	Vertex * getVertex(unsigned);
