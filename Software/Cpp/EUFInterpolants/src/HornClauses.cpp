@@ -126,6 +126,8 @@ void HornClauses::mc2ConsequentAndmc2Antecedent(SetOfUnsignedPairs & prev_combin
 					mergeType2_1AndType3(horn_clauses[position_consequent],
 															 horn_clauses[position_antecedent]);
 					change = true;
+					if(change)
+						std::cout << "Something happened in 1" << std::endl;
 				}
 			}
 	}
@@ -156,6 +158,8 @@ void HornClauses::mc1ConsequentAndmc1Antecedent(SetOfUnsignedPairs & prev_combin
 					mergeType2AndType3(horn_clauses[position_consequent],
 														 horn_clauses[position_antecedent]);
 					change = true;
+					if(change)
+						std::cout << "Something happened in 2" << std::endl;
 				}
 			}
 		}
@@ -195,6 +199,8 @@ void HornClauses::mc1ConsequentAndmc2Antecedent(SetOfUnsignedPairs & prev_combin
 							mergeType2AndType3(horn_clauses[position_consequent],
 																 horn_clauses[position_antecedent]);
 							change = true;
+							if(change)
+								std::cout << "Something happened in 3" << std::endl;
 						}
 					}
 			}
@@ -227,6 +233,8 @@ void HornClauses::mc1ConsequentAndmc1Antecedent2(SetOfUnsignedPairs & prev_combi
 					mergeType2AndType2(horn_clauses[position_consequent_1],
 														 horn_clauses[position_consequent_2]);
 					change = true;
+					if(change)
+						std::cout << "Something happened in 4" << std::endl;
 				}
 			}
 	}
