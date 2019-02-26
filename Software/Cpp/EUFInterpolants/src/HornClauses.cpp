@@ -136,7 +136,7 @@ void HornClauses::mc2ConsequentAndmc2Antecedent(SetOfUnsignedPairs & prev_combin
 void HornClauses::mc1ConsequentAndmc1Antecedent(SetOfUnsignedPairs & prev_combinations,
 																								bool & change){
 	for(auto map_vertex_positions = mc1_consequent.begin();
-			map_vertex_positions != mc1_consequent.end(); ++ map_vertex_positions){
+			map_vertex_positions != mc1_consequent.end(); ++map_vertex_positions){
 		auto vertex = map_vertex_positions->first;
 		auto positions_consequent = map_vertex_positions->second;
 		for(unsigned position_consequent : positions_consequent){
@@ -147,7 +147,8 @@ void HornClauses::mc1ConsequentAndmc1Antecedent(SetOfUnsignedPairs & prev_combin
 					 existential(prev_combinations, std::make_pair(position_antecedent,
 																												 position_consequent))
 					 && horn_clauses[position_consequent]->getAntecedentValue()){
-					if(debugHornClauses)
+					//if(debugHornClauses)
+					if(true)
 						std::cout << "2. Combine " << position_consequent << " , "
 											<< position_antecedent << std::endl
 											<< *horn_clauses[position_consequent] << std::endl
@@ -223,7 +224,8 @@ void HornClauses::mc1ConsequentAndmc1Antecedent2(SetOfUnsignedPairs & prev_combi
 																												 position_consequent_1))
 					 && horn_clauses[position_consequent_1]->getAntecedentValue()
 					 && horn_clauses[position_consequent_2]->getAntecedentValue()){
-					if(debugHornClauses)
+					//if(debugHornClauses)
+					if(true)
 						std::cout << "4. Combine " << std::endl
 											<< *horn_clauses[position_consequent_1] << std::endl
 											<< " with " << std::endl << *horn_clauses[position_consequent_2]
