@@ -49,6 +49,8 @@ void HornClauses::conditionalElimination(){
   bool change = true;
   SetOfUnsignedPairs prev_combinations;
 	
+
+	
   while(change){
 		
     change = false;
@@ -137,9 +139,11 @@ void HornClauses::mc1ConsequentAndmc1Antecedent(SetOfUnsignedPairs & prev_combin
 																								bool & change){
 	for(auto map_vertex_positions = mc1_consequent.begin();
 			map_vertex_positions != mc1_consequent.end(); ++map_vertex_positions){
+		
 		auto vertex = map_vertex_positions->first;
 		auto positions_consequent = map_vertex_positions->second;
 		for(unsigned position_consequent : positions_consequent){
+			
 			for(unsigned position_antecedent : mc1_antecedent[vertex]){
 				if(existential(prev_combinations, std::make_pair(position_consequent,
 																												 position_antecedent))
@@ -172,9 +176,11 @@ void HornClauses::mc1ConsequentAndmc2Antecedent(SetOfUnsignedPairs & prev_combin
 	for(match1::iterator map_vertex_positions_consequent = mc1_consequent.begin();
 			map_vertex_positions_consequent != mc1_consequent.end();
 			++map_vertex_positions_consequent){
+		
 		auto vertex_consequent = map_vertex_positions_consequent->first;
 		auto positions_consequent = map_vertex_positions_consequent->second;
 		for(unsigned position_consequent :positions_consequent){
+			
 			for(match2::iterator map_equality_positions_antecedent = mc2_antecedent.begin();
 					map_equality_positions_antecedent != mc2_antecedent.end();
 					++map_equality_positions_antecedent){
@@ -213,9 +219,11 @@ void HornClauses::mc1ConsequentAndmc1Antecedent2(SetOfUnsignedPairs & prev_combi
 																								bool & change){
 	for(match1::iterator map_vertex_positions = mc1_consequent.begin();
 			map_vertex_positions != mc1_consequent.end(); ++map_vertex_positions){
+		
 		auto vertex_consequent_1 = map_vertex_positions->first;
 		auto positions_consequent_1 = map_vertex_positions->second;
 		for(unsigned position_consequent_1 : positions_consequent_1)
+			
 			for(unsigned position_consequent_2 : mc1_consequent[vertex_consequent_1]){
 				if(existential(prev_combinations, std::make_pair(position_consequent_1,
 																												 position_consequent_2))
