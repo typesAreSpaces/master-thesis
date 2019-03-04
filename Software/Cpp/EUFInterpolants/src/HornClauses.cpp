@@ -49,8 +49,6 @@ void HornClauses::conditionalElimination(){
   bool change = true;
   SetOfUnsignedPairs prev_combinations;
 	
-
-	
   while(change){
 		
     change = false;
