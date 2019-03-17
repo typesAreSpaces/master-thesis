@@ -9,7 +9,7 @@
 int main(int argc, char ** argv){
 	
 	// Testing EUFInterpolant algorithm
-  std::string file = "./tests/smt2lib_2/kapurEUFExample.smt2";
+  std::string file = "./tests/smt2lib_2/kapurEUFExample2.smt2";
   //std::string file = "/Users/joseabelcastellanosjoo/Documents/QF_UF/2018-Goel-hwbench/QF_UF_firewire_tree.5.prop3_ab_reg_max.smt2";
   //std::string file = "/Users/joseabelcastellanosjoo/Documents/QF_UF/2018-Goel-hwbench/QF_UF_firewire_tree.3.prop2_ab_reg_max.smt2";
   //std::string file = "/Users/joseabelcastellanosjoo/Documents/QF_UF/2018-Goel-hwbench/QF_UF_needham.3.prop4_ab_reg_max.smt2";
