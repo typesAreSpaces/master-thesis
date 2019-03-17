@@ -30,7 +30,7 @@ int main(int argc, char ** argv){
   Z3_ast input_formula =
 		Z3_ast_vector_get(ctx, conjunction_of_assertions, 0);
 	z3::expr input_formula_expr(ctx, input_formula);
-  std::set<std::string> symbols_to_elim = {"f"};
+  std::set<std::string> symbols_to_elim = {"v"};
 	
   EUFInterpolant eufI (ctx, input_formula, symbols_to_elim);
   eufI.algorithm();
