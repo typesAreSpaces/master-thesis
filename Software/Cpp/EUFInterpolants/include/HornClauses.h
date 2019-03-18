@@ -21,38 +21,38 @@ class HornClauses{
   std::vector<HornClause*>      horn_clauses;
   match1                        mc1_antecedent, mc1_consequent;
   match2                        mc2_antecedent, mc2_consequent;
-	match2                        reduced;
-	std::map<equality, unsigned>  reduced_length;
-	std::vector<Vertex*> &        local_terms;
+  match2                        reduced;
+  std::map<equality, unsigned>  reduced_length;
+  std::vector<Vertex*> &        local_terms;
   void mergeType2_1AndType3(HornClause *, HornClause *);
   void mergeType2_1AndType4(HornClause *, HornClause *);
   void mergeType2AndType2(HornClause *, HornClause *);
   void mergeType2AndType3(HornClause *, HornClause *);
   void mergeType2AndType4(HornClause *, HornClause *);
-	void simplify();
+  void simplify();
   void makeMatches(HornClause *, unsigned);
-	void combinationHelper(HornClause *);
-	void orient(HornClause *);
-	void mc2ConsequentAndmc2Antecedent(SetOfUnsignedPairs &, bool &);
-	void mc1ConsequentAndmc1Antecedent(SetOfUnsignedPairs &, bool &);
-	void mc1ConsequentAndmc2Antecedent(SetOfUnsignedPairs &, bool &);
-	void mc1ConsequentAndmc1Antecedent2(SetOfUnsignedPairs &, bool &);
-	template<typename A>
+  void combinationHelper(HornClause *);
+  void orient(HornClause *);
+  void mc2ConsequentAndmc2Antecedent(SetOfUnsignedPairs &, bool &);
+  void mc1ConsequentAndmc1Antecedent(SetOfUnsignedPairs &, bool &);
+  void mc1ConsequentAndmc2Antecedent(SetOfUnsignedPairs &, bool &);
+  void mc1ConsequentAndmc1Antecedent2(SetOfUnsignedPairs &, bool &);
+  template<typename A>
 	static void swap(std::vector<A> &, unsigned, unsigned);
-	Vertex * getVertex(unsigned);
-	Vertex * getVertex(Vertex *);
+  Vertex * getVertex(unsigned);
+  Vertex * getVertex(Vertex *);
 	
  public:
   HornClauses(std::vector<Vertex*> &);
   ~HornClauses();
   void addHornClause(UnionFind &, Vertex*, Vertex*, bool);
-	void addHornClause(UnionFind &, std::vector<equality> &, equality &, bool);
+  void addHornClause(UnionFind &, std::vector<equality> &, equality &, bool);
   void conditionalElimination();
-	unsigned size();
-	std::vector<HornClause*> getHornClauses();
+  unsigned size();
+  std::vector<HornClause*> getHornClauses();
   friend std::ostream & operator << (std::ostream &, HornClauses &);
-	std::ostream & printMatch1(std::ostream &, match1 &);
-	std::ostream & printMatch2(std::ostream &, match2 &);
+  std::ostream & printMatch1(std::ostream &, match1 &);
+  std::ostream & printMatch2(std::ostream &, match2 &);
 };
 
 #endif

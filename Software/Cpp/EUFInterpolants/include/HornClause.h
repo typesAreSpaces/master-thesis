@@ -10,11 +10,11 @@ typedef std::pair<Vertex*, Vertex*> equality;
 
 class HornClause{	
  private:
-	static UnionFind            global_UF;
-	static bool                 is_first_time;
-	static std::vector<Vertex*> global_terms;
-	UnionFind                   local_UF;	
-	bool                        antecedent_boolean_value, consequent_boolean_value;
+  static UnionFind            global_UF;
+  static bool                 is_first_time;
+  static std::vector<Vertex*> global_terms;
+  UnionFind                   local_UF;	
+  bool                        antecedent_boolean_value, consequent_boolean_value;
   std::vector<equality>       antecedent;
   equality                    consequent;
 	
@@ -31,12 +31,12 @@ class HornClause{
   std::vector<equality> & getAntecedent();
   equality & getConsequent();
   UnionFind & getLocalUF();
-	static UnionFind & getGlobalUF();
-	Vertex * getVertex(unsigned);
-	Vertex * getVertex(Vertex *);
-	friend bool operator <(HornClause &, HornClause &);
-	friend bool operator >(HornClause &, HornClause &);
-	friend std::ostream & operator << (std::ostream &, HornClause &);
+  static UnionFind & getGlobalUF();
+  Vertex * getVertex(unsigned);
+  Vertex * getVertex(Vertex *);
+  friend bool operator <(HornClause &, HornClause &);
+  friend bool operator >(HornClause &, HornClause &);
+  friend std::ostream & operator << (std::ostream &, HornClause &);
 };
 
 #endif

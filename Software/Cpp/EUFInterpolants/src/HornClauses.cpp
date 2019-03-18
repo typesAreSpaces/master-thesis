@@ -1,5 +1,6 @@
 #include "HornClauses.h"
 #define debugHornClauses false
+#define DEBUGMSG(X) if(debugHornClauses){ X }
 
 unsigned HornClauses::num_horn_clauses = 0;
 
@@ -48,11 +49,11 @@ void HornClauses::addHornClause(UnionFind & uf,
 void HornClauses::conditionalElimination(){
   bool change = true;
   SetOfUnsignedPairs prev_combinations;
-	
+  unsigned old_horn_clauses_size, new_horn_clauses_size;
   while(change){
-		
+	
     change = false;
-	unsigned oldSize = horn_clauses.size(), newSize;
+	old_horn_clauses_size = horn_clauses.size();
 
 	// 1.
     // This part covers cases:
@@ -61,14 +62,14 @@ void HornClauses::conditionalElimination(){
 	// Some Type 4 + Type 3 || Type 4
     // with mc2_consequent x mc2_antecedent
 	mc2ConsequentAndmc2Antecedent(prev_combinations, change);
-		
+
 	// 2.
     // This part covers cases:
     // 4. Type 2 + Type 3
     // 5. Type 2 + Type 4
     // with mc1_consequent x mc1_antecedent
 	mc1ConsequentAndmc1Antecedent(prev_combinations, change);
-    
+
 	// 3.
     // This part covers cases:
     // 4. Type 2 + Type 3
@@ -81,25 +82,26 @@ void HornClauses::conditionalElimination(){
 	// 3. Type 2 + Type 2
     // with mc1_consequent x mc1_consequent
     mc1ConsequentAndmc1Antecedent2(prev_combinations, change);
-		
+
 	// Update the match data structures
-	newSize = horn_clauses.size();
 	mc1_antecedent.clear();
 	mc1_consequent.clear();
 	mc2_antecedent.clear();
 	mc2_consequent.clear();
-	for(unsigned i = oldSize; i < newSize; ++i)
+	
+	new_horn_clauses_size = horn_clauses.size();
+	for(unsigned i = old_horn_clauses_size; i < new_horn_clauses_size; ++i)
 	  makeMatches(horn_clauses[i], i);
   }
 
   simplify();
+
+  // TODO: Complete this method
  
-  if(debugHornClauses){
-	std::cout << "Horn Clauses produced:" << std::endl;
-	for(match2::iterator it = reduced.begin(); it != reduced.end(); ++it)
-	  for(unsigned i = 0; i < reduced_length[it->first] + 1; ++i)
-		std::cout << *horn_clauses[it->second[i]] << std::endl;
-  }
+  DEBUGMSG(std::cout << "Horn Clauses produced:" << std::endl;
+		   for(match2::iterator it = reduced.begin(); it != reduced.end(); ++it)
+			 for(unsigned i = 0; i < reduced_length[it->first]; ++i)
+			   std::cout << *horn_clauses[it->second[i]] << std::endl;);
 }
 
 void HornClauses::mc2ConsequentAndmc2Antecedent(SetOfUnsignedPairs & prev_combinations,
@@ -114,17 +116,16 @@ void HornClauses::mc2ConsequentAndmc2Antecedent(SetOfUnsignedPairs & prev_combin
 														 position_antecedent))
 		   && existential(prev_combinations, std::make_pair(position_antecedent,
 															position_consequent))){
-		  if(debugHornClauses)
-			std::cout << "1. Combine " << std::endl
+		  DEBUGMSG(std::cout << "1. Combine " << std::endl
 					  << *horn_clauses[position_consequent] << std::endl
 					  << " with " << std::endl << *horn_clauses[position_antecedent]
-					  << std::endl;
+				   << std::endl;);
+			
 		  prev_combinations.insert(std::make_pair(position_consequent,
 												  position_antecedent));
 		  mergeType2_1AndType3(horn_clauses[position_consequent],
 							   horn_clauses[position_antecedent]);
-		  if(change)
-			std::cout << "Something happened in 1" << std::endl;
+		  change = true;
 		}
 	  }
   }
@@ -146,18 +147,17 @@ void HornClauses::mc1ConsequentAndmc1Antecedent(SetOfUnsignedPairs & prev_combin
 		   existential(prev_combinations, std::make_pair(position_antecedent,
 														 position_consequent))
 		   && horn_clauses[position_consequent]->getAntecedentValue()){
-		  if(debugHornClauses)
-			std::cout << "2. Combine " << position_consequent << " , "
+		  DEBUGMSG(std::cout << "2. Combine " << position_consequent << " , "
 					  << position_antecedent << std::endl
 					  << *horn_clauses[position_consequent] << std::endl
 					  << " with " << std::endl << *horn_clauses[position_antecedent]
-					  << std::endl;
+				   << std::endl;);
+			
 		  prev_combinations.insert(std::make_pair(position_consequent,
 												  position_antecedent));
 		  mergeType2AndType3(horn_clauses[position_consequent],
 							 horn_clauses[position_antecedent]);
-		  if(change)
-			std::cout << "Something happened in 2" << std::endl;
+		  change = true;
 		}
 	  }
 	}
@@ -188,18 +188,17 @@ void HornClauses::mc1ConsequentAndmc2Antecedent(SetOfUnsignedPairs & prev_combin
 			   existential(prev_combinations, std::make_pair(position_antecedent,
 															 position_consequent))
 			   && horn_clauses[position_consequent]->getAntecedentValue()){
-			  if(debugHornClauses)
-				std::cout << "3. Combine " << std::endl
-						  << *horn_clauses[position_consequent] << std::endl
-						  << " with " << std::endl
-						  << *horn_clauses[position_antecedent]
-						  << std::endl;
+			  DEBUGMSG(std::cout << "3. Combine " << std::endl
+					   << *horn_clauses[position_consequent] << std::endl
+					   << " with " << std::endl
+					   << *horn_clauses[position_antecedent]
+					   << std::endl;);
+				
 			  prev_combinations.insert(std::make_pair(position_consequent,
 													  position_antecedent));
 			  mergeType2AndType3(horn_clauses[position_consequent],
 								 horn_clauses[position_antecedent]);
-			  if(change)
-				std::cout << "Something happened in 3" << std::endl;
+			  change = true;
 			}
 		  }
 	  }
@@ -224,17 +223,16 @@ void HornClauses::mc1ConsequentAndmc1Antecedent2(SetOfUnsignedPairs & prev_combi
 														 position_consequent_1))
 		   && horn_clauses[position_consequent_1]->getAntecedentValue()
 		   && horn_clauses[position_consequent_2]->getAntecedentValue()){
-		  if(debugHornClauses)
-			std::cout << "4. Combine " << std::endl
-					  << *horn_clauses[position_consequent_1] << std::endl
-					  << " with " << std::endl << *horn_clauses[position_consequent_2]
-					  << std::endl;
+		  DEBUGMSG(std::cout << "4. Combine " << std::endl
+				   << *horn_clauses[position_consequent_1] << std::endl
+				   << " with " << std::endl << *horn_clauses[position_consequent_2]
+				   << std::endl;)
+			
 		  prev_combinations.insert(std::make_pair(position_consequent_1,
 												  position_consequent_2));
 		  mergeType2AndType2(horn_clauses[position_consequent_1],
 							 horn_clauses[position_consequent_2]);
-		  if(change)
-			std::cout << "Something happened in 4" << std::endl;
+		  change = true;
 		}
 	  }
   }
@@ -245,39 +243,46 @@ void HornClauses::mc1ConsequentAndmc1Antecedent2(SetOfUnsignedPairs & prev_combi
 // C, D -> a     C -> a
 // ---------------------
 //       C -> a
-void HornClauses::simplify(){
+void HornClauses::simplify() {
   unsigned position = 0;
-  bool change = false;
-	
+  bool change = true;
+
+  // Filter: Only Type 2 or Type 2.1 are allowed here		
   for(std::vector<HornClause*>::iterator it = horn_clauses.begin();
-	  it != horn_clauses.end(); ++it){
-	// Filter: Only Type 2 or Type 2.1 are allowed here		
+	  it != horn_clauses.end(); ++it){	
 	if((*it)->getAntecedentValue()
-	   && local_terms[(*it)->getConsequent().first->getId()]->getSymbolCommonQ())
+	   && local_terms[(*it)->getConsequent().first->getId()]->getSymbolCommonQ()){
 	  reduced[(*it)->getConsequent()].push_back(position);
+	}
 	++position;
   }
-
+  
   for(match2::iterator it = reduced.begin();
 	  it != reduced.end(); ++it){
 	unsigned length = it->second.size();
-	for(unsigned i = 0; i + 1 < length; ++i)
-	  for(unsigned j = i + 1; j < length; ++j){
-		do{
-		  if(*horn_clauses[it->second[i]] > *horn_clauses[it->second[j]]){
-			swap(horn_clauses, j, length - 1);
-			change = true;
-			--length;
-		  }
-		  else if(*horn_clauses[it->second[i]] < *horn_clauses[it->second[j]]){
-			swap(horn_clauses, i, j);
-			swap(horn_clauses, j, length - 1);
-			change = true;
-			--length;
-		  }
-		} while(change && (i < length));
-		reduced_length[it->first] = length;
+	for(unsigned i = 0; i + 1 < length; ++i){
+	  unsigned j = i + 1;
+	  while(change && j < length){
+		change = false;
+		unsigned i_position = it->second[i],
+		  j_position = it->second[j],
+		  l_position = it->second[length - 1];
+		if(*horn_clauses[i_position] > *horn_clauses[j_position]){
+		  change = true;
+		  swap(horn_clauses, j_position, l_position);
+		  --length;
+		}
+		else if(*horn_clauses[i_position] < *horn_clauses[j_position]){
+		  change = true;
+		  swap(horn_clauses, i_position, j_position);
+		  swap(horn_clauses, j_position, l_position);
+		  --length;
+		}
+		else
+		  ++j;
 	  }
+	}
+	reduced_length[it->first] = length;
   }
 }
 
@@ -294,8 +299,8 @@ void HornClauses::makeMatches(HornClause * hc, unsigned i){
     // then the equality is uncommon due to
     // the normalizing ordering used
     if(!equation_iterator->first->getSymbolCommonQ()){
-	  if(debugHornClauses)
-		std::cout << *hc << "\n was added to mc2_antecedent" << std::endl;
+	  DEBUGMSG(std::cout << *hc << "\n was added to mc2_antecedent" << std::endl;);
+		
       mc2_antecedent[std::make_pair(equation_iterator->first,
 									equation_iterator->second)].push_back(i);
 	}
@@ -304,15 +309,15 @@ void HornClauses::makeMatches(HornClause * hc, unsigned i){
       // the second term is common, then
       // there is nothing to do!
       if(!equation_iterator->second->getSymbolCommonQ()){
-		if(debugHornClauses)
-		  std::cout << *hc << "\n was added to mc1_antecedent" << std::endl;
+		DEBUGMSG(std::cout << *hc << "\n was added to mc1_antecedent" << std::endl;);
+		  
 		mc1_antecedent[equation_iterator->second].push_back(i);
 	  }
     }
   }
   if(!hc_consequent.first->getSymbolCommonQ()){
-	if(debugHornClauses)
-	  std::cout << *hc << "\n was added to mc2_consequent" << std::endl;
+	DEBUGMSG(std::cout << *hc << "\n was added to mc2_consequent" << std::endl;);
+	  
     mc2_consequent[std::make_pair(hc_consequent.first,
 								  hc_consequent.second)].push_back(i);
   }
@@ -321,8 +326,8 @@ void HornClauses::makeMatches(HornClause * hc, unsigned i){
     // the second term is common, then
     // there is nothing to do!
     if(!hc_consequent.second->getSymbolCommonQ()){
-	  if(debugHornClauses)
-		std::cout << *hc << "\n was added to mc1_consequent" << std::endl;
+	  DEBUGMSG(std::cout << *hc << "\n was added to mc1_consequent" << std::endl;);
+		
       mc1_consequent[hc_consequent.second].push_back(i);
 	}
   }
@@ -414,20 +419,18 @@ void HornClauses::mergeType2AndType4(HornClause * h1, HornClause * h2){
 }
 
 void HornClauses::combinationHelper(HornClause * hc){
-  if(debugHornClauses)
-	std::cout << "Temporal Horn Clause " << *hc << std::endl;
+  DEBUGMSG(std::cout << "Temporal Horn Clause " << *hc << std::endl;);
   hc->normalize();
-  if(debugHornClauses)
-	std::cout << "New Horn Clause" << std::endl
-			  << *hc << std::endl;
+  DEBUGMSG(std::cout << "New Horn Clause" << std::endl
+		   << *hc << std::endl;);
+	
   if(hc->checkTriviality()){
     delete hc;
-	if(debugHornClauses)
-	  std::cout << "It was deleted" << std::endl << std::endl;
+	DEBUGMSG(std::cout << "It was deleted" << std::endl << std::endl;);
     return;
   }
-  if(debugHornClauses)
-	std::cout << "It was added!" << std::endl << std::endl;
+  DEBUGMSG(std::cout << "It was added!" << std::endl << std::endl;);
+	
   orient(hc);
   horn_clauses.push_back(hc);
   ++num_horn_clauses;
@@ -439,8 +442,9 @@ unsigned HornClauses::size(){
 
 std::vector<HornClause*> HornClauses::getHornClauses(){
   std::vector<HornClause*> _hc;
-  for(match2::iterator it = reduced.begin(); it != reduced.end(); ++it)
-	for(unsigned i = 0; i < reduced_length[it->first] + 1; ++i)
+  
+  for(auto it = reduced.begin(); it != reduced.end(); ++it)
+	for(unsigned i = 0; i < reduced_length[it->first]; ++i)
 	  _hc.push_back(horn_clauses[it->second[i]]);
   return _hc;
 }
