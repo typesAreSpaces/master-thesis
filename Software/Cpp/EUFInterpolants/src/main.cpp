@@ -32,17 +32,17 @@ int main(int argc, char ** argv){
   z3::expr input_formula_expr(ctx, input_formula);
   std::set<std::string> symbols_to_elim = {"v"};
 	
-  EUFInterpolant eufI (ctx, input_formula, symbols_to_elim);
-  eufI.algorithm();
+  // EUFInterpolant eufI (ctx, input_formula, symbols_to_elim);
+  // eufI.algorithm();
 
-  std::cout << std::endl;
+  // std::cout << std::endl;
 	
-  Declarations decls (ctx, input_formula_expr);
-  std::cout << "Sort Declarations" << std::endl;
-  decls.display_sort_decls(std::cout);
-  std::cout << std::endl;
-  std::cout << "Func Declarations" << std::endl;
-  decls.display_func_decls(std::cout);
+  // Declarations decls (ctx, input_formula_expr);
+  // std::cout << "Sort Declarations" << std::endl;
+  // decls.display_sort_decls(std::cout);
+  // std::cout << std::endl;
+  // std::cout << "Func Declarations" << std::endl;
+  // decls.display_func_decls(std::cout);
 
   // ---------------------------------------------------------
   // The following code shows how to construct
@@ -87,6 +87,20 @@ int main(int argc, char ** argv){
   // std::cout << Z3_get_ast_id(ctx, f_x1_x2_x1) << std::endl;
   // std::cout << x2 << std::endl;
   // std::cout << Z3_get_ast_id(ctx, x2) << std::endl;
-	
+
+  // Example using substitution
+  // A Vector of (from) and a Vector of (to)
+  // are needed
+  z3::sort _sort = ctx.uninterpreted_sort("A");
+  z3::expr v = ctx.constant("v", _sort);
+  z3::expr w = ctx.constant("waaa", _sort);
+  z3::expr_vector v_vector(ctx);
+  z3::expr_vector w_vector(ctx);
+  w_vector.push_back(w);
+  v_vector.push_back(v);
+
+  std::cout << input_formula_expr << std::endl;
+  std::cout << input_formula_expr.substitute(v_vector, w_vector) << std::endl;
+  
   return 0;
 }
