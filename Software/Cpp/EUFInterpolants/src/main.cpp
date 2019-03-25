@@ -32,8 +32,8 @@ int main(int argc, char ** argv){
   z3::expr input_formula_expr(ctx, input_formula);
   std::set<std::string> symbols_to_elim = {"v"};
 	
-  // EUFInterpolant eufI (ctx, input_formula, symbols_to_elim);
-  // eufI.algorithm();
+  EUFInterpolant eufI (ctx, input_formula, symbols_to_elim);
+  eufI.algorithm();
 
   // std::cout << std::endl;
 	
@@ -99,8 +99,8 @@ int main(int argc, char ** argv){
   w_vector.push_back(w);
   v_vector.push_back(v);
 
-  std::cout << input_formula_expr << std::endl;
-  std::cout << input_formula_expr.substitute(v_vector, w_vector) << std::endl;
+  // std::cout << input_formula_expr << std::endl;
+  // std::cout << input_formula_expr.substitute(v_vector, w_vector) << std::endl;
   
   return 0;
 }

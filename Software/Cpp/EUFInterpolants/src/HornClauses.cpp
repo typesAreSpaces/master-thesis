@@ -503,8 +503,11 @@ std::ostream & HornClauses::printMatch2(std::ostream & os, match2 & m1){
 }
 
 std::ostream & operator << (std::ostream & os, HornClauses & hcs){
+  int i = 1;
   for(std::vector<HornClause*>::iterator _it = hcs.horn_clauses.begin();
-      _it != hcs.horn_clauses.end(); ++_it)
-	os << **_it << std::endl;
+      _it != hcs.horn_clauses.end(); ++_it){
+	os << i << ". " << **_it << std::endl;
+	++i;
+  }
   return os;
 }

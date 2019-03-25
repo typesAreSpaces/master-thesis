@@ -29,7 +29,7 @@ void EUFInterpolant::algorithm(){
   // UPDATE: IT LOOKS LIKE IT'S DONE!
   horn_clauses.conditionalElimination();
   // ------------------------------------
-  //std::cout << horn_clauses << std::endl;
+  std::cout << horn_clauses << std::endl;
   
   auto hCS = horn_clauses.getHornClauses();
   std::cout << "Horn equations produced:" << std::endl;
