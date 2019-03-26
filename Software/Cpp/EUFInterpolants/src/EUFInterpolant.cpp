@@ -16,6 +16,10 @@ EUFInterpolant::EUFInterpolant(Z3_context c, Z3_ast v,
 EUFInterpolant::~EUFInterpolant(){
 }
 
+std::vector<HornClause*> EUFInterpolant::getHornClauses(){
+  return horn_clauses.getHornClauses();
+}
+
 void EUFInterpolant::algorithm(){
   identifyCommonSymbols();
   // Congruence Closure Algorithm
@@ -29,10 +33,11 @@ void EUFInterpolant::algorithm(){
   // UPDATE: IT LOOKS LIKE IT'S DONE!
   horn_clauses.conditionalElimination();
   // ------------------------------------
+  std::cout << "All Horn equations produced by the algorithm:" << std::endl;
   std::cout << horn_clauses << std::endl;
   
   auto hCS = horn_clauses.getHornClauses();
-  std::cout << "Horn equations produced:" << std::endl;
+  std::cout << "Candidate Horn equations produced:" << std::endl;
   for(auto it = hCS.begin();
 	  it != hCS.end(); ++it){
 	std::cout << **it << std::endl;
@@ -57,9 +62,8 @@ void EUFInterpolant::algorithm(){
 	display_ast(ctx, stdout, disequation->second);
 	std::cout << std::endl;
   }
-
+  
   // Continue Here
-	
 }
 
 void EUFInterpolant::identifyCommonSymbols(){

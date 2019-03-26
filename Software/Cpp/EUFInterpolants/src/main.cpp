@@ -32,8 +32,13 @@ int main(int argc, char ** argv){
   z3::expr input_formula_expr(ctx, input_formula);
   std::set<std::string> symbols_to_elim = {"v"};
 	
-  EUFInterpolant eufI (ctx, input_formula, symbols_to_elim);
-  eufI.algorithm();
+  EUFInterpolant a (ctx, input_formula, symbols_to_elim);
+  a.algorithm();
+
+  std::cout << "Wait wuttt?" << std::endl;
+  auto b = a.getHornClauses();
+  for(auto x : b)
+	std::cout << *x << std::endl;
 
   // std::cout << std::endl;
 	

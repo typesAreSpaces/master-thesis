@@ -16,15 +16,15 @@ class Terms{
   std::vector<Vertex*>                    terms;
   std::set<std::string>                   symbols_to_elim; 
   std::vector<std::pair<Z3_ast, Z3_ast> > equations, disequations;
-	UnionFind                               equivalence_class;
+  UnionFind                               equivalence_class;
 	
  private:
-	void exitf(const char *);
+  void exitf(const char *);
   void unreachable();
   void traverse(Z3_context, Z3_ast,
-						 unsigned, unsigned &, std::set<std::string> &);
+				unsigned, unsigned &, std::set<std::string> &);
   void traverse(Z3_context, Z3_ast,
-						 std::set<std::string> &);
+				std::set<std::string> &);
   
  public:
   Terms(Z3_context, Z3_ast);
@@ -33,16 +33,16 @@ class Terms{
   ~Terms();
   std::vector<Vertex*> & getTerms();
   UnionFind & getEquivalenceClass();
-	Vertex * getOriginalVertex(unsigned);
-	Vertex * getVertex(unsigned);
+  Vertex * getOriginalVertex(unsigned);
+  Vertex * getVertex(unsigned);
   Vertex * getVertex(Vertex*);
   void merge(Vertex*, Vertex*);
   void rotate(Vertex*, Vertex*);
   unsigned getRootNum();
   std::set<std::string> & getSymbolsToElim();
-	std::vector<std::pair<Z3_ast, Z3_ast> > & getEquations();
-	std::vector<std::pair<Z3_ast, Z3_ast> > & getDisequations();
-	friend std::ostream & operator <<(std::ostream &, Terms &);
+  std::vector<std::pair<Z3_ast, Z3_ast> > & getEquations();
+  std::vector<std::pair<Z3_ast, Z3_ast> > & getDisequations();
+  friend std::ostream & operator <<(std::ostream &, Terms &);
 };
 
 #endif

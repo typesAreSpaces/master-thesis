@@ -18,7 +18,6 @@ class HornClause{
   std::vector<equality>       antecedent;
   equality                    consequent;
 	
-	
  public:
   HornClause(UnionFind &, std::vector<equality> &, equality &, std::vector<Vertex*> &);
   HornClause(UnionFind &, Vertex*, Vertex*, std::vector<Vertex*> &, bool);

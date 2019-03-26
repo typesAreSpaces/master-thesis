@@ -14,17 +14,18 @@ class EUFInterpolant {
  private:
   CongruenceClosure congruence_closure;
   HornClauses       horn_clauses;
-	Z3_context        ctx;
-	symbolLocations   symbol_locations;
+  Z3_context        ctx;
+  symbolLocations   symbol_locations;
   void identifyCommonSymbols();
   void setCommonRepresentatives();
   void eliminationOfUncommonFSyms();
-	void addNegativeHornClauses();
+  void addNegativeHornClauses();
   
  public:
   EUFInterpolant(Z3_context, Z3_ast);
   EUFInterpolant(Z3_context, Z3_ast, std::set<std::string> &);
   ~EUFInterpolant();
+  std::vector<HornClause*> getHornClauses();
   void algorithm();
   friend std::ostream & operator << (std::ostream &, EUFInterpolant &);
 };
