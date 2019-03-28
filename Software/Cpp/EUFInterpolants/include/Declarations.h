@@ -29,6 +29,9 @@ public:
 	void display_sort_decls(std:: ostream &);
 	void display_sort_decl(std::ostream & , z3::sort &);
 	void display_func_decls(std::ostream &);
+	std::vector<std::string> getNames();
+	std::vector<z3::sort> getSorts();
+	std::vector<z3::func_decl> getFunctions();
 };
 
 #endif

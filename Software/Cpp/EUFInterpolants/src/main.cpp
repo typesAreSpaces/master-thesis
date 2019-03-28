@@ -41,21 +41,37 @@ int main(int argc, char ** argv){
 	std::cout << *x << std::endl;
 
   // std::cout << std::endl;
-	
-  // Declarations decls (ctx, input_formula_expr);
-  // std::cout << "Sort Declarations" << std::endl;
-  // decls.display_sort_decls(std::cout);
-  // std::cout << std::endl;
-  // std::cout << "Func Declarations" << std::endl;
-  // decls.display_func_decls(std::cout);
 
-  // ---------------------------------------------------------
-  // The following code shows how to construct
-  // new terms using the z3++ api. We notice
-  // the context does not allow symbol duplication
-  // Test used:
-  // "./tests/smt2lib_2/kapurEUFExample2_4.smt2"
-  // ---------------------------------------------------------
+  // API to obtain declarations
+  // of formulas
+  Declarations decls (ctx, input_formula_expr);
+  std::cout << "Sort Declarations" << std::endl;
+  decls.display_sort_decls(std::cout);
+  std::cout << std::endl;
+  std::cout << "Func Declarations" << std::endl;
+  decls.display_func_decls(std::cout);
+
+  std::cout << "Testing the new get functors" << std::endl;
+  auto funs = decls.getFunctions();
+  for(auto x : funs)
+	std::cout << x.name() << std::endl;
+
+  // Attempting to construct a formula using funs
+  z3::sort _sort_2 = ctx.uninterpreted_sort("A");
+  z3::expr x_2 = ctx.constant("x1", _sort_2);
+  z3::expr f_x_x_2 = funs[1](x_2, x_2);
+  std::cout << "Formula constructed from funs" << std::endl;
+  std::cout << f_x_x_2 << std::endl;
+  std::cout << Z3_get_ast_id(ctx, f_x_x_2) << std::endl;
+  // It worked as expected
+  
+  // // ---------------------------------------------------------
+  // // The following code shows how to construct
+  // // new terms using the z3++ api. We notice
+  // // the context does not allow symbol duplication
+  // // Test used:
+  // // "./tests/smt2lib_2/kapurEUFExample2_4.smt2"
+  // // ---------------------------------------------------------
   // z3::sort _sort = ctx.uninterpreted_sort("A");
   // z3::expr x = ctx.constant("x1", _sort);
   // z3::func_decl f = z3::function("f", _sort, _sort, _sort);
@@ -63,20 +79,22 @@ int main(int argc, char ** argv){
   // std::cout << "Input formula\n";
   // std::cout << input_formula_expr << std::endl;
   // std::cout << x << std::endl;
-
+  // // Obtaining the ids of the 'new expressions'
+  // // show that the Z3 manager doesn't create a
+  // // new node for them when they have already
+  // // been created
   // std::cout << "Ids" << std::endl;
   // std::cout << Z3_get_ast_id(ctx, x) << std::endl;
-
   // std::cout << f_x_x << std::endl;
   // std::cout << Z3_get_ast_id(ctx, f_x_x) << std::endl;
 
-  // ---------------------------------------------------------
-  // The following code shows how to construct
-  // new terms using the z3++ api. We notice
-  // the context does not allow symbol duplication
-  // Test used:
-  // "./tests/smt2lib_2/kapurEUFExample2_5.smt2"
-  // ---------------------------------------------------------
+  // // ---------------------------------------------------------
+  // // The following code shows how to construct
+  // // new terms using the z3++ api. We notice
+  // // the context does not allow symbol duplication
+  // // Test used:
+  // // "./tests/smt2lib_2/kapurEUFExample2_5.smt2"
+  // // ---------------------------------------------------------
   // z3::sort _sort = ctx.uninterpreted_sort("A");
   // z3::sort_vector _sorts(ctx);
   // _sorts.push_back(_sort), _sorts.push_back(_sort), _sorts.push_back(_sort);
@@ -93,17 +111,17 @@ int main(int argc, char ** argv){
   // std::cout << x2 << std::endl;
   // std::cout << Z3_get_ast_id(ctx, x2) << std::endl;
 
-  // Example using substitution
-  // A Vector of (from) and a Vector of (to)
-  // are needed
-  z3::sort _sort = ctx.uninterpreted_sort("A");
-  z3::expr v = ctx.constant("v", _sort);
-  z3::expr w = ctx.constant("waaa", _sort);
-  z3::expr_vector v_vector(ctx);
-  z3::expr_vector w_vector(ctx);
-  w_vector.push_back(w);
-  v_vector.push_back(v);
 
+  // // Example using substitution
+  // // A Vector of (from) and a Vector of (to)
+  // // are needed
+  // z3::sort _sort = ctx.uninterpreted_sort("A");
+  // z3::expr v = ctx.constant("v", _sort);
+  // z3::expr w = ctx.constant("waaa", _sort);
+  // z3::expr_vector v_vector(ctx);
+  // z3::expr_vector w_vector(ctx);
+  // w_vector.push_back(w);
+  // v_vector.push_back(v);
   // std::cout << input_formula_expr << std::endl;
   // std::cout << input_formula_expr.substitute(v_vector, w_vector) << std::endl;
   
