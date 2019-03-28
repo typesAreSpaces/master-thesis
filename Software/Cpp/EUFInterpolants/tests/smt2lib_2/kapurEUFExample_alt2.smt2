@@ -1,0 +1,18 @@
+(declare-sort A 0)
+(declare-fun z1 () A)
+(declare-fun z2 () A)
+(declare-fun y1 () A)
+(declare-fun y2 () A)
+(declare-fun s1 () A)
+(declare-fun s2 () A)
+(declare-fun v () A)
+(declare-fun t () A)
+(declare-fun u () A)
+(declare-fun f (A A A A) A)
+
+(define-fun A1 () Bool
+	    (and (= (f z1 v u u) s1)
+		(= (f z2 v u u) s2)
+		(= (f (f y1 v u u) (f y2 v u u) u u) t))
+)
+(assert A1)

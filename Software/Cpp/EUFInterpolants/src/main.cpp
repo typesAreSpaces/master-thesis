@@ -5,6 +5,7 @@
 
 #include "EUFInterpolant.h"
 #include "Declarations.h"
+#include "ConvertReprToZ3.h"
 
 int main(int argc, char ** argv){
 	
@@ -19,7 +20,8 @@ int main(int argc, char ** argv){
   cfg.set("MODEL", true);
   cfg.set("TRACE", false);
   z3::context ctx(cfg);
-	
+  z3::sort sort_A = ctx.uninterpreted_sort("A");
+  
   // I'm using Z3_ast_vector_get
   // because parsing from a file using 
   // Z3, the API only provides 
@@ -32,38 +34,26 @@ int main(int argc, char ** argv){
   z3::expr input_formula_expr(ctx, input_formula);
   std::set<std::string> symbols_to_elim = {"v"};
 	
-  EUFInterpolant a (ctx, input_formula, symbols_to_elim);
-  a.algorithm();
-
-  std::cout << "Wait wuttt?" << std::endl;
-  auto b = a.getHornClauses();
-  for(auto x : b)
-	std::cout << *x << std::endl;
-
-  // std::cout << std::endl;
-
-  // API to obtain declarations
-  // of formulas
-  Declarations decls (ctx, input_formula_expr);
-  std::cout << "Sort Declarations" << std::endl;
-  decls.display_sort_decls(std::cout);
+  EUFInterpolant example (ctx, input_formula, symbols_to_elim);
+  example.algorithm();
   std::cout << std::endl;
-  std::cout << "Func Declarations" << std::endl;
-  decls.display_func_decls(std::cout);
+  
+  std::cout << "Testing Converter" << std::endl;
+  auto horn_clauses = example.getHornClauses();
+  Converter cvt (ctx, sort_A);
+  for(auto x : horn_clauses){
+	std::cout << *x << std::endl;
+	std::cout << cvt.convert(x) << std::endl;
+  }
 
-  std::cout << "Testing the new get functors" << std::endl;
-  auto funs = decls.getFunctions();
-  for(auto x : funs)
-	std::cout << x.name() << std::endl;
-
-  // Attempting to construct a formula using funs
-  z3::sort _sort_2 = ctx.uninterpreted_sort("A");
-  z3::expr x_2 = ctx.constant("x1", _sort_2);
-  z3::expr f_x_x_2 = funs[1](x_2, x_2);
-  std::cout << "Formula constructed from funs" << std::endl;
-  std::cout << f_x_x_2 << std::endl;
-  std::cout << Z3_get_ast_id(ctx, f_x_x_2) << std::endl;
-  // It worked as expected
+  // // API to obtain declarations
+  // // of formulas
+  // Declarations decls (ctx, input_formula_expr);
+  // std::cout << "Sort Declarations" << std::endl;
+  // decls.display_sort_decls(std::cout);
+  // std::cout << std::endl;
+  // std::cout << "Func Declarations" << std::endl;
+  // decls.display_func_decls(std::cout);
   
   // // ---------------------------------------------------------
   // // The following code shows how to construct
@@ -110,7 +100,6 @@ int main(int argc, char ** argv){
   // std::cout << Z3_get_ast_id(ctx, f_x1_x2_x1) << std::endl;
   // std::cout << x2 << std::endl;
   // std::cout << Z3_get_ast_id(ctx, x2) << std::endl;
-
 
   // // Example using substitution
   // // A Vector of (from) and a Vector of (to)

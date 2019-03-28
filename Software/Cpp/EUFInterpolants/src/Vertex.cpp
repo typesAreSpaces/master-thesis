@@ -3,23 +3,23 @@
 unsigned Vertex::total_num_vertex = 0;
 
 void Vertex::addPredecessor(unsigned i){
-	if(!defined)
-		predecessors.add(i);
+  if(!defined)
+	predecessors.add(i);
 }
 
 Vertex::Vertex(std::string name, unsigned arity) : name(name),
-																									 is_symbol_common(true),
-																									 defined(false),
-																									 id(total_num_vertex),
-																									 arity(arity){
+												   is_symbol_common(true),
+												   defined(false),
+												   id(total_num_vertex),
+												   arity(arity){
   ++total_num_vertex;
-}
+												   }
 
 Vertex::Vertex() : is_symbol_common(true),
-									 defined(false),
-									 id(total_num_vertex){
+				   defined(false),
+				   id(total_num_vertex){
   ++total_num_vertex;
-									 }
+				   }
 
 Vertex::~Vertex(){};
 
@@ -32,10 +32,10 @@ void Vertex::setArity(unsigned _arity){
 }
 
 void Vertex::addSuccessor(Vertex * v){
-	if(!defined){
-		successors.push_back(v);
-		v->addPredecessor(id);
-	}
+  if(!defined){
+	successors.push_back(v);
+	v->addPredecessor(id);
+  }
 }
 
 void Vertex::setSymbolCommonQ(bool b){
@@ -47,7 +47,7 @@ void Vertex::mergePredecessors(Vertex * v){
 }
 
 void Vertex::define(){
-	defined = true;
+  defined = true;
 }
 
 std::string Vertex::getName(){
@@ -60,7 +60,7 @@ std::string Vertex::to_string(){
   std::string _temp = name + "(";
   unsigned _counter = 0;
   for(std::vector<Vertex*>::iterator it = successors.begin();
-			it != successors.end(); ++it){
+	  it != successors.end(); ++it){
     _temp += (*it)->to_string();
     ++_counter;
     if(_counter < arity)
@@ -127,7 +127,7 @@ std::ostream & operator << (std::ostream & os, Vertex & v){
   os << "Symbol: " << v.to_string() << std::endl;
   os << "ID: " << v.id << std::endl;
   os << "Predecessors:" << std::endl;
-	os << v.predecessors << std::endl;
+  os << v.predecessors << std::endl;
   os << "Successors:" << std::endl;
   for(auto it = v.successors.begin(); it != v.successors.end(); ++it){
     os << (*it)->to_string();
@@ -154,12 +154,12 @@ bool operator < (const Vertex & u, const Vertex & v){
       return false;
     else{
       if(u.arity <  v.arity)
-				return true;
+		return true;
       else{
-				if(u.arity > v.arity)
-					return false;
-				else
-					return (u.id < v.id);
+		if(u.arity > v.arity)
+		  return false;
+		else
+		  return (u.id < v.id);
       }
     }
   }

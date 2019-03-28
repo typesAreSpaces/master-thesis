@@ -63,9 +63,8 @@ void Declarations::display_sort_decl(std::ostream& out, z3::sort& s) {
 
 
 void Declarations::display_func_decls(std::ostream& out) {
-  for (size_t i = 0; i < funs.size(); ++i) {
-	display_func_decl(out, funs[i]);
-  }
+  for (auto it = funs.begin(); it != funs.end(); ++it)
+	display_func_decl(out, *it);
 }
 
 bool Declarations::contains_id(unsigned id) const {
