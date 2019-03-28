@@ -1,9 +1,0 @@
-- EUFInterpolant.h
-  vector<HornClause*> (collection of Horn Clauses)
-  - HornClauses.h		
-  	vector<HornClause*> (collection of Horn Clauses)
-	- HornClause.h
-	  equality := pair<Vertex*, Vertex*> [consequent]
-	  vector<equality> (ANDS) [antecedent]
-	  vector<Vertex*> [global_terms]
-	  - Vertex.h
