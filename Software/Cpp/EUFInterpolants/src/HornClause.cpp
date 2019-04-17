@@ -26,7 +26,6 @@ HornClause::HornClause(UnionFind & uf,
   consequent_boolean_value = consequent_boolean_value &&		
 	getVertex(consequent.first)->getSymbolCommonQ() &&
 	getVertex(consequent.second)->getSymbolCommonQ();
-
   }
 
 // It's assumed the arities of Vertex * u,

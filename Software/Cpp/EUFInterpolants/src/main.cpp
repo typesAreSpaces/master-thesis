@@ -11,6 +11,7 @@ int main(int argc, char ** argv){
 	
   // Testing EUFInterpolant algorithm
   std::string file = "./tests/smt2lib_2/kapurEUFExample.smt2";
+  // std::string file = "./tests/smt2lib_2/kapurEUFExample2.smt2";
   //std::string file = "/Users/joseabelcastellanosjoo/Documents/QF_UF/2018-Goel-hwbench/QF_UF_firewire_tree.5.prop3_ab_reg_max.smt2";
   //std::string file = "/Users/joseabelcastellanosjoo/Documents/QF_UF/2018-Goel-hwbench/QF_UF_firewire_tree.3.prop2_ab_reg_max.smt2";
   //std::string file = "/Users/joseabelcastellanosjoo/Documents/QF_UF/2018-Goel-hwbench/QF_UF_needham.3.prop4_ab_reg_max.smt2";
@@ -33,18 +34,19 @@ int main(int argc, char ** argv){
 	Z3_ast_vector_get(ctx, conjunction_of_assertions, 0);
   z3::expr input_formula_expr(ctx, input_formula);
   std::set<std::string> symbols_to_elim = {"v"};
-	
-  EUFInterpolant example (ctx, input_formula, symbols_to_elim);
+  
+  Converter cvt (ctx, sort_A);	
+  EUFInterpolant example (ctx, input_formula, symbols_to_elim, cvt);
   example.algorithm();
   std::cout << std::endl;
   
-  std::cout << "Testing Converter" << std::endl;
-  auto horn_clauses = example.getHornClauses();
-  Converter cvt (ctx, sort_A);
-  for(auto x : horn_clauses){
-	std::cout << *x << std::endl;
-	std::cout << cvt.convert(x) << std::endl;
-  }
+  // std::cout << "Testing Converter" << std::endl;
+  // auto horn_clauses = example.getHornClauses();
+  // Converter cvt (ctx, sort_A);	
+  // for(auto x : horn_clauses){
+  // 	std::cout << *x << std::endl;
+  // 	std::cout << cvt.convert(x) << std::endl;
+  // }
 
   // // API to obtain declarations
   // // of formulas

@@ -1,5 +1,6 @@
 #include "ConvertReprToZ3.h"
 
+// All sorts are the same ... ?
 Converter::Converter(z3::context & c, z3::sort & s) :
   ctx(c), sort_A(s) {
 }

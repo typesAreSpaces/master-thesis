@@ -1,14 +1,21 @@
 #include "EUFInterpolant.h"
 
-EUFInterpolant::EUFInterpolant(Z3_context c, Z3_ast v) :
+
+EUFInterpolant::EUFInterpolant(Z3_context c, Z3_ast v, Converter & cvt) :
   congruence_closure(c, v),
+  cvt(cvt),
   horn_clauses(congruence_closure.getTerms()),
   ctx(c) {
+  unsigned size_congruence_closure = Vertex::getTotalNumVertex();
+  contradiction = std::make_pair(congruence_closure.getVertex(size_congruence_closure - 1),
+								 congruence_closure.getVertex(size_congruence_closure - 1));
   }
 
 EUFInterpolant::EUFInterpolant(Z3_context c, Z3_ast v,
-							   std::set<std::string> & symbols_to_elim) :
+							   std::set<std::string> & symbols_to_elim,
+							   Converter & cvt) :
   congruence_closure(c, v, symbols_to_elim),
+  cvt(cvt),
   horn_clauses(congruence_closure.getTerms()),
   ctx(c) {
   }
@@ -33,37 +40,49 @@ void EUFInterpolant::algorithm(){
   // UPDATE: IT LOOKS LIKE IT'S DONE!
   horn_clauses.conditionalElimination();
   // ------------------------------------
-  std::cout << "All Horn equations produced by the algorithm:" << std::endl;
-  std::cout << horn_clauses << std::endl;
-  
-  auto hCS = horn_clauses.getHornClauses();
-  std::cout << "Candidate Horn equations produced:" << std::endl;
-  for(auto it = hCS.begin();
-	  it != hCS.end(); ++it){
-	std::cout << **it << std::endl;
-  }
-	
-  std::cout << "Original Equations:" << std::endl;
-  auto equations = congruence_closure.getEquations();
-  for(auto equation = equations.begin();
-	  equation != equations.end(); ++equation){
-	display_ast(ctx, stdout, equation->first);
-	std::cout << " = ";
-	display_ast(ctx, stdout, equation->second);
-	std::cout << std::endl;
-  }
 
-  std::cout << "Original Disequations:" << std::endl;
-  auto disequations = congruence_closure.getDisequations();
-  for(auto disequation = disequations.begin();
-	  disequation != disequations.end(); ++disequation){
-	display_ast(ctx, stdout, disequation->first);
-	std::cout << " ~= ";
-	display_ast(ctx, stdout, disequation->second);
-	std::cout << std::endl;
-  }
+  // std::cout << "All Horn equations produced by the algorithm:" << std::endl;
+  // std::cout << horn_clauses << std::endl;
+  
+  auto horn_clauses_produced = horn_clauses.getHornClauses();
+  // std::cout << "Candidate Horn equations produced:" << std::endl;
+  // for(auto it = horn_clauses_produced.begin();
+  // 	  it != horn_clauses_produced.end(); ++it){
+  // 	std::cout << **it << std::endl;
+  // }
+	
+  // std::cout << "Original Equations:" << std::endl;
+  // auto equations = congruence_closure.getEquations();
+  // for(auto equation = equations.begin();
+  // 	  equation != equations.end(); ++equation){
+  // 	display_ast(ctx, stdout, equation->first);
+  // 	std::cout << " = ";
+  // 	display_ast(ctx, stdout, equation->second);
+  // 	std::cout << std::endl;
+  // }
+
+  // std::cout << "Original Disequations:" << std::endl;
+  // auto disequations = congruence_closure.getDisequations();
+  // for(auto disequation = disequations.begin();
+  // 	  disequation != disequations.end(); ++disequation){
+  // 	display_ast(ctx, stdout, disequation->first);
+  // 	std::cout << " ~= ";
+  // 	display_ast(ctx, stdout, disequation->second);
+  // 	std::cout << std::endl;
+  // }
   
   // Continue Here
+  // Function P {
+  // Input: 
+  // -) equations
+  // -) set of uncommon terms that I can get rid of 
+  // -) horn_clauses_produced
+  // }
+  auto S = getUncommonTermsToElim(horn_clauses_produced);
+  for(auto it = S.begin(); it != S.end(); ++it)
+	std::cout << *it << std::endl;
+  
+  // Continue here
 }
 
 void EUFInterpolant::identifyCommonSymbols(){
@@ -186,6 +205,10 @@ void EUFInterpolant::addNegativeHornClauses(){
 	rhs = Z3_get_ast_id(ctx, disequation->second);
 	lhs_vertex = congruence_closure.getVertex(lhs);
 	rhs_vertex = congruence_closure.getVertex(rhs);
+
+	// std::cout << "Inside addNegativeHornClauses" << std::endl;
+	// std::cout << lhs_vertex->to_string() << " ~= ";
+	// std::cout << rhs_vertex->to_string() << std::endl;
 	
 	// It's assumed function symbol names
 	// have unique arities
@@ -200,18 +223,31 @@ void EUFInterpolant::addNegativeHornClauses(){
 	}
 	else{
 	  // Just add HornClauses using the representative
-	  unsigned _sizeCC = Vertex::getTotalNumVertex();
-	  equality fFalse = std::make_pair(congruence_closure.getVertex(_sizeCC - 1),
-									   congruence_closure.getVertex(_sizeCC - 1));
 	  std::vector<equality> _antecedent;
 	  _antecedent.push_back(std::make_pair(lhs_vertex, rhs_vertex));
+	  // Add HornClauses 'directly' using the antecedent
+	  // and contradiction as consequent
 	  horn_clauses.addHornClause(congruence_closure.getEquivalenceClass(),
 								 _antecedent,
-								 fFalse,
+								 contradiction,
 								 true);
 	}
   }
   return;
+}
+
+std::set<unsigned> EUFInterpolant::getUncommonTermsToElim(std::vector<HornClause*> & horn_clauses){
+  std::set<unsigned> answer;
+  for(auto horn_clause = horn_clauses.begin();
+	  horn_clause != horn_clauses.end(); horn_clause++){
+	Vertex* v = (**horn_clause).getConsequent().second;
+	// v is a pointer to a Vertex
+	// which is only added to 'answer' if it
+	// is uncommon
+	if(!v->getSymbolCommonQ())
+	  answer.insert(Z3_get_ast_id(ctx, cvt.convert(v)));
+  }
+  return answer;
 }
 
 // Not implemented yet!
