@@ -7,8 +7,8 @@ EUFInterpolant::EUFInterpolant(Z3_context c, Z3_ast v, Converter & cvt) :
   horn_clauses(congruence_closure.getTerms()),
   ctx(c) {
   unsigned size_congruence_closure = Vertex::getTotalNumVertex();
-  contradiction = std::make_pair(congruence_closure.getVertex(size_congruence_closure - 1),
-								 congruence_closure.getVertex(size_congruence_closure - 1));
+  auto last_vertex = congruence_closure.getVertex(size_congruence_closure - 1);
+  contradiction = std::make_pair(last_vertex, last_vertex);
   }
 
 EUFInterpolant::EUFInterpolant(Z3_context c, Z3_ast v,
@@ -18,6 +18,9 @@ EUFInterpolant::EUFInterpolant(Z3_context c, Z3_ast v,
   cvt(cvt),
   horn_clauses(congruence_closure.getTerms()),
   ctx(c) {
+  unsigned size_congruence_closure = Vertex::getTotalNumVertex();
+  auto last_vertex = congruence_closure.getVertex(size_congruence_closure - 1);
+  contradiction = std::make_pair(last_vertex, last_vertex);
   }
 
 EUFInterpolant::~EUFInterpolant(){
@@ -28,6 +31,7 @@ std::vector<HornClause*> EUFInterpolant::getHornClauses(){
 }
 
 void EUFInterpolant::algorithm(){
+  
   auto terms = congruence_closure.getTerms();
   identifyCommonSymbols();
   // Congruence Closure Algorithm
@@ -41,12 +45,12 @@ void EUFInterpolant::algorithm(){
   // UPDATE: IT LOOKS LIKE IT'S DONE!
   horn_clauses.conditionalElimination();
   // ------------------------------------
-
   // std::cout << "All Horn equations produced by the algorithm:" << std::endl;
   // std::cout << horn_clauses << std::endl;
+  
   auto horn_clauses_produced = horn_clauses.getHornClauses();
   auto horn_clauses_produced_z3 = cvt.convert(horn_clauses_produced);
-
+  
   // std::cout << "Candidate Horn equations produced: start" << std::endl;
   // unsigned l = horn_clauses_produced.size();
   // for(unsigned i = 0; i < l; ++i){
@@ -248,7 +252,7 @@ void EUFInterpolant::addNegativeHornClauses(){
 std::set<unsigned> EUFInterpolant::getUncommonTermsToElim(std::vector<HornClause*> & horn_clauses){
   std::set<unsigned> answer;
   for(auto horn_clause = horn_clauses.begin();
-	  horn_clause != horn_clauses.end(); horn_clause++){
+	  horn_clause != horn_clauses.end(); ++horn_clause){
 	Vertex* v = (**horn_clause).getConsequent().second;
 	// v is a pointer to a Vertex
 	// which is only added to 'answer' if it
@@ -267,7 +271,8 @@ z3::expr EUFInterpolant::exponentialElimination(z3::expr_vector & equations,
   else{
 	auto element = terms_elim.begin();
 	terms_elim.erase(element);
-	z3::expr_vector new_equations(ctx);
+	//z3::expr_vector new_equations(ctx);
+	auto new_equations = equations;
 	return exponentialElimination(new_equations, terms_elim, hcs);
   }
 }
