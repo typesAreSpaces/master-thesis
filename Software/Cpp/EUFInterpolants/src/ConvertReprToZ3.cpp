@@ -37,10 +37,33 @@ z3::expr Converter::convert(std::vector<equality> & eqs){
   return formula;
 }
 
+z3::expr_vector Converter::convert(std::vector<std::pair<Z3_ast, Z3_ast> > & eqs){
+  z3::expr_vector answer(ctx);
+  for(auto it = eqs.begin(); it != eqs.end(); ++it)
+    answer.push_back(z3::expr(ctx, it->first) == z3::expr(ctx, it->second));
+  return answer;
+}
+
 z3::expr Converter::convert(HornClause * hc){
   z3::expr formula(ctx);
   auto antecedent = hc->getAntecedent();
   auto consequent = hc->getConsequent();
   formula = implies(convert(antecedent), convert(consequent));
+  return formula;
+}
+
+z3::expr_vector Converter::convert(std::vector<HornClause*> & hcs){
+  z3::expr_vector answer(ctx);
+  for(auto it = hcs.begin(); it != hcs.end(); ++it)
+	answer.push_back(convert(*it));
+  return answer;
+}
+
+z3::expr Converter::makeConjunction(z3::expr_vector & v){
+  unsigned length = v.size();
+  z3::expr formula(ctx);
+  formula = v[0];
+  for(unsigned i = 1; i < length; ++i)
+	formula = formula && v[i];
   return formula;
 }

@@ -19,10 +19,10 @@ void Terms::unreachable(){
 
 // This method extracts terms and symbols
 void Terms::traverse(Z3_context c, Z3_ast v,
-									 unsigned numTerms, unsigned & counterExtraTerms,
-									 std::set<std::string> & symbols){
+					 unsigned numTerms, unsigned & counterExtraTerms,
+					 std::set<std::string> & symbols){
 
-	unsigned id = Z3_get_ast_id(c, v);
+  unsigned id = Z3_get_ast_id(c, v);
   if(debugVisit2)
     std::cout << "Just checking the id " << " ID: " << id << std::endl;
 	
@@ -34,7 +34,7 @@ void Terms::traverse(Z3_context c, Z3_ast v,
     terms[id]->setArity(0);
     if(debugVisit){
       std::cout << "Application of " << terms[id]->getName()
-								<< " ID: " << id << std::endl;
+				<< " ID: " << id << std::endl;
     }
     break;
   }
@@ -57,12 +57,12 @@ void Terms::traverse(Z3_context c, Z3_ast v,
     case Z3_STRING_SYMBOL:
       terms[id]->setName(Z3_get_symbol_string(c, s));
       symbols.insert(Z3_get_symbol_string(c, s));
-			if(terms[id]->getName() == "=")
-				equations.push_back(std::make_pair(Z3_get_app_arg(c, app, 0),
-																					 Z3_get_app_arg(c, app, 1)));
+	  if(terms[id]->getName() == "=")
+		equations.push_back(std::make_pair(Z3_get_app_arg(c, app, 0),
+										   Z3_get_app_arg(c, app, 1)));
       if(terms[id]->getName() == "distinct")
-				disequations.push_back(std::make_pair(Z3_get_app_arg(c, app, 0),
-																							Z3_get_app_arg(c, app, 1)));
+		disequations.push_back(std::make_pair(Z3_get_app_arg(c, app, 0),
+											  Z3_get_app_arg(c, app, 1)));
 		
       break;
     default:
@@ -73,17 +73,17 @@ void Terms::traverse(Z3_context c, Z3_ast v,
       terms[id]->setArity(2);
       // Adding w_j(v) vertices
       for(unsigned j = 2; j <= num_args; ++j){
-				terms.push_back(new Vertex("_" + terms[i]->getName()
-																	 + "_" + std::to_string(j), 2));
-				++counterExtraTerms;
+		terms.push_back(new Vertex("_" + terms[i]->getName()
+								   + "_" + std::to_string(j), 2));
+		++counterExtraTerms;
       }
       _successor = Z3_get_ast_id(c, Z3_get_app_arg(c, app, 0));
       terms[id]->addSuccessor(terms[_successor]);
       terms[id]->addSuccessor(terms[mark]);
       for(unsigned j = 0; j < num_args - 2; ++j){
-				_successor = Z3_get_ast_id(c, Z3_get_app_arg(c, app, j + 1));
-				terms[mark + j]->addSuccessor(terms[_successor]);
-				terms[mark + j]->addSuccessor(terms[mark + j + 1]);
+		_successor = Z3_get_ast_id(c, Z3_get_app_arg(c, app, j + 1));
+		terms[mark + j]->addSuccessor(terms[_successor]);
+		terms[mark + j]->addSuccessor(terms[mark + j + 1]);
       }
       _successor = Z3_get_ast_id(c, Z3_get_app_arg(c, app, num_args - 1));
       terms[mark + num_args - 2]->addSuccessor(terms[_successor]);
@@ -92,14 +92,14 @@ void Terms::traverse(Z3_context c, Z3_ast v,
     else{
       terms[id]->setArity(num_args);
       for(unsigned j = 0; j < num_args; ++j){
-				_successor = Z3_get_ast_id(c, Z3_get_app_arg(c, app, j));
-				terms[id]->addSuccessor(terms[_successor]);
+		_successor = Z3_get_ast_id(c, Z3_get_app_arg(c, app, j));
+		terms[id]->addSuccessor(terms[_successor]);
       }
     }
     //---------------------------------------------------------------------------------
     if(debugVisit){
       std::cout << "Application of " << terms[id]->getName()
-								<< " ID: " << id << std::endl;
+				<< " ID: " << id << std::endl;
     }
     break;
   }
@@ -112,16 +112,16 @@ void Terms::traverse(Z3_context c, Z3_ast v,
     break;
   }
   }
-	terms[id]->define();
-	if(debugVisit2){
+  terms[id]->define();
+  if(debugVisit2){
     std::cout << "Just checking the final vertex " << *terms[id] << std::endl;
   }
 }
 
 // This method extracts symbols
 void Terms::traverse(Z3_context c, Z3_ast v,
-									std::set<std::string> & symbols){
-	switch (Z3_get_ast_kind(c, v)) {
+					 std::set<std::string> & symbols){
+  switch (Z3_get_ast_kind(c, v)) {
   case Z3_NUMERAL_AST: {
     // do something
     symbols.insert(Z3_get_numeral_string(c, v));
@@ -185,8 +185,8 @@ Terms::Terms(Z3_context ctx, Z3_ast v){
   // important due to the side-effect of the
   // new Vertex() object
 	
-	// Adding placeholders for the
-	// actual terms
+  // Adding placeholders for the
+  // actual terms
   for(unsigned i = 0; i < numTerms; ++i)
     terms[i] = new Vertex("_", 0);
   // Adding {x_j | 0 <= j < n} vertices
@@ -200,14 +200,14 @@ Terms::Terms(Z3_context ctx, Z3_ast v){
   traverse(ctx, Z3_get_app_arg(ctx, app, 1), symbolsB);
   
   std::set_difference(symbolsA.begin(), symbolsA.end(),
-											symbolsB.begin(), symbolsB.end(),
-											std::inserter(symbols_to_elim, symbols_to_elim.end()));
+					  symbolsB.begin(), symbolsB.end(),
+					  std::inserter(symbols_to_elim, symbols_to_elim.end()));
 
-	// This symbol will be used to encode the False particle
-	terms.push_back(new Vertex("incomparable", 0));
-	terms[Vertex::getTotalNumVertex() - 1]->define();
+  // This symbol will be used to encode the False particle
+  terms.push_back(new Vertex("incomparable", 0));
+  terms[Vertex::getTotalNumVertex() - 1]->define();
 
-	equivalence_class = UnionFind(Vertex::getTotalNumVertex());
+  equivalence_class = UnionFind(Vertex::getTotalNumVertex());
 }
 
 Terms::Terms(Z3_context ctx, Z3_ast v, std::set<std::string> & symbols_to_elim) :
@@ -223,8 +223,8 @@ Terms::Terms(Z3_context ctx, Z3_ast v, std::set<std::string> & symbols_to_elim) 
   // important due to the side-effect of the
   // new Vertex() object
 	
-	// Adding placeholders for the
-	// actual terms
+  // Adding placeholders for the
+  // actual terms
   for(unsigned i = 0; i < numTerms; ++i)
     terms[i] = new Vertex("_", 0);
   // Adding {x_j | 0 <= j < n} vertices
@@ -235,11 +235,11 @@ Terms::Terms(Z3_context ctx, Z3_ast v, std::set<std::string> & symbols_to_elim) 
   //Extracting the formula
   traverse(ctx, v, numTerms, refCounterExtraTerms, symbolsA);
 
-	// This symbol will be used to encode the False particle
-	terms.push_back(new Vertex("incomparable", 0));
-	terms[Vertex::getTotalNumVertex() - 1]->define();
+  // This symbol will be used to encode the False particle
+  terms.push_back(new Vertex("incomparable", 0));
+  terms[Vertex::getTotalNumVertex() - 1]->define();
 
-	equivalence_class = UnionFind(Vertex::getTotalNumVertex());
+  equivalence_class = UnionFind(Vertex::getTotalNumVertex());
 }
 
 
@@ -250,8 +250,8 @@ Terms::Terms(std::istream & in){
   in >> numTerms;
   terms.resize(2*numTerms);
 
-	// Adding placeholders for the
-	// actual terms
+  // Adding placeholders for the
+  // actual terms
   for(unsigned i = 0; i < numTerms; ++i)
     terms[i] = new Vertex("_", 0);
 
@@ -267,18 +267,18 @@ Terms::Terms(std::istream & in){
       mark = terms.size();
       terms[i]->setArity(2);
 
-			// Adding w_j(v) vertices
+	  // Adding w_j(v) vertices
       for(unsigned j = 2; j <= _arity; ++j)
-				terms.push_back(new Vertex("_" + terms[i]->getName() +
-																	 "_" + std::to_string(j), 2));
+		terms.push_back(new Vertex("_" + terms[i]->getName() +
+								   "_" + std::to_string(j), 2));
 			
       in >> _successor;
       terms[i]->addSuccessor(terms[_successor]);
       terms[i]->addSuccessor(terms[mark]);
       for(unsigned j = 0; j < _arity - 2; ++j){
-				in >> _successor;
-				terms[mark + j]->addSuccessor(terms[_successor]);
-				terms[mark + j]->addSuccessor(terms[mark + j + 1]);
+		in >> _successor;
+		terms[mark + j]->addSuccessor(terms[_successor]);
+		terms[mark + j]->addSuccessor(terms[mark + j + 1]);
       }
       in >> _successor;
       terms[mark + _arity - 2]->addSuccessor(terms[_successor]);
@@ -287,15 +287,15 @@ Terms::Terms(std::istream & in){
     else{
       terms[i]->setArity(_arity);
       for(unsigned j = 0; j < _arity; ++j){
-				in >> _successor;       
-				terms[i]->addSuccessor(terms[_successor]);
+		in >> _successor;       
+		terms[i]->addSuccessor(terms[_successor]);
       }
     }
   }
 
-	// This symbol will be used to encode the False particle
-	terms.push_back(new Vertex("incomparable", 0));
-	terms[Vertex::getTotalNumVertex() - 1]->define();
+  // This symbol will be used to encode the False particle
+  terms.push_back(new Vertex("incomparable", 0));
+  terms[Vertex::getTotalNumVertex() - 1]->define();
 	
   equivalence_class = UnionFind(Vertex::getTotalNumVertex());
 }
@@ -352,17 +352,17 @@ std::set<std::string> & Terms::getSymbolsToElim(){
 }
 
 std::vector<std::pair<Z3_ast, Z3_ast> > & Terms::getEquations(){
-	return equations;
+  return equations;
 }
 
 std::vector<std::pair<Z3_ast, Z3_ast> > & Terms::getDisequations(){
-	return disequations;
+  return disequations;
 }
 
 std::ostream & operator << (std::ostream & os, Terms & gterms){
-	os << "Terms" << std::endl;
-	for(std::vector<Vertex*>::iterator it = gterms.terms.begin();
-			it != gterms.terms.end(); ++it)
+  os << "Terms" << std::endl;
+  for(std::vector<Vertex*>::iterator it = gterms.terms.begin();
+	  it != gterms.terms.end(); ++it)
     os << **it << std::endl;
   return os;
 }

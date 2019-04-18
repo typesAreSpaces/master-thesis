@@ -28,6 +28,7 @@ std::vector<HornClause*> EUFInterpolant::getHornClauses(){
 }
 
 void EUFInterpolant::algorithm(){
+  auto terms = congruence_closure.getTerms();
   identifyCommonSymbols();
   // Congruence Closure Algorithm
   congruence_closure.algorithm();
@@ -43,16 +44,19 @@ void EUFInterpolant::algorithm(){
 
   // std::cout << "All Horn equations produced by the algorithm:" << std::endl;
   // std::cout << horn_clauses << std::endl;
-  
   auto horn_clauses_produced = horn_clauses.getHornClauses();
-  // std::cout << "Candidate Horn equations produced:" << std::endl;
-  // for(auto it = horn_clauses_produced.begin();
-  // 	  it != horn_clauses_produced.end(); ++it){
-  // 	std::cout << **it << std::endl;
+  auto horn_clauses_produced_z3 = cvt.convert(horn_clauses_produced);
+
+  // unsigned l = horn_clauses_produced.size();
+  // std::cout << "Candidate Horn equations produced: start" << std::endl;
+  // for(unsigned i = 0; i < l; ++i){
+  // 	std::cout << horn_clauses_produced_z3[i] << std::endl;
   // }
+  // std::cout << "Candidate Horn equations produced: end" << std::endl;
 	
+  auto equations = cvt.convert(congruence_closure.getEquations());
+  
   // std::cout << "Original Equations:" << std::endl;
-  // auto equations = congruence_closure.getEquations();
   // for(auto equation = equations.begin();
   // 	  equation != equations.end(); ++equation){
   // 	display_ast(ctx, stdout, equation->first);
@@ -61,8 +65,8 @@ void EUFInterpolant::algorithm(){
   // 	std::cout << std::endl;
   // }
 
-  // std::cout << "Original Disequations:" << std::endl;
   // auto disequations = congruence_closure.getDisequations();
+  // std::cout << "Original Disequations:" << std::endl;
   // for(auto disequation = disequations.begin();
   // 	  disequation != disequations.end(); ++disequation){
   // 	display_ast(ctx, stdout, disequation->first);
@@ -71,18 +75,21 @@ void EUFInterpolant::algorithm(){
   // 	std::cout << std::endl;
   // }
   
-  // Continue Here
-  // Function P {
-  // Input: 
-  // -) equations
-  // -) set of uncommon terms that I can get rid of 
-  // -) horn_clauses_produced
-  // }
-  auto S = getUncommonTermsToElim(horn_clauses_produced);
-  for(auto it = S.begin(); it != S.end(); ++it)
-	std::cout << *it << std::endl;
+  auto uncomm_terms_elim = getUncommonTermsToElim(horn_clauses_produced);
   
-  // Continue here
+  // for(auto it = uncomm_terms_elim.begin();
+  // 	  it != uncomm_terms_elim.end(); ++it)
+  // 	std::cout << cvt.convert(terms[*it]) << std::endl;
+  
+  // Continue Here
+  // Function exponentialElimination {
+  // Input: 
+  // -) equations --- (as z3::expr_vector)
+  // -) uncomm_terms_elim
+  //    {set of uncommon terms that I can get rid of} --- (as set of Z3_ast ids)
+  // -) horn_clauses_produced_z3 --- (as z3::expr_vector)
+  // }
+  
 }
 
 void EUFInterpolant::identifyCommonSymbols(){
@@ -248,6 +255,24 @@ std::set<unsigned> EUFInterpolant::getUncommonTermsToElim(std::vector<HornClause
 	  answer.insert(Z3_get_ast_id(ctx, cvt.convert(v)));
   }
   return answer;
+}
+
+z3::expr exponentialElimination(z3::expr_vector & equations,
+								std::set<unsigned> & terms_elim,
+								z3::expr_vector & hcs){
+  if(terms_elim.empty())
+	return cvt.makeConjunction(equations);
+  else{
+	auto element = terms_elim.begin();
+	terms_elim.erase(element);
+	new_equations = //TODO;
+	return exponentialElimination(new_equations, terms_elim, hcs);
+  }
+}
+
+z3::expr_vector substitutions(z3::expr & formula, z3::expr & term,
+							  z3::expr_vector & hcs){
+  // TODO
 }
 
 // Not implemented yet!

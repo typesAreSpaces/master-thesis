@@ -11,13 +11,13 @@ class CongruenceClosure : public SignatureTable {
   void init(Z3_context);
 	
  public:
-	CongruenceClosure(Z3_context, Z3_ast, std::set<std::string> &);
+  CongruenceClosure(Z3_context, Z3_ast, std::set<std::string> &);
   CongruenceClosure(Z3_context, Z3_ast);
   CongruenceClosure(std::istream &);
   ~CongruenceClosure();
   void algorithm();
   bool checkCorrectness();
-	friend std::ostream & operator << (std::ostream &, CongruenceClosure &);
+  friend std::ostream & operator << (std::ostream &, CongruenceClosure &);
 };
 
 #endif

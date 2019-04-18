@@ -15,10 +15,13 @@ class Converter {
   std::map<unsigned, unsigned> index;
  public:
   Converter(z3::context &, z3::sort &);
-  z3::expr convert(Vertex *);
-  z3::expr convert(equality &);
-  z3::expr convert(std::vector<equality> &);
-  z3::expr convert(HornClause *);
+  z3::expr        convert(Vertex *);
+  z3::expr        convert(equality &);
+  z3::expr        convert(std::vector<equality> &);
+  z3::expr_vector convert(std::vector<std::pair<Z3_ast, Z3_ast> > &);
+  z3::expr        convert(HornClause *);
+  z3::expr_vector convert(std::vector<HornClause*> &);
+  z3::expr        makeConjunction(z3::expr_vector &);
 };
 
 #endif
