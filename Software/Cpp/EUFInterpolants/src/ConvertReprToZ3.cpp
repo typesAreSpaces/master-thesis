@@ -67,3 +67,23 @@ z3::expr Converter::makeConjunction(z3::expr_vector & v){
 	formula = formula && v[i];
   return formula;
 }
+
+bool Converter::areEqual(z3::expr & x, z3::expr & y){
+  unsigned x_id = Z3_get_ast_id(ctx, x);
+  unsigned y_id = Z3_get_ast_id(ctx, y);
+  return x_id == y_id;
+}
+
+z3::expr Converter::getAntecedent(z3::expr & hc){
+  if(hc.is_implies())
+	return hc.arg(0);
+  else
+	throw "z3::expr should by a horn clause";
+}
+
+z3::expr Converter::getConsequent(z3::expr & hc){
+  if(hc.is_implies())
+	return hc.arg(1);
+  else
+	throw "z3::expr should by a horn clause";
+}

@@ -22,6 +22,9 @@ class Converter {
   z3::expr        convert(HornClause *);
   z3::expr_vector convert(std::vector<HornClause*> &);
   z3::expr        makeConjunction(z3::expr_vector &);
+  bool            areEqual(z3::expr &, z3::expr &);
+  z3::expr        getAntecedent(z3::expr &);
+  z3::expr        getConsequent(z3::expr &);
 };
 
 #endif

@@ -47,10 +47,12 @@ void EUFInterpolant::algorithm(){
   auto horn_clauses_produced = horn_clauses.getHornClauses();
   auto horn_clauses_produced_z3 = cvt.convert(horn_clauses_produced);
 
-  // unsigned l = horn_clauses_produced.size();
   // std::cout << "Candidate Horn equations produced: start" << std::endl;
+  // unsigned l = horn_clauses_produced.size();
   // for(unsigned i = 0; i < l; ++i){
-  // 	std::cout << horn_clauses_produced_z3[i] << std::endl;
+  // 	auto temp = horn_clauses_produced_z3[i];
+  // 	std::cout << cvt.getAntecedent(temp) << " -> ";
+  // 	std::cout << cvt.getConsequent(temp) << std::endl;
   // }
   // std::cout << "Candidate Horn equations produced: end" << std::endl;
 	
@@ -257,22 +259,33 @@ std::set<unsigned> EUFInterpolant::getUncommonTermsToElim(std::vector<HornClause
   return answer;
 }
 
-z3::expr exponentialElimination(z3::expr_vector & equations,
-								std::set<unsigned> & terms_elim,
-								z3::expr_vector & hcs){
+z3::expr EUFInterpolant::exponentialElimination(z3::expr_vector & equations,
+												std::set<unsigned> & terms_elim,
+												z3::expr_vector & hcs){
   if(terms_elim.empty())
 	return cvt.makeConjunction(equations);
   else{
 	auto element = terms_elim.begin();
 	terms_elim.erase(element);
-	new_equations = //TODO;
+	z3::expr_vector new_equations(ctx);
 	return exponentialElimination(new_equations, terms_elim, hcs);
   }
 }
 
-z3::expr_vector substitutions(z3::expr & formula, z3::expr & term,
-							  z3::expr_vector & hcs){
-  // TODO
+std::set<z3::expr> EUFInterpolant::substitutions(z3::expr & formula,
+												 z3::expr & term,
+												 z3::expr_vector & hcs){
+  std::set<z3::expr> answer;
+  unsigned hcs_length = hcs.size();
+  for(unsigned i = 0; i < hcs_length; ++i){
+	// current_hc_term is the 'y' in the Horn
+	// clause 'antecedent -> x = y'
+	auto current_hc_term = hcs[i].arg(1).arg(1);
+	if(cvt.areEqual(term, current_hc_term)){
+	  std::cout << "Ok lol" << std::endl;
+	}
+  }
+  return answer;
 }
 
 // Not implemented yet!
