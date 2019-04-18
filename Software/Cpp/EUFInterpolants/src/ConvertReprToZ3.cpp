@@ -61,6 +61,8 @@ z3::expr_vector Converter::convert(std::vector<HornClause*> & hcs){
 
 z3::expr Converter::makeConjunction(z3::expr_vector & v){
   unsigned length = v.size();
+  if(length == 0)
+	return v.ctx().bool_val(true);
   z3::expr formula(ctx);
   formula = v[0];
   for(unsigned i = 1; i < length; ++i)

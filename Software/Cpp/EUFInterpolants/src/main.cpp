@@ -10,11 +10,11 @@
 int main(int argc, char ** argv){
 	
   // Testing EUFInterpolant algorithm
-  std::string file = "./tests/smt2lib_2/kapurEUFExample2.smt2";
+  std::string file = "./tests/smt2lib_2/kapurEUFExample.smt2";
   // std::string file = "./tests/smt2lib_2/kapurEUFExample2.smt2";
-  //std::string file = "/Users/joseabelcastellanosjoo/Documents/QF_UF/2018-Goel-hwbench/QF_UF_firewire_tree.5.prop3_ab_reg_max.smt2";
-  //std::string file = "/Users/joseabelcastellanosjoo/Documents/QF_UF/2018-Goel-hwbench/QF_UF_firewire_tree.3.prop2_ab_reg_max.smt2";
-  //std::string file = "/Users/joseabelcastellanosjoo/Documents/QF_UF/2018-Goel-hwbench/QF_UF_needham.3.prop4_ab_reg_max.smt2";
+  // std::string file = "/Users/joseabelcastellanosjoo/Documents/QF_UF/2018-Goel-hwbench/QF_UF_firewire_tree.5.prop3_ab_reg_max.smt2";
+  // std::string file = "/Users/joseabelcastellanosjoo/Documents/QF_UF/2018-Goel-hwbench/QF_UF_firewire_tree.3.prop2_ab_reg_max.smt2";
+  // std::string file = "/Users/joseabelcastellanosjoo/Documents/QF_UF/2018-Goel-hwbench/QF_UF_needham.3.prop4_ab_reg_max.smt2";
 
   z3::config cfg;
   cfg.set("PROOF", true);
@@ -35,10 +35,9 @@ int main(int argc, char ** argv){
   z3::expr input_formula_expr(ctx, input_formula);
   std::set<std::string> symbols_to_elim = {"v"};
   
-  Converter cvt (ctx, sort_A);	
+  Converter cvt (ctx, sort_A);
   EUFInterpolant example (ctx, input_formula, symbols_to_elim, cvt);
-  example.algorithm();
-  std::cout << std::endl;
+  std::cout << example.algorithm() << std::endl;
   
   // std::cout << "Testing Converter" << std::endl;
   // auto horn_clauses = example.getHornClauses();
@@ -103,17 +102,22 @@ int main(int argc, char ** argv){
   // std::cout << x2 << std::endl;
   // std::cout << Z3_get_ast_id(ctx, x2) << std::endl;
 
-  // // Example using substitution
+  // // // Example using substitution
   // // A Vector of (from) and a Vector of (to)
   // // are needed
   // z3::sort _sort = ctx.uninterpreted_sort("A");
   // z3::expr v = ctx.constant("v", _sort);
-  // z3::expr w = ctx.constant("waaa", _sort);
+  // z3::expr w = ctx.constant("wa1", _sort);
+  // z3::expr u = ctx.constant("wa2", _sort);
   // z3::expr_vector v_vector(ctx);
   // z3::expr_vector w_vector(ctx);
   // w_vector.push_back(w);
+  
   // v_vector.push_back(v);
   // std::cout << input_formula_expr << std::endl;
+  // std::cout << input_formula_expr.substitute(v_vector, w_vector) << std::endl;
+  // w_vector.pop_back();
+  // w_vector.push_back(u);
   // std::cout << input_formula_expr.substitute(v_vector, w_vector) << std::endl;
   
   return 0;

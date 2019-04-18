@@ -4,8 +4,9 @@
 EUFInterpolant::EUFInterpolant(Z3_context c, Z3_ast v, Converter & cvt) :
   congruence_closure(c, v),
   cvt(cvt),
-  horn_clauses(congruence_closure.getTerms()),
-  ctx(c) {
+  terms(congruence_closure.getTerms()),
+  horn_clauses(terms),
+  ctx(c){
   unsigned size_congruence_closure = Vertex::getTotalNumVertex();
   auto last_vertex = congruence_closure.getVertex(size_congruence_closure - 1);
   contradiction = std::make_pair(last_vertex, last_vertex);
@@ -16,7 +17,8 @@ EUFInterpolant::EUFInterpolant(Z3_context c, Z3_ast v,
 							   Converter & cvt) :
   congruence_closure(c, v, symbols_to_elim),
   cvt(cvt),
-  horn_clauses(congruence_closure.getTerms()),
+  terms(congruence_closure.getTerms()),
+  horn_clauses(terms),
   ctx(c) {
   unsigned size_congruence_closure = Vertex::getTotalNumVertex();
   auto last_vertex = congruence_closure.getVertex(size_congruence_closure - 1);
@@ -30,9 +32,7 @@ std::vector<HornClause*> EUFInterpolant::getHornClauses(){
   return horn_clauses.getHornClauses();
 }
 
-void EUFInterpolant::algorithm(){
-  
-  auto terms = congruence_closure.getTerms();
+z3::expr EUFInterpolant::algorithm(){
   identifyCommonSymbols();
   // Congruence Closure Algorithm
   congruence_closure.algorithm();
@@ -60,32 +60,14 @@ void EUFInterpolant::algorithm(){
   // }
   // std::cout << "Candidate Horn equations produced: end" << std::endl;
 	
-  auto equations = cvt.convert(congruence_closure.getEquations());
-  
-  // std::cout << "Original Equations:" << std::endl;
-  // for(auto equation = equations.begin();
-  // 	  equation != equations.end(); ++equation){
-  // 	display_ast(ctx, stdout, equation->first);
-  // 	std::cout << " = ";
-  // 	display_ast(ctx, stdout, equation->second);
-  // 	std::cout << std::endl;
-  // }
-
-  // auto disequations = congruence_closure.getDisequations();
-  // std::cout << "Original Disequations:" << std::endl;
-  // for(auto disequation = disequations.begin();
-  // 	  disequation != disequations.end(); ++disequation){
-  // 	display_ast(ctx, stdout, disequation->first);
-  // 	std::cout << " ~= ";
-  // 	display_ast(ctx, stdout, disequation->second);
-  // 	std::cout << std::endl;
-  // }
-  
+  auto equations = cvt.convert(congruence_closure.getEquations());  
   auto uncomm_terms_elim = getUncommonTermsToElim(horn_clauses_produced);
   
   // for(auto it = uncomm_terms_elim.begin();
-  // 	  it != uncomm_terms_elim.end(); ++it)
+  // 	  it != uncomm_terms_elim.end(); ++it){
+  // 	std::cout << *it << std::endl;
   // 	std::cout << cvt.convert(terms[*it]) << std::endl;
+  // }
   
   // Continue Here
   // Function exponentialElimination {
@@ -96,6 +78,9 @@ void EUFInterpolant::algorithm(){
   // -) horn_clauses_produced_z3 --- (as z3::expr_vector)
   // }
   
+  return exponentialElimination(equations,
+								uncomm_terms_elim,
+								horn_clauses_produced_z3);
 }
 
 void EUFInterpolant::identifyCommonSymbols(){
@@ -270,24 +255,42 @@ z3::expr EUFInterpolant::exponentialElimination(z3::expr_vector & equations,
 	return cvt.makeConjunction(equations);
   else{
 	auto element = terms_elim.begin();
+	auto element_id = *element;
 	terms_elim.erase(element);
-	//z3::expr_vector new_equations(ctx);
-	auto new_equations = equations;
+	// Observed behaviour: calling .ctx() something
+	// changes the pointer element
+	z3::expr_vector new_equations(equations.ctx());
+	unsigned number_equations = equations.size();
+	for(unsigned i = 0; i < number_equations; i++){
+	  auto current_equation = equations[i];
+	  auto current_element = cvt.convert(terms[element_id]);
+	  auto current_substitutions = substitutions(current_equation,
+												 current_element, hcs);
+	  unsigned length_substitutions = current_substitutions.size();
+	  for(unsigned i = 0; i < length_substitutions; i++)
+		new_equations.push_back(current_substitutions[i]);
+	}
 	return exponentialElimination(new_equations, terms_elim, hcs);
   }
 }
 
-std::set<z3::expr> EUFInterpolant::substitutions(z3::expr & formula,
+z3::expr_vector EUFInterpolant::substitutions(z3::expr & formula,
 												 z3::expr & term,
 												 z3::expr_vector & hcs){
-  std::set<z3::expr> answer;
+  z3::expr_vector answer(formula.ctx());
+  z3::expr_vector from(formula.ctx()), to(formula.ctx());
+  from.push_back(term);
   unsigned hcs_length = hcs.size();
   for(unsigned i = 0; i < hcs_length; ++i){
 	// current_hc_term is the 'y' in the Horn
 	// clause 'antecedent -> x = y'
-	auto current_hc_term = hcs[i].arg(1).arg(1);
-	if(cvt.areEqual(term, current_hc_term)){
-	  std::cout << "Ok lol" << std::endl;
+	auto current_consequent_rhs = hcs[i].arg(1).arg(1);
+	auto current_consequent_lhs = hcs[i].arg(1).arg(0);
+	auto antecedent = hcs[i].arg(0);
+	if(cvt.areEqual(term, current_consequent_rhs)){
+	  to.push_back(current_consequent_lhs);
+	  answer.push_back(implies(antecedent, formula.substitute(from, to)));
+	  to.pop_back();
 	}
   }
   return answer;
