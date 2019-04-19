@@ -1,5 +1,5 @@
 #include "HornClauses.h"
-#define debugHornClauses false
+#define debugHornClauses true
 #define DEBUG_MSG(X) if(debugHornClauses){ X }
 
 unsigned HornClauses::num_horn_clauses = 0;
@@ -93,15 +93,13 @@ void HornClauses::conditionalElimination(){
 	for(unsigned i = old_horn_clauses_size; i < new_horn_clauses_size; ++i)
 	  makeMatches(horn_clauses[i], i);
   }
-
+  
   simplify();
-
-  // TODO: Complete this method
  
-  DEBUG_MSG(std::cout << "Horn Clauses produced:" << std::endl;
-		   for(match2::iterator it = reduced.begin(); it != reduced.end(); ++it)
-			 for(unsigned i = 0; i < reduced_length[it->first]; ++i)
-			   std::cout << *horn_clauses[it->second[i]] << std::endl;);
+  DEBUG_MSG(std::cout << "Horn Clauses produced - after simplify:" << std::endl;
+			for(match2::iterator it = reduced.begin(); it != reduced.end(); ++it)
+			  for(unsigned i = 0; i < reduced_length[it->first]; ++i)
+				std::cout << *horn_clauses[it->second[i]] << std::endl;);
 }
 
 void HornClauses::mc2ConsequentAndmc2Antecedent(SetOfUnsignedPairs & prev_combinations,
@@ -247,6 +245,12 @@ void HornClauses::simplify() {
   unsigned position = 0;
   bool change = true;
 
+  DEBUG_MSG(std::cout << "Horn Clauses produced - before simplify:" << std::endl;
+  for(std::vector<HornClause*>::iterator it = horn_clauses.begin();
+	  it != horn_clauses.end(); ++it){	
+	std::cout << **it << std::endl;
+  });
+  
   // Filter: Only Type 2 or Type 2.1 are allowed here		
   for(std::vector<HornClause*>::iterator it = horn_clauses.begin();
 	  it != horn_clauses.end(); ++it){	

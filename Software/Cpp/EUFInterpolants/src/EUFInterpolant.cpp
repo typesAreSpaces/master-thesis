@@ -34,49 +34,24 @@ std::vector<HornClause*> EUFInterpolant::getHornClauses(){
 
 z3::expr EUFInterpolant::algorithm(){
   identifyCommonSymbols();
-  // Congruence Closure Algorithm
   congruence_closure.algorithm();
   setCommonRepresentatives();
   eliminationOfUncommonFSyms();
   addNegativeHornClauses();
-
   // ------------------------------------
   // TODO: FIX THIS!
   // UPDATE: IT LOOKS LIKE IT'S DONE!
   horn_clauses.conditionalElimination();
   // ------------------------------------
-  // std::cout << "All Horn equations produced by the algorithm:" << std::endl;
-  // std::cout << horn_clauses << std::endl;
   
   auto horn_clauses_produced = horn_clauses.getHornClauses();
   auto horn_clauses_produced_z3 = cvt.convert(horn_clauses_produced);
-  
-  // std::cout << "Candidate Horn equations produced: start" << std::endl;
-  // unsigned l = horn_clauses_produced.size();
-  // for(unsigned i = 0; i < l; ++i){
-  // 	auto temp = horn_clauses_produced_z3[i];
-  // 	std::cout << cvt.getAntecedent(temp) << " -> ";
-  // 	std::cout << cvt.getConsequent(temp) << std::endl;
-  // }
-  // std::cout << "Candidate Horn equations produced: end" << std::endl;
-	
   auto equations = cvt.convert(congruence_closure.getEquations());  
   auto uncomm_terms_elim = getUncommonTermsToElim(horn_clauses_produced);
-  
-  // for(auto it = uncomm_terms_elim.begin();
-  // 	  it != uncomm_terms_elim.end(); ++it){
-  // 	std::cout << *it << std::endl;
-  // 	std::cout << cvt.convert(terms[*it]) << std::endl;
-  // }
-  
-  // Continue Here
-  // Function exponentialElimination {
-  // Input: 
-  // -) equations --- (as z3::expr_vector)
-  // -) uncomm_terms_elim
-  //    {set of uncommon terms that I can get rid of} --- (as set of Z3_ast ids)
-  // -) horn_clauses_produced_z3 --- (as z3::expr_vector)
-  // }
+
+  std::cout << "Horn Clauses" << std::endl;
+  std::cout << horn_clauses_produced_z3 << std::endl;
+
   
   return exponentialElimination(equations,
 								uncomm_terms_elim,
@@ -257,7 +232,7 @@ z3::expr EUFInterpolant::exponentialElimination(z3::expr_vector & equations,
 	auto element = terms_elim.begin();
 	auto element_id = *element;
 	terms_elim.erase(element);
-	// Observed behaviour: calling .ctx() something
+	// Observed behaviour: calling .ctx() sometimes
 	// changes the pointer element
 	z3::expr_vector new_equations(equations.ctx());
 	unsigned number_equations = equations.size();
@@ -275,8 +250,8 @@ z3::expr EUFInterpolant::exponentialElimination(z3::expr_vector & equations,
 }
 
 z3::expr_vector EUFInterpolant::substitutions(z3::expr & formula,
-												 z3::expr & term,
-												 z3::expr_vector & hcs){
+											  z3::expr & term,
+											  z3::expr_vector & hcs){
   z3::expr_vector answer(formula.ctx());
   z3::expr_vector from(formula.ctx()), to(formula.ctx());
   from.push_back(term);
@@ -289,7 +264,12 @@ z3::expr_vector EUFInterpolant::substitutions(z3::expr & formula,
 	auto antecedent = hcs[i].arg(0);
 	if(cvt.areEqual(term, current_consequent_rhs)){
 	  to.push_back(current_consequent_lhs);
-	  answer.push_back(implies(antecedent, formula.substitute(from, to)));
+	  auto formula_subs = formula.substitute(from, to);
+	  if(formula_subs.is_implies())
+		answer.push_back(implies(antecedent && formula_subs.arg(0),
+								 formula_subs.arg(1)));
+	  else
+		answer.push_back(implies(antecedent, formula_subs));
 	  to.pop_back();
 	}
   }

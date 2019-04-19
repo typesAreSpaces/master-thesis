@@ -6,3 +6,8 @@
 	  equality := pair<Vertex*, Vertex*> [consequent]
 	  vector<equality> (ANDS) [antecedent]
 	  vector<Vertex*> [global_terms]
+	  
+- TODOs:
+  - Add to the EUF::algorithm() answer the Horn Clauses of Type 1
+  - Check why EUF::exponentialElimination() keeps previous
+    Horn clauses

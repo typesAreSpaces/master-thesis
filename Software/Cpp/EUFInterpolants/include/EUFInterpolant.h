@@ -17,18 +17,18 @@ class EUFInterpolant {
   CongruenceClosure      congruence_closure;
   Converter              cvt;
   std::vector<Vertex*> & terms;
-  HornClauses        horn_clauses;
-  Z3_context         ctx;
-  symbolLocations    symbol_locations;
-  equality           contradiction;
-  void               identifyCommonSymbols();
-  void               setCommonRepresentatives();
-  void               eliminationOfUncommonFSyms();
-  void               addNegativeHornClauses();
-  std::set<unsigned> getUncommonTermsToElim(std::vector<HornClause*> &);
-  z3::expr           exponentialElimination(z3::expr_vector &,
+  HornClauses            horn_clauses;
+  Z3_context             ctx;
+  symbolLocations        symbol_locations;
+  equality               contradiction;
+  void                   identifyCommonSymbols();
+  void                   setCommonRepresentatives();
+  void                   eliminationOfUncommonFSyms();
+  void                   addNegativeHornClauses();
+  std::set<unsigned>     getUncommonTermsToElim(std::vector<HornClause*> &);
+  z3::expr               exponentialElimination(z3::expr_vector &,
 												std::set<unsigned> &, z3::expr_vector &);
-  z3::expr_vector    substitutions(z3::expr &, z3::expr &, z3::expr_vector &);
+  z3::expr_vector        substitutions(z3::expr &, z3::expr &, z3::expr_vector &);
    
  public:
   EUFInterpolant(Z3_context, Z3_ast, Converter &);
