@@ -50,6 +50,7 @@ class HornClauses{
   void conditionalElimination();
   unsigned size();
   std::vector<HornClause*> getHornClauses();
+  std::vector<HornClause*> getReducibleHornClauses();
   friend std::ostream & operator << (std::ostream &, HornClauses &);
   std::ostream & printMatch1(std::ostream &, match1 &);
   std::ostream & printMatch2(std::ostream &, match2 &);

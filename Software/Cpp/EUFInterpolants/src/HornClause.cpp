@@ -1,5 +1,7 @@
 #include "HornClause.h"
 
+// The global_UF helps to normalize
+// Horn clauses 
 UnionFind HornClause::global_UF               = UnionFind();
 bool HornClause::is_first_time                = true;
 std::vector<Vertex*> HornClause::global_terms = std::vector<Vertex*>();

@@ -8,7 +8,7 @@ HornClauses::HornClauses(std::vector<Vertex*> & terms) : local_terms(terms) {
 }
 
 HornClauses::~HornClauses(){
-  for(std::vector<HornClause*>::iterator it = horn_clauses.begin();
+  for(auto it = horn_clauses.begin();
       it != horn_clauses.end(); ++it)
     delete *it;
 }
@@ -445,6 +445,19 @@ unsigned HornClauses::size(){
 }
 
 std::vector<HornClause*> HornClauses::getHornClauses(){
+  std::vector<HornClause*> _hc;
+  for(auto it = horn_clauses.begin();
+	  it != horn_clauses.end(); ++it){
+	auto consequent = (*it)->getConsequent();
+	if((*it)->getAntecedentValue()
+	   && local_terms[consequent.first->getId()]->getSymbolCommonQ()
+	   && local_terms[consequent.second->getId()]->getSymbolCommonQ())
+	  _hc.push_back(*it);
+  }
+  return _hc;
+}
+
+std::vector<HornClause*> HornClauses::getReducibleHornClauses(){
   std::vector<HornClause*> _hc;
   
   for(auto it = reduced.begin(); it != reduced.end(); ++it)

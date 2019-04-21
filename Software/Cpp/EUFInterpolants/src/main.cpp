@@ -40,7 +40,7 @@ int main(int argc, char ** argv){
   std::cout << example.algorithm() << std::endl;
   
   // std::cout << "Testing Converter" << std::endl;
-  // auto horn_clauses = example.getHornClauses();
+  // auto horn_clauses = example.getReducibleHornClauses();
   // Converter cvt (ctx, sort_A);	
   // for(auto x : horn_clauses){
   // 	std::cout << *x << std::endl;

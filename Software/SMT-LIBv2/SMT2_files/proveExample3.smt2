@@ -5,9 +5,9 @@
 (declare-fun x () A)
 (declare-fun y () A)
 (declare-fun g (A) A)
-(define-fun conjecture1 () Bool (=> (= x y) (= (g x) (g y))))
+(define-fun leibniz () Bool (=> (= x y) (= (g x) (g y))))
 
 ;; Assertion of A
-(assert conjecture1)
+(assert (not leibniz))
 (check-sat)
 (exit)
