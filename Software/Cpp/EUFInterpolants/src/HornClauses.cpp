@@ -1,5 +1,5 @@
 #include "HornClauses.h"
-#define debugHornClauses true
+#define debugHornClauses false
 #define DEBUG_MSG(X) if(debugHornClauses){ X }
 
 unsigned HornClauses::num_horn_clauses = 0;
@@ -307,6 +307,10 @@ void HornClauses::makeMatches(HornClause * hc, unsigned i){
 		
       mc2_antecedent[std::make_pair(equation_iterator->first,
 									equation_iterator->second)].push_back(i);
+	  // We also consider the mc2_antecedent as two
+	  // mc1_antecedent elements
+	  mc1_antecedent[equation_iterator->first].push_back(i);
+	  mc1_antecedent[equation_iterator->second].push_back(i);
 	}
     else{
       // If the first term is common and
@@ -324,6 +328,10 @@ void HornClauses::makeMatches(HornClause * hc, unsigned i){
 	  
     mc2_consequent[std::make_pair(hc_consequent.first,
 								  hc_consequent.second)].push_back(i);
+	// We also consider the mc2_consequent as two
+	// mc1_consequent elements
+	mc1_consequent[hc_consequent.first].push_back(i);
+	mc1_consequent[hc_consequent.second].push_back(i);
   }
   else{
     // If the first term is common and

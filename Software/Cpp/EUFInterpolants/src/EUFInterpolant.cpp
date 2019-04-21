@@ -50,8 +50,11 @@ z3::expr EUFInterpolant::algorithm(){
   auto non_reducible_horn_clauses_z3 = cvt.convert(non_reducible_horn_clauses);
   auto equations = cvt.convert(congruence_closure.getEquations());  
   auto uncomm_terms_elim = getUncommonTermsToElim(reducible_horn_clauses);
-
-
+  auto exponential_horn_clauses = exponentialElimination(equations,
+														 uncomm_terms_elim,
+														 reducible_horn_clauses_z3);
+  auto simplified_horn_clauses = cvt.extraSimplification(non_reducible_horn_clauses_z3);
+  auto simplified_horn_clauses_2 = cvt.extraSimplification(exponential_horn_clauses);
   // std::cout << "Non reducible Horn Clauses" << std::endl;
   // std::cout << cvt.makeConjunction(non_reducible_horn_clauses_z3) << std::endl;
   // std::cout <<
@@ -59,13 +62,8 @@ z3::expr EUFInterpolant::algorithm(){
   
   // std::cout << "Horn Clauses" << std::endl;
   // std::cout << reducible_horn_clauses_z3 << std::endl;
-
-
-  std::cout << "The Interpolant" << std::endl;
-  return cvt.makeConjunction(non_reducible_horn_clauses_z3) &&
-	exponentialElimination(equations,
-						   uncomm_terms_elim,
-						   reducible_horn_clauses_z3);
+  return cvt.makeConjunction(simplified_horn_clauses)
+	&& cvt.makeConjunction(simplified_horn_clauses_2);
 }
 
 void EUFInterpolant::identifyCommonSymbols(){
@@ -233,11 +231,11 @@ std::set<unsigned> EUFInterpolant::getUncommonTermsToElim(std::vector<HornClause
   return answer;
 }
 
-z3::expr EUFInterpolant::exponentialElimination(z3::expr_vector & equations,
-												std::set<unsigned> & terms_elim,
-												z3::expr_vector & hcs){
+z3::expr_vector EUFInterpolant::exponentialElimination(z3::expr_vector & equations,
+													   std::set<unsigned> & terms_elim,
+													   z3::expr_vector & hcs){
   if(terms_elim.empty())
-	return cvt.makeConjunction(equations);
+	return equations;
   else{
 	auto element = terms_elim.begin();
 	auto element_id = *element;

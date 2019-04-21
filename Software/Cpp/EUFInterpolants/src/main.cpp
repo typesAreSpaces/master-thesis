@@ -37,6 +37,7 @@ int main(int argc, char ** argv){
   
   Converter cvt (ctx, sort_A);
   EUFInterpolant example (ctx, input_formula, symbols_to_elim, cvt);
+  std::cout << "The Interpolant" << std::endl;
   std::cout << example.algorithm() << std::endl;
   
   // std::cout << "Testing Converter" << std::endl;

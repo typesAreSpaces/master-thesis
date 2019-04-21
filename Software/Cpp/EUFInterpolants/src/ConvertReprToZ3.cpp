@@ -89,3 +89,35 @@ z3::expr Converter::getConsequent(z3::expr & hc){
   else
 	throw "z3::expr should by a horn clause";
 }
+
+z3::expr_vector Converter::extraSimplification(z3::expr_vector & formulas){
+  z3::solver s(formulas.ctx());
+  z3::expr_vector answer(formulas.ctx());
+  std::set<unsigned> filter;
+  unsigned length = formulas.size();
+  for(unsigned i = 0; i < length; i++){
+	for(unsigned j = i + 1; j < length; j++){
+	  s.push();
+	  s.add(not(implies(formulas[i], formulas[j])));
+	  switch (s.check()) {
+	  case z3::unsat:   filter.insert(j);  break;
+	  case z3::sat:     break;
+	  case z3::unknown: break;
+	  }
+	  s.pop();
+	  s.push();
+	  s.add(not(implies(formulas[j], formulas[i])));
+	  switch (s.check()) {
+	  case z3::unsat:   filter.insert(i); break;
+	  case z3::sat:     break;
+	  case z3::unknown: break;
+	  }
+	  s.pop();
+	}
+  }
+  
+  for(unsigned i = 0; i < length; i++)
+	if(filter.find(i) == filter.end())
+	  answer.push_back(formulas[i]);
+  return answer;
+}

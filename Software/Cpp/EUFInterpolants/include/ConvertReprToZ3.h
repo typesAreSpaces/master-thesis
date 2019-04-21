@@ -25,6 +25,7 @@ class Converter {
   bool            areEqual(z3::expr &, z3::expr &);
   z3::expr        getAntecedent(z3::expr &);
   z3::expr        getConsequent(z3::expr &);
+  z3::expr_vector extraSimplification(z3::expr_vector &);
 };
 
 #endif

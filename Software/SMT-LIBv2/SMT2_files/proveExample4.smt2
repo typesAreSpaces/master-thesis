@@ -7,9 +7,9 @@
 (declare-fun y1 () A)
 (declare-fun z1 () A)
 (declare-fun z2 () A)
-(define-fun x () Bool (=> (= z1 z2) (= s1 s2)))
-(define-fun y () Bool (=> (and (= z1 y1) (= z2 y1)) (= s1 s2)))
-(define-fun conjecture1 () Bool (=> y x))
+(define-fun x () Bool (= z1 z2))
+(define-fun y () Bool (and (= z1 y1) (= z2 y1)))
+(define-fun conjecture1 () Bool (=> x y))
 
 ;; Assertion of A
 (assert (not conjecture1))
