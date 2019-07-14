@@ -44,26 +44,28 @@ z3::expr EUFInterpolant::algorithm(){
   horn_clauses.conditionalElimination();
   // ------------------------------------
   
-  auto reducible_horn_clauses = horn_clauses.getReducibleHornClauses();
-  auto reducible_horn_clauses_z3 = cvt.convert(reducible_horn_clauses);
-  auto non_reducible_horn_clauses = horn_clauses.getHornClauses();
-  auto non_reducible_horn_clauses_z3 = cvt.convert(non_reducible_horn_clauses);
-  auto equations = cvt.convert(congruence_closure.getEquations());  
-  auto uncomm_terms_elim = getUncommonTermsToElim(reducible_horn_clauses);
-  auto exponential_horn_clauses = exponentialElimination(equations,
-														 uncomm_terms_elim,
-														 reducible_horn_clauses_z3);
-  auto simplified_horn_clauses = cvt.extraSimplification(non_reducible_horn_clauses_z3);
-  auto simplified_horn_clauses_2 = cvt.extraSimplification(exponential_horn_clauses);
-  // std::cout << "Non reducible Horn Clauses" << std::endl;
-  // std::cout << cvt.makeConjunction(non_reducible_horn_clauses_z3) << std::endl;
-  // std::cout <<
-  // 	(cvt.makeConjunction(non_reducible_horn_clauses_z3)).simplify() << std::endl;
+  auto non_reducible_hs = horn_clauses.getHornClauses();
+  auto non_reducible_hs_z3 = cvt.convert(non_reducible_hs);
+  auto simplified_hs = cvt.extraSimplification(non_reducible_hs_z3);
+
+  std::cout << "Non Reducible" << std::endl;
+  std::cout << simplified_hs << std::endl;
   
-  // std::cout << "Horn Clauses" << std::endl;
-  // std::cout << reducible_horn_clauses_z3 << std::endl;
-  return cvt.makeConjunction(simplified_horn_clauses)
-	&& cvt.makeConjunction(simplified_horn_clauses_2);
+  auto reducible_hs = horn_clauses.getReducibleHornClauses();
+  auto reducible_hs_z3 = cvt.convert(reducible_hs);
+
+  std::cout << "Reducible" << std::endl;
+  std::cout << reducible_hs_z3 << std::endl;
+  
+  auto equations = cvt.convert(congruence_closure.getEquations());  
+  auto uncomm_terms_elim = getUncommonTermsToElim(reducible_hs);
+  auto exponential_hs = exponentialElimination(equations,
+											   uncomm_terms_elim,
+											   reducible_hs_z3);
+  auto simplified_exponential_hs = cvt.extraSimplification(exponential_hs);  
+  
+  return cvt.makeConjunction(simplified_hs)
+	&& cvt.makeConjunction(simplified_exponential_hs);
 }
 
 void EUFInterpolant::identifyCommonSymbols(){

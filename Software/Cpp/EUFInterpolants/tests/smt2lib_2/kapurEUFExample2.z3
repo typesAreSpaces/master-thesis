@@ -8,4 +8,5 @@
 )
 (assert A1)
 (check-sat)
+(echo "The model is: ")
 (get-model)
