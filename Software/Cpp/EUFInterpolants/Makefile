@@ -14,16 +14,18 @@ ifeq ($(UNAME), Darwin)
 Z3DIR = /Users/joseabelcastellanosjoo/Documents/Applications/z3
 Z3EXT = dylib
 endif
+
 IDIR = ./include
 ODIR = ./obj
 SDIR = ./src
-CONGRUENCE_CLOSURE_TEST = performance/congruence_closure
 CC = g++
 FLAGS = -I$(SDIR)/ -I$(IDIR)/ -std=c++11
 
 SRC = $(wildcard $(SDIR)/*.cpp)
 OBJS = $(patsubst $(SDIR)/%.cpp, $(ODIR)/%.o, $(SRC))
 DEPS = $(wildcard $(IDIR)/*.h)
+
+CONGRUENCE_CLOSURE_TEST = performance/congruence_closure
 
 all: main
 
