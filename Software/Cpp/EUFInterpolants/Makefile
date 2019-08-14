@@ -5,8 +5,8 @@ ifeq ($(UNAME), Linux)
 	Z3DIR = /nfs/student/j/jose.castellanosjoo/Documents/GitProjects/z3
 	endif
 	ifeq ($(WHO), jose)
-# Z3DIR = /home/jose/Documents/GithubProjects/z3
-	Z3DIR = /home/jose/z3/
+# Z3DIR = /home/jose/Documents/Github\ Projects/z3
+	Z3DIR = /home/jose/Documents/GithubProjects/z3
 	endif
 Z3EXT = so
 endif
