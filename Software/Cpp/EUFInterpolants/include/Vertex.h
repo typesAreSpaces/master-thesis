@@ -7,36 +7,39 @@
 
 class Vertex{
  private:
-  static unsigned        total_num_vertex;
-  std::string            name;
-  bool                   is_symbol_common;
-  bool                   defined;
-  unsigned               id, arity;
-  std::vector<Vertex*>   successors;
-  CircularList<unsigned> predecessors;
+  static unsigned          total_num_vertex;
+  std::string             name;
+  bool                     is_symbol_common;
+  bool                     defined;
+  unsigned                 id, arity;
+  std::vector<Vertex*>    successors;
+  CircularList<unsigned>   predecessors;
   void addPredecessor(unsigned);
 
  public:
   Vertex(std::string, unsigned);
   Vertex();
   ~Vertex();
+
   void setName(std::string);
-  void setArity(unsigned);
   void setSymbolCommonQ(bool);
+  void define();
+  void setArity(unsigned);
   void addSuccessor(Vertex *);
   void mergePredecessors(Vertex *);
-  void define();
-  std::string getName();
-  unsigned getArity();
-  unsigned getId();
-  unsigned getLength();
+  
   static unsigned getTotalNumVertex();
+  std::string getName();
   bool getSymbolCommonQ();
-  std::string to_string();
+  unsigned getId();
+  unsigned getArity();
+  unsigned getLength();
   std::vector<Vertex*> & getSuccessors();
   CircularList<unsigned> * getPredecessors();
-  Vertex * getRightChild();
+  std::string to_string();
   Vertex * getLeftChild();
+  Vertex * getRightChild();
+  
   std::ostream & functionPrettyPrint (std::ostream &);
   friend std::ostream & operator << (std::ostream &, Vertex &);
   friend bool operator ==(const Vertex &, const Vertex &);

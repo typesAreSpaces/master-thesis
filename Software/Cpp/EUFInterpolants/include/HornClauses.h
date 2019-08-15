@@ -38,7 +38,7 @@ class HornClauses{
   void mc1ConsequentAndmc2Antecedent(SetOfUnsignedPairs &, bool &);
   void mc1ConsequentAndmc1Antecedent2(SetOfUnsignedPairs &, bool &);
   template<typename A>
-	static void swap(std::vector<A> &, unsigned, unsigned);
+    static void swap(std::vector<A> &, unsigned, unsigned);
   Vertex * getVertex(unsigned);
   Vertex * getVertex(Vertex *);
 	
