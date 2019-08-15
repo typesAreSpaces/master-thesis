@@ -29,9 +29,9 @@ int main(int argc, char ** argv){
   // the function Z3_parse_smtlib2_file
   // which returns a Z3_ast_vector
   Z3_ast_vector conjunction_of_assertions =
-	Z3_parse_smtlib2_file(ctx, file.c_str(), 0, 0, 0, 0, 0, 0);
+  	Z3_parse_smtlib2_file(ctx, file.c_str(), 0, 0, 0, 0, 0, 0);
   Z3_ast input_formula =
-	Z3_ast_vector_get(ctx, conjunction_of_assertions, 0);
+  	Z3_ast_vector_get(ctx, conjunction_of_assertions, 0);
   z3::expr input_formula_expr(ctx, input_formula);
   std::set<std::string> symbols_to_elim = {"f"};
   

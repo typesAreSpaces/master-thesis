@@ -13,20 +13,21 @@ std::ostream & operator << (std::ostream &, CircularList<T> &);
 template <typename T>
 class CircularList{
  private:
-  int       length;
-  node<T> * list;
+  unsigned int length;
+  node<T> * elements;
   void addEmpty(T x);
   void addNonEmpty(T x);
 	
  public:
   CircularList();
   ~CircularList();
-  int size();
-	void add(T x);
+  unsigned int size();
+  void add(T x);
   void merge(CircularList *);
-	node<T> * getList();
-	node<T> * begin();
+  node<T> * getElements();
+  node<T> * begin();
   node<T> * end();
+  bool empty();
   class iterator{
   private:
     node<T> * _it;
@@ -38,8 +39,8 @@ class CircularList{
     bool operator!=(node<T> *) const;
     node<T>& operator*();
   };
-	template <typename U>
-	friend std::ostream & operator << (std::ostream &, CircularList<U> &);
+  template <typename U>
+    friend std::ostream & operator << (std::ostream &, CircularList<U> &);
 };
 
 #include "CircularList.tpp"
