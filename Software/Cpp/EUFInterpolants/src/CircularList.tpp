@@ -1,21 +1,4 @@
 template <typename T>
-void CircularList<T>::addEmpty(T element){
-  node<T> * new_elements = new node<T>;
-  new_elements->data = element;
-  new_elements->next = new_elements;
-  elements = new_elements;
-}
-
-template <typename T>
-void CircularList<T>::addNonEmpty(T element){
-  node<T> * new_elements = new node<T>;
-  new_elements->data = element;
-  new_elements->next = elements->next;
-  elements->next = new_elements;
-  elements = new_elements;
-}
-
-template <typename T>
 CircularList<T>::CircularList() : length(0), elements(nullptr) {}
 
 template <typename T>
@@ -38,12 +21,29 @@ unsigned int CircularList<T>::size(){
 }
 
 template <typename T>
-void CircularList<T>::add(T element){
+void CircularList<T>::add(const T & element){
   if(this->empty())
     addEmpty(element);
   else
     addNonEmpty(element);
   ++length;
+}
+
+template <typename T>
+void CircularList<T>::addEmpty(const T & element){
+  node<T> * new_elements = new node<T>;
+  new_elements->data = element;
+  new_elements->next = new_elements;
+  elements = new_elements;
+}
+
+template <typename T>
+void CircularList<T>::addNonEmpty(const T & element){
+  node<T> * new_elements = new node<T>;
+  new_elements->data = element;
+  new_elements->next = elements->next;
+  elements->next = new_elements;
+  elements = new_elements;
 }
 
 template <typename T>
@@ -54,9 +54,9 @@ void CircularList<T>::merge(CircularList<T> * circular_list){
       this->elements = circular_list->elements;
     }
     else{
-      node<T> * temp = this->elements->next;
+      node<T> * new_elements = this->elements->next;
       this->elements->next = circular_list->elements->next;
-      circular_list->elements->next = temp;
+      circular_list->elements->next = new_elements;
       this->length += circular_list->length;
     }
     circular_list->elements = nullptr;

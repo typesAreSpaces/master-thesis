@@ -15,14 +15,14 @@ class CircularList{
  private:
   unsigned int length;
   node<T> * elements;
-  void addEmpty(T);
-  void addNonEmpty(T);
+  void addEmpty(const T &);
+  void addNonEmpty(const T &);
 	
  public:
   CircularList();
   ~CircularList();
   unsigned int size();
-  void add(T);
+  void add(const T &);
   void merge(CircularList *);
   node<T> * getElements();
   node<T> * begin();
