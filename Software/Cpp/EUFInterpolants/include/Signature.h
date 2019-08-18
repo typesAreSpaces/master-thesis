@@ -3,32 +3,32 @@
 
 #include <iostream>
 
-struct SignatureArg1 {
+struct UnarySignature {
   std::string name;
   unsigned    first_signature;
   struct Hash;
-  SignatureArg1(std::string, unsigned);
-  ~SignatureArg1();
-  bool operator==(const SignatureArg1 &) const;
-  friend std::ostream & operator << (std::ostream &, SignatureArg1 &);
+  UnarySignature(std::string, unsigned);
+  ~UnarySignature();
+  bool operator==(const UnarySignature &) const;
+  friend std::ostream & operator << (std::ostream &, UnarySignature &);
 };
 
-struct SignatureArg1::Hash {
-  std::size_t operator()(const SignatureArg1 &) const;
+struct UnarySignature::Hash {
+  std::size_t operator()(const UnarySignature &) const;
 };
 
-struct SignatureArg2 {
+struct BinarySignature {
   std::string name;
   unsigned    first_signature, second_signature;
   struct Hash;
-  SignatureArg2(std::string, unsigned, unsigned);
-  ~SignatureArg2();
-  bool operator==(const SignatureArg2 &) const;
-  friend std::ostream & operator << (std::ostream &, SignatureArg2 &);
+  BinarySignature(std::string, unsigned, unsigned);
+  ~BinarySignature();
+  bool operator==(const BinarySignature &) const;
+  friend std::ostream & operator << (std::ostream &, BinarySignature &);
 };
 
-struct SignatureArg2::Hash {
-  std::size_t operator()(const SignatureArg2 &) const;
+struct BinarySignature::Hash {
+  std::size_t operator()(const BinarySignature &) const;
 };
 
 #endif

@@ -5,7 +5,7 @@ Converter::Converter(z3::context & c, z3::sort & s) :
   ctx(c), sort_A(s) {
 }
 
-z3::expr Converter::convert(Vertex * v){
+z3::expr Converter::convert(Term * v){
   unsigned arity = v->getArity();
   z3::expr formula(ctx);
   if(arity == 0)

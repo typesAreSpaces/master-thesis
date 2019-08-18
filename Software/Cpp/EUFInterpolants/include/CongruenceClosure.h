@@ -3,8 +3,8 @@
 
 #include "SignatureTable.h"
 
-typedef std::set<Vertex*> Pending;
-typedef std::set<std::pair<Vertex*, Vertex*> > Combine;
+typedef std::set<Term*> Pending;
+typedef std::set<std::pair<Term*, Term*> > Combine;
 
 class CongruenceClosure : public SignatureTable {
  private:

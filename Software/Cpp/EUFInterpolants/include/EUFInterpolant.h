@@ -16,7 +16,7 @@ class EUFInterpolant {
  private:
   CongruenceClosure      congruence_closure;
   Converter              cvt;
-  std::vector<Vertex*> & terms;
+  std::vector<Term*> & terms;
   HornClauses            horn_clauses;
   Z3_context             ctx;
   symbolLocations        symbol_locations;

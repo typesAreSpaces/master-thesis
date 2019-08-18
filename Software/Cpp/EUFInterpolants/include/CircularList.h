@@ -23,11 +23,12 @@ class CircularList{
   ~CircularList();
   unsigned int size();
   void add(const T &);
-  void merge(CircularList *);
-  node<T> * getElements();
+  void merge(CircularList &);
+  bool empty();
+  const node<T> & getElements();
+  
   node<T> * begin();
   node<T> * end();
-  bool empty();
   class iterator{
   private:
     node<T> * _it;

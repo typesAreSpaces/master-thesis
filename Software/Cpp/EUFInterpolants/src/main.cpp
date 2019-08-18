@@ -5,7 +5,7 @@
 
 #include "EUFInterpolant.h"
 #include "Declarations.h"
-#include "ConvertReprToZ3.h"
+#include "ConvertReprToZ3.h" 
 
 int main(int argc, char ** argv){
 
@@ -38,7 +38,27 @@ int main(int argc, char ** argv){
   Converter cvt (ctx, sort_A);
   EUFInterpolant example (ctx, input_formula, symbols_to_elim, cvt);
   std::cout << "The Interpolant" << std::endl;
-  std::cout << example.algorithm() << std::endl;
+  std::cout << example.algorithm() << std::endl; 
+
+
+  CircularList<int> a;
+  CircularList<int> b;
+
+  for(int i = 0; i < 100; ++i){
+    a.add(i);
+    b.add(2*i);
+  }
   
+  std::cout << "List a: "<< a << std::endl;
+  std::cout << std::endl;
+  std::cout << "List b: " << b << std::endl;
+
+  std::cout << std::endl;
+
+  a.merge(b);
+  
+  std::cout << "List a: "<< a << std::endl;
+  std::cout << std::endl;
+  std::cout << "List b: " << b << std::endl;
   return 0;
 }

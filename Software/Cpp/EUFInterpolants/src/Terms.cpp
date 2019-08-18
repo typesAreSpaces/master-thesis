@@ -2,6 +2,152 @@
 #define debugVisit  false
 #define debugVisit2 false
 
+Terms::Terms(Z3_context ctx, Z3_ast v){
+  Z3_app app = Z3_to_app(ctx, v);
+  // Update: let's take as number of terms the
+  // max id in the first conjunction of the input
+  // formula, which is the ID of the root of
+  // the first conjunction under the hypothesis
+  // that IDs are given by a PostOrder traversing
+  // of the graph
+  // Update 2: The general format for the SMT2 file is the following:
+  // <declarations>
+  // definition of formula A
+  // definition of formula B
+  // assert [Interp] formula A
+  // assert formula B
+  unsigned numTerms = Z3_get_ast_id(ctx, Z3_get_app_arg(ctx, app, 0)),
+    counterExtraTerms = 0, & refCounterExtraTerms = counterExtraTerms;
+  this->root_num = numTerms;
+  
+  std::set<std::string> symbolsA, symbolsB;
+  terms.resize(2*numTerms);
+
+  // The order of the next two for loops is
+  // important due to the side-effect of the
+  // new Term() object
+	
+  // Adding placeholders for the
+  // actual terms
+  for(unsigned i = 0; i < numTerms; ++i)
+    terms[i] = new Term("_", 0);
+  // Adding {x_j | 0 <= j < n} vertices
+  // where n is the number of original vertices
+  for(unsigned i = 0; i < numTerms; ++i)
+    terms[numTerms + i] = new Term("_x" + std::to_string(i), 0);
+  
+  //Extracting first formula
+  traverse(ctx, Z3_get_app_arg(ctx, app, 0), numTerms, refCounterExtraTerms, symbolsA);
+  //Extracting second formula
+  traverse(ctx, Z3_get_app_arg(ctx, app, 1), symbolsB);
+  
+  std::set_difference(symbolsA.begin(), symbolsA.end(),
+		      symbolsB.begin(), symbolsB.end(),
+		      std::inserter(symbols_to_elim, symbols_to_elim.end()));
+
+  // This symbol will be used to encode the False particle
+  terms.push_back(new Term("incomparable", 0));
+  terms[Term::getTotalNumTerm() - 1]->define();
+
+  equivalence_class = UnionFind(Term::getTotalNumTerm());
+}
+
+Terms::Terms(Z3_context ctx, Z3_ast v, std::set<std::string> & symbols_to_elim) :
+  symbols_to_elim(symbols_to_elim){
+  unsigned numTerms = Z3_get_ast_id(ctx, v),
+    counterExtraTerms = 0,
+    & refCounterExtraTerms = counterExtraTerms;
+  this->root_num = numTerms;
+  std::set<std::string> symbolsA, symbolsB;
+  terms.resize(2*numTerms);
+
+  // The order of the next two for loops is
+  // important due to the side-effect of the
+  // new Term() object
+	
+  // Adding placeholders for the
+  // actual terms
+  for(unsigned i = 0; i < numTerms; ++i)
+    terms[i] = new Term("_", 0);
+  // Adding {x_j | 0 <= j < n} vertices
+  // where n is the number of original vertices
+  for(unsigned i = 0; i < numTerms; ++i)
+    terms[numTerms + i] = new Term("_x" + std::to_string(i), 0);
+  
+  //Extracting the formula
+  traverse(ctx, v, numTerms, refCounterExtraTerms, symbolsA);
+
+  // This symbol will be used to encode the False particle
+  terms.push_back(new Term("incomparable", 0));
+  terms[Term::getTotalNumTerm() - 1]->define();
+
+  equivalence_class = UnionFind(Term::getTotalNumTerm());
+}
+
+
+Terms::Terms(std::istream & in){
+  unsigned numTerms, _arity, _successor, mark;
+  std::string _name;
+  
+  in >> numTerms;
+  terms.resize(2*numTerms);
+
+  // Adding placeholders for the
+  // actual terms
+  for(unsigned i = 0; i < numTerms; ++i)
+    terms[i] = new Term("_", 0);
+
+  // Adding {x_j | 0 <= j < n} vertices
+  // where n is the number of original vertices
+  for(unsigned i = 0; i < numTerms; ++i)
+    terms[numTerms + i] = new Term("_x" + std::to_string(i), 0);
+
+  for(unsigned i = 0; i < numTerms; ++i){
+    in >> _name >> _arity;
+    terms[i]->setName(_name);
+    if(_arity > 2){
+      mark = terms.size();
+      terms[i]->setArity(2);
+
+      // Adding w_j(v) vertices
+      for(unsigned j = 2; j <= _arity; ++j)
+	terms.push_back(new Term("_" + terms[i]->getName() +
+				   "_" + std::to_string(j), 2));
+			
+      in >> _successor;
+      terms[i]->addSuccessor(terms[_successor]);
+      terms[i]->addSuccessor(terms[mark]);
+      for(unsigned j = 0; j < _arity - 2; ++j){
+	in >> _successor;
+	terms[mark + j]->addSuccessor(terms[_successor]);
+	terms[mark + j]->addSuccessor(terms[mark + j + 1]);
+      }
+      in >> _successor;
+      terms[mark + _arity - 2]->addSuccessor(terms[_successor]);
+      terms[mark + _arity - 2]->addSuccessor(terms[numTerms + _arity]);
+    }
+    else{
+      terms[i]->setArity(_arity);
+      for(unsigned j = 0; j < _arity; ++j){
+	in >> _successor;       
+	terms[i]->addSuccessor(terms[_successor]);
+      }
+    }
+  }
+
+  // This symbol will be used to encode the False particle
+  terms.push_back(new Term("incomparable", 0));
+  terms[Term::getTotalNumTerm() - 1]->define();
+	
+  equivalence_class = UnionFind(Term::getTotalNumTerm());
+}
+
+Terms::~Terms(){
+  for(std::vector<Term*>::iterator it = terms.begin();
+      it != terms.end(); ++it)
+    delete *it;
+}
+
 /**
    \brief exit gracefully in case of error.
 */
@@ -73,7 +219,7 @@ void Terms::traverse(Z3_context c, Z3_ast v,
       terms[id]->setArity(2);
       // Adding w_j(v) vertices
       for(unsigned j = 2; j <= num_args; ++j){
-	terms.push_back(new Vertex("_" + terms[i]->getName()
+	terms.push_back(new Term("_" + terms[i]->getName()
 				   + "_" + std::to_string(j), 2));
 	++counterExtraTerms;
       }
@@ -160,153 +306,7 @@ void Terms::traverse(Z3_context c, Z3_ast v,
   }
 }
 
-Terms::Terms(Z3_context ctx, Z3_ast v){
-  Z3_app app = Z3_to_app(ctx, v);
-  // Update: let's take as number of terms the
-  // max id in the first conjunction of the input
-  // formula, which is the ID of the root of
-  // the first conjunction under the hypothesis
-  // that IDs are given by a PostOrder traversing
-  // of the graph
-  // Update 2: The general format for the SMT2 file is the following:
-  // <declarations>
-  // definition of formula A
-  // definition of formula B
-  // assert [Interp] formula A
-  // assert formula B
-  unsigned numTerms = Z3_get_ast_id(ctx, Z3_get_app_arg(ctx, app, 0)),
-    counterExtraTerms = 0, & refCounterExtraTerms = counterExtraTerms;
-  this->root_num = numTerms;
-  
-  std::set<std::string> symbolsA, symbolsB;
-  terms.resize(2*numTerms);
-
-  // The order of the next two for loops is
-  // important due to the side-effect of the
-  // new Vertex() object
-	
-  // Adding placeholders for the
-  // actual terms
-  for(unsigned i = 0; i < numTerms; ++i)
-    terms[i] = new Vertex("_", 0);
-  // Adding {x_j | 0 <= j < n} vertices
-  // where n is the number of original vertices
-  for(unsigned i = 0; i < numTerms; ++i)
-    terms[numTerms + i] = new Vertex("_x" + std::to_string(i), 0);
-  
-  //Extracting first formula
-  traverse(ctx, Z3_get_app_arg(ctx, app, 0), numTerms, refCounterExtraTerms, symbolsA);
-  //Extracting second formula
-  traverse(ctx, Z3_get_app_arg(ctx, app, 1), symbolsB);
-  
-  std::set_difference(symbolsA.begin(), symbolsA.end(),
-		      symbolsB.begin(), symbolsB.end(),
-		      std::inserter(symbols_to_elim, symbols_to_elim.end()));
-
-  // This symbol will be used to encode the False particle
-  terms.push_back(new Vertex("incomparable", 0));
-  terms[Vertex::getTotalNumVertex() - 1]->define();
-
-  equivalence_class = UnionFind(Vertex::getTotalNumVertex());
-}
-
-Terms::Terms(Z3_context ctx, Z3_ast v, std::set<std::string> & symbols_to_elim) :
-  symbols_to_elim(symbols_to_elim){
-  unsigned numTerms = Z3_get_ast_id(ctx, v),
-    counterExtraTerms = 0,
-    & refCounterExtraTerms = counterExtraTerms;
-  this->root_num = numTerms;
-  std::set<std::string> symbolsA, symbolsB;
-  terms.resize(2*numTerms);
-
-  // The order of the next two for loops is
-  // important due to the side-effect of the
-  // new Vertex() object
-	
-  // Adding placeholders for the
-  // actual terms
-  for(unsigned i = 0; i < numTerms; ++i)
-    terms[i] = new Vertex("_", 0);
-  // Adding {x_j | 0 <= j < n} vertices
-  // where n is the number of original vertices
-  for(unsigned i = 0; i < numTerms; ++i)
-    terms[numTerms + i] = new Vertex("_x" + std::to_string(i), 0);
-  
-  //Extracting the formula
-  traverse(ctx, v, numTerms, refCounterExtraTerms, symbolsA);
-
-  // This symbol will be used to encode the False particle
-  terms.push_back(new Vertex("incomparable", 0));
-  terms[Vertex::getTotalNumVertex() - 1]->define();
-
-  equivalence_class = UnionFind(Vertex::getTotalNumVertex());
-}
-
-
-Terms::Terms(std::istream & in){
-  unsigned numTerms, _arity, _successor, mark;
-  std::string _name;
-  
-  in >> numTerms;
-  terms.resize(2*numTerms);
-
-  // Adding placeholders for the
-  // actual terms
-  for(unsigned i = 0; i < numTerms; ++i)
-    terms[i] = new Vertex("_", 0);
-
-  // Adding {x_j | 0 <= j < n} vertices
-  // where n is the number of original vertices
-  for(unsigned i = 0; i < numTerms; ++i)
-    terms[numTerms + i] = new Vertex("_x" + std::to_string(i), 0);
-
-  for(unsigned i = 0; i < numTerms; ++i){
-    in >> _name >> _arity;
-    terms[i]->setName(_name);
-    if(_arity > 2){
-      mark = terms.size();
-      terms[i]->setArity(2);
-
-      // Adding w_j(v) vertices
-      for(unsigned j = 2; j <= _arity; ++j)
-	terms.push_back(new Vertex("_" + terms[i]->getName() +
-				   "_" + std::to_string(j), 2));
-			
-      in >> _successor;
-      terms[i]->addSuccessor(terms[_successor]);
-      terms[i]->addSuccessor(terms[mark]);
-      for(unsigned j = 0; j < _arity - 2; ++j){
-	in >> _successor;
-	terms[mark + j]->addSuccessor(terms[_successor]);
-	terms[mark + j]->addSuccessor(terms[mark + j + 1]);
-      }
-      in >> _successor;
-      terms[mark + _arity - 2]->addSuccessor(terms[_successor]);
-      terms[mark + _arity - 2]->addSuccessor(terms[numTerms + _arity]);
-    }
-    else{
-      terms[i]->setArity(_arity);
-      for(unsigned j = 0; j < _arity; ++j){
-	in >> _successor;       
-	terms[i]->addSuccessor(terms[_successor]);
-      }
-    }
-  }
-
-  // This symbol will be used to encode the False particle
-  terms.push_back(new Vertex("incomparable", 0));
-  terms[Vertex::getTotalNumVertex() - 1]->define();
-	
-  equivalence_class = UnionFind(Vertex::getTotalNumVertex());
-}
-
-Terms::~Terms(){
-  for(std::vector<Vertex*>::iterator it = terms.begin();
-      it != terms.end(); ++it)
-    delete *it;
-}
-
-std::vector<Vertex*> & Terms::getTerms(){
+std::vector<Term*> & Terms::getTerms(){
   return terms;
 }
 
@@ -314,32 +314,32 @@ UnionFind & Terms::getEquivalenceClass(){
   return equivalence_class;
 }
 
-Vertex * Terms::getOriginalVertex(unsigned i){
+Term * Terms::getOriginalTerm(unsigned i){
   return terms[i];
 }
 
-Vertex * Terms::getVertex(unsigned i){
+Term * Terms::getTerm(unsigned i){
   return terms[equivalence_class.find(i)];
 }
 
-Vertex * Terms::getVertex(Vertex * v){
+Term * Terms::getTerm(Term * v){
   return terms[equivalence_class.find(v->getId())];
 }
 
-void Terms::merge(Vertex * u, Vertex * v){
-  // Precondition, getVertex(u) and getVertex(v) should be different
+void Terms::merge(Term * u, Term * v){
+  // Precondition, getTerm(u) and getTerm(v) should be different
   // Merge the predecessor's list too!
-  if(getVertex(u) != getVertex(v)){
-    getVertex(u)->mergePredecessors(getVertex(v));
+  if(getTerm(u) != getTerm(v)){
+    getTerm(u)->mergePredecessors(getTerm(v));
     equivalence_class.merge(u->getId(), v->getId());
   }
 }
 
-void Terms::rotate(Vertex * u, Vertex * v){
+void Terms::rotate(Term * u, Term * v){
   // Force vertex u to become
   // vertex v's parent  
-  u->mergePredecessors(getVertex(v));
-  equivalence_class.link(u->getId(), getVertex(v)->getId());
+  u->mergePredecessors(getTerm(v));
+  equivalence_class.link(u->getId(), getTerm(v)->getId());
   equivalence_class.reset(u->getId());
 }
 
@@ -361,7 +361,7 @@ std::vector<std::pair<Z3_ast, Z3_ast> > & Terms::getDisequations(){
 
 std::ostream & operator << (std::ostream & os, Terms & gterms){
   os << "Terms" << std::endl;
-  for(std::vector<Vertex*>::iterator it = gterms.terms.begin();
+  for(std::vector<Term*>::iterator it = gterms.terms.begin();
       it != gterms.terms.end(); ++it)
     os << **it << std::endl;
   return os;

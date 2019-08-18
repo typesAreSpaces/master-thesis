@@ -1,13 +1,13 @@
 #ifndef UNIONFIND_H
 #define UNIONFIND_H
 
+#include <iostream>
 #include <vector>
-#include "Node.h"
 
 class UnionFind{
 private:
-  std::vector<unsigned> parent;
-  unsigned              num_equivalence_classes;
+  std::vector<unsigned> representative;
+  unsigned              num_equivalence_classes, length;
 	
 public:
   UnionFind(unsigned);

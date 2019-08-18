@@ -4,76 +4,76 @@
 // Horn clauses 
 UnionFind HornClause::global_UF               = UnionFind();
 bool HornClause::is_first_time                = true;
-std::vector<Vertex*> HornClause::global_terms = std::vector<Vertex*>();
+std::vector<Term*> HornClause::global_terms = std::vector<Term*>();
 
 HornClause::HornClause(UnionFind & uf,
-					   std::vector<equality> & antecedent,
-					   equality & consequent,
-					   std::vector<Vertex*> & terms) :
+		       std::vector<equality> & antecedent,
+		       equality & consequent,
+		       std::vector<Term*> & terms) :
   local_UF(uf),
   antecedent(antecedent),
   consequent(consequent){
   if(is_first_time){
-	is_first_time = false;
-	global_UF = uf;
-	global_terms = terms;
+    is_first_time = false;
+    global_UF = uf;
+    global_terms = terms;
   }
   antecedent_boolean_value = true, consequent_boolean_value = true;
   for(auto it = antecedent.begin();
       it != antecedent.end(); ++it){
     antecedent_boolean_value = antecedent_boolean_value &&
-	  getVertex(it->first)->getSymbolCommonQ() &&
-	  getVertex(it->second)->getSymbolCommonQ();
+      getTerm(it->first)->getSymbolCommonQ() &&
+      getTerm(it->second)->getSymbolCommonQ();
   }
   consequent_boolean_value = consequent_boolean_value &&		
-	getVertex(consequent.first)->getSymbolCommonQ() &&
-	getVertex(consequent.second)->getSymbolCommonQ();
+    getTerm(consequent.first)->getSymbolCommonQ() &&
+    getTerm(consequent.second)->getSymbolCommonQ();
   }
 
-// It's assumed the arities of Vertex * u,
-// Vertex * v are the same
+// It's assumed the arities of Term * u,
+// Term * v are the same
 HornClause::HornClause(UnionFind & uf,
-					   Vertex* u, Vertex* v,
-					   std::vector<Vertex*> & terms,
-					   bool is_disequation) :
+		       Term* u, Term* v,
+		       std::vector<Term*> & terms,
+		       bool is_disequation) :
   local_UF(uf),
   antecedent_boolean_value(true),
   consequent_boolean_value(true){
   if(is_first_time){
-	is_first_time = false;
-	global_UF = uf;
-	global_terms = terms;
+    is_first_time = false;
+    global_UF = uf;
+    global_terms = terms;
   }
 	
   unsigned _arity = u->getArity();
   assert(_arity == v->getArity());
-  std::vector<Vertex*> & successors_u = u->getSuccessors(),
+  const std::vector<Term*> & successors_u = u->getSuccessors(),
     & successors_v = v->getSuccessors();
   for(unsigned i = 0; i < _arity; ++i){
-	Vertex * _u = getVertex(successors_u[i]),
-      * _v = getVertex(successors_v[i]);
+    Term * _u = getTerm(successors_u[i]),
+      * _v = getTerm(successors_v[i]);
     if(*_u >= *_v)
       antecedent.push_back(std::make_pair(_u, _v));
     else
       antecedent.push_back(std::make_pair(_v, _u));
     antecedent_boolean_value = antecedent_boolean_value
-	  && _u->getSymbolCommonQ() && _v->getSymbolCommonQ();
+      && _u->getSymbolCommonQ() && _v->getSymbolCommonQ();
   }
   if(is_disequation){
-	consequent = std::make_pair(terms[Vertex::getTotalNumVertex() - 1],
-								terms[Vertex::getTotalNumVertex() - 1]);
-	consequent_boolean_value = true;
+    consequent = std::make_pair(terms[Term::getTotalNumTerm() - 1],
+				terms[Term::getTotalNumTerm() - 1]);
+    consequent_boolean_value = true;
   }
   else{
-	Vertex * _u = getVertex(u),
-	  * _v = getVertex(v);
+    Term * _u = getTerm(u),
+      * _v = getTerm(v);
   
-	if(*_u >= *_v)
-	  consequent = std::make_pair(_u, _v);
-	else
-	  consequent = std::make_pair(_v, _u);
-	consequent_boolean_value = consequent_boolean_value
-	  && _u->getSymbolCommonQ() && _v->getSymbolCommonQ();
+    if(*_u >= *_v)
+      consequent = std::make_pair(_u, _v);
+    else
+      consequent = std::make_pair(_v, _u);
+    consequent_boolean_value = consequent_boolean_value
+      && _u->getSymbolCommonQ() && _v->getSymbolCommonQ();
   }
 }
 
@@ -86,20 +86,20 @@ void HornClause::normalize(){
   antecedent_boolean_value = true;
   for(std::vector<equality>::iterator it = antecedent.begin();
       it != antecedent.end();){
-    if(getVertex(it->first) == getVertex(it->second))
+    if(getTerm(it->first) == getTerm(it->second))
       antecedent.erase(it);
     else{
       local_UF.merge(it->first->getId(), it->second->getId());
       antecedent_boolean_value = antecedent_boolean_value
-		&& it->first->getSymbolCommonQ()
-		&& it->second->getSymbolCommonQ();
+	&& it->first->getSymbolCommonQ()
+	&& it->second->getSymbolCommonQ();
       ++it;
     }
   }
 }
 
 bool HornClause::checkTriviality(){
-  return (getVertex(consequent.first) == getVertex(consequent.second));
+  return (getTerm(consequent.first) == getTerm(consequent.second));
 }
 
 bool HornClause::getAntecedentValue(){
@@ -129,11 +129,11 @@ UnionFind & HornClause::getGlobalUF(){
   return global_UF;
 }
 
-Vertex * HornClause::getVertex(unsigned i){
+Term * HornClause::getTerm(unsigned i){
   return global_terms[local_UF.find(i)];
 }
 
-Vertex * HornClause::getVertex(Vertex * v){
+Term * HornClause::getTerm(Term * v){
   return global_terms[local_UF.find(v->getId())];
 }
 
@@ -146,9 +146,9 @@ bool operator > (HornClause & hc1, HornClause & hc2){
   std::vector<equality> & hc1Antecedent = hc1.getAntecedent();
   UnionFind & hc2UF = hc2.getLocalUF();
   for(std::vector<equality>::iterator it = hc1Antecedent.begin();
-	  it != hc1Antecedent.end(); ++it)
-	if(hc2UF.find(it->first->getId()) != hc2UF.find(it->second->getId()))
-	  return false;
+      it != hc1Antecedent.end(); ++it)
+    if(hc2UF.find(it->first->getId()) != hc2UF.find(it->second->getId()))
+      return false;
   return true;
 }
 
@@ -159,7 +159,7 @@ bool operator < (HornClause & hc1, HornClause & hc2){
 std::ostream & operator << (std::ostream & os, HornClause & hc){
   bool flag = true;
   for(std::vector<equality>::iterator it = hc.antecedent.begin();
-	  it != hc.antecedent.end(); ++it){
+      it != hc.antecedent.end(); ++it){
     if(flag)
       os << it->first->to_string() << " = " << it->second->to_string();
     else
@@ -167,6 +167,6 @@ std::ostream & operator << (std::ostream & os, HornClause & hc){
     flag = false;
   }
   os << " -> " << hc.consequent.first->to_string()
-	 << " = " << hc.consequent.second->to_string();
+     << " = " << hc.consequent.second->to_string();
   return os;
 }

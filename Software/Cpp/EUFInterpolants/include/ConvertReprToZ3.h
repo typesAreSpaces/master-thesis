@@ -1,7 +1,7 @@
 #ifndef _REPR_
 #define _REPR_
 
-#include "Vertex.h"
+#include "Term.h"
 #include "HornClause.h"
 #include "HornClauses.h"
 #include "z3.h"
@@ -15,7 +15,7 @@ class Converter {
   std::map<unsigned, unsigned> index;
  public:
   Converter(z3::context &, z3::sort &);
-  z3::expr        convert(Vertex *);
+  z3::expr        convert(Term *);
   z3::expr        convert(equality &);
   z3::expr        convert(std::vector<equality> &);
   z3::expr_vector convert(std::vector<std::pair<Z3_ast, Z3_ast> > &);

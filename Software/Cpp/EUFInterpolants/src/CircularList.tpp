@@ -47,25 +47,25 @@ void CircularList<T>::addNonEmpty(const T & element){
 }
 
 template <typename T>
-void CircularList<T>::merge(CircularList<T> * circular_list){
-  if(!circular_list->empty()){
+void CircularList<T>::merge(CircularList<T> & circular_list){
+  if(!circular_list.empty()){
     if(this->empty()){
-      this->length = circular_list->length;
-      this->elements = circular_list->elements;
+      this->length = circular_list.length;
+      this->elements = circular_list.elements;
     }
     else{
       node<T> * new_elements = this->elements->next;
-      this->elements->next = circular_list->elements->next;
-      circular_list->elements->next = new_elements;
-      this->length += circular_list->length;
+      this->elements->next = circular_list.elements->next;
+      circular_list.elements->next = new_elements;
+      this->length += circular_list.length;
     }
-    circular_list->elements = nullptr;
-    circular_list->length = 0;
+    circular_list.elements = nullptr;
+    circular_list.length = 0;
   }
 }
 
 template <typename T>
-node<T> * CircularList<T>::getElements(){
+const node<T> & CircularList<T>::getElements(){
   return elements;
 }
 

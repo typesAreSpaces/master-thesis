@@ -6,14 +6,14 @@
 #include <vector>
 #include <set>
 #include <vector>
-#include "Vertex.h"
+#include "Term.h"
 #include "UnionFind.h"
 #include "z3.h"
 
 class Terms{
  protected:
   unsigned                                root_num;
-  std::vector<Vertex*>                    terms;
+  std::vector<Term*>                      terms;
   std::set<std::string>                   symbols_to_elim; 
   std::vector<std::pair<Z3_ast, Z3_ast> > equations, disequations;
   UnionFind                               equivalence_class;
@@ -22,22 +22,22 @@ class Terms{
   void exitf(const char *);
   void unreachable();
   void traverse(Z3_context, Z3_ast,
-				unsigned, unsigned &, std::set<std::string> &);
+		unsigned, unsigned &, std::set<std::string> &);
   void traverse(Z3_context, Z3_ast,
-				std::set<std::string> &);
+		std::set<std::string> &);
   
  public:
   Terms(Z3_context, Z3_ast);
   Terms(Z3_context, Z3_ast, std::set<std::string> &);
   Terms(std::istream &);
   ~Terms();
-  std::vector<Vertex*> & getTerms();
+  std::vector<Term*> & getTerms();
   UnionFind & getEquivalenceClass();
-  Vertex * getOriginalVertex(unsigned);
-  Vertex * getVertex(unsigned);
-  Vertex * getVertex(Vertex*);
-  void merge(Vertex*, Vertex*);
-  void rotate(Vertex*, Vertex*);
+  Term * getOriginalTerm(unsigned);
+  Term * getTerm(unsigned);
+  Term * getTerm(Term*);
+  void merge(Term*, Term*);
+  void rotate(Term*, Term*);
   unsigned getRootNum();
   std::set<std::string> & getSymbolsToElim();
   std::vector<std::pair<Z3_ast, Z3_ast> > & getEquations();

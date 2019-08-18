@@ -1,88 +1,89 @@
-#include "Vertex.h"
+#include "Term.h"
 
-unsigned Vertex::total_num_vertex = 0;
+unsigned Term::total_num_vertex = 0;
 
-Vertex::Vertex(std::string name, unsigned arity) : name(name),
-						   is_symbol_common(true),
-						   defined(false),
-						   id(total_num_vertex),
-						   arity(arity){
+Term::Term(std::string name,
+	   unsigned arity) : name(name),
+			     is_symbol_common(true),
+			     defined(false),
+			     id(total_num_vertex),
+			     arity(arity){
   ++total_num_vertex;
-						   }
+			     }
 
-Vertex::Vertex() : is_symbol_common(true),
-		   defined(false),
-		   id(total_num_vertex){
+Term::Term() : is_symbol_common(true),
+	       defined(false),
+	       id(total_num_vertex){
   ++total_num_vertex;
-		   }
+	       }
 
-Vertex::~Vertex(){};
+Term::~Term(){};
 
-void Vertex::setName(std::string name){
+void Term::setName(std::string name){
   this->name = name;
 }
 
-void Vertex::setSymbolCommonQ(bool is_symbol_common){
+void Term::setSymbolCommonQ(bool is_symbol_common){
   this->is_symbol_common = is_symbol_common;
 }
 
-void Vertex::define(){
+void Term::define(){
   defined = true;
 }
 
-void Vertex::setArity(unsigned arity){
+void Term::setArity(unsigned arity){
   this->arity = arity;
 }
 
-void Vertex::addPredecessor(unsigned i){
+void Term::addPredecessor(unsigned i){
   if(!defined)
     predecessors.add(i);
 }
 
-void Vertex::addSuccessor(Vertex * v){
+void Term::addSuccessor(Term * v){
   if(!defined){
     successors.push_back(v);
     v->addPredecessor(id);
   }
 }
 
-void Vertex::mergePredecessors(Vertex * v){
+void Term::mergePredecessors(Term * v){
   this->predecessors.merge(v->getPredecessors());
 }
 
-unsigned Vertex::getTotalNumVertex(){
+unsigned Term::getTotalNumTerm(){
   return total_num_vertex;
 }
 
-std::string Vertex::getName(){
+const std::string & Term::getName(){
   return name;
 }
 
-bool Vertex::getSymbolCommonQ(){
+bool Term::getSymbolCommonQ(){
   return is_symbol_common;
 }
 
-unsigned Vertex::getId(){
+unsigned Term::getId(){
   return id;
 }
 
-unsigned Vertex::getArity(){
+unsigned Term::getArity(){
   return arity;
 }
 
-unsigned Vertex::getLength(){
+unsigned Term::getLength(){
   return predecessors.size();
 }
 
-std::vector<Vertex*> & Vertex::getSuccessors(){
+const std::vector<Term*> & Term::getSuccessors(){
   return successors;
 }
 
-CircularList<unsigned> * Vertex::getPredecessors(){
-  return &predecessors;
+CircularList<unsigned> & Term::getPredecessors(){
+  return predecessors;
 }
 
-std::string Vertex::to_string(){
+std::string Term::to_string(){
   if(arity == 0)
     return name;
   std::string partial_name = name + "(";
@@ -97,15 +98,17 @@ std::string Vertex::to_string(){
   return partial_name + ")";
 }
 
-Vertex * Vertex::getLeftChild(){
+Term * Term::getLeftChild(){
+  assert(successors[0] != nullptr);
   return successors[0];
 }
 
-Vertex * Vertex::getRightChild(){
+Term * Term::getRightChild(){
+  assert(successors[1] != nullptr);
   return successors[1];
 }
 
-std::ostream & Vertex::functionPrettyPrint (std::ostream & os){
+std::ostream & Term::functionPrettyPrint (std::ostream & os){
   if(arity == 0){
     os << name;
     return os;
@@ -122,16 +125,16 @@ std::ostream & Vertex::functionPrettyPrint (std::ostream & os){
   return os;
 }
 
-std::ostream & operator << (std::ostream & os, Vertex & v){
+std::ostream & operator << (std::ostream & os, Term & v){
   unsigned _counter = 0;
-  os << "Symbol: " << v.to_string() << std::endl;
-  os << "ID: " << v.id << std::endl;
-  os << "Predecessors:" << std::endl;
+  os << "Symbol: " << v.to_string();
+  os << " ID: " << v.id;
+  os << " Predecessors: ";
   os << v.predecessors << std::endl;
-  os << "Successors:" << std::endl;
+  os << " Successors: ";
   for(auto it = v.successors.begin();
       it != v.successors.end(); ++it){
-    os << (*it)->to_string();
+    os << (*it)->id;
     ++_counter;
     if(_counter < v.arity)
       os << ", ";
@@ -139,15 +142,15 @@ std::ostream & operator << (std::ostream & os, Vertex & v){
   return os;
 }
 
-bool operator ==(const Vertex & u, const Vertex & v){
+bool operator ==(const Term & u, const Term & v){
   return (u.id == v.id);
 }
 
-bool operator !=(const Vertex & u, const Vertex & v){
+bool operator !=(const Term & u, const Term & v){
   return !(u == v);
 }
 
-bool operator < (const Vertex & u, const Vertex & v){
+bool operator < (const Term & u, const Term & v){
   if (u.is_symbol_common < v.is_symbol_common)
     return true;
   else{
@@ -166,13 +169,13 @@ bool operator < (const Vertex & u, const Vertex & v){
   }
 }
 
-bool operator <= (const Vertex & u, const Vertex & v){
+bool operator <= (const Term & u, const Term & v){
   return (u == v || u < v);
 }
 
-bool operator >(const Vertex & u, const Vertex & v){
+bool operator >(const Term & u, const Term & v){
   return (v < u);
 }
-bool operator >=(const Vertex & u, const Vertex & v){
+bool operator >=(const Term & u, const Term & v){
   return (u == v || u > v);
 }

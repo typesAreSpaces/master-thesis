@@ -1,43 +1,42 @@
 #include "UnionFind.h"
 
-UnionFind::UnionFind(unsigned n) : num_equivalence_classes(n){
-  parent.resize(n);
+UnionFind::UnionFind(unsigned n) : num_equivalence_classes(n), length(n){
+  representative.resize(n);
   for(unsigned i = 0; i < n; ++i)
-    parent[i] = i;
+    representative[i] = i;
 }
 
 UnionFind::UnionFind(){};
 
 UnionFind::~UnionFind(){};
 
-void UnionFind::merge(unsigned i, unsigned j){
-  link(find(i), find(j));
+void UnionFind::merge(unsigned x, unsigned y){
+  link(find(x), find(y));
   --num_equivalence_classes;
 }
 
-void UnionFind::link(unsigned i, unsigned j){
-  parent[j] = i;
+void UnionFind::link(unsigned x, unsigned y){
+  representative[y] = x;
 }
 
 void UnionFind::reset(unsigned i){
-  parent[i] = i;
+  representative[i] = i;
 }
 
-unsigned UnionFind::find(unsigned i){
-  if(i != parent[i])
-    parent[i] = find(parent[i]);
-  return parent[i];
+unsigned UnionFind::find(unsigned x){
+  if(x != representative[x])
+    representative[x] = find(representative[x]);
+  return representative[x];
 }
 
 unsigned UnionFind::size(){
-  return num_equivalence_classes;
+  return length;
 }
 
 std::ostream & operator << (std::ostream & os, UnionFind & uf){
-  unsigned i = 0;
-  for(std::vector<unsigned>::iterator it = uf.parent.begin();
-			it != uf.parent.end(); ++it){
-    os << "ID: " << i << " Parent: " << *it << " ";
+  for(unsigned i = 0; i < uf.length; ++i){
+    os << "ID: " << i;
+    os << " Representative: " << uf.representative[i] << "\n";
     ++i;
   }
   return os;

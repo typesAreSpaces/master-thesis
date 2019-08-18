@@ -6,24 +6,24 @@
 #include "Signature.h"
 #include "Terms.h"
 
-typedef std::unordered_map<SignatureArg1, Vertex*, SignatureArg1::Hash> treeArg1;
-typedef std::unordered_map<SignatureArg2, Vertex*, SignatureArg2::Hash> treeArg2; 
+typedef std::unordered_map<UnarySignature, Term*, UnarySignature::Hash> UnaryTerms;
+typedef std::unordered_map<BinarySignature, Term*, BinarySignature::Hash> BinaryTerms; 
 
 class SignatureTable : public Terms {
 protected:
-  treeArg1 table1;
-  treeArg2 table2;
+  UnaryTerms table1;
+  BinaryTerms table2;
 	
 public:
   SignatureTable(Z3_context, Z3_ast);
   SignatureTable(Z3_context, Z3_ast, std::set<std::string> &);
   SignatureTable(std::istream &);
   ~SignatureTable();
-  void enter(Vertex*);
-  void remove(Vertex*);
-  Vertex* query(Vertex*);
-  SignatureArg1 getSignatureArg1(Vertex*);
-  SignatureArg2 getSignatureArg2(Vertex*);
+  void enter(Term*);
+  void remove(Term*);
+  Term* query(Term*);
+  UnarySignature getUnarySignature(Term*);
+  BinarySignature getBinarySignature(Term*);
   friend std::ostream & operator << (std::ostream &, SignatureTable &);
 };
 

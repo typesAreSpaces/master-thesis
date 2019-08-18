@@ -4,7 +4,7 @@
 
 unsigned HornClauses::num_horn_clauses = 0;
 
-HornClauses::HornClauses(std::vector<Vertex*> & terms) : local_terms(terms) {
+HornClauses::HornClauses(std::vector<Term*> & terms) : local_terms(terms) {
 }
 
 HornClauses::~HornClauses(){
@@ -14,7 +14,7 @@ HornClauses::~HornClauses(){
 }
 
 void HornClauses::addHornClause(UnionFind & uf,
-								Vertex* u, Vertex* v,
+								Term* u, Term* v,
 								bool is_disequation){
   HornClause * hc = new HornClause(uf, u, v, local_terms, is_disequation);
   if(!is_disequation){
@@ -382,7 +382,7 @@ void HornClauses::mergeType2AndType2(HornClause * h1, HornClause * h2){
       _it != _h1Antecedent.end(); ++_it){
 	if(_h2LocalUf.find(_it->first->getId()) !=
 	   _h2LocalUf.find(_it->second->getId())){
-	  Vertex * _u = local_terms[_h2LocalUf.find(_it->first->getId())],
+	  Term * _u = local_terms[_h2LocalUf.find(_it->first->getId())],
 		* _v = local_terms[_h2LocalUf.find(_it->second->getId())];
 	  if(*_u >= *_v)
 		_h2Antecedent.push_back(std::make_pair(_u, _v));
@@ -390,7 +390,7 @@ void HornClauses::mergeType2AndType2(HornClause * h1, HornClause * h2){
 		_h2Antecedent.push_back(std::make_pair(_v, _u));
 	}
   }
-  Vertex * _u = local_terms[_h2LocalUf.find(_h1Consequent.first->getId())],
+  Term * _u = local_terms[_h2LocalUf.find(_h1Consequent.first->getId())],
 	* _v = local_terms[_h2LocalUf.find(_h2Consequent.first->getId())];
   if(*_u >= *_v)
 	_h2Consequent = std::make_pair(_u, _v);
@@ -481,14 +481,14 @@ void HornClauses::orient(HornClause * hc){
 	
   for(std::vector<equality>::iterator _it = antecedent.begin();
 	  _it != antecedent.end(); ++_it){
-    Vertex * _u = local_terms[localUF.find(_it->first->getId())],
+    Term * _u = local_terms[localUF.find(_it->first->getId())],
       * _v = local_terms[localUF.find(_it->second->getId())];
     if(*_u >= *_v)
 	  *_it = std::make_pair(_u, _v);
 	else
 	  *_it = std::make_pair(_v, _u);
   }
-  Vertex * _u = local_terms[localUF.find(consequent.first->getId())],
+  Term * _u = local_terms[localUF.find(consequent.first->getId())],
     * _v = local_terms[localUF.find(consequent.second->getId())];
   
   if(*_u >= *_v)

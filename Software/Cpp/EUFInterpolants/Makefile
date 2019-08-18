@@ -36,7 +36,7 @@ main: $(OBJS) $(Z3DIR)/build/libz3.$(Z3EXT)
 	$(CC) -o $@ $^ -lpthread -Wall
 
 check_correctness_congruence_closure:
-	$(CC) -o $(CONGRUENCE_CLOSURE_TEST)/$@ $(CONGRUENCE_CLOSURE_TEST)/congruence_closure_performance.cpp -I./include -I./src -std=c++11 obj/CircularList.o obj/CongruenceClosure.o obj/Signature.o obj/SignatureTable.o obj/Terms.o obj/UnionFind.o obj/Vertex.o $(Z3DIR)/build/libz3.$(Z3EXT)
+	$(CC) -o $(CONGRUENCE_CLOSURE_TEST)/$@ $(CONGRUENCE_CLOSURE_TEST)/congruence_closure_performance.cpp -I./include -I./src -std=c++11 obj/CircularList.o obj/CongruenceClosure.o obj/Signature.o obj/SignatureTable.o obj/Terms.o obj/UnionFind.o obj/Term.o $(Z3DIR)/build/libz3.$(Z3EXT)
 	rm -rf $(CONGRUENCE_CLOSURE_TEST)/$@.txt
 	touch $(CONGRUENCE_CLOSURE_TEST)/$@.txt
 	for directories in /Users/joseabelcastellanosjoo/master-thesis/Software/Cpp/EUFInterpolants/tests/congruence_closure/*; do \
@@ -46,7 +46,7 @@ check_correctness_congruence_closure:
 	done
 
 check_performance_congruence_closure:
-	$(CC) -o $(CONGRUENCE_CLOSURE_TEST)/$@ $(CONGRUENCE_CLOSURE_TEST)/congruence_closure_performance.cpp -I./include -I./src -std=c++11 obj/CircularList.o obj/CongruenceClosure.o obj/Signature.o obj/SignatureTable.o obj/Terms.o obj/UnionFind.o obj/Vertex.o $(Z3DIR)/build/libz3.$(Z3EXT)
+	$(CC) -o $(CONGRUENCE_CLOSURE_TEST)/$@ $(CONGRUENCE_CLOSURE_TEST)/congruence_closure_performance.cpp -I./include -I./src -std=c++11 obj/CircularList.o obj/CongruenceClosure.o obj/Signature.o obj/SignatureTable.o obj/Terms.o obj/UnionFind.o obj/Term.o $(Z3DIR)/build/libz3.$(Z3EXT)
 	rm -rf $(CONGRUENCE_CLOSURE_TEST)/$@.txt
 	touch $(CONGRUENCE_CLOSURE_TEST)/$@.txt
 	for directories in /Users/joseabelcastellanosjoo/Desktop/congruence_closure_performance_samples/*; do \
