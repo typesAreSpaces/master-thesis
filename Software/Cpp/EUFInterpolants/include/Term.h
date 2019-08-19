@@ -8,13 +8,13 @@
 
 class Term{
  private:
-  static unsigned        total_num_vertex;
-  std::string            name;
-  bool                   is_symbol_common;
-  bool                   is_defined;
-  unsigned               id, arity;
-  std::vector<Term*>     successors;
-  CircularList<unsigned> predecessors;
+  static unsigned     total_num_vertex;
+  std::string         name;
+  bool                is_symbol_common;
+  bool                is_defined;
+  unsigned            id, arity;
+  std::vector<Term*>  successors;
+  CircularList<Term*> predecessors;
 
  public:
   Term(std::string, unsigned);
@@ -35,7 +35,7 @@ class Term{
   unsigned getArity();
   unsigned getLength();
   const std::vector<Term*> & getSuccessors();
-  CircularList<unsigned> & getPredecessors();
+  CircularList<Term*> & getPredecessors();
   std::string to_string();
   Term * getLeftChild();
   Term * getRightChild();

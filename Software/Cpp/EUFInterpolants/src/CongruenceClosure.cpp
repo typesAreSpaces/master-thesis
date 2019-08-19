@@ -155,7 +155,7 @@ void CongruenceClosure::algorithm(){
 	  find_v = find_w;
 	  find_w = temp_swap;
 	}
-	CircularList<unsigned> & list_find_v = find_v->getPredecessors();
+	CircularList<Term*> & list_find_v = find_v->getPredecessors();
 	if(find_v->getLength() != 0){
 	  auto predecessor_it = list_find_v.begin();
 	  do{

@@ -39,7 +39,7 @@ void Term::addSuccessor(Term * v){
   assert(!is_defined);
   successors.push_back(v);
   // Add predeccessors
-  v->predecessors.add(id);
+  v->predecessors.add(this);
 }
 
 void Term::mergePredecessors(Term * v){
@@ -74,7 +74,7 @@ const std::vector<Term*> & Term::getSuccessors(){
   return successors;
 }
 
-CircularList<unsigned> & Term::getPredecessors(){
+CircularList<Term*> & Term::getPredecessors(){
   return predecessors;
 }
 

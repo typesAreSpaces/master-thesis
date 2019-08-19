@@ -318,6 +318,10 @@ Term * Terms::getOriginalTerm(unsigned i){
   return terms[i];
 }
 
+Term * Terms::getOriginalTerm(Term * v){
+  return terms[v->getId()];
+}
+
 Term * Terms::getTerm(unsigned i){
   return terms[equivalence_class.find(i)];
 }
