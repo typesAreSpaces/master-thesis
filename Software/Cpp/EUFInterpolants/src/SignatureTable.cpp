@@ -16,11 +16,11 @@ void SignatureTable::enter(Term* v){
   unsigned _arity = v->getArity();
   if(_arity == 1){
     //<UnarySignature, Term*>
-    table1.insert(std::make_pair(getUnarySignature(v), v));
+    unaryTable.insert(std::make_pair(getUnarySignature(v), v));
   }
   if(_arity == 2){
     //<BinarySignature, Term*>
-    table2.insert(std::make_pair(getBinarySignature(v), v));
+    binaryTable.insert(std::make_pair(getBinarySignature(v), v));
   }
   return;
 }
@@ -30,9 +30,9 @@ void SignatureTable::remove(Term * v){
   try{
     query(v);
     if(_arity == 1)
-      table1.erase(getUnarySignature(v));
+      unaryTable.erase(getUnarySignature(v));
     if(_arity == 2)
-      table2.erase(getBinarySignature(v));
+      binaryTable.erase(getBinarySignature(v));
   }
   catch(const char * msg){
     //std::cerr << "SignatureTable::remove error" << std::endl;
@@ -44,15 +44,15 @@ void SignatureTable::remove(Term * v){
 Term * SignatureTable::query(Term * v){
   unsigned _arity = v->getArity();
   if(_arity == 1){
-    UnaryTerms::iterator it = table1.find(getUnarySignature(v));
-    if(it == table1.end())
+    UnaryTerms::iterator it = unaryTable.find(getUnarySignature(v));
+    if(it == unaryTable.end())
       throw "Element not found";
     return it->second;
   }
   else{
     if(_arity == 2){
-      BinaryTerms::iterator it = table2.find(getBinarySignature(v));
-      if(it == table2.end())
+      BinaryTerms::iterator it = binaryTable.find(getBinarySignature(v));
+      if(it == binaryTable.end())
 	throw "Element not found";
       return it->second;
     }
@@ -78,11 +78,11 @@ BinarySignature SignatureTable::getBinarySignature(Term * v){
 
 std::ostream & operator << (std::ostream & os, SignatureTable & st){
   os << "Signature Table" << std::endl;
-  for(auto it = st.table1.begin(); it != st.table1.end(); ++it){
+  for(auto it = st.unaryTable.begin(); it != st.unaryTable.end(); ++it){
     UnarySignature _temp = it->first;
     os << _temp << " " << *(it->second) << std::endl;
   }
-  for(auto it = st.table2.begin(); it != st.table2.end(); ++it){
+  for(auto it = st.binaryTable.begin(); it != st.binaryTable.end(); ++it){
     BinarySignature __temp = it->first;
     os << __temp << " " << *(it->second) << std::endl;
   }

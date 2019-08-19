@@ -38,7 +38,6 @@ std::ostream & operator << (std::ostream & os, const UnionFind & uf){
   for(unsigned i = 0; i < uf.length; ++i){
     os << "ID: " << i;
     os << " Representative: " << uf.representative[i] << "\n";
-    ++i;
   }
   return os;
 }

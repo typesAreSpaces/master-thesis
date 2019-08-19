@@ -1,6 +1,6 @@
 #include "Signature.h"
 
-UnarySignature::UnarySignature(std::string name,
+UnarySignature::UnarySignature(const std::string & name,
 			       unsigned first_signature) :
   name(name), first_signature(first_signature){}
 
@@ -11,10 +11,10 @@ bool UnarySignature::operator==(const UnarySignature & x) const {
 	  && this->first_signature == x.first_signature);
 }
 
-std::ostream & operator << (std::ostream & os, UnarySignature & x){
-  os << "Signature ";
-  os << "Name: " << x.name;
-  os << " First_Signature: " << x.first_signature;
+std::ostream & operator << (std::ostream & os, const UnarySignature & x){
+  os << "Signature:";
+  os << " Name: " << x.name;
+  os << " First Signature: " << x.first_signature;
   return os;
 }
 
@@ -26,7 +26,7 @@ std::size_t UnarySignature::Hash::operator()(const UnarySignature & x) const {
   return res;
 }
 
-BinarySignature::BinarySignature(std::string name,
+BinarySignature::BinarySignature(const std::string & name,
 				 unsigned first_signature, unsigned second_signature) :
   name(name), first_signature(first_signature), second_signature(second_signature){}
 
@@ -38,11 +38,11 @@ bool BinarySignature::operator==(const BinarySignature & x) const {
 	  && this->second_signature == x.second_signature);
 }
 
-std::ostream & operator << (std::ostream & os, BinarySignature & x){
-  os << "Signature ";
-  os << "Name: " << x.name;
-  os << " First_Signature: " << x.first_signature;
-  os << " Second_Signature: " << x.second_signature;  
+std::ostream & operator << (std::ostream & os, const BinarySignature & x){
+  os << "Signature:";
+  os << " Name: " << x.name;
+  os << " First Signature: " << x.first_signature;
+  os << " Second Signature: " << x.second_signature;  
   return os;
 }
 

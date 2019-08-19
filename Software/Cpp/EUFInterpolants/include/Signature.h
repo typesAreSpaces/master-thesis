@@ -4,13 +4,13 @@
 #include <iostream>
 
 struct UnarySignature {
-  std::string name;
+  const std::string & name;
   unsigned    first_signature;
   struct Hash;
-  UnarySignature(std::string, unsigned);
+  UnarySignature(const std::string &, unsigned);
   ~UnarySignature();
   bool operator==(const UnarySignature &) const;
-  friend std::ostream & operator << (std::ostream &, UnarySignature &);
+  friend std::ostream & operator << (std::ostream &, const UnarySignature &);
 };
 
 struct UnarySignature::Hash {
@@ -18,13 +18,13 @@ struct UnarySignature::Hash {
 };
 
 struct BinarySignature {
-  std::string name;
+  const std::string & name;
   unsigned    first_signature, second_signature;
   struct Hash;
-  BinarySignature(std::string, unsigned, unsigned);
+  BinarySignature(const std::string &, unsigned, unsigned);
   ~BinarySignature();
   bool operator==(const BinarySignature &) const;
-  friend std::ostream & operator << (std::ostream &, BinarySignature &);
+  friend std::ostream & operator << (std::ostream &, const BinarySignature &);
 };
 
 struct BinarySignature::Hash {

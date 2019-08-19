@@ -11,8 +11,8 @@ typedef std::unordered_map<BinarySignature, Term*, BinarySignature::Hash> Binary
 
 class SignatureTable : public Terms {
 protected:
-  UnaryTerms table1;
-  BinaryTerms table2;
+  UnaryTerms unaryTable;
+  BinaryTerms binaryTable;
 	
 public:
   SignatureTable(Z3_context, Z3_ast);
