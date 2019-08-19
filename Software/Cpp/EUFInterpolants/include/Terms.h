@@ -22,7 +22,7 @@ class Terms{
   void exitf(const char *);
   void unreachable();
   void traverse(Z3_context, Z3_ast,
-		unsigned, unsigned &, std::set<std::string> &);
+		unsigned, std::set<std::string> &);
   void traverse(Z3_context, Z3_ast, std::set<std::string> &);
   
  public:
