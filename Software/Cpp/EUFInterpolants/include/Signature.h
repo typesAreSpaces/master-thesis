@@ -5,7 +5,7 @@
 
 struct UnarySignature {
   const std::string & name;
-  unsigned    first_signature;
+  unsigned            first_signature;
   struct Hash;
   UnarySignature(const std::string &, unsigned);
   ~UnarySignature();
@@ -19,7 +19,7 @@ struct UnarySignature::Hash {
 
 struct BinarySignature {
   const std::string & name;
-  unsigned    first_signature, second_signature;
+  unsigned            first_signature, second_signature;
   struct Hash;
   BinarySignature(const std::string &, unsigned, unsigned);
   ~BinarySignature();
