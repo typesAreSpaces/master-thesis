@@ -3,19 +3,21 @@
 unsigned Term::total_num_vertex = 0;
 
 Term::Term(std::string name,
-	   unsigned arity) : name(name),
-			     is_symbol_common(true),
-			     is_defined(false),
-			     id(total_num_vertex),
-			     arity(arity){
+	   unsigned arity) :
+  name(name),
+  is_symbol_common(true),
+  is_defined(false),
+  id(total_num_vertex),
+  arity(arity){
   ++total_num_vertex;
-			     }
+  }
 
-Term::Term() : is_symbol_common(true),
-	       is_defined(false),
-	       id(total_num_vertex){
+Term::Term() :
+  is_symbol_common(true),
+  is_defined(false),
+  id(total_num_vertex){
   ++total_num_vertex;
-	       }
+  }
 
 Term::~Term(){};
 

@@ -11,12 +11,13 @@ UnionFind::UnionFind(){};
 UnionFind::~UnionFind(){};
 
 void UnionFind::merge(unsigned x, unsigned y){
-  link(find(x), find(y));
-  --num_equivalence_classes;
+  representative[find(y)] = find(x);
+  --num_equivalence_classes;  
 }
 
 void UnionFind::link(unsigned x, unsigned y){
   representative[y] = x;
+  --num_equivalence_classes;
 }
 
 void UnionFind::reset(unsigned i){
@@ -33,7 +34,7 @@ unsigned UnionFind::size(){
   return length;
 }
 
-std::ostream & operator << (std::ostream & os, UnionFind & uf){
+std::ostream & operator << (std::ostream & os, const UnionFind & uf){
   for(unsigned i = 0; i < uf.length; ++i){
     os << "ID: " << i;
     os << " Representative: " << uf.representative[i] << "\n";
