@@ -5,14 +5,14 @@ unsigned Term::total_num_vertex = 0;
 Term::Term(std::string name,
 	   unsigned arity) : name(name),
 			     is_symbol_common(true),
-			     defined(false),
+			     is_defined(false),
 			     id(total_num_vertex),
 			     arity(arity){
   ++total_num_vertex;
 			     }
 
 Term::Term() : is_symbol_common(true),
-	       defined(false),
+	       is_defined(false),
 	       id(total_num_vertex){
   ++total_num_vertex;
 	       }
@@ -28,23 +28,18 @@ void Term::setSymbolCommonQ(bool is_symbol_common){
 }
 
 void Term::define(){
-  defined = true;
+  is_defined = true;
 }
 
 void Term::setArity(unsigned arity){
   this->arity = arity;
 }
 
-void Term::addPredecessor(unsigned i){
-  if(!defined)
-    predecessors.add(i);
-}
-
 void Term::addSuccessor(Term * v){
-  if(!defined){
-    successors.push_back(v);
-    v->addPredecessor(id);
-  }
+  assert(!is_defined);
+  successors.push_back(v);
+  // Add predeccessors
+  v->predecessors.add(id);
 }
 
 void Term::mergePredecessors(Term * v){

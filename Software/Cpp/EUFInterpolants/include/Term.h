@@ -11,12 +11,10 @@ class Term{
   static unsigned        total_num_vertex;
   std::string            name;
   bool                   is_symbol_common;
-  bool                   defined;
+  bool                   is_defined;
   unsigned               id, arity;
   std::vector<Term*>     successors;
   CircularList<unsigned> predecessors;
-  
-  void addPredecessor(unsigned);
 
  public:
   Term(std::string, unsigned);
@@ -28,8 +26,8 @@ class Term{
   void define();
   void setArity(unsigned);
   void addSuccessor(Term *);
-  void mergePredecessors(Term *);x
-x  
+  void mergePredecessors(Term *);
+  
   static unsigned getTotalNumTerm();
   const std::string & getName();
   bool getSymbolCommonQ();
