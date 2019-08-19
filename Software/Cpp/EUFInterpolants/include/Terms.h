@@ -23,8 +23,7 @@ class Terms{
   void unreachable();
   void traverse(Z3_context, Z3_ast,
 		unsigned, unsigned &, std::set<std::string> &);
-  void traverse(Z3_context, Z3_ast,
-		std::set<std::string> &);
+  void traverse(Z3_context, Z3_ast, std::set<std::string> &);
   
  public:
   Terms(Z3_context, Z3_ast);
@@ -35,8 +34,8 @@ class Terms{
   UnionFind & getEquivalenceClass();
   Term * getOriginalTerm(unsigned);
   Term * getOriginalTerm(Term *);
-  Term * getTerm(unsigned);
-  Term * getTerm(Term*);
+  Term * getReprTerm(unsigned);
+  Term * getReprTerm(Term*);
   void merge(Term*, Term*);
   void rotate(Term*, Term*);
   unsigned getRootNum();

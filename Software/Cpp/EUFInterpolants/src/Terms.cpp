@@ -319,22 +319,22 @@ Term * Terms::getOriginalTerm(unsigned i){
 }
 
 Term * Terms::getOriginalTerm(Term * v){
-  return terms[v->getId()];
+  return v;
 }
 
-Term * Terms::getTerm(unsigned i){
+Term * Terms::getReprTerm(unsigned i){
   return terms[equivalence_class.find(i)];
 }
 
-Term * Terms::getTerm(Term * v){
+Term * Terms::getReprTerm(Term * v){
   return terms[equivalence_class.find(v->getId())];
 }
 
 void Terms::merge(Term * u, Term * v){
-  // Precondition, getTerm(u) and getTerm(v) should be different
+  // Precondition, getReprTerm(u) and getReprTerm(v) should be different
   // Merge the predecessor's list too!
-  if(getTerm(u) != getTerm(v)){
-    getTerm(u)->mergePredecessors(getTerm(v));
+  if(getReprTerm(u) != getReprTerm(v)){
+    getReprTerm(u)->mergePredecessors(getReprTerm(v));
     equivalence_class.merge(u->getId(), v->getId());
   }
 }
@@ -342,8 +342,8 @@ void Terms::merge(Term * u, Term * v){
 void Terms::rotate(Term * u, Term * v){
   // Force vertex u to become
   // vertex v's parent  
-  u->mergePredecessors(getTerm(v));
-  equivalence_class.link(u->getId(), getTerm(v)->getId());
+  u->mergePredecessors(getReprTerm(v));
+  equivalence_class.link(u->getId(), getReprTerm(v)->getId());
   equivalence_class.reset(u->getId());
 }
 

@@ -8,7 +8,7 @@ EUFInterpolant::EUFInterpolant(Z3_context c, Z3_ast v, Converter & cvt) :
   horn_clauses(terms),
   ctx(c){
   unsigned size_congruence_closure = Term::getTotalNumTerm();
-  auto last_vertex = congruence_closure.getTerm(size_congruence_closure - 1);
+  auto last_vertex = congruence_closure.getReprTerm(size_congruence_closure - 1);
   contradiction = std::make_pair(last_vertex, last_vertex);
   }
 
@@ -21,7 +21,7 @@ EUFInterpolant::EUFInterpolant(Z3_context c, Z3_ast v,
   horn_clauses(terms),
   ctx(c) {
   unsigned size_congruence_closure = Term::getTotalNumTerm();
-  auto last_vertex = congruence_closure.getTerm(size_congruence_closure - 1);
+  auto last_vertex = congruence_closure.getReprTerm(size_congruence_closure - 1);
   contradiction = std::make_pair(last_vertex, last_vertex);
   }
 
@@ -71,7 +71,7 @@ z3::expr EUFInterpolant::algorithm(){
 void EUFInterpolant::identifyCommonSymbols(){
   unsigned root_num = congruence_closure.getRootNum();
   std::stack<Term*> stack_vertices;
-  Term * root = congruence_closure.getTerm(root_num), * temp_root;
+  Term * root = congruence_closure.getReprTerm(root_num), * temp_root;
   unsigned arity;
   auto & symbols_to_eliminate = congruence_closure.getSymbolsToElim();
   
@@ -129,7 +129,7 @@ void EUFInterpolant::setCommonRepresentatives(){
   unsigned totalNV = Term::getTotalNumTerm();
   for(unsigned i = 0; i < totalNV; ++i){
     Term * vertex_iterator = congruence_closure.getOriginalTerm(i);
-    Term * vertex_representative = congruence_closure.getTerm(vertex_iterator);
+    Term * vertex_representative = congruence_closure.getReprTerm(vertex_iterator);
     // A rotation between the current 
     // representative and the current term if:
     // 1) the current term is common
@@ -149,7 +149,7 @@ void EUFInterpolant::eliminationOfUncommonFSyms(){
     auto symbol_name = map_symbol_location->first;
     auto positions = map_symbol_location->second;
     for(auto position : positions){
-      if(!congruence_closure.getTerm(position)->getSymbolCommonQ()){
+      if(!congruence_closure.getReprTerm(position)->getSymbolCommonQ()){
 	expose = true;
 	break;
       }
@@ -186,8 +186,8 @@ void EUFInterpolant::addNegativeHornClauses(){
 	
     lhs = Z3_get_ast_id(ctx, disequation->first);
     rhs = Z3_get_ast_id(ctx, disequation->second);
-    lhs_vertex = congruence_closure.getTerm(lhs);
-    rhs_vertex = congruence_closure.getTerm(rhs);
+    lhs_vertex = congruence_closure.getReprTerm(lhs);
+    rhs_vertex = congruence_closure.getReprTerm(rhs);
 
     // std::cout << "Inside addNegativeHornClauses" << std::endl;
     // std::cout << lhs_vertex->to_string() << " ~= ";

@@ -65,15 +65,15 @@ UnarySignature SignatureTable::getUnarySignature(Term * v){
   std::vector<Term*> _successors = v->getSuccessors();
   // Store v with its current signature
   return UnarySignature(v->getName(),
-			getTerm(_successors[0])->getId());
+			getReprTerm(_successors[0])->getId());
 }
 
 BinarySignature SignatureTable::getBinarySignature(Term * v){
   std::vector<Term*> _successors = v->getSuccessors();
   // Store v with its current signature
   return BinarySignature(v->getName(),
-			 getTerm(_successors[0])->getId(),
-			 getTerm(_successors[1])->getId());
+			 getReprTerm(_successors[0])->getId(),
+			 getReprTerm(_successors[1])->getId());
 }
 
 std::ostream & operator << (std::ostream & os, SignatureTable & st){
