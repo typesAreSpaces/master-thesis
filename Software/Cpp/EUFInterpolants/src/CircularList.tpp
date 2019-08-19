@@ -116,7 +116,19 @@ std::ostream & operator << (std::ostream & os, CircularList<T> & x){
   if(!x.empty()){
     auto it = x.begin();
     do {
-      os << it->data << " ";
+      os << (it->data) << " ";
+      it = it->next;
+    } while(it != x.begin());
+  }
+  return os;
+}
+
+template <typename T>
+std::ostream & operator << (std::ostream & os, CircularList<T*> & x){
+  if(!x.empty()){
+    auto it = x.begin();
+    do {
+      os << *(it->data) << " ";
       it = it->next;
     } while(it != x.begin());
   }

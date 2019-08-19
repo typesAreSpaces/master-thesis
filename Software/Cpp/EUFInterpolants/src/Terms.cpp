@@ -22,7 +22,7 @@ Terms::Terms(Z3_context ctx, Z3_ast v){
 
    // This symbol will be used to encode the False particle
   terms[0] = new Term("incomparable", 0);
-  terms[Term::getTotalNumTerm() - 1]->define();
+  terms[0]->define();
   
   // The order of the next two for loops is
   // important due to the side-effect of the
@@ -58,7 +58,7 @@ Terms::Terms(Z3_context ctx, Z3_ast v, std::set<std::string> & symbols_to_elim) 
 
   // This symbol will be used to encode the False particle
   terms[0] = new Term("incomparable", 0);
-  terms[Term::getTotalNumTerm() - 1]->define();
+  terms[0]->define();
   
   // The order of the next two for loops is
   // important due to the side-effect of the
@@ -89,7 +89,7 @@ Terms::Terms(std::istream & in){
 
    // This symbol will be used to encode the False particle
   terms[0] = new Term("incomparable", 0);
-  terms[Term::getTotalNumTerm() - 1]->define();
+  terms[0]->define();
   
   // Adding placeholders for the
   // actual terms
@@ -297,10 +297,6 @@ UnionFind & Terms::getEquivalenceClass(){
 
 Term * Terms::getOriginalTerm(unsigned i){
   return terms[i];
-}
-
-Term * Terms::getOriginalTerm(Term * v){
-  return v;
 }
 
 Term * Terms::getReprTerm(unsigned i){

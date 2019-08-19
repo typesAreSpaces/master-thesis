@@ -7,9 +7,8 @@ EUFInterpolant::EUFInterpolant(Z3_context c, Z3_ast v, Converter & cvt) :
   terms(congruence_closure.getTerms()),
   horn_clauses(terms),
   ctx(c){
-  unsigned size_congruence_closure = Term::getTotalNumTerm();
-  auto last_vertex = congruence_closure.getReprTerm(size_congruence_closure - 1);
-  contradiction = std::make_pair(last_vertex, last_vertex);
+  contradiction = std::make_pair(congruence_closure.getOriginalTerm(0),
+				 congruence_closure.getOriginalTerm(0));
   }
 
 EUFInterpolant::EUFInterpolant(Z3_context c, Z3_ast v,
@@ -20,9 +19,8 @@ EUFInterpolant::EUFInterpolant(Z3_context c, Z3_ast v,
   terms(congruence_closure.getTerms()),
   horn_clauses(terms),
   ctx(c) {
-  unsigned size_congruence_closure = Term::getTotalNumTerm();
-  auto last_vertex = congruence_closure.getReprTerm(size_congruence_closure - 1);
-  contradiction = std::make_pair(last_vertex, last_vertex);
+  contradiction = std::make_pair(congruence_closure.getOriginalTerm(0),
+				 congruence_closure.getOriginalTerm(0));
   }
 
 EUFInterpolant::~EUFInterpolant(){

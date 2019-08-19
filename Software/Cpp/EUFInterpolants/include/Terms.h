@@ -33,7 +33,6 @@ class Terms{
   std::vector<Term*> & getTerms();
   UnionFind & getEquivalenceClass();
   Term * getOriginalTerm(unsigned);
-  Term * getOriginalTerm(Term *);
   Term * getReprTerm(unsigned);
   Term * getReprTerm(Term*);
   void merge(Term*, Term*);

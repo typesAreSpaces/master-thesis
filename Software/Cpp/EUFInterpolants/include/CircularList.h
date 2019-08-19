@@ -42,6 +42,8 @@ class CircularList{
   };
   template <typename U>
     friend std::ostream & operator << (std::ostream &, CircularList<U> &);
+  template <typename U>
+    friend std::ostream & operator << (std::ostream &, CircularList<U*> &);
 };
 
 #include "CircularList.tpp"
