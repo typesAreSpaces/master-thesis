@@ -24,11 +24,11 @@ z3::expr Converter::convert(Term * v){
   return formula;
 }
 
-z3::expr Converter::convert(equality & eq){
+z3::expr Converter::convert(const equality & eq){
   return (convert(eq.first) == convert(eq.second));
 }
 
-z3::expr Converter::convert(std::vector<equality> & eqs){
+z3::expr Converter::convert(const std::vector<equality> & eqs){
   z3::expr formula(ctx);
   int length = eqs.size();
   formula = convert(eqs[0]);
@@ -37,7 +37,7 @@ z3::expr Converter::convert(std::vector<equality> & eqs){
   return formula;
 }
 
-z3::expr_vector Converter::convert(std::vector<std::pair<Z3_ast, Z3_ast> > & eqs){
+z3::expr_vector Converter::convert(const std::vector<std::pair<Z3_ast, Z3_ast> > & eqs){
   z3::expr_vector answer(ctx);
   for(auto it = eqs.begin(); it != eqs.end(); ++it)
     answer.push_back(z3::expr(ctx, it->first) == z3::expr(ctx, it->second));
@@ -52,14 +52,14 @@ z3::expr Converter::convert(HornClause * hc){
   return formula;
 }
 
-z3::expr_vector Converter::convert(std::vector<HornClause*> & hcs){
+z3::expr_vector Converter::convert(const std::vector<HornClause*> & hcs){
   z3::expr_vector answer(ctx);
   for(auto it = hcs.begin(); it != hcs.end(); ++it)
     answer.push_back(convert(*it));
   return answer;
 }
 
-z3::expr Converter::makeConjunction(z3::expr_vector & v){
+z3::expr Converter::makeConjunction(const z3::expr_vector & v){
   unsigned length = v.size();
   if(length == 0)
     return v.ctx().bool_val(true);
@@ -70,27 +70,27 @@ z3::expr Converter::makeConjunction(z3::expr_vector & v){
   return formula;
 }
 
-bool Converter::areEqual(z3::expr & x, z3::expr & y){
+bool Converter::areEqual(const z3::expr & x, const z3::expr & y){
   unsigned x_id = Z3_get_ast_id(ctx, x);
   unsigned y_id = Z3_get_ast_id(ctx, y);
   return x_id == y_id;
 }
 
-z3::expr Converter::getAntecedent(z3::expr & hc){
+z3::expr Converter::getAntecedent(const z3::expr & hc){
   if(hc.is_implies())
     return hc.arg(0);
   else
     throw "z3::expr should by a horn clause";
 }
 
-z3::expr Converter::getConsequent(z3::expr & hc){
+z3::expr Converter::getConsequent(const z3::expr & hc){
   if(hc.is_implies())
     return hc.arg(1);
   else
     throw "z3::expr should by a horn clause";
 }
 
-z3::expr_vector Converter::extraSimplification(z3::expr_vector & formulas){
+z3::expr_vector Converter::extraSimplification(const z3::expr_vector & formulas){
   z3::solver s(formulas.ctx());
   z3::expr_vector answer(formulas.ctx());
   std::set<unsigned> filter;

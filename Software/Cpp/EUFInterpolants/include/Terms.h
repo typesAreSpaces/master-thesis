@@ -40,10 +40,10 @@ class Terms{
   void merge(Term*, Term*);
   void rotate(Term*, Term*);
   unsigned getRootNum();
-  std::set<std::string> & getSymbolsToElim();
-  std::vector<std::pair<Z3_ast, Z3_ast> > & getEquations();
-  std::vector<std::pair<Z3_ast, Z3_ast> > & getDisequations();
-  friend std::ostream & operator <<(std::ostream &, Terms &);
+  const std::set<std::string> & getSymbolsToElim();
+  const std::vector<std::pair<Z3_ast, Z3_ast> > & getEquations();
+  const std::vector<std::pair<Z3_ast, Z3_ast> > & getDisequations();
+  friend std::ostream & operator <<(std::ostream &, const Terms &);
 };
 
 #endif

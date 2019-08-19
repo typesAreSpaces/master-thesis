@@ -351,22 +351,21 @@ unsigned Terms::getRootNum(){
   return root_num;
 }
 
-std::set<std::string> & Terms::getSymbolsToElim(){
+const std::set<std::string> & Terms::getSymbolsToElim(){
   return symbols_to_elim;
 }
 
-std::vector<std::pair<Z3_ast, Z3_ast> > & Terms::getEquations(){
+const std::vector<std::pair<Z3_ast, Z3_ast> > & Terms::getEquations(){
   return equations;
 }
 
-std::vector<std::pair<Z3_ast, Z3_ast> > & Terms::getDisequations(){
+const std::vector<std::pair<Z3_ast, Z3_ast> > & Terms::getDisequations(){
   return disequations;
 }
 
-std::ostream & operator << (std::ostream & os, Terms & gterms){
+std::ostream & operator << (std::ostream & os, const Terms & gterms){
   os << "Terms" << std::endl;
-  for(std::vector<Term*>::iterator it = gterms.terms.begin();
-      it != gterms.terms.end(); ++it)
+  for(auto it = gterms.terms.begin(); it != gterms.terms.end(); ++it)
     os << **it << std::endl;
   return os;
 }
