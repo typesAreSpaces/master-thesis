@@ -17,14 +17,13 @@ protected:
 public:
   SignatureTable(Z3_context, Z3_ast);
   SignatureTable(Z3_context, Z3_ast, std::set<std::string> &);
-  SignatureTable(std::istream &);
   ~SignatureTable();
   void enter(Term*);
   void remove(Term*);
   Term* query(Term*);
   UnarySignature getUnarySignature(Term*);
   BinarySignature getBinarySignature(Term*);
-  friend std::ostream & operator << (std::ostream &, SignatureTable &);
+  friend std::ostream & operator << (std::ostream &, const SignatureTable &);
 };
 
 #endif

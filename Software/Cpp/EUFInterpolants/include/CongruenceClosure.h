@@ -13,7 +13,6 @@ class CongruenceClosure : public SignatureTable {
  public:
   CongruenceClosure(Z3_context, Z3_ast, std::set<std::string> &);
   CongruenceClosure(Z3_context, Z3_ast);
-  CongruenceClosure(std::istream &);
   ~CongruenceClosure();
   void algorithm();
   bool checkCorrectness();

@@ -21,14 +21,12 @@ class Terms{
  private:
   void exitf(const char *);
   void unreachable();
-  void traverse(Z3_context, Z3_ast,
-		unsigned, std::set<std::string> &);
-  void traverse(Z3_context, Z3_ast, std::set<std::string> &);
+  void extractSymbolsAndTerms(Z3_context, Z3_ast, std::set<std::string> &);
+  void extractSymbols(Z3_context, Z3_ast, std::set<std::string> &);
   
  public:
   Terms(Z3_context, Z3_ast);
-  Terms(Z3_context, Z3_ast, std::set<std::string> &);
-  Terms(std::istream &);
+  Terms(Z3_context, Z3_ast, const std::set<std::string> &);
   ~Terms();
   std::vector<Term*> & getTerms();
   UnionFind & getEquivalenceClass();

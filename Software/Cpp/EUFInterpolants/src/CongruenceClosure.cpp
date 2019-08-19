@@ -62,49 +62,6 @@ CongruenceClosure::CongruenceClosure(Z3_context c, Z3_ast v) :
   init(c);
 }
 
-CongruenceClosure::CongruenceClosure(std::istream & in) : SignatureTable(in) {
-  unsigned num_eq, lhs, rhs;
-  Term * lhs_vertex, *rhs_vertex;
-	
-  in >> num_eq;
-  for(unsigned i = 0; i < num_eq; ++i){
-    in >> lhs >> rhs;
-    lhs_vertex = getReprTerm(lhs);
-    rhs_vertex = getReprTerm(rhs);
-    
-    if(lhs_vertex->getLength() < rhs_vertex->getLength()){
-      merge(getReprTerm(rhs), getReprTerm(lhs));
-      DEBUG_CC(traceMerge,
-	       std::cout << "==========================================" << std::endl;
-	       std::cout << "Merging " << std::endl;
-	       std::cout << lhs_vertex->to_string() << std::endl;
-	       std::cout << " to " << std::endl;
-	       std::cout << rhs_vertex->to_string() << std::endl;
-	       std::cout << "==========================================" << std::endl;)
-	}
-    else{
-      merge(getReprTerm(lhs), getReprTerm(rhs));
-      DEBUG_CC(traceMerge,
-	       std::cout << "==========================================" << std::endl;
-	       std::cout << "Merging " << std::endl;
-	       std::cout << rhs_vertex->to_string() << std::endl;
-	       std::cout << " to " << std::endl;
-	       std::cout << lhs_vertex->to_string() << std::endl;
-	       std::cout << "==========================================" << std::endl;)
-	}
-    DEBUG_CC(traceEC,
-	     std::cout << "==========================================" << std::endl;
-	     std::cout << "Terms and ID's" << std::endl;
-	     for(unsigned i = 0; i < Term::getTotalNumTerm(); ++i)
-	       std::cout << i << " " << getReprTerm(i)->to_string() << std::endl;
-	     std::cout << "==========================================" << std::endl;
-	     std::cout << "==========================================" << std::endl;
-	     std::cout << "Current Equivalence Class" << std::endl;
-	     std::cout << equivalence_class << std::endl;
-	     std::cout << "==========================================" << std::endl;)
-      }
-}
-
 CongruenceClosure::~CongruenceClosure(){}
 
 void CongruenceClosure::algorithm(){

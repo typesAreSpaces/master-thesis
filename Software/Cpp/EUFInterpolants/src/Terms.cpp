@@ -1,139 +1,103 @@
 #include "Terms.h"
 
+// Remark: We take as number of terms the
+// max id in the first conjunction of the input
+// formula, which is the ID of the root of
+// the first conjunction under the hypothesis
+// that IDs are given by a PostOrder traversing
+// of the graph
+// Remark 2: The general format for the SMT2 file is the following:
+// <declarations>
+// definition of formula A (i.e. first_formula)
+// definition of formula B (i.e. second_formula)
+// assert [Interp] formula A
+// assert formula B
 Terms::Terms(Z3_context ctx, Z3_ast v){
-  Z3_app app = Z3_to_app(ctx, v);
-  // Update: let's take as number of terms the
-  // max id in the first conjunction of the input
-  // formula, which is the ID of the root of
-  // the first conjunction under the hypothesis
-  // that IDs are given by a PostOrder traversing
-  // of the graph
-  // Update 2: The general format for the SMT2 file is the following:
-  // <declarations>
-  // definition of formula A
-  // definition of formula B
-  // assert [Interp] formula A
-  // assert formula B
-  unsigned numTerms = Z3_get_ast_id(ctx, Z3_get_app_arg(ctx, app, 0));
-  this->root_num = numTerms;
   
-  std::set<std::string> symbolsA, symbolsB;
-  terms.resize(2*numTerms + 1);
+  Z3_app app = Z3_to_app(ctx, v);
+  assert(Z3_get_app_num_args(ctx, app) == 2);
+  auto first_formula = Z3_get_app_arg(ctx, app, 0);
+  auto second_formula = Z3_get_app_arg(ctx, app, 1);
 
-   // This symbol will be used to encode the False particle
+  // this->root_num denotes the id of the root
+  // of the Z3_ast. It also denotes, the number
+  // of original elements by construction.
+  this->root_num = Z3_get_ast_id(ctx, first_formula);
+  unsigned num_original_terms = this->root_num;
+  std::set<std::string> symbols_first_formula, symbols_second_formula;
+  terms.resize(2*num_original_terms + 1);
+  // This term will encode the False particle
   terms[0] = new Term("incomparable", 0);
   terms[0]->define();
-  
   // The order of the next two for loops is
   // important due to the side-effect of the
   // new Term() object
-	
+  // --------------------------------------
   // Adding placeholders for the
   // actual terms
-  for(unsigned i = 0; i < numTerms; ++i)
-    terms[i + 1] = new Term("_", 0);
-  // Adding {x_j | 0 <= j < n} vertices
+  // The initial name "_" is important
+  // because we can filter non used terms
+  // if they start with that character
+  for(unsigned term_index = 1; term_index <= num_original_terms; ++term_index)
+    terms[term_index] = new Term("_", 0);
+  // Adding {x_j | 1 <= j <= n} vertices
   // where n is the number of original vertices
-  for(unsigned i = 0; i < numTerms; ++i)
-    terms[numTerms + i + 1] = new Term("_x" + std::to_string(i), 0);
+  // Their location on terms start from this->root_num + 1
+  for(unsigned term_index = 1; term_index <= num_original_terms; ++term_index)
+    terms[num_original_terms + term_index] = new Term("_x" + std::to_string(term_index), 0);
   
   //Extracting first formula
-  traverse(ctx, Z3_get_app_arg(ctx, app, 0), numTerms, symbolsA);
-  //Extracting second formula
-  traverse(ctx, Z3_get_app_arg(ctx, app, 1), symbolsB);
-  
-  std::set_difference(symbolsA.begin(), symbolsA.end(),
-		      symbolsB.begin(), symbolsB.end(),
-		      std::inserter(symbols_to_elim, symbols_to_elim.end()));
-
+  extractSymbolsAndTerms(ctx, first_formula, symbols_first_formula);
+  // Remark: The side effect of the previous function introduces
+  // more terms since it adds w_j(v) terms
   equivalence_class = UnionFind(Term::getTotalNumTerm());
+  
+  //Extracting second formula
+  extractSymbols(ctx, second_formula, symbols_second_formula);
+  
+  std::set_difference(symbols_first_formula.begin(), symbols_first_formula.end(),
+		      symbols_second_formula.begin(), symbols_second_formula.end(),
+		      std::inserter(symbols_to_elim, symbols_to_elim.end()));
 }
 
-Terms::Terms(Z3_context ctx, Z3_ast v, std::set<std::string> & symbols_to_elim) :
+// Here we take the whole formula
+// because the interpolantion problem
+// is solved as a
+// quantifier elimination problem
+Terms::Terms(Z3_context ctx, Z3_ast v, const std::set<std::string> & symbols_to_elim) :
   symbols_to_elim(symbols_to_elim){
-  unsigned numTerms = Z3_get_ast_id(ctx, v);
-  this->root_num = numTerms;
-  std::set<std::string> symbolsA, symbolsB;
-  terms.resize(2*numTerms + 1);
-
-  // This symbol will be used to encode the False particle
+  
+  // this->root_num denotes the id of the root
+  // of the Z3_ast. It also denotes, the number
+  // of original elements by construction.
+  this->root_num= Z3_get_ast_id(ctx, v);
+  unsigned num_original_terms = this->root_num;
+  std::set<std::string> symbols_first_formula, symbols_second_formula;
+  terms.resize(2*num_original_terms + 1);
+  // This term will encode the False particle
   terms[0] = new Term("incomparable", 0);
   terms[0]->define();
-  
   // The order of the next two for loops is
   // important due to the side-effect of the
   // new Term() object
-	
+  // --------------------------------------
   // Adding placeholders for the
   // actual terms
-  for(unsigned i = 0; i < numTerms; ++i)
-    terms[i + 1] = new Term("_", 0);
+  // The initial name "_" is important
+  // because we can filter non used terms
+  // if they start with that character
+  for(unsigned term_index = 1; term_index <= num_original_terms; ++term_index)
+    terms[term_index] = new Term("_", 0);
   // Adding {x_j | 0 <= j < n} vertices
   // where n is the number of original vertices
-  for(unsigned i = 0; i < numTerms; ++i)
-    terms[numTerms + i + 1] = new Term("_x" + std::to_string(i), 0);
+  // Their location on terms start from this->root_num + 1
+  for(unsigned term_index = 1; term_index <= num_original_terms; ++term_index)
+    terms[num_original_terms + term_index] = new Term("_x" + std::to_string(term_index), 0);
   
   //Extracting the formula
-  traverse(ctx, v, numTerms, symbolsA);
-
-  equivalence_class = UnionFind(Term::getTotalNumTerm());
-}
-
-
-Terms::Terms(std::istream & in){
-  unsigned numTerms, _arity, _successor, current_term_position;
-  std::string _name;
-  
-  in >> numTerms;
-  terms.resize(2*numTerms + 1);
-
-   // This symbol will be used to encode the False particle
-  terms[0] = new Term("incomparable", 0);
-  terms[0]->define();
-  
-  // Adding placeholders for the
-  // actual terms
-  for(unsigned i = 0; i < numTerms; ++i)
-    terms[i + 1] = new Term("_", 0);
-
-  // Adding {x_j | 0 <= j < n} vertices
-  // where n is the number of original vertices
-  for(unsigned i = 0; i < numTerms; ++i)
-    terms[numTerms + i + 1] = new Term("_x" + std::to_string(i), 0);
-
-  for(unsigned i = 0; i < numTerms; ++i){
-    in >> _name >> _arity;
-    terms[i]->setName(_name);
-    if(_arity > 2){
-      current_term_position = terms.size();
-      terms[i]->setArity(2);
-
-      // Adding w_j(v) vertices
-      for (unsigned j = 2; j <= _arity; ++j)
-	terms.push_back(new Term("_" + terms[i]->getName() +
-				   "_" + std::to_string(j), 2));
-			
-      in >> _successor;
-      terms[i]->addSuccessor(terms[_successor]);
-      terms[i]->addSuccessor(terms[current_term_position]);
-      for(unsigned j = 0; j < _arity - 2; ++j){
-	in >> _successor;
-	terms[current_term_position + j]->addSuccessor(terms[_successor]);
-	terms[current_term_position + j]->addSuccessor(terms[current_term_position + j + 1]);
-      }
-      in >> _successor;
-      terms[current_term_position + _arity - 2]->addSuccessor(terms[_successor]);
-      terms[current_term_position + _arity - 2]->addSuccessor(terms[numTerms + _arity]);
-    }
-    else{
-      terms[i]->setArity(_arity);
-      for(unsigned j = 0; j < _arity; ++j){
-	in >> _successor;       
-	terms[i]->addSuccessor(terms[_successor]);
-      }
-    }
-  }
-	
+  extractSymbolsAndTerms(ctx, v, symbols_first_formula);
+  // Remark: The side effect of the previous function introduces
+  // more terms since it adds w_j(v) terms
   equivalence_class = UnionFind(Term::getTotalNumTerm());
 }
 
@@ -159,9 +123,7 @@ void Terms::unreachable(){
 }
 
 // This method extracts terms and symbols
-void Terms::traverse(Z3_context c, Z3_ast v,
-		     unsigned numTerms,
-		     std::set<std::string> & symbols){
+void Terms::extractSymbolsAndTerms(Z3_context c, Z3_ast v, std::set<std::string> & symbols){
 
   unsigned id = Z3_get_ast_id(c, v);
   assert(id > 0);
@@ -176,10 +138,10 @@ void Terms::traverse(Z3_context c, Z3_ast v,
   }
   case Z3_APP_AST: {
     Z3_app app = Z3_to_app(c, v);
-    unsigned i, _successor, current_term_position, num_args = Z3_get_app_num_args(c, app);
+    unsigned num_args = Z3_get_app_num_args(c, app);
     
-    for (i = 0; i < num_args; ++i)
-      traverse(c, Z3_get_app_arg(c, app, i), numTerms, symbols);
+    for (unsigned i = 0; i < num_args; ++i)
+      extractSymbolsAndTerms(c, Z3_get_app_arg(c, app, i), symbols);
 
     //-----------------------------------------------------------------------
     // do something
@@ -204,32 +166,40 @@ void Terms::traverse(Z3_context c, Z3_ast v,
     default:
       unreachable();
     }
-    if(num_args > 2){
-      current_term_position = terms.size();
-      terms[id]->setArity(2);
-      // Adding w_j(v) vertices
-      for(unsigned j = 2; j <= num_args; ++j){
-	terms.push_back(new Term("_" + terms[i]->getName()
-				   + "_" + std::to_string(j), 2));
-      }
-      _successor = Z3_get_ast_id(c, Z3_get_app_arg(c, app, 0));
-      terms[id]->addSuccessor(terms[_successor]);
-      terms[id]->addSuccessor(terms[current_term_position]);
-      for(unsigned j = 0; j < num_args - 2; ++j){
-	_successor = Z3_get_ast_id(c, Z3_get_app_arg(c, app, j + 1));
-	terms[current_term_position + j]->addSuccessor(terms[_successor]);
-	terms[current_term_position + j]->addSuccessor(terms[current_term_position + j + 1]);
-      }
-      _successor = Z3_get_ast_id(c, Z3_get_app_arg(c, app, num_args - 1));
-      terms[current_term_position + num_args - 2]->addSuccessor(terms[_successor]);
-      terms[current_term_position + num_args - 2]->addSuccessor(terms[numTerms + num_args]);
-    }
-    else{
+    
+    switch(num_args){
+    case 0:
       terms[id]->setArity(num_args);
-      for(unsigned j = 0; j < num_args; ++j){
-	_successor = Z3_get_ast_id(c, Z3_get_app_arg(c, app, j));
-	terms[id]->addSuccessor(terms[_successor]);
-      }
+      break;
+    case 1:
+      terms[id]->setArity(num_args);
+      terms[id]->addSuccessor(terms[ Z3_get_ast_id(c, Z3_get_app_arg(c, app, j)) ]);
+      break;
+    default:
+      unsigned current_successor_id, num_original_terms = this->root_num;
+      terms[id]->setArity(2);
+      // Position of w_2(v)
+      unsigned first_w_term = terms.size(); 
+      // Adding w_j(v) vertices/terms
+      for(unsigned arg_index = 2; arg_index <= num_args; ++arg_index){
+	terms.push_back(new Term("_" + terms[id]->getName() + "_" + std::to_string(arg_index), 2));
+	if(arg_index == 2){
+	  current_successor_id = Z3_get_ast_id(c, Z3_get_app_arg(c, app, arg_index - 2));
+	  terms[id]->addSuccessor(terms[current_successor_id]);
+	  terms[id]->addSuccessor(terms[first_w_term]);
+	}
+	else if(arg_index == num_args){
+	  current_successor_id = Z3_get_ast_id(c, Z3_get_app_arg(c, app, num_args - 2));
+	  terms[first_w_term + num_args - 1]->addSuccessor(terms[current_successor_id]);
+	  terms[first_w_term + num_args - 1]->addSuccessor(terms[num_original_terms + num_args]);
+	}
+	else{
+	  current_successor_id = Z3_get_ast_id(c, Z3_get_app_arg(c, app, arg_index - 2));
+	  terms[first_w_term + arg_index - 2]->addSuccessor(terms[current_successor_id]);
+	  terms[first_w_term + arg_index - 2]->addSuccessor(terms[first_w_term + arg_index - 1]);
+	}
+      }      
+      break;
     }
     break;
   }
@@ -246,8 +216,8 @@ void Terms::traverse(Z3_context c, Z3_ast v,
 }
 
 // This method extracts symbols
-void Terms::traverse(Z3_context c, Z3_ast v,
-		     std::set<std::string> & symbols){
+void Terms::extractSymbols(Z3_context c, Z3_ast v,
+			   std::set<std::string> & symbols){
   switch (Z3_get_ast_kind(c, v)) {
   case Z3_NUMERAL_AST: {
     // do something
@@ -256,9 +226,9 @@ void Terms::traverse(Z3_context c, Z3_ast v,
   }
   case Z3_APP_AST: {
     Z3_app app = Z3_to_app(c, v);
-    unsigned i, num_args = Z3_get_app_num_args(c, app);
-    for (i = 0; i < num_args; ++i)
-      traverse(c, Z3_get_app_arg(c, app, i), symbols);
+    unsigned num_args = Z3_get_app_num_args(c, app);
+    for (unsigned current_arg = 0; current_arg < num_args; ++current_arg)
+      extractSymbols(c, Z3_get_app_arg(c, app, current_arg), symbols);
     //---------------------------------------------------------------------------
     // do something
     Z3_func_decl d = Z3_get_app_decl(c, app);

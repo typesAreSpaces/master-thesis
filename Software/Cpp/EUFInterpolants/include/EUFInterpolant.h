@@ -34,8 +34,9 @@ class EUFInterpolant {
   EUFInterpolant(Z3_context, Z3_ast, Converter &);
   EUFInterpolant(Z3_context, Z3_ast, std::set<std::string> &, Converter &);
   ~EUFInterpolant();
-  std::vector<HornClause*> getHornClauses();
+  void                     test();
   z3::expr                 algorithm();
+  std::vector<HornClause*> getHornClauses();
   friend std::ostream &    operator << (std::ostream &, EUFInterpolant &);
 };
 

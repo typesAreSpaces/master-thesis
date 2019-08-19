@@ -11,6 +11,8 @@ class Term{
   static unsigned     total_num_vertex;
   std::string         name;
   bool                is_symbol_common;
+  // A term is `defined` when we specify
+  // its successors and predecessors
   bool                is_defined;
   unsigned            id, arity;
   std::vector<Term*>  successors;

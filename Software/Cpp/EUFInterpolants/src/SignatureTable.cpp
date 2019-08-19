@@ -7,9 +7,6 @@ SignatureTable::SignatureTable(Z3_context c, Z3_ast v,
 			       std::set<std::string> & symbolsToElim) :
   Terms(c, v, symbolsToElim) {}
 
-SignatureTable::SignatureTable(std::istream & in) :
-  Terms(in) {}
-
 SignatureTable::~SignatureTable(){}
 
 void SignatureTable::enter(Term* v){
@@ -76,15 +73,13 @@ BinarySignature SignatureTable::getBinarySignature(Term * v){
 			 getReprTerm(_successors[1])->getId());
 }
 
-std::ostream & operator << (std::ostream & os, SignatureTable & st){
+std::ostream & operator << (std::ostream & os, const SignatureTable & st){
   os << "Signature Table" << std::endl;
-  for(auto it = st.unaryTable.begin(); it != st.unaryTable.end(); ++it){
-    UnarySignature _temp = it->first;
-    os << _temp << " " << *(it->second) << std::endl;
-  }
-  for(auto it = st.binaryTable.begin(); it != st.binaryTable.end(); ++it){
-    BinarySignature __temp = it->first;
-    os << __temp << " " << *(it->second) << std::endl;
-  }
-  return os;
+  os << "Unary Terms:" << std::endl;
+  for(auto it = st.unaryTable.begin(); it != st.unaryTable.end(); ++it)
+    os <<  *(it->second) << " " << it->first << std::endl;
+  os << "Binary Terms:" << std::endl;
+  for(auto it = st.binaryTable.begin(); it != st.binaryTable.end(); ++it)
+    os <<  *(it->second) << " " << it->first << std::endl;
+  return os << std::endl;
 }

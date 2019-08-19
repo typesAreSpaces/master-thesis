@@ -26,8 +26,9 @@ EUFInterpolant::EUFInterpolant(Z3_context c, Z3_ast v,
 EUFInterpolant::~EUFInterpolant(){
 }
 
-std::vector<HornClause*> EUFInterpolant::getHornClauses(){
-  return horn_clauses.getHornClauses();
+void EUFInterpolant::test(){
+  
+  return;
 }
 
 z3::expr EUFInterpolant::algorithm(){
@@ -66,12 +67,16 @@ z3::expr EUFInterpolant::algorithm(){
     && cvt.makeConjunction(simplified_exponential_hs);
 }
 
+std::vector<HornClause*> EUFInterpolant::getHornClauses(){
+  return horn_clauses.getHornClauses();
+}
+
 void EUFInterpolant::identifyCommonSymbols(){
   unsigned root_num = congruence_closure.getRootNum();
-  std::stack<Term*> stack_vertices;
   Term * root = congruence_closure.getReprTerm(root_num), * temp_root;
   unsigned arity;
   auto & symbols_to_eliminate = congruence_closure.getSymbolsToElim();
+  std::stack<Term*> stack_vertices;
   
   // Traversing the graph (in post-order) 
   // to determine if a term is common or not
