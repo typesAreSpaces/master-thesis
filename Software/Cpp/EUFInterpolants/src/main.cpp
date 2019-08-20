@@ -40,26 +40,5 @@ int main(int argc, char ** argv){
   std::cout << "The Interpolant" << std::endl;
   example.test();
   // std::cout << example.algorithm() << std::endl; 
-
-
-  CircularList<int> a;
-  CircularList<int> b;
-
-  for(int i = 0; i < 100; ++i){
-    a.add(i);
-    b.add(2*i);
-  }
-  
-  std::cout << "List a: "<< a << std::endl;
-  std::cout << std::endl;
-  std::cout << "List b: " << b << std::endl;
-
-  std::cout << std::endl;
-
-  a.merge(b);
-  
-  std::cout << "List a: "<< a << std::endl;
-  std::cout << std::endl;
-  std::cout << "List b: " << b << std::endl;
   return 0;
 }

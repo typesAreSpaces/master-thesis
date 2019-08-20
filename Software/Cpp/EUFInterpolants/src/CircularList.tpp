@@ -123,12 +123,13 @@ std::ostream & operator << (std::ostream & os, CircularList<T> & x){
   return os;
 }
 
+// Use only with CircularList<Term*>, for the moment
 template <typename T>
 std::ostream & operator << (std::ostream & os, CircularList<T*> & x){
   if(!x.empty()){
     auto it = x.begin();
     do {
-      os << *(it->data) << " ";
+      os << (it->data)->getId() << " ";
       it = it->next;
     } while(it != x.begin());
   }

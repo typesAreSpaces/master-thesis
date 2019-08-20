@@ -56,8 +56,8 @@ Terms::Terms(Z3_context ctx, Z3_ast v){
   extractSymbols(ctx, second_formula, symbols_second_formula);
   
   std::set_difference(symbols_first_formula.begin(), symbols_first_formula.end(),
-		      symbols_second_formula.begin(), symbols_second_formula.end(),
-		      std::inserter(symbols_to_elim, symbols_to_elim.end()));
+					  symbols_second_formula.begin(), symbols_second_formula.end(),
+					  std::inserter(symbols_to_elim, symbols_to_elim.end()));
 }
 
 // Here we take the whole formula
@@ -96,6 +96,10 @@ Terms::Terms(Z3_context ctx, Z3_ast v, const std::set<std::string> & symbols_to_
   
   //Extracting the formula
   extractSymbolsAndTerms(ctx, v, symbols_first_formula);
+  // Testing/Checking the terms
+  for(auto x : terms){
+	std::cout << *x << std::endl;
+  }
   // Remark: The side effect of the previous function introduces
   // more terms since it adds w_j(v) terms
   equivalence_class = UnionFind(Term::getTotalNumTerm());
@@ -125,7 +129,7 @@ void Terms::unreachable(){
 // This method extracts terms and symbols
 void Terms::extractSymbolsAndTerms(Z3_context c, Z3_ast v, std::set<std::string> & symbols){
 
-  unsigned id = Z3_get_ast_id(c, v);
+  const unsigned id = Z3_get_ast_id(c, v);
   assert(id > 0);
 	
   switch (Z3_get_ast_kind(c, v)) {
@@ -156,11 +160,11 @@ void Terms::extractSymbolsAndTerms(Z3_context c, Z3_ast v, std::set<std::string>
       terms[id]->setName(Z3_get_symbol_string(c, s));
       symbols.insert(Z3_get_symbol_string(c, s));
       if(terms[id]->getName() == "=")
-	equations.push_back(std::make_pair(Z3_get_app_arg(c, app, 0),
-					   Z3_get_app_arg(c, app, 1)));
+		equations.push_back(std::make_pair(Z3_get_app_arg(c, app, 0),
+										   Z3_get_app_arg(c, app, 1)));
       if(terms[id]->getName() == "distinct")
-	disequations.push_back(std::make_pair(Z3_get_app_arg(c, app, 0),
-					      Z3_get_app_arg(c, app, 1)));
+		disequations.push_back(std::make_pair(Z3_get_app_arg(c, app, 0),
+											  Z3_get_app_arg(c, app, 1)));
 		
       break;
     default:
@@ -173,32 +177,37 @@ void Terms::extractSymbolsAndTerms(Z3_context c, Z3_ast v, std::set<std::string>
       break;
     case 1:
       terms[id]->setArity(num_args);
-      terms[id]->addSuccessor(terms[ Z3_get_ast_id(c, Z3_get_app_arg(c, app, j)) ]);
+      terms[id]->addSuccessor(terms[ Z3_get_ast_id(c, Z3_get_app_arg(c, app, 0)) ]);
       break;
     default:
-      unsigned current_successor_id, num_original_terms = this->root_num;
+	  assert(num_args >= 2);
       terms[id]->setArity(2);
+	  
       // Position of w_2(v)
-      unsigned first_w_term = terms.size(); 
+      const unsigned first_w_term = terms.size(); 
       // Adding w_j(v) vertices/terms
-      for(unsigned arg_index = 2; arg_index <= num_args; ++arg_index){
-	terms.push_back(new Term("_" + terms[id]->getName() + "_" + std::to_string(arg_index), 2));
-	if(arg_index == 2){
-	  current_successor_id = Z3_get_ast_id(c, Z3_get_app_arg(c, app, arg_index - 2));
-	  terms[id]->addSuccessor(terms[current_successor_id]);
+	  for(unsigned arg_index = 2; arg_index <= num_args; ++arg_index)
+		terms.push_back(new Term("_" + terms[id]->getName() + "_" + std::to_string(arg_index), 2));
+
+	  unsigned current_successor_id, num_original_terms = this->root_num;
+	  // Adding edge (v, v_1)
+	  terms[id]->addSuccessor(terms[Z3_get_ast_id(c, Z3_get_app_arg(c, app, 0))]);
+	  // Adding edge (v, w_2(v))
 	  terms[id]->addSuccessor(terms[first_w_term]);
-	}
-	else if(arg_index == num_args){
-	  current_successor_id = Z3_get_ast_id(c, Z3_get_app_arg(c, app, num_args - 2));
-	  terms[first_w_term + num_args - 1]->addSuccessor(terms[current_successor_id]);
-	  terms[first_w_term + num_args - 1]->addSuccessor(terms[num_original_terms + num_args]);
-	}
-	else{
-	  current_successor_id = Z3_get_ast_id(c, Z3_get_app_arg(c, app, arg_index - 2));
-	  terms[first_w_term + arg_index - 2]->addSuccessor(terms[current_successor_id]);
-	  terms[first_w_term + arg_index - 2]->addSuccessor(terms[first_w_term + arg_index - 1]);
-	}
-      }      
+      for(unsigned arg_index = 2; arg_index <= num_args; ++arg_index){
+		// std::cout << "Current id: " << id << " Current arg index: " << arg_index - 2 << std::endl;
+		current_successor_id = Z3_get_ast_id(c, Z3_get_app_arg(c, app, arg_index - 1));
+		// Adding edge w_i(v), v_i
+		terms[first_w_term + arg_index - 2]->addSuccessor(terms[current_successor_id]);
+		if(arg_index == num_args){
+		  // Adding edge ( w_{d(v)}(v), x_{d(v)} )
+		  terms[first_w_term + arg_index - 2]->addSuccessor(terms[num_original_terms + num_args]);
+		}
+		else{
+		  // Adding edge ( w_i(v), w_{i+1}(v) )
+		  terms[first_w_term + arg_index - 2]->addSuccessor(terms[first_w_term + arg_index - 1]);
+		}
+      }
       break;
     }
     break;
@@ -217,7 +226,7 @@ void Terms::extractSymbolsAndTerms(Z3_context c, Z3_ast v, std::set<std::string>
 
 // This method extracts symbols
 void Terms::extractSymbols(Z3_context c, Z3_ast v,
-			   std::set<std::string> & symbols){
+						   std::set<std::string> & symbols){
   switch (Z3_get_ast_kind(c, v)) {
   case Z3_NUMERAL_AST: {
     // do something

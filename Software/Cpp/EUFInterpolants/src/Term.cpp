@@ -127,7 +127,9 @@ std::ostream & operator << (std::ostream & os, Term & v){
   os << "Symbol: " << v.to_string();
   os << " ID: " << v.id;
   os << " Predecessors: ";
-  os << v.predecessors;;
+  
+  os << v.predecessors;
+  
   os << " Successors: ";
   for(auto it = v.successors.begin();
       it != v.successors.end(); ++it){
