@@ -102,10 +102,7 @@ void CongruenceClosure::algorithm(){
     pending.clear();
     for(Combine::iterator pair = combine.begin();
 	pair != combine.end(); ++pair){
-      Term * v = pair->first,
-	* w = pair->second,
-	* find_v = getReprTerm(v),
-	* find_w = getReprTerm(w);
+      Term * v = pair->first,* w = pair->second,* find_v = getReprTerm(v),* find_w = getReprTerm(w);
       if(find_v != find_w){
 	if(find_v->getLength() >= find_w->getLength()){
 	  Term * temp_swap = find_v;
@@ -116,11 +113,11 @@ void CongruenceClosure::algorithm(){
 	if(find_v->getLength() != 0){
 	  auto predecessor_it = list_find_v.begin();
 	  do{
-	    Term * predecessor = (*predecessor_it).data;
+	    Term * predecessor = predecessor_it->data;
 	    // Term * predecessor = getReprTerm((*predecessor_it).data);
 	    remove(predecessor);
 	    pending.insert(predecessor);
-	    ++predecessor_it;
+	    predecessor_it = predecessor_it->next;
 	  } while(predecessor_it != list_find_v.begin());
 	}
 	merge(find_w, find_v);

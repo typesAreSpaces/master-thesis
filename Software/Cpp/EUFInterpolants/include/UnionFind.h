@@ -7,7 +7,7 @@
 class UnionFind{
 private:
   std::vector<unsigned> representative;
-  unsigned              num_equivalence_classes, length;
+  unsigned              length;
 	
 public:
   UnionFind(unsigned);

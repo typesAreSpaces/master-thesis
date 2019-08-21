@@ -27,7 +27,6 @@ EUFInterpolant::~EUFInterpolant(){
 }
 
 void EUFInterpolant::test(){
-  
   return;
 }
 
@@ -46,7 +45,7 @@ z3::expr EUFInterpolant::algorithm(){
   auto non_reducible_hs = horn_clauses.getHornClauses();
   auto non_reducible_hs_z3 = cvt.convert(non_reducible_hs);
   auto simplified_hs = cvt.extraSimplification(non_reducible_hs_z3);
-
+  
   std::cout << "Non Reducible" << std::endl;
   std::cout << simplified_hs << std::endl;
   
@@ -56,11 +55,17 @@ z3::expr EUFInterpolant::algorithm(){
   std::cout << "Reducible" << std::endl;
   std::cout << reducible_hs_z3 << std::endl;
   
-  auto equations = cvt.convert(congruence_closure.getEquations());  
+  auto equations = cvt.convert(congruence_closure.getEquations());
   auto uncomm_terms_elim = getUncommonTermsToElim(reducible_hs);
+
+  std::cout << "ok" << std::endl;
+  
   auto exponential_hs = exponentialElimination(equations,
 					       uncomm_terms_elim,
 					       reducible_hs_z3);
+  std::cout << "Exponential" << std::endl;
+  std::cout << exponential_hs << std::endl;
+  
   auto simplified_exponential_hs = cvt.extraSimplification(exponential_hs);  
   
   return cvt.makeConjunction(simplified_hs)
@@ -222,30 +227,36 @@ void EUFInterpolant::addNegativeHornClauses(){
   return;
 }
 
-std::set<unsigned> EUFInterpolant::getUncommonTermsToElim(std::vector<HornClause*> & horn_clauses){
-  std::set<unsigned> answer;
+z3::expr_vector EUFInterpolant::getUncommonTermsToElim(std::vector<HornClause*> & horn_clauses){
+  z3::expr_vector answer(ctx);
   for(auto horn_clause = horn_clauses.begin();
       horn_clause != horn_clauses.end(); ++horn_clause){
     Term* v = (**horn_clause).getConsequent().second;
     // v is a pointer to a Term
     // which is only added to 'answer' if it
     // is uncommon
-    if(!v->getSymbolCommonQ())
-      answer.insert(Z3_get_ast_id(ctx, cvt.convert(v)));
+    if(!v->getSymbolCommonQ()){
+      // auto new_expr = cvt.convert(v);
+      // std::cout << "Expression" << std::endl;
+      // std::cout << v->getId() << std::endl;
+      // std::cout << "New expression converted" << std::endl;
+      // std::cout << new_expr << std::endl;
+      // std::cout << Z3_get_ast_id(ctx, new_expr) << std::endl;
+      // answer.insert(Z3_get_ast_id(ctx, new_expr));
+      // // answer.insert(v->getId());
+      answer.push_back(cvt.convert(v));
+    }
   }
   return answer;
 }
 
 z3::expr_vector EUFInterpolant::exponentialElimination(z3::expr_vector & equations,
-						       std::set<unsigned> & terms_elim,
+						       z3::expr_vector & terms_elim,
 						       z3::expr_vector & hcs){
   if(terms_elim.empty())
     return equations;
-  else{
-    auto element = terms_elim.begin();
-    auto element_id = *element;
-    auto current_element = cvt.convert(terms[element_id]);
-    terms_elim.erase(element);
+  else{ 
+    auto current_element = terms_elim.pop_back();
     // Observed behaviour: calling .ctx() sometimes
     // changes the pointer element
     z3::expr_vector new_equations(equations.ctx());
