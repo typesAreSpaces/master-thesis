@@ -12,11 +12,12 @@
 // definition of formula B (i.e. second_formula)
 // assert [Interp] formula A
 // assert formula B
-Terms::Terms(Z3_context ctx, Z3_ast v){
-  Z3_app app = Z3_to_app(ctx, v);
-  assert(Z3_get_app_num_args(ctx, app) == 2);
-  auto first_formula = Z3_get_app_arg(ctx, app, 0);
-  auto second_formula = Z3_get_app_arg(ctx, app, 1);
+Terms::Terms(z3::context & ctx, const z3::expr & v) :
+  ctx(ctx)
+{
+  assert(v.num_args() == 2);
+  auto first_formula = v.arg(0);
+  auto second_formula = v.arg(1);
 
   // this->root_num denotes the id of the root
   // of the Z3_ast. It also denotes, the number
@@ -64,12 +65,14 @@ Terms::Terms(Z3_context ctx, Z3_ast v){
 // because the interpolantion problem
 // is solved as a
 // quantifier elimination problem
-Terms::Terms(Z3_context ctx, Z3_ast v, const std::set<std::string> & symbols_to_elim) :
-  symbols_to_elim(symbols_to_elim){
+Terms::Terms(z3::context & ctx, const z3::expr & v, const std::set<std::string> & symbols_to_elim) :
+  ctx(ctx),
+  symbols_to_elim(symbols_to_elim)
+{
   // this->root_num denotes the id of the root
   // of the Z3_ast. It also denotes, the number
   // of original elements by construction.
-  this->root_num= Z3_get_ast_id(ctx, v);
+  this->root_num= v.id();
   unsigned num_original_terms = this->root_num;
   std::set<std::string> symbols_first_formula, symbols_second_formula;
   terms.resize(2*num_original_terms + 1);
@@ -123,9 +126,9 @@ void Terms::unreachable(){
 }
 
 // This method extracts terms and symbols
-void Terms::extractSymbolsAndTerms(Z3_context c, Z3_ast v, std::set<std::string> & symbols){
+void Terms::extractSymbolsAndTerms(const z3::expr & v, std::set<std::string> & symbols){
 
-  const unsigned id = Z3_get_ast_id(c, v);
+  const unsigned id = v.id();
   assert(id > 0);
 	
   switch (Z3_get_ast_kind(c, v)) {

@@ -31,8 +31,8 @@ class Terms{
   void extractSymbols(const z3::expr &, std::set<std::string> &);
   
  public:
-  Terms(const z3::context &, const z3::expr &);
-  Terms(const z3::context &, const z3::expr &, const std::set<std::string> &);
+  Terms(z3::context &, const z3::expr &);
+  Terms(z3::context &, const z3::expr &, const std::set<std::string> &);
   ~Terms();
   std::vector<Term*> & getTerms();
   UnionFind & getEquivalenceClass();

@@ -27,8 +27,8 @@ class EUFInterpolant {
   void                 addNegativeHornClauses();
   z3::expr_vector   getUncommonTermsToElim(std::vector<HornClause*> &);
   z3::expr_vector   exponentialElimination(z3::expr_vector &,
-										   z3::expr_vector &, z3::expr_vector &);
-  z3::expr_vector   substitutions(z3::expr &, z3::expr , z3::expr_vector &);
+					   z3::expr_vector &, z3::expr_vector &);
+  z3::expr_vector   substitutions(z3::expr &, z3::expr &, z3::expr_vector &);
    
  public:
   EUFInterpolant(z3::context &, const z3::expr &, Converter &);

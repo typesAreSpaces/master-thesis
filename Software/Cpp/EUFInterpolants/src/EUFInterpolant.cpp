@@ -253,36 +253,20 @@ z3::expr_vector EUFInterpolant::getUncommonTermsToElim(std::vector<HornClause*> 
 z3::expr_vector EUFInterpolant::exponentialElimination(z3::expr_vector & equations,
 						       z3::expr_vector & terms_elim,
 						       z3::expr_vector & hcs){
-
+  z3::expr_vector new_equations(equations.ctx());
   for(auto term_to_elim : terms_elim){
-	z3::expr_vector new_equations(equations.ctx());
-
-
-	for(auto equation : equations){
-	  auto current_substitutions = substitutions(equation, term_to_elim, hcs);
-	  unsigned length_substitutions = current_substitutions.size();
-      for(unsigned i = 0; i < length_substitutions; i++)
-		new_equations.push_back(current_substitutions[i]);
-	}
+    new_equations.resize(0);
+    for(auto equation : equations){
+      auto current_substitutions = substitutions(equation, term_to_elim, hcs);
+      for(auto substitution : current_substitutions)
+	new_equations.push_back(substitution);
+    }
+    equations.resize(0);
+    // Deep - copy
+    for(auto substitution : new_equations)
+      equations.push_back(substitution);
   }
-  
-  if(terms_elim.empty())
-    return equations;
-  else{
-	
-	
-    auto current_element = terms_elim[0];
-    // Observed behaviour: calling .ctx() sometimes
-    // changes the pointer element
-    
-    // std::cout << "exponentialElimination - equations" << std::endl;
-    // std::cout << equations << std::endl;
-    // std::cout << "exponentialElimination - new_equations" << std::endl;
-    // std::cout << new_equations << std::endl;
-    // std::cout << "element" << std::endl;
-    // std::cout << term_to_elim << std::endl;
-    return exponentialElimination(new_equations, terms_elim, hcs);
-  }
+  return equations;
 }
 
 z3::expr_vector EUFInterpolant::substitutions(z3::expr & formula,
