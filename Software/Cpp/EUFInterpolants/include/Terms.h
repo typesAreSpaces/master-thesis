@@ -9,6 +9,7 @@
 #include "Term.h"
 #include "UnionFind.h"
 #include "z3.h"
+#include "z3++.h"
 
 class Terms{
  protected:
