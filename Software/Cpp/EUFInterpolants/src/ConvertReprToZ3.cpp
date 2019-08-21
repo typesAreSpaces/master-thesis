@@ -37,6 +37,13 @@ z3::expr Converter::convert(const std::vector<equality> & eqs){
   return formula;
 }
 
+z3::expr_vector Converter::convert(const std::vector<Equation> & eqs){
+  z3::expr_vector answer(ctx);
+  for(auto eq : eqs)
+	answer.push_back(eq.first == eq.second);
+  return answer;
+}
+
 z3::expr_vector Converter::convert(const std::vector<std::pair<Z3_ast, Z3_ast> > & eqs){
   z3::expr_vector answer(ctx);
   for(auto it = eqs.begin(); it != eqs.end(); ++it)

@@ -1,7 +1,7 @@
 #include "EUFInterpolant.h"
 
 
-EUFInterpolant::EUFInterpolant(Z3_context c, Z3_ast v, Converter & cvt) :
+EUFInterpolant::EUFInterpolant(z3::context & c, const z3::expr & v, Converter & cvt) :
   congruence_closure(c, v),
   cvt(cvt),
   terms(congruence_closure.getTerms()),
@@ -11,7 +11,7 @@ EUFInterpolant::EUFInterpolant(Z3_context c, Z3_ast v, Converter & cvt) :
 				 congruence_closure.getOriginalTerm(0));
   }
 
-EUFInterpolant::EUFInterpolant(Z3_context c, Z3_ast v,
+EUFInterpolant::EUFInterpolant(z3::context & c, const z3::expr & v,
 			       std::set<std::string> & symbols_to_elim,
 			       Converter & cvt) :
   congruence_closure(c, v, symbols_to_elim),
@@ -253,28 +253,34 @@ z3::expr_vector EUFInterpolant::getUncommonTermsToElim(std::vector<HornClause*> 
 z3::expr_vector EUFInterpolant::exponentialElimination(z3::expr_vector & equations,
 						       z3::expr_vector & terms_elim,
 						       z3::expr_vector & hcs){
+
+  for(auto term_to_elim : terms_elim){
+	z3::expr_vector new_equations(equations.ctx());
+
+
+	for(auto equation : equations){
+	  auto current_substitutions = substitutions(equation, term_to_elim, hcs);
+	  unsigned length_substitutions = current_substitutions.size();
+      for(unsigned i = 0; i < length_substitutions; i++)
+		new_equations.push_back(current_substitutions[i]);
+	}
+  }
+  
   if(terms_elim.empty())
     return equations;
-  else{ 
-    auto current_element = terms_elim.pop_back();
+  else{
+	
+	
+    auto current_element = terms_elim[0];
     // Observed behaviour: calling .ctx() sometimes
     // changes the pointer element
-    z3::expr_vector new_equations(equations.ctx());
-    unsigned number_equations = equations.size();
-    for(unsigned i = 0; i < number_equations; i++){
-      auto current_equation = equations[i];
-      auto current_substitutions = substitutions(current_equation,
-						 current_element, hcs);
-      unsigned length_substitutions = current_substitutions.size();
-      for(unsigned i = 0; i < length_substitutions; i++)
-	new_equations.push_back(current_substitutions[i]);
-    }
+    
     // std::cout << "exponentialElimination - equations" << std::endl;
     // std::cout << equations << std::endl;
     // std::cout << "exponentialElimination - new_equations" << std::endl;
     // std::cout << new_equations << std::endl;
     // std::cout << "element" << std::endl;
-    // std::cout << current_element << std::endl;
+    // std::cout << term_to_elim << std::endl;
     return exponentialElimination(new_equations, terms_elim, hcs);
   }
 }

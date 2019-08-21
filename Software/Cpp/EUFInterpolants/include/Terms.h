@@ -11,23 +11,28 @@
 #include "z3.h"
 #include "z3++.h"
 
+typedef std::pair<z3::expr &, z3::expr&> Equation;
+typedef std::pair<z3::expr &, z3::expr&> Disequation;
+
 class Terms{
  protected:
-  unsigned                                root_num;
-  std::vector<Term*>                      terms;
-  std::set<std::string>                   symbols_to_elim; 
-  std::vector<std::pair<Z3_ast, Z3_ast> > equations, disequations;
-  UnionFind                               equivalence_class;
+  unsigned                 root_num;
+  std::vector<Term*>       terms;
+  std::set<std::string>    symbols_to_elim; 
+  std::vector<Equation>    equations;
+  std::vector<Disequation> disequations;
+  UnionFind                equivalence_class;
+  z3::context &            ctx;
 	
  private:
   void exitf(const char *);
   void unreachable();
-  void extractSymbolsAndTerms(Z3_context, Z3_ast, std::set<std::string> &);
-  void extractSymbols(Z3_context, Z3_ast, std::set<std::string> &);
+  void extractSymbolsAndTerms(const z3::expr &, std::set<std::string> &);
+  void extractSymbols(const z3::expr &, std::set<std::string> &);
   
  public:
-  Terms(Z3_context, Z3_ast);
-  Terms(Z3_context, Z3_ast, const std::set<std::string> &);
+  Terms(const z3::context &, const z3::expr &);
+  Terms(const z3::context &, const z3::expr &, const std::set<std::string> &);
   ~Terms();
   std::vector<Term*> & getTerms();
   UnionFind & getEquivalenceClass();
@@ -38,8 +43,8 @@ class Terms{
   void rotate(Term*, Term*);
   unsigned getRootNum();
   const std::set<std::string> & getSymbolsToElim();
-  const std::vector<std::pair<Z3_ast, Z3_ast> > & getEquations();
-  const std::vector<std::pair<Z3_ast, Z3_ast> > & getDisequations();
+  const std::vector<Equation> & getEquations();
+  const std::vector<Disequation> & getDisequations();
   friend std::ostream & operator <<(std::ostream &, const Terms &);
 };
 

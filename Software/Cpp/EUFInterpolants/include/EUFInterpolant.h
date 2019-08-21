@@ -18,7 +18,7 @@ class EUFInterpolant {
   Converter            cvt;
   std::vector<Term*> & terms;
   HornClauses          horn_clauses;
-  Z3_context           ctx;
+  z3::context &        ctx;
   symbolLocations      symbol_locations;
   equality             contradiction;
   void                 identifyCommonSymbols();
@@ -26,13 +26,13 @@ class EUFInterpolant {
   void                 eliminationOfUncommonFSyms();
   void                 addNegativeHornClauses();
   z3::expr_vector   getUncommonTermsToElim(std::vector<HornClause*> &);
-  z3::expr_vector      exponentialElimination(z3::expr_vector &,
-					      z3::expr_vector &, z3::expr_vector &);
-  z3::expr_vector      substitutions(z3::expr &, z3::expr , z3::expr_vector &);
+  z3::expr_vector   exponentialElimination(z3::expr_vector &,
+										   z3::expr_vector &, z3::expr_vector &);
+  z3::expr_vector   substitutions(z3::expr &, z3::expr , z3::expr_vector &);
    
  public:
-  EUFInterpolant(Z3_context, Z3_ast, Converter &);
-  EUFInterpolant(Z3_context, Z3_ast, std::set<std::string> &, Converter &);
+  EUFInterpolant(z3::context &, const z3::expr &, Converter &);
+  EUFInterpolant(z3::context &, const z3::expr &, std::set<std::string> &, Converter &);
   ~EUFInterpolant();
   void                     test();
   z3::expr                 algorithm();
