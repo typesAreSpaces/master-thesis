@@ -16,13 +16,13 @@ typedef std::pair<z3::expr &, z3::expr&> Disequation;
 
 class Terms{
  protected:
+  z3::context &            ctx;
   unsigned                 root_num;
   std::vector<Term*>       terms;
   std::set<std::string>    symbols_to_elim; 
   std::vector<Equation>    equations;
   std::vector<Disequation> disequations;
   UnionFind                equivalence_class;
-  z3::context &            ctx;
 	
  private:
   void exitf(const char *);

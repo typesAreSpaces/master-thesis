@@ -22,7 +22,7 @@ Terms::Terms(z3::context & ctx, const z3::expr & v) :
   // this->root_num denotes the id of the root
   // of the Z3_ast. It also denotes, the number
   // of original elements by construction.
-  this->root_num = Z3_get_ast_id(ctx, first_formula);
+  this->root_num = first_formula.id();
   unsigned num_original_terms = this->root_num;
   std::set<std::string> symbols_first_formula, symbols_second_formula;
   terms.resize(2*num_original_terms + 1);
@@ -48,13 +48,13 @@ Terms::Terms(z3::context & ctx, const z3::expr & v) :
     terms[num_original_terms + term_index] = new Term("_x" + std::to_string(term_index), 0);
   
   //Extracting first formula
-  extractSymbolsAndTerms(ctx, first_formula, symbols_first_formula);
+  extractSymbolsAndTerms(first_formula, symbols_first_formula);
   // Remark: The side effect of the previous function introduces
   // more terms since it adds w_j(v) terms
   equivalence_class = UnionFind(Term::getTotalNumTerm());
   
   //Extracting second formula
-  extractSymbols(ctx, second_formula, symbols_second_formula);
+  extractSymbols(second_formula, symbols_second_formula);
   
   std::set_difference(symbols_first_formula.begin(), symbols_first_formula.end(),
 		      symbols_second_formula.begin(), symbols_second_formula.end(),
@@ -97,7 +97,7 @@ Terms::Terms(z3::context & ctx, const z3::expr & v, const std::set<std::string> 
     terms[num_original_terms + term_index] = new Term("_x" + std::to_string(term_index), 0);
   
   //Extracting the formula
-  extractSymbolsAndTerms(ctx, v, symbols_first_formula);
+  extractSymbolsAndTerms(v, symbols_first_formula);
   
   // Remark: The side effect of the previous function introduces
   // more terms since it adds w_j(v) terms
@@ -130,53 +130,38 @@ void Terms::extractSymbolsAndTerms(const z3::expr & v, std::set<std::string> & s
 
   const unsigned id = v.id();
   assert(id > 0);
-	
-  switch (Z3_get_ast_kind(c, v)) {
-  case Z3_NUMERAL_AST: {
-    // do something
-    terms[id]->setName(Z3_get_numeral_string(c, v));
-    symbols.insert(Z3_get_numeral_string(c, v));
-    terms[id]->setArity(0);
-    break;
-  }
-  case Z3_APP_AST: {
-    Z3_app app = Z3_to_app(c, v);
-    unsigned num_args = Z3_get_app_num_args(c, app);
-    
-    for (unsigned i = 0; i < num_args; ++i)
-      extractSymbolsAndTerms(c, Z3_get_app_arg(c, app, i), symbols);
 
-    //-----------------------------------------------------------------------
-    // do something
-    Z3_func_decl d = Z3_get_app_decl(c, app);
-    Z3_symbol s = Z3_get_decl_name(c, d);
-    switch (Z3_get_symbol_kind(c, s)) {
+  if(v.is_app())  {
+    unsigned num_args = v.num_args();
+    z3::symbol symbol_name = v.decl().name();
+    
+    for (unsigned index_arg = 0; index_arg < num_args; index_arg++)
+      extractSymbolsAndTerms(v.arg(index_arg), symbols);
+    
+    switch(symbol_name){
     case Z3_INT_SYMBOL:
-      terms[id]->setName(std::to_string(Z3_get_symbol_int(c, s)));
-      symbols.insert(std::to_string(Z3_get_symbol_int(c, s)));
+      terms[id]->setName(std::to_string(symbol_name.to_int()));    
+      symbols.insert(std::to_string(symbol_name.to_int()));
       break;
     case Z3_STRING_SYMBOL:
-      terms[id]->setName(Z3_get_symbol_string(c, s));
-      symbols.insert(Z3_get_symbol_string(c, s));
+      terms[id]->setName(symbol_name.str());
+      symbols.insert(symbol_name.str());
       if(terms[id]->getName() == "=")
-	equations.push_back(std::make_pair(Z3_get_app_arg(c, app, 0),
-					   Z3_get_app_arg(c, app, 1)));
+	equations.push_back(std::make_pair(v.arg(0), v.arg(1)));
       if(terms[id]->getName() == "distinct")
-	disequations.push_back(std::make_pair(Z3_get_app_arg(c, app, 0),
-					      Z3_get_app_arg(c, app, 1)));
-		
+	disequations.push_back(std::make_pair(v.arg(0), v.arg(1)));
       break;
     default:
       unreachable();
     }
-    
+
     switch(num_args){
     case 0:
-      terms[id]->setArity(num_args);
+      terms[id]->setArity(0);
       break;
     case 1:
-      terms[id]->setArity(num_args);
-      terms[id]->addSuccessor(terms[ Z3_get_ast_id(c, Z3_get_app_arg(c, app, 0)) ]);
+      terms[id]->setArity(1);
+      terms[id]->addSuccessor(terms[v.arg(0).id()]);
       break;
     default:
       assert(num_args >= 2);
@@ -185,82 +170,66 @@ void Terms::extractSymbolsAndTerms(const z3::expr & v, std::set<std::string> & s
       // Position of w_2(v)
       const unsigned first_w_term = terms.size(); 
       // Adding w_j(v) vertices/terms
-      for(unsigned arg_index = 2; arg_index <= num_args; ++arg_index)
-	terms.push_back(new Term("_" + terms[id]->getName() + "_" + std::to_string(arg_index), 2));
+      for(unsigned index_arg = 2; index_arg <= num_args; ++index_arg)
+	terms.push_back(new Term("_" + terms[id]->getName() + "_" + std::to_string(index_arg), 2));
 
       unsigned num_original_terms = this->root_num;
       // Adding edge (v, v_1)
-      terms[id]->addSuccessor(terms[Z3_get_ast_id(c, Z3_get_app_arg(c, app, 0))]);
+      terms[id]->addSuccessor(terms[v.arg(0).id()]);
       // Adding edge (v, w_2(v))
       terms[id]->addSuccessor(terms[first_w_term]);
-      for(unsigned arg_index = 2; arg_index <= num_args; ++arg_index){
-	// std::cout << "Current id: " << id << " Current arg index: " << arg_index - 2 << std::endl;
+      for(unsigned index_arg = 2; index_arg <= num_args; ++index_arg){
 	// Adding edge w_i(v), v_i
-	terms[first_w_term + arg_index - 2]->addSuccessor(terms[ Z3_get_ast_id(c, Z3_get_app_arg(c, app, arg_index - 1)) ]);
-	if(arg_index == num_args){
+	terms[first_w_term + index_arg - 2]->addSuccessor(terms[v.arg(index_arg - 1).id()]);
+	if(index_arg == num_args){
 	  // Adding edge ( w_{d(v)}(v), x_{d(v)} )
-	  terms[first_w_term + arg_index - 2]->addSuccessor(terms[num_original_terms + num_args]);
+	  terms[first_w_term + index_arg - 2]->addSuccessor(terms[num_original_terms + num_args]);
 	}
 	else{
 	  // Adding edge ( w_i(v), w_{i+1}(v) )
-	  terms[first_w_term + arg_index - 2]->addSuccessor(terms[first_w_term + arg_index - 1]);
+	  terms[first_w_term + index_arg - 2]->addSuccessor(terms[first_w_term + index_arg - 1]);
 	}
       }
       break;
     }
-    break;
   }
-  case Z3_QUANTIFIER_AST: {
-    //fprintf(out, "quantifier");
-    break;
+  else if(v.is_quantifier()){
+    // do something
   }
-  default:{
-    //fprintf(out, "#unknown");
-    break;
-  }
+  else{
+    assert(v.is_var());
+    // do something
   }
   terms[id]->define();
 }
 
 // This method extracts symbols
-void Terms::extractSymbols(Z3_context c, Z3_ast v,
+void Terms::extractSymbols(const z3::expr & v,
 			   std::set<std::string> & symbols){
-  switch (Z3_get_ast_kind(c, v)) {
-  case Z3_NUMERAL_AST: {
-    // do something
-    symbols.insert(Z3_get_numeral_string(c, v));
-    break;
-  }
-  case Z3_APP_AST: {
-    Z3_app app = Z3_to_app(c, v);
-    unsigned num_args = Z3_get_app_num_args(c, app);
-    for (unsigned current_arg = 0; current_arg < num_args; ++current_arg)
-      extractSymbols(c, Z3_get_app_arg(c, app, current_arg), symbols);
-    //---------------------------------------------------------------------------
-    // do something
-    Z3_func_decl d = Z3_get_app_decl(c, app);
-    Z3_symbol s = Z3_get_decl_name(c, d);
-    switch (Z3_get_symbol_kind(c, s)) {
+  if(v.is_app()){
+    unsigned num_args = v.num_args();
+    z3::symbol symbol_name = v.decl().name();
+    
+    for (unsigned index_arg = 0; index_arg < num_args; ++index_arg)
+      extractSymbols(v.arg(index_arg), symbols);
+    
+    switch (symbol_name) {
     case Z3_INT_SYMBOL:
-      symbols.insert(std::to_string(Z3_get_symbol_int(c, s)));
+      symbols.insert(std::to_string(symbol_name.to_int()));
       break;
     case Z3_STRING_SYMBOL:
-      symbols.insert(Z3_get_symbol_string(c, s));
+      symbols.insert(symbol_name.str());
       break;
     default:
       unreachable();
     }
-    //----------------------------------------------------------------------------
-    break;
   }
-  case Z3_QUANTIFIER_AST: {
-    //fprintf(out, "quantifier");
-    break;
+  else if(v.is_quantifier){
+    // do something
   }
-  default:{
-    //fprintf(out, "#unknown");
-    break;
-  }
+  else{
+    assert(v.is_var());
+    // do something
   }
 }
 
