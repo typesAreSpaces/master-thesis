@@ -133,19 +133,19 @@ void Terms::extractSymbolsAndTerms(const z3::expr & v, std::set<std::string> & s
 
   if(v.is_app())  {
     unsigned num_args = v.num_args();
-    z3::symbol symbol_kind = v.decl().name().kind();
+    auto symbol_name = v.decl().name();
     
     for (unsigned index_arg = 0; index_arg < num_args; index_arg++)
       extractSymbolsAndTerms(v.arg(index_arg), symbols);
     
-    switch(symbol_kind){
+    switch(symbol_name.kind()){
     case Z3_INT_SYMBOL:
-      terms[id]->setName(std::to_string(symbol_kind.to_int()));    
-      symbols.insert(std::to_string(symbol_kind.to_int()));
+      terms[id]->setName(std::to_string(symbol_name.to_int()));    
+      symbols.insert(std::to_string(symbol_name.to_int()));
       break;
     case Z3_STRING_SYMBOL:
-      terms[id]->setName(symbol_kind.str());
-      symbols.insert(symbol_kind.str());
+      terms[id]->setName(symbol_name.str());
+      symbols.insert(symbol_name.str());
       if(terms[id]->getName() == "=")
 	equations.push_back(std::make_pair(v.arg(0), v.arg(1)));
       if(terms[id]->getName() == "distinct")
@@ -208,23 +208,23 @@ void Terms::extractSymbols(const z3::expr & v,
 			   std::set<std::string> & symbols){
   if(v.is_app()){
     unsigned num_args = v.num_args();
-    z3::symbol symbol_kind = v.decl().name().kind();
+    auto symbol_name = v.decl().name();
     
     for (unsigned index_arg = 0; index_arg < num_args; ++index_arg)
       extractSymbols(v.arg(index_arg), symbols);
     
-    switch (symbol_kind) {
+    switch (symbol_name.kind()) {
     case Z3_INT_SYMBOL:
-      symbols.insert(std::to_string(symbol_kind.to_int()));
+      symbols.insert(std::to_string(symbol_name.to_int()));
       break;
     case Z3_STRING_SYMBOL:
-      symbols.insert(symbol_kind.str());
+      symbols.insert(symbol_name.str());
       break;
     default:
       unreachable();
     }
   }
-  else if(v.is_quantifier){
+  else if(v.is_quantifier()){
     // do something
   }
   else{

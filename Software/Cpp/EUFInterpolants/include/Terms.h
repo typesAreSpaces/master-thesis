@@ -11,8 +11,8 @@
 #include "z3.h"
 #include "z3++.h"
 
-typedef std::pair<z3::expr &, z3::expr&> Equation;
-typedef std::pair<z3::expr &, z3::expr&> Disequation;
+typedef std::pair<z3::expr, z3::expr> Equation;
+typedef std::pair<z3::expr, z3::expr> Disequation;
 
 class Terms{
  protected:
