@@ -133,19 +133,19 @@ void Terms::extractSymbolsAndTerms(const z3::expr & v, std::set<std::string> & s
 
   if(v.is_app())  {
     unsigned num_args = v.num_args();
-    z3::symbol symbol_name = v.decl().name();
+    z3::symbol symbol_kind = v.decl().name().kind();
     
     for (unsigned index_arg = 0; index_arg < num_args; index_arg++)
       extractSymbolsAndTerms(v.arg(index_arg), symbols);
     
-    switch(symbol_name){
+    switch(symbol_kind){
     case Z3_INT_SYMBOL:
-      terms[id]->setName(std::to_string(symbol_name.to_int()));    
-      symbols.insert(std::to_string(symbol_name.to_int()));
+      terms[id]->setName(std::to_string(symbol_kind.to_int()));    
+      symbols.insert(std::to_string(symbol_kind.to_int()));
       break;
     case Z3_STRING_SYMBOL:
-      terms[id]->setName(symbol_name.str());
-      symbols.insert(symbol_name.str());
+      terms[id]->setName(symbol_kind.str());
+      symbols.insert(symbol_kind.str());
       if(terms[id]->getName() == "=")
 	equations.push_back(std::make_pair(v.arg(0), v.arg(1)));
       if(terms[id]->getName() == "distinct")
@@ -208,17 +208,17 @@ void Terms::extractSymbols(const z3::expr & v,
 			   std::set<std::string> & symbols){
   if(v.is_app()){
     unsigned num_args = v.num_args();
-    z3::symbol symbol_name = v.decl().name();
+    z3::symbol symbol_kind = v.decl().name().kind();
     
     for (unsigned index_arg = 0; index_arg < num_args; ++index_arg)
       extractSymbols(v.arg(index_arg), symbols);
     
-    switch (symbol_name) {
+    switch (symbol_kind) {
     case Z3_INT_SYMBOL:
-      symbols.insert(std::to_string(symbol_name.to_int()));
+      symbols.insert(std::to_string(symbol_kind.to_int()));
       break;
     case Z3_STRING_SYMBOL:
-      symbols.insert(symbol_name.str());
+      symbols.insert(symbol_kind.str());
       break;
     default:
       unreachable();
@@ -280,11 +280,11 @@ const std::set<std::string> & Terms::getSymbolsToElim(){
   return symbols_to_elim;
 }
 
-const std::vector<std::pair<Z3_ast, Z3_ast> > & Terms::getEquations(){
+const std::vector<Equation> & Terms::getEquations(){
   return equations;
 }
 
-const std::vector<std::pair<Z3_ast, Z3_ast> > & Terms::getDisequations(){
+const std::vector<Disequation> & Terms::getDisequations(){
   return disequations;
 }
 

@@ -4,25 +4,25 @@
 #include <utility>
 #include <unordered_map>
 #include "Signature.h"
-#include "Terms.h"
+#include "Term.h"
+#include "UnionFind.h"
 
 typedef std::unordered_map<UnarySignature, Term*, UnarySignature::Hash> UnaryTerms;
 typedef std::unordered_map<BinarySignature, Term*, BinarySignature::Hash> BinaryTerms; 
 
-class SignatureTable : public Terms {
+class SignatureTable {
 protected:
   UnaryTerms unaryTable;
   BinaryTerms binaryTable;
 	
 public:
-  SignatureTable(Z3_context, Z3_ast);
-  SignatureTable(Z3_context, Z3_ast, std::set<std::string> &);
+  SignatureTable();
   ~SignatureTable();
   void enter(Term*);
   void remove(Term*);
   Term* query(Term*);
-  UnarySignature getUnarySignature(Term*);
-  BinarySignature getBinarySignature(Term*);
+  UnarySignature getUnarySignature(Term*, UnionFind &);
+  BinarySignature getBinarySignature(Term*, UnionFind &);
   friend std::ostream & operator << (std::ostream &, const SignatureTable &);
 };
 
