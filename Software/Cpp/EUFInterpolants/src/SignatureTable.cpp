@@ -4,35 +4,35 @@ SignatureTable::SignatureTable(){};
 
 SignatureTable::~SignatureTable(){}
 
-void SignatureTable::enter(Term* v){
+void SignatureTable::enter(Term* v, UnionFind & eq_class){
   switch(v->getArity()){
   case 1:
-	//<UnarySignature, Term*>
-    unaryTable.insert(std::make_pair(getUnarySignature(v), v));
-	break;
+    //<UnarySignature, Term*>
+    unaryTable.insert(std::make_pair(getUnarySignature(v, eq_class), v));
+    break;
   case 2:
-	//<BinarySignature, Term*>
-    binaryTable.insert(std::make_pair(getBinarySignature(v), v));
-	break;
+    //<BinarySignature, Term*>
+    binaryTable.insert(std::make_pair(getBinarySignature(v, eq_class), v));
+    break;
   default:
-	break;
+    break;
   }
   return;
 }
 
-void SignatureTable::remove(Term * v){
+void SignatureTable::remove(Term * v, UnionFind & eq_class){
   try{
-    query(v);
-	switch(v->getArity()){
-	case 1:
-	  unaryTable.erase(getUnarySignature(v));
-	  break;
-	case 2:
-	  binaryTable.erase(getBinarySignature(v));
-	  break;
-	default:
-	  break;
-	}
+    query(v, eq_class);
+    switch(v->getArity()){
+    case 1:
+      unaryTable.erase(getUnarySignature(v, eq_class));
+      break;
+    case 2:
+      binaryTable.erase(getBinarySignature(v, eq_class));
+      break;
+    default:
+      break;
+    }
   }
   catch(const char * msg){
     //std::cerr << "SignatureTable::remove error" << std::endl;
@@ -41,23 +41,22 @@ void SignatureTable::remove(Term * v){
   return;
 }
 
-Term * SignatureTable::query(Term * v){
-  switch(v->getArity()){
-  case 1:
-	UnaryTerms::iterator it = unaryTable.find(getUnarySignature(v));
+Term * SignatureTable::query(Term * v, UnionFind & eq_class){
+  unsigned arity = v->getArity();
+  if(arity == 1){
+    UnaryTerms::iterator it = unaryTable.find(getUnarySignature(v, eq_class));
     if(it == unaryTable.end())
       throw "Element not found";
     return it->second;
-	break;
-  case 2:
-	BinaryTerms::iterator it = binaryTable.find(getBinarySignature(v));
-	if(it == binaryTable.end())
-	  throw "Element not found";
-	return it->second;
-	break;
-  default:
-	throw "Wrong arity";
-	break;
+  }
+  else if(arity == 2){
+    BinaryTerms::iterator it = binaryTable.find(getBinarySignature(v, eq_class));
+    if(it == binaryTable.end())
+      throw "Element not found";
+    return it->second;
+  }
+  else{
+    throw "Wrong arity";
   }
 }
 
@@ -66,7 +65,7 @@ UnarySignature SignatureTable::getUnarySignature(Term * v, UnionFind & eq_class)
   std::vector<Term*> _successors = v->getSuccessors();
   // Store v with its current signature
   return UnarySignature(v->getName(),
-						eq_class.find(_successors[0]->getId()));
+			eq_class.find(_successors[0]->getId()));
 }
 
 BinarySignature SignatureTable::getBinarySignature(Term * v, UnionFind & eq_class){
@@ -74,8 +73,8 @@ BinarySignature SignatureTable::getBinarySignature(Term * v, UnionFind & eq_clas
   std::vector<Term*> _successors = v->getSuccessors();
   // Store v with its current signature
   return BinarySignature(v->getName(),
-						 eq_class.find(_successors[0]->getId()),
-						 eq_class.find(_successors[1]->getId()));
+			 eq_class.find(_successors[0]->getId()),
+			 eq_class.find(_successors[1]->getId()));
 }
 
 std::ostream & operator << (std::ostream & os, const SignatureTable & st){

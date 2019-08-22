@@ -5,10 +5,6 @@
 #include <vector>
 
 class UnionFind{
-private:
-  std::vector<unsigned> representative;
-  unsigned              length;
-	
 public:
   UnionFind(unsigned);
   UnionFind();
@@ -19,6 +15,9 @@ public:
   unsigned find(unsigned);
   unsigned size();
   friend std::ostream & operator << (std::ostream &, const UnionFind &);
+ private:
+  std::vector<unsigned> representative;
+  unsigned              length;
 };
 
 #endif

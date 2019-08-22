@@ -7,17 +7,6 @@
 #include "CircularList.h"
 
 class Term{
- private:
-  static unsigned     total_num_vertex;
-  std::string         name;
-  bool                is_symbol_common;
-  // A term is `defined` when we specify
-  // its successors and predecessors
-  bool                is_defined;
-  unsigned            id, arity;
-  std::vector<Term*>  successors;
-  CircularList<Term*> predecessors;
-
  public:
   Term(std::string, unsigned);
   Term();
@@ -50,6 +39,16 @@ class Term{
   friend bool operator <=(const Term &, const Term &);
   friend bool operator >(const Term &, const Term &);
   friend bool operator >=(const Term &, const Term &);
+ private:
+  static unsigned     total_num_vertex;
+  std::string         name;
+  bool                is_symbol_common;
+  // A term is `defined` when we specify
+  // its successors and predecessors
+  bool                is_defined;
+  unsigned            id, arity;
+  std::vector<Term*>  successors;
+  CircularList<Term*> predecessors;
 };
 
 #endif

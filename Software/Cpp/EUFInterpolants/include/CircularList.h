@@ -12,12 +12,6 @@ std::ostream & operator << (std::ostream &, CircularList<T> &);
 
 template <typename T>
 class CircularList{
- private:
-  unsigned int length;
-  node<T> * elements;
-  void addEmpty(const T &);
-  void addNonEmpty(const T &);
-	
  public:
   CircularList();
   ~CircularList();
@@ -44,6 +38,11 @@ class CircularList{
     friend std::ostream & operator << (std::ostream &, CircularList<U> &);
   template <typename U>
     friend std::ostream & operator << (std::ostream &, CircularList<U*> &);
+ private:
+  unsigned int length;
+  node<T> * elements;
+  void addEmpty(const T &);
+  void addNonEmpty(const T &);
 };
 
 #include "CircularList.tpp"
