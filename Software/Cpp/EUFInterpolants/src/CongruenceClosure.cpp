@@ -8,10 +8,10 @@
 
 #define DEBUG_CC(X, Y) if(X) { Y }
 
-void CongruenceClosure::init(Z3_context c){
+void CongruenceClosure::init(){
   unsigned lhs, rhs;
   Term * lhs_vertex, * rhs_vertex;
-  for(auto equation = equations.begin(); equation != equations.end(); ++equation){
+  for(auto equation : equations){
     lhs = Z3_get_ast_id(c, equation->first);
     rhs = Z3_get_ast_id(c, equation->second);
     lhs_vertex = getReprTerm(lhs);
@@ -50,16 +50,18 @@ void CongruenceClosure::init(Z3_context c){
       }
 }
 
-CongruenceClosure::CongruenceClosure(Z3_context c,
-				     Z3_ast v,
-				     std::set<std::string> & symbols_to_elim) :
-  SignatureTable(c, v, symbols_to_elim) {
-  init(c);
+CongruenceClosure::CongruenceClosure(z3::context & c, const z3::expr & v) :
+  Terms(c, v)
+{
+  init();
 }
 
-CongruenceClosure::CongruenceClosure(Z3_context c, Z3_ast v) :
-  SignatureTable(c, v) {
-  init(c);
+CongruenceClosure::CongruenceClosure(z3::context & c,
+									 const z3::expr & v,
+									 std::set<std::string> & symbols_to_elim) :
+  Terms(c, v, symbols_to_elim)
+{
+  init();
 }
 
 CongruenceClosure::~CongruenceClosure(){}
