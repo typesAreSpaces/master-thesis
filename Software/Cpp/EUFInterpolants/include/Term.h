@@ -39,13 +39,14 @@ class Term{
   friend bool operator <=(const Term &, const Term &);
   friend bool operator >(const Term &, const Term &);
   friend bool operator >=(const Term &, const Term &);
+
  private:
   static unsigned     total_num_vertex;
   std::string         name;
   bool                is_symbol_common;
+  bool                is_defined;
   // A term is `defined` when we specify
   // its successors and predecessors
-  bool                is_defined;
   unsigned            id, arity;
   std::vector<Term*>  successors;
   CircularList<Term*> predecessors;

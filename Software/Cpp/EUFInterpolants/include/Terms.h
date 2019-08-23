@@ -2,13 +2,10 @@
 #define _TERMS_
 
 #include <iostream>
-#include <algorithm>
 #include <vector>
 #include <set>
-#include <vector>
 #include "Term.h"
 #include "UnionFind.h"
-#include "z3.h"
 #include "z3++.h"
 
 typedef std::pair<z3::expr, z3::expr> Equation;
@@ -43,7 +40,8 @@ class Terms{
   void exitf(const char *);
   void unreachable();
   void extractSymbolsAndTerms(const z3::expr &, std::set<std::string> &);
-  void extractSymbols(const z3::expr &, std::set<std::string> &);
+  void extractTerms(const z3::expr &);
+  void removeSymbols(const z3::expr &, std::set<std::string> &);
 };
 
 #endif

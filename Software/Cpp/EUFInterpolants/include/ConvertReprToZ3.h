@@ -1,11 +1,10 @@
 #ifndef _REPR_
 #define _REPR_
 
+#include <map>
 #include "Term.h"
+#include "Terms.h"
 #include "HornClause.h"
-#include "HornClauses.h"
-#include "z3.h"
-#include "Declarations.h"
 
 class Converter {
  private:

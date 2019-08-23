@@ -5,36 +5,37 @@
 #define tracePending  false
 #define traceEC       false
 #define traceSigTable false
+#define debug         true
 
 #define DEBUG_CC(X, Y) if(X) { Y }
 
 void CongruenceClosure::init(){
   unsigned lhs, rhs;
-  Term * lhs_vertex, * rhs_vertex;
+  Term * lhs_repr, * rhs_repr;
   for(auto equation : equations){
-    lhs = Z3_get_ast_id(c, equation->first);
-    rhs = Z3_get_ast_id(c, equation->second);
-    lhs_vertex = getReprTerm(lhs);
-    rhs_vertex = getReprTerm(rhs);
+    lhs = equation.first.id();
+    rhs = equation.second.id();
+    lhs_repr = getReprTerm(lhs);
+    rhs_repr = getReprTerm(rhs);
     
-    if(lhs_vertex->getLength() < rhs_vertex->getLength()){
-      merge(getReprTerm(rhs), getReprTerm(lhs));
+    if(lhs_repr->getLength() < rhs_repr->getLength()){
+      merge(rhs_repr, lhs_repr);
       DEBUG_CC(traceMerge,
 	       std::cout << "==========================================" << std::endl;
 	       std::cout << "Merging " << std::endl;
-	       std::cout << lhs_vertex->to_string() << std::endl;
+	       std::cout << lhs_repr->to_string() << std::endl;
 	       std::cout << " to " << std::endl;
-	       std::cout << rhs_vertex->to_string() << std::endl;
+	       std::cout << rhs_repr->to_string() << std::endl;
 	       std::cout << "==========================================" << std::endl;)
 	}
     else{
-      merge(getReprTerm(lhs), getReprTerm(rhs));
+      merge(lhs_repr, rhs_repr);
       DEBUG_CC(traceMerge,
 	       std::cout << "==========================================" << std::endl;
 	       std::cout << "Merging " << std::endl;
-	       std::cout << rhs_vertex->to_string() << std::endl;
+	       std::cout << rhs_repr->to_string() << std::endl;
 	       std::cout << " to " << std::endl;
-	       std::cout << lhs_vertex->to_string() << std::endl;
+	       std::cout << lhs_repr->to_string() << std::endl;
 	       std::cout << "==========================================" << std::endl;)
 	}
     DEBUG_CC(traceEC,
@@ -50,16 +51,16 @@ void CongruenceClosure::init(){
       }
 }
 
-CongruenceClosure::CongruenceClosure(z3::context & c, const z3::expr & v) :
-  Terms(c, v)
+CongruenceClosure::CongruenceClosure(z3::context & ctx, const z3::expr & v) :
+  Terms(ctx, v)
 {
   init();
 }
 
-CongruenceClosure::CongruenceClosure(z3::context & c,
-									 const z3::expr & v,
-									 std::set<std::string> & symbols_to_elim) :
-  Terms(c, v, symbols_to_elim)
+CongruenceClosure::CongruenceClosure(z3::context & ctx,
+				     const z3::expr & v,
+				     const std::set<std::string> & symbols_to_elim) :
+  Terms(ctx, v, symbols_to_elim)
 {
   init();
 }
@@ -69,44 +70,51 @@ CongruenceClosure::~CongruenceClosure(){}
 void CongruenceClosure::algorithm(){
   Pending pending;
   Combine combine;
-  unsigned total_num_vertex = Term::getTotalNumTerm();
 
   // Adding functional grounded vertices to pending
-  for(unsigned i = 0; i < total_num_vertex; ++i){
-    Term * temp_vertex = getReprTerm(i);
-    if(temp_vertex->getArity() >= 1)
-      pending.insert(temp_vertex);
+  for(auto term : terms){
+    if(term->getArity() >= 1)
+      pending.push_back(term);
   }
-	
+
+  DEBUG_CC(debug,
+	   std::cout<< "Before Congruence Closure" << std::endl;
+	   for(auto x : terms)
+	     if(x->to_string()[0] != '_')
+	       std::cout << "Term: " << x->to_string()
+			 << " Original term id: " << x->getId()
+			 << " Representative term id: " << getReprTerm(x)->getId() << std::endl;
+	   )
+  
   while(!pending.empty()){
     combine.clear();
-    for(Pending::iterator vertex_it = pending.begin();
-	vertex_it != pending.end(); ++vertex_it){
+    for(auto term : pending){
       try{
-	Term * already_there = query(*vertex_it);
-	combine.insert(std::make_pair(*vertex_it, already_there));
+	Term * already_there = sigTable.query(term, equivalence_class);
+	combine.push_back(std::make_pair(term, already_there));
 	DEBUG_CC(traceCombine,
 		 std::cout << "==========================================" << std::endl;
 		 std::cout << "Inserting to Combine" << std::endl;
-		 std::cout << (*vertex_it)->to_string() << " and " << std::endl;
+		 std::cout << term->to_string() << " and " << std::endl;
 		 std::cout << already_there->to_string() << std::endl;
 		 std::cout << "==========================================" << std::endl;)
 	  }
       catch (const char * msg){
-	enter(*vertex_it);
+	sigTable.enter(term, equivalence_class);
 	DEBUG_CC(traceSigTable,
 		 std::cout << "==========================================" << std::endl;
 		 std::cout << "Current Signature Table" << std::endl;
-		 std::cout << *dynamic_cast<SignatureTable*>(this) << std::endl;
+		 std::cout << sigTable << std::endl;
 		 std::cout << "==========================================" << std::endl;)
 	  }
     }
     pending.clear();
-    for(Combine::iterator pair = combine.begin();
-	pair != combine.end(); ++pair){
-      Term * v = pair->first,* w = pair->second,* find_v = getReprTerm(v),* find_w = getReprTerm(w);
+    for(auto pair_terms : combine){
+      Term * v = pair_terms.first,* w = pair_terms.second;
+      Term * find_v = getReprTerm(v),* find_w = getReprTerm(w);
       if(find_v != find_w){
-	if(find_v->getLength() >= find_w->getLength()){
+	// Invariant find_v->getLength() <= find_w->getLengt()
+	if(find_v->getLength() > find_w->getLength()){
 	  Term * temp_swap = find_v;
 	  find_v = find_w;
 	  find_w = temp_swap;
@@ -116,9 +124,8 @@ void CongruenceClosure::algorithm(){
 	  auto predecessor_it = list_find_v.begin();
 	  do{
 	    Term * predecessor = predecessor_it->data;
-	    // Term * predecessor = getReprTerm((*predecessor_it).data);
-	    remove(predecessor);
-	    pending.insert(predecessor);
+	    sigTable.remove(predecessor, equivalence_class);
+	    pending.push_back(predecessor);
 	    predecessor_it = predecessor_it->next;
 	  } while(predecessor_it != list_find_v.begin());
 	}
@@ -133,6 +140,14 @@ void CongruenceClosure::algorithm(){
 	  }
     }
   }
+  DEBUG_CC(debug,
+	   std::cout<< "After Congruence Closure" << std::endl;
+	   for(auto x : terms)
+	     if(x->to_string()[0] != '_')
+	       std::cout << "Term: " << x->to_string()
+			 << " Original term id: " << x->getId()
+			 << " Representative term id: " << getReprTerm(x)->getId() << std::endl;
+	   )
 }
 
 bool CongruenceClosure::checkCorrectness(){
@@ -143,13 +158,15 @@ bool CongruenceClosure::checkCorrectness(){
       Term * u = getReprTerm(i), * v = getReprTerm(j);
       if(u->getArity() == v->getArity()){
 	if(u->getArity() == 1
-	   && getUnarySignature(u) == getUnarySignature(v)
+	   && sigTable.getUnarySignature(u, equivalence_class)
+	   == sigTable.getUnarySignature(v, equivalence_class)
 	   && getReprTerm(u)->getId() != getReprTerm(v)->getId()){
 	  std::cout << "Not Ok" << std::endl;
 	  return false;
 	}
 	if(u->getArity() == 2
-	   && getBinarySignature(u) == getBinarySignature(v)
+	   && sigTable.getBinarySignature(u, equivalence_class)
+	   == sigTable.getBinarySignature(v, equivalence_class)
 	   && getReprTerm(u)->getId() != getReprTerm(v)->getId()){
 	  std::cout << "Not Ok" << std::endl;
 	  return false;

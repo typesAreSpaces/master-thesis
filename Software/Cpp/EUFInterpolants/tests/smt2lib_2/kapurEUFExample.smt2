@@ -9,7 +9,7 @@
 (declare-fun t () A)
 (declare-fun f (A A) A)
 
-(define-fun A () Bool
+(define-fun input_formula () Bool
 	    (and (= (f z1 v) s1) (= (f z2 v) s2) (= (f (f y1 v) (f y2 v)) t))
 )
-(assert A)
+(assert input_formula)

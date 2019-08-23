@@ -4,8 +4,8 @@
 #include "Terms.h"
 #include "SignatureTable.h"
 
-typedef std::set<Term*> Pending;
-typedef std::set<std::pair<Term*, Term*> > Combine;
+typedef std::vector<Term*> Pending;
+typedef std::vector<std::pair<Term*, Term*> > Combine;
 
 class CongruenceClosure : public Terms {
  private:

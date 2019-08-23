@@ -1,23 +1,24 @@
 #ifndef _HORN_CLAUSE_
 #define _HORN_CLAUSE_
 
-#include "Terms.h"
+#include "Term.h"
 #include "UnionFind.h"
 #include <assert.h>
 #include <vector>
+#include <set>
 #include <utility>
 
 typedef std::pair<Term*, Term*> equality;
 
 class HornClause{	
  private:
-  static UnionFind            global_UF;
-  static bool                 is_first_time;
+  static UnionFind          global_UF;
+  static bool               is_first_time;
   static std::vector<Term*> global_terms;
-  UnionFind                   local_UF;	
-  bool                        antecedent_boolean_value, consequent_boolean_value;
-  std::vector<equality>       antecedent;
-  equality                    consequent;
+  UnionFind                 local_UF;	
+  bool                      antecedent_boolean_value, consequent_boolean_value;
+  std::vector<equality>     antecedent;
+  equality                  consequent;
 	
  public:
   HornClause(UnionFind &, std::vector<equality> &, equality &, std::vector<Term*> &);
