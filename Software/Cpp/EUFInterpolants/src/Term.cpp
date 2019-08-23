@@ -38,13 +38,11 @@ void Term::setArity(unsigned arity){
 }
 
 void Term::addSuccessor(Term * v){
-  std::cout << "Name " << v->name << std::endl;
-  std::cout << "ID " << v->id << std::endl;
-  std::cout << "IS DEFINED " << v->is_defined << std::endl;
-  assert(!is_defined);
-  successors.push_back(v);
-  // Add predeccessors
-  v->predecessors.add(this);
+  if(!is_defined){
+	successors.push_back(v);
+	// Add predeccessors
+	v->predecessors.add(this);
+  }
 }
 
 void Term::mergePredecessors(Term * v){

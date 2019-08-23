@@ -32,7 +32,7 @@ void EUFInterpolant::test(){
 
 z3::expr EUFInterpolant::algorithm(){
   identifyCommonSymbols();
-  congruence_closure.algorithm();
+  congruence_closure.buildCongruenceClosure();
   setCommonRepresentatives();
   eliminationOfUncommonFSyms();
   addNegativeHornClauses();
