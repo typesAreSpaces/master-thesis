@@ -4,9 +4,9 @@
 #include <iostream>
 #include <vector>
 #include <set>
+#include <z3++.h>
 #include "Term.h"
 #include "UnionFind.h"
-#include "z3++.h"
 
 typedef std::pair<z3::expr, z3::expr> Equation;
 typedef std::pair<z3::expr, z3::expr> Disequation;

@@ -1,12 +1,12 @@
 #ifndef _HORN_CLAUSE_
 #define _HORN_CLAUSE_
 
-#include "Term.h"
-#include "UnionFind.h"
 #include <assert.h>
 #include <vector>
 #include <set>
 #include <utility>
+#include "Term.h"
+#include "UnionFind.h"
 
 typedef std::pair<Term*, Term*> equality;
 

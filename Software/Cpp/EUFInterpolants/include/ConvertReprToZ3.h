@@ -7,11 +7,6 @@
 #include "HornClause.h"
 
 class Converter {
- private:
-  z3::context & ctx;
-  z3::sort &    sort_A;
-  std::vector<z3::func_decl>   funs;
-  std::map<unsigned, unsigned> index;
  public:
   Converter(z3::context &, z3::sort &);
   z3::expr        convert(Term *);
@@ -26,6 +21,9 @@ class Converter {
   z3::expr        getAntecedent(const z3::expr &);
   z3::expr        getConsequent(const z3::expr &);
   z3::expr_vector extraSimplification(const z3::expr_vector &);
+ private:
+  z3::context & ctx;
+  z3::sort &    sort_A;
 };
 
 #endif
