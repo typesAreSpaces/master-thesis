@@ -18,7 +18,7 @@ class CongruenceClosure : public Terms {
   ~CongruenceClosure();
   void buildCongruenceClosure();
   bool checkCorrectness();
-  friend std::ostream & operator << (std::ostream &, const CongruenceClosure &);
+  friend std::ostream & operator << (std::ostream &, CongruenceClosure &);
 };
 
 #endif

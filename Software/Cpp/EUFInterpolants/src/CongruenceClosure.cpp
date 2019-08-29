@@ -158,19 +158,32 @@ bool CongruenceClosure::checkCorrectness(){
     for(unsigned j = i + 1; j < total_num_vertex; ++j){
       Term * u = getReprTerm(i), * v = getReprTerm(j);
       if(u->getArity() == v->getArity()){
-	if(u->getArity() == 1
-	   && sigTable.getUnarySignature(u, equivalence_class)
-	   == sigTable.getUnarySignature(v, equivalence_class)
-	   && getReprTerm(u)->getId() != getReprTerm(v)->getId()){
-	  std::cout << "Not Ok" << std::endl;
+	switch(u->getArity()){
+	case 0:
+	  // This method just checks if the congruence
+	  // closure is correctly computed for nodes/terms
+	  // with arity > 0
+	  break;
+	case 1:
+	  if(sigTable.getUnarySignature(u, equivalence_class)
+	     == sigTable.getUnarySignature(v, equivalence_class)
+	     && getReprTerm(u)->getId() != getReprTerm(v)->getId()){
+	    std::cout << "Not Ok (Case arity 1)" << std::endl;
+	    return false;
+	  }
+	  break;
+	case 2:
+	  if(sigTable.getBinarySignature(u, equivalence_class)
+	     == sigTable.getBinarySignature(v, equivalence_class)
+	     && getReprTerm(u)->getId() != getReprTerm(v)->getId()){
+	    std::cout << "Not Ok (Case arity 2)" << std::endl;
+	    return false;
+	  }
+	  break;
+	default:
+	  std::cout << "Incorrect arities" << std::endl;
 	  return false;
-	}
-	if(u->getArity() == 2
-	   && sigTable.getBinarySignature(u, equivalence_class)
-	   == sigTable.getBinarySignature(v, equivalence_class)
-	   && getReprTerm(u)->getId() != getReprTerm(v)->getId()){
-	  std::cout << "Not Ok" << std::endl;
-	  return false;
+	  break;
 	}
       }
     }
@@ -180,14 +193,11 @@ bool CongruenceClosure::checkCorrectness(){
 
 std::ostream & operator << (std::ostream & os, CongruenceClosure & cc){
   os << "Congruence Closure" << std::endl;
-  unsigned total_num_vertex = Term::getTotalNumTerm();
-  
-  for(unsigned i = 0; i < total_num_vertex; ++i){
-    // Just print non-extra nodes
-    auto term = cc.getOriginalTerm(i);
+  for(auto term : cc.terms){
     if(term->getName()[0] != '_')
       os << "Term: " << term->to_string()
-	 << " Representative: " << cc.getReprTerm(term)->to_string() << std::endl;
+	 << " Representative: " << cc.getReprTerm(term->getId())->to_string()
+	 << std::endl;
   }
   return os;
 }

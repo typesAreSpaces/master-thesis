@@ -300,7 +300,7 @@ Term * Terms::getOriginalTerm(unsigned i){
   return terms[i];
 }
 
-Term * Terms::getReprTerm(unsigned i){
+Term * Terms::getReprTerm (unsigned i){
   return terms[equivalence_class.find(i)];
 }
 

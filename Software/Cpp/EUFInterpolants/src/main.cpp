@@ -9,8 +9,8 @@ int main(int argc, char ** argv){
 
   // Testing EUFInterpolant algorithm
   // std::string input_file = "./tests/smt2lib_2/kapurEUFExample.smt2";
-  // std::string input_file = "./tests/smt2lib_2/simple.smt2";
-  std::string input_file = "./tests/smt2lib_2/simple2.smt2";
+  std::string input_file = "./tests/smt2lib_2/simple.smt2";
+  // std::string input_file = "./tests/smt2lib_2/simple2.smt2";
   // std::string input_file = "./tests/smt2lib_2/kapurEUFExample2.smt2";
   // std::string input_file = "/Users/joseabelcastellanosjoo/Documents/QF_UF/2018-Goel-hwbench/QF_UF_firewire_tree.5.prop3_ab_reg_max.smt2";
   // std::string input_file = "/Users/joseabelcastellanosjoo/Documents/QF_UF/2018-Goel-hwbench/QF_UF_firewire_tree.3.prop2_ab_reg_max.smt2";
@@ -21,9 +21,6 @@ int main(int argc, char ** argv){
   // std::cout << input_formula.arg(0).arg(1).decl().range().id() << std::endl;
   z3::sort sort_A = ctx.uninterpreted_sort("A");
   std::set<std::string> symbols_to_elim = {"f"};
-  
-  CongruenceClosure test(ctx, input_formula, symbols_to_elim);
-  test.buildCongruenceClosure();
   
   // Converter cvt (ctx, sort_A);
   // EUFInterpolant example (ctx, input_formula, symbols_to_elim, cvt);
