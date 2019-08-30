@@ -21,6 +21,31 @@ int main(int argc, char ** argv){
   // std::cout << input_formula.arg(0).arg(1).decl().range().id() << std::endl;
   z3::sort sort_A = ctx.uninterpreted_sort("A");
   std::set<std::string> symbols_to_elim = {"f"};
+
+  CongruenceClosure example(ctx, input_formula, symbols_to_elim);
+  std::cout << example << std::endl;
+  
+  UnionFind original = example.getDeepEquivalenceClass();
+
+  UnionFind & willchange = example.getEquivalenceClass();
+  willchange.merge(6, 8);
+  example.buildCongruenceClosure();
+  std::cout << example << std::endl;
+
+  example.setEquivalenceClass(original);
+  example.buildCongruenceClosure();
+  std::cout << example << std::endl;
+
+  // UnionFind & original = example.getEquivalenceClass();
+  // UnionFind & willchange = example.getEquivalenceClass();
+  // willchange.merge(6, 8);
+  // std::cout << willchange << std::endl;
+  
+  // example.buildCongruenceClosure(willchange);
+  // std::cout << example << std::endl;
+
+  // example.buildCongruenceClosure(original);
+  // std::cout << example << std::endl;
   
   // Converter cvt (ctx, sort_A);
   // EUFInterpolant example (ctx, input_formula, symbols_to_elim, cvt);

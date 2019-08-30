@@ -17,7 +17,9 @@ class Terms{
   Terms(z3::context &, const z3::expr &, const std::set<std::string> &);
   ~Terms();
   std::vector<Term*> & getTerms();
+  void setEquivalenceClass(UnionFind &);
   UnionFind & getEquivalenceClass();
+  UnionFind getDeepEquivalenceClass();
   Term * getOriginalTerm(unsigned);
   Term * getReprTerm (unsigned);
   Term * getReprTerm(Term*);

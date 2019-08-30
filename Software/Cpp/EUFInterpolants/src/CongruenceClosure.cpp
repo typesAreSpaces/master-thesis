@@ -195,7 +195,8 @@ std::ostream & operator << (std::ostream & os, CongruenceClosure & cc){
   os << "Congruence Closure" << std::endl;
   for(auto term : cc.terms){
     if(term->getName()[0] != '_')
-      os << "Term: " << term->to_string()
+      os << "ID: " << term->getId()
+	 << " Term: " << term->to_string()
 	 << " Representative: " << cc.getReprTerm(term->getId())->to_string()
 	 << std::endl;
   }

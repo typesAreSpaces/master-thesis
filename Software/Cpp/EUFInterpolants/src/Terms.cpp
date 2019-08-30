@@ -292,8 +292,21 @@ std::vector<Term*> & Terms::getTerms(){
   return terms;
 }
 
-UnionFind & Terms::getEquivalenceClass(){
+void Terms::setEquivalenceClass(UnionFind & uf){  
+  equivalence_class = uf;
+}
+
+UnionFind & Terms::getEquivalenceClass(){  
   return equivalence_class;
+}
+
+UnionFind Terms::getDeepEquivalenceClass(){
+  unsigned num_elements = equivalence_class.size();
+  std::vector<unsigned> new_elements(num_elements);
+  for(unsigned index = 0; index < num_elements; ++index){
+    new_elements[index] = equivalence_class[index];
+  }
+  return UnionFind(new_elements);
 }
 
 Term * Terms::getOriginalTerm(unsigned i){

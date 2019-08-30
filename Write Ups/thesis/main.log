@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.18 (TeX Live 2017/Debian) (preloaded format=pdflatex 2019.6.8)  8 JUN 2019 13:48
+This is pdfTeX, Version 3.14159265-2.6-1.40.18 (TeX Live 2017/Debian) (preloaded format=pdflatex 2019.8.13)  30 AUG 2019 10:51
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -787,8 +787,8 @@ Package rerunfilecheck Info: File `main.out' has not changed.
 Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 110.
  ) 
 Here is how much of TeX's memory you used:
- 8328 strings out of 492982
- 116182 string characters out of 6134897
+ 8330 strings out of 492982
+ 116212 string characters out of 6134896
  245157 words of memory out of 5000000
  11709 multiletter control sequences out of 15000+600000
  13883 words of font info for 51 fonts, out of 8000000 for 9000
@@ -805,10 +805,10 @@ lic/amsfonts/cm/cmsl12.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/am
 sfonts/cm/cmsy10.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts
 /cm/cmsy6.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmt
 i12.pfb>
-Output written on main.pdf (19 pages, 139083 bytes).
+Output written on main.pdf (19 pages, 142726 bytes).
 PDF statistics:
- 220 PDF objects out of 1000 (max. 8388607)
- 186 compressed objects within 2 object streams
- 38 named destinations out of 1000 (max. 500000)
+ 222 PDF objects out of 1000 (max. 8388607)
+ 188 compressed objects within 2 object streams
+ 40 named destinations out of 1000 (max. 500000)
  113 words of extra memory for PDF output out of 10000 (max. 10000000)
 

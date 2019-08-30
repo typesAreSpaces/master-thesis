@@ -1,12 +1,15 @@
 #include "UnionFind.h"
 
-UnionFind::UnionFind(unsigned n) : length(n){
+UnionFind::UnionFind(){};
+
+UnionFind::UnionFind(unsigned n){
   representative.resize(n);
   for(unsigned i = 0; i < n; ++i)
     representative[i] = i;
 }
 
-UnionFind::UnionFind(){};
+UnionFind::UnionFind(std::vector<unsigned> values):
+  representative(values){};
 
 UnionFind::~UnionFind(){};
 
@@ -29,11 +32,15 @@ unsigned UnionFind::find(unsigned x){
 }
 
 unsigned UnionFind::size(){
-  return length;
+  return representative.size();
+}
+
+unsigned UnionFind::operator[](unsigned index) const {
+  return representative[index];
 }
 
 std::ostream & operator << (std::ostream & os, const UnionFind & uf){
-  for(unsigned i = 0; i < uf.length; ++i){
+  for(unsigned i = 0; i < uf.representative.size(); ++i){
     os << "ID: " << i;
     os << " Representative: " << uf.representative[i] << "\n";
   }
