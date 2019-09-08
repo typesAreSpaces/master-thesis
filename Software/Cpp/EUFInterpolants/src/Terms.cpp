@@ -134,30 +134,31 @@ void Terms::extractSymbolsAndTerms(const z3::expr & v, std::set<std::string> & s
     
     switch(symbol_name.kind()){
     case Z3_INT_SYMBOL:
-      terms[id]->setName(std::to_string(symbol_name.to_int()));    
+      terms[id]->setName(std::to_string(symbol_name.to_int())); //////////// terms
       symbols.insert(std::to_string(symbol_name.to_int()));
       break;
     case Z3_STRING_SYMBOL:
-      terms[id]->setName(symbol_name.str());
+      terms[id]->setName(symbol_name.str());  //////////// terms
       symbols.insert(symbol_name.str());
       if(terms[id]->getName() == "=")
-		equations.push_back(std::make_pair(v.arg(0), v.arg(1)));
+	equations.push_back(std::make_pair(v.arg(0), v.arg(1)));
       if(terms[id]->getName() == "distinct")
-		disequations.push_back(std::make_pair(v.arg(0), v.arg(1)));
+	disequations.push_back(std::make_pair(v.arg(0), v.arg(1)));
       break;
     default:
       unreachable();
     }
 
+    //////////// terms
     switch(num_args){
     case 0:
-      terms[id]->setArity(0);
-	  terms[id]->define();
+      terms[id]->setArity(0); 
+      terms[id]->define();
       break;
     case 1:
       terms[id]->setArity(1);
       terms[id]->addSuccessor(terms[v.arg(0).id()]);
-	  terms[id]->define();
+      terms[id]->define();
       break;
     default:
       assert(num_args >= 2);
@@ -167,27 +168,27 @@ void Terms::extractSymbolsAndTerms(const z3::expr & v, std::set<std::string> & s
       const unsigned first_w_term = terms.size(); 
       // Adding w_j(v) vertices/terms
       for(unsigned index_arg = 2; index_arg <= num_args; ++index_arg)
-		terms.push_back(new Term("_" + terms[id]->getName() + "_" + std::to_string(index_arg), 2));
+	terms.push_back(new Term("_" + terms[id]->getName() + "_" + std::to_string(index_arg), 2));
 
       unsigned num_original_terms = this->root_num;
       // Adding edge (v, v_1)
       terms[id]->addSuccessor(terms[v.arg(0).id()]);
       // Adding edge (v, w_2(v))
       terms[id]->addSuccessor(terms[first_w_term]);
-	  terms[id]->define();
+      terms[id]->define();
       for(unsigned index_arg = 2; index_arg <= num_args; ++index_arg){
-		terms[first_w_term + index_arg - 2]->setArity(2);
-		// Adding edge w_i(v), v_i
-		terms[first_w_term + index_arg - 2]->addSuccessor(terms[v.arg(index_arg - 1).id()]);
-		if(index_arg == num_args){
-		  // Adding edge ( w_{d(v)}(v), x_{d(v)} )
-		  terms[first_w_term + index_arg - 2]->addSuccessor(terms[num_original_terms + num_args]);
-		}
-		else{
-		  // Adding edge ( w_i(v), w_{i+1}(v) )
-		  terms[first_w_term + index_arg - 2]->addSuccessor(terms[first_w_term + index_arg - 1]);
-		}
-		terms[first_w_term + index_arg - 2]->define();
+	terms[first_w_term + index_arg - 2]->setArity(2);
+	// Adding edge w_i(v), v_i
+	terms[first_w_term + index_arg - 2]->addSuccessor(terms[v.arg(index_arg - 1).id()]);
+	if(index_arg == num_args){
+	  // Adding edge ( w_{d(v)}(v), x_{d(v)} )
+	  terms[first_w_term + index_arg - 2]->addSuccessor(terms[num_original_terms + num_args]);
+	}
+	else{
+	  // Adding edge ( w_i(v), w_{i+1}(v) )
+	  terms[first_w_term + index_arg - 2]->addSuccessor(terms[first_w_term + index_arg - 1]);
+	}
+	terms[first_w_term + index_arg - 2]->define();
       }
       break;
     }
@@ -214,9 +215,9 @@ void Terms::extractTerms(const z3::expr & v){
     case Z3_STRING_SYMBOL:
       terms[id]->setName(symbol_name.str());
       if(terms[id]->getName() == "=")
-		equations.push_back(std::make_pair(v.arg(0), v.arg(1)));
+	equations.push_back(std::make_pair(v.arg(0), v.arg(1)));
       if(terms[id]->getName() == "distinct")
-		disequations.push_back(std::make_pair(v.arg(0), v.arg(1)));
+	disequations.push_back(std::make_pair(v.arg(0), v.arg(1)));
       break;
     default:
       unreachable();
@@ -225,12 +226,12 @@ void Terms::extractTerms(const z3::expr & v){
     switch(num_args){
     case 0:
       terms[id]->setArity(0);
-	  terms[id]->define();
+      terms[id]->define();
       break;
     case 1:
       terms[id]->setArity(1);
       terms[id]->addSuccessor(terms[v.arg(0).id()]);
-	  terms[id]->define();
+      terms[id]->define();
       break;
     default:
       assert(num_args >= 2);
@@ -239,26 +240,26 @@ void Terms::extractTerms(const z3::expr & v){
       const unsigned first_w_term = terms.size(); 
       // Adding w_j(v) vertices/terms
       for(unsigned index_arg = 2; index_arg <= num_args; ++index_arg)
-		terms.push_back(new Term("_" + terms[id]->getName() + "_" + std::to_string(index_arg), 2));
+	terms.push_back(new Term("_" + terms[id]->getName() + "_" + std::to_string(index_arg), 2));
       unsigned num_original_terms = this->root_num;
       // Adding edge (v, v_1)
       terms[id]->addSuccessor(terms[v.arg(0).id()]);
       // Adding edge (v, w_2(v))
       terms[id]->addSuccessor(terms[first_w_term]);
-	  terms[id]->define();
+      terms[id]->define();
       for(unsigned index_arg = 2; index_arg <= num_args; ++index_arg){
-		terms[first_w_term + index_arg - 2]->setArity(2);
-		// Adding edge w_i(v), v_i
-		terms[first_w_term + index_arg - 2]->addSuccessor(terms[v.arg(index_arg - 1).id()]);
-		if(index_arg == num_args){
-		  // Adding edge ( w_{d(v)}(v), x_{d(v)} )
-		  terms[first_w_term + index_arg - 2]->addSuccessor(terms[num_original_terms + num_args]);
-		}
-		else{
-		  // Adding edge ( w_i(v), w_{i+1}(v) )
-		  terms[first_w_term + index_arg - 2]->addSuccessor(terms[first_w_term + index_arg - 1]);
-		}
-		terms[first_w_term + index_arg - 2]->define();
+	terms[first_w_term + index_arg - 2]->setArity(2);
+	// Adding edge w_i(v), v_i
+	terms[first_w_term + index_arg - 2]->addSuccessor(terms[v.arg(index_arg - 1).id()]);
+	if(index_arg == num_args){
+	  // Adding edge ( w_{d(v)}(v), x_{d(v)} )
+	  terms[first_w_term + index_arg - 2]->addSuccessor(terms[num_original_terms + num_args]);
+	}
+	else{
+	  // Adding edge ( w_i(v), w_{i+1}(v) )
+	  terms[first_w_term + index_arg - 2]->addSuccessor(terms[first_w_term + index_arg - 1]);
+	}
+	terms[first_w_term + index_arg - 2]->define();
       }
       break;
     }
@@ -267,7 +268,7 @@ void Terms::extractTerms(const z3::expr & v){
 
 // This method remove symbols that are common
 void Terms::removeSymbols(const z3::expr & v,
-						  std::set<std::string> & symbols){
+			  std::set<std::string> & symbols){
   if(v.is_app()){
     unsigned num_args = v.num_args();
     auto symbol_name = v.decl().name();
@@ -292,7 +293,7 @@ std::vector<Term*> & Terms::getTerms(){
   return terms;
 }
 
-void Terms::setEquivalenceClass(UnionFind & uf){  
+void Terms::setEquivalenceClass(UnionFind & uf){
   equivalence_class = uf;
 }
 

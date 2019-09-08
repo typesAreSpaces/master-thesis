@@ -6,7 +6,7 @@
 #include <cassert>
 #include "CircularList.h"
 
-class Term{
+class Term {
  public:
   Term(std::string, unsigned);
   Term();
@@ -30,7 +30,6 @@ class Term{
   std::string to_string();
   Term * getLeftChild();
   Term * getRightChild();
-  
   std::ostream & functionPrettyPrint (std::ostream &);
   friend std::ostream & operator << (std::ostream &, Term &);
   friend bool operator ==(const Term &, const Term &);
@@ -39,9 +38,9 @@ class Term{
   friend bool operator <=(const Term &, const Term &);
   friend bool operator >(const Term &, const Term &);
   friend bool operator >=(const Term &, const Term &);
-
- private:
   static unsigned     total_num_vertex;
+ private:
+
   std::string         name;
   bool                is_symbol_common;
   bool                is_defined;

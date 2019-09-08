@@ -24,6 +24,10 @@ int main(int argc, char ** argv){
 
   CongruenceClosure example(ctx, input_formula, symbols_to_elim);
   std::cout << example << std::endl;
+  auto terms_example = example.getTerms();
+  for(auto element : terms_example){
+    std::cout << *element << std::endl;
+  }
   
   UnionFind original = example.getDeepEquivalenceClass();
 
@@ -31,10 +35,32 @@ int main(int argc, char ** argv){
   willchange.merge(6, 8);
   example.buildCongruenceClosure();
   std::cout << example << std::endl;
+  terms_example = example.getTerms();
+  for(auto element : terms_example){
+    std::cout << *element << std::endl;
+  }
 
-  example.setEquivalenceClass(original);
-  example.buildCongruenceClosure();
+  example.buildCongruenceClosure(original);
   std::cout << example << std::endl;
+  terms_example = example.getTerms();
+  for(auto element : terms_example){
+    std::cout << *element << std::endl;
+  }
+
+  Term::total_num_vertex = 0;
+  CongruenceClosure example2(ctx, input_formula, symbols_to_elim);
+  std::cout << example2 << std::endl;
+  auto terms_example2 = example2.getTerms();
+  for(auto element : terms_example2){
+    std::cout << *element << std::endl;
+  }
+
+  example.transferState(example2);
+  // std::cout << example << std::endl;
+  // terms_example = example.getTerms();
+  // for(auto element : terms_example){
+  //   std::cout << *element << std::endl;
+  // }
 
   // UnionFind & original = example.getEquivalenceClass();
   // UnionFind & willchange = example.getEquivalenceClass();

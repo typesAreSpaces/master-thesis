@@ -112,7 +112,7 @@ node<T>& CircularList<T>::iterator:: operator *(){
 }
 
 template <typename T>
-std::ostream & operator << (std::ostream & os, CircularList<T> & x){
+std::ostream & operator << (std::ostream & os, CircularList<T> & x){;
   if(!x.empty()){
     auto it = x.begin();
     do {

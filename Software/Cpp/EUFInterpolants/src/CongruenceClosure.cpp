@@ -151,6 +151,11 @@ void CongruenceClosure::buildCongruenceClosure(){
 	   )
 }
 
+void CongruenceClosure::buildCongruenceClosure(UnionFind & uf){
+  this->setEquivalenceClass(uf);
+  this->buildCongruenceClosure();
+}
+
 bool CongruenceClosure::checkCorrectness(){
   unsigned total_num_vertex = Term::getTotalNumTerm();
 
@@ -189,6 +194,49 @@ bool CongruenceClosure::checkCorrectness(){
     }
   std::cout << "Ok" << std::endl;
   return true;
+}
+
+void CongruenceClosure::transferState(CongruenceClosure & cc){
+  // Update the predecessors only!
+  unsigned num_terms = terms.size();
+  // This should be a deep-copy
+  for(unsigned index = 0; index < num_terms; ++index){
+    CircularList<Term*> & pred = terms[index]->getPredecessors();
+    CircularList<Term*> & cc_pred = cc.getOriginalTerm(index)->getPredecessors();
+    // std::cout << pred.size() << " " << cc_pred.size() << std::endl;
+    // std::cout << cc_pred << std::endl;
+
+    // WE NEED TO DELETE THE PREVIOUS pred
+    // delete pred; // This doesn't work
+
+    if(!cc_pred.empty()){
+      auto pred_iterator = cc_pred.begin();
+      do{
+	pred.add(terms[(pred_iterator->data)->getId()]);
+	pred_iterator = pred_iterator->next;
+      } while(pred_iterator != cc_pred.begin());
+    }
+    
+    
+    // std::cout << cc_pred << std::endl;
+    // terms[index]->addSuccessor(/*A term/*);
+  }
+
+
+  for(unsigned index = 0; index < num_terms; ++index){
+    CircularList<Term*> & pred = terms[index]->getPredecessors();
+    CircularList<Term*> & cc_pred = cc.getOriginalTerm(index)->getPredecessors();
+    std::cout << pred.size() << " " << cc_pred.size() << std::endl;
+    std::cout << pred << std::endl;
+    // delete pred;
+    
+    
+    // std::cout << cc_pred << std::endl;
+    // terms[index]->addSuccessor(/*A term/*);
+  }
+
+  
+  equivalence_class = cc.getDeepEquivalenceClass();
 }
 
 std::ostream & operator << (std::ostream & os, CongruenceClosure & cc){

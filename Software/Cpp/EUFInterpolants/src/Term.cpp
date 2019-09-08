@@ -39,9 +39,9 @@ void Term::setArity(unsigned arity){
 
 void Term::addSuccessor(Term * v){
   if(!is_defined){
-	successors.push_back(v);
-	// Add predeccessors
-	v->predecessors.add(this);
+    successors.push_back(v);
+    // Add predeccessors
+    v->predecessors.add(this);
   }
 }
 
