@@ -19,20 +19,19 @@ int main(int argc, char ** argv){
   z3::context ctx;
   z3::expr input_formula = ctx.parse_file(input_file.c_str())[0];
   // std::cout << input_formula.arg(0).arg(1).decl().range().id() << std::endl;
-  z3::sort sort_A = ctx.uninterpreted_sort("A");
+  z3::sort sort_A = ctx.uninterpreted_sort("A"); // Unique sort
   std::set<std::string> symbols_to_elim = {"f"};
 
-  CongruenceClosure example(ctx, input_formula, symbols_to_elim);
-  example.merge(6, 8);
-  example.buildCongruenceClosure();
+  // CongruenceClosure example(ctx, input_formula, symbols_to_elim);
+  // example.merge(6, 8);
+  // example.buildCongruenceClosure();
   
-  CongruenceClosure example2(ctx, input_formula, symbols_to_elim);
-  example.transferEqClassAndPreds(example2);
-  example.buildCongruenceClosure();
+  // CongruenceClosure example2(ctx, input_formula, symbols_to_elim);
+  // example.transferEqClassAndPreds(example2);
+  // example.buildCongruenceClosure();
   
-  // Converter cvt (ctx, sort_A);
-  // EUFInterpolant example (ctx, input_formula, symbols_to_elim, cvt);
-  // std::cout << "The Interpolant" << std::endl;
-  // std::cout << example.algorithm() << std::endl; 
+  EUFInterpolant test (ctx, input_formula, symbols_to_elim, sort_A);
+  std::cout << "The Interpolant" << std::endl;
+  // std::cout << test.buildInterpolant() << std::endl;
   return 0;
 }

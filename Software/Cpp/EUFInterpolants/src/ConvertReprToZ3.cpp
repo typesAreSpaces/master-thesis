@@ -1,7 +1,7 @@
 #include "ConvertReprToZ3.h"
 
 // Are all sorts the same?
-Converter::Converter(z3::context & c, z3::sort & s) :
+Converter::Converter(z3::context & c, const z3::sort & s) :
   ctx(c), sort_A(s) {
 }
 
@@ -40,14 +40,7 @@ z3::expr Converter::convert(const std::vector<EquationTerm> & eqs){
 z3::expr_vector Converter::convert(const std::vector<Equation> & eqs){
   z3::expr_vector answer(ctx);
   for(auto eq : eqs)
-	answer.push_back(eq.first == eq.second);
-  return answer;
-}
-
-z3::expr_vector Converter::convert(const std::vector<std::pair<Z3_ast, Z3_ast> > & eqs){
-  z3::expr_vector answer(ctx);
-  for(auto it = eqs.begin(); it != eqs.end(); ++it)
-    answer.push_back(z3::expr(ctx, it->first) == z3::expr(ctx, it->second));
+    answer.push_back(eq.first == eq.second);
   return answer;
 }
 

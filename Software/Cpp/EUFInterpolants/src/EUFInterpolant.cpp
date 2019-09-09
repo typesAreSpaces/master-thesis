@@ -1,9 +1,9 @@
 #include "EUFInterpolant.h"
 
 
-EUFInterpolant::EUFInterpolant(z3::context & c, const z3::expr & v, Converter & cvt) :
+EUFInterpolant::EUFInterpolant(z3::context & c, const z3::expr & v, const z3::sort & s) :
   congruence_closure(c, v),
-  cvt(cvt),
+  cvt(c, s),
   horn_clauses(congruence_closure.getTerms()),
   ctx(c){
   contradiction = std::make_pair(congruence_closure.getOriginalTerm(0),
@@ -12,9 +12,9 @@ EUFInterpolant::EUFInterpolant(z3::context & c, const z3::expr & v, Converter & 
 
 EUFInterpolant::EUFInterpolant(z3::context & c, const z3::expr & v,
 			       std::set<std::string> & symbols_to_elim,
-			       Converter & cvt) :
+			       const z3::sort & s) :
   congruence_closure(c, v, symbols_to_elim),
-  cvt(cvt),
+  cvt(c, s),
   horn_clauses(congruence_closure.getTerms()),
   ctx(c) {
   contradiction = std::make_pair(congruence_closure.getOriginalTerm(0),
@@ -28,7 +28,7 @@ void EUFInterpolant::test(){
   return;
 }
 
-z3::expr EUFInterpolant::algorithm(){
+z3::expr EUFInterpolant::buildInterpolant(){
   identifyCommonSymbols();
   congruence_closure.buildCongruenceClosure();
   setCommonRepresentatives();
