@@ -25,13 +25,15 @@ EUFInterpolant::EUFInterpolant(const z3::expr & e,
 EUFInterpolant::~EUFInterpolant(){}
 
 void EUFInterpolant::test(){
+  identifyCommonSymbols();
+  congruence_closure.buildCongruenceClosure();
   return;
 }
 
 z3::expr EUFInterpolant::buildInterpolant(){
-  identifyCommonSymbols();
-  congruence_closure.buildCongruenceClosure();
-  setCommonRepresentatives();
+  identifyCommonSymbols(); // Check
+  congruence_closure.buildCongruenceClosure(); // Check
+  setCommonRepresentatives(); // TODO
   eliminationOfUncommonFSyms();
   addNegativeHornClauses();
   // ------------------------------------
@@ -76,57 +78,58 @@ std::vector<HornClause*> EUFInterpolant::getHornClauses(){
 
 void EUFInterpolant::identifyCommonSymbols(){
   unsigned root_num = congruence_closure.getRootNum();
-  Term * root = congruence_closure.getReprTerm(root_num), * temp_root;
+  Term * current_term = congruence_closure.getReprTerm(root_num), * temp_current_term;
   unsigned arity;
   auto & symbols_to_eliminate = congruence_closure.getSymbolsToElim();
   std::stack<Term*> stack_vertices;
-  
+   
   // Traversing the graph (in post-order) 
   // to determine if a term is common or not
+  // Reference: https://www.geeksforgeeks.org/iterative-postorder-traversal-using-stack/
   do{
-    while(root != nullptr){
-      arity = root->getArity();
+    while(current_term != nullptr){
+      arity = current_term->getArity();
       switch(arity){
       case 0:
-	stack_vertices.push(root);
-	root = nullptr;
+	stack_vertices.push(current_term);
+	current_term = nullptr;
 	break;
       case 1:
-	stack_vertices.push(root);
-	root = root->getLeftChild();
+	stack_vertices.push(current_term);
+	current_term = current_term->getLeftChild();
 	break;
       case 2:
-	stack_vertices.push(root->getRightChild()), stack_vertices.push(root);
-	root = root->getLeftChild();
+	stack_vertices.push(current_term->getRightChild()), stack_vertices.push(current_term);
+	current_term = current_term->getLeftChild();
 	break;
       default:
+	throw("Error: Arity cannot be more than 2");
 	break;
       }
-    } 
-    root = stack_vertices.top(), stack_vertices.pop();
-    arity = root->getArity();
+    }
+    current_term = stack_vertices.top();
+    stack_vertices.pop();
+    arity = current_term->getArity();
     if(arity == 2 && !stack_vertices.empty()
-       && root->getRightChild()->getId() == stack_vertices.top()->getId()){
-      temp_root = stack_vertices.top();
+       && current_term->getRightChild()->getId() == stack_vertices.top()->getId()){
+      temp_current_term = stack_vertices.top();
       stack_vertices.pop();
-      stack_vertices.push(root);
-      root = temp_root;
+      stack_vertices.push(current_term);
+      current_term = temp_current_term;
     }
     else{
-      // do something with root
-      std::string root_name = root->getName();
-      symbol_locations[root_name].insert(root->getId());
-      bool is_root_eliminable = (symbols_to_eliminate.find(root_name)
-				 == symbols_to_eliminate.end()) ? true : false;
-      std::vector<Term*> root_successors = root->getSuccessors();
-      for(unsigned i = 0; i < arity; ++i){
-	if(!is_root_eliminable)
+      // do something with current_term
+      std::string current_term_name = current_term->getName();
+      symbol_locations[current_term_name].insert(current_term->getId());
+      bool is_current_term_common =
+	symbols_to_eliminate.find(current_term_name) == symbols_to_eliminate.end();
+      for(auto successor : current_term->getSuccessors()){
+	if(!is_current_term_common)
 	  break;
-	is_root_eliminable = is_root_eliminable
-	  && root_successors[i]->getSymbolCommonQ();
+	is_current_term_common = successor->getSymbolCommonQ();
       }
-      root->setSymbolCommonQ(is_root_eliminable);
-      root = nullptr;
+      current_term->setSymbolCommonQ(is_current_term_common);
+      current_term = nullptr;
     }
   } while(!stack_vertices.empty());
 }

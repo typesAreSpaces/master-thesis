@@ -20,11 +20,11 @@ int main(int argc, char ** argv){
     for(int index = 2; index < argc; ++index)
       symbols_to_elim.insert(argv[index]);
     // std::cout << input_formula.arg(0).arg(1).decl().range().id() << std::endl;
-    EUFInterpolant test(ctx.parse_file(argv[1])[0],
+    EUFInterpolant example(ctx.parse_file(argv[1])[0],
 			symbols_to_elim,
 			ctx.uninterpreted_sort("A"));
     std::cout << "The Interpolant" << std::endl;
-    // std::cout << test.buildInterpolant() << std::endl;
+    example.test();
   }
   return 0;
 }

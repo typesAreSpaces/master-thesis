@@ -225,8 +225,9 @@ std::ostream & operator << (std::ostream & os, CongruenceClosure & cc){
   for(auto term : cc.terms){
     if(term->getName()[0] != '_')
       os << "ID: " << term->getId()
-	 << " Term: " << term->to_string()
-	 << " Representative: " << cc.getReprTerm(term->getId())->to_string()
+	 << ", Term: " << term->to_string()
+	 << ", Common: " << term->getSymbolCommonQ()
+	 << ", Representative: " << cc.getReprTerm(term->getId())->to_string()
 	 << std::endl;
   }
   return os;

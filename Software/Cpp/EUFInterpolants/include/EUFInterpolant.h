@@ -8,6 +8,9 @@
 #include <map>
 #include <set>
 
+// SymbolLocation : SymbolName -> Set of Locations
+// Map to keep track the location (position in the `terms' data structure)
+// of names inside expressions 
 typedef std::map<std::string, std::set<unsigned> > SymbolLocations;
 
 class EUFInterpolant {
