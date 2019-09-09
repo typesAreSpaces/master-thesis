@@ -60,7 +60,7 @@ Terms::Terms(z3::context & ctx, const z3::expr & v) :
 // because the interpolantion problem
 // is solved as a
 // quantifier elimination problem
-Terms::Terms(z3::context & ctx, const z3::expr & v, const std::set<std::string> & symbols_to_elim) :
+Terms::Terms(z3::context & ctx, const z3::expr & v, const UncommonSymbols & symbols_to_elim) :
   ctx(ctx),
   symbols_to_elim(symbols_to_elim)
 {
@@ -120,7 +120,7 @@ void Terms::unreachable(){
 }
 
 // This method extracts terms and symbols
-void Terms::extractSymbolsAndTerms(const z3::expr & v, std::set<std::string> & symbols){
+void Terms::extractSymbolsAndTerms(const z3::expr & v, UncommonSymbols & symbols){
 
   const unsigned id = v.id();
   assert(id > 0);
@@ -267,8 +267,7 @@ void Terms::extractTerms(const z3::expr & v){
 }
 
 // This method remove symbols that are common
-void Terms::removeSymbols(const z3::expr & v,
-			  std::set<std::string> & symbols){
+void Terms::removeSymbols(const z3::expr & v, UncommonSymbols & symbols){
   if(v.is_app()){
     unsigned num_args = v.num_args();
     auto symbol_name = v.decl().name();
@@ -338,7 +337,9 @@ void Terms::merge(unsigned i, unsigned j){
 }
 
 void Terms::rotate(Term * u, Term * v){
-  // Precondition: getReprTerm(u) and getReprTerm(v) should be different 
+  // Precondition: getReprTerm(u) and getReprTerm(v) should be THE SAME
+  // i.e. a rotation only make sense between elements of the same
+  // equivalence class
   // Force vertex u to become
   // vertex v's parent
   assert(getReprTerm(u) == getReprTerm(v));
@@ -355,7 +356,7 @@ z3::context & Terms::getCtx(){
   return ctx;
 }
 
-const std::set<std::string> & Terms::getSymbolsToElim(){
+const UncommonSymbols & Terms::getSymbolsToElim(){
   return symbols_to_elim;
 }
 

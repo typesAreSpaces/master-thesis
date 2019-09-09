@@ -62,7 +62,7 @@ CongruenceClosure::CongruenceClosure(z3::context & ctx, const z3::expr & v) :
 
 CongruenceClosure::CongruenceClosure(z3::context & ctx,
 				     const z3::expr & v,
-				     const std::set<std::string> & symbols_to_elim) :
+				     const UncommonSymbols & symbols_to_elim) :
   Terms(ctx, v, symbols_to_elim)
 {
   init();

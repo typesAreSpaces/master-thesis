@@ -10,43 +10,50 @@
 
 typedef std::pair<z3::expr, z3::expr> Equation;
 typedef std::pair<z3::expr, z3::expr> Disequation;
+typedef std::vector<Equation> Equations;
+typedef std::vector<Disequation> Disequations;
+typedef std::set<std::string> UncommonSymbols;
 
 class Terms {  
  public:
   Terms(z3::context &, const z3::expr &);
-  Terms(z3::context &, const z3::expr &, const std::set<std::string> &);
+  Terms(z3::context &, const z3::expr &, const UncommonSymbols &);
   ~Terms();
-  std::vector<Term*> & getTerms();
-  void setEquivalenceClass(UnionFind &);
-  UnionFind & getEquivalenceClass();
-  UnionFind getDeepEquivalenceClass();
-  Term * getOriginalTerm(unsigned);
-  Term * getReprTerm (unsigned);
-  Term * getReprTerm(Term*);
-  void merge(Term*, Term*);
-  void merge(unsigned, unsigned);
-  void rotate(Term*, Term*);
-  unsigned getRootNum();
-  z3::context & getCtx();
-  const std::set<std::string> & getSymbolsToElim();
-  const std::vector<Equation> & getEquations();
-  const std::vector<Disequation> & getDisequations();
+
+  std::vector<Term*> &    getTerms();
+  void                    setEquivalenceClass(UnionFind &);
+  UnionFind &             getEquivalenceClass();
+  UnionFind               getDeepEquivalenceClass();
+  Term *                  getOriginalTerm(unsigned);
+  Term *                  getReprTerm (unsigned);
+  Term *                  getReprTerm(Term*);
+  void                    merge(Term*, Term*);
+  void                    merge(unsigned, unsigned);
+  void                    rotate(Term*, Term*);
+  unsigned                getRootNum();
+  z3::context &           getCtx();
+  const UncommonSymbols & getSymbolsToElim();
+  const Equations &       getEquations();
+  const Disequations &    getDisequations();
+  
   friend std::ostream & operator <<(std::ostream &, const Terms &);
+  
  protected:
   z3::context &            ctx;
   unsigned                 root_num;
   std::vector<Equation>    equations;
   std::vector<Disequation> disequations;
-  std::set<std::string>    symbols_to_elim;
-  
+  UncommonSymbols          symbols_to_elim;
+
   std::vector<Term*>       terms;
   UnionFind                equivalence_class;
+  
  private:
   void exitf(const char *);
   void unreachable();
-  void extractSymbolsAndTerms(const z3::expr &, std::set<std::string> &);
+  void extractSymbolsAndTerms(const z3::expr &, UncommonSymbols &);
   void extractTerms(const z3::expr &);
-  void removeSymbols(const z3::expr &, std::set<std::string> &);
+  void removeSymbols(const z3::expr &, UncommonSymbols &);
 };
 
 #endif

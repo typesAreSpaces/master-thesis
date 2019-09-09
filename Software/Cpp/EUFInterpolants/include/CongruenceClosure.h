@@ -10,17 +10,19 @@ typedef std::vector<std::pair<Term*, Term*> > Combine;
 class CongruenceClosure : public Terms {
  private:
   SignatureTable sigTable;
-  void init();
+  void           init();
 	
  public:
   CongruenceClosure(z3::context &, const z3::expr &);
-  CongruenceClosure(z3::context &, const z3::expr &, const std::set<std::string> &);
+  CongruenceClosure(z3::context &, const z3::expr &, const UncommonSymbols &);
   ~CongruenceClosure();
+  
   void buildCongruenceClosure();
   bool checkCorrectness();
   void transferEqClassAndPreds(CongruenceClosure &);
   void transferEqClass(CongruenceClosure &);
   void transferPreds(CongruenceClosure &);
+  
   friend std::ostream & operator << (std::ostream &, CongruenceClosure &);
 };
 

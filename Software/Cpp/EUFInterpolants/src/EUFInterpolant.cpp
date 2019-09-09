@@ -1,25 +1,30 @@
 #include "EUFInterpolant.h"
+#define DEBUGGING false
+#define DEBUG_MSG(X,Y) if(X){Y}
+
+
+typedef std::pair<Term*, Term*> EquationTerm;
 
 EUFInterpolant::EUFInterpolant(const z3::expr & e, const z3::sort & s) :
   congruence_closure(e.ctx(), e),
   original_structure(e.ctx(), e),
   cvt(e.ctx(), s),
-  horn_clauses(congruence_closure.getTerms())
-{
-  contradiction = std::make_pair(congruence_closure.getOriginalTerm(0),
-				 congruence_closure.getOriginalTerm(0));
+  horn_clauses(congruence_closure.getTerms()),
+  contradiction(congruence_closure.getOriginalTerm(0),
+		congruence_closure.getOriginalTerm(0)){
+  original_structure.buildCongruenceClosure();
 }
 
 EUFInterpolant::EUFInterpolant(const z3::expr & e,
-			       std::set<std::string> & symbols_to_elim,
+			       const std::set<std::string> & symbols_to_elim,
 			       const z3::sort & s) :
   congruence_closure(e.ctx(), e, symbols_to_elim),
   original_structure(e.ctx(), e, symbols_to_elim),
   cvt(e.ctx(), s),
-  horn_clauses(congruence_closure.getTerms())
-{
-  contradiction = std::make_pair(congruence_closure.getOriginalTerm(0),
-				 congruence_closure.getOriginalTerm(0));
+  horn_clauses(congruence_closure.getTerms()),
+  contradiction(congruence_closure.getOriginalTerm(0),
+		congruence_closure.getOriginalTerm(0)){
+  original_structure.buildCongruenceClosure();
 }
 
 EUFInterpolant::~EUFInterpolant(){}
@@ -27,13 +32,15 @@ EUFInterpolant::~EUFInterpolant(){}
 void EUFInterpolant::test(){
   identifyCommonSymbols();
   congruence_closure.buildCongruenceClosure();
+  setCommonRepresentatives();
+  eliminationOfUncommonFSyms();// TODO
   return;
 }
 
 z3::expr EUFInterpolant::buildInterpolant(){
   identifyCommonSymbols(); // Check
   congruence_closure.buildCongruenceClosure(); // Check
-  setCommonRepresentatives(); // TODO
+  setCommonRepresentatives(); // Check
   eliminationOfUncommonFSyms();
   addNegativeHornClauses();
   // ------------------------------------
@@ -120,7 +127,7 @@ void EUFInterpolant::identifyCommonSymbols(){
     else{
       // do something with current_term
       std::string current_term_name = current_term->getName();
-      symbol_locations[current_term_name].insert(current_term->getId());
+      symbol_locations[current_term_name].push_back(current_term->getId());
       bool is_current_term_common =
 	symbols_to_eliminate.find(current_term_name) == symbols_to_eliminate.end();
       for(auto successor : current_term->getSuccessors()){
@@ -135,49 +142,65 @@ void EUFInterpolant::identifyCommonSymbols(){
 }
 
 void EUFInterpolant::setCommonRepresentatives(){
-  unsigned totalNV = Term::getTotalNumTerm();
-  for(unsigned i = 0; i < totalNV; ++i){
-    Term * vertex_iterator = congruence_closure.getOriginalTerm(i);
-    Term * vertex_representative = congruence_closure.getReprTerm(vertex_iterator);
+
+#if DEBUGGING
+  for(auto term : congruence_closure.getTerms())
+    std::cout << "Original: " << term->to_string() << std::endl
+	      << "Repr: " << congruence_closure.getReprTerm(term)->to_string()
+	      << std::endl << std::endl;
+#endif
+  
+  for(auto term : congruence_closure.getTerms()){
+    Term * term_repr = congruence_closure.getReprTerm(term);
     // A rotation between the current 
     // representative and the current term if:
     // 1) the current term is common
     // 2) the current term has a smaller arity
-    if(vertex_iterator->getSymbolCommonQ()
-       && vertex_iterator->getArity() < vertex_representative->getArity()){
-      congruence_closure.rotate(vertex_iterator, vertex_representative);
+    if(term->getSymbolCommonQ() && term->getArity() < term_repr->getArity()){
+      congruence_closure.rotate(term, term_repr);
+#if DEBUGGING
+      std::cout << "A rotation occurred between " << std::endl
+		<< "-> " << *term << std::endl
+		<< "and\n"
+		<< "-> " << *term_repr << std::endl;
+#endif
     }
   }
+
+#if DEBUGGING
+  for(auto term : congruence_closure.getTerms())
+    std::cout << "Original: " << term->to_string() << std::endl
+	      << "Repr: " << congruence_closure.getReprTerm(term)->to_string()
+	      << std::endl << std::endl;
+#endif
 }
 
 void EUFInterpolant::eliminationOfUncommonFSyms(){
   bool expose = false;
 	
-  for(auto map_symbol_location = symbol_locations.begin();
-      map_symbol_location != symbol_locations.end(); ++map_symbol_location){
-    auto symbol_name = map_symbol_location->first;
-    auto positions = map_symbol_location->second;
-    for(auto position : positions){
-      if(!congruence_closure.getReprTerm(position)->getSymbolCommonQ()){
+  for(auto map_iterator : symbol_locations){
+    auto symbol_name = map_iterator.first;
+    auto locations = map_iterator.second;
+    
+    for(auto location : locations)
+      if(!congruence_closure.getReprTerm(location)->getSymbolCommonQ()){
 	expose = true;
 	break;
       }
-    }
 		
     // We don't include in the Exposure method new introduced symbols
     // nor equalities, disequalities
     if(expose && (symbol_name[0] != '=' &&
 		  symbol_name != "distinct" &&
 		  symbol_name[0] != '_')){
-      unsigned number_of_positions = positions.size();
-      // Why: do I need a new vector _temp?
-      std::vector<unsigned> _temp(number_of_positions);
-      std::copy(positions.begin(), positions.end(), _temp.begin());
-      for(unsigned i = 0; i < number_of_positions - 1; ++i)
-	for(unsigned j = i + 1; j < number_of_positions; ++j){
+      unsigned number_of_locations = locations.size();
+      std::vector<unsigned> _temp(number_of_locations);
+      for(unsigned i = 0; i < number_of_locations - 1; ++i)
+	for(unsigned j = i + 1; j < number_of_locations; ++j){
+	  // This 
 	  horn_clauses.addHornClause(congruence_closure.getEquivalenceClass(),
-				     congruence_closure.getOriginalTerm(_temp[i]),
-				     congruence_closure.getOriginalTerm(_temp[j]),
+				     congruence_closure.getReprTerm(locations[i]),
+				     congruence_closure.getReprTerm(locations[j]),
 				     false);
 	}
     }
