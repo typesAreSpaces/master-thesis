@@ -351,6 +351,10 @@ unsigned Terms::getRootNum(){
   return root_num;
 }
 
+z3::context & Terms::getCtx(){
+  return ctx;
+}
+
 const std::set<std::string> & Terms::getSymbolsToElim(){
   return symbols_to_elim;
 }

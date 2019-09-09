@@ -1,28 +1,28 @@
 #include "EUFInterpolant.h"
 
-
-EUFInterpolant::EUFInterpolant(z3::context & c, const z3::expr & v, const z3::sort & s) :
-  congruence_closure(c, v),
-  cvt(c, s),
-  horn_clauses(congruence_closure.getTerms()),
-  ctx(c){
+EUFInterpolant::EUFInterpolant(const z3::expr & e, const z3::sort & s) :
+  congruence_closure(e.ctx(), e),
+  original_structure(e.ctx(), e),
+  cvt(e.ctx(), s),
+  horn_clauses(congruence_closure.getTerms())
+{
   contradiction = std::make_pair(congruence_closure.getOriginalTerm(0),
 				 congruence_closure.getOriginalTerm(0));
-  }
+}
 
-EUFInterpolant::EUFInterpolant(z3::context & c, const z3::expr & v,
+EUFInterpolant::EUFInterpolant(const z3::expr & e,
 			       std::set<std::string> & symbols_to_elim,
 			       const z3::sort & s) :
-  congruence_closure(c, v, symbols_to_elim),
-  cvt(c, s),
-  horn_clauses(congruence_closure.getTerms()),
-  ctx(c) {
+  congruence_closure(e.ctx(), e, symbols_to_elim),
+  original_structure(e.ctx(), e, symbols_to_elim),
+  cvt(e.ctx(), s),
+  horn_clauses(congruence_closure.getTerms())
+{
   contradiction = std::make_pair(congruence_closure.getOriginalTerm(0),
 				 congruence_closure.getOriginalTerm(0));
-  }
-
-EUFInterpolant::~EUFInterpolant(){
 }
+
+EUFInterpolant::~EUFInterpolant(){}
 
 void EUFInterpolant::test(){
   return;
@@ -190,8 +190,8 @@ void EUFInterpolant::addNegativeHornClauses(){
   for(auto disequation = disequations.begin();
       disequation != disequations.end(); ++disequation){
 	
-    lhs = Z3_get_ast_id(ctx, disequation->first);
-    rhs = Z3_get_ast_id(ctx, disequation->second);
+    lhs = disequation->first;
+    rhs = disequation->second;
     lhs_vertex = congruence_closure.getReprTerm(lhs);
     rhs_vertex = congruence_closure.getReprTerm(rhs);
 
@@ -226,7 +226,7 @@ void EUFInterpolant::addNegativeHornClauses(){
 }
 
 z3::expr_vector EUFInterpolant::getUncommonTermsToElim(std::vector<HornClause*> & horn_clauses){
-  z3::expr_vector answer(ctx);
+  z3::expr_vector answer(congruence_closure.getCtx());
   for(auto horn_clause = horn_clauses.begin();
       horn_clause != horn_clauses.end(); ++horn_clause){
     Term* v = (**horn_clause).getConsequent().second;
@@ -285,7 +285,7 @@ z3::expr_vector EUFInterpolant::substitutions(z3::expr & formula,
       auto formula_subs = formula.substitute(from, to);
       // Only commit to do the substituion
       // if these formulas are fundamentally different
-      if(Z3_get_ast_id(ctx, formula_subs) != Z3_get_ast_id(ctx, formula)){
+      if(formula_subs.id() != formula.id()){
 	if(formula_subs.is_implies())
 	  answer.push_back(implies(antecedent && formula_subs.arg(0),
 				   formula_subs.arg(1)));

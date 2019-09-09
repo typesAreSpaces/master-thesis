@@ -194,6 +194,16 @@ bool CongruenceClosure::checkCorrectness(){
 }
 
 void CongruenceClosure::transferEqClassAndPreds(CongruenceClosure & cc){
+  this->transferEqClass(cc);
+  this->transferPreds(cc);
+}
+
+void CongruenceClosure::transferEqClass(CongruenceClosure & cc){
+  // Transfering equivalence class
+  equivalence_class = cc.getDeepEquivalenceClass();
+}
+
+void CongruenceClosure::transferPreds(CongruenceClosure & cc){
   // Transfering predecessors
   unsigned num_terms = terms.size();
   for(unsigned index = 0; index < num_terms; ++index){
@@ -208,8 +218,6 @@ void CongruenceClosure::transferEqClassAndPreds(CongruenceClosure & cc){
       } while(pred_iterator != cc_pred.begin());
     }
   }
-  // Transfering equivalence class
-  equivalence_class = cc.getDeepEquivalenceClass();
 }
 
 std::ostream & operator << (std::ostream & os, CongruenceClosure & cc){

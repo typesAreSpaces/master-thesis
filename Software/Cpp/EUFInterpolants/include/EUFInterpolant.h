@@ -12,8 +12,8 @@ typedef std::map<std::string, std::set<unsigned> > SymbolLocations;
 
 class EUFInterpolant {
  public:
-  EUFInterpolant(z3::context &, const z3::expr &, const z3::sort &);
-  EUFInterpolant(z3::context &, const z3::expr &, std::set<std::string> &, const z3::sort &);
+  EUFInterpolant(const z3::expr &, const z3::sort &);
+  EUFInterpolant(const z3::expr &, std::set<std::string> &, const z3::sort &);
   ~EUFInterpolant();
   void                     test();
   z3::expr                 buildInterpolant();
@@ -21,9 +21,9 @@ class EUFInterpolant {
   friend std::ostream &    operator << (std::ostream &, EUFInterpolant &);
  private:
   CongruenceClosure    congruence_closure;
+  CongruenceClosure    original_structure;
   Converter            cvt;
   HornClauses          horn_clauses;
-  z3::context &        ctx;
   SymbolLocations      symbol_locations;
   EquationTerm         contradiction;
   void                 identifyCommonSymbols();

@@ -27,6 +27,7 @@ class Terms {
   void merge(unsigned, unsigned);
   void rotate(Term*, Term*);
   unsigned getRootNum();
+  z3::context & getCtx();
   const std::set<std::string> & getSymbolsToElim();
   const std::vector<Equation> & getEquations();
   const std::vector<Disequation> & getDisequations();
