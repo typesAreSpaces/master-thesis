@@ -10,8 +10,8 @@ class Converter {
  public:
   Converter(z3::context &, z3::sort &);
   z3::expr        convert(Term *);
-  z3::expr        convert(const equality &);
-  z3::expr        convert(const std::vector<equality> &);
+  z3::expr        convert(const EquationTerm &);
+  z3::expr        convert(const std::vector<EquationTerm> &);
   z3::expr_vector convert(const std::vector<Equation> &);
   z3::expr_vector convert(const std::vector<std::pair<Z3_ast, Z3_ast> > &);
   z3::expr        convert(HornClause *);

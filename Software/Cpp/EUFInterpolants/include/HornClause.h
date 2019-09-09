@@ -8,7 +8,7 @@
 #include "Term.h"
 #include "UnionFind.h"
 
-typedef std::pair<Term*, Term*> equality;
+typedef std::pair<Term*, Term*> EquationTerm;
 
 class HornClause{	
  private:
@@ -17,11 +17,11 @@ class HornClause{
   static std::vector<Term*> global_terms;
   UnionFind                 local_UF;	
   bool                      antecedent_boolean_value, consequent_boolean_value;
-  std::vector<equality>     antecedent;
-  equality                  consequent;
+  std::vector<EquationTerm>     antecedent;
+  EquationTerm                  consequent;
 	
  public:
-  HornClause(UnionFind &, std::vector<equality> &, equality &, std::vector<Term*> &);
+  HornClause(UnionFind &, std::vector<EquationTerm> &, EquationTerm &, std::vector<Term*> &);
   HornClause(UnionFind &, Term*, Term*, std::vector<Term*> &, bool);
   ~HornClause();
   void normalize();
@@ -29,8 +29,8 @@ class HornClause{
   bool getAntecedentValue();
   bool getConsequentValue();
   bool getMaximalConsequent();
-  std::vector<equality> & getAntecedent();
-  equality & getConsequent();
+  std::vector<EquationTerm> & getAntecedent();
+  EquationTerm & getConsequent();
   UnionFind & getLocalUF();
   static UnionFind & getGlobalUF();
   Term * getTerm(unsigned);

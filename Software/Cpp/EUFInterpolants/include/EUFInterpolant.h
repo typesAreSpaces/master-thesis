@@ -8,17 +8,16 @@
 #include <map>
 #include <set>
 
-typedef std::map<std::string, std::set<unsigned> > symbolLocations;
+typedef std::map<std::string, std::set<unsigned> > SymbolLocations;
 
 class EUFInterpolant {
  private:
   CongruenceClosure    congruence_closure;
   Converter            cvt;
-  std::vector<Term*> & terms;
   HornClauses          horn_clauses;
   z3::context &        ctx;
-  symbolLocations      symbol_locations;
-  equality             contradiction;
+  SymbolLocations      symbol_locations;
+  EquationTerm         contradiction;
   void                 identifyCommonSymbols();
   void                 setCommonRepresentatives();
   void                 eliminationOfUncommonFSyms();

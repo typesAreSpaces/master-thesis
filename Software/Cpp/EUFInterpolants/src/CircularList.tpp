@@ -5,6 +5,7 @@ template <typename T>
 CircularList<T>::~CircularList(){
   node<T> * curr_ptr;
   if(!this->empty()){
+    this->length = 0;
     curr_ptr = elements->next;
     while(curr_ptr != curr_ptr->next){
       elements->next = curr_ptr->next;

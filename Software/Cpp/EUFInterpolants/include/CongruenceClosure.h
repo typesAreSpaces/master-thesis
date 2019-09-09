@@ -17,9 +17,8 @@ class CongruenceClosure : public Terms {
   CongruenceClosure(z3::context &, const z3::expr &, const std::set<std::string> &);
   ~CongruenceClosure();
   void buildCongruenceClosure();
-  void buildCongruenceClosure(UnionFind &);
   bool checkCorrectness();
-  void transferState(CongruenceClosure &);
+  void transferEqClassAndPreds(CongruenceClosure &);
   friend std::ostream & operator << (std::ostream &, CongruenceClosure &);
 };
 

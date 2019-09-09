@@ -11,6 +11,8 @@
 #define DEBUG_CC(X, Y) if(X) { Y }
 
 void CongruenceClosure::init(){
+  Term::total_num_vertex = 0; // Important to reset total_num_vertex
+  // Parsing the equation 
   unsigned lhs, rhs;
   Term * lhs_repr, * rhs_repr;
   for(auto equation : equations){
@@ -120,14 +122,14 @@ void CongruenceClosure::buildCongruenceClosure(){
 	  find_v = find_w;
 	  find_w = temp_swap;
 	}
-	CircularList<Term*> & list_find_v = find_v->getPredecessors();
+	auto & list_find_v = find_v->getPredecessors();
 	if(find_v->getLength() != 0){
-	  auto predecessor_it = list_find_v.begin();
+	  CircularList<Term*>::iterator predecessor_it(list_find_v.begin());
 	  do{
-	    Term * predecessor = predecessor_it->data;
+	    auto predecessor = (*predecessor_it).data;
 	    sigTable.remove(predecessor, equivalence_class);
 	    pending.push_back(predecessor);
-	    predecessor_it = predecessor_it->next;
+	    ++predecessor_it;
 	  } while(predecessor_it != list_find_v.begin());
 	}
 	merge(find_w, find_v);
@@ -149,11 +151,6 @@ void CongruenceClosure::buildCongruenceClosure(){
 			 << " Original term id: " << x->getId()
 			 << " Representative term id: " << getReprTerm(x)->getId() << std::endl;
 	   )
-}
-
-void CongruenceClosure::buildCongruenceClosure(UnionFind & uf){
-  this->setEquivalenceClass(uf);
-  this->buildCongruenceClosure();
 }
 
 bool CongruenceClosure::checkCorrectness(){
@@ -196,46 +193,22 @@ bool CongruenceClosure::checkCorrectness(){
   return true;
 }
 
-void CongruenceClosure::transferState(CongruenceClosure & cc){
-  // Update the predecessors only!
+void CongruenceClosure::transferEqClassAndPreds(CongruenceClosure & cc){
+  // Transfering predecessors
   unsigned num_terms = terms.size();
-  // This should be a deep-copy
   for(unsigned index = 0; index < num_terms; ++index){
     CircularList<Term*> & pred = terms[index]->getPredecessors();
     CircularList<Term*> & cc_pred = cc.getOriginalTerm(index)->getPredecessors();
-    // std::cout << pred.size() << " " << cc_pred.size() << std::endl;
-    // std::cout << cc_pred << std::endl;
-
-    // WE NEED TO DELETE THE PREVIOUS pred
-    // delete pred; // This doesn't work
-
+    pred.~CircularList();
     if(!cc_pred.empty()){
-      auto pred_iterator = cc_pred.begin();
+      CircularList<Term*>::iterator pred_iterator(cc_pred.begin());
       do{
-	pred.add(terms[(pred_iterator->data)->getId()]);
-	pred_iterator = pred_iterator->next;
+	pred.add(terms[((*pred_iterator).data)->getId()]);
+	++pred_iterator;
       } while(pred_iterator != cc_pred.begin());
     }
-    
-    
-    // std::cout << cc_pred << std::endl;
-    // terms[index]->addSuccessor(/*A term/*);
   }
-
-
-  for(unsigned index = 0; index < num_terms; ++index){
-    CircularList<Term*> & pred = terms[index]->getPredecessors();
-    CircularList<Term*> & cc_pred = cc.getOriginalTerm(index)->getPredecessors();
-    std::cout << pred.size() << " " << cc_pred.size() << std::endl;
-    std::cout << pred << std::endl;
-    // delete pred;
-    
-    
-    // std::cout << cc_pred << std::endl;
-    // terms[index]->addSuccessor(/*A term/*);
-  }
-
-  
+  // Transfering equivalence class
   equivalence_class = cc.getDeepEquivalenceClass();
 }
 

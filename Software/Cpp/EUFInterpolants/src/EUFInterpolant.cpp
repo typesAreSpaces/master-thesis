@@ -4,8 +4,7 @@
 EUFInterpolant::EUFInterpolant(z3::context & c, const z3::expr & v, Converter & cvt) :
   congruence_closure(c, v),
   cvt(cvt),
-  terms(congruence_closure.getTerms()),
-  horn_clauses(terms),
+  horn_clauses(congruence_closure.getTerms()),
   ctx(c){
   contradiction = std::make_pair(congruence_closure.getOriginalTerm(0),
 				 congruence_closure.getOriginalTerm(0));
@@ -16,8 +15,7 @@ EUFInterpolant::EUFInterpolant(z3::context & c, const z3::expr & v,
 			       Converter & cvt) :
   congruence_closure(c, v, symbols_to_elim),
   cvt(cvt),
-  terms(congruence_closure.getTerms()),
-  horn_clauses(terms),
+  horn_clauses(congruence_closure.getTerms()),
   ctx(c) {
   contradiction = std::make_pair(congruence_closure.getOriginalTerm(0),
 				 congruence_closure.getOriginalTerm(0));
@@ -214,7 +212,7 @@ void EUFInterpolant::addNegativeHornClauses(){
     }
     else{
       // Just add HornClauses using the representative
-      std::vector<equality> _antecedent;
+      std::vector<EquationTerm> _antecedent;
       _antecedent.push_back(std::make_pair(lhs_vertex, rhs_vertex));
       // Add HornClauses 'directly' using the antecedent
       // and contradiction as consequent

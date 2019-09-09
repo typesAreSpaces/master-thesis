@@ -23,55 +23,12 @@ int main(int argc, char ** argv){
   std::set<std::string> symbols_to_elim = {"f"};
 
   CongruenceClosure example(ctx, input_formula, symbols_to_elim);
-  std::cout << example << std::endl;
-  auto terms_example = example.getTerms();
-  for(auto element : terms_example){
-    std::cout << *element << std::endl;
-  }
-  
-  UnionFind original = example.getDeepEquivalenceClass();
-
-  UnionFind & willchange = example.getEquivalenceClass();
-  willchange.merge(6, 8);
+  example.merge(6, 8);
   example.buildCongruenceClosure();
-  std::cout << example << std::endl;
-  terms_example = example.getTerms();
-  for(auto element : terms_example){
-    std::cout << *element << std::endl;
-  }
-
-  example.buildCongruenceClosure(original);
-  std::cout << example << std::endl;
-  terms_example = example.getTerms();
-  for(auto element : terms_example){
-    std::cout << *element << std::endl;
-  }
-
-  Term::total_num_vertex = 0;
-  CongruenceClosure example2(ctx, input_formula, symbols_to_elim);
-  std::cout << example2 << std::endl;
-  auto terms_example2 = example2.getTerms();
-  for(auto element : terms_example2){
-    std::cout << *element << std::endl;
-  }
-
-  example.transferState(example2);
-  // std::cout << example << std::endl;
-  // terms_example = example.getTerms();
-  // for(auto element : terms_example){
-  //   std::cout << *element << std::endl;
-  // }
-
-  // UnionFind & original = example.getEquivalenceClass();
-  // UnionFind & willchange = example.getEquivalenceClass();
-  // willchange.merge(6, 8);
-  // std::cout << willchange << std::endl;
   
-  // example.buildCongruenceClosure(willchange);
-  // std::cout << example << std::endl;
-
-  // example.buildCongruenceClosure(original);
-  // std::cout << example << std::endl;
+  CongruenceClosure example2(ctx, input_formula, symbols_to_elim);
+  example.transferEqClassAndPreds(example2);
+  example.buildCongruenceClosure();
   
   // Converter cvt (ctx, sort_A);
   // EUFInterpolant example (ctx, input_formula, symbols_to_elim, cvt);

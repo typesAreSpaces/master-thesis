@@ -24,11 +24,11 @@ z3::expr Converter::convert(Term * v){
   return formula;
 }
 
-z3::expr Converter::convert(const equality & eq){
+z3::expr Converter::convert(const EquationTerm & eq){
   return (convert(eq.first) == convert(eq.second));
 }
 
-z3::expr Converter::convert(const std::vector<equality> & eqs){
+z3::expr Converter::convert(const std::vector<EquationTerm> & eqs){
   z3::expr formula(ctx);
   int length = eqs.size();
   formula = convert(eqs[0]);

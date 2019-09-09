@@ -11,7 +11,7 @@
 // match1 : Uncommon Term -> Positions of Horn Clauses
 typedef std::map<Term*, std::vector<unsigned> > match1;
 // match2 : (Uncommon Term, Uncommon Term) -> Positions of Horn Clauses
-typedef std::map<equality, std::vector<unsigned> > match2;
+typedef std::map<EquationTerm, std::vector<unsigned> > match2;
 
 typedef std::set<std::pair<unsigned, unsigned> > SetOfUnsignedPairs;
 
@@ -22,7 +22,7 @@ class HornClauses{
   match1                        mc1_antecedent, mc1_consequent;
   match2                        mc2_antecedent, mc2_consequent;
   match2                        reduced;
-  std::map<equality, unsigned>  reduced_length;
+  std::map<EquationTerm, unsigned>  reduced_length;
   std::vector<Term*> &        local_terms;
   void mergeType2_1AndType3(HornClause *, HornClause *);
   void mergeType2_1AndType4(HornClause *, HornClause *);
@@ -46,7 +46,7 @@ class HornClauses{
   HornClauses(std::vector<Term*> &);
   ~HornClauses();
   void addHornClause(UnionFind &, Term*, Term*, bool);
-  void addHornClause(UnionFind &, std::vector<equality> &, equality &, bool);
+  void addHornClause(UnionFind &, std::vector<EquationTerm> &, EquationTerm &, bool);
   void conditionalElimination();
   unsigned size();
   std::vector<HornClause*> getHornClauses();

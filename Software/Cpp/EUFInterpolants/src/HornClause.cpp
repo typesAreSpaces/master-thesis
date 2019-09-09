@@ -7,8 +7,8 @@ bool HornClause::is_first_time                = true;
 std::vector<Term*> HornClause::global_terms = std::vector<Term*>();
 
 HornClause::HornClause(UnionFind & uf,
-		       std::vector<equality> & antecedent,
-		       equality & consequent,
+		       std::vector<EquationTerm> & antecedent,
+		       EquationTerm & consequent,
 		       std::vector<Term*> & terms) :
   local_UF(uf),
   antecedent(antecedent),
@@ -84,7 +84,7 @@ HornClause::~HornClause(){
 // UnionFind data structure
 void HornClause::normalize(){
   antecedent_boolean_value = true;
-  for(std::vector<equality>::iterator it = antecedent.begin();
+  for(std::vector<EquationTerm>::iterator it = antecedent.begin();
       it != antecedent.end();){
     if(getTerm(it->first) == getTerm(it->second))
       antecedent.erase(it);
@@ -113,11 +113,11 @@ bool HornClause::getMaximalConsequent(){
   return consequent.first->getSymbolCommonQ();
 }
 
-std::vector<equality> & HornClause::getAntecedent(){
+std::vector<EquationTerm> & HornClause::getAntecedent(){
   return antecedent;
 }
 
-equality & HornClause::getConsequent(){
+EquationTerm & HornClause::getConsequent(){
   return consequent;
 }
 
@@ -143,9 +143,9 @@ Term * HornClause::getTerm(Term * v){
 // but not in the antecedent of hc2, then the
 // operator returns false, true otherwise
 bool operator > (HornClause & hc1, HornClause & hc2){
-  std::vector<equality> & hc1Antecedent = hc1.getAntecedent();
+  std::vector<EquationTerm> & hc1Antecedent = hc1.getAntecedent();
   UnionFind & hc2UF = hc2.getLocalUF();
-  for(std::vector<equality>::iterator it = hc1Antecedent.begin();
+  for(std::vector<EquationTerm>::iterator it = hc1Antecedent.begin();
       it != hc1Antecedent.end(); ++it)
     if(hc2UF.find(it->first->getId()) != hc2UF.find(it->second->getId()))
       return false;
@@ -158,7 +158,7 @@ bool operator < (HornClause & hc1, HornClause & hc2){
 
 std::ostream & operator << (std::ostream & os, HornClause & hc){
   bool flag = true;
-  for(std::vector<equality>::iterator it = hc.antecedent.begin();
+  for(std::vector<EquationTerm>::iterator it = hc.antecedent.begin();
       it != hc.antecedent.end(); ++it){
     if(flag)
       os << it->first->to_string() << " = " << it->second->to_string();

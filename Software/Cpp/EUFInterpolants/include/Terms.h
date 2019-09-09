@@ -24,6 +24,7 @@ class Terms {
   Term * getReprTerm (unsigned);
   Term * getReprTerm(Term*);
   void merge(Term*, Term*);
+  void merge(unsigned, unsigned);
   void rotate(Term*, Term*);
   unsigned getRootNum();
   const std::set<std::string> & getSymbolsToElim();

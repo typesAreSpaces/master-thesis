@@ -323,8 +323,14 @@ Term * Terms::getReprTerm(Term * v){
 }
 
 void Terms::merge(Term * u, Term * v){
-  // Precondition: getReprTerm(u) and getReprTerm(v) should be different
-  // Merge the predecessor's list too!
+  if(getReprTerm(u) != getReprTerm(v)){
+    getReprTerm(u)->mergePredecessors(getReprTerm(v));
+    equivalence_class.merge(u->getId(), v->getId());
+  }
+}
+
+void Terms::merge(unsigned i, unsigned j){
+  auto u = getOriginalTerm(i), v = getOriginalTerm(j);
   if(getReprTerm(u) != getReprTerm(v)){
     getReprTerm(u)->mergePredecessors(getReprTerm(v));
     equivalence_class.merge(u->getId(), v->getId());

@@ -30,8 +30,8 @@ void HornClauses::addHornClause(UnionFind & uf,
 }
 
 void HornClauses::addHornClause(UnionFind & uf,
-								std::vector<equality> & antecedent,
-								equality & consequent,
+								std::vector<EquationTerm> & antecedent,
+								EquationTerm & consequent,
 								bool is_disequation){
   HornClause * hc = new HornClause(uf, antecedent, consequent, local_terms);
   if(!is_disequation){
@@ -294,9 +294,9 @@ void HornClauses::simplify() {
 // All HornClauses here are assumed to be normalized
 // and oriented!
 void HornClauses::makeMatches(HornClause * hc, unsigned i){
-  std::vector<equality> & hc_antecedent = hc->getAntecedent();
-  equality & hc_consequent = hc->getConsequent();
-  for(std::vector<equality>::iterator equation_iterator = hc_antecedent.begin();
+  std::vector<EquationTerm> & hc_antecedent = hc->getAntecedent();
+  EquationTerm & hc_consequent = hc->getConsequent();
+  for(std::vector<EquationTerm>::iterator equation_iterator = hc_antecedent.begin();
       equation_iterator != hc_antecedent.end(); ++equation_iterator){
 	// Pay attention to this part !!!
 	// If the first term is uncommon,
@@ -348,12 +348,12 @@ void HornClauses::makeMatches(HornClause * hc, unsigned i){
 void HornClauses::mergeType2_1AndType3(HornClause * h1, HornClause * h2){
   UnionFind _h1LocalUf = h1->getLocalUF(),
     _h2LocalUf = HornClause::getGlobalUF();
-  equality _h1Consequent = h1->getConsequent(),
+  EquationTerm _h1Consequent = h1->getConsequent(),
     _h2Consequent = h2->getConsequent();
-  std::vector<equality> _h1Antecedent = h1->getAntecedent(),
+  std::vector<EquationTerm> _h1Antecedent = h1->getAntecedent(),
     _h2Antecedent = h2->getAntecedent();
 
-  for(std::vector<equality>::iterator equation_iterator = _h2Antecedent.begin();
+  for(std::vector<EquationTerm>::iterator equation_iterator = _h2Antecedent.begin();
       equation_iterator != _h2Antecedent.end(); ++equation_iterator){
     if(*equation_iterator != _h1Consequent)
       _h1Antecedent.push_back(*equation_iterator);
@@ -373,12 +373,12 @@ void HornClauses::mergeType2_1AndType4(HornClause * h1, HornClause * h2){
 void HornClauses::mergeType2AndType2(HornClause * h1, HornClause * h2){
   UnionFind _h1LocalUf = h1->getLocalUF(),
     _h2LocalUf = HornClause::getGlobalUF();
-  equality _h1Consequent = h1->getConsequent(),
+  EquationTerm _h1Consequent = h1->getConsequent(),
     _h2Consequent = h2->getConsequent();
-  std::vector<equality> _h1Antecedent = h1->getAntecedent(),
+  std::vector<EquationTerm> _h1Antecedent = h1->getAntecedent(),
     _h2Antecedent = h2->getAntecedent();
 	
-  for(std::vector<equality>::iterator _it = _h1Antecedent.begin();
+  for(std::vector<EquationTerm>::iterator _it = _h1Antecedent.begin();
       _it != _h1Antecedent.end(); ++_it){
 	if(_h2LocalUf.find(_it->first->getId()) !=
 	   _h2LocalUf.find(_it->second->getId())){
@@ -405,12 +405,12 @@ void HornClauses::mergeType2AndType2(HornClause * h1, HornClause * h2){
 void HornClauses::mergeType2AndType3(HornClause * h1, HornClause * h2){
   UnionFind _h1LocalUf = h1->getLocalUF(),
     _h2LocalUf = HornClause::getGlobalUF();
-  equality _h1Consequent = h1->getConsequent(),
+  EquationTerm _h1Consequent = h1->getConsequent(),
     _h2Consequent = h2->getConsequent();
-  std::vector<equality> _h1Antecedent = h1->getAntecedent(),
+  std::vector<EquationTerm> _h1Antecedent = h1->getAntecedent(),
     _h2Antecedent = h2->getAntecedent();
 	
-  for(std::vector<equality>::iterator _it = _h2Antecedent.begin();
+  for(std::vector<EquationTerm>::iterator _it = _h2Antecedent.begin();
       _it != _h2Antecedent.end(); ++_it){
 	if(_it->first->getId() == _h1Consequent.second->getId())
 	  _it->first = _h1Consequent.first;
@@ -476,10 +476,10 @@ std::vector<HornClause*> HornClauses::getReducibleHornClauses(){
 
 void HornClauses::orient(HornClause * hc){
   UnionFind & localUF = HornClause::getGlobalUF();
-  std::vector<equality> & antecedent = hc->getAntecedent();
-  equality & consequent = hc->getConsequent();
+  std::vector<EquationTerm> & antecedent = hc->getAntecedent();
+  EquationTerm & consequent = hc->getConsequent();
 	
-  for(std::vector<equality>::iterator _it = antecedent.begin();
+  for(std::vector<EquationTerm>::iterator _it = antecedent.begin();
 	  _it != antecedent.end(); ++_it){
     Term * _u = local_terms[localUF.find(_it->first->getId())],
       * _v = local_terms[localUF.find(_it->second->getId())];
