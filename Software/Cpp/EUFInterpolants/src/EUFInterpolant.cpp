@@ -200,7 +200,7 @@ void EUFInterpolant::eliminationOfUncommonFSyms(){
 	    horn_clauses.addHornClause(congruence_closure.getEquivalenceClass(),
 				       congruence_closure.getOriginalTerm(locations[location_i]),
 				       congruence_closure.getOriginalTerm(locations[location_j]),
-				       false);
+				       false); // Check but HornClauses needs to be revisited
 	  }
 	} 
       }
