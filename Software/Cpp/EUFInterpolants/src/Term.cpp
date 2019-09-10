@@ -19,7 +19,8 @@ Term::Term() :
   ++total_num_vertex;
   }
 
-Term::~Term(){};
+Term::~Term(){
+};
 
 void Term::setName(std::string name){
   this->name = name;

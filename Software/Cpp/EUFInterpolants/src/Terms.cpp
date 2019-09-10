@@ -99,9 +99,8 @@ Terms::Terms(z3::context & ctx, const z3::expr & v, const UncommonSymbols & symb
 }
 
 Terms::~Terms(){
-  for(std::vector<Term*>::iterator it = terms.begin();
-      it != terms.end(); ++it)
-    delete *it;
+  for(auto it : terms)
+    delete it;
 }
 
 /**

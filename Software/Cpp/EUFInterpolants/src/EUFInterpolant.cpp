@@ -27,7 +27,8 @@ EUFInterpolant::EUFInterpolant(const z3::expr & e,
   original_structure.buildCongruenceClosure();
 }
 
-EUFInterpolant::~EUFInterpolant(){}
+EUFInterpolant::~EUFInterpolant(){
+}
 
 void EUFInterpolant::test(){
   identifyCommonSymbols();
@@ -175,36 +176,35 @@ void EUFInterpolant::setCommonRepresentatives(){
 #endif
 }
 
+// If a symbol is the symbol name of an uncommon
+// term then we expose the arguments of all the
+// terms (locations) that contain such symbol
 void EUFInterpolant::eliminationOfUncommonFSyms(){
-  bool expose = false;
-	
   for(auto map_iterator : symbol_locations){
     auto symbol_name = map_iterator.first;
-    auto locations = map_iterator.second;
-    
-    for(auto location : locations)
-      if(!congruence_closure.getReprTerm(location)->getSymbolCommonQ()){
-	expose = true;
-	break;
-      }
-		
     // We don't include in the Exposure method new introduced symbols
     // nor equalities, disequalities
-    if(expose && (symbol_name[0] != '=' &&
-		  symbol_name != "distinct" &&
-		  symbol_name[0] != '_')){
-      unsigned number_of_locations = locations.size();
-      std::vector<unsigned> _temp(number_of_locations);
-      for(unsigned i = 0; i < number_of_locations - 1; ++i)
-	for(unsigned j = i + 1; j < number_of_locations; ++j){
-	  // This 
-	  horn_clauses.addHornClause(congruence_closure.getEquivalenceClass(),
-				     congruence_closure.getReprTerm(locations[i]),
-				     congruence_closure.getReprTerm(locations[j]),
-				     false);
+    if(symbol_name[0] != '=' && symbol_name != "distinct" && symbol_name[0] != '_'){
+      auto locations = map_iterator.second;
+      bool expose = false;
+      for(auto location : locations)
+	if(!congruence_closure.getReprTerm(location)->getSymbolCommonQ()){
+	  expose = true;
+	  break;
 	}
+      if(expose){
+	unsigned number_of_locations = locations.size();
+	for(unsigned location_i = 0;  location_i < number_of_locations - 1; ++location_i){
+	  for(unsigned location_j = location_i + 1; location_j < number_of_locations; ++location_j){
+	    // Exposing two terms that have the same symbol name
+	    horn_clauses.addHornClause(congruence_closure.getEquivalenceClass(),
+				       congruence_closure.getOriginalTerm(locations[location_i]),
+				       congruence_closure.getOriginalTerm(locations[location_j]),
+				       false);
+	  }
+	} 
+      }
     }
-    expose = false;
   }
 }
 

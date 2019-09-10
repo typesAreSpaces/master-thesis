@@ -11,7 +11,8 @@ UnionFind::UnionFind(unsigned n){
 UnionFind::UnionFind(std::vector<unsigned> values):
   representative(values){};
 
-UnionFind::~UnionFind(){};
+UnionFind::~UnionFind(){
+};
 
 void UnionFind::merge(unsigned x, unsigned y){
   representative[find(y)] = find(x);
