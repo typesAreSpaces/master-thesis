@@ -253,9 +253,8 @@ void EUFInterpolant::addNegativeHornClauses(){
 
 z3::expr_vector EUFInterpolant::getUncommonTermsToElim(std::vector<HornClause*> & horn_clauses){
   z3::expr_vector answer(congruence_closure.getCtx());
-  for(auto horn_clause = horn_clauses.begin();
-      horn_clause != horn_clauses.end(); ++horn_clause){
-    Term* v = (**horn_clause).getConsequent().second;
+  for(auto horn_clause : horn_clauses){
+    Term* v = (*horn_clause).getConsequent().second;
     // v is a pointer to a Term
     // which is only added to 'answer' if it
     // is uncommon
