@@ -19,10 +19,24 @@ int main(int argc, char ** argv){
     std::set<std::string> symbols_to_elim;
     for(int index = 2; index < argc; ++index)
       symbols_to_elim.insert(argv[index]);
+    z3::expr input_formula = ctx.parse_file(argv[1])[0];
+    
+    // CongruenceClosure example1(ctx, input_formula, symbols_to_elim);
+    // example1.merge(6, 8);
+    // example1.buildCongruenceClosure();
+    // for(auto x : example1.getTerms())
+    //   std::cout << *x << std::endl;
+    // CongruenceClosure example2(ctx, input_formula, symbols_to_elim);
+    // example1.transferEqClassAndPreds(example2);
+    // example1.buildCongruenceClosure();
+    // for(auto x : example1.getTerms())
+    //   std::cout << *x << std::endl;
+    
     // std::cout << input_formula.arg(0).arg(1).decl().range().id() << std::endl;
-    EUFInterpolant example(ctx.parse_file(argv[1])[0],
-			symbols_to_elim,
-			ctx.uninterpreted_sort("A"));
+    
+    EUFInterpolant example(input_formula,
+			   symbols_to_elim,
+			   ctx.uninterpreted_sort("A"));
     std::cout << "The Interpolant" << std::endl;
     example.test();
   }

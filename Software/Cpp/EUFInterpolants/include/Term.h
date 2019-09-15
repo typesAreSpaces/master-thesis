@@ -18,27 +18,27 @@ class Term {
   void setArity(unsigned);
   void addSuccessor(Term *);
   void mergePredecessors(Term *);
-  
-  static unsigned getTotalNumTerm();
-  const std::string & getName();
-  bool getSymbolCommonQ();
-  unsigned getId();
-  unsigned getArity();
-  unsigned getLength();
+
+  static unsigned            total_num_vertex;
+  static unsigned            getTotalNumTerm();
+  const std::string &        getName();
+  bool                       getSymbolCommonQ();
+  unsigned                   getId();
+  unsigned                   getArity();
+  unsigned                   getLength();
   const std::vector<Term*> & getSuccessors();
-  CircularList<Term*> & getPredecessors();
-  std::string to_string();
-  Term * getLeftChild();
-  Term * getRightChild();
-  std::ostream & functionPrettyPrint (std::ostream &);
-  friend std::ostream & operator << (std::ostream &, Term &);
-  friend bool operator ==(const Term &, const Term &);
-  friend bool operator !=(const Term &, const Term &);
-  friend bool operator <(const Term &, const Term &);
-  friend bool operator <=(const Term &, const Term &);
-  friend bool operator >(const Term &, const Term &);
-  friend bool operator >=(const Term &, const Term &);
-  static unsigned     total_num_vertex;
+  CircularList<Term*> &      getPredecessors();
+  std::string                to_string();
+  Term *                     getLeftChild();
+  Term *                     getRightChild();
+  std::ostream &             functionPrettyPrint (std::ostream &);
+  friend std::ostream &      operator << (std::ostream &, Term &);
+  friend bool                operator ==(const Term &, const Term &);
+  friend bool                operator !=(const Term &, const Term &);
+  friend bool                operator <(const Term &, const Term &);
+  friend bool                operator <=(const Term &, const Term &);
+  friend bool                operator >(const Term &, const Term &);
+  friend bool                operator >=(const Term &, const Term &);
  private:
 
   std::string         name;

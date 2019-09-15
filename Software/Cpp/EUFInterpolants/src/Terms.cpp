@@ -16,6 +16,7 @@ Terms::Terms(z3::context & ctx, const z3::expr & v) :
   ctx(ctx)
 {
   assert(v.num_args() == 2);
+  Term::total_num_vertex = 0; // Important to reset total_num_vertex
   auto first_formula = v.arg(0);
   auto second_formula = v.arg(1);
 
@@ -64,9 +65,11 @@ Terms::Terms(z3::context & ctx, const z3::expr & v, const UncommonSymbols & symb
   ctx(ctx),
   symbols_to_elim(symbols_to_elim)
 {
+  Term::total_num_vertex = 0; // Important to reset total_num_vertex
   // this->root_num denotes the id of the root
   // of the Z3_ast. It also denotes, the number
   // of original elements by construction.
+  
   this->root_num= v.id();
   unsigned num_original_terms = this->root_num;
   terms.resize(2*num_original_terms + 1);
@@ -369,7 +372,7 @@ const std::vector<Disequation> & Terms::getDisequations(){
 
 std::ostream & operator << (std::ostream & os, const Terms & gterms){
   os << "Terms" << std::endl;
-  for(auto it = gterms.terms.begin(); it != gterms.terms.end(); ++it)
-    os << **it << std::endl;
+  for(auto it : gterms.terms)
+    os << *it << std::endl;
   return os;
 }

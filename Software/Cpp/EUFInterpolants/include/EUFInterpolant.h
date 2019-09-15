@@ -23,8 +23,8 @@ class EUFInterpolant {
   std::vector<HornClause*> getHornClauses();
   friend std::ostream &    operator << (std::ostream &, EUFInterpolant &);
  private:
-  CongruenceClosure congruence_closure;
-  CongruenceClosure original_structure;
+  CongruenceClosure auxiliar_closure;
+  CongruenceClosure original_closure;
   Converter         cvt;
   HornClauses       horn_clauses;
   SymbolLocations   symbol_locations;

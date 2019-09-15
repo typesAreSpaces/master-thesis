@@ -1,6 +1,6 @@
 #ifndef _HORN_CLAUSES_
 #define _HORN_CLAUSES_
-#define existential(x, y) x.find(y) == x.end()
+#define InSet(y, x) x.find(y) == x.end()
 
 #include "HornClause.h"
 #include "Terms.h"
@@ -19,8 +19,16 @@ class HornClauses{
  public:
   HornClauses(std::vector<Term*> &);
   ~HornClauses();
-  void                     addHornClause(UnionFind &, Term*, Term*, bool);
-  void                     addHornClause(UnionFind &, std::vector<EquationTerm> &, EquationTerm &, bool);
+  
+  // Adds a Horn clause using two terms of the form f(t_1, ..., t_n) and f(t'_1, ..., t'_n)
+  void                     addHornClause(UnionFind &,
+					 Term*, Term*,
+					 bool);
+  // Adds a Horn Clause using a vector of EquationTerms as antecedent
+  // and an EquationTerm as conclusion
+  void                     addHornClause(UnionFind &,
+					 std::vector<EquationTerm> &, EquationTerm &,
+					 bool);
   void                     conditionalElimination();
   unsigned                 size();
   std::vector<HornClause*> getHornClauses();

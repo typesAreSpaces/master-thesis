@@ -11,7 +11,6 @@
 #define DEBUG_CC(X, Y) if(X) { Y }
 
 void CongruenceClosure::init(){
-  Term::total_num_vertex = 0; // Important to reset total_num_vertex
   // Parsing the equation 
   unsigned lhs, rhs;
   Term * lhs_repr, * rhs_repr;
