@@ -192,17 +192,17 @@ bool CongruenceClosure::checkCorrectness(){
   return true;
 }
 
-void CongruenceClosure::transferEqClassAndPreds(CongruenceClosure & cc){
+void CongruenceClosure::transferEqClassAndPreds(const CongruenceClosure & cc){
   this->transferEqClass(cc);
   this->transferPreds(cc);
 }
 
-void CongruenceClosure::transferEqClass(CongruenceClosure & cc){
+void CongruenceClosure::transferEqClass(const CongruenceClosure & cc){
   // Transfering equivalence class
   equivalence_class = cc.getDeepEquivalenceClass();
 }
 
-void CongruenceClosure::transferPreds(CongruenceClosure & cc){
+void CongruenceClosure::transferPreds(const CongruenceClosure & cc){
   // Transfering predecessors
   unsigned num_terms = terms.size();
   for(unsigned index = 0; index < num_terms; ++index){

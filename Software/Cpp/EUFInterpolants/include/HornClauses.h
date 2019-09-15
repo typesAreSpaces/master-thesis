@@ -21,12 +21,12 @@ class HornClauses{
   ~HornClauses();
   
   // Adds a Horn clause using two terms of the form f(t_1, ..., t_n) and f(t'_1, ..., t'_n)
-  void                     addHornClause(UnionFind &,
+  void                     addHornClause(const CongruenceClosure &, CongruenceClosure &,
 					 Term*, Term*,
 					 bool);
   // Adds a Horn Clause using a vector of EquationTerms as antecedent
   // and an EquationTerm as conclusion
-  void                     addHornClause(UnionFind &,
+  void                     addHornClause(const CongruenceClosure &, CongruenceClosure &,
 					 std::vector<EquationTerm> &, EquationTerm &,
 					 bool);
   void                     conditionalElimination();

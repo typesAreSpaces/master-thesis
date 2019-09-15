@@ -32,7 +32,7 @@ unsigned UnionFind::find(unsigned x){
   return representative[x];
 }
 
-unsigned UnionFind::size(){
+unsigned UnionFind::size() const {
   return representative.size();
 }
 

@@ -14,7 +14,7 @@ public:
   void link(unsigned, unsigned);
   void reset(unsigned);
   unsigned find(unsigned);
-  unsigned size();
+  unsigned size() const;
   unsigned operator[] (unsigned) const;
   friend std::ostream & operator << (std::ostream &, const UnionFind &);
  private:

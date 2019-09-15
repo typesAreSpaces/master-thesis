@@ -12,23 +12,27 @@ HornClauses::~HornClauses(){
     delete it;
 }
 
-void HornClauses::addHornClause(UnionFind & uf,
+void HornClauses::addHornClause(const CongruenceClosure & original_closure,
+				CongruenceClosure & auxiliar_closure,
 				Term* u, Term* v,
 				bool is_disequation){
-  HornClause * hc = new HornClause(uf, u, v, local_terms, is_disequation);
+  HornClause * hc = new HornClause(uf, u, v, local_terms, is_disequation); // how to deal with uf, local_terms here?
   if(!is_disequation){
     hc->normalize();
     if(hc->checkTriviality()){
       delete hc;
+      auxiliar_closure.transferEqClassAndPreds(original_closure);
       return;
     }
   }
   horn_clauses.push_back(hc);
   makeMatches(hc, num_horn_clauses);
   ++num_horn_clauses;
+  auxiliar_closure.transferEqClassAndPreds(original_closure);
 }
 
-void HornClauses::addHornClause(UnionFind & uf,
+void HornClauses::addHornClause(const CongruenceClosure & original_closure,
+				CongruenceClosure & auxiliar_closure,
 				std::vector<EquationTerm> & antecedent,
 				EquationTerm & consequent,
 				bool is_disequation){
@@ -37,12 +41,14 @@ void HornClauses::addHornClause(UnionFind & uf,
     hc->normalize();
     if(hc->checkTriviality()){
       delete hc;
+      auxiliar_closure.transferEqClassAndPreds(original_closure);
       return;
     }
   }
   horn_clauses.push_back(hc);
   makeMatches(hc, num_horn_clauses);
   ++num_horn_clauses;
+  auxiliar_closure.transferEqClassAndPreds(original_closure);
 }
 
 void HornClauses::conditionalElimination(){

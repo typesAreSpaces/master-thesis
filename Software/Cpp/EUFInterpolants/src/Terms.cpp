@@ -302,7 +302,7 @@ UnionFind & Terms::getEquivalenceClass(){
   return equivalence_class;
 }
 
-UnionFind Terms::getDeepEquivalenceClass(){
+const UnionFind Terms::getDeepEquivalenceClass() const {
   unsigned num_elements = equivalence_class.size();
   std::vector<unsigned> new_elements(num_elements);
   for(unsigned index = 0; index < num_elements; ++index){
@@ -311,7 +311,7 @@ UnionFind Terms::getDeepEquivalenceClass(){
   return UnionFind(new_elements);
 }
 
-Term * Terms::getOriginalTerm(unsigned i){
+Term * Terms::getOriginalTerm(unsigned i) const {
   return terms[i];
 }
 
