@@ -33,7 +33,7 @@ class HornClauses{
   unsigned                 size();
   std::vector<HornClause*> getHornClauses();
   std::vector<HornClause*> getReducibleHornClauses();
-  friend std::ostream &    operator << (std::ostream &, HornClauses &);
+  friend std::ostream &    operator << (std::ostream &, const HornClauses &);
   std::ostream &           printMatch1(std::ostream &, Match1 &);
   std::ostream &           printMatch2(std::ostream &, Match2 &);
   

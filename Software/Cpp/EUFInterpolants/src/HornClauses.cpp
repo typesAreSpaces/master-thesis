@@ -353,10 +353,10 @@ void HornClauses::mergeType2_1AndType3(HornClause * h1, HornClause * h2){
   UnionFind _h1LocalUf = h1->getLocalUF(),
     _h2LocalUf = HornClause::getGlobalUF();
 
-  EquationTerm _h1Consequent = h1->getConsequent(),
-    _h2Consequent = h2->getConsequent();
   std::vector<EquationTerm> _h1Antecedent = h1->getAntecedent(),
     _h2Antecedent = h2->getAntecedent();
+  EquationTerm _h1Consequent = h1->getConsequent(),
+    _h2Consequent = h2->getConsequent();
 
   for(std::vector<EquationTerm>::iterator equation_iterator = _h2Antecedent.begin();
       equation_iterator != _h2Antecedent.end(); ++equation_iterator){
@@ -380,11 +380,10 @@ void HornClauses::mergeType2AndType2(HornClause * h1, HornClause * h2){
   UnionFind _h1LocalUf = h1->getLocalUF(),
     _h2LocalUf = HornClause::getGlobalUF();
 
-  EquationTerm _h1Consequent = h1->getConsequent(),
-    _h2Consequent = h2->getConsequent();
-
   std::vector<EquationTerm> _h1Antecedent = h1->getAntecedent(),
     _h2Antecedent = h2->getAntecedent();
+  EquationTerm _h1Consequent = h1->getConsequent(),
+    _h2Consequent = h2->getConsequent();
 	
   for(std::vector<EquationTerm>::iterator _it = _h1Antecedent.begin();
       _it != _h1Antecedent.end(); ++_it){
@@ -415,10 +414,11 @@ void HornClauses::mergeType2AndType2(HornClause * h1, HornClause * h2){
 void HornClauses::mergeType2AndType3(HornClause * h1, HornClause * h2){
   UnionFind _h1LocalUf = h1->getLocalUF(),
     _h2LocalUf = HornClause::getGlobalUF();
-  EquationTerm _h1Consequent = h1->getConsequent(),
-    _h2Consequent = h2->getConsequent();
+
   std::vector<EquationTerm> _h1Antecedent = h1->getAntecedent(),
     _h2Antecedent = h2->getAntecedent();
+  EquationTerm _h1Consequent = h1->getConsequent(),
+    _h2Consequent = h2->getConsequent();
 	
   for(std::vector<EquationTerm>::iterator _it = _h2Antecedent.begin();
       _it != _h2Antecedent.end(); ++_it){
@@ -463,29 +463,29 @@ unsigned HornClauses::size(){
 }
 
 std::vector<HornClause*> HornClauses::getHornClauses(){
-  std::vector<HornClause*> _hc;
-  for(auto it = horn_clauses.begin();
-      it != horn_clauses.end(); ++it){
-    auto consequent = (*it)->getConsequent();
-    if((*it)->getAntecedentValue()
+  std::vector<HornClause*> new_hcs;
+  for(auto it : horn_clauses){
+    auto consequent = it->getConsequent();
+    if(it->getAntecedentValue()
        && local_terms[consequent.first->getId()]->getSymbolCommonQ()
        && local_terms[consequent.second->getId()]->getSymbolCommonQ())
-      _hc.push_back(*it);
+      new_hcs.push_back(it);
   }
-  return _hc;
+  return new_hcs;
 }
 
 std::vector<HornClause*> HornClauses::getReducibleHornClauses(){
-  std::vector<HornClause*> _hc;
+  std::vector<HornClause*> new_hc;
   
-  for(auto it = reduced.begin(); it != reduced.end(); ++it)
-    for(unsigned i = 0; i < reduced_length[it->first]; ++i)
-      _hc.push_back(horn_clauses[it->second[i]]);
-  return _hc;
+  for(auto it : reduced)
+    for(unsigned index = 0; index < reduced_length[it.first]; ++index)
+      new_hcs.push_back(horn_clauses[it.second[index]]);
+  return new_hcs;
 }
 
 void HornClauses::orient(HornClause * hc){
   UnionFind & localUF = HornClause::getGlobalUF();
+  
   std::vector<EquationTerm> & antecedent = hc->getAntecedent();
   EquationTerm & consequent = hc->getConsequent();
 	
@@ -537,11 +537,10 @@ std::ostream & HornClauses::printMatch2(std::ostream & os, Match2 & m1){
   return os;
 }
 
-std::ostream & operator << (std::ostream & os, HornClauses & hcs){
+std::ostream & operator << (std::ostream & os, const HornClauses & hcs){
   int i = 1;
-  for(std::vector<HornClause*>::iterator _it = hcs.horn_clauses.begin();
-      _it != hcs.horn_clauses.end(); ++_it){
-    os << i << ". " << **_it << std::endl;
+  for(auto it : hcs.horn_clauses){
+    os << i << ". " << *it << std::endl;
     ++i;
   }
   return os;
