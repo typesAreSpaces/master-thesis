@@ -9,45 +9,39 @@ EUFInterpolant::EUFInterpolant(const z3::expr & e, const z3::sort & s) :
   auxiliar_closure(e.ctx(), e),
   original_closure(e.ctx(), e),
   cvt(e.ctx(), s),
-  horn_clauses(original_closure.getTerms()),
+  horn_clauses(original_closure),
   contradiction(original_closure.getOriginalTerm(0),
 		original_closure.getOriginalTerm(0)){
-  auxiliar_closure.buildCongruenceClosure();
 }
 
 EUFInterpolant::EUFInterpolant(const z3::expr & e,
 			       const std::set<std::string> & symbols_to_elim,
 			       const z3::sort & s) :
-  auxiliar_closure(e.ctx(), e, symbols_to_elim),
-  original_closure(e.ctx(), e, symbols_to_elim),
+  auxiliar_closure(e.ctx(), e),
+  original_closure(e.ctx(), e),
   cvt(e.ctx(), s),
-  horn_clauses(original_closure.getTerms()),
+  horn_clauses(original_closure),
   contradiction(original_closure.getOriginalTerm(0),
 		original_closure.getOriginalTerm(0)){
-  auxiliar_closure.buildCongruenceClosure();
 }
 
 EUFInterpolant::~EUFInterpolant(){
 }
 
 void EUFInterpolant::test(){
-  identifyCommonSymbols();
-  original_closure.buildCongruenceClosure();
   setCommonRepresentatives();
   eliminationOfUncommonFSyms();// TODO
   return;
 }
 
 z3::expr EUFInterpolant::buildInterpolant(){
-  identifyCommonSymbols(); // Check
-  original_closure.buildCongruenceClosure(); // Check
   setCommonRepresentatives(); // Check
   eliminationOfUncommonFSyms();
   addNegativeHornClauses();
   // ------------------------------------
   // TODO: FIX THIS!
   // UPDATE: IT LOOKS LIKE IT'S DONE!
-  horn_clauses.conditionalElimination();
+  horn_clauses.conditionalElimination(auxiliar_closure);
   // ------------------------------------
   
   auto non_reducible_hs = horn_clauses.getHornClauses();
@@ -82,64 +76,6 @@ z3::expr EUFInterpolant::buildInterpolant(){
 
 std::vector<HornClause*> EUFInterpolant::getHornClauses(){
   return horn_clauses.getHornClauses();
-}
-
-void EUFInterpolant::identifyCommonSymbols(){
-  unsigned root_num = original_closure.getRootNum();
-  Term * current_term = original_closure.getReprTerm(root_num), * temp_current_term;
-  unsigned arity;
-  auto & symbols_to_eliminate = original_closure.getSymbolsToElim();
-  std::stack<Term*> stack_vertices;
-   
-  // Traversing the graph (in post-order) 
-  // to determine if a term is common or not
-  // Reference: https://www.geeksforgeeks.org/iterative-postorder-traversal-using-stack/
-  do{
-    while(current_term != nullptr){
-      arity = current_term->getArity();
-      switch(arity){
-      case 0:
-	stack_vertices.push(current_term);
-	current_term = nullptr;
-	break;
-      case 1:
-	stack_vertices.push(current_term);
-	current_term = current_term->getLeftChild();
-	break;
-      case 2:
-	stack_vertices.push(current_term->getRightChild()), stack_vertices.push(current_term);
-	current_term = current_term->getLeftChild();
-	break;
-      default:
-	throw("Error: Arity cannot be more than 2");
-	break;
-      }
-    }
-    current_term = stack_vertices.top();
-    stack_vertices.pop();
-    arity = current_term->getArity();
-    if(arity == 2 && !stack_vertices.empty()
-       && current_term->getRightChild()->getId() == stack_vertices.top()->getId()){
-      temp_current_term = stack_vertices.top();
-      stack_vertices.pop();
-      stack_vertices.push(current_term);
-      current_term = temp_current_term;
-    }
-    else{
-      // do something with current_term
-      std::string current_term_name = current_term->getName();
-      symbol_locations[current_term_name].push_back(current_term->getId());
-      bool is_current_term_common =
-	symbols_to_eliminate.find(current_term_name) == symbols_to_eliminate.end();
-      for(auto successor : current_term->getSuccessors()){
-	if(!is_current_term_common)
-	  break;
-	is_current_term_common = successor->getSymbolCommonQ();
-      }
-      current_term->setSymbolCommonQ(is_current_term_common);
-      current_term = nullptr;
-    }
-  } while(!stack_vertices.empty());
 }
 
 void EUFInterpolant::setCommonRepresentatives(){
@@ -180,7 +116,7 @@ void EUFInterpolant::setCommonRepresentatives(){
 // term then we expose the arguments of all the
 // terms (locations) that contain such symbol
 void EUFInterpolant::eliminationOfUncommonFSyms(){
-  for(auto map_iterator : symbol_locations){
+  for(auto map_iterator : original_closure.getSymbolLocations()){
     auto symbol_name = map_iterator.first;
     // We don't include in the Exposure method new introduced symbols
     // nor equalities, disequalities
@@ -198,9 +134,9 @@ void EUFInterpolant::eliminationOfUncommonFSyms(){
 	  for(unsigned location_j = location_i + 1; location_j < number_of_locations; ++location_j){
 	    // Exposing two terms that have the same symbol name
 	    // Hmm not sure with original_closure
-	    horn_clauses.addHornClause(original_closure.getEquivalenceClass(),
-				       original_closure.getOriginalTerm(locations[location_i]),
-				       original_closure.getOriginalTerm(locations[location_j]),
+	    horn_clauses.addHornClause(auxiliar_closure,
+				       auxiliar_closure.getOriginalTerm(locations[location_i]),
+				       auxiliar_closure.getOriginalTerm(locations[location_j]),
 				       false); // Check but HornClauses needs to be revisited
 	  }
 	} 
@@ -232,10 +168,10 @@ void EUFInterpolant::addNegativeHornClauses(){
       // Add HornClauses unfolding arguments
       // Let's check anyways
       assert(lhs_vertex->getArity() == rhs_vertex->getArity());
-      horn_clauses.addHornClause(original_closure.getEquivalenceClass(),
+      horn_clauses.addHornClause(auxiliar_closure,
 				 lhs_vertex,
 				 rhs_vertex,
-				 true);
+				 true); // Needds testing
     }
     else{
       // Just add HornClauses using the representative
@@ -243,10 +179,10 @@ void EUFInterpolant::addNegativeHornClauses(){
       _antecedent.push_back(std::make_pair(lhs_vertex, rhs_vertex));
       // Add HornClauses 'directly' using the antecedent
       // and contradiction as consequent
-      horn_clauses.addHornClause(original_closure.getEquivalenceClass(),
+      horn_clauses.addHornClause(auxiliar_closure,
 				 _antecedent,
 				 contradiction,
-				 true);
+				 true); // Needs testing
     }
   }
   return;

@@ -4,14 +4,8 @@
 #include "CongruenceClosure.h"
 #include "HornClauses.h"
 #include "ConvertReprToZ3.h"
-#include <stack>
 #include <map>
 #include <set>
-
-// SymbolLocation : SymbolName -> Set of Locations
-// Map to keep track the location (position in the `terms' data structure)
-// of names inside expressions 
-typedef std::map<std::string, std::vector<unsigned> > SymbolLocations;
 
 class EUFInterpolant {
  public:
@@ -27,10 +21,8 @@ class EUFInterpolant {
   CongruenceClosure original_closure;
   Converter         cvt;
   HornClauses       horn_clauses;
-  SymbolLocations   symbol_locations;
   EquationTerm      contradiction;
   
-  void              identifyCommonSymbols();
   void              setCommonRepresentatives();
   void              eliminationOfUncommonFSyms();
   void              addNegativeHornClauses();

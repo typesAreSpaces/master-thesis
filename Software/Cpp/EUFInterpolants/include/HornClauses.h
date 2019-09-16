@@ -8,50 +8,50 @@
 #include <set>
 #include <map>
 
-// match1 : Uncommon Term -> Positions of Horn Clauses
-typedef std::map<Term*, std::vector<unsigned> > match1;
-// match2 : (Uncommon Term, Uncommon Term) -> Positions of Horn Clauses
-typedef std::map<EquationTerm, std::vector<unsigned> > match2;
+// Match1 : Uncommon Term -> Positions of Horn Clauses
+typedef std::map<Term*, std::vector<unsigned> > Match1;
+// Match2 : (Uncommon Term, Uncommon Term) -> Positions of Horn Clauses
+typedef std::map<EquationTerm, std::vector<unsigned> > Match2;
 
 typedef std::set<std::pair<unsigned, unsigned> > SetOfUnsignedPairs;
 
 class HornClauses{
  public:
-  HornClauses(std::vector<Term*> &);
+  HornClauses(const CongruenceClosure &);
   ~HornClauses();
   
   // Adds a Horn clause using two terms of the form f(t_1, ..., t_n) and f(t'_1, ..., t'_n)
-  void                     addHornClause(const CongruenceClosure &, CongruenceClosure &,
+  void                     addHornClause(CongruenceClosure &,
 					 Term*, Term*,
 					 bool);
   // Adds a Horn Clause using a vector of EquationTerms as antecedent
   // and an EquationTerm as conclusion
-  void                     addHornClause(const CongruenceClosure &, CongruenceClosure &,
+  void                     addHornClause(CongruenceClosure &,
 					 std::vector<EquationTerm> &, EquationTerm &,
 					 bool);
-  void                     conditionalElimination();
+  void                     conditionalElimination(CongruenceClosure &);
   unsigned                 size();
   std::vector<HornClause*> getHornClauses();
   std::vector<HornClause*> getReducibleHornClauses();
   friend std::ostream &    operator << (std::ostream &, HornClauses &);
-  std::ostream &           printMatch1(std::ostream &, match1 &);
-  std::ostream &           printMatch2(std::ostream &, match2 &);
+  std::ostream &           printMatch1(std::ostream &, Match1 &);
+  std::ostream &           printMatch2(std::ostream &, Match2 &);
   
  private:
   static unsigned                  num_horn_clauses;
   std::vector<HornClause*>         horn_clauses;
-  match1                           mc1_antecedent, mc1_consequent;
-  match2                           mc2_antecedent, mc2_consequent;
-  match2                           reduced;
+  Match1                           mc1_antecedent, mc1_consequent;
+  Match2                           mc2_antecedent, mc2_consequent;
+  Match2                           reduced;
   std::map<EquationTerm, unsigned> reduced_length;
-  std::vector<Term*> &             local_terms;
+  const CongruenceClosure &        original_cc;
   
   void mergeType2_1AndType3(HornClause *, HornClause *);
   void mergeType2_1AndType4(HornClause *, HornClause *);
   void mergeType2AndType2(HornClause *, HornClause *);
   void mergeType2AndType3(HornClause *, HornClause *);
   void mergeType2AndType4(HornClause *, HornClause *);
-  void simplify();
+  void simplify(CongruenceClosure &);
   void makeMatches(HornClause *, unsigned);
   void combinationHelper(HornClause *);
   void orient(HornClause *);

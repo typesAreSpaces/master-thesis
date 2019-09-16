@@ -51,6 +51,8 @@ void CongruenceClosure::init(){
 	     std::cout << equivalence_class << std::endl;
 	     std::cout << "==========================================" << std::endl;)
       }
+  identifyCommonSymbols();
+  buildCongruenceClosure();
 }
 
 CongruenceClosure::CongruenceClosure(z3::context & ctx, const z3::expr & v) :
@@ -68,6 +70,62 @@ CongruenceClosure::CongruenceClosure(z3::context & ctx,
 }
 
 CongruenceClosure::~CongruenceClosure(){}
+
+void CongruenceClosure::identifyCommonSymbols(){
+  Term * current_term = getReprTerm(root_num), * temp_current_term;
+  unsigned arity;
+  std::stack<Term*> stack_vertices;
+   
+  // Traversing the graph (in post-order) 
+  // to determine if a term is common or not
+  // Reference: https://www.geeksforgeeks.org/iterative-postorder-traversal-using-stack/
+  do{
+    while(current_term != nullptr){
+      arity = current_term->getArity();
+      switch(arity){
+      case 0:
+	stack_vertices.push(current_term);
+	current_term = nullptr;
+	break;
+      case 1:
+	stack_vertices.push(current_term);
+	current_term = current_term->getLeftChild();
+	break;
+      case 2:
+	stack_vertices.push(current_term->getRightChild()), stack_vertices.push(current_term);
+	current_term = current_term->getLeftChild();
+	break;
+      default:
+	throw("Error: Arity cannot be more than 2");
+	break;
+      }
+    }
+    current_term = stack_vertices.top();
+    stack_vertices.pop();
+    arity = current_term->getArity();
+    if(arity == 2 && !stack_vertices.empty()
+       && current_term->getRightChild()->getId() == stack_vertices.top()->getId()){
+      temp_current_term = stack_vertices.top();
+      stack_vertices.pop();
+      stack_vertices.push(current_term);
+      current_term = temp_current_term;
+    }
+    else{
+      // do something with current_term
+      std::string current_term_name = current_term->getName();
+      symbol_locations[current_term_name].push_back(current_term->getId());
+      bool is_current_term_common =
+	symbols_to_elim.find(current_term_name) == symbols_to_elim.end();
+      for(auto successor : current_term->getSuccessors()){
+	if(!is_current_term_common)
+	  break;
+	is_current_term_common = successor->getSymbolCommonQ();
+      }
+      current_term->setSymbolCommonQ(is_current_term_common);
+      current_term = nullptr;
+    }
+  } while(!stack_vertices.empty());
+}
 
 void CongruenceClosure::buildCongruenceClosure(){
   Pending pending;
@@ -217,6 +275,10 @@ void CongruenceClosure::transferPreds(const CongruenceClosure & cc){
       } while(pred_iterator != cc_pred.begin());
     }
   }
+}
+
+const SymbolLocations & CongruenceClosure::getSymbolLocations(){
+  return symbol_locations;
 }
 
 std::ostream & operator << (std::ostream & os, CongruenceClosure & cc){

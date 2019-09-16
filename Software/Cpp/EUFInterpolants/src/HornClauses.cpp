@@ -4,7 +4,9 @@
 
 unsigned HornClauses::num_horn_clauses = 0;
 
-HornClauses::HornClauses(std::vector<Term*> & terms) : local_terms(terms) {
+HornClauses::HornClauses(const CongruenceClosure & original_closure) :
+  original_cc(original_closure)
+{
 }
 
 HornClauses::~HornClauses(){
@@ -12,46 +14,42 @@ HornClauses::~HornClauses(){
     delete it;
 }
 
-void HornClauses::addHornClause(const CongruenceClosure & original_closure,
-				CongruenceClosure & auxiliar_closure,
+void HornClauses::addHornClause(CongruenceClosure & auxiliar_closure,
 				Term* u, Term* v,
 				bool is_disequation){
-  HornClause * hc = new HornClause(uf, u, v, local_terms, is_disequation); // how to deal with uf, local_terms here?
+  HornClause * hc = new HornClause(auxiliar_closure, u, v, is_disequation);
   if(!is_disequation){
     hc->normalize();
-    if(hc->checkTriviality()){
+    if(hc->checkTriviality())
       delete hc;
-      auxiliar_closure.transferEqClassAndPreds(original_closure);
-      return;
-    }
   }
-  horn_clauses.push_back(hc);
-  makeMatches(hc, num_horn_clauses);
-  ++num_horn_clauses;
-  auxiliar_closure.transferEqClassAndPreds(original_closure);
+  else{
+    horn_clauses.push_back(hc);
+    makeMatches(hc, num_horn_clauses);
+    ++num_horn_clauses;
+  }
+  auxiliar_closure.transferEqClassAndPreds(original_cc);
 }
 
-void HornClauses::addHornClause(const CongruenceClosure & original_closure,
-				CongruenceClosure & auxiliar_closure,
+void HornClauses::addHornClause(CongruenceClosure & auxiliar_closure,
 				std::vector<EquationTerm> & antecedent,
 				EquationTerm & consequent,
 				bool is_disequation){
-  HornClause * hc = new HornClause(uf, antecedent, consequent, local_terms);
+  HornClause * hc = new HornClause(auxiliar_closure, antecedent, consequent);
   if(!is_disequation){
     hc->normalize();
-    if(hc->checkTriviality()){
+    if(hc->checkTriviality())
       delete hc;
-      auxiliar_closure.transferEqClassAndPreds(original_closure);
-      return;
-    }
   }
-  horn_clauses.push_back(hc);
-  makeMatches(hc, num_horn_clauses);
-  ++num_horn_clauses;
-  auxiliar_closure.transferEqClassAndPreds(original_closure);
+  else{
+    horn_clauses.push_back(hc);
+    makeMatches(hc, num_horn_clauses);
+    ++num_horn_clauses;
+  }
+  auxiliar_closure.transferEqClassAndPreds(original_cc);
 }
 
-void HornClauses::conditionalElimination(){
+void HornClauses::conditionalElimination(CongruenceClosure & auxiliar_closure){
   bool change = true;
   SetOfUnsignedPairs prev_combinations;
   unsigned old_horn_clauses_size, new_horn_clauses_size;
@@ -99,12 +97,13 @@ void HornClauses::conditionalElimination(){
       makeMatches(horn_clauses[i], i);
   }
   
-  simplify();
+  simplify(auxiliar_closure);
  
   DEBUG_MSG(std::cout << "Horn Clauses produced - after simplify:" << std::endl;
-	    for(match2::iterator it = reduced.begin(); it != reduced.end(); ++it)
+	    for(Match2::iterator it = reduced.begin(); it != reduced.end(); ++it)
 	      for(unsigned i = 0; i < reduced_length[it->first]; ++i)
 		std::cout << *horn_clauses[it->second[i]] << std::endl;);
+  auxiliar_closure.transferEqClassAndPreds(original_cc);
 }
 
 void HornClauses::mc2ConsequentAndmc2Antecedent(SetOfUnsignedPairs & prev_combinations,
@@ -169,7 +168,7 @@ void HornClauses::mc1ConsequentAndmc1Antecedent(SetOfUnsignedPairs & prev_combin
 
 void HornClauses::mc1ConsequentAndmc2Antecedent(SetOfUnsignedPairs & prev_combinations,
 						bool & change){
-  for(match1::iterator map_vertex_positions_consequent = mc1_consequent.begin();
+  for(Match1::iterator map_vertex_positions_consequent = mc1_consequent.begin();
       map_vertex_positions_consequent != mc1_consequent.end();
       ++map_vertex_positions_consequent){
 		
@@ -177,7 +176,7 @@ void HornClauses::mc1ConsequentAndmc2Antecedent(SetOfUnsignedPairs & prev_combin
     auto positions_consequent = map_vertex_positions_consequent->second;
     for(unsigned position_consequent :positions_consequent){
 			
-      for(match2::iterator map_equality_positions_antecedent = mc2_antecedent.begin();
+      for(Match2::iterator map_equality_positions_antecedent = mc2_antecedent.begin();
 	  map_equality_positions_antecedent != mc2_antecedent.end();
 	  ++map_equality_positions_antecedent){
 	auto equality_antecedent = map_equality_positions_antecedent->first;
@@ -211,7 +210,7 @@ void HornClauses::mc1ConsequentAndmc2Antecedent(SetOfUnsignedPairs & prev_combin
 
 void HornClauses::mc1ConsequentAndmc1Antecedent2(SetOfUnsignedPairs & prev_combinations,
 						 bool & change){
-  for(match1::iterator map_vertex_positions = mc1_consequent.begin();
+  for(Match1::iterator map_vertex_positions = mc1_consequent.begin();
       map_vertex_positions != mc1_consequent.end(); ++map_vertex_positions){
 		
     auto vertex_consequent_1 = map_vertex_positions->first;
@@ -246,10 +245,11 @@ void HornClauses::mc1ConsequentAndmc1Antecedent2(SetOfUnsignedPairs & prev_combi
 // C, D -> a     C -> a
 // ---------------------
 //       C -> a
-void HornClauses::simplify() {
+void HornClauses::simplify(CongruenceClosure & auxiliar_cc){
   unsigned position = 0;
   bool change = true;
-
+  std::vector<Term*> & local_terms = auxiliar_cc.getTerms();
+  
   DEBUG_MSG(std::cout << "Horn Clauses produced - before simplify:" << std::endl;
 	    for(std::vector<HornClause*>::iterator it = horn_clauses.begin();
 		it != horn_clauses.end(); ++it){	
@@ -257,25 +257,23 @@ void HornClauses::simplify() {
 	    });
   
   // Filter: Only Type 2 or Type 2.1 are allowed here		
-  for(std::vector<HornClause*>::iterator it = horn_clauses.begin();
-      it != horn_clauses.end(); ++it){	
-    if((*it)->getAntecedentValue()
-       && local_terms[(*it)->getConsequent().first->getId()]->getSymbolCommonQ()){
-      reduced[(*it)->getConsequent()].push_back(position);
+  for(auto it : horn_clauses){	
+    if(it->getAntecedentValue()
+       && local_terms[it->getConsequent().first->getId()]->getSymbolCommonQ()){
+      reduced[it->getConsequent()].push_back(position);
     }
     ++position;
   }
   
-  for(match2::iterator it = reduced.begin();
-      it != reduced.end(); ++it){
-    unsigned length = it->second.size();
+  for(auto it : reduced){
+    unsigned length = it.second.size();
     for(unsigned i = 0; i + 1 < length; ++i){
       unsigned j = i + 1;
       while(change && j < length){
 	change = false;
-	unsigned i_position = it->second[i],
-	  j_position = it->second[j],
-	  l_position = it->second[length - 1];
+	unsigned i_position = it.second[i],
+	  j_position = it.second[j],
+	  l_position = it.second[length - 1];
 	if(*horn_clauses[i_position] > *horn_clauses[j_position]){
 	  change = true;
 	  swap(horn_clauses, j_position, l_position);
@@ -291,7 +289,7 @@ void HornClauses::simplify() {
 	  ++j;
       }
     }
-    reduced_length[it->first] = length;
+    reduced_length[it.first] = length;
   }
 }
 
@@ -351,8 +349,10 @@ void HornClauses::makeMatches(HornClause * hc, unsigned i){
 }
 
 void HornClauses::mergeType2_1AndType3(HornClause * h1, HornClause * h2){
+
   UnionFind _h1LocalUf = h1->getLocalUF(),
     _h2LocalUf = HornClause::getGlobalUF();
+
   EquationTerm _h1Consequent = h1->getConsequent(),
     _h2Consequent = h2->getConsequent();
   std::vector<EquationTerm> _h1Antecedent = h1->getAntecedent(),
@@ -376,10 +376,13 @@ void HornClauses::mergeType2_1AndType4(HornClause * h1, HornClause * h2){
 }
 
 void HornClauses::mergeType2AndType2(HornClause * h1, HornClause * h2){
+  
   UnionFind _h1LocalUf = h1->getLocalUF(),
     _h2LocalUf = HornClause::getGlobalUF();
+
   EquationTerm _h1Consequent = h1->getConsequent(),
     _h2Consequent = h2->getConsequent();
+
   std::vector<EquationTerm> _h1Antecedent = h1->getAntecedent(),
     _h2Antecedent = h2->getAntecedent();
 	
@@ -395,8 +398,10 @@ void HornClauses::mergeType2AndType2(HornClause * h1, HornClause * h2){
 	_h2Antecedent.push_back(std::make_pair(_v, _u));
     }
   }
+  
   Term * _u = local_terms[_h2LocalUf.find(_h1Consequent.first->getId())],
     * _v = local_terms[_h2LocalUf.find(_h2Consequent.first->getId())];
+  
   if(*_u >= *_v)
     _h2Consequent = std::make_pair(_u, _v);
   else
@@ -509,8 +514,8 @@ void HornClauses::swap(std::vector<A> & a, unsigned i, unsigned j){
   a[j] = temp;
 }
 
-std::ostream & HornClauses::printMatch1(std::ostream & os, match1 & m1){
-  for(match1::iterator _it = m1.begin(); _it != m1.end(); ++_it){
+std::ostream & HornClauses::printMatch1(std::ostream & os, Match1 & m1){
+  for(Match1::iterator _it = m1.begin(); _it != m1.end(); ++_it){
     os << _it->first->to_string() << std::endl;
     for(std::vector<unsigned>::iterator _it2 = m1[_it->first].begin();
 	_it2 != m1[_it->first].end(); ++_it2)
@@ -520,8 +525,8 @@ std::ostream & HornClauses::printMatch1(std::ostream & os, match1 & m1){
   return os;
 }
 
-std::ostream & HornClauses::printMatch2(std::ostream & os, match2 & m1){
-  for(match2::iterator _it = m1.begin(); _it != m1.end(); ++_it){
+std::ostream & HornClauses::printMatch2(std::ostream & os, Match2 & m1){
+  for(Match2::iterator _it = m1.begin(); _it != m1.end(); ++_it){
     os << _it->first.first->to_string()
        << " = " << _it->first.second->to_string() << std::endl;
     for(std::vector<unsigned>::iterator _it2 = m1[_it->first].begin();
