@@ -19,8 +19,8 @@ void HornClauses::addHornClause(CongruenceClosure & auxiliar_closure,
 				bool is_disequation){
   HornClause * hc = new HornClause(auxiliar_closure, u, v, is_disequation);
   if(!is_disequation){
-    hc->normalize();
-    if(hc->checkTriviality())
+    hc->normalize(auxiliar_closure);
+    if(hc->checkTriviality(auxiliar_closure))
       delete hc;
   }
   else{
@@ -37,8 +37,8 @@ void HornClauses::addHornClause(CongruenceClosure & auxiliar_closure,
 				bool is_disequation){
   HornClause * hc = new HornClause(auxiliar_closure, antecedent, consequent);
   if(!is_disequation){
-    hc->normalize();
-    if(hc->checkTriviality())
+    hc->normalize(auxiliar_closure);
+    if(hc->checkTriviality(auxiliar_closure))
       delete hc;
   }
   else{
@@ -148,7 +148,7 @@ void HornClauses::mc1ConsequentAndmc1Antecedent(SetOfUnsignedPairs & prev_combin
 	   &&
 	   InSet(std::make_pair(position_antecedent,
 				position_consequent), prev_combinations)
-	   && horn_clauses[position_consequent]->getAntecedentValue()){
+	   && horn_clauses[position_consequent]->getAntecedentCommon()){
 	  DEBUG_MSG(std::cout << "2. Combine " << position_consequent << " , "
 		    << position_antecedent << std::endl
 		    << *horn_clauses[position_consequent] << std::endl
@@ -189,7 +189,7 @@ void HornClauses::mc1ConsequentAndmc2Antecedent(SetOfUnsignedPairs & prev_combin
 	       &&
 	       InSet(std::make_pair(position_antecedent,
 				    position_consequent), prev_combinations)
-	       && horn_clauses[position_consequent]->getAntecedentValue()){
+	       && horn_clauses[position_consequent]->getAntecedentCommon()){
 	      DEBUG_MSG(std::cout << "3. Combine " << std::endl
 			<< *horn_clauses[position_consequent] << std::endl
 			<< " with " << std::endl
@@ -223,8 +223,8 @@ void HornClauses::mc1ConsequentAndmc1Antecedent2(SetOfUnsignedPairs & prev_combi
 	   &&
 	   InSet(std::make_pair(position_consequent_2,
 				position_consequent_1), prev_combinations)
-	   && horn_clauses[position_consequent_1]->getAntecedentValue()
-	   && horn_clauses[position_consequent_2]->getAntecedentValue()){
+	   && horn_clauses[position_consequent_1]->getAntecedentCommon()
+	   && horn_clauses[position_consequent_2]->getAntecedentCommon()){
 	  DEBUG_MSG(std::cout << "4. Combine " << std::endl
 		    << *horn_clauses[position_consequent_1] << std::endl
 		    << " with " << std::endl << *horn_clauses[position_consequent_2]
@@ -258,7 +258,7 @@ void HornClauses::simplify(CongruenceClosure & auxiliar_cc){
   
   // Filter: Only Type 2 or Type 2.1 are allowed here		
   for(auto it : horn_clauses){	
-    if(it->getAntecedentValue()
+    if(it->getAntecedentCommon()
        && local_terms[it->getConsequent().first->getId()]->getSymbolCommonQ()){
       reduced[it->getConsequent()].push_back(position);
     }
@@ -350,25 +350,25 @@ void HornClauses::makeMatches(HornClause * hc, unsigned i){
 
 void HornClauses::mergeType2_1AndType3(HornClause * h1, HornClause * h2){
 
-  UnionFind _h1LocalUf = h1->getLocalUF(),
-    _h2LocalUf = HornClause::getGlobalUF();
+  // UnionFind _h1LocalUf = h1->getLocalUF(),
+  //   _h2LocalUf = HornClause::getGlobalUF();
 
-  std::vector<EquationTerm> _h1Antecedent = h1->getAntecedent(),
-    _h2Antecedent = h2->getAntecedent();
-  EquationTerm _h1Consequent = h1->getConsequent(),
-    _h2Consequent = h2->getConsequent();
+  // std::vector<EquationTerm> _h1Antecedent = h1->getAntecedent(),
+  //   _h2Antecedent = h2->getAntecedent();
+  // EquationTerm _h1Consequent = h1->getConsequent(),
+  //   _h2Consequent = h2->getConsequent();
 
-  for(std::vector<EquationTerm>::iterator equation_iterator = _h2Antecedent.begin();
-      equation_iterator != _h2Antecedent.end(); ++equation_iterator){
-    if(*equation_iterator != _h1Consequent)
-      _h1Antecedent.push_back(*equation_iterator);
-  }
-  _h2LocalUf.merge(_h1LocalUf.find(_h1Consequent.first->getId()),
-		   _h1LocalUf.find(_h1Consequent.second->getId()));
+  // for(std::vector<EquationTerm>::iterator equation_iterator = _h2Antecedent.begin();
+  //     equation_iterator != _h2Antecedent.end(); ++equation_iterator){
+  //   if(*equation_iterator != _h1Consequent)
+  //     _h1Antecedent.push_back(*equation_iterator);
+  // }
+  // _h2LocalUf.merge(_h1LocalUf.find(_h1Consequent.first->getId()),
+  // 		   _h1LocalUf.find(_h1Consequent.second->getId()));
 
-  HornClause * hc = new HornClause(_h2LocalUf, _h1Antecedent,
-				   _h2Consequent, local_terms);
-  combinationHelper(hc);
+  // HornClause * hc = new HornClause(_h2LocalUf, _h1Antecedent,
+  // 				   _h2Consequent, local_terms);
+  // combinationHelper(hc);
 }
 
 void HornClauses::mergeType2_1AndType4(HornClause * h1, HornClause * h2){
@@ -377,76 +377,76 @@ void HornClauses::mergeType2_1AndType4(HornClause * h1, HornClause * h2){
 
 void HornClauses::mergeType2AndType2(HornClause * h1, HornClause * h2){
   
-  UnionFind _h1LocalUf = h1->getLocalUF(),
-    _h2LocalUf = HornClause::getGlobalUF();
+  // UnionFind _h1LocalUf = h1->getLocalUF(),
+  //   _h2LocalUf = HornClause::getGlobalUF();
 
-  std::vector<EquationTerm> _h1Antecedent = h1->getAntecedent(),
-    _h2Antecedent = h2->getAntecedent();
-  EquationTerm _h1Consequent = h1->getConsequent(),
-    _h2Consequent = h2->getConsequent();
+  // std::vector<EquationTerm> _h1Antecedent = h1->getAntecedent(),
+  //   _h2Antecedent = h2->getAntecedent();
+  // EquationTerm _h1Consequent = h1->getConsequent(),
+  //   _h2Consequent = h2->getConsequent();
 	
-  for(std::vector<EquationTerm>::iterator _it = _h1Antecedent.begin();
-      _it != _h1Antecedent.end(); ++_it){
-    if(_h2LocalUf.find(_it->first->getId()) !=
-       _h2LocalUf.find(_it->second->getId())){
-      Term * _u = local_terms[_h2LocalUf.find(_it->first->getId())],
-	* _v = local_terms[_h2LocalUf.find(_it->second->getId())];
-      if(*_u >= *_v)
-	_h2Antecedent.push_back(std::make_pair(_u, _v));
-      else
-	_h2Antecedent.push_back(std::make_pair(_v, _u));
-    }
-  }
+  // for(std::vector<EquationTerm>::iterator _it = _h1Antecedent.begin();
+  //     _it != _h1Antecedent.end(); ++_it){
+  //   if(_h2LocalUf.find(_it->first->getId()) !=
+  //      _h2LocalUf.find(_it->second->getId())){
+  //     Term * _u = local_terms[_h2LocalUf.find(_it->first->getId())],
+  // 	* _v = local_terms[_h2LocalUf.find(_it->second->getId())];
+  //     if(*_u >= *_v)
+  // 	_h2Antecedent.push_back(std::make_pair(_u, _v));
+  //     else
+  // 	_h2Antecedent.push_back(std::make_pair(_v, _u));
+  //   }
+  // }
   
-  Term * _u = local_terms[_h2LocalUf.find(_h1Consequent.first->getId())],
-    * _v = local_terms[_h2LocalUf.find(_h2Consequent.first->getId())];
+  // Term * _u = local_terms[_h2LocalUf.find(_h1Consequent.first->getId())],
+  //   * _v = local_terms[_h2LocalUf.find(_h2Consequent.first->getId())];
   
-  if(*_u >= *_v)
-    _h2Consequent = std::make_pair(_u, _v);
-  else
-    _h2Consequent = std::make_pair(_v, _u);
+  // if(*_u >= *_v)
+  //   _h2Consequent = std::make_pair(_u, _v);
+  // else
+  //   _h2Consequent = std::make_pair(_v, _u);
 	
-  HornClause * hc = new HornClause(_h2LocalUf, _h2Antecedent,
-				   _h2Consequent, local_terms);
-  combinationHelper(hc);
+  // HornClause * hc = new HornClause(_h2LocalUf, _h2Antecedent,
+  // 				   _h2Consequent, local_terms);
+  // combinationHelper(hc);
 }
 
 void HornClauses::mergeType2AndType3(HornClause * h1, HornClause * h2){
-  UnionFind _h1LocalUf = h1->getLocalUF(),
-    _h2LocalUf = HornClause::getGlobalUF();
+  // UnionFind _h1LocalUf = h1->getLocalUF(),
+  //   _h2LocalUf = HornClause::getGlobalUF();
 
-  std::vector<EquationTerm> _h1Antecedent = h1->getAntecedent(),
-    _h2Antecedent = h2->getAntecedent();
-  EquationTerm _h1Consequent = h1->getConsequent(),
-    _h2Consequent = h2->getConsequent();
+  // std::vector<EquationTerm> _h1Antecedent = h1->getAntecedent(),
+  //   _h2Antecedent = h2->getAntecedent();
+  // EquationTerm _h1Consequent = h1->getConsequent(),
+  //   _h2Consequent = h2->getConsequent();
 	
-  for(std::vector<EquationTerm>::iterator _it = _h2Antecedent.begin();
-      _it != _h2Antecedent.end(); ++_it){
-    if(_it->first->getId() == _h1Consequent.second->getId())
-      _it->first = _h1Consequent.first;
-    if(_it->second->getId() == _h1Consequent.second->getId())
-      _it->second = _h1Consequent.first;
-    _h1Antecedent.push_back(*_it);
-  }
-  _h2LocalUf.merge(_h1LocalUf.find(_h1Consequent.first->getId()),
-		   _h1LocalUf.find(_h1Consequent.second->getId()));
+  // for(std::vector<EquationTerm>::iterator _it = _h2Antecedent.begin();
+  //     _it != _h2Antecedent.end(); ++_it){
+  //   if(_it->first->getId() == _h1Consequent.second->getId())
+  //     _it->first = _h1Consequent.first;
+  //   if(_it->second->getId() == _h1Consequent.second->getId())
+  //     _it->second = _h1Consequent.first;
+  //   _h1Antecedent.push_back(*_it);
+  // }
+  // _h2LocalUf.merge(_h1LocalUf.find(_h1Consequent.first->getId()),
+  // 		   _h1LocalUf.find(_h1Consequent.second->getId()));
 
-  HornClause * hc = new HornClause(_h2LocalUf, _h1Antecedent,
-				   _h2Consequent, local_terms);
-  combinationHelper(hc);
+  // HornClause * hc = new HornClause(_h2LocalUf, _h1Antecedent,
+  // 				   _h2Consequent, local_terms);
+  // combinationHelper(hc);
 }
 
 void HornClauses::mergeType2AndType4(HornClause * h1, HornClause * h2){
   // Same as mergeType2AndType3
 }
 
-void HornClauses::combinationHelper(HornClause * hc){
+void HornClauses::combinationHelper(HornClause * hc, CongruenceClosure & cc){
   DEBUG_MSG(std::cout << "Temporal Horn Clause " << *hc << std::endl;);
-  hc->normalize();
+  hc->normalize(cc);
   DEBUG_MSG(std::cout << "New Horn Clause" << std::endl
 	    << *hc << std::endl;);
 	
-  if(hc->checkTriviality()){
+  if(hc->checkTriviality(cc)){
     delete hc;
     DEBUG_MSG(std::cout << "It was deleted" << std::endl << std::endl;);
     return;
@@ -466,7 +466,7 @@ std::vector<HornClause*> HornClauses::getHornClauses(){
   std::vector<HornClause*> new_hcs;
   for(auto it : horn_clauses){
     auto consequent = it->getConsequent();
-    if(it->getAntecedentValue()
+    if(it->getAntecedentCommon()
        && local_terms[consequent.first->getId()]->getSymbolCommonQ()
        && local_terms[consequent.second->getId()]->getSymbolCommonQ())
       new_hcs.push_back(it);

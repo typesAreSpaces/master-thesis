@@ -19,11 +19,11 @@ class HornClause {
 	     std::vector<EquationTerm> &, EquationTerm &);
   ~HornClause();
   
-  void                        normalize(); 
-  bool                        checkTriviality();
+  void                        normalize(CongruenceClosure &);
+  bool                        checkTriviality(CongruenceClosure &);
 
-  bool                        getAntecedentValue();
-  bool                        getConsequentValue();
+  bool                        getAntecedentCommon();
+  bool                        getConsequentCommon();
   bool                        getMaximalConsequent();
   
   std::vector<EquationTerm> & getAntecedent();
@@ -35,7 +35,6 @@ class HornClause {
   
  private:
   bool                      is_antecedent_common, is_consequent_common;
-  CongruenceClosure &       local_cc;
   std::vector<EquationTerm> antecedent;
   EquationTerm              consequent;
 };

@@ -3,11 +3,10 @@
 // It's assumed the arities of Term * u,
 // Term * v are the same
 HornClause::HornClause(CongruenceClosure & cc,
-		       Term* u, Term* v,
+		       Term * u, Term * v,
 		       bool is_disequation) :
   is_antecedent_common(true),
-  is_consequent_common(true),
-  local_cc(cc)
+  is_consequent_common(true)
 {
   Term * iterator_lhs, * iterator_rhs;
   
@@ -19,8 +18,8 @@ HornClause::HornClause(CongruenceClosure & cc,
   
   for(unsigned index = 0; index < _arity; ++index){
 
-    iterator_lhs = local_cc.getReprTerm(successors_u[index]);
-    iterator_rhs = local_cc.getReprTerm(successors_v[index]);
+    iterator_lhs = cc.getReprTerm(successors_u[index]);
+    iterator_rhs = cc.getReprTerm(successors_v[index]);
     
     if(*iterator_lhs >= *iterator_rhs)
       antecedent.push_back(std::make_pair(iterator_lhs, iterator_rhs));
@@ -32,13 +31,13 @@ HornClause::HornClause(CongruenceClosure & cc,
   }
   
   if(is_disequation){
-    consequent = std::make_pair(local_cc.getOriginalTerm(0),
-				local_cc.getOriginalTerm(0));
+    consequent = std::make_pair(cc.getOriginalTerm(0),
+				cc.getOriginalTerm(0));
     is_consequent_common = true;
   }
   else{
-    iterator_lhs = local_cc.getReprTerm(u);
-    iterator_rhs = local_cc.getReprTerm(v);
+    iterator_lhs = cc.getReprTerm(u);
+    iterator_rhs = cc.getReprTerm(v);
   
     if(*iterator_lhs >= *iterator_rhs)
       consequent = std::make_pair(iterator_lhs, iterator_rhs);
@@ -54,18 +53,17 @@ HornClause::HornClause(CongruenceClosure & cc,
 		       EquationTerm & consequent) :
   is_antecedent_common(true),
   is_consequent_common(true),
-  local_cc(cc),
   antecedent(antecedent),
   consequent(consequent)
 {
   for(auto it : antecedent){
     is_antecedent_common = is_antecedent_common &&
-      local_cc.getReprTerm(it.first)->getSymbolCommonQ() &&
-      local_cc.getReprTerm(it.second)->getSymbolCommonQ();
+      cc.getReprTerm(it.first)->getSymbolCommonQ() &&
+      cc.getReprTerm(it.second)->getSymbolCommonQ();
   }
   is_consequent_common = is_consequent_common &&		
-    local_cc.getReprTerm(consequent.first)->getSymbolCommonQ() &&
-    local_cc.getReprTerm(consequent.second)->getSymbolCommonQ();
+    cc.getReprTerm(consequent.first)->getSymbolCommonQ() &&
+    cc.getReprTerm(consequent.second)->getSymbolCommonQ();
 }
 
 HornClause::~HornClause(){
@@ -73,14 +71,14 @@ HornClause::~HornClause(){
 
 // Joins the proper elements to the
 // UnionFind data structure
-void HornClause::normalize(){
+void HornClause::normalize(CongruenceClosure & cc){
   // TODO: Check if this doesn't go out of bound
   is_antecedent_common = true;
   for(auto it = antecedent.begin(); it != antecedent.end(); ++it){
-    if(local_cc.getReprTerm(it->first) == local_cc.getReprTerm(it->second))
+    if(cc.getReprTerm(it->first) == cc.getReprTerm(it->second))
       antecedent.erase(it);
     else{
-      local_cc.merge(it->first->getId(), it->second->getId()); // This is wrong
+      cc.merge(it->first->getId(), it->second->getId()); // This is wrong
       is_antecedent_common = is_antecedent_common
 	&& it->first->getSymbolCommonQ()
 	&& it->second->getSymbolCommonQ();
@@ -89,14 +87,14 @@ void HornClause::normalize(){
   }
 }
 
-bool HornClause::checkTriviality(){
-  return (local_cc.getReprTerm(consequent.first) == local_cc.getReprTerm(consequent.second));
+bool HornClause::checkTriviality(CongruenceClosure & cc){
+  return (cc.getReprTerm(consequent.first) == cc.getReprTerm(consequent.second));
 }
 
-bool HornClause::getAntecedentValue(){
+bool HornClause::getAntecedentCommon(){
   return is_antecedent_common;
 }
-bool HornClause::getConsequentValue(){
+bool HornClause::getConsequentCommon(){
   return is_consequent_common;
 }
 
