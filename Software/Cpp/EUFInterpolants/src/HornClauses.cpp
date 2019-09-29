@@ -467,16 +467,15 @@ std::vector<HornClause*> HornClauses::getHornClauses(){
   for(auto it : horn_clauses){
     auto consequent = it->getConsequent();
     if(it->getAntecedentCommon()
-       && local_terms[consequent.first->getId()]->getSymbolCommonQ()
-       && local_terms[consequent.second->getId()]->getSymbolCommonQ())
+       && consequent.first->getSymbolCommonQ()
+       && consequent.second->getSymbolCommonQ())
       new_hcs.push_back(it);
   }
   return new_hcs;
 }
 
 std::vector<HornClause*> HornClauses::getReducibleHornClauses(){
-  std::vector<HornClause*> new_hc;
-  
+  std::vector<HornClause*> new_hcs;
   for(auto it : reduced)
     for(unsigned index = 0; index < reduced_length[it.first]; ++index)
       new_hcs.push_back(horn_clauses[it.second[index]]);
@@ -484,22 +483,21 @@ std::vector<HornClause*> HornClauses::getReducibleHornClauses(){
 }
 
 void HornClauses::orient(HornClause * hc){
-  UnionFind & localUF = HornClause::getGlobalUF();
   
   std::vector<EquationTerm> & antecedent = hc->getAntecedent();
   EquationTerm & consequent = hc->getConsequent();
 	
   for(std::vector<EquationTerm>::iterator _it = antecedent.begin();
       _it != antecedent.end(); ++_it){
-    Term * _u = local_terms[localUF.find(_it->first->getId())],
-      * _v = local_terms[localUF.find(_it->second->getId())];
+    Term * _u = _it->first,
+      * _v = _it->second; 
     if(*_u >= *_v)
       *_it = std::make_pair(_u, _v);
     else
       *_it = std::make_pair(_v, _u);
   }
-  Term * _u = local_terms[localUF.find(consequent.first->getId())],
-    * _v = local_terms[localUF.find(consequent.second->getId())];
+  Term * _u = consequent.first, 
+    * _v = consequent.second; 
   
   if(*_u >= *_v)
     consequent = std::make_pair(_u, _v);

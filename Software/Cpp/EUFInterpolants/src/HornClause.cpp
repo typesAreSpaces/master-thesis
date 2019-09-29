@@ -110,25 +110,25 @@ EquationTerm & HornClause::getConsequent(){
   return consequent;
 }
 
-// // This comparison assumes the consequent of
-// // hc1 and hc2 are equal
-// // If it finds an element in the antecedent of hc1
-// // but not in the antecedent of hc2, then the
-// // operator returns false, true otherwise
-// bool operator > (HornClause & hc1, HornClause & hc2){
+// This comparison assumes the consequent of
+// hc1 and hc2 are equal
+// If it finds an element in the antecedent of hc1
+// but not in the antecedent of hc2, then the
+// operator returns false, true otherwise
+bool operator > (HornClause & hc1, HornClause & hc2){
 
-//   std::vector<EquationTerm> & hc1Antecedent = hc1.getAntecedent();
-//   UnionFind & hc2UF = hc2.getLocalUF();
+  std::vector<EquationTerm> & hc1Antecedent = hc1.getAntecedent();
+  UnionFind & hc2UF = hc2.getLocalUF();
   
-//   for(auto it : hc1Antecedent)
-//     if(hc2UF.find(it.first->getId()) != hc2UF.find(it.second->getId()))
-//       return false;
-//   return true;
-// }
+  for(auto it : hc1Antecedent)
+    if(hc2UF.find(it.first->getId()) != hc2UF.find(it.second->getId()))
+      return false;
+  return true;
+}
 
-// bool operator < (HornClause & hc1, HornClause & hc2){
-//   return hc2 > hc1;
-// }
+bool operator < (HornClause & hc1, HornClause & hc2){
+  return hc2 > hc1;
+}
 
 std::ostream & operator << (std::ostream & os, const HornClause & hc){
   bool flag = true;
