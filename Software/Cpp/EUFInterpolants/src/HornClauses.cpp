@@ -251,10 +251,9 @@ void HornClauses::simplify(CongruenceClosure & auxiliar_cc){
   std::vector<Term*> & local_terms = auxiliar_cc.getTerms();
   
   DEBUG_MSG(std::cout << "Horn Clauses produced - before simplify:" << std::endl;
-	    for(std::vector<HornClause*>::iterator it = horn_clauses.begin();
-		it != horn_clauses.end(); ++it){	
-	      std::cout << **it << std::endl;
-	    });
+			for(auto it : horn_clauses){	
+			  std::cout << *it << std::endl;
+			});
   
   // Filter: Only Type 2 or Type 2.1 are allowed here		
   for(auto it : horn_clauses){	
