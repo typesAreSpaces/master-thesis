@@ -46,6 +46,10 @@ HornClause::HornClause(CongruenceClosure & cc,
     is_consequent_common = is_consequent_common
       && iterator_lhs->getSymbolCommonQ() && iterator_rhs->getSymbolCommonQ();
   }
+
+  // Normalization needed here
+  
+  this->local_equiv_class = cc.getDeepEquivalenceClass();
 }
   
 HornClause::HornClause(CongruenceClosure & cc,
@@ -64,6 +68,10 @@ HornClause::HornClause(CongruenceClosure & cc,
   is_consequent_common = is_consequent_common &&		
     cc.getReprTerm(consequent.first)->getSymbolCommonQ() &&
     cc.getReprTerm(consequent.second)->getSymbolCommonQ();
+
+  // Normalization needed here
+  
+  this->local_equiv_class = cc.getDeepEquivalenceClass();
 }
 
 HornClause::~HornClause(){
@@ -71,6 +79,9 @@ HornClause::~HornClause(){
 
 // Joins the proper elements to the
 // UnionFind data structure
+// - If the elements are equal then
+//   'normalize' removes them from 'antecedent'
+// - Otherwise, it adds them in the congruence
 void HornClause::normalize(CongruenceClosure & cc){
   // TODO: Check if this doesn't go out of bound
   is_antecedent_common = true;
@@ -87,8 +98,9 @@ void HornClause::normalize(CongruenceClosure & cc){
   }
 }
 
-bool HornClause::checkTriviality(CongruenceClosure & cc){
-  return (cc.getReprTerm(consequent.first) == cc.getReprTerm(consequent.second));
+bool HornClause::checkTriviality(){
+  return (local_equiv_class.find(consequent.first->getId())
+	  == local_equiv_class.find(consequent.second->getId()));
 }
 
 bool HornClause::getAntecedentCommon(){
@@ -108,6 +120,10 @@ std::vector<EquationTerm> & HornClause::getAntecedent(){
 
 EquationTerm & HornClause::getConsequent(){
   return consequent;
+}
+
+UnionFind & HornClause::getLocalUF(){
+  return local_equiv_class;
 }
 
 // This comparison assumes the consequent of

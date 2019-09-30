@@ -51,7 +51,7 @@ class HornClauses{
   void mergeType2AndType2(HornClause *, HornClause *);
   void mergeType2AndType3(HornClause *, HornClause *);
   void mergeType2AndType4(HornClause *, HornClause *);
-  void simplify(CongruenceClosure &);
+  void simplifyHornClauses();
   void makeMatches(HornClause *, unsigned);
   void combinationHelper(HornClause *, CongruenceClosure &);
   void orient(HornClause *);

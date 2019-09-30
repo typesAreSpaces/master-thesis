@@ -23,7 +23,7 @@ class Terms {
   std::vector<Term*> &    getTerms();
   void                    setEquivalenceClass(UnionFind &);
   UnionFind &             getEquivalenceClass();
-  const UnionFind         getDeepEquivalenceClass() const; 
+  const UnionFind         getDeepEquivalenceClass() const;
   Term *                  getOriginalTerm(unsigned) const;
   Term *                  getReprTerm (unsigned);
   Term *                  getReprTerm(Term*);

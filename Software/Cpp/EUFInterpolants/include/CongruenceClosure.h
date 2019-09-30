@@ -13,7 +13,7 @@ typedef std::map<std::string, std::vector<unsigned> > SymbolLocations;
 typedef std::vector<Term*> Pending;
 typedef std::vector<std::pair<Term*, Term*> > Combine;
 
-class CongruenceClosure : public Terms {	
+class CongruenceClosure : public Terms {
  public:
   CongruenceClosure(z3::context &, const z3::expr &);
   CongruenceClosure(z3::context &, const z3::expr &, const UncommonSymbols &);
