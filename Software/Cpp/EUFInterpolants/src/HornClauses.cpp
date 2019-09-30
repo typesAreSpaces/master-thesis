@@ -242,9 +242,15 @@ void HornClauses::simplifyHornClauses(){
   bool change = true;
   
   DEBUG_MSG(std::cout << "Horn Clauses produced - before simplify:" << std::endl;
+<<<<<<< HEAD
 	    for(auto it : horn_clauses){	
 	      std::cout << *it << std::endl;
 	    });
+=======
+			for(auto it : horn_clauses){	
+			  std::cout << *it << std::endl;
+			});
+>>>>>>> be0dc335f47998ee5e2e0bb03a8398c849c57576
   
   // Filter: Only Type 2 or Type 2.1 are allowed here		
   for(auto it : horn_clauses){	
