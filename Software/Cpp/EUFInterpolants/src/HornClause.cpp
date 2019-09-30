@@ -83,17 +83,16 @@ HornClause::~HornClause(){
 //   'normalize' removes them from 'antecedent'
 // - Otherwise, it adds them in the congruence
 void HornClause::normalize(CongruenceClosure & cc){
-  // TODO: Check if this doesn't go out of bound
+  // TODO: Check if this doesn't go out of bound (!!)
   is_antecedent_common = true;
   for(auto it = antecedent.begin(); it != antecedent.end(); ++it){
     if(cc.getReprTerm(it->first) == cc.getReprTerm(it->second))
       antecedent.erase(it);
     else{
-      cc.merge(it->first->getId(), it->second->getId()); // This is wrong
+      cc.merge(it->first->getId(), it->second->getId());
       is_antecedent_common = is_antecedent_common
 	&& it->first->getSymbolCommonQ()
 	&& it->second->getSymbolCommonQ();
-      ++it; // <- Specially here
     }
   }
 }
