@@ -2,8 +2,6 @@
 #define debugHornClauses false
 #define DEBUG_MSG(X) if(debugHornClauses){ X }
 
-unsigned HornClauses::num_horn_clauses = 0;
-
 HornClauses::HornClauses(const CongruenceClosure & original_closure,
 			 CongruenceClosure & auxiliar_closure) :
   original_cc(original_closure), auxiliar_cc(auxiliar_closure)
@@ -24,9 +22,11 @@ void HornClauses::addHornClause(Term* u, Term* v,
       return;
     }
   }
+
+  orient(hc);
   horn_clauses.push_back(hc);
-  makeMatches(hc, num_horn_clauses);
-  ++num_horn_clauses;
+  makeMatches(hc, -1, true);
+  
   auxiliar_cc.transferEqClassAndPreds(original_cc);
 }
 
@@ -40,9 +40,11 @@ void HornClauses::addHornClause(std::vector<EquationTerm> & antecedent,
       return;
     }
   }
+
+  orient(hc);
   horn_clauses.push_back(hc);
-  makeMatches(hc, num_horn_clauses);
-  ++num_horn_clauses;
+  makeMatches(hc, -1, true);
+  
   auxiliar_cc.transferEqClassAndPreds(original_cc);
 }
 
@@ -91,8 +93,9 @@ void HornClauses::conditionalElimination(){
     mc2_consequent.clear();
 	
     new_horn_clauses_size = horn_clauses.size();
-    for(unsigned i = old_horn_clauses_size; i < new_horn_clauses_size; ++i)
-      makeMatches(horn_clauses[i], i);
+    for(unsigned new_horn_clauses_index = old_horn_clauses_size;
+	new_horn_clauses_index < new_horn_clauses_size; ++new_horn_clauses_index)
+      makeMatches(horn_clauses[new_horn_clauses_index], new_horn_clauses_index, false);
   }
   
   simplifyHornClauses();
@@ -275,48 +278,63 @@ void HornClauses::simplifyHornClauses(){
   }
 }
 
+
+// -------------------------------------
+// It fills the data structures
+// Match1 mc1_antecedent, mc1_consequent
+// Match2 mc2_antecedent, mc2_consequent
+// when a new horn clause is introduced
+// -------------------------------------
 // Precondition: 
-// All HornClauses here are assumed to be normalized
-// and oriented!
-void HornClauses::makeMatches(HornClause * hc, unsigned i){
+// All HornClauses here are assumed
+// to be normalized 
+// -------------------------------------
+void HornClauses::makeMatches(HornClause * hc,
+			      unsigned current_index, bool isLast){
+  if(isLast)
+    current_index = horn_clauses.size();
+  
   std::vector<EquationTerm> & hc_antecedent = hc->getAntecedent();
   EquationTerm & hc_consequent = hc->getConsequent();
-  for(std::vector<EquationTerm>::iterator equation_iterator = hc_antecedent.begin();
-      equation_iterator != hc_antecedent.end(); ++equation_iterator){
+
+  // ----------------------------------------------------
+  // Processing the antedecent of the current Horn Clause
+  for(auto equation_iterator : hc_antecedent) {
     // Pay attention to this part !!!
     // If the first term is uncommon,
     // then the equality is uncommon due to
     // the normalizing ordering used
-    if(!equation_iterator->first->getSymbolCommonQ()){
+    if(!equation_iterator.first->getSymbolCommonQ()){
       DEBUG_MSG(std::cout << *hc << "\n was added to mc2_antecedent" << std::endl;);
-		
-      mc2_antecedent[std::make_pair(equation_iterator->first,
-				    equation_iterator->second)].push_back(i);
+      mc2_antecedent[std::make_pair(equation_iterator.first,
+				    equation_iterator.second)].push_back(current_index);
       // We also consider the mc2_antecedent as two
       // mc1_antecedent elements
-      mc1_antecedent[equation_iterator->first].push_back(i);
-      mc1_antecedent[equation_iterator->second].push_back(i);
+      mc1_antecedent[equation_iterator.first].push_back(current_index);
+      mc1_antecedent[equation_iterator.second].push_back(current_index);
     }
     else{
       // If the first term is common and
       // the second term is common, then
       // there is nothing to do!
-      if(!equation_iterator->second->getSymbolCommonQ()){
+      if(!equation_iterator.second->getSymbolCommonQ()){
 	DEBUG_MSG(std::cout << *hc << "\n was added to mc1_antecedent" << std::endl;);
-		  
-	mc1_antecedent[equation_iterator->second].push_back(i);
+	mc1_antecedent[equation_iterator.second].push_back(current_index);
       }
     }
   }
+  // ----------------------------------------------------
+  
+  // ----------------------------------------------------
+  // Processing the consequent of the current Horn Clause
   if(!hc_consequent.first->getSymbolCommonQ()){
     DEBUG_MSG(std::cout << *hc << "\n was added to mc2_consequent" << std::endl;);
-	  
     mc2_consequent[std::make_pair(hc_consequent.first,
-				  hc_consequent.second)].push_back(i);
+				  hc_consequent.second)].push_back(current_index);
     // We also consider the mc2_consequent as two
     // mc1_consequent elements
-    mc1_consequent[hc_consequent.first].push_back(i);
-    mc1_consequent[hc_consequent.second].push_back(i);
+    mc1_consequent[hc_consequent.first].push_back(current_index);
+    mc1_consequent[hc_consequent.second].push_back(current_index);
   }
   else{
     // If the first term is common and
@@ -324,10 +342,10 @@ void HornClauses::makeMatches(HornClause * hc, unsigned i){
     // there is nothing to do!
     if(!hc_consequent.second->getSymbolCommonQ()){
       DEBUG_MSG(std::cout << *hc << "\n was added to mc1_consequent" << std::endl;);
-		
-      mc1_consequent[hc_consequent.second].push_back(i);
+      mc1_consequent[hc_consequent.second].push_back(current_index);
     }
   }
+  // ----------------------------------------------------
 }
 
 void HornClauses::mergeType2_1AndType3(HornClause * h1, HornClause * h2){
@@ -434,11 +452,13 @@ void HornClauses::combinationHelper(HornClause * hc){
 	
   orient(hc);
   horn_clauses.push_back(hc);
-  ++num_horn_clauses;
+  // makeMatches is called for all the additions
+  // done by combinationHelper inside
+  // HornClauses::conditionalElimination
 }
 
 unsigned HornClauses::size(){
-  return num_horn_clauses;
+  return horn_clauses.size();
 }
 
 std::vector<HornClause*> HornClauses::getHornClauses(){
@@ -461,26 +481,24 @@ std::vector<HornClause*> HornClauses::getReducibleHornClauses(){
   return new_hcs;
 }
 
+// Rearranges a Horn Clauses to the form
+// (/\_i u_i = v_i) => a = b, where u_i >= v_i and a >= b
+// The < relation on (Term, Term) used is
+// defined at Term.cpp
 void HornClauses::orient(HornClause * hc){
   
   std::vector<EquationTerm> & antecedent = hc->getAntecedent();
   EquationTerm & consequent = hc->getConsequent();
+  Term * _u, * _v;
 	
-  for(std::vector<EquationTerm>::iterator _it = antecedent.begin();
-      _it != antecedent.end(); ++_it){
-    Term * _u = _it->first,
-      * _v = _it->second; 
-    if(*_u >= *_v)
-      *_it = std::make_pair(_u, _v);
-    else
-      *_it = std::make_pair(_v, _u);
+  for(auto & it : antecedent){
+    _u = it.first, _v = it.second; 
+    if(*_u < *_v)
+      it = std::make_pair(_v, _u);
   }
-  Term * _u = consequent.first, 
-    * _v = consequent.second; 
   
-  if(*_u >= *_v)
-    consequent = std::make_pair(_u, _v);
-  else
+  _u = consequent.first, _v = consequent.second; 
+  if(*_u < *_v)
     consequent = std::make_pair(_v, _u);
 }
 
@@ -492,24 +510,24 @@ void HornClauses::swap(std::vector<A> & a, unsigned i, unsigned j){
 }
 
 std::ostream & HornClauses::printMatch1(std::ostream & os, Match1 & m1){
-  for(Match1::iterator _it = m1.begin(); _it != m1.end(); ++_it){
-    os << _it->first->to_string() << std::endl;
-    for(std::vector<unsigned>::iterator _it2 = m1[_it->first].begin();
-	_it2 != m1[_it->first].end(); ++_it2)
-      os << *_it2 << " ";
+  for(auto term_it : m1){
+    os << term_it.first->to_string()
+       << std::endl;
+    for(auto position : m1[term_it.first])
+      os << position << " ";
     os << std::endl;
   }
   return os;
 }
 
-std::ostream & HornClauses::printMatch2(std::ostream & os, Match2 & m1){
-  for(Match2::iterator _it = m1.begin(); _it != m1.end(); ++_it){
-    os << _it->first.first->to_string()
-       << " = " << _it->first.second->to_string() << std::endl;
-    for(std::vector<unsigned>::iterator _it2 = m1[_it->first].begin();
-	_it2 != m1[_it->first].end(); ++_it2)
-      std::cout << *_it2 << " ";
-    std::cout << std::endl;
+std::ostream & HornClauses::printMatch2(std::ostream & os, Match2 & m2){
+  for(auto equation_it : m2){
+    os << equation_it.first.first->to_string()
+       << " = " << equation_it.first.second->to_string()
+       << std::endl;
+    for(auto position : m2[equation_it.first])
+      os << position << " ";
+    os << std::endl;
   }
   return os;
 }

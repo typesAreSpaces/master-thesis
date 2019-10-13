@@ -36,7 +36,6 @@ class HornClauses{
   std::ostream &           printMatch2(std::ostream &, Match2 &);
   
  private:
-  static unsigned                  num_horn_clauses;
   std::vector<HornClause*>         horn_clauses;
   Match1                           mc1_antecedent, mc1_consequent;
   Match2                           mc2_antecedent, mc2_consequent;
@@ -51,7 +50,7 @@ class HornClauses{
   void mergeType2AndType3(HornClause *, HornClause *);
   void mergeType2AndType4(HornClause *, HornClause *);
   void simplifyHornClauses();
-  void makeMatches(HornClause *, unsigned);
+  void makeMatches(HornClause *, unsigned, bool);
   void combinationHelper(HornClause *);
   void orient(HornClause *);
   void mc2ConsequentAndmc2Antecedent(SetOfUnsignedPairs &, bool &);
