@@ -9,7 +9,7 @@ EUFInterpolant::EUFInterpolant(const z3::expr & e, const z3::sort & s) :
   auxiliar_closure(e.ctx(), e),
   original_closure(e.ctx(), e),
   cvt(e.ctx(), s),
-  horn_clauses(original_closure),
+  horn_clauses(original_closure, auxiliar_closure),
   contradiction(original_closure.getOriginalTerm(0),
 		original_closure.getOriginalTerm(0)){
 }
@@ -20,7 +20,7 @@ EUFInterpolant::EUFInterpolant(const z3::expr & e,
   auxiliar_closure(e.ctx(), e),
   original_closure(e.ctx(), e),
   cvt(e.ctx(), s),
-  horn_clauses(original_closure),
+  horn_clauses(original_closure, auxiliar_closure),
   contradiction(original_closure.getOriginalTerm(0),
 		original_closure.getOriginalTerm(0)){
 }
@@ -41,7 +41,7 @@ z3::expr EUFInterpolant::buildInterpolant(){
   // ------------------------------------
   // TODO: FIX THIS!
   // UPDATE: IT LOOKS LIKE IT'S DONE!
-  horn_clauses.conditionalElimination(auxiliar_closure);
+  horn_clauses.conditionalElimination();
   // ------------------------------------
   
   auto non_reducible_hs = horn_clauses.getHornClauses();
@@ -120,7 +120,9 @@ void EUFInterpolant::eliminationOfUncommonFSyms(){
     auto symbol_name = map_iterator.first;
     // We don't include in the Exposure method new introduced symbols
     // nor equalities, disequalities
-    if(symbol_name[0] != '=' && symbol_name != "distinct" && symbol_name[0] != '_'){
+    if(symbol_name[0] != '='
+       && symbol_name != "distinct"
+       && symbol_name[0] != '_'){
       auto locations = map_iterator.second;
       bool expose = false;
       for(auto location : locations)
@@ -130,12 +132,15 @@ void EUFInterpolant::eliminationOfUncommonFSyms(){
 	}
       if(expose){
 	unsigned number_of_locations = locations.size();
-	for(unsigned location_i = 0;  location_i < number_of_locations - 1; ++location_i){
-	  for(unsigned location_j = location_i + 1; location_j < number_of_locations; ++location_j){
+	for(unsigned location_i = 0;
+	    location_i < number_of_locations - 1;
+	    ++location_i){
+	  for(unsigned location_j = location_i + 1;
+	      location_j < number_of_locations;
+	      ++location_j){
 	    // Exposing two terms that have the same symbol name
 	    // Hmm not sure with original_closure
-	    horn_clauses.addHornClause(auxiliar_closure,
-				       auxiliar_closure.getOriginalTerm(locations[location_i]),
+	    horn_clauses.addHornClause(auxiliar_closure.getOriginalTerm(locations[location_i]),
 				       auxiliar_closure.getOriginalTerm(locations[location_j]),
 				       false); // Check but HornClauses needs to be revisited
 	  }
@@ -168,8 +173,7 @@ void EUFInterpolant::addNegativeHornClauses(){
       // Add HornClauses unfolding arguments
       // Let's check anyways
       assert(lhs_vertex->getArity() == rhs_vertex->getArity());
-      horn_clauses.addHornClause(auxiliar_closure,
-				 lhs_vertex,
+      horn_clauses.addHornClause(lhs_vertex,
 				 rhs_vertex,
 				 true); // Needds testing
     }
@@ -179,8 +183,7 @@ void EUFInterpolant::addNegativeHornClauses(){
       _antecedent.push_back(std::make_pair(lhs_vertex, rhs_vertex));
       // Add HornClauses 'directly' using the antecedent
       // and contradiction as consequent
-      horn_clauses.addHornClause(auxiliar_closure,
-				 _antecedent,
+      horn_clauses.addHornClause(_antecedent,
 				 contradiction,
 				 true); // Needs testing
     }

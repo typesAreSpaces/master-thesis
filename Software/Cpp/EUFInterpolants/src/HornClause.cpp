@@ -77,25 +77,25 @@ HornClause::HornClause(CongruenceClosure & cc,
 HornClause::~HornClause(){
 }
 
-// Joins the proper elements to the
-// UnionFind data structure
-// - If the elements are equal then
-//   'normalize' removes them from 'antecedent'
-// - Otherwise, it adds them in the congruence
-void HornClause::normalize(CongruenceClosure & cc){
-  // TODO: Check if this doesn't go out of bound (!!)
-  is_antecedent_common = true;
-  for(auto it = antecedent.begin(); it != antecedent.end(); ++it){
-    if(cc.getReprTerm(it->first) == cc.getReprTerm(it->second))
-      antecedent.erase(it);
-    else{
-      cc.merge(it->first->getId(), it->second->getId());
-      is_antecedent_common = is_antecedent_common
-	&& it->first->getSymbolCommonQ()
-	&& it->second->getSymbolCommonQ();
-    }
-  }
-}
+// // Joins the proper elements to the
+// // UnionFind data structure
+// // - If the elements are equal then
+// //   'normalize' removes them from 'antecedent'
+// // - Otherwise, it adds them in the congruence
+// void HornClause::normalize(CongruenceClosure & cc){
+//   // TODO: Check if this doesn't go out of bound (!!)
+//   is_antecedent_common = true;
+//   for(auto it = antecedent.begin(); it != antecedent.end(); ++it){
+//     if(cc.getReprTerm(it->first) == cc.getReprTerm(it->second))
+//       antecedent.erase(it);
+//     else{
+//       cc.merge(it->first->getId(), it->second->getId());
+//       is_antecedent_common = is_antecedent_common
+// 	&& it->first->getSymbolCommonQ()
+// 	&& it->second->getSymbolCommonQ();
+//     }
+//   }
+// }
 
 bool HornClause::checkTriviality(){
   return (local_equiv_class.find(consequent.first->getId())

@@ -19,7 +19,7 @@ class HornClause {
 	     std::vector<EquationTerm> &, EquationTerm &);
   ~HornClause();
   
-  void                        normalize(CongruenceClosure &);
+  // void                        normalize(CongruenceClosure &);
   bool                        checkTriviality();
 
   bool                        getAntecedentCommon();

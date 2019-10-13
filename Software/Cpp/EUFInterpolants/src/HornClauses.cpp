@@ -4,8 +4,9 @@
 
 unsigned HornClauses::num_horn_clauses = 0;
 
-HornClauses::HornClauses(const CongruenceClosure & original_closure) :
-  original_cc(original_closure)
+HornClauses::HornClauses(const CongruenceClosure & original_closure,
+			 CongruenceClosure & auxiliar_closure) :
+  original_cc(original_closure), auxiliar_cc(auxiliar_closure)
 {
 }
 
@@ -14,42 +15,38 @@ HornClauses::~HornClauses(){
     delete it;
 }
 
-void HornClauses::addHornClause(CongruenceClosure & auxiliar_closure,
-				Term* u, Term* v,
+void HornClauses::addHornClause(Term* u, Term* v,
 				bool is_disequation){
-  HornClause * hc = new HornClause(auxiliar_closure, u, v, is_disequation);
+  HornClause * hc = new HornClause(auxiliar_cc, u, v, is_disequation);
   if(!is_disequation){
-    hc->normalize(auxiliar_closure);
-    if(hc->checkTriviality())
+    if(hc->checkTriviality()){
       delete hc;
+      return;
+    }
   }
-  else{
-    horn_clauses.push_back(hc);
-    makeMatches(hc, num_horn_clauses);
-    ++num_horn_clauses;
-  }
-  auxiliar_closure.transferEqClassAndPreds(original_cc);
+  horn_clauses.push_back(hc);
+  makeMatches(hc, num_horn_clauses);
+  ++num_horn_clauses;
+  auxiliar_cc.transferEqClassAndPreds(original_cc);
 }
 
-void HornClauses::addHornClause(CongruenceClosure & auxiliar_closure,
-				std::vector<EquationTerm> & antecedent,
+void HornClauses::addHornClause(std::vector<EquationTerm> & antecedent,
 				EquationTerm & consequent,
 				bool is_disequation){
-  HornClause * hc = new HornClause(auxiliar_closure, antecedent, consequent);
+  HornClause * hc = new HornClause(auxiliar_cc, antecedent, consequent);
   if(!is_disequation){
-    hc->normalize(auxiliar_closure);
-    if(hc->checkTriviality())
+    if(hc->checkTriviality()){
       delete hc;
+      return;
+    }
   }
-  else{
-    horn_clauses.push_back(hc);
-    makeMatches(hc, num_horn_clauses);
-    ++num_horn_clauses;
-  }
-  auxiliar_closure.transferEqClassAndPreds(original_cc);
+  horn_clauses.push_back(hc);
+  makeMatches(hc, num_horn_clauses);
+  ++num_horn_clauses;
+  auxiliar_cc.transferEqClassAndPreds(original_cc);
 }
 
-void HornClauses::conditionalElimination(CongruenceClosure & auxiliar_closure){
+void HornClauses::conditionalElimination(){
   bool change = true;
   SetOfUnsignedPairs prev_combinations;
   unsigned old_horn_clauses_size, new_horn_clauses_size;
@@ -104,7 +101,7 @@ void HornClauses::conditionalElimination(CongruenceClosure & auxiliar_closure){
 	    for(auto it : reduced)
 	      for(unsigned i = 0; i < reduced_length[it.first]; ++i)
 		std::cout << *horn_clauses[it.second[i]] << std::endl;);
-  auxiliar_closure.transferEqClassAndPreds(original_cc);
+  auxiliar_cc.transferEqClassAndPreds(original_cc);
 }
 
 void HornClauses::mc2ConsequentAndmc2Antecedent(SetOfUnsignedPairs & prev_combinations,
@@ -425,17 +422,14 @@ void HornClauses::mergeType2AndType4(HornClause * h1, HornClause * h2){
   // Same as mergeType2AndType3
 }
 
-void HornClauses::combinationHelper(HornClause * hc, CongruenceClosure & cc){
-  DEBUG_MSG(std::cout << "Temporal Horn Clause " << *hc << std::endl;);
-  hc->normalize(cc);
-  DEBUG_MSG(std::cout << "New Horn Clause" << std::endl
-	    << *hc << std::endl;);
-	
+void HornClauses::combinationHelper(HornClause * hc){
+  
   if(hc->checkTriviality()){
     delete hc;
     DEBUG_MSG(std::cout << "It was deleted" << std::endl << std::endl;);
     return;
   }
+  
   DEBUG_MSG(std::cout << "It was added!" << std::endl << std::endl;);
 	
   orient(hc);

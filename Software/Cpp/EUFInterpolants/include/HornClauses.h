@@ -17,19 +17,17 @@ typedef std::set<std::pair<unsigned, unsigned> > SetOfUnsignedPairs;
 
 class HornClauses{
  public:
-  HornClauses(const CongruenceClosure &);
+  HornClauses(const CongruenceClosure &, CongruenceClosure &);
   ~HornClauses();
   
   // Adds a Horn clause using two terms of the form f(t_1, ..., t_n) and f(t'_1, ..., t'_n)
-  void                     addHornClause(CongruenceClosure &,
-					 Term*, Term*,
+  void                     addHornClause(Term*, Term*,
 					 bool);
   // Adds a Horn Clause using a vector of EquationTerms as antecedent
   // and an EquationTerm as conclusion
-  void                     addHornClause(CongruenceClosure &,
-					 std::vector<EquationTerm> &, EquationTerm &,
+  void                     addHornClause(std::vector<EquationTerm> &, EquationTerm &,
 					 bool);
-  void                     conditionalElimination(CongruenceClosure &);
+  void                     conditionalElimination();
   unsigned                 size();
   std::vector<HornClause*> getHornClauses();
   std::vector<HornClause*> getReducibleHornClauses();
@@ -45,6 +43,7 @@ class HornClauses{
   Match2                           reduced;
   std::map<EquationTerm, unsigned> reduced_length;
   const CongruenceClosure &        original_cc;
+  CongruenceClosure                auxiliar_cc;
   
   void mergeType2_1AndType3(HornClause *, HornClause *);
   void mergeType2_1AndType4(HornClause *, HornClause *);
@@ -53,7 +52,7 @@ class HornClauses{
   void mergeType2AndType4(HornClause *, HornClause *);
   void simplifyHornClauses();
   void makeMatches(HornClause *, unsigned);
-  void combinationHelper(HornClause *, CongruenceClosure &);
+  void combinationHelper(HornClause *);
   void orient(HornClause *);
   void mc2ConsequentAndmc2Antecedent(SetOfUnsignedPairs &, bool &);
   void mc1ConsequentAndmc1Antecedent(SetOfUnsignedPairs &, bool &);
