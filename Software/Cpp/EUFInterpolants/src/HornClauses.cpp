@@ -16,6 +16,8 @@ HornClauses::~HornClauses(){
 void HornClauses::addHornClause(Term* u, Term* v,
 				bool is_disequation){
   HornClause * hc = new HornClause(auxiliar_cc, u, v, is_disequation);
+  auxiliar_cc.transferEqClassAndPreds(original_cc);
+  
   if(!is_disequation){
     if(hc->checkTriviality()){
       delete hc;
@@ -26,14 +28,14 @@ void HornClauses::addHornClause(Term* u, Term* v,
   orient(hc);
   horn_clauses.push_back(hc);
   makeMatches(hc, -1, true);
-  
-  auxiliar_cc.transferEqClassAndPreds(original_cc);
 }
 
 void HornClauses::addHornClause(std::vector<EquationTerm> & antecedent,
 				EquationTerm & consequent,
 				bool is_disequation){
   HornClause * hc = new HornClause(auxiliar_cc, antecedent, consequent);
+  auxiliar_cc.transferEqClassAndPreds(original_cc);
+  
   if(!is_disequation){
     if(hc->checkTriviality()){
       delete hc;
@@ -44,8 +46,6 @@ void HornClauses::addHornClause(std::vector<EquationTerm> & antecedent,
   orient(hc);
   horn_clauses.push_back(hc);
   makeMatches(hc, -1, true);
-  
-  auxiliar_cc.transferEqClassAndPreds(original_cc);
 }
 
 void HornClauses::conditionalElimination(){

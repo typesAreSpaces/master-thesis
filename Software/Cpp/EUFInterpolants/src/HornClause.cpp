@@ -1,7 +1,10 @@
 #include "HornClause.h"
 
+// HornClause produces a horn clause for the form
+// /\_i repr(u_i) = repr(v_i) => repr(f(u_1, ..., u_n)) = repr(f(v_1, ..., v_n))
+// such that Term u = f(u_1, ..., u_n), Term v = f(v_1, ..., v_n)
 // It's assumed the arities of Term * u,
-// Term * v are the same
+// Term * v are the same (also their signatures ...)
 HornClause::HornClause(CongruenceClosure & cc,
 		       Term * u, Term * v,
 		       bool is_disequation) :
@@ -48,6 +51,8 @@ HornClause::HornClause(CongruenceClosure & cc,
   }
 
   // Normalization needed here
+  // or perhaps in the process of creating the horn clause
+  // (which involves performing a congruence closure)
   
   this->local_equiv_class = cc.getDeepEquivalenceClass();
 }
@@ -70,6 +75,8 @@ HornClause::HornClause(CongruenceClosure & cc,
     cc.getReprTerm(consequent.second)->getSymbolCommonQ();
 
   // Normalization needed here
+  // or perhaps in the process of creating the horn clause
+  // (which involves performing a congruence closure)
   
   this->local_equiv_class = cc.getDeepEquivalenceClass();
 }
@@ -125,11 +132,22 @@ UnionFind & HornClause::getLocalUF(){
   return local_equiv_class;
 }
 
+// -------------------------------------------------------------------
+// Precondition:
 // This comparison assumes the consequent of
 // hc1 and hc2 are equal
+// -------------------------------------------------------------------
+// Definition: > \in HornClause \times HornClause
+// Let hc1 = (/\_i u_i = v_i) => a_1 = a_2
+// Let hc2 = (/\_j u_j^' = v_j^') => b_1 = b_2
+// hc1 > hc2 iff (/\_j u_j^' = v_j^') => (/\_i u_i = v_i_)
+//               and (repr(a_1) = repr(a_2)) = (repr(b_1) = repr(b_2))
+//               and i > j
+// -------------------------------------------------------------------
 // If it finds an element in the antecedent of hc1
 // but not in the antecedent of hc2, then the
 // operator returns false, true otherwise
+// -------------------------------------------------------------------
 bool operator > (HornClause & hc1, HornClause & hc2){
 
   std::vector<EquationTerm> & hc1Antecedent = hc1.getAntecedent();
@@ -138,7 +156,7 @@ bool operator > (HornClause & hc1, HornClause & hc2){
   for(auto it : hc1Antecedent)
     if(hc2UF.find(it.first->getId()) != hc2UF.find(it.second->getId()))
       return false;
-  return true;
+  return hc1Antecedent.size() > hc2.getAntecedent().size();
 }
 
 bool operator < (HornClause & hc1, HornClause & hc2){

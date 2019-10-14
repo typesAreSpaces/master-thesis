@@ -32,6 +32,7 @@ class HornClause {
   
   friend bool                 operator <(HornClause &, HornClause &);
   friend bool                 operator >(HornClause &, HornClause &);
+  
   friend std::ostream &       operator << (std::ostream &, const HornClause &);
   
  private:
