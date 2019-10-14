@@ -19,7 +19,6 @@ class HornClause {
 	     std::vector<EquationTerm> &, EquationTerm &);
   ~HornClause();
   
-  // void                        normalize(CongruenceClosure &);
   bool                        checkTriviality();
 
   bool                        getAntecedentCommon();
@@ -29,7 +28,6 @@ class HornClause {
   std::vector<EquationTerm> & getAntecedent();
   EquationTerm &              getConsequent();
   UnionFind &                 getLocalUF();
-  void                        orient();
   
   friend bool                 operator <(HornClause &, HornClause &);
   friend bool                 operator >(HornClause &, HornClause &);
@@ -41,6 +39,7 @@ class HornClause {
   std::vector<EquationTerm> antecedent;
   UnionFind                 local_equiv_class;
   EquationTerm              consequent;
+  void                      orient();
 };
 
 #endif

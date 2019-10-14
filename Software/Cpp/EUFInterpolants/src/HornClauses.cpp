@@ -25,7 +25,6 @@ void HornClauses::addHornClause(Term* u, Term* v,
     }
   }
 
-  hc->orient();
   horn_clauses.push_back(hc);
   makeMatches(hc, -1, true);
 }
@@ -43,7 +42,6 @@ void HornClauses::addHornClause(std::vector<EquationTerm> & antecedent,
     }
   }
 
-  hc->orient();
   horn_clauses.push_back(hc);
   makeMatches(hc, -1, true);
 }
@@ -454,7 +452,6 @@ void HornClauses::combinationHelper(HornClause * hc){
   
   DEBUG_MSG(std::cout << "It was added!" << std::endl << std::endl;);
 	
-  hc->orient();
   horn_clauses.push_back(hc);
   // makeMatches is called for all the additions
   // done by combinationHelper inside

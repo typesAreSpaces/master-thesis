@@ -54,6 +54,7 @@ HornClause::HornClause(CongruenceClosure & cc,
   // or perhaps in the process of creating the horn clause
   // (which involves performing a congruence closure)
   
+  orient();
   this->local_equiv_class = cc.getDeepEquivalenceClass();
 }
   
@@ -77,7 +78,8 @@ HornClause::HornClause(CongruenceClosure & cc,
   // Normalization needed here
   // or perhaps in the process of creating the horn clause
   // (which involves performing a congruence closure)
-  
+
+  orient();
   this->local_equiv_class = cc.getDeepEquivalenceClass();
 }
 
