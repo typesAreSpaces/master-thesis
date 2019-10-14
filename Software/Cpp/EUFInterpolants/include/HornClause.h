@@ -29,6 +29,7 @@ class HornClause {
   std::vector<EquationTerm> & getAntecedent();
   EquationTerm &              getConsequent();
   UnionFind &                 getLocalUF();
+  void                        orient();
   
   friend bool                 operator <(HornClause &, HornClause &);
   friend bool                 operator >(HornClause &, HornClause &);

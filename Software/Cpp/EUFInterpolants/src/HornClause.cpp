@@ -132,17 +132,39 @@ UnionFind & HornClause::getLocalUF(){
   return local_equiv_class;
 }
 
+
+// Rearranges a Horn Clauses to the form
+// (/\_i u_i = v_i) => a = b, where u_i >= v_i and a >= b
+// The < relation on (Term, Term) used is
+// defined at Term.cpp
+void HornClause::orient(){
+  
+  std::vector<EquationTerm> & antecedent = getAntecedent();
+  EquationTerm & consequent = getConsequent();
+  Term * _u, * _v;
+	
+  for(auto & it : antecedent){
+    _u = it.first, _v = it.second;
+    if(*_u < *_v)
+      it = std::make_pair(_v, _u);
+  }
+  
+  _u = consequent.first, _v = consequent.second; 
+  if(*_u < *_v)
+    consequent = std::make_pair(_v, _u);
+}
+
 // -------------------------------------------------------------------
 // Precondition:
 // This comparison assumes the consequent of
 // hc1 and hc2 are equal
 // -------------------------------------------------------------------
 // Definition: > \in HornClause \times HornClause
-// Let hc1 = (/\_i u_i = v_i) => a_1 = a_2
-// Let hc2 = (/\_j u_j^' = v_j^') => b_1 = b_2
-// hc1 > hc2 iff (/\_j u_j^' = v_j^') => (/\_i u_i = v_i_)
+// Let hc1 = (/\_i^m u_i = v_i) => a_1 = a_2
+// Let hc2 = (/\_j^n u_j^' = v_j^') => b_1 = b_2
+// hc1 > hc2 iff (/\_j^n u_j^' = v_j^') => (/\_i^m u_i = v_i_)
 //               and (repr(a_1) = repr(a_2)) = (repr(b_1) = repr(b_2))
-//               and i > j
+//               and n > m
 // -------------------------------------------------------------------
 // If it finds an element in the antecedent of hc1
 // but not in the antecedent of hc2, then the

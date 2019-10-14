@@ -69,7 +69,8 @@ CongruenceClosure::CongruenceClosure(z3::context & ctx,
   init();
 }
 
-CongruenceClosure::~CongruenceClosure(){}
+CongruenceClosure::~CongruenceClosure(){
+}
 
 void CongruenceClosure::identifyCommonSymbols(){
   Term * current_term = getReprTerm(root_num), * temp_current_term;

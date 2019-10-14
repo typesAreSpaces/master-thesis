@@ -33,7 +33,7 @@ $(ODIR)/%.o: $(SDIR)/%.cpp $(DEPS)
 	$(CC) -g -c -o $@  $(FLAGS) $< -Wall
 
 main: $(OBJS) $(Z3DIR)/build/libz3.$(Z3EXT)
-	$(CC) -o $@ $^ -lpthread -Wall
+	$(CC) -g -o $@ $^ -lpthread -Wall
 
 check_correctness_congruence_closure:
 	$(CC) -o $(CONGRUENCE_CLOSURE_TEST)/$@ $(CONGRUENCE_CLOSURE_TEST)/congruence_closure_performance.cpp -I./include -I./src -std=c++11 obj/CircularList.o obj/CongruenceClosure.o obj/Signature.o obj/SignatureTable.o obj/Terms.o obj/UnionFind.o obj/Term.o $(Z3DIR)/build/libz3.$(Z3EXT)
@@ -68,6 +68,23 @@ run : main
 #	./main ./Users/joseabelcastellanosjoo/Documents/QF_UF/2018-Goel-hwbench/QF_UF_firewire_tree.3.prop2_ab_reg_max.smt2 f
 #	./main ./Users/joseabelcastellanosjoo/Documents/QF_UF/2018-Goel-hwbench/QF_UF_needham.3.prop4_ab_reg_max.smt2 f
 
+debug : main
+#	gdb --args ./main ./tests/smt2lib_2/kapurEUFExample.smt2 v
+	gdb --args ./main ./tests/smt2lib_2/simple.smt2 f 
+#	gdb --args ./main ./tests/smt2lib_2/simple2.smt2 f
+#	gdb --args ./main ./tests/smt2lib_2/kapurEUFExample2.smt2 f
+#	gdb --args ./main ./Users/joseabelcastellanosjoo/Documents/QF_UF/2018-Goel-hwbench/QF_UF_firewire_tree.5.prop3_ab_reg_max.smt2 f
+#	gdb --args ./main ./Users/joseabelcastellanosjoo/Documents/QF_UF/2018-Goel-hwbench/QF_UF_firewire_tree.3.prop2_ab_reg_max.smt2 f
+#	gdb --args ./main ./Users/joseabelcastellanosjoo/Documents/QF_UF/2018-Goel-hwbench/QF_UF_needham.3.prop4_ab_reg_max.smt2 f
+
+valgrind : main
+#	valgrind ./main ./tests/smt2lib_2/kapurEUFExample.smt2 v
+	valgrind ./main ./tests/smt2lib_2/simple.smt2 f 
+#	valgrind ./main ./tests/smt2lib_2/simple2.smt2 f
+#	valgrind ./main ./tests/smt2lib_2/kapurEUFExample2.smt2 f
+#	valgrind ./main ./Users/joseabelcastellanosjoo/Documents/QF_UF/2018-Goel-hwbench/QF_UF_firewire_tree.5.prop3_ab_reg_max.smt2 f
+#	valgrind ./main ./Users/joseabelcastellanosjoo/Documents/QF_UF/2018-Goel-hwbench/QF_UF_firewire_tree.3.prop2_ab_reg_max.smt2 f
+#	valgrind ./main ./Users/joseabelcastellanosjoo/Documents/QF_UF/2018-Goel-hwbench/QF_UF_needham.3.prop4_ab_reg_max.smt2 f
 
 .PHONY: clean
 clean:

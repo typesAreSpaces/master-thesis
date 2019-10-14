@@ -42,17 +42,17 @@ class HornClauses{
   Match2                           reduced;
   std::map<EquationTerm, unsigned> reduced_length;
   const CongruenceClosure &        original_cc;
-  CongruenceClosure                auxiliar_cc;
+  CongruenceClosure &              auxiliar_cc;
   
   void mergeType2_1AndType3(HornClause *, HornClause *);
   void mergeType2_1AndType4(HornClause *, HornClause *);
   void mergeType2AndType2(HornClause *, HornClause *);
   void mergeType2AndType3(HornClause *, HornClause *);
   void mergeType2AndType4(HornClause *, HornClause *);
+  
   void simplifyHornClauses();
   void makeMatches(HornClause *, unsigned, bool);
   void combinationHelper(HornClause *);
-  void orient(HornClause *);
   void mc2ConsequentAndmc2Antecedent(SetOfUnsignedPairs &, bool &);
   void mc1ConsequentAndmc1Antecedent(SetOfUnsignedPairs &, bool &);
   void mc1ConsequentAndmc2Antecedent(SetOfUnsignedPairs &, bool &);

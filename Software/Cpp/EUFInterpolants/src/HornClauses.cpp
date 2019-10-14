@@ -25,7 +25,7 @@ void HornClauses::addHornClause(Term* u, Term* v,
     }
   }
 
-  orient(hc);
+  hc->orient();
   horn_clauses.push_back(hc);
   makeMatches(hc, -1, true);
 }
@@ -43,7 +43,7 @@ void HornClauses::addHornClause(std::vector<EquationTerm> & antecedent,
     }
   }
 
-  orient(hc);
+  hc->orient();
   horn_clauses.push_back(hc);
   makeMatches(hc, -1, true);
 }
@@ -232,7 +232,8 @@ void HornClauses::mc1ConsequentAndmc1Antecedent2(SetOfUnsignedPairs & prev_combi
   }
 }
 
-// This method removes unnecessary extra Horn Clauses
+// This method removes unnecessary
+// extra Horn Clauses
 // Implements the following rule:
 // C, D -> a     C -> a
 // ---------------------
@@ -259,19 +260,22 @@ void HornClauses::simplifyHornClauses(){
 	unsigned i_position = it.second[i],
 	  j_position = it.second[j],
 	  l_position = it.second[length - 1];
+	
 	if(*horn_clauses[i_position] > *horn_clauses[j_position]){
 	  change = true;
 	  swap(horn_clauses, j_position, l_position);
 	  --length;
 	}
-	else if(*horn_clauses[i_position] < *horn_clauses[j_position]){
-	  change = true;
-	  swap(horn_clauses, i_position, j_position);
-	  swap(horn_clauses, j_position, l_position);
-	  --length;
+	else{
+	  if(*horn_clauses[i_position] < *horn_clauses[j_position]){
+	    change = true;
+	    swap(horn_clauses, i_position, j_position);
+	    swap(horn_clauses, j_position, l_position);
+	    --length;
+	  }
+	  else
+	    ++j; 
 	}
-	else
-	  ++j;
       }
     }
     reduced_length[it.first] = length;
@@ -450,7 +454,7 @@ void HornClauses::combinationHelper(HornClause * hc){
   
   DEBUG_MSG(std::cout << "It was added!" << std::endl << std::endl;);
 	
-  orient(hc);
+  hc->orient();
   horn_clauses.push_back(hc);
   // makeMatches is called for all the additions
   // done by combinationHelper inside
@@ -479,27 +483,6 @@ std::vector<HornClause*> HornClauses::getReducibleHornClauses(){
     for(unsigned index = 0; index < reduced_length[it.first]; ++index)
       new_hcs.push_back(horn_clauses[it.second[index]]);
   return new_hcs;
-}
-
-// Rearranges a Horn Clauses to the form
-// (/\_i u_i = v_i) => a = b, where u_i >= v_i and a >= b
-// The < relation on (Term, Term) used is
-// defined at Term.cpp
-void HornClauses::orient(HornClause * hc){
-  
-  std::vector<EquationTerm> & antecedent = hc->getAntecedent();
-  EquationTerm & consequent = hc->getConsequent();
-  Term * _u, * _v;
-	
-  for(auto & it : antecedent){
-    _u = it.first, _v = it.second; 
-    if(*_u < *_v)
-      it = std::make_pair(_v, _u);
-  }
-  
-  _u = consequent.first, _v = consequent.second; 
-  if(*_u < *_v)
-    consequent = std::make_pair(_v, _u);
 }
 
 template<typename A>
