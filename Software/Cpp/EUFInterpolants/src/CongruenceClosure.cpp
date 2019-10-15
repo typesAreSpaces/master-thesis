@@ -8,8 +8,6 @@
 #define BEFORE_CC       false
 #define AFTER_CC        false
 
-#define DEBUG_CC(X, Y) if(X) { Y }
-
 void CongruenceClosure::init(){
   // Parsing the equation 
   unsigned lhs, rhs;
@@ -22,35 +20,38 @@ void CongruenceClosure::init(){
     
     if(lhs_repr->getLength() < rhs_repr->getLength()){
       merge(rhs_repr, lhs_repr);
-      DEBUG_CC(TRACE_MERGE,
-	       std::cout << "==========================================" << std::endl;
-	       std::cout << "Merging " << std::endl;
-	       std::cout << lhs_repr->to_string() << std::endl;
-	       std::cout << " to " << std::endl;
-	       std::cout << rhs_repr->to_string() << std::endl;
-	       std::cout << "==========================================" << std::endl;)
-	}
+#if TRACE_MERGE
+      std::cout << "==========================================" << std::endl;
+      std::cout << "Merging " << std::endl;
+      std::cout << lhs_repr->to_string() << std::endl;
+      std::cout << " to " << std::endl;
+      std::cout << rhs_repr->to_string() << std::endl;
+      std::cout << "==========================================" << std::endl;
+#endif
+    }
     else{
       merge(lhs_repr, rhs_repr);
-      DEBUG_CC(TRACE_MERGE,
-	       std::cout << "==========================================" << std::endl;
-	       std::cout << "Merging " << std::endl;
-	       std::cout << rhs_repr->to_string() << std::endl;
-	       std::cout << " to " << std::endl;
-	       std::cout << lhs_repr->to_string() << std::endl;
-	       std::cout << "==========================================" << std::endl;)
-	}
-    DEBUG_CC(TRACE_EC,
-	     std::cout << "==========================================" << std::endl;
-	     std::cout << "Terms and ID's" << std::endl;
-	     for(unsigned i = 0; i < Term::getTotalNumTerm(); ++i)
-	       std::cout << i << " " << getReprTerm(i)->to_string() << std::endl;
-	     std::cout << "==========================================" << std::endl;
-	     std::cout << "==========================================" << std::endl;
-	     std::cout << "Current Equivalence Class" << std::endl;
-	     std::cout << equivalence_class << std::endl;
-	     std::cout << "==========================================" << std::endl;)
-      }
+#if TRACE_MERGE
+      std::cout << "==========================================" << std::endl;
+      std::cout << "Merging " << std::endl;
+      std::cout << rhs_repr->to_string() << std::endl;
+      std::cout << " to " << std::endl;
+      std::cout << lhs_repr->to_string() << std::endl;
+      std::cout << "==========================================" << std::endl;
+#endif
+    }
+#if TRACE_EC
+    std::cout << "==========================================" << std::endl;
+    std::cout << "Terms and ID's" << std::endl;
+    for(unsigned i = 0; i < Term::getTotalNumTerm(); ++i)
+      std::cout << i << " " << getReprTerm(i)->to_string() << std::endl;
+    std::cout << "==========================================" << std::endl;
+    std::cout << "==========================================" << std::endl;
+    std::cout << "Current Equivalence Class" << std::endl;
+    std::cout << equivalence_class << std::endl;
+    std::cout << "==========================================" << std::endl;
+#endif
+  }
   identifyCommonSymbols();
   buildCongruenceClosure();
 }
@@ -138,14 +139,14 @@ void CongruenceClosure::buildCongruenceClosure(){
       pending.push_back(term);
   }
 
-  DEBUG_CC(BEFORE_CC,
-	   std::cout<< "Before Congruence Closure" << std::endl;
-	   for(auto x : terms)
-	     if(x->to_string()[0] != '_')
-	       std::cout << "Term: " << x->to_string()
-			 << " Original term id: " << x->getId()
-			 << " Representative term id: " << getReprTerm(x)->getId() << std::endl;
-	   )
+#if BEFORE_CC
+  std::cout<< "Before Congruence Closure" << std::endl;
+  for(auto x : terms)
+    if(x->to_string()[0] != '_')
+      std::cout << "Term: " << x->to_string()
+		<< " Original term id: " << x->getId()
+		<< " Representative term id: " << getReprTerm(x)->getId() << std::endl;
+#endif
   
   while(!pending.empty()){
     combine.clear();
@@ -153,21 +154,23 @@ void CongruenceClosure::buildCongruenceClosure(){
       try{
 	Term * already_there = sigTable.query(term, equivalence_class);
 	combine.push_back(std::make_pair(term, already_there));
-	DEBUG_CC(TRACE_COMBINE,
-		 std::cout << "==========================================" << std::endl;
-		 std::cout << "Inserting to Combine" << std::endl;
-		 std::cout << term->to_string() << " and " << std::endl;
-		 std::cout << already_there->to_string() << std::endl;
-		 std::cout << "==========================================" << std::endl;)
-	  }
+#if TRACE_COMBINE
+	std::cout << "==========================================" << std::endl;
+	std::cout << "Inserting to Combine" << std::endl;
+	std::cout << term->to_string() << " and " << std::endl;
+	std::cout << already_there->to_string() << std::endl;
+	std::cout << "==========================================" << std::endl;
+#endif
+      }
       catch (const char * msg){
 	sigTable.enter(term, equivalence_class);
-	DEBUG_CC(TRACE_SIG_TABLE,
-		 std::cout << "==========================================" << std::endl;
-		 std::cout << "Current Signature Table" << std::endl;
-		 std::cout << sigTable << std::endl;
-		 std::cout << "==========================================" << std::endl;)
-	  }
+#if TRACE_SIG_TABLE
+	std::cout << "==========================================" << std::endl;
+	std::cout << "Current Signature Table" << std::endl;
+	std::cout << sigTable << std::endl;
+	std::cout << "==========================================" << std::endl;
+#endif
+      }
     }
     pending.clear();
     for(auto pair_terms : combine){
@@ -191,24 +194,25 @@ void CongruenceClosure::buildCongruenceClosure(){
 	  } while(predecessor_it != list_find_v.begin());
 	}
 	merge(find_w, find_v);
-	DEBUG_CC(TRACE_MERGE,
-		 std::cout << "========================================" << std::endl;
-		 std::cout << "Merging " << std::endl;
-		 std::cout << find_w->to_string() << std::endl;
-		 std::cout << " to " << std::endl;
-		 std::cout << find_v->to_string() << std::endl;
-		 std::cout << "========================================" << std::endl;)
-	  }
+#if TRACE_MERGE
+	std::cout << "========================================" << std::endl;
+	std::cout << "Merging " << std::endl;
+	std::cout << find_w->to_string() << std::endl;
+	std::cout << " to " << std::endl;
+	std::cout << find_v->to_string() << std::endl;
+	std::cout << "========================================" << std::endl;
+#endif
+      }
     }
   }
-  DEBUG_CC(AFTER_CC,
-	   std::cout<< "After Congruence Closure" << std::endl;
-	   for(auto x : terms)
-	     if(x->to_string()[0] != '_')
-	       std::cout << "Term: " << x->to_string()
-			 << " Original term id: " << x->getId()
-			 << " Representative term id: " << getReprTerm(x)->getId() << std::endl;
-	   )
+#if AFTER_CC
+  std::cout<< "After Congruence Closure" << std::endl;
+  for(auto x : terms)
+    if(x->to_string()[0] != '_')
+      std::cout << "Term: " << x->to_string()
+		<< " Original term id: " << x->getId()
+		<< " Representative term id: " << getReprTerm(x)->getId() << std::endl;
+#endif
 }
 
 bool CongruenceClosure::checkCorrectness(){

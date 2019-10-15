@@ -1,7 +1,5 @@
 #include "EUFInterpolant.h"
-#define DEBUGGING false
-#define DEBUG_MSG(X,Y) if(X){Y}
-
+#define DEBUG_EUFINTERPOLANT false
 
 typedef std::pair<Term*, Term*> EquationTerm;
 
@@ -79,14 +77,12 @@ std::vector<HornClause*> EUFInterpolant::getHornClauses(){
 }
 
 void EUFInterpolant::setCommonRepresentatives(){
-
-#if DEBUGGING
+#if DEBUG_EUFINTERPOLANT
   for(auto term : original_closure.getTerms())
     std::cout << "Original: " << term->to_string() << std::endl
 	      << "Repr: " << original_closure.getReprTerm(term)->to_string()
 	      << std::endl << std::endl;
 #endif
-  
   for(auto term : original_closure.getTerms()){
     Term * term_repr = original_closure.getReprTerm(term);
     // A rotation between the current 
@@ -95,7 +91,7 @@ void EUFInterpolant::setCommonRepresentatives(){
     // 2) the current term has a smaller arity
     if(term->getSymbolCommonQ() && term->getArity() < term_repr->getArity()){
       original_closure.rotate(term, term_repr);
-#if DEBUGGING
+#if DEBUG_EUFINTERPOLANT
       std::cout << "A rotation occurred between " << std::endl
 		<< "-> " << *term << std::endl
 		<< "and\n"
@@ -104,7 +100,7 @@ void EUFInterpolant::setCommonRepresentatives(){
     }
   }
 
-#if DEBUGGING
+#if DEBUG_EUFINTERPOLANT
   for(auto term : original_closure.getTerms())
     std::cout << "Original: " << term->to_string() << std::endl
 	      << "Repr: " << original_closure.getReprTerm(term)->to_string()
