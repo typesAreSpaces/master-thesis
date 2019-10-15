@@ -149,6 +149,7 @@ void CongruenceClosure::buildCongruenceClosure(){
 #endif
   
   while(!pending.empty()){
+    
     combine.clear();
     for(auto term : pending){
       try{
@@ -172,39 +173,41 @@ void CongruenceClosure::buildCongruenceClosure(){
 #endif
       }
     }
+    
     pending.clear();
     for(auto pair_terms : combine){
       Term * v = pair_terms.first,* w = pair_terms.second;
-      Term * find_v = getReprTerm(v),* find_w = getReprTerm(w);
-      if(find_v != find_w){
-	// Invariant find_v->getLength() <= find_w->getLengt()
-	if(find_v->getLength() > find_w->getLength()){
-	  Term * temp_swap = find_v;
-	  find_v = find_w;
-	  find_w = temp_swap;
+      Term * repr_v = getReprTerm(v),* repr_w = getReprTerm(w);
+      if(repr_v != repr_w){
+	// Invariant repr_v->getLength() <= repr_w->getLengt()
+	if(repr_v->getLength() > repr_w->getLength()){
+	  Term * temp_swap = repr_v;
+	  repr_v = repr_w;
+	  repr_w = temp_swap;
 	}
-	auto & list_find_v = find_v->getPredecessors();
-	if(find_v->getLength() != 0){
-	  CircularList<Term*>::iterator predecessor_it(list_find_v.begin());
+	auto & list_repr_v = repr_v->getPredecessors();
+	if(repr_v->getLength() != 0){
+	  CircularList<Term*>::iterator predecessor_it(list_repr_v.begin());
 	  do{
 	    auto predecessor = (*predecessor_it).data;
 	    sigTable.remove(predecessor, equivalence_class);
 	    pending.push_back(predecessor);
 	    ++predecessor_it;
-	  } while(predecessor_it != list_find_v.begin());
+	  } while(predecessor_it != list_repr_v.begin());
 	}
-	merge(find_w, find_v);
+	merge(repr_w, repr_v);
 #if TRACE_MERGE
 	std::cout << "========================================" << std::endl;
 	std::cout << "Merging " << std::endl;
-	std::cout << find_w->to_string() << std::endl;
+	std::cout << repr_w->to_string() << std::endl;
 	std::cout << " to " << std::endl;
-	std::cout << find_v->to_string() << std::endl;
+	std::cout << repr_v->to_string() << std::endl;
 	std::cout << "========================================" << std::endl;
 #endif
       }
     }
   }
+  
 #if AFTER_CC
   std::cout<< "After Congruence Closure" << std::endl;
   for(auto x : terms)
