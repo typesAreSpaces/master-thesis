@@ -5,6 +5,7 @@
 #include <vector>
 #include <set>
 #include <utility>
+#include <algorithm>
 #include "Term.h"
 #include "CongruenceClosure.h"
 
@@ -40,6 +41,7 @@ class HornClause {
   UnionFind                 local_equiv_class;
   EquationTerm              consequent;
   void                      orient();
+  static bool               compareEquations(const EquationTerm &, const EquationTerm &);
 };
 
 #endif

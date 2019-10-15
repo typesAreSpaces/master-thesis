@@ -15,14 +15,15 @@ HornClause::HornClause(CongruenceClosure & cc,
   
   unsigned _arity = u->getArity();
   assert(_arity == v->getArity());
-  
   const std::vector<Term*> & successors_u = u->getSuccessors(),
     & successors_v = v->getSuccessors();
-  
-  for(unsigned index = 0; index < _arity; ++index){
 
-    iterator_lhs = cc.getReprTerm(successors_u[index]);
-    iterator_rhs = cc.getReprTerm(successors_v[index]);
+  // ---------------------------------------------
+  // This part effectively orients the Horn Clause
+  for(unsigned index_arity = 0; index_arity < _arity; ++index_arity){
+
+    iterator_lhs = cc.getReprTerm(successors_u[index_arity]);
+    iterator_rhs = cc.getReprTerm(successors_v[index_arity]);
     
     if(*iterator_lhs >= *iterator_rhs)
       antecedent.push_back(std::make_pair(iterator_lhs, iterator_rhs));
@@ -32,6 +33,7 @@ HornClause::HornClause(CongruenceClosure & cc,
     is_antecedent_common = is_antecedent_common
       && iterator_lhs->getSymbolCommonQ() && iterator_rhs->getSymbolCommonQ();
   }
+  // ---------------------------------------------
   
   if(is_disequation){
     consequent = std::make_pair(cc.getOriginalTerm(0),
@@ -41,18 +43,22 @@ HornClause::HornClause(CongruenceClosure & cc,
   else{
     iterator_lhs = cc.getReprTerm(u);
     iterator_rhs = cc.getReprTerm(v);
-  
+    // ---------------------------------------------
+    // This part effectively orients the Horn Clause
     if(*iterator_lhs >= *iterator_rhs)
       consequent = std::make_pair(iterator_lhs, iterator_rhs);
     else
       consequent = std::make_pair(iterator_rhs, iterator_lhs);
+    // ---------------------------------------------
     is_consequent_common = is_consequent_common
       && iterator_lhs->getSymbolCommonQ() && iterator_rhs->getSymbolCommonQ();
   }
 
-  // Normalization needed here
-  // or perhaps in the process of creating the horn clause
-  // (which involves performing a congruence closure)
+  std::sort(antecedent.begin(), antecedent.end(), compareEquations);
+
+  // // Normalization needed here
+  // // or perhaps in the process of creating the horn clause
+  // // (which involves performing a congruence closure)
 
   // // Joins the proper elements to the
   // // UnionFind data structure
@@ -74,7 +80,6 @@ HornClause::HornClause(CongruenceClosure & cc,
   //   }
   // }
   
-  orient();
   this->local_equiv_class = cc.getDeepEquivalenceClass();
 }
   
@@ -98,7 +103,7 @@ HornClause::HornClause(CongruenceClosure & cc,
   // Normalization needed here
   // or perhaps in the process of creating the horn clause
   // (which involves performing a congruence closure)
-
+  
   orient();
   this->local_equiv_class = cc.getDeepEquivalenceClass();
 }
@@ -154,6 +159,11 @@ void HornClause::orient(){
   _u = consequent.first, _v = consequent.second; 
   if(*_u < *_v)
     consequent = std::make_pair(_v, _u);
+}
+
+bool HornClause::compareEquations(const EquationTerm & eq1, const EquationTerm & eq2){
+  return std::min(eq1.first->getLength(), eq1.second->getLength())
+    > std::min(eq2.first->getLength(), eq2.second->getLength());
 }
 
 // -------------------------------------------------------------------

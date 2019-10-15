@@ -1,15 +1,17 @@
 #include "CongruenceClosure.h"
 
-#define TRACE_MERGE     false
-#define TRACE_COMBINE   false
-#define TRACE_PENDING   false
-#define TRACE_EC        false
-#define TRACE_SIG_TABLE false
-#define BEFORE_CC       false
-#define AFTER_CC        false
+#define TRACE_MERGE       false
+#define TRACE_COMBINE     false
+#define TRACE_PENDING     false
+#define TRACE_EC          false
+#define TRACE_SIG_TABLE   false
+#define BEFORE_CC         false
+#define AFTER_CC          false
+#define CHECK_CORRECTNESS false
 
 void CongruenceClosure::init(){
-  // Parsing the equation 
+  // Parsing the equation
+  // Equation Z3 -> Id's in equivalence class -> Internal representation 
   unsigned lhs, rhs;
   Term * lhs_repr, * rhs_repr;
   for(auto equation : equations){
@@ -52,7 +54,6 @@ void CongruenceClosure::init(){
     std::cout << "==========================================" << std::endl;
 #endif
   }
-  identifyCommonSymbols();
   buildCongruenceClosure();
 }
 
@@ -71,61 +72,6 @@ CongruenceClosure::CongruenceClosure(z3::context & ctx,
 }
 
 CongruenceClosure::~CongruenceClosure(){
-}
-
-void CongruenceClosure::identifyCommonSymbols(){
-  Term * current_term = getReprTerm(root_num), * temp_current_term;
-  unsigned arity;
-  std::stack<Term*> stack_vertices;
-   
-  // Traversing the graph (in post-order) 
-  // to determine if a term is common or not
-  // Reference: https://www.geeksforgeeks.org/iterative-postorder-traversal-using-stack/
-  do{
-    while(current_term != nullptr){
-      arity = current_term->getArity();
-      switch(arity){
-      case 0:
-	stack_vertices.push(current_term);
-	current_term = nullptr;
-	break;
-      case 1:
-	stack_vertices.push(current_term);
-	current_term = current_term->getLeftChild();
-	break;
-      case 2:
-	stack_vertices.push(current_term->getRightChild()), stack_vertices.push(current_term);
-	current_term = current_term->getLeftChild();
-	break;
-      default:
-	throw("Error: Arity cannot be more than 2");
-	break;
-      }
-    }
-    current_term = stack_vertices.top();
-    stack_vertices.pop();
-    arity = current_term->getArity();
-    if(arity == 2 && !stack_vertices.empty()
-       && current_term->getRightChild()->getId() == stack_vertices.top()->getId()){
-      temp_current_term = stack_vertices.top();
-      stack_vertices.pop();
-      stack_vertices.push(current_term);
-      current_term = temp_current_term;
-    }
-    else{
-      // do something with current_term
-      std::string current_term_name = current_term->getName();
-      symbol_locations[current_term_name].push_back(current_term->getId());
-      bool is_current_term_common = InSet(current_term_name, symbols_to_elim); 
-      for(auto successor : current_term->getSuccessors()){
-		if(!is_current_term_common)
-		  break;
-		is_current_term_common = successor->getSymbolCommonQ();
-      }
-      current_term->setSymbolCommonQ(is_current_term_common);
-      current_term = nullptr;
-    }
-  } while(!stack_vertices.empty());
 }
 
 void CongruenceClosure::buildCongruenceClosure(){
@@ -234,7 +180,9 @@ bool CongruenceClosure::checkCorrectness(){
 	  if(sigTable.getUnarySignature(u, equivalence_class)
 	     == sigTable.getUnarySignature(v, equivalence_class)
 	     && getReprTerm(u)->getId() != getReprTerm(v)->getId()){
+#if CHECK_CORRECTNESS
 	    std::cout << "Not Ok (Case arity 1)" << std::endl;
+#endif
 	    return false;
 	  }
 	  break;
@@ -242,18 +190,24 @@ bool CongruenceClosure::checkCorrectness(){
 	  if(sigTable.getBinarySignature(u, equivalence_class)
 	     == sigTable.getBinarySignature(v, equivalence_class)
 	     && getReprTerm(u)->getId() != getReprTerm(v)->getId()){
+#if CHECK_CORRECTNESS
 	    std::cout << "Not Ok (Case arity 2)" << std::endl;
+#endif
 	    return false;
 	  }
 	  break;
 	default:
+#if CHECK_CORRECTNESS
 	  std::cout << "Incorrect arities" << std::endl;
+#endif
 	  return false;
 	  break;
 	}
       }
     }
+#if CHECK_CORRECTNESS
   std::cout << "Ok" << std::endl;
+#endif
   return true;
 }
 
