@@ -22,7 +22,8 @@ class CongruenceClosure : public Terms {
   void transferEqClassAndPreds(const CongruenceClosure &);
   void transferEqClass(const CongruenceClosure &);
   void transferPreds(const CongruenceClosure &);
-  // void addEquationToCurrent();
+  void addEquationToCurrent(Term *, Term *);
+  void addEquationToCurrent(unsigned, unsigned);
   
   const SymbolLocations & getSymbolLocations();
   
@@ -30,7 +31,7 @@ class CongruenceClosure : public Terms {
   
  private:
   SignatureTable  sigTable;
-  void            init();
+  void            processEquations();
 };
 
 #endif

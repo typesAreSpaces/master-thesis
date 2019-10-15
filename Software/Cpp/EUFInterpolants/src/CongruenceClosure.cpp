@@ -9,12 +9,19 @@
 #define AFTER_CC          false
 #define CHECK_CORRECTNESS false
 
-void CongruenceClosure::init(){
+void CongruenceClosure::processEquations(){
   // Parsing the equation
-  // Equation Z3 -> Id's in equivalence class -> Internal representation 
+  // Equation Z3 representation
+  // -> Id's in equivalence class
+  // -> Internal representation
   unsigned lhs, rhs;
   Term * lhs_repr, * rhs_repr;
+  
   for(auto equation : equations){
+#if TRACE_MERGE
+    std::cout << "Using the following equation" << std::endl;
+    std::cout << equation.first << "=" << equation.second << std::endl;
+#endif
     lhs = equation.first.id();
     rhs = equation.second.id();
     lhs_repr = getReprTerm(lhs);
@@ -24,8 +31,8 @@ void CongruenceClosure::init(){
       merge(rhs_repr, lhs_repr);
 #if TRACE_MERGE
       std::cout << "==========================================" << std::endl;
-      std::cout << "Merging " << std::endl;
-      std::cout << lhs_repr->to_string() << std::endl;
+      std::cout << "Initial merging " << std::endl;
+      std::cout << lhs_repr->to_string()<< std::endl;
       std::cout << " to " << std::endl;
       std::cout << rhs_repr->to_string() << std::endl;
       std::cout << "==========================================" << std::endl;
@@ -35,7 +42,7 @@ void CongruenceClosure::init(){
       merge(lhs_repr, rhs_repr);
 #if TRACE_MERGE
       std::cout << "==========================================" << std::endl;
-      std::cout << "Merging " << std::endl;
+      std::cout << "Initial merging " << std::endl;
       std::cout << rhs_repr->to_string() << std::endl;
       std::cout << " to " << std::endl;
       std::cout << lhs_repr->to_string() << std::endl;
@@ -60,7 +67,7 @@ void CongruenceClosure::init(){
 CongruenceClosure::CongruenceClosure(z3::context & ctx, const z3::expr & v) :
   Terms(ctx, v)
 {
-  init();
+  processEquations();
 }
 
 CongruenceClosure::CongruenceClosure(z3::context & ctx,
@@ -68,7 +75,7 @@ CongruenceClosure::CongruenceClosure(z3::context & ctx,
 				     const UncommonSymbols & symbols_to_elim) :
   Terms(ctx, v, symbols_to_elim)
 {
-  init();
+  processEquations();
 }
 
 CongruenceClosure::~CongruenceClosure(){
@@ -143,7 +150,7 @@ void CongruenceClosure::buildCongruenceClosure(){
 	merge(repr_w, repr_v);
 #if TRACE_MERGE
 	std::cout << "========================================" << std::endl;
-	std::cout << "Merging " << std::endl;
+	std::cout << "Merging inside congruence closure" << std::endl;
 	std::cout << repr_w->to_string() << std::endl;
 	std::cout << " to " << std::endl;
 	std::cout << repr_v->to_string() << std::endl;
@@ -236,6 +243,18 @@ void CongruenceClosure::transferPreds(const CongruenceClosure & cc){
       } while(pred_iterator != cc_pred.begin());
     }
   }
+}
+
+void CongruenceClosure::addEquationToCurrent(Term * u, Term * v){
+  merge(getReprTerm(u), getReprTerm(v));
+  buildCongruenceClosure();
+  return;
+}
+
+void CongruenceClosure::addEquationToCurrent(unsigned i, unsigned j){
+  merge(getReprTerm(i), getReprTerm(j));
+  buildCongruenceClosure();
+  return;
 }
 
 const SymbolLocations & CongruenceClosure::getSymbolLocations(){

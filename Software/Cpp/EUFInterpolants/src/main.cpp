@@ -24,11 +24,10 @@ int main(int argc, char ** argv){
 
     // std::cout << input_formula.arg(0).arg(1).decl().range().id() << std::endl;
     
-    // CongruenceClosure cc_example(ctx, input_formula, symbols_to_elim);
-    // std::cout << cc_example.areEqual(6, 8) << std::endl;
-    // cc_example.merge(6, 8);
-    // cc_example.buildCongruenceClosure();
-    // std::cout << cc_example.areEqual(6, 8) << std::endl;
+    CongruenceClosure cc_example(ctx, input_formula, symbols_to_elim);
+    std::cout << cc_example << std::endl;
+    cc_example.addEquationToCurrent(6, 11);
+    std::cout << cc_example << std::endl;
     
     EUFInterpolant euf_interpolant_example(input_formula,
 					   symbols_to_elim,

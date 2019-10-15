@@ -13,10 +13,10 @@ EUFInterpolant::EUFInterpolant(const z3::expr & e, const z3::sort & s) :
 }
 
 EUFInterpolant::EUFInterpolant(const z3::expr & e,
-			       const std::set<std::string> & symbols_to_elim,
+			       const UncommonSymbols & symbols_to_elim,
 			       const z3::sort & s) :
-  auxiliar_closure(e.ctx(), e),
-  original_closure(e.ctx(), e),
+  auxiliar_closure(e.ctx(), e, symbols_to_elim),
+  original_closure(e.ctx(), e, symbols_to_elim),
   cvt(e.ctx(), s),
   horn_clauses(original_closure, auxiliar_closure),
   contradiction(original_closure.getOriginalTerm(0),
