@@ -116,12 +116,11 @@ void CongruenceClosure::identifyCommonSymbols(){
       // do something with current_term
       std::string current_term_name = current_term->getName();
       symbol_locations[current_term_name].push_back(current_term->getId());
-      bool is_current_term_common =
-	symbols_to_elim.find(current_term_name) == symbols_to_elim.end();
+      bool is_current_term_common = InSet(current_term_name, symbols_to_elim); 
       for(auto successor : current_term->getSuccessors()){
-	if(!is_current_term_common)
-	  break;
-	is_current_term_common = successor->getSymbolCommonQ();
+		if(!is_current_term_common)
+		  break;
+		is_current_term_common = successor->getSymbolCommonQ();
       }
       current_term->setSymbolCommonQ(is_current_term_common);
       current_term = nullptr;

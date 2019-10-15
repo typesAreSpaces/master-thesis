@@ -1,5 +1,6 @@
 #ifndef _CONG_CLOSURE
 #define _CONG_CLOSURE
+#define InSet(y, x) x.find(y) == x.end()
 
 #include <stack>
 #include <map>
