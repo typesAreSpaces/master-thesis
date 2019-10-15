@@ -37,7 +37,7 @@ class Terms {
   unsigned                getRootNum();
   z3::context &           getCtx();
   const UncommonSymbols & getSymbolsToElim();
-  const Equations &       getEquations();
+  const Equations &       getEquations();m
   const Disequations &    getDisequations();
   bool                    areEqual(Term *, Term *);
   bool                    areEqual(unsigned, unsigned);
