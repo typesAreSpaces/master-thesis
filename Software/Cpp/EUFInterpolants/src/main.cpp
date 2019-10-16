@@ -26,14 +26,19 @@ int main(int argc, char ** argv){
     
     CongruenceClosure cc_example(ctx, input_formula, symbols_to_elim);
     std::cout << cc_example << std::endl;
-    cc_example.addEquationToCurrent(6, 11);
+    cc_example.addEquation(6, 11);
     std::cout << cc_example << std::endl;
+
+    CongruenceClosure cc_example2(ctx, input_formula, symbols_to_elim);
+    std::cout << cc_example2 << std::endl;
+    cc_example2.transferEqClassAndPreds(cc_example); // <- TODO: This is the current problem
+    std::cout << "Done 2" << std::endl; 
     
-    EUFInterpolant euf_interpolant_example(input_formula,
-					   symbols_to_elim,
-					   ctx.uninterpreted_sort("A"));
-    std::cout << "The Interpolant" << std::endl;
-    euf_interpolant_example.test();
+    // EUFInterpolant euf_interpolant_example(input_formula,
+    // 					   symbols_to_elim,
+    // 					   ctx.uninterpreted_sort("A"));
+    // std::cout << "The Interpolant" << std::endl;
+    // euf_interpolant_example.test(); 
   }
   return 0;
 }

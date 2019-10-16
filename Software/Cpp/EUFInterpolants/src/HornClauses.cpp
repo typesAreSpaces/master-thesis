@@ -16,6 +16,7 @@ void HornClauses::addHornClause(Term* u, Term* v,
 				bool is_disequation){
   HornClause * hc = new HornClause(auxiliar_cc, u, v, is_disequation);
   auxiliar_cc.transferEqClassAndPreds(original_cc);
+
   
   if(!is_disequation){
     if(hc->checkTriviality()){

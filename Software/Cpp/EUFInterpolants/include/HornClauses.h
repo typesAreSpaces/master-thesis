@@ -42,6 +42,9 @@ class HornClauses{
   Match2                           reduced;
   std::map<EquationTerm, unsigned> reduced_length;
   const CongruenceClosure &        original_cc;
+  // Remainder: This auxiliar_cc must be reset
+  // back to the original configuration after every
+  // creation of new Horn Clause's
   CongruenceClosure &              auxiliar_cc;
   
   void mergeType2_1AndType3(HornClause *, HornClause *);

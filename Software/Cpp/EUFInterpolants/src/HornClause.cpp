@@ -56,6 +56,13 @@ HornClause::HornClause(CongruenceClosure & cc,
 
   std::sort(antecedent.begin(), antecedent.end(), compareEquations);
 
+  // TODO: Keep working here
+  for(auto x : antecedent){
+    if(!cc.areEqual(x.first, x.second)){
+      //cc.addEquation(x.first, x.second);
+    }
+  }
+
   // // Normalization needed here
   // // or perhaps in the process of creating the horn clause
   // // (which involves performing a congruence closure)

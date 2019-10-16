@@ -22,8 +22,8 @@ class CongruenceClosure : public Terms {
   void transferEqClassAndPreds(const CongruenceClosure &);
   void transferEqClass(const CongruenceClosure &);
   void transferPreds(const CongruenceClosure &);
-  void addEquationToCurrent(Term *, Term *);
-  void addEquationToCurrent(unsigned, unsigned);
+  void addEquation(Term *, Term *);
+  void addEquation(unsigned, unsigned);
   
   const SymbolLocations & getSymbolLocations();
   

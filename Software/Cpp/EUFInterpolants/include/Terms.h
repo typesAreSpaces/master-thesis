@@ -11,6 +11,9 @@
 #include "Term.h"
 #include "UnionFind.h"
 
+// The following structure keeps track of all the positions involving equations
+// inside the equivalence class of terms with the given symbol name
+// i.e. f -> <location(f(x)), location(f(y)), location(f(f(x)))> in SymbolLocations
 typedef std::map<std::string, std::vector<unsigned> > SymbolLocations;
 typedef std::pair<z3::expr, z3::expr> Equation;
 typedef std::pair<z3::expr, z3::expr> Disequation;
@@ -37,7 +40,7 @@ class Terms {
   unsigned                getRootNum();
   z3::context &           getCtx();
   const UncommonSymbols & getSymbolsToElim();
-  const Equations &       getEquations();m
+  const Equations &       getEquations();
   const Disequations &    getDisequations();
   bool                    areEqual(Term *, Term *);
   bool                    areEqual(unsigned, unsigned);

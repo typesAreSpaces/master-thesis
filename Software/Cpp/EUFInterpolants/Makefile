@@ -60,10 +60,10 @@ check_performance_congruence_closure:
 	./$(CONGRUENCE_CLOSURE_TEST)/processing $(CONGRUENCE_CLOSURE_TEST)/$@.txt > $(CONGRUENCE_CLOSURE_TEST)/results.txt
 
 run : main
-#	./main ./tests/smt2lib_2/kapurEUFExample.smt2 v
+	./main ./tests/smt2lib_2/kapurEUFExample.smt2 v
 #	./main ./tests/smt2lib_2/simple.smt2 f 
 #	./main ./tests/smt2lib_2/simple2.smt2 f
-	./main ./tests/smt2lib_2/simple3.smt2 f 	
+#	./main ./tests/smt2lib_2/simple3.smt2 f 	
 #	./main ./tests/smt2lib_2/kapurEUFExample2.smt2 f
 #	./main ./Users/joseabelcastellanosjoo/Documents/QF_UF/2018-Goel-hwbench/QF_UF_firewire_tree.5.prop3_ab_reg_max.smt2 f
 #	./main ./Users/joseabelcastellanosjoo/Documents/QF_UF/2018-Goel-hwbench/QF_UF_firewire_tree.3.prop2_ab_reg_max.smt2 f
@@ -79,8 +79,8 @@ debug : main
 #	gdb --args ./main ./Users/joseabelcastellanosjoo/Documents/QF_UF/2018-Goel-hwbench/QF_UF_needham.3.prop4_ab_reg_max.smt2 f
 
 valgrind : main
-#	valgrind ./main ./tests/smt2lib_2/kapurEUFExample.smt2 v
-	valgrind ./main ./tests/smt2lib_2/simple.smt2 f 
+	valgrind ./main ./tests/smt2lib_2/kapurEUFExample.smt2 v
+#	valgrind ./main ./tests/smt2lib_2/simple.smt2 f 
 #	valgrind ./main ./tests/smt2lib_2/simple2.smt2 f
 #	valgrind ./main ./tests/smt2lib_2/kapurEUFExample2.smt2 f
 #	valgrind ./main ./Users/joseabelcastellanosjoo/Documents/QF_UF/2018-Goel-hwbench/QF_UF_firewire_tree.5.prop3_ab_reg_max.smt2 f
