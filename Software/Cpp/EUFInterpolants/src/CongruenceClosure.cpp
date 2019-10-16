@@ -64,21 +64,22 @@ void CongruenceClosure::processEquations(){
   buildCongruenceClosure();
 }
 
-CongruenceClosure::CongruenceClosure(z3::context & ctx, const z3::expr & v) :
-  Terms(ctx, v)
+CongruenceClosure::CongruenceClosure(z3::context & ctx, const z3::expr & v, unsigned name) :
+  Terms(ctx, v), name(name)
 {
   processEquations();
 }
 
 CongruenceClosure::CongruenceClosure(z3::context & ctx,
 				     const z3::expr & v,
-				     const UncommonSymbols & symbols_to_elim) :
-  Terms(ctx, v, symbols_to_elim)
+				     const UncommonSymbols & symbols_to_elim, unsigned name) :
+  Terms(ctx, v, symbols_to_elim), name(name)
 {
   processEquations();
 }
 
 CongruenceClosure::~CongruenceClosure(){
+  std::cout << "Fuck " << name << std::endl;
 }
 
 void CongruenceClosure::buildCongruenceClosure(){

@@ -13,8 +13,8 @@ typedef std::vector<std::pair<Term*, Term*> > Combine;
 
 class CongruenceClosure : public Terms {
  public:
-  CongruenceClosure(z3::context &, const z3::expr &);
-  CongruenceClosure(z3::context &, const z3::expr &, const UncommonSymbols &);
+  CongruenceClosure(z3::context &, const z3::expr &, unsigned);
+  CongruenceClosure(z3::context &, const z3::expr &, const UncommonSymbols &, unsigned);
   ~CongruenceClosure();
 
   void buildCongruenceClosure();
@@ -32,6 +32,7 @@ class CongruenceClosure : public Terms {
  private:
   SignatureTable  sigTable;
   void            processEquations();
+  unsigned        name;
 };
 
 #endif
