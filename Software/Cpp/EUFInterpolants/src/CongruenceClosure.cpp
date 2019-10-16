@@ -79,7 +79,6 @@ CongruenceClosure::CongruenceClosure(z3::context & ctx,
 }
 
 CongruenceClosure::~CongruenceClosure(){
-  std::cout << "Fuck " << name << std::endl;
 }
 
 void CongruenceClosure::buildCongruenceClosure(){
@@ -232,9 +231,7 @@ void CongruenceClosure::transferEqClass(const CongruenceClosure & cc){
 void CongruenceClosure::transferPreds(const CongruenceClosure & cc){
   // Transfering predecessors
   unsigned num_terms = terms.size();
-  std::cout << num_terms << std::endl;
   for(unsigned index = 0; index < num_terms; ++index){
-    std::cout << index << std::endl;
     CircularList<Term*> & pred = terms[index]->getPredecessors();
     CircularList<Term*> & cc_pred = cc.getOriginalTerm(index)->getPredecessors();
     pred.~CircularList();
@@ -246,15 +243,11 @@ void CongruenceClosure::transferPreds(const CongruenceClosure & cc){
       } while(pred_iterator != cc_pred.begin());
     }
   }
-  std::cout << "Done" << std::endl;
 }
 
 void CongruenceClosure::addEquation(Term * u, Term * v){
-  std::cout << "Ok" << std::endl;
   merge(getReprTerm(u), getReprTerm(v));
-  std::cout << "Ok2" << std::endl;
   buildCongruenceClosure();
-  std::cout << "Ok3" << std::endl;
   return;
 }
 

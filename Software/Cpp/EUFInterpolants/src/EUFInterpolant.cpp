@@ -144,13 +144,11 @@ void EUFInterpolant::eliminationOfUncommonFSyms(){
 	      horn_clauses.addHornClause(auxiliar_closure.getOriginalTerm(locations[location_i]),
 					 auxiliar_closure.getOriginalTerm(locations[location_j]),
 					 false);
-	    std::cout << "Completed" << std::endl;
 	  }
 	} 
       }
     }
   }
-  std::cout << "Done" << std::endl;
 }
 
 void EUFInterpolant::addNegativeHornClauses(){

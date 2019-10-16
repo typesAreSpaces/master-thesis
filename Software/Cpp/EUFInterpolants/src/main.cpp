@@ -24,15 +24,14 @@ int main(int argc, char ** argv){
 
     // std::cout << input_formula.arg(0).arg(1).decl().range().id() << std::endl;
     
-    CongruenceClosure cc_example(ctx, input_formula, symbols_to_elim, 1);
+    CongruenceClosure cc_example(ctx, input_formula, symbols_to_elim, 0);
     std::cout << cc_example << std::endl;
     cc_example.addEquation(6, 11);
     std::cout << cc_example << std::endl;
 
-    CongruenceClosure cc_example2(ctx, input_formula, symbols_to_elim, 0);
-    std::cout << cc_example2 << std::endl;
-    cc_example2.transferEqClassAndPreds(cc_example); // <- TODO: This is the current problem
-    std::cout << "Done 2" << std::endl; 
+    CongruenceClosure cc_example2(ctx, input_formula, symbols_to_elim, 1);
+    cc_example.transferEqClassAndPreds(cc_example2);
+    std::cout << cc_example << std::endl;
     
     // EUFInterpolant euf_interpolant_example(input_formula,
     // 					   symbols_to_elim,

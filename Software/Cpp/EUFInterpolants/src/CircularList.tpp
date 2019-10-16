@@ -14,6 +14,8 @@ CircularList<T>::~CircularList(){
     }
     delete curr_ptr;
   }
+  this->elements = nullptr;
+  this->length = 0;
 }
 
 template <typename T>
