@@ -70,8 +70,8 @@ run : main
 #	./main ./Users/joseabelcastellanosjoo/Documents/QF_UF/2018-Goel-hwbench/QF_UF_needham.3.prop4_ab_reg_max.smt2 f
 
 debug : main
-#	gdb --args ./main ./tests/smt2lib_2/kapurEUFExample.smt2 v
-	gdb --args ./main ./tests/smt2lib_2/simple.smt2 f 
+	gdb --args ./main ./tests/smt2lib_2/kapurEUFExample.smt2 v
+#	gdb --args ./main ./tests/smt2lib_2/simple.smt2 f 
 #	gdb --args ./main ./tests/smt2lib_2/simple2.smt2 f
 #	gdb --args ./main ./tests/smt2lib_2/kapurEUFExample2.smt2 f
 #	gdb --args ./main ./Users/joseabelcastellanosjoo/Documents/QF_UF/2018-Goel-hwbench/QF_UF_firewire_tree.5.prop3_ab_reg_max.smt2 f
