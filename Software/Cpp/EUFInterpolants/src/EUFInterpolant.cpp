@@ -139,7 +139,6 @@ void EUFInterpolant::eliminationOfUncommonFSyms(){
 	      location_j < number_of_locations;
 	      ++location_j){
 	    // Exposing two terms that have the same symbol name
-	    std::cout << location_i << " " << location_j << std::endl;
 	    if(locations[location_i] != locations[location_j])
 	      horn_clauses.addHornClause(auxiliar_closure.getOriginalTerm(locations[location_i]),
 					 auxiliar_closure.getOriginalTerm(locations[location_j]),

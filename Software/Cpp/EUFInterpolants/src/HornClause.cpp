@@ -54,38 +54,18 @@ HornClause::HornClause(CongruenceClosure & cc,
       && iterator_lhs->getSymbolCommonQ() && iterator_rhs->getSymbolCommonQ();
   }
 
-  std::sort(antecedent.begin(), antecedent.end(), compareEquations);
-
-  // TODO: Keep working here
-  for(auto x : antecedent){
-    if(!cc.areEqual(x.first, x.second)){
-      //cc.addEquation(x.first, x.second);
+  // -------------------------------------------------------------------------------
+  // Normalization
+  std::sort(antecedent.begin(), antecedent.end(), compareEquations); // <- Heuristic
+  for(auto equation = antecedent.begin(); equation != antecedent.end();){
+    if(!cc.areEqual(equation->first, equation->second)){
+      cc.addEquation(equation->first, equation->second);
+      ++equation;
     }
+    else
+      equation = antecedent.erase(equation);
   }
-
-  // // Normalization needed here
-  // // or perhaps in the process of creating the horn clause
-  // // (which involves performing a congruence closure)
-
-  // // Joins the proper elements to the
-  // // UnionFind data structure
-  // // - If the elements are equal then
-  // //   'normalize' removes them from 'antecedent'
-  // // - Otherwise, it adds them in the congruence
-  // void HornClause::normalize(CongruenceClosure & cc){
-  //   // TODO: Check if this doesn't go out of bound (!!)
-  //   is_antecedent_common = true;
-  //   for(auto it = antecedent.begin(); it != antecedent.end(); ++it){
-  //     if(cc.getReprTerm(it->first) == cc.getReprTerm(it->second))
-  //       antecedent.erase(it);
-  //     else{
-  //       cc.merge(it->first->getId(), it->second->getId());
-  //       is_antecedent_common = is_antecedent_common
-  // 	&& it->first->getSymbolCommonQ()
-  // 	&& it->second->getSymbolCommonQ();
-  //     }
-  //   }
-  // }
+  // -------------------------------------------------------------------------------
   
   this->local_equiv_class = cc.getDeepEquivalenceClass();
 }
@@ -106,12 +86,22 @@ HornClause::HornClause(CongruenceClosure & cc,
   is_consequent_common = is_consequent_common &&		
     cc.getReprTerm(consequent.first)->getSymbolCommonQ() &&
     cc.getReprTerm(consequent.second)->getSymbolCommonQ();
-
-  // Normalization needed here
-  // or perhaps in the process of creating the horn clause
-  // (which involves performing a congruence closure)
   
   orient();
+
+  // -------------------------------------------------------------------------------
+  // Normalization
+  std::sort(antecedent.begin(), antecedent.end(), compareEquations); // <- Heuristic
+  for(auto equation = antecedent.begin(); equation != antecedent.end();){
+    if(!cc.areEqual(equation->first, equation->second)){
+      cc.addEquation(equation->first, equation->second);
+      ++equation;
+    }
+    else
+      equation = antecedent.erase(equation);
+  }
+  // -------------------------------------------------------------------------------
+  
   this->local_equiv_class = cc.getDeepEquivalenceClass();
 }
 

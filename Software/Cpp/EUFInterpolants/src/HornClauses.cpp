@@ -1,5 +1,6 @@
 #include "HornClauses.h"
 #define DEBUG_HORN_CLAUSES false
+#define DEBUG_ADDINGHC true
 
 HornClauses::HornClauses(const CongruenceClosure & original_closure,
 			 CongruenceClosure & auxiliar_closure) :
@@ -20,6 +21,9 @@ void HornClauses::addHornClause(Term* u, Term* v,
   
   if(!is_disequation){
     if(hc->checkTriviality()){
+#if DEBUG_ADDINGHC 
+      std::cout << "It was deleted" << std::endl;
+#endif
       delete hc;
       return;
     }

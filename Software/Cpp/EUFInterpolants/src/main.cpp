@@ -6,14 +6,6 @@
 #include "EUFInterpolant.h"
 
 int main(int argc, char ** argv){
-
-  // CongruenceClosure example(ctx, input_formula, symbols_to_elim);
-  // example.merge(6, 8);
-  // example.buildCongruenceClosure();
-  
-  // CongruenceClosure example2(ctx, input_formula, symbols_to_elim);
-  // example.transferEqClassAndPreds(example2);
-  // example.buildCongruenceClosure();
   
   if(argc >= 2) {
     z3::context ctx;
@@ -28,8 +20,6 @@ int main(int argc, char ** argv){
     // of every expression (convention)
     while(aux_expr.num_args() != 0)
       aux_expr = aux_expr.arg(0);
-
-    // std::cout <<  << std::endl;
     
     // CongruenceClosure cc_example(ctx, input_formula, symbols_to_elim, 0);
     // std::cout << cc_example << std::endl;
