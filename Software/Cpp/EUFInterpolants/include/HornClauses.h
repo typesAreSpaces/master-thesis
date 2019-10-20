@@ -17,7 +17,7 @@ typedef std::set<std::pair<unsigned, unsigned> > SetOfUnsignedPairs;
 
 class HornClauses{
  public:
-  HornClauses(const CongruenceClosure &, CongruenceClosure &);
+  HornClauses(CongruenceClosure &, CongruenceClosure &);
   ~HornClauses();
   
   // Adds a Horn clause using two terms of the form f(t_1, ..., t_n) and f(t'_1, ..., t'_n)
@@ -41,7 +41,7 @@ class HornClauses{
   Match2                           mc2_antecedent, mc2_consequent;
   Match2                           reduced;
   std::map<EquationTerm, unsigned> reduced_length;
-  const CongruenceClosure &        original_cc;
+  CongruenceClosure &              original_cc;
   // Remainder: This auxiliar_cc must be reset
   // back to the original configuration after every
   // creation of new Horn Clause's

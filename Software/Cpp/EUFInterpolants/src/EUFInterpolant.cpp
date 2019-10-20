@@ -27,13 +27,11 @@ EUFInterpolant::~EUFInterpolant(){
 }
 
 void EUFInterpolant::test(){
-  setCommonRepresentatives();
-  eliminationOfUncommonFSyms();// TODO
+  eliminationOfUncommonFSyms();// TODO: Looks almost done. Needs testing.
   return;
 }
 
 z3::expr EUFInterpolant::buildInterpolant(){
-  setCommonRepresentatives(); // Check
   eliminationOfUncommonFSyms();
   addNegativeHornClauses();
   // ------------------------------------
@@ -74,38 +72,6 @@ z3::expr EUFInterpolant::buildInterpolant(){
 
 std::vector<HornClause*> EUFInterpolant::getHornClauses(){
   return horn_clauses.getHornClauses();
-}
-
-void EUFInterpolant::setCommonRepresentatives(){
-#if DEBUG_EUFINTERPOLANT
-  for(auto term : original_closure.getTerms())
-    std::cout << "Original: " << term->to_string() << std::endl
-	      << "Repr: " << original_closure.getReprTerm(term)->to_string()
-	      << std::endl << std::endl;
-#endif
-  for(auto term : original_closure.getTerms()){
-    Term * term_repr = original_closure.getReprTerm(term);
-    // A rotation between the current 
-    // representative and the current term if:
-    // 1) the current term is common
-    // 2) the current term has a smaller arity
-    if(term->getSymbolCommonQ() && term->getArity() < term_repr->getArity()){
-      original_closure.rotate(term, term_repr);
-#if DEBUG_EUFINTERPOLANT
-      std::cout << "A rotation occurred between " << std::endl
-		<< "-> " << *term << std::endl
-		<< "and\n"
-		<< "-> " << *term_repr << std::endl;
-#endif
-    }
-  }
-
-#if DEBUG_EUFINTERPOLANT
-  for(auto term : original_closure.getTerms())
-    std::cout << "Original: " << term->to_string() << std::endl
-	      << "Repr: " << original_closure.getReprTerm(term)->to_string()
-	      << std::endl << std::endl;
-#endif
 }
 
 // If a symbol is the symbol name of an uncommon

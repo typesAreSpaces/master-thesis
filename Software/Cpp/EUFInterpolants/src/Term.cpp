@@ -152,13 +152,18 @@ bool operator !=(const Term & u, const Term & v){
 }
 
 bool operator < (const Term & u, const Term & v){
-  if (u.is_symbol_common != v.is_symbol_common)
+  if (u.is_symbol_common != v.is_symbol_common){
     return u.is_symbol_common < v.is_symbol_common;
+  }
   else{
-    if(u.arity != v.arity)
-      return u.arity < v.arity;
-    else
-      return u.id < v.id;
+    if(u.arity != v.arity){
+      // Because we prefer a term with fewer arity
+      return u.arity > v.arity;
+    }
+    else{
+      // Because we prefer a term with smaller id
+      return u.id > v.id;
+    }
   }
 }
 

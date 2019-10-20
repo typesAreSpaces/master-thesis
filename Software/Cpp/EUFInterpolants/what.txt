@@ -1,0 +1,24 @@
+g++ -g -c -o obj/EUFInterpolant.o  -I./src/ -I./include/ -std=c++11 src/EUFInterpolant.cpp -Wall
+g++ -g -o main obj/HornClause.o obj/UnionFind.o obj/ConvertReprToZ3.o obj/Term.o obj/Signature.o obj/EUFInterpolant.o obj/Terms.o obj/SignatureTable.o obj/Node.o obj/CircularList.o obj/CongruenceClosure.o obj/main.o obj/HornClauses.o /home/jose/Documents/GithubProjects/z3/build/libz3.so -lpthread -Wall
+./main ./tests/smt2lib_2/kapurEUFExample.smt2 v
+The Interpolant
+Creating new horn clause z1 = z2 -> s1 = s2
+It was added
+Creating new horn clause z1 = y1 -> s1 = f(y1,_f_2(v,_x2))
+It was added
+Creating new horn clause z1 = y2 -> s1 = f(y2,_f_2(v,_x2))
+It was added
+Creating new horn clause z1 = f(y1,_f_2(v,_x2)) && _f_2(v,_x2) = _f_2(f(y2,_f_2(v,_x2)),_x2) -> s1 = t
+It was added
+Creating new horn clause z2 = y1 -> s2 = f(y1,_f_2(v,_x2))
+It was added
+Creating new horn clause z2 = y2 -> s2 = f(y2,_f_2(v,_x2))
+It was added
+Creating new horn clause z2 = f(y1,_f_2(v,_x2)) && _f_2(v,_x2) = _f_2(f(y2,_f_2(v,_x2)),_x2) -> s2 = t
+It was added
+Creating new horn clause y1 = y2 -> f(y1,_f_2(v,_x2)) = f(y2,_f_2(v,_x2))
+It was added
+Creating new horn clause y1 = f(y1,_f_2(v,_x2)) && _f_2(v,_x2) = _f_2(f(y2,_f_2(v,_x2)),_x2) -> t = f(y1,_f_2(v,_x2))
+It was added
+Creating new horn clause y2 = f(y1,_f_2(v,_x2)) && _f_2(v,_x2) = _f_2(f(y2,_f_2(v,_x2)),_x2) -> t = f(y2,_f_2(v,_x2))
+It was added

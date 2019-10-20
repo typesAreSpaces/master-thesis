@@ -108,9 +108,9 @@ HornClause::HornClause(CongruenceClosure & cc,
 HornClause::~HornClause(){
 }
 
-bool HornClause::checkTriviality(){
-  return (local_equiv_class.find(consequent.first->getId())
-	  == local_equiv_class.find(consequent.second->getId()));
+bool HornClause::checkTriviality(UnionFind & uf){
+  return (uf.find(consequent.first->getId())
+	  == uf.find(consequent.second->getId()));
 }
 
 bool HornClause::getAntecedentCommon(){

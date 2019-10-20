@@ -1,8 +1,8 @@
 #include "HornClauses.h"
 #define DEBUG_HORN_CLAUSES false
-#define DEBUG_ADDINGHC true
+#define DEBUG_ADDINGHC     true
 
-HornClauses::HornClauses(const CongruenceClosure & original_closure,
+HornClauses::HornClauses(CongruenceClosure & original_closure,
 			 CongruenceClosure & auxiliar_closure) :
   original_cc(original_closure), auxiliar_cc(auxiliar_closure)
 {
@@ -16,11 +16,13 @@ HornClauses::~HornClauses(){
 void HornClauses::addHornClause(Term* u, Term* v,
 				bool is_disequation){
   HornClause * hc = new HornClause(auxiliar_cc, u, v, is_disequation);
+#if DEBUG_ADDINGHC 
+  std::cout << "Creating new horn clause " << *hc << std::endl;
+#endif
   auxiliar_cc.transferEqClassAndPreds(original_cc);
-
   
   if(!is_disequation){
-    if(hc->checkTriviality()){
+    if(hc->checkTriviality(original_cc.getEquivalenceClass())){
 #if DEBUG_ADDINGHC 
       std::cout << "It was deleted" << std::endl;
 #endif
@@ -28,7 +30,10 @@ void HornClauses::addHornClause(Term* u, Term* v,
       return;
     }
   }
-
+#if DEBUG_ADDINGHC 
+      std::cout << "It was added" << std::endl;
+#endif
+      
   horn_clauses.push_back(hc);
   makeMatches(hc, -1, true);
 }
@@ -40,12 +45,19 @@ void HornClauses::addHornClause(std::vector<EquationTerm> & antecedent,
   auxiliar_cc.transferEqClassAndPreds(original_cc);
   
   if(!is_disequation){
-    if(hc->checkTriviality()){
+    if(hc->checkTriviality(original_cc.getEquivalenceClass())){
+#if DEBUG_ADDINGHC 
+      std::cout << "It was deleted" << std::endl;
+      std::cout << *hc << std::endl;
+#endif
       delete hc;
       return;
     }
   }
-
+#if DEBUG_ADDINGHC 
+      std::cout << "It was added" << std::endl;
+      std::cout << *hc << std::endl;
+#endif      
   horn_clauses.push_back(hc);
   makeMatches(hc, -1, true);
 }
@@ -463,7 +475,7 @@ void HornClauses::mergeType2AndType4(HornClause * h1, HornClause * h2){
 
 void HornClauses::combinationHelper(HornClause * hc){
   
-  if(hc->checkTriviality()){
+  if(hc->checkTriviality(original_cc.getEquivalenceClass())){
     delete hc;
 #if DEBUG_HORN_CLAUSES
     std::cout << "It was deleted" << std::endl << std::endl;

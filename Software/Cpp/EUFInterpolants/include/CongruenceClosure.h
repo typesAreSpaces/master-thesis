@@ -32,6 +32,7 @@ class CongruenceClosure : public Terms {
  private:
   SignatureTable  sigTable;
   void            processEquations();
+  void            setCommonRepresentatives();
   unsigned        name;
 };
 

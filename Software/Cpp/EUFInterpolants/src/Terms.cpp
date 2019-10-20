@@ -372,7 +372,7 @@ void Terms::setEquivalenceClass(UnionFind & uf){
   equivalence_class = uf;
 }
 
-UnionFind & Terms::getEquivalenceClass(){  
+UnionFind & Terms::getEquivalenceClass(){ 
   return equivalence_class;
 }
 

@@ -23,7 +23,6 @@ class EUFInterpolant {
   HornClauses       horn_clauses;
   EquationTerm      contradiction;
   
-  void              setCommonRepresentatives();
   void              eliminationOfUncommonFSyms();
   void              addNegativeHornClauses();
   z3::expr_vector   getUncommonTermsToElim(std::vector<HornClause*> &);

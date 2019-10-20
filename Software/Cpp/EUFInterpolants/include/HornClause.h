@@ -20,7 +20,7 @@ class HornClause {
 	     std::vector<EquationTerm> &, EquationTerm &);
   ~HornClause();
   
-  bool                        checkTriviality();
+  bool                        checkTriviality(UnionFind &);
 
   bool                        getAntecedentCommon();
   bool                        getConsequentCommon();
@@ -38,6 +38,7 @@ class HornClause {
  private:
   bool                      is_antecedent_common, is_consequent_common;
   std::vector<EquationTerm> antecedent;
+  // The operator < heavily depends on this structure
   UnionFind                 local_equiv_class;
   EquationTerm              consequent;
   void                      orient();

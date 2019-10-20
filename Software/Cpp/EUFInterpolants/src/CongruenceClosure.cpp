@@ -8,6 +8,38 @@
 #define BEFORE_CC         false
 #define AFTER_CC          false
 #define CHECK_CORRECTNESS false
+#define DEBUG_SCR         false
+
+void CongruenceClosure::setCommonRepresentatives(){
+#if DEBUG_SCR
+  for(auto term : terms)
+    std::cout << "Original: " << term->to_string() << std::endl
+	      << "Repr: " << cc.getReprTerm(term)->to_string()
+	      << std::endl << std::endl;
+#endif
+  for(auto term : terms){
+    Term * term_repr = getReprTerm(term);
+    // A rotation between the current 
+    // representative and the current term if:
+    // 1) the current term is common
+    // 2) the current term has a smaller arity
+    if(term->getSymbolCommonQ() && term->getArity() < term_repr->getArity()){
+      rotate(term, term_repr);
+#if DEBUG_SCR
+      std::cout << "A rotation occurred between " << std::endl
+		<< "-> " << *term << std::endl
+		<< "and\n"
+		<< "-> " << *term_repr << std::endl;
+#endif
+    }
+  }
+#if DEBUG_SCR
+  for(auto term : terms)
+    std::cout << "Original: " << term->to_string() << std::endl
+	      << "Repr: " << cc.getReprTerm(term)->to_string()
+	      << std::endl << std::endl;
+#endif
+}
 
 void CongruenceClosure::processEquations(){
   // Parsing the equation
@@ -15,7 +47,7 @@ void CongruenceClosure::processEquations(){
   // -> Id's in equivalence class
   // -> Internal representation
   unsigned lhs, rhs;
-  Term * lhs_repr, * rhs_repr;
+  Term * lhs_repr, * rhs_repr, * aux_term;
   
   for(auto equation : equations){
 #if TRACE_MERGE
@@ -26,29 +58,34 @@ void CongruenceClosure::processEquations(){
     rhs = equation.second.id();
     lhs_repr = getReprTerm(lhs);
     rhs_repr = getReprTerm(rhs);
-    
-    if(lhs_repr->getLength() < rhs_repr->getLength()){
-      merge(rhs_repr, lhs_repr);
-#if TRACE_MERGE
-      std::cout << "==========================================" << std::endl;
-      std::cout << "Initial merging " << std::endl;
-      std::cout << lhs_repr->to_string()<< std::endl;
-      std::cout << " to " << std::endl;
-      std::cout << rhs_repr->to_string() << std::endl;
-      std::cout << "==========================================" << std::endl;
-#endif
+
+    if(lhs_repr->getLength() == rhs_repr->getLength()){
+      if(*lhs_repr < *rhs_repr){
+	aux_term = lhs_repr;
+	lhs_repr = rhs_repr;
+	rhs_repr = aux_term;
+      }
     }
     else{
-      merge(lhs_repr, rhs_repr);
-#if TRACE_MERGE
-      std::cout << "==========================================" << std::endl;
-      std::cout << "Initial merging " << std::endl;
-      std::cout << rhs_repr->to_string() << std::endl;
-      std::cout << " to " << std::endl;
-      std::cout << lhs_repr->to_string() << std::endl;
-      std::cout << "==========================================" << std::endl;
-#endif
+      if(lhs_repr->getLength() < rhs_repr->getLength()){
+	aux_term = lhs_repr;
+	lhs_repr = rhs_repr;
+	rhs_repr = aux_term;
+      }
     }
+    merge(lhs_repr, rhs_repr);
+#if TRACE_MERGE
+    std::cout << "==========================================" << std::endl;
+    std::cout << "Initial merging " << std::endl;
+    std::cout << lhs_repr->to_string() << "(representative)" << std::endl;
+    std::cout << lhs_repr->getPredecessors() << std::endl;
+    std::cout << " to " << std::endl;
+    std::cout << rhs_repr->to_string() << std::endl;
+    std::cout << rhs_repr->getPredecessors() << std::endl;
+    std::cout << "==========================================" << std::endl;
+#endif
+    
+    
 #if TRACE_EC
     std::cout << "==========================================" << std::endl;
     std::cout << "Terms and ID's" << std::endl;
@@ -84,6 +121,7 @@ CongruenceClosure::~CongruenceClosure(){
 void CongruenceClosure::buildCongruenceClosure(){
   Pending pending;
   Combine combine;
+  Term * aux_term;
 
   // Adding functional grounded vertices to pending
   for(auto term : terms){
@@ -131,11 +169,23 @@ void CongruenceClosure::buildCongruenceClosure(){
       Term * v = pair_terms.first,* w = pair_terms.second;
       Term * repr_v = getReprTerm(v),* repr_w = getReprTerm(w);
       if(repr_v != repr_w){
-	// Invariant repr_v->getLength() <= repr_w->getLengt()
-	if(repr_v->getLength() > repr_w->getLength()){
-	  Term * temp_swap = repr_v;
-	  repr_v = repr_w;
-	  repr_w = temp_swap;
+	// Invariant repr_v->getLength() < repr_w->getLengt()
+	// or if repr_v->getLength() == repr_w->getLengt()
+	// then break ties using the < relation defined on terms
+	// @ Term.cpp
+	if(repr_w->getLength() == repr_v->getLength()){
+	  if(*repr_w < *repr_v){
+	    aux_term = repr_w;
+	    repr_w = repr_v;
+	    repr_v = aux_term;
+	  }
+	}
+	else{
+	  if(repr_w->getLength() < repr_v->getLength()){
+	    aux_term = repr_w;
+	    repr_w = repr_v;
+	    repr_v = aux_term;
+	  }
 	}
 	auto & list_repr_v = repr_v->getPredecessors();
 	if(repr_v->getLength() != 0){
@@ -151,7 +201,7 @@ void CongruenceClosure::buildCongruenceClosure(){
 #if TRACE_MERGE
 	std::cout << "========================================" << std::endl;
 	std::cout << "Merging inside congruence closure" << std::endl;
-	std::cout << repr_w->to_string() << std::endl;
+	std::cout << repr_w->to_string() << "(representative)" << std::endl;
 	std::cout << " to " << std::endl;
 	std::cout << repr_v->to_string() << std::endl;
 	std::cout << "========================================" << std::endl;
@@ -168,6 +218,7 @@ void CongruenceClosure::buildCongruenceClosure(){
 		<< " Original term id: " << x->getId()
 		<< " Representative term id: " << getReprTerm(x)->getId() << std::endl;
 #endif
+  setCommonRepresentatives();
 }
 
 bool CongruenceClosure::checkCorrectness(){
@@ -246,14 +297,29 @@ void CongruenceClosure::transferPreds(const CongruenceClosure & cc){
 }
 
 void CongruenceClosure::addEquation(Term * u, Term * v){
-  merge(getReprTerm(u), getReprTerm(v));
-  buildCongruenceClosure();
-  return;
+  addEquation(u->getId(), v->getId());
 }
 
 void CongruenceClosure::addEquation(unsigned i, unsigned j){
-  merge(getReprTerm(i), getReprTerm(j));
-  buildCongruenceClosure();
+  Term * u_repr = getReprTerm(i), * v_repr = getReprTerm(j), * aux_term;
+  if(u_repr != v_repr){
+    if(u_repr->getLength() == v_repr->getLength()){
+      if(*u_repr < *v_repr){
+	aux_term = u_repr;
+	u_repr = v_repr;
+	v_repr = aux_term;
+      }
+    }
+    else{
+      if(u_repr->getLength() < v_repr->getLength()){
+	aux_term = u_repr;
+	u_repr = v_repr;
+	v_repr = aux_term;
+      }
+    }
+    merge(u_repr, v_repr);
+    buildCongruenceClosure();
+  }
   return;
 }
 
