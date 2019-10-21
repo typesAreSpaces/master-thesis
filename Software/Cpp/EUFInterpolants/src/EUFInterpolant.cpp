@@ -27,6 +27,7 @@ EUFInterpolant::~EUFInterpolant(){
 }
 
 void EUFInterpolant::test(){
+  std::cout << original_closure << std::endl;
   eliminationOfUncommonFSyms();// TODO: Looks almost done. Needs testing.
   return;
 }
@@ -82,19 +83,18 @@ void EUFInterpolant::eliminationOfUncommonFSyms(){
     auto symbol_name = map_iterator.first;
     // We don't include in the Exposure method new introduced symbols
     // nor equalities, disequalities
-    // TODO: There is a potential problem by not including the auxilar
-    // symbols i.e. the ones starting with "_"
     if(symbol_name[0] != '='
        && symbol_name != "distinct"
        && symbol_name[0] != '_'){
       auto locations = map_iterator.second;
       
       bool expose = false;
-      for(auto location : locations)
+      for(auto location : locations){
 	if(!original_closure.getReprTerm(location)->getSymbolCommonQ()){
 	  expose = true;
 	  break;
 	}
+      }
       
       if(expose){
 	unsigned number_of_locations = locations.size();

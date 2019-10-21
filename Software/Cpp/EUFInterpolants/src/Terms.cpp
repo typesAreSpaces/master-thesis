@@ -311,13 +311,21 @@ void Terms::identifyCommonSymbols(){
   Term * current_term = getReprTerm(root_num), * aux_current_term;
   unsigned arity;
   std::stack<Term*> stack_vertices;
-  bool insideEquation = true;
+  bool inside_equation = false;
    
   // Traversing the graph (in post-order)
   // to determine if a term is common or not
   // Reference: https://www.geeksforgeeks.org/iterative-postorder-traversal-using-stack/
   do{
     while(current_term != nullptr){
+      std::string current_term_name = current_term->getName();
+      if(current_term_name == "=")
+	inside_equation = true;
+      if(current_term_name == "distinct")
+	inside_equation = false;
+      if(current_term_name == "and")
+	inside_equation = false;
+      
       arity = current_term->getArity();
       switch(arity){
       case 0:
@@ -353,12 +361,7 @@ void Terms::identifyCommonSymbols(){
       // and collects the position of each
       // symbols
       std::string current_term_name = current_term->getName();
-      
-      if(current_term_name == "=")
-	insideEquation = true;
-      if(current_term_name == "distinct")
-	insideEquation = false;
-      if(insideEquation)
+      if(inside_equation)
 	symbol_locations[current_term_name].push_back(current_term->getId());
       
       bool is_current_term_common = InSet(current_term_name, symbols_to_elim); 

@@ -1,24 +1,52 @@
-g++ -g -c -o obj/EUFInterpolant.o  -I./src/ -I./include/ -std=c++11 src/EUFInterpolant.cpp -Wall
+g++ -g -c -o obj/CongruenceClosure.o  -I./src/ -I./include/ -std=c++11 src/CongruenceClosure.cpp -Wall
 g++ -g -o main obj/HornClause.o obj/UnionFind.o obj/ConvertReprToZ3.o obj/Term.o obj/Signature.o obj/EUFInterpolant.o obj/Terms.o obj/SignatureTable.o obj/Node.o obj/CircularList.o obj/CongruenceClosure.o obj/main.o obj/HornClauses.o /home/jose/Documents/GithubProjects/z3/build/libz3.so -lpthread -Wall
-./main ./tests/smt2lib_2/kapurEUFExample.smt2 v
+./main ./tests/smt2lib_2/three_arguments.smt2 f
 The Interpolant
-Creating new horn clause z1 = z2 -> s1 = s2
-It was added
-Creating new horn clause z1 = y1 -> s1 = f(y1,_f_2(v,_x2))
-It was added
-Creating new horn clause z1 = y2 -> s1 = f(y2,_f_2(v,_x2))
-It was added
-Creating new horn clause z1 = f(y1,_f_2(v,_x2)) && _f_2(v,_x2) = _f_2(f(y2,_f_2(v,_x2)),_x2) -> s1 = t
-It was added
-Creating new horn clause z2 = y1 -> s2 = f(y1,_f_2(v,_x2))
-It was added
-Creating new horn clause z2 = y2 -> s2 = f(y2,_f_2(v,_x2))
-It was added
-Creating new horn clause z2 = f(y1,_f_2(v,_x2)) && _f_2(v,_x2) = _f_2(f(y2,_f_2(v,_x2)),_x2) -> s2 = t
-It was added
-Creating new horn clause y1 = y2 -> f(y1,_f_2(v,_x2)) = f(y2,_f_2(v,_x2))
-It was added
-Creating new horn clause y1 = f(y1,_f_2(v,_x2)) && _f_2(v,_x2) = _f_2(f(y2,_f_2(v,_x2)),_x2) -> t = f(y1,_f_2(v,_x2))
-It was added
-Creating new horn clause y2 = f(y1,_f_2(v,_x2)) && _f_2(v,_x2) = _f_2(f(y2,_f_2(v,_x2)),_x2) -> t = f(y2,_f_2(v,_x2))
-It was added
+Congruence Closure
+ID: 0; Term: incomparable; Common: 1; Representative: incomparable; Preds: ; Succs: ; Original Succs: 
+ID: 1; Term: _; Common: 1; Representative: _; Preds: ; Succs: ; Original Succs: 
+ID: 2; Term: _; Common: 1; Representative: _; Preds: ; Succs: ; Original Succs: 
+ID: 3; Term: _; Common: 1; Representative: _; Preds: ; Succs: ; Original Succs: 
+ID: 4; Term: _; Common: 1; Representative: _; Preds: ; Succs: ; Original Succs: 
+ID: 5; Term: x; Common: 1; Representative: x; Preds: 31 9 35 37 39 7 8 32 33 34 11 38 40 ; Succs: ; Original Succs: 
+ID: 6; Term: y; Common: 1; Representative: x; Preds: ; Succs: ; Original Succs: 
+ID: 7; Term: =(x,_=_2(y,_x2)); Common: 1; Representative: =(x,_=_2(y,_x2)); Preds: 15 ; Succs: 5, 31; Original Succs: 5, 6
+mID: 8; Term: f(x,_f_2(x,_f_3(x,_x3))); Common: 0; Representative: f(x,_f_2(x,_f_3(x,_x3))); Preds: 14 36 10 ; Succs: 5, 32; Original Succs: 5, 5, 5
+ID: 9; Term: f(y,_f_2(x,_f_3(y,_x3))); Common: 0; Representative: f(x,_f_2(x,_f_3(x,_x3))); Preds: ; Succs: 6, 34; Original Succs: 6, 5, 6
+ID: 10; Term: distinct(f(x,_f_2(x,_f_3(x,_x3))),_distinct_2(f(y,_f_2(x,_f_3(y,_x3))),_x2)); Common: 0; Representative: distinct(f(x,_f_2(x,_f_3(x,_x3))),_distinct_2(f(y,_f_2(x,_f_3(y,_x3))),_x2)); Preds: 42 ; Succs: 8, 36; Original Succs: 8, 9
+ID: 11; Term: f(x,_f_2(y,_f_3(x,_x3))); Common: 0; Representative: f(x,_f_2(x,_f_3(x,_x3))); Preds: ; Succs: 5, 37; Original Succs: 5, 6, 5
+ID: 12; Term: z; Common: 1; Representative: z; Preds: 13 ; Succs: ; Original Succs: 
+ID: 13; Term: f(z,_f_2(y,_f_3(x,_x3))); Common: 0; Representative: f(z,_f_2(y,_f_3(x,_x3))); Preds: 41 ; Succs: 12, 39; Original Succs: 12, 6, 5
+ID: 14; Term: distinct(f(x,_f_2(y,_f_3(x,_x3))),_distinct_2(f(z,_f_2(y,_f_3(x,_x3))),_x2)); Common: 0; Representative: distinct(f(x,_f_2(y,_f_3(x,_x3))),_distinct_2(f(z,_f_2(y,_f_3(x,_x3))),_x2)); Preds: 43 ; Succs: 11, 41; Original Succs: 11, 13
+ID: 15; Term: and(=(x,_=_2(y,_x2)),_and_2(distinct(f(x,_f_2(x,_f_3(x,_x3))),_distinct_2(f(y,_f_2(x,_f_3(y,_x3))),_x2)),_and_3(distinct(f(x,_f_2(y,_f_3(x,_x3))),_distinct_2(f(z,_f_2(y,_f_3(x,_x3))),_x2)),_x3))); Common: 0; Representative: and(=(x,_=_2(y,_x2)),_and_2(distinct(f(x,_f_2(x,_f_3(x,_x3))),_distinct_2(f(y,_f_2(x,_f_3(y,_x3))),_x2)),_and_3(distinct(f(x,_f_2(y,_f_3(x,_x3))),_distinct_2(f(z,_f_2(y,_f_3(x,_x3))),_x2)),_x3))); Preds: ; Succs: 7, 42; Original Succs: 7, 10, 14
+ID: 16; Term: _x1; Common: 1; Representative: _x1; Preds: ; Succs: ; Original Succs: 
+ID: 17; Term: _x2; Common: 1; Representative: _x2; Preds: 31 36 41 ; Succs: ; Original Succs: 
+ID: 18; Term: _x3; Common: 1; Representative: _x3; Preds: 33 35 38 40 43 ; Succs: ; Original Succs: 
+ID: 19; Term: _x4; Common: 1; Representative: _x4; Preds: ; Succs: ; Original Succs: 
+ID: 20; Term: _x5; Common: 1; Representative: _x5; Preds: ; Succs: ; Original Succs: 
+ID: 21; Term: _x6; Common: 1; Representative: _x6; Preds: ; Succs: ; Original Succs: 
+ID: 22; Term: _x7; Common: 1; Representative: _x7; Preds: ; Succs: ; Original Succs: 
+ID: 23; Term: _x8; Common: 1; Representative: _x8; Preds: ; Succs: ; Original Succs: 
+ID: 24; Term: _x9; Common: 1; Representative: _x9; Preds: ; Succs: ; Original Succs: 
+ID: 25; Term: _x10; Common: 1; Representative: _x10; Preds: ; Succs: ; Original Succs: 
+ID: 26; Term: _x11; Common: 1; Representative: _x11; Preds: ; Succs: ; Original Succs: 
+ID: 27; Term: _x12; Common: 1; Representative: _x12; Preds: ; Succs: ; Original Succs: 
+ID: 28; Term: _x13; Common: 1; Representative: _x13; Preds: ; Succs: ; Original Succs: 
+ID: 29; Term: _x14; Common: 1; Representative: _x14; Preds: ; Succs: ; Original Succs: 
+ID: 30; Term: _x15; Common: 1; Representative: _x15; Preds: ; Succs: ; Original Succs: 
+ID: 31; Term: _=_2(y,_x2); Common: 1; Representative: _=_2(y,_x2); Preds: 7 ; Succs: 6, 17; Original Succs: 
+ID: 32; Term: _f_2(x,_f_3(x,_x3)); Common: 1; Representative: _f_2(x,_f_3(x,_x3)); Preds: 13 11 9 8 ; Succs: 5, 33; Original Succs: 
+ID: 33; Term: _f_3(x,_x3); Common: 1; Representative: _f_3(x,_x3); Preds: 39 37 34 32 ; Succs: 5, 18; Original Succs: 
+ID: 34; Term: _f_2(x,_f_3(y,_x3)); Common: 1; Representative: _f_2(x,_f_3(x,_x3)); Preds: ; Succs: 5, 35; Original Succs: 
+ID: 35; Term: _f_3(y,_x3); Common: 1; Representative: _f_3(x,_x3); Preds: ; Succs: 6, 18; Original Succs: 
+ID: 36; Term: _distinct_2(f(y,_f_2(x,_f_3(y,_x3))),_x2); Common: 0; Representative: _distinct_2(f(y,_f_2(x,_f_3(y,_x3))),_x2); Preds: 10 ; Succs: 9, 17; Original Succs: 
+ID: 37; Term: _f_2(y,_f_3(x,_x3)); Common: 1; Representative: _f_2(x,_f_3(x,_x3)); Preds: ; Succs: 6, 38; Original Succs: 
+ID: 38; Term: _f_3(x,_x3); Common: 1; Representative: _f_3(x,_x3); Preds: ; Succs: 5, 18; Original Succs: 
+ID: 39; Term: _f_2(y,_f_3(x,_x3)); Common: 1; Representative: _f_2(x,_f_3(x,_x3)); Preds: ; Succs: 6, 40; Original Succs: 
+ID: 40; Term: _f_3(x,_x3); Common: 1; Representative: _f_3(x,_x3); Preds: ; Succs: 5, 18; Original Succs: 
+ID: 41; Term: _distinct_2(f(z,_f_2(y,_f_3(x,_x3))),_x2); Common: 0; Representative: _distinct_2(f(z,_f_2(y,_f_3(x,_x3))),_x2); Preds: 14 ; Succs: 13, 17; Original Succs: 
+ID: 42; Term: _and_2(distinct(f(x,_f_2(x,_f_3(x,_x3))),_distinct_2(f(y,_f_2(x,_f_3(y,_x3))),_x2)),_and_3(distinct(f(x,_f_2(y,_f_3(x,_x3))),_distinct_2(f(z,_f_2(y,_f_3(x,_x3))),_x2)),_x3)); Common: 0; Representative: _and_2(distinct(f(x,_f_2(x,_f_3(x,_x3))),_distinct_2(f(y,_f_2(x,_f_3(y,_x3))),_x2)),_and_3(distinct(f(x,_f_2(y,_f_3(x,_x3))),_distinct_2(f(z,_f_2(y,_f_3(x,_x3))),_x2)),_x3)); Preds: 15 ; Succs: 10, 43; Original Succs: 
+ID: 43; Term: _and_3(distinct(f(x,_f_2(y,_f_3(x,_x3))),_distinct_2(f(z,_f_2(y,_f_3(x,_x3))),_x2)),_x3); Common: 0; Representative: _and_3(distinct(f(x,_f_2(y,_f_3(x,_x3))),_distinct_2(f(z,_f_2(y,_f_3(x,_x3))),_x2)),_x3); Preds: 42 ; Succs: 14, 18; Original Succs: 
+
+Creating new horn clause  -> f(x,_f_2(x,_f_3(x,_x3))) = f(x,_f_2(x,_f_3(x,_x3)))
+It was deleted

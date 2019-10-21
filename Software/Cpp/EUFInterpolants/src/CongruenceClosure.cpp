@@ -326,7 +326,7 @@ const SymbolLocations & CongruenceClosure::getSymbolLocations(){
 }
 
 std::ostream & operator << (std::ostream & os, CongruenceClosure & cc){
-  bool extraComma = true;
+  bool extraComma;
   os << "Congruence Closure" << std::endl;
   for(auto term : cc.terms){
     os << "ID: " << term->getId()
@@ -335,6 +335,7 @@ std::ostream & operator << (std::ostream & os, CongruenceClosure & cc){
        << "; Representative: " << cc.getReprTerm(term->getId())->to_string()
        << "; Preds: " <<  term->getPredecessors()
        << "; Succs: ";
+    extraComma = true;
     for(auto x : term->getSuccessors()){
       if(extraComma){
 	os << x->getId();

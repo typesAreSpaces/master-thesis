@@ -42,13 +42,15 @@ void HornClauses::addHornClause(std::vector<EquationTerm> & antecedent,
 				EquationTerm & consequent,
 				bool is_disequation){
   HornClause * hc = new HornClause(auxiliar_cc, antecedent, consequent);
+#if DEBUG_ADDINGHC 
+  std::cout << "Creating new horn clause " << *hc << std::endl;
+#endif
   auxiliar_cc.transferEqClassAndPreds(original_cc);
   
   if(!is_disequation){
     if(hc->checkTriviality(original_cc.getEquivalenceClass())){
 #if DEBUG_ADDINGHC 
       std::cout << "It was deleted" << std::endl;
-      std::cout << *hc << std::endl;
 #endif
       delete hc;
       return;
@@ -56,7 +58,6 @@ void HornClauses::addHornClause(std::vector<EquationTerm> & antecedent,
   }
 #if DEBUG_ADDINGHC 
       std::cout << "It was added" << std::endl;
-      std::cout << *hc << std::endl;
 #endif      
   horn_clauses.push_back(hc);
   makeMatches(hc, -1, true);
