@@ -27,8 +27,8 @@ EUFInterpolant::~EUFInterpolant(){
 }
 
 void EUFInterpolant::test(){
-  std::cout << original_closure << std::endl;
-  eliminationOfUncommonFSyms();// TODO: Looks almost done. Needs testing.
+  eliminationOfUncommonFSyms();
+  addNegativeHornClauses(); // TODO: Keep working here
   return;
 }
 
@@ -82,35 +82,28 @@ void EUFInterpolant::eliminationOfUncommonFSyms(){
   for(auto map_iterator : original_closure.getSymbolLocations()){
     auto symbol_name = map_iterator.first;
     // We don't include in the Exposure method new introduced symbols
-    // nor equalities, disequalities
-    if(symbol_name[0] != '='
-       && symbol_name != "distinct"
+    // nor equalities, disequalities, nor the initial conjuction
+    if(symbol_name[0] != '=' && symbol_name != "distinct" && symbol_name != "and"
        && symbol_name[0] != '_'){
       auto locations = map_iterator.second;
       
       bool expose = false;
-      for(auto location : locations){
+      for(auto location : locations)
 	if(!original_closure.getReprTerm(location)->getSymbolCommonQ()){
 	  expose = true;
 	  break;
 	}
-      }
       
       if(expose){
 	unsigned number_of_locations = locations.size();
-	for(unsigned location_i = 0;
-	    location_i < number_of_locations - 1;
-	    ++location_i){
-	  for(unsigned location_j = location_i + 1;
-	      location_j < number_of_locations;
-	      ++location_j){
+	for(unsigned location_i = 0; location_i < number_of_locations - 1; ++location_i)
+	  for(unsigned location_j = location_i + 1; location_j < number_of_locations; ++location_j)
 	    // Exposing two terms that have the same symbol name
 	    if(locations[location_i] != locations[location_j])
 	      horn_clauses.addHornClause(auxiliar_closure.getOriginalTerm(locations[location_i]),
 					 auxiliar_closure.getOriginalTerm(locations[location_j]),
 					 false);
-	  }
-	} 
+	  
       }
     }
   }
