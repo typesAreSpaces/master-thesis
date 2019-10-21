@@ -8,15 +8,16 @@
 
 class Term {
  public:
-  Term(std::string, unsigned);
+  Term(std::string, unsigned, unsigned);
   Term();
   ~Term();
 
   void setName(std::string);
   void setSymbolCommonQ(bool);
   void define();
-  void setArity(unsigned);
+  void setArity(unsigned, unsigned);
   void addSuccessor(Term *);
+  void addOriginalSuccessor(Term *);
   void mergePredecessors(Term *);
 
   static unsigned            total_num_vertex;
@@ -25,8 +26,10 @@ class Term {
   bool                       getSymbolCommonQ();
   unsigned                   getId();
   unsigned                   getArity();
+  unsigned                   getOriginalArity();
   unsigned                   getLength();
   const std::vector<Term*> & getSuccessors();
+  const std::vector<Term*> & getOriginalSuccessors();
   CircularList<Term*> &      getPredecessors();
   std::string                to_string();
   Term *                     getLeftChild();
@@ -46,8 +49,8 @@ class Term {
   bool                is_defined;
   // A term is `defined` when we specify
   // its successors and predecessors
-  unsigned            id, arity;
-  std::vector<Term*>  successors;
+  unsigned            id, arity, original_arity;
+  std::vector<Term*>  successors, original_successors;
   CircularList<Term*> predecessors;
 };
 

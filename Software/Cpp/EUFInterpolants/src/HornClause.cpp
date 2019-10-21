@@ -13,11 +13,12 @@ HornClause::HornClause(CongruenceClosure & cc,
 {
   Term * iterator_lhs, * iterator_rhs;
   
-  unsigned _arity = u->getArity();
-  assert(_arity == v->getArity());
-  const std::vector<Term*> & successors_u = u->getSuccessors(),
-    & successors_v = v->getSuccessors();
+  unsigned _arity = u->getOriginalArity();
+  assert(_arity == v->getOriginalArity());
 
+  const std::vector<Term*> & successors_u = u->getOriginalSuccessors(),
+    & successors_v = v->getOriginalSuccessors();
+  
   // ---------------------------------------------
   // This part effectively orients the Horn Clause
   for(unsigned index_arity = 0; index_arity < _arity; ++index_arity){

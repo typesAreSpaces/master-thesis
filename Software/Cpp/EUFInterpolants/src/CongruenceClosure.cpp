@@ -101,16 +101,16 @@ void CongruenceClosure::processEquations(){
   buildCongruenceClosure();
 }
 
-CongruenceClosure::CongruenceClosure(z3::context & ctx, const z3::expr & v, unsigned name) :
-  Terms(ctx, v), name(name)
+CongruenceClosure::CongruenceClosure(z3::context & ctx, const z3::expr & v) :
+  Terms(ctx, v)
 {
   processEquations();
 }
 
 CongruenceClosure::CongruenceClosure(z3::context & ctx,
 				     const z3::expr & v,
-				     const UncommonSymbols & symbols_to_elim, unsigned name) :
-  Terms(ctx, v, symbols_to_elim), name(name)
+				     const UncommonSymbols & symbols_to_elim) :
+  Terms(ctx, v, symbols_to_elim)
 {
   processEquations();
 }
@@ -132,10 +132,9 @@ void CongruenceClosure::buildCongruenceClosure(){
 #if BEFORE_CC
   std::cout<< "Before Congruence Closure" << std::endl;
   for(auto x : terms)
-    if(x->to_string()[0] != '_')
-      std::cout << "Term: " << x->to_string()
-		<< " Original term id: " << x->getId()
-		<< " Representative term id: " << getReprTerm(x)->getId() << std::endl;
+    std::cout << "Term: " << x->to_string()
+	      << " Original term id: " << x->getId()
+	      << " Representative term id: " << getReprTerm(x)->getId() << std::endl;
 #endif
   
   while(!pending.empty()){
@@ -213,10 +212,9 @@ void CongruenceClosure::buildCongruenceClosure(){
 #if AFTER_CC
   std::cout<< "After Congruence Closure" << std::endl;
   for(auto x : terms)
-    if(x->to_string()[0] != '_')
-      std::cout << "Term: " << x->to_string()
-		<< " Original term id: " << x->getId()
-		<< " Representative term id: " << getReprTerm(x)->getId() << std::endl;
+    std::cout << "Term: " << x->to_string()
+	      << " Original term id: " << x->getId()
+	      << " Representative term id: " << getReprTerm(x)->getId() << std::endl;
 #endif
   setCommonRepresentatives();
 }
@@ -328,14 +326,35 @@ const SymbolLocations & CongruenceClosure::getSymbolLocations(){
 }
 
 std::ostream & operator << (std::ostream & os, CongruenceClosure & cc){
+  bool extraComma = true;
   os << "Congruence Closure" << std::endl;
   for(auto term : cc.terms){
-    if(term->getName()[0] != '_')
-      os << "ID: " << term->getId()
-	 << ", Term: " << term->to_string()
-	 << ", Common: " << term->getSymbolCommonQ()
-	 << ", Representative: " << cc.getReprTerm(term->getId())->to_string()
-	 << std::endl;
+    os << "ID: " << term->getId()
+       << "; Term: " << term->to_string()
+       << "; Common: " << term->getSymbolCommonQ()
+       << "; Representative: " << cc.getReprTerm(term->getId())->to_string()
+       << "; Preds: " <<  term->getPredecessors()
+       << "; Succs: ";
+    for(auto x : term->getSuccessors()){
+      if(extraComma){
+	os << x->getId();
+	extraComma = false;
+      }
+      else
+	os << ", " << x->getId();
+    }
+    extraComma = true;
+    os << "; Original Succs: ";
+    for(auto x : term->getOriginalSuccessors()){
+      if(extraComma){
+	os << x->getId();
+	extraComma = false;
+      }
+      else
+	os << ", " << x->getId();
+    }
+    
+    os << std::endl;
   }
   return os;
 }

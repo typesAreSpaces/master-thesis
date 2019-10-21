@@ -27,7 +27,7 @@ Terms::Terms(z3::context & ctx, const z3::expr & v) :
   unsigned num_original_terms = this->root_num;
   terms.resize(2*num_original_terms + 1);
   // This term will encode the False particle
-  terms[0] = new Term("incomparable", 0);
+  terms[0] = new Term("incomparable", 0, 0);
   terms[0]->define();
   // --------------------------------------
   // The order of the next two for loops is
@@ -40,12 +40,12 @@ Terms::Terms(z3::context & ctx, const z3::expr & v) :
   // because we can filter non used terms
   // if they start with that character
   for(unsigned term_index = 1; term_index <= num_original_terms; ++term_index)
-    terms[term_index] = new Term("_", 0);
+    terms[term_index] = new Term("_", 0, 0);
   // Adding {x_j | 1 <= j <= n} vertices
   // where n is the number of original vertices
   // -- Their location on terms start from this->root_num + 1 --
   for(unsigned term_index = 1; term_index <= num_original_terms; ++term_index)
-    terms[num_original_terms + term_index] = new Term("_x" + std::to_string(term_index), 0);
+    terms[num_original_terms + term_index] = new Term("_x" + std::to_string(term_index), 0, 0);
   
   //Extracting first formula
   extractSymbolsAndTerms(first_formula, symbols_to_elim);
@@ -76,7 +76,7 @@ Terms::Terms(z3::context & ctx, const z3::expr & v, const UncommonSymbols & symb
   unsigned num_original_terms = this->root_num;
   terms.resize(2*num_original_terms + 1);
   // This term will encode the False particle
-  terms[0] = new Term("incomparable", 0);
+  terms[0] = new Term("incomparable", 0, 0);
   terms[0]->define();
   // The order of the next two for loops is
   // important due to the side-effect of the
@@ -88,12 +88,12 @@ Terms::Terms(z3::context & ctx, const z3::expr & v, const UncommonSymbols & symb
   // because we can filter non used terms
   // if they start with that character
   for(unsigned term_index = 1; term_index <= num_original_terms; ++term_index)
-    terms[term_index] = new Term("_", 0);
+    terms[term_index] = new Term("_", 0, 0);
   // Adding {x_j | 0 <= j < n} vertices
   // where n is the number of original vertices
   // -- Their location on terms start from this->root_num + 1 --
   for(unsigned term_index = 1; term_index <= num_original_terms; ++term_index)
-    terms[num_original_terms + term_index] = new Term("_x" + std::to_string(term_index), 0);
+    terms[num_original_terms + term_index] = new Term("_x" + std::to_string(term_index), 0, 0);
   
   //Extracting the formula
   extractTerms(v);
@@ -158,34 +158,39 @@ void Terms::extractSymbolsAndTerms(const z3::expr & v, UncommonSymbols & symbols
     //////////// terms
     switch(num_args){
     case 0:
-      terms[id]->setArity(0); 
+      terms[id]->setArity(0, 0); 
       terms[id]->define();
       break;
     case 1:
-      terms[id]->setArity(1);
+      terms[id]->setArity(1, 1);
       terms[id]->addSuccessor(terms[v.arg(0).id()]);
+      terms[id]->addOriginalSuccessor(terms[v.arg(0).id()]);
       terms[id]->define();
       break;
     default:
       assert(num_args >= 2);
-      terms[id]->setArity(2);
+      terms[id]->setArity(2, num_args);
 	  
       // Position of w_2(v)
       const unsigned first_w_term = terms.size(); 
       // Adding w_j(v) vertices/terms
       for(unsigned index_arg = 2; index_arg <= num_args; ++index_arg)
-	terms.push_back(new Term("_" + terms[id]->getName() + "_" + std::to_string(index_arg), 2));
+	terms.push_back(new Term("_" + terms[id]->getName() + "_" + std::to_string(index_arg), 2, 2));
 
       unsigned num_original_terms = this->root_num;
       // Adding edge (v, v_1)
       terms[id]->addSuccessor(terms[v.arg(0).id()]);
+      terms[id]->addOriginalSuccessor(terms[v.arg(0).id()]);
+      
       // Adding edge (v, w_2(v))
       terms[id]->addSuccessor(terms[first_w_term]);
-      terms[id]->define();
       for(unsigned index_arg = 2; index_arg <= num_args; ++index_arg){
-	terms[first_w_term + index_arg - 2]->setArity(2);
+	terms[first_w_term + index_arg - 2]->setArity(2, 2);
+
 	// Adding edge w_i(v), v_i
 	terms[first_w_term + index_arg - 2]->addSuccessor(terms[v.arg(index_arg - 1).id()]);
+	terms[id]->addOriginalSuccessor(terms[v.arg(index_arg - 1).id()]);
+	
 	if(index_arg == num_args){
 	  // Adding edge ( w_{d(v)}(v), x_{d(v)} )
 	  terms[first_w_term + index_arg - 2]->addSuccessor(terms[num_original_terms + num_args]);
@@ -196,6 +201,7 @@ void Terms::extractSymbolsAndTerms(const z3::expr & v, UncommonSymbols & symbols
 	}
 	terms[first_w_term + index_arg - 2]->define();
       }
+      terms[id]->define();
       break;
     }
   }
@@ -231,32 +237,35 @@ void Terms::extractTerms(const z3::expr & v){
 
     switch(num_args){
     case 0:
-      terms[id]->setArity(0);
+      terms[id]->setArity(0, 0);
       terms[id]->define();
       break;
     case 1:
-      terms[id]->setArity(1);
+      terms[id]->setArity(1, 1);
       terms[id]->addSuccessor(terms[v.arg(0).id()]);
+      terms[id]->addOriginalSuccessor(terms[v.arg(0).id()]);
       terms[id]->define();
       break;
     default:
       assert(num_args >= 2);
-      terms[id]->setArity(2);
+      terms[id]->setArity(2, num_args);
       // Position of w_2(v)
       const unsigned first_w_term = terms.size(); 
       // Adding w_j(v) vertices/terms
       for(unsigned index_arg = 2; index_arg <= num_args; ++index_arg)
-	terms.push_back(new Term("_" + terms[id]->getName() + "_" + std::to_string(index_arg), 2));
+	terms.push_back(new Term("_" + terms[id]->getName() + "_" + std::to_string(index_arg), 2, 2));
       unsigned num_original_terms = this->root_num;
       // Adding edge (v, v_1)
       terms[id]->addSuccessor(terms[v.arg(0).id()]);
+      terms[id]->addOriginalSuccessor(terms[v.arg(0).id()]);
+      
       // Adding edge (v, w_2(v))
       terms[id]->addSuccessor(terms[first_w_term]);
-      terms[id]->define();
       for(unsigned index_arg = 2; index_arg <= num_args; ++index_arg){
-	terms[first_w_term + index_arg - 2]->setArity(2);
+	terms[first_w_term + index_arg - 2]->setArity(2, 2);
 	// Adding edge w_i(v), v_i
 	terms[first_w_term + index_arg - 2]->addSuccessor(terms[v.arg(index_arg - 1).id()]);
+	terms[id]->addOriginalSuccessor(terms[v.arg(index_arg - 1).id()]);
 	if(index_arg == num_args){
 	  // Adding edge ( w_{d(v)}(v), x_{d(v)} )
 	  terms[first_w_term + index_arg - 2]->addSuccessor(terms[num_original_terms + num_args]);
@@ -267,6 +276,7 @@ void Terms::extractTerms(const z3::expr & v){
 	}
 	terms[first_w_term + index_arg - 2]->define();
       }
+      terms[id]->define();
       break;
     }
   }

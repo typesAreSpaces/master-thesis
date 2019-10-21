@@ -3,12 +3,13 @@
 unsigned Term::total_num_vertex = 0;
 
 Term::Term(std::string name,
-	   unsigned arity) :
+	   unsigned arity, unsigned original_arity) :
   name(name),
   is_symbol_common(true),
   is_defined(false),
   id(total_num_vertex),
-  arity(arity){
+  arity(arity),
+  original_arity(original_arity){
   ++total_num_vertex;
   }
 
@@ -34,8 +35,9 @@ void Term::define(){
   is_defined = true;
 }
 
-void Term::setArity(unsigned arity){
+void Term::setArity(unsigned arity, unsigned original_arity){
   this->arity = arity;
+  this->original_arity = original_arity;
 }
 
 void Term::addSuccessor(Term * v){
@@ -44,6 +46,11 @@ void Term::addSuccessor(Term * v){
     // Add predeccessors
     v->predecessors.add(this);
   }
+}
+
+void Term::addOriginalSuccessor(Term * v){
+  if(!is_defined)
+    original_successors.push_back(v);
 }
 
 void Term::mergePredecessors(Term * v){
@@ -70,12 +77,20 @@ unsigned Term::getArity(){
   return arity;
 }
 
+unsigned Term::getOriginalArity(){
+  return original_arity;
+}
+
 unsigned Term::getLength(){
   return predecessors.size();
 }
 
 const std::vector<Term*> & Term::getSuccessors(){
   return successors;
+}
+
+const std::vector<Term*> & Term::getOriginalSuccessors(){
+  return original_successors;
 }
 
 CircularList<Term*> & Term::getPredecessors(){
@@ -128,11 +143,11 @@ std::ostream & operator << (std::ostream & os, Term & v){
   unsigned _counter = 0;
   os << "Symbol: " << v.to_string();
   os << " ID: " << v.id;
-  os << " Predecessors: ";
-  
+  os << " Predecessors: ";  
   os << v.predecessors;
-  
   os << " Successors: ";
+  os << " Arity: " << v.getArity();
+  os << " Original Arity: " << v.getOriginalArity();
   for(auto it = v.successors.begin();
       it != v.successors.end(); ++it){
     os << (*it)->id;
