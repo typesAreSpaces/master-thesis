@@ -87,7 +87,7 @@ HornClause::HornClause(CongruenceClosure & cc,
   is_consequent_common = is_consequent_common &&		
     cc.getReprTerm(consequent.first)->getSymbolCommonQ() &&
     cc.getReprTerm(consequent.second)->getSymbolCommonQ();
-  
+  b
   orient();
 
   // -------------------------------------------------------------------------------
