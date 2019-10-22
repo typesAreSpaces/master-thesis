@@ -1,6 +1,0 @@
-src/HornClauses.cpp
-	- local ocurrences:
-	  - simplify
-	  - merge's
-	  - getHornClauses
-	  - orient

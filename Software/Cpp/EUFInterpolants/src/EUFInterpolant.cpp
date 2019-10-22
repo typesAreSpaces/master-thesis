@@ -27,6 +27,7 @@ EUFInterpolant::~EUFInterpolant(){
 }
 
 void EUFInterpolant::test(){
+  // std::cout << auxiliar_closure << std::endl;
   eliminationOfUncommonFSyms();
   addNegativeHornClauses(); // TODO: Keep working here
   return;
@@ -83,8 +84,8 @@ void EUFInterpolant::eliminationOfUncommonFSyms(){
     auto symbol_name = map_iterator.first;
     // We don't include in the Exposure method new introduced symbols
     // nor equalities, disequalities, nor the initial conjuction
-    if(symbol_name[0] != '=' && symbol_name != "distinct" && symbol_name != "and"
-       && symbol_name[0] != '_'){
+    if(symbol_name[0] != '=' && symbol_name != "distinct"
+       && symbol_name != "and" && symbol_name[0] != '_'){
       auto locations = map_iterator.second;
       
       bool expose = false;
@@ -111,40 +112,25 @@ void EUFInterpolant::eliminationOfUncommonFSyms(){
 
 void EUFInterpolant::addNegativeHornClauses(){
   auto disequations = original_closure.getDisequations();
-  unsigned lhs, rhs;
-  Term * lhs_vertex, * rhs_vertex;
+  Term * lhs, * rhs;
   
-  for(auto disequation = disequations.begin();
-      disequation != disequations.end(); ++disequation){
+  for(auto disequation : disequations){
 	
-    lhs = disequation->first;
-    rhs = disequation->second;
-    lhs_vertex = original_closure.getReprTerm(lhs);
-    rhs_vertex = original_closure.getReprTerm(rhs);
+    lhs = auxiliar_closure.getOriginalTerm(disequation.first.id());
+    rhs = auxiliar_closure.getOriginalTerm(disequation.second.id());
 
-    // std::cout << "Inside addNegativeHornClauses" << std::endl;
-    // std::cout << lhs_vertex->to_string() << " ~= ";
-    // std::cout << rhs_vertex->to_string() << std::endl;
-	
-    // It's assumed function symbol names
-    // have unique arities
-    if(lhs_vertex->getName() == rhs_vertex->getName()){
-      // Add HornClauses unfolding arguments
-      // Let's check anyways
-      assert(lhs_vertex->getArity() == rhs_vertex->getArity());
-      horn_clauses.addHornClause(lhs_vertex,
-				 rhs_vertex,
-				 true); // Needds testing
+    // Add HornClauses unfolding arguments
+    if(lhs->getName() == rhs->getName()){
+      assert(lhs->getArity() == rhs->getArity());
+      horn_clauses.addHornClause(lhs, rhs, true);
     }
     else{
       // Just add HornClauses using the representative
-      std::vector<EquationTerm> _antecedent;
-      _antecedent.push_back(std::make_pair(lhs_vertex, rhs_vertex));
+      std::vector<EquationTerm> antecedent;
+      antecedent.push_back(std::make_pair(lhs, rhs));
       // Add HornClauses 'directly' using the antecedent
       // and contradiction as consequent
-      horn_clauses.addHornClause(_antecedent,
-				 contradiction,
-				 true); // Needs testing
+      horn_clauses.addHornClause(antecedent, contradiction, true); // Needs testing
     }
   }
   return;
