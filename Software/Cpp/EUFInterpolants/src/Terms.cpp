@@ -364,7 +364,7 @@ void Terms::identifyCommonSymbols(){
       if(inside_equation)
 	symbol_locations[current_term_name].push_back(current_term->getId());
       
-      bool is_current_term_common = InSet(current_term_name, symbols_to_elim); 
+      bool is_current_term_common = notInSet(current_term_name, symbols_to_elim); 
       for(auto successor : current_term->getSuccessors()){
 	if(!is_current_term_common)
 	  break;

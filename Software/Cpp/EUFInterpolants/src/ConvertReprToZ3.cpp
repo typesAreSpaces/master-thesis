@@ -117,7 +117,7 @@ z3::expr_vector Converter::extraSimplification(const z3::expr_vector & formulas)
   }
   
   for(unsigned i = 0; i < length; i++)
-    if(InSet(i, filter))
+    if(notInSet(i, filter))
       answer.push_back(formulas[i]);
   return answer;
 }

@@ -33,7 +33,6 @@ int main(int argc, char ** argv){
     EUFInterpolant euf_interpolant_example(input_formula,
     					   symbols_to_elim,
 					   aux_expr.decl().range());
-    std::cout << "The Interpolant" << std::endl;
     euf_interpolant_example.test(); 
   }
   return 0;

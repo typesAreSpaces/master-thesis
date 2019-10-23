@@ -1,6 +1,6 @@
 #ifndef _TERMS_
 #define _TERMS_
-#define InSet(y, x) x.find(y) == x.end()
+#define notInSet(y, x) x.find(y) == x.end()
 
 #include <iostream>
 #include <stack>

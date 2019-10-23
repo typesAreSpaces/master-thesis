@@ -1,6 +1,6 @@
 #ifndef _REPR_
 #define _REPR_
-#define InSet(y, x) x.find(y) == x.end()
+#define notInSet(y, x) x.find(y) == x.end()
 
 #include <map>
 #include "Term.h"

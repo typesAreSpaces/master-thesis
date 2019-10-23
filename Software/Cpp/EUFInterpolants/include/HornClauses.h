@@ -1,6 +1,6 @@
 #ifndef _HORN_CLAUSES_
 #define _HORN_CLAUSES_
-#define InSet(y, x) x.find(y) == x.end()
+#define notInSet(y, x) x.find(y) == x.end()
 
 #include "HornClause.h"
 #include "Terms.h"
