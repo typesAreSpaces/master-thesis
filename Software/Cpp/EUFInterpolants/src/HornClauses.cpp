@@ -52,7 +52,7 @@ void HornClauses::decideHornClause(HornClause * hc, bool is_disequation){
   std::cout << "It was added" << std::endl;
 #endif      
   horn_clauses.push_back(hc);
-  makeMatches(hc, -1, true);
+  makeMatches(hc, horn_clauses.size() - 1);
 }
 
 void HornClauses::conditionalElimination(){
@@ -101,7 +101,7 @@ void HornClauses::conditionalElimination(){
 	
     new_horn_clauses_size = horn_clauses.size();
     for(unsigned index = old_horn_clauses_size; index < new_horn_clauses_size; ++index)
-      makeMatches(horn_clauses[index], index, false);
+      makeMatches(horn_clauses[index], index);
 
   }
   
@@ -314,12 +314,10 @@ void HornClauses::simplifyHornClauses(){
 // to be normalized 
 // -------------------------------------
 void HornClauses::makeMatches(HornClause * hc,
-			      unsigned current_index, bool isLast){
+			      unsigned current_index){
 #if DEBUG_MAKE_MATCHES
   std::cout << "Making matches for " << *hc << std::endl;
 #endif
-  if(isLast)
-    current_index = horn_clauses.size() - 1;
   
   std::vector<EquationTerm> & hc_antecedent = hc->getAntecedent();
   EquationTerm & hc_consequent = hc->getConsequent();
