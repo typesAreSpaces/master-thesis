@@ -16,32 +16,17 @@ HornClauses::~HornClauses(){
 void HornClauses::addHornClause(Term* u, Term* v,
 				bool is_disequation){
   HornClause * hc = new HornClause(auxiliar_cc, u, v, is_disequation);
-#if DEBUG_ADDINGHC 
-  std::cout << "Creating new horn clause " << *hc << std::endl;
-#endif
-  auxiliar_cc.transferEqClassAndPreds(original_cc);
-  
-  if(!is_disequation){
-    if(hc->checkTriviality(original_cc.getEquivalenceClass())){
-#if DEBUG_ADDINGHC 
-      std::cout << "It was deleted" << std::endl;
-#endif
-      delete hc;
-      return;
-    }
-  }
-#if DEBUG_ADDINGHC 
-      std::cout << "It was added" << std::endl;
-#endif
-      
-  horn_clauses.push_back(hc);
-  makeMatches(hc, -1, true);
+  decideHornClause(hc, is_disequation);
 }
 
 void HornClauses::addHornClause(std::vector<EquationTerm> & antecedent,
 				EquationTerm & consequent,
 				bool is_disequation){
   HornClause * hc = new HornClause(auxiliar_cc, antecedent, consequent);
+  decideHornClause(hc, is_disequation);
+}
+
+void HornClauses::decideHornClause(HornClause * hc, bool is_disequation){
 #if DEBUG_ADDINGHC 
   std::cout << "Creating new horn clause " << *hc << std::endl;
 #endif
@@ -57,7 +42,7 @@ void HornClauses::addHornClause(std::vector<EquationTerm> & antecedent,
     }
   }
 #if DEBUG_ADDINGHC 
-      std::cout << "It was added" << std::endl;
+  std::cout << "It was added" << std::endl;
 #endif      
   horn_clauses.push_back(hc);
   makeMatches(hc, -1, true);

@@ -54,20 +54,7 @@ HornClause::HornClause(CongruenceClosure & cc,
     is_consequent_common = is_consequent_common
       && iterator_lhs->getSymbolCommonQ() && iterator_rhs->getSymbolCommonQ();
   }
-
-  // -------------------------------------------------------------------------------
-  // Normalization
-  std::sort(antecedent.begin(), antecedent.end(), compareEquations); // <- Heuristic
-  for(auto equation = antecedent.begin(); equation != antecedent.end();){
-    if(!cc.areEqual(equation->first, equation->second)){
-      cc.addEquation(equation->first, equation->second);
-      ++equation;
-    }
-    else
-      equation = antecedent.erase(equation);
-  }
-  // -------------------------------------------------------------------------------
-  
+  normalize(cc);
   this->local_equiv_class = cc.getDeepEquivalenceClass();
 }
   
@@ -87,22 +74,9 @@ HornClause::HornClause(CongruenceClosure & cc,
   is_consequent_common = is_consequent_common &&		
     cc.getReprTerm(consequent.first)->getSymbolCommonQ() &&
     cc.getReprTerm(consequent.second)->getSymbolCommonQ();
-  b
-  orient();
-
-  // -------------------------------------------------------------------------------
-  // Normalization
-  std::sort(antecedent.begin(), antecedent.end(), compareEquations); // <- Heuristic
-  for(auto equation = antecedent.begin(); equation != antecedent.end();){
-    if(!cc.areEqual(equation->first, equation->second)){
-      cc.addEquation(equation->first, equation->second);
-      ++equation;
-    }
-    else
-      equation = antecedent.erase(equation);
-  }
-  // -------------------------------------------------------------------------------
   
+  orient();
+  normalize(cc);
   this->local_equiv_class = cc.getDeepEquivalenceClass();
 }
 
@@ -157,6 +131,18 @@ void HornClause::orient(){
   _u = consequent.first, _v = consequent.second; 
   if(*_u < *_v)
     consequent = std::make_pair(_v, _u);
+}
+
+void HornClause::normalize(CongruenceClosure & cc){
+  std::sort(antecedent.begin(), antecedent.end(), compareEquations); // <- Heuristic
+  for(auto equation = antecedent.begin(); equation != antecedent.end();){
+    if(!cc.areEqual(equation->first, equation->second)){
+      cc.addEquation(equation->first, equation->second);
+      ++equation;
+    }
+    else
+      equation = antecedent.erase(equation);
+  }
 }
 
 bool HornClause::compareEquations(const EquationTerm & eq1, const EquationTerm & eq2){

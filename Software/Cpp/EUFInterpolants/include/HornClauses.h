@@ -46,7 +46,8 @@ class HornClauses{
   // back to the original configuration after every
   // creation of new Horn Clause's
   CongruenceClosure &              auxiliar_cc;
-  
+
+  void decideHornClause(HornClause *, bool);
   void mergeType2_1AndType3(HornClause *, HornClause *);
   void mergeType2_1AndType4(HornClause *, HornClause *);
   void mergeType2AndType2(HornClause *, HornClause *);

@@ -41,7 +41,8 @@ class HornClause {
   // The operator < heavily depends on this structure
   UnionFind                 local_equiv_class;
   EquationTerm              consequent;
-  void                      orient();
+  void                      normalize(CongruenceClosure & cc);
+  void                      orient();   
   static bool               compareEquations(const EquationTerm &, const EquationTerm &);
 };
 
