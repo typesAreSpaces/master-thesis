@@ -30,9 +30,6 @@ HornClause::HornClause(CongruenceClosure & cc,
       antecedent.push_back(std::make_pair(iterator_lhs, iterator_rhs));
     else
       antecedent.push_back(std::make_pair(iterator_rhs, iterator_lhs));
-    
-    is_antecedent_common = is_antecedent_common
-      && iterator_lhs->getSymbolCommonQ() && iterator_rhs->getSymbolCommonQ();
   }
   // ---------------------------------------------
   
@@ -54,7 +51,15 @@ HornClause::HornClause(CongruenceClosure & cc,
     is_consequent_common = is_consequent_common
       && iterator_lhs->getSymbolCommonQ() && iterator_rhs->getSymbolCommonQ();
   }
+  
   normalize(cc);
+  
+  for(auto it : antecedent){
+    is_antecedent_common = is_antecedent_common &&
+      cc.getReprTerm(it.first)->getSymbolCommonQ() &&
+      cc.getReprTerm(it.second)->getSymbolCommonQ();
+  }
+
   this->local_equiv_class = cc.getDeepEquivalenceClass();
 }
   
@@ -66,17 +71,19 @@ HornClause::HornClause(CongruenceClosure & cc,
   antecedent(antecedent),
   consequent(consequent)
 {
-  for(auto it : antecedent){
-    is_antecedent_common = is_antecedent_common &&
-      cc.getReprTerm(it.first)->getSymbolCommonQ() &&
-      cc.getReprTerm(it.second)->getSymbolCommonQ();
-  }
   is_consequent_common = is_consequent_common &&		
     cc.getReprTerm(consequent.first)->getSymbolCommonQ() &&
     cc.getReprTerm(consequent.second)->getSymbolCommonQ();
   
   orient();
   normalize(cc);
+  
+  for(auto it : antecedent){
+    is_antecedent_common = is_antecedent_common &&
+      cc.getReprTerm(it.first)->getSymbolCommonQ() &&
+      cc.getReprTerm(it.second)->getSymbolCommonQ();
+  }
+  
   this->local_equiv_class = cc.getDeepEquivalenceClass();
 }
 
