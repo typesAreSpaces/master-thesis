@@ -445,29 +445,32 @@ void HornClauses::mergeType2AndType2(HornClause * h1, HornClause * h2){
 }
 
 void HornClauses::mergeType2AndType3(HornClause * h1, HornClause * h2){
-  // TODO: Keep working here!
-  UnionFind _h1LocalUf = h1->getLocalUF(),
-    _h2LocalUf = HornClause::getGlobalUF();
+  std::cout << "Merge Type 2 and Type 3" << std::endl;
+  std::cout << "1. " << *h1 << std::endl;
+  std::cout << "2. " << *h2 << std::endl;
+  
+  // // TODO: Keep working here!
+  // UnionFind _h1LocalUf = h1->getLocalUF(),
+  //   _h2LocalUf = h2->getLocalUF();
 
-  std::vector<EquationTerm> _h1Antecedent = h1->getAntecedent(),
-    _h2Antecedent = h2->getAntecedent();
-  EquationTerm _h1Consequent = h1->getConsequent(),
-    _h2Consequent = h2->getConsequent();
+  // std::vector<EquationTerm> _h1Antecedent = h1->getAntecedent(),
+  //   _h2Antecedent = h2->getAntecedent();
+  // EquationTerm _h1Consequent = h1->getConsequent(),
+  //   _h2Consequent = h2->getConsequent();
 	
-  for(std::vector<EquationTerm>::iterator _it = _h2Antecedent.begin();
-      _it != _h2Antecedent.end(); ++_it){
-    if(_it->first->getId() == _h1Consequent.second->getId())
-      _it->first = _h1Consequent.first;
-    if(_it->second->getId() == _h1Consequent.second->getId())
-      _it->second = _h1Consequent.first;
-    _h1Antecedent.push_back(*_it);
-  }
-  _h2LocalUf.merge(_h1LocalUf.find(_h1Consequent.first->getId()),
-  		   _h1LocalUf.find(_h1Consequent.second->getId()));
+  // for(auto _it : _h2Antecedent){
+  //   if(_it.first->getId() == _h1Consequent.second->getId())
+  //     _it.first = _h1Consequent.first;
+  //   if(_it.second->getId() == _h1Consequent.second->getId())
+  //     _it.second = _h1Consequent.first;
+  //   _h1Antecedent.push_back(_it);
+  // }
+  // _h2LocalUf.merge(_h1LocalUf.find(_h1Consequent.first->getId()),
+  // 		   _h1LocalUf.find(_h1Consequent.second->getId()));
 
-  HornClause * hc = new HornClause(_h2LocalUf, _h1Antecedent,
-  				   _h2Consequent, local_terms);
-  combinationHelper(hc);
+  // HornClause * hc = new HornClause(_h2LocalUf, _h1Antecedent,
+  // 				   _h2Consequent, local_terms);
+  // combinationHelper(hc);
 }
 
 void HornClauses::mergeType2AndType4(HornClause * h1, HornClause * h2){
