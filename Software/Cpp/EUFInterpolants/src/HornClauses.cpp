@@ -3,7 +3,7 @@
 #define DEBUG_ADDINGHC           false
 #define DEBUG_MAKE_MATCHES       false
 #define DEBUG_CE                 false
-#define DEBUG_COMBINATION_HELPER false
+#define DEBUG_COMBINATION_HELPER true
 #define DEBUG_MC2CMC2A           true
 #define DEBUG_MC1CMC1A           true
 #define DEBUG_MC1CMC2A           false
@@ -158,12 +158,9 @@ void HornClauses::mc1ConsequentAndmc1Antecedent(SetOfUnsignedPairs & prev_combin
     auto positions_consequent = map_vertex_positions.second;
     for(unsigned position_consequent : positions_consequent){
       for(unsigned position_antecedent : mc1_antecedent[vertex]){
-	if(notInSet(std::make_pair(position_consequent,
-				   position_antecedent), prev_combinations)
-	   && notInSet(std::make_pair(position_antecedent,
-				      position_consequent), prev_combinations)
-	   && horn_clauses[position_consequent]->getAntecedentCommon()) // <- TODO: Do I need this restriction?
-	  {
+	if(notInSet(std::make_pair(position_consequent, position_antecedent), prev_combinations)
+	   && notInSet(std::make_pair(position_antecedent, position_consequent), prev_combinations)
+	   && horn_clauses[position_consequent]->getAntecedentCommon()){
 #if DEBUG_MC1CMC1A
 	    std::cout << "2. Combine " << position_consequent << " , "
 		      << position_antecedent << std::endl
@@ -171,10 +168,8 @@ void HornClauses::mc1ConsequentAndmc1Antecedent(SetOfUnsignedPairs & prev_combin
 		      << " with " << std::endl << *horn_clauses[position_antecedent]
 		      << std::endl;
 #endif 
-	    prev_combinations.insert(std::make_pair(position_consequent,
-						    position_antecedent));
-	    mergeType2AndType3(horn_clauses[position_consequent],
-			       horn_clauses[position_antecedent]);
+	    prev_combinations.insert(std::make_pair(position_consequent, position_antecedent));
+	    mergeType2AndType3(horn_clauses[position_consequent], horn_clauses[position_antecedent], vertex);
 	    change = true;
 	  }
       }
@@ -444,33 +439,36 @@ void HornClauses::mergeType2AndType2(HornClause * h1, HornClause * h2){
   // combinationHelper(hc);
 }
 
-void HornClauses::mergeType2AndType3(HornClause * h1, HornClause * h2){
-  std::cout << "Merge Type 2 and Type 3" << std::endl;
-  std::cout << "1. " << *h1 << std::endl;
-  std::cout << "2. " << *h2 << std::endl;
+void HornClauses::mergeType2AndType3(HornClause * h_left, HornClause * h_right, Term * to_remove){
+  auto to_replace = h_left->getConsequent().first->getId() == to_remove->getId() ?
+    h_left->getConsequent().second : h_left->getConsequent().first;
+  auto consequent = std::make_pair(h_right->getConsequent().first, h_right->getConsequent().second);
+
+  std::vector<EquationTerm> antecedent;
+  for(auto equation : h_left->getAntecedent()){
+    if(equation.first->getId() == to_remove->getId())
+      antecedent.push_back(std::make_pair(equation.second, to_replace));
+    else{
+      if(equation.second->getId() == to_remove->getId())
+      antecedent.push_back(std::make_pair(equation.first, to_replace));
+      else
+	antecedent.push_back(equation);
+    }
+  }
   
-  // // TODO: Keep working here!
-  // UnionFind _h1LocalUf = h1->getLocalUF(),
-  //   _h2LocalUf = h2->getLocalUF();
+  for(auto equation : h_right->getAntecedent()){
+    if(equation.first->getId() == to_remove->getId())
+      antecedent.push_back(std::make_pair(equation.second, to_replace));
+    else{
+      if(equation.second->getId() == to_remove->getId())
+      antecedent.push_back(std::make_pair(equation.first, to_replace));
+      else
+	antecedent.push_back(equation);
+    }
+  }
 
-  // std::vector<EquationTerm> _h1Antecedent = h1->getAntecedent(),
-  //   _h2Antecedent = h2->getAntecedent();
-  // EquationTerm _h1Consequent = h1->getConsequent(),
-  //   _h2Consequent = h2->getConsequent();
-	
-  // for(auto _it : _h2Antecedent){
-  //   if(_it.first->getId() == _h1Consequent.second->getId())
-  //     _it.first = _h1Consequent.first;
-  //   if(_it.second->getId() == _h1Consequent.second->getId())
-  //     _it.second = _h1Consequent.first;
-  //   _h1Antecedent.push_back(_it);
-  // }
-  // _h2LocalUf.merge(_h1LocalUf.find(_h1Consequent.first->getId()),
-  // 		   _h1LocalUf.find(_h1Consequent.second->getId()));
-
-  // HornClause * hc = new HornClause(_h2LocalUf, _h1Antecedent,
-  // 				   _h2Consequent, local_terms);
-  // combinationHelper(hc);
+  HornClause * hc = new HornClause(auxiliar_cc, antecedent, consequent);
+  combinationHelper(hc);
 }
 
 void HornClauses::mergeType2AndType4(HornClause * h1, HornClause * h2){
@@ -478,17 +476,18 @@ void HornClauses::mergeType2AndType4(HornClause * h1, HornClause * h2){
 }
 
 void HornClauses::combinationHelper(HornClause * hc){
+  auxiliar_cc.transferEqClassAndPreds(original_cc);
   
   if(hc->checkTriviality(original_cc.getEquivalenceClass())){
     delete hc;
 #if DEBUG_COMBINATION_HELPER
-    std::cout << "It was deleted" << std::endl << std::endl;
+    std::cout << "Inside combination helper: " << *hc << " was deleted" << std::endl << std::endl;
 #endif
     return;
   }
   
 #if DEBUG_COMBINATION_HELPER
-  std::cout << "It was added!" << std::endl << std::endl;
+  std::cout << "Inside combination helper: " << *hc << " was added!" << std::endl << std::endl;
 #endif
   
   horn_clauses.push_back(hc);

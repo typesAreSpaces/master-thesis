@@ -51,7 +51,7 @@ class HornClauses{
   void mergeType2_1AndType3(HornClause *, HornClause *);
   void mergeType2_1AndType4(HornClause *, HornClause *);
   void mergeType2AndType2(HornClause *, HornClause *);
-  void mergeType2AndType3(HornClause *, HornClause *);
+  void mergeType2AndType3(HornClause *, HornClause *, Term *);
   void mergeType2AndType4(HornClause *, HornClause *);
   
   void simplifyHornClauses();
