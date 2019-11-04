@@ -78,7 +78,7 @@ void HornClauses::conditionalElimination(){
     // 4. Type 2 + Type 3
     // 5. Type 2 + Type 4
     // with mc1_consequent x mc1_antecedent
-    mc1ConsequentAndmc1Antecedent(prev_combinations, change); // TODO: and this one
+    mc1ConsequentAndmc1Antecedent(prev_combinations, change); // Done
 
     // 3.
     // This part covers cases:
@@ -145,14 +145,7 @@ void HornClauses::mc2ConsequentAndmc2Antecedent(SetOfUnsignedPairs & prev_combin
 }
 
 void HornClauses::mc1ConsequentAndmc1Antecedent(SetOfUnsignedPairs & prev_combinations,
-						bool & change){
-  // unsigned i = 0;
-  // for(auto x : horn_clauses){
-  //   std::cout << i++ << ". " << *x << std::endl;
-  //   std::cout << x->getAntecedentCommon() << std::endl;
-  //   std::cout << x->getConsequentCommon() << std::endl;
-  // }
-  
+						bool & change){  
   for(auto map_vertex_positions : mc1_consequent){		
     auto vertex = map_vertex_positions.first;
     auto positions_consequent = map_vertex_positions.second;
