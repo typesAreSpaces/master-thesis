@@ -48,7 +48,7 @@ class HornClauses{
   CongruenceClosure &              auxiliar_cc;
 
   void decideHornClause(HornClause *, bool);
-  void mergeType2_1AndType3(HornClause *, HornClause *);
+  void mergeType2_1AndType3(HornClause *, HornClause *, EquationTerm &);
   void mergeType2_1AndType4(HornClause *, HornClause *);
   void mergeType2AndType2(HornClause *, HornClause *);
   void mergeType2AndType3(HornClause *, HornClause *, Term *);
@@ -60,7 +60,7 @@ class HornClauses{
   void mc2ConsequentAndmc2Antecedent(SetOfUnsignedPairs &, bool &);
   void mc1ConsequentAndmc1Antecedent(SetOfUnsignedPairs &, bool &);
   void mc1ConsequentAndmc2Antecedent(SetOfUnsignedPairs &, bool &);
-  void mc1ConsequentAndmc1Antecedent2(SetOfUnsignedPairs &, bool &);
+  void mc1ConsequentAndmc1Consequent(SetOfUnsignedPairs &, bool &);
   
   template<typename A>
     static void swap(std::vector<A> &, unsigned, unsigned);
