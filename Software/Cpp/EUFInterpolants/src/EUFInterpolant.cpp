@@ -30,10 +30,7 @@ void EUFInterpolant::test(){
   // std::cout << auxiliar_closure << std::endl;
   eliminationOfUncommonFSyms();
   addNegativeHornClauses();
-  // ------------------------------------
-  // TODO: Working on this one
-  horn_clauses.conditionalElimination();
-  // ------------------------------------
+  horn_clauses.conditionalElimination(); // TODO: Needs testing
   return;
 }
 

@@ -21,12 +21,10 @@ class HornClauses{
   ~HornClauses();
   
   // Adds a Horn clause using two terms of the form f(t_1, ..., t_n) and f(t'_1, ..., t'_n)
-  void                     addHornClause(Term*, Term*,
-					 bool);
+  void                     addHornClause(Term*, Term*, bool);
   // Adds a Horn Clause using a vector of EquationTerms as antecedent
   // and an EquationTerm as conclusion
-  void                     addHornClause(std::vector<EquationTerm> &, EquationTerm &,
-					 bool);
+  void                     addHornClause(std::vector<EquationTerm> &, EquationTerm &, bool);
   void                     conditionalElimination();
   unsigned                 size();
   std::vector<HornClause*> getHornClauses();
@@ -50,7 +48,7 @@ class HornClauses{
   void decideHornClause(HornClause *, bool);
   void mergeType2_1AndType3(HornClause *, HornClause *, EquationTerm &);
   void mergeType2_1AndType4(HornClause *, HornClause *);
-  void mergeType2AndType2(HornClause *, HornClause *);
+  void mergeType2AndType2(HornClause *, HornClause *, Term *);
   void mergeType2AndType3(HornClause *, HornClause *, Term *);
   void mergeType2AndType4(HornClause *, HornClause *);
   

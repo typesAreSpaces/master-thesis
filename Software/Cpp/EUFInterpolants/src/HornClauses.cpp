@@ -3,7 +3,7 @@
 #define DEBUG_ADDINGHC           false
 #define DEBUG_MAKE_MATCHES       false
 #define DEBUG_CE                 false
-#define DEBUG_COMBINATION_HELPER false
+#define DEBUG_COMBINATION_HELPER true
 #define DEBUG_MC2CMC2A           true
 #define DEBUG_MC1CMC1A           true
 #define DEBUG_MC1CMC2A           true
@@ -55,7 +55,7 @@ void HornClauses::decideHornClause(HornClause * hc, bool is_disequation){
   makeMatches(hc, horn_clauses.size() - 1);
 }
 
-void HornClauses::conditionalElimination(){
+void HornClauses::conditionalElimination(){ // TODO: Needs testing
   bool change = true;
   SetOfUnsignedPairs prev_combinations;
   unsigned old_horn_clauses_size, new_horn_clauses_size;
@@ -91,7 +91,7 @@ void HornClauses::conditionalElimination(){
     // This part covers cases:
     // 3. Type 2 + Type 2
     // with mc1_consequent x mc1_consequent
-    mc1ConsequentAndmc1Consequent(prev_combinations, change);// TODO: Working on this one
+    mc1ConsequentAndmc1Consequent(prev_combinations, change);
 
     // Update the match data structures
     mc1_antecedent.clear();
@@ -102,7 +102,6 @@ void HornClauses::conditionalElimination(){
     new_horn_clauses_size = horn_clauses.size();
     for(unsigned index = old_horn_clauses_size; index < new_horn_clauses_size; ++index)
       makeMatches(horn_clauses[index], index);
-
   }
   
   simplifyHornClauses();
@@ -117,17 +116,16 @@ void HornClauses::conditionalElimination(){
 }
 
 // Elimination of h_left : * -> uncom_1 = uncom_2, h_right : * ^ uncom_1 = uncom_2 ^ * -> *
-void HornClauses::mc2ConsequentAndmc2Antecedent(SetOfUnsignedPairs & prev_combinations,
-						bool & change){
+void HornClauses::mc2ConsequentAndmc2Antecedent(SetOfUnsignedPairs & prev_combinations, bool & change){
   for(auto map_equation_positions : mc2_consequent){
     auto equation = map_equation_positions.first;
-    auto positions_consequent = map_equation_positions.second;
-    for(unsigned left_consequent : positions_consequent)
+    for(unsigned left_consequent : mc2_consequent[equation])
       for(unsigned right_antecedent : mc2_antecedent[equation]){
 	if(notInSet(std::make_pair(left_consequent, right_antecedent), prev_combinations)
 	   && notInSet(std::make_pair(right_antecedent, left_consequent), prev_combinations)){
 #if DEBUG_MC2CMC2A
-	  std::cout << "1. Combine" << std::endl
+	  std::cout << "1. Combine " << left_consequent << ", "
+		    << right_antecedent << std::endl
 		    << *horn_clauses[left_consequent] << std::endl
 		    << " with " << std::endl
 		    << *horn_clauses[right_antecedent]
@@ -142,12 +140,10 @@ void HornClauses::mc2ConsequentAndmc2Antecedent(SetOfUnsignedPairs & prev_combin
 }
 
 // Elimination of h_left : * -> com_1 = uncom, h_right : * ^ com_2 = uncom ^ * -> *
-void HornClauses::mc1ConsequentAndmc1Antecedent(SetOfUnsignedPairs & prev_combinations,
-						bool & change){  
+void HornClauses::mc1ConsequentAndmc1Antecedent(SetOfUnsignedPairs & prev_combinations, bool & change){  
   for(auto map_vertex_positions : mc1_consequent){		
     auto vertex = map_vertex_positions.first;
-    auto positions_consequent = map_vertex_positions.second;
-    for(unsigned left_consequent : positions_consequent){
+    for(unsigned left_consequent : mc1_consequent[vertex]){
       for(unsigned right_antecedent : mc1_antecedent[vertex]){
 	if(notInSet(std::make_pair(left_consequent, right_antecedent), prev_combinations)
 	   && notInSet(std::make_pair(right_antecedent, left_consequent), prev_combinations)
@@ -169,12 +165,10 @@ void HornClauses::mc1ConsequentAndmc1Antecedent(SetOfUnsignedPairs & prev_combin
 }
 
 // Elimination of h_left : * -> com = uncom_1, h_right : * ^ uncomm_1 = uncom_2 ^ * -> *
-void HornClauses::mc1ConsequentAndmc2Antecedent(SetOfUnsignedPairs & prev_combinations,
-						bool & change){
+void HornClauses::mc1ConsequentAndmc2Antecedent(SetOfUnsignedPairs & prev_combinations, bool & change){
   for(auto map_vertex_positions_consequent : mc1_consequent){
     auto vertex = map_vertex_positions_consequent.first; // (uncom_1)
-    auto positions_consequent = map_vertex_positions_consequent.second;
-    for(unsigned left_consequent : positions_consequent){
+    for(unsigned left_consequent : mc1_consequent[vertex]){
       for(auto map_equation_positions_antecedent : mc2_antecedent){
 	auto equation_antecedent = map_equation_positions_antecedent.first;
 	if(equation_antecedent.first == vertex || equation_antecedent.second == vertex){
@@ -183,7 +177,8 @@ void HornClauses::mc1ConsequentAndmc2Antecedent(SetOfUnsignedPairs & prev_combin
 	       && notInSet(std::make_pair(right_antecedent, left_consequent), prev_combinations)
 	       && horn_clauses[left_consequent]->getAntecedentCommon()){
 #if DEBUG_MC1CMC2A
-	      std::cout << "3. Combine " << std::endl
+	      std::cout << "3. Combine " << left_consequent << ", "
+			<< right_antecedent << std::endl
 			<< *horn_clauses[left_consequent] << std::endl
 			<< " with " << std::endl
 			<< *horn_clauses[right_antecedent]
@@ -200,35 +195,30 @@ void HornClauses::mc1ConsequentAndmc2Antecedent(SetOfUnsignedPairs & prev_combin
   }
 }
 
-// Elimination of h_left : * ^ uncom_1 = com_1 ^ * -> *, h_right : * ^ uncom_1 = com_2 ^ * -> *
-void HornClauses::mc1ConsequentAndmc1Consequent(SetOfUnsignedPairs & prev_combinations,
-						 bool & change){
-//   for(auto map_vertex_positions : mc1_consequent){		
-//     auto vertex = map_vertex_positions.first;
-//     auto positions_consequent_1 = map_vertex_positions.second;
-//     for(unsigned position_consequent_1 : positions_consequent_1)
-			
-//       for(unsigned position_consequent_2 : mc1_consequent[vertex]){
-// 	if(notInSet(std::make_pair(position_consequent_1,
-// 				   position_consequent_2), prev_combinations)
-// 	   && notInSet(std::make_pair(position_consequent_2,
-// 				      position_consequent_1), prev_combinations)
-// 	   && horn_clauses[position_consequent_1]->getAntecedentCommon()
-// 	   && horn_clauses[position_consequent_2]->getAntecedentCommon()){
-// #if DEBUG_MC1CMC1A2
-// 	  std::cout << "4. Combine " << std::endl
-// 		    << *horn_clauses[position_consequent_1] << std::endl
-// 		    << " with " << std::endl << *horn_clauses[position_consequent_2]
-// 		    << std::endl;
-// #endif	    
-// 	  prev_combinations.insert(std::make_pair(position_consequent_1,
-// 						  position_consequent_2));
-// 	  mergeType2AndType2(horn_clauses[position_consequent_1],
-// 			     horn_clauses[position_consequent_2]);
-// 	  change = true;
-// 	}
-//       }
-//   }
+// Elimination of h_left :  * -> com_1 = uncom_1, h_right : * -> com_2 = uncom_1
+void HornClauses::mc1ConsequentAndmc1Consequent(SetOfUnsignedPairs & prev_combinations, bool & change){
+  for(auto map_vertex_positions : mc1_consequent){
+    auto vertex = map_vertex_positions.first;
+    for(unsigned left_consequent : mc1_consequent[vertex])
+      for(unsigned right_consequent : mc1_consequent[vertex]){
+  	if(left_consequent != right_consequent
+	   && notInSet(std::make_pair(left_consequent, right_consequent), prev_combinations)
+  	   && notInSet(std::make_pair(right_consequent, left_consequent), prev_combinations)
+  	   && horn_clauses[left_consequent]->getAntecedentCommon()
+  	   && horn_clauses[right_consequent]->getAntecedentCommon()){
+#if DEBUG_MC1CMC1A2
+  	  std::cout << "4. Combine " << left_consequent << ", "
+		    << right_consequent << std::endl
+  		    << *horn_clauses[left_consequent] << std::endl
+  		    << " with " << std::endl << *horn_clauses[right_consequent]
+  		    << std::endl;
+#endif	    
+  	  prev_combinations.insert(std::make_pair(left_consequent, right_consequent));
+  	  mergeType2AndType2(horn_clauses[left_consequent], horn_clauses[right_consequent], vertex);
+  	  change = true;
+  	}
+      }
+  }
 }
 
 // This method removes unnecessary
@@ -380,40 +370,18 @@ void HornClauses::mergeType2_1AndType4(HornClause * h1, HornClause * h2){
   // Same as mergeType2_1AndType3
 }
 
-void HornClauses::mergeType2AndType2(HornClause * h1, HornClause * h2){
-  
-  // UnionFind _h1LocalUf = h1->getLocalUF(),
-  //   _h2LocalUf = HornClause::getGlobalUF();
+// Elimination of h_left :  * -> com_1 = uncom_1, h_right : * -> com_2 = uncom_1
+void HornClauses::mergeType2AndType2(HornClause * h_left, HornClause * h_right, Term * to_remove){
+  auto consequent = std::make_pair(h_right->getConsequent().first, h_left->getConsequent().first);
+  std::vector<EquationTerm> antecedent;
 
-  // std::vector<EquationTerm> _h1Antecedent = h1->getAntecedent(),
-  //   _h2Antecedent = h2->getAntecedent();
-  // EquationTerm _h1Consequent = h1->getConsequent(),
-  //   _h2Consequent = h2->getConsequent();
-	
-  // for(std::vector<EquationTerm>::iterator _it = _h1Antecedent.begin();
-  //     _it != _h1Antecedent.end(); ++_it){
-  //   if(_h2LocalUf.find(_it->first->getId()) !=
-  //      _h2LocalUf.find(_it->second->getId())){
-  //     Term * _u = local_terms[_h2LocalUf.find(_it->first->getId())],
-  // 	* _v = local_terms[_h2LocalUf.find(_it->second->getId())];
-  //     if(*_u >= *_v)
-  // 	_h2Antecedent.push_back(std::make_pair(_u, _v));
-  //     else
-  // 	_h2Antecedent.push_back(std::make_pair(_v, _u));
-  //   }
-  // }
-  
-  // Term * _u = local_terms[_h2LocalUf.find(_h1Consequent.first->getId())],
-  //   * _v = local_terms[_h2LocalUf.find(_h2Consequent.first->getId())];
-  
-  // if(*_u >= *_v)
-  //   _h2Consequent = std::make_pair(_u, _v);
-  // else
-  //   _h2Consequent = std::make_pair(_v, _u);
-	
-  // HornClause * hc = new HornClause(_h2LocalUf, _h2Antecedent,
-  // 				   _h2Consequent, local_terms);
-  // combinationHelper(hc);
+  for(auto equation : h_left->getAntecedent())
+    antecedent.push_back(equation);
+  for(auto equation : h_right->getAntecedent())
+    antecedent.push_back(equation);
+
+  HornClause * hc = new HornClause(auxiliar_cc, antecedent, consequent);
+  combinationHelper(hc);
 }
 
 void HornClauses::mergeType2AndType3(HornClause * h_left, HornClause * h_right, Term * to_remove){
@@ -456,10 +424,10 @@ void HornClauses::combinationHelper(HornClause * hc){
   auxiliar_cc.transferEqClassAndPreds(original_cc);
   
   if(hc->checkTriviality(original_cc.getEquivalenceClass())){
-    delete hc;
 #if DEBUG_COMBINATION_HELPER
     std::cout << "Inside combination helper: " << *hc << " was deleted" << std::endl << std::endl;
 #endif
+    delete hc;
     return;
   }
   
