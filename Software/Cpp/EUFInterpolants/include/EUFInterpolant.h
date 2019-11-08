@@ -12,7 +12,6 @@ class EUFInterpolant {
   EUFInterpolant(const z3::expr &, const z3::sort &);
   EUFInterpolant(const z3::expr &, const UncommonSymbols &, const z3::sort &);
   ~EUFInterpolant();
-  void                     test();
   z3::expr                 buildInterpolant();
   std::vector<HornClause*> getHornClauses();
   friend std::ostream &    operator << (std::ostream &, EUFInterpolant &);

@@ -12,9 +12,7 @@ EUFInterpolant::EUFInterpolant(const z3::expr & e, const z3::sort & s) :
 		original_closure.getOriginalTerm(0)){
 }
 
-EUFInterpolant::EUFInterpolant(const z3::expr & e,
-			       const UncommonSymbols & symbols_to_elim,
-			       const z3::sort & s) :
+EUFInterpolant::EUFInterpolant(const z3::expr & e, const UncommonSymbols & symbols_to_elim, const z3::sort & s) :
   auxiliar_closure(e.ctx(), e, symbols_to_elim),
   original_closure(e.ctx(), e, symbols_to_elim),
   cvt(e.ctx(), s),
@@ -26,51 +24,35 @@ EUFInterpolant::EUFInterpolant(const z3::expr & e,
 EUFInterpolant::~EUFInterpolant(){
 }
 
-void EUFInterpolant::test(){
-  // std::cout << auxiliar_closure << std::endl;
-  eliminationOfUncommonFSyms();
-  addNegativeHornClauses();
-  horn_clauses.conditionalElimination(); // TODO: Needs testing
-  return;
-}
-
 z3::expr EUFInterpolant::buildInterpolant(){
   eliminationOfUncommonFSyms();
   addNegativeHornClauses();
-  // ------------------------------------
-  // TODO: FIX THIS!
-  // UPDATE: IT LOOKS LIKE IT'S DONE!
   horn_clauses.conditionalElimination();
-  // ------------------------------------
   
-  auto non_reducible_hs = horn_clauses.getHornClauses();
-  auto non_reducible_hs_z3 = cvt.convert(non_reducible_hs);
+  // TODO: Needs to obtain the original symbols
+  auto non_reducible_hs_z3 = cvt.convert(horn_clauses.getHornClauses());
   auto simplified_hs = cvt.extraSimplification(non_reducible_hs_z3);
   
-  std::cout << "Non Reducible" << std::endl;
-  std::cout << simplified_hs << std::endl;
-  
   auto reducible_hs = horn_clauses.getReducibleHornClauses();
+  // TODO: Needs to obtain the original symbols
   auto reducible_hs_z3 = cvt.convert(reducible_hs);
 
-  std::cout << "Reducible" << std::endl;
-  std::cout << reducible_hs_z3 << std::endl;
-  
+  // TODO: Needs to obtain the original symbols
   auto equations = cvt.convert(original_closure.getEquations());
+  // TODO: Needs to obtain the original symbols
   auto uncomm_terms_elim = getUncommonTermsToElim(reducible_hs);
 
-  std::cout << "ok" << std::endl;
-  
-  auto exponential_hs = exponentialElimination(equations,
-					       uncomm_terms_elim,
-					       reducible_hs_z3);
+  // FIX: There might be problems here
+  std::cout << "Equations " << equations << std::endl;
+  std::cout << "Uncommon terms to elim " << uncomm_terms_elim << std::endl;
+  std::cout << "Reducible horn clauses " << reducible_hs_z3 << std::endl;
+  auto exponential_hs = exponentialElimination(equations, uncomm_terms_elim, reducible_hs_z3);
   std::cout << "Exponential" << std::endl;
   std::cout << exponential_hs << std::endl;
   
   auto simplified_exponential_hs = cvt.extraSimplification(exponential_hs);  
   
-  return cvt.makeConjunction(simplified_hs)
-    && cvt.makeConjunction(simplified_exponential_hs);
+  return cvt.makeConjunction(simplified_hs) && cvt.makeConjunction(simplified_exponential_hs);
 }
 
 std::vector<HornClause*> EUFInterpolant::getHornClauses(){
@@ -160,8 +142,7 @@ z3::expr_vector EUFInterpolant::getUncommonTermsToElim(std::vector<HornClause*> 
 }
 
 z3::expr_vector EUFInterpolant::exponentialElimination(z3::expr_vector & equations,
-						       z3::expr_vector & terms_elim,
-						       z3::expr_vector & hcs){
+						       z3::expr_vector & terms_elim, z3::expr_vector & hcs){
   z3::expr_vector new_equations(equations.ctx());
   for(auto term_to_elim : terms_elim){
     new_equations.resize(0);

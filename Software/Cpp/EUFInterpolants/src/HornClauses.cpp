@@ -3,11 +3,11 @@
 #define DEBUG_ADDINGHC           false
 #define DEBUG_MAKE_MATCHES       false
 #define DEBUG_CE                 false
-#define DEBUG_COMBINATION_HELPER true
-#define DEBUG_MC2CMC2A           true
-#define DEBUG_MC1CMC1A           true
-#define DEBUG_MC1CMC2A           true
-#define DEBUG_MC1CMC1A2          true
+#define DEBUG_COMBINATION_HELPER false
+#define DEBUG_MC2CMC2A           false
+#define DEBUG_MC1CMC1A           false
+#define DEBUG_MC1CMC2A           false
+#define DEBUG_MC1CMC1A2          false
 
 HornClauses::HornClauses(CongruenceClosure & original_closure,
 			 CongruenceClosure & auxiliar_closure) :
@@ -20,15 +20,12 @@ HornClauses::~HornClauses(){
     delete it;
 }
 
-void HornClauses::addHornClause(Term* u, Term* v,
-				bool is_disequation){
+void HornClauses::addHornClause(Term* u, Term* v, bool is_disequation){
   HornClause * hc = new HornClause(auxiliar_cc, u, v, is_disequation);
   decideHornClause(hc, is_disequation);
 }
 
-void HornClauses::addHornClause(std::vector<EquationTerm> & antecedent,
-				EquationTerm & consequent,
-				bool is_disequation){
+void HornClauses::addHornClause(std::vector<EquationTerm> & antecedent, EquationTerm & consequent, bool is_disequation){
   HornClause * hc = new HornClause(auxiliar_cc, antecedent, consequent);
   decideHornClause(hc, is_disequation);
 }
@@ -55,7 +52,7 @@ void HornClauses::decideHornClause(HornClause * hc, bool is_disequation){
   makeMatches(hc, horn_clauses.size() - 1);
 }
 
-void HornClauses::conditionalElimination(){ // TODO: Needs testing
+void HornClauses::conditionalElimination(){
   bool change = true;
   SetOfUnsignedPairs prev_combinations;
   unsigned old_horn_clauses_size, new_horn_clauses_size;
@@ -240,34 +237,34 @@ void HornClauses::simplifyHornClauses(){
     ++position;
   }
   
-  for(auto it : reduced){
-    unsigned length = it.second.size();
-    for(unsigned i = 0; i + 1 < length; ++i){
+  for(auto horn_clause : reduced){
+    unsigned num_of_positions = horn_clause.second.size();
+    for(unsigned i = 0; i + 1 < num_of_positions; ++i){
       unsigned j = i + 1;
-      while(change && j < length){
+      while(change && j < num_of_positions){
 	change = false;
-	unsigned i_position = it.second[i],
-	  j_position = it.second[j],
-	  l_position = it.second[length - 1];
+	unsigned i_position = horn_clause.second[i],
+	  j_position = horn_clause.second[j],
+	  last_position = horn_clause.second[num_of_positions - 1];
 	
 	if(*horn_clauses[i_position] > *horn_clauses[j_position]){
 	  change = true;
-	  swap(horn_clauses, j_position, l_position);
-	  --length;
+	  swap(horn_clauses, j_position, last_position);
+	  --num_of_positions;
 	}
 	else{
 	  if(*horn_clauses[i_position] < *horn_clauses[j_position]){
 	    change = true;
 	    swap(horn_clauses, i_position, j_position);
-	    swap(horn_clauses, j_position, l_position);
-	    --length;
+	    swap(horn_clauses, j_position, last_position);
+	    --num_of_positions;
 	  }
 	  else
 	    ++j; 
 	}
       }
     }
-    reduced_length[it.first] = length;
+    reduced_length[horn_clause.first] = num_of_positions;
   }
 }
 
@@ -282,18 +279,15 @@ void HornClauses::simplifyHornClauses(){
 // All HornClauses here are assumed
 // to be normalized 
 // -------------------------------------
-void HornClauses::makeMatches(HornClause * hc,
-			      unsigned current_index){
+void HornClauses::makeMatches(HornClause * hc, unsigned current_index){
 #if DEBUG_MAKE_MATCHES
   std::cout << "Making matches for " << *hc << std::endl;
 #endif
-  
-  std::vector<EquationTerm> & hc_antecedent = hc->getAntecedent();
   EquationTerm & hc_consequent = hc->getConsequent();
 
   // -----------------------------------------------------------------------------------
   // Processing the antedecent of the current Horn Clause
-  for(auto equation_iterator : hc_antecedent) {
+  for(auto equation_iterator : hc->getAntecedent()) {
     // If the first term is uncommon,
     // then the equation is uncommon due to
     // the normalizing ordering used
@@ -347,7 +341,6 @@ void HornClauses::makeMatches(HornClause * hc,
     // there is nothing to do
   }
   // -----------------------------------------------------------------------------
-  
 }
 
 void HornClauses::mergeType2_1AndType3(HornClause * h_left, HornClause * h_right, EquationTerm & to_remove){

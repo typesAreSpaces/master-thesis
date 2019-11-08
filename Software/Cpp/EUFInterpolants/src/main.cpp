@@ -30,10 +30,9 @@ int main(int argc, char ** argv){
     // cc_example.transferEqClassAndPreds(cc_example2);
     // std::cout << cc_example << std::endl;
     
-    EUFInterpolant euf_interpolant_example(input_formula,
-    					   symbols_to_elim,
-					   aux_expr.decl().range());
-    euf_interpolant_example.test(); 
+    EUFInterpolant euf_interpolant_example(input_formula, symbols_to_elim, aux_expr.decl().range());
+    auto result = euf_interpolant_example.buildInterpolant();
+    std::cout << "The interpolant is: " << result << std::endl;
   }
   return 0;
 }
