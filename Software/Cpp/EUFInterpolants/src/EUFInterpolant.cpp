@@ -8,8 +8,8 @@ EUFInterpolant::EUFInterpolant(const z3::expr & e, const z3::sort & s) :
   original_closure(e.ctx(), e),
   cvt(e.ctx(), s),
   horn_clauses(original_closure, auxiliar_closure),
-  contradiction(original_closure.getOriginalTerm(0),
-		original_closure.getOriginalTerm(0)){
+  contradiction(original_closure.getOriginalTerm(0), original_closure.getOriginalTerm(0))
+{
 }
 
 EUFInterpolant::EUFInterpolant(const z3::expr & e, const UncommonSymbols & symbols_to_elim, const z3::sort & s) :
@@ -17,8 +17,8 @@ EUFInterpolant::EUFInterpolant(const z3::expr & e, const UncommonSymbols & symbo
   original_closure(e.ctx(), e, symbols_to_elim),
   cvt(e.ctx(), s),
   horn_clauses(original_closure, auxiliar_closure),
-  contradiction(original_closure.getOriginalTerm(0),
-		original_closure.getOriginalTerm(0)){
+  contradiction(original_closure.getOriginalTerm(0), original_closure.getOriginalTerm(0))
+{
 }
 
 EUFInterpolant::~EUFInterpolant(){
@@ -142,51 +142,67 @@ z3::expr_vector EUFInterpolant::getUncommonTermsToElim(std::vector<HornClause*> 
 }
 
 z3::expr_vector EUFInterpolant::exponentialElimination(z3::expr_vector & equations,
-						       z3::expr_vector & terms_elim, z3::expr_vector & hcs){
+						       z3::expr_vector & terms_elim,
+						       z3::expr_vector & hcs){
   z3::expr_vector new_equations(equations.ctx());
-  for(auto term_to_elim : terms_elim){
+  for(auto term_elim : terms_elim){
+    
     new_equations.resize(0);
+
     for(auto equation : equations){
-      auto current_substitutions = substitutions(equation, term_to_elim, hcs);
-      for(auto substitution : current_substitutions)
+      std::cout << "Inside exponential elimination - old equation ";
+      std::cout << equation << std::endl;
+      // Remark: substitutions can produce horn clauses!
+      // so new_equations are not all equations!
+      for(auto substitution : substitutions(equation, term_elim, hcs)){
+	std::cout << "Inside exponential elimination - substitution ";
+	std::cout << substitution << std::endl;
 	new_equations.push_back(substitution);
+      }
     }
+
     equations.resize(0);
+    
     // Deep - copy
-    for(auto substitution : new_equations)
-      equations.push_back(substitution);
+    for(auto equation : new_equations){
+      std::cout << "Inside exponential elimination - new equation: ";
+      std::cout << equation << std::endl;
+      equations.push_back(equation);
+    }
+    
   }
   return equations;
 }
 
-z3::expr_vector EUFInterpolant::substitutions(z3::expr & formula,
-					      z3::expr & term,
+
+z3::expr_vector EUFInterpolant::substitutions(z3::expr & equation,
+					      z3::expr & term_elim,
 					      z3::expr_vector & hcs){
-  z3::expr_vector answer(formula.ctx());
-  z3::expr_vector from(formula.ctx()), to(formula.ctx());
-  from.push_back(term);
+  z3::expr_vector answer(equation.ctx()), from(equation.ctx()), to(equation.ctx());
+  from.push_back(term_elim);
   unsigned hcs_length = hcs.size();
-  for(unsigned i = 0; i < hcs_length; ++i){
-    // current_hc_term is the 'y' in the Horn
-    // clause 'antecedent -> x = y'
-    auto current_consequent_rhs = hcs[i].arg(1).arg(1);
-    auto current_consequent_lhs = hcs[i].arg(1).arg(0);
-    auto antecedent = hcs[i].arg(0);
-    if(cvt.areEqual(term, current_consequent_rhs)){
+  
+  for(unsigned index_hc = 0; index_hc < hcs_length; ++index_hc){
+    auto current_consequent_lhs = hcs[index_hc].arg(1).arg(0);
+    auto current_consequent_rhs = hcs[index_hc].arg(1).arg(1);
+    auto antecedent = hcs[index_hc].arg(0);
+    if(cvt.areEqual(term_elim, current_consequent_rhs)){
       to.push_back(current_consequent_lhs);
-      auto formula_subs = formula.substitute(from, to);
-      // Only commit to do the substituion
-      // if these formulas are fundamentally different
-      if(formula_subs.id() != formula.id()){
-	if(formula_subs.is_implies())
-	  answer.push_back(implies(antecedent && formula_subs.arg(0),
-				   formula_subs.arg(1)));
+      auto new_equation = equation.substitute(from, to);
+      std::cout << "Old equation: " << equation << std::endl;
+      std::cout << "New equation: " << new_equation << std::endl;
+      // Only commit to do the substitution
+      // if these formulas are different
+      if(new_equation.id() != equation.id()){
+	if(new_equation.is_implies())
+	  answer.push_back(implies(antecedent && new_equation.arg(0), new_equation.arg(1)));
 	else
-	  answer.push_back(implies(antecedent, formula_subs));
+	  answer.push_back(implies(antecedent, new_equation));
       }
       to.pop_back();
     }
   }
+  std::cout << answer.size() << std::endl;
   return answer;
 }
 

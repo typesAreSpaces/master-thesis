@@ -2,7 +2,7 @@
 #define DEBUG_HORN_CLAUSES       false
 #define DEBUG_ADDINGHC           false
 #define DEBUG_MAKE_MATCHES       false
-#define DEBUG_CE                 false
+#define DEBUG_CE                 true
 #define DEBUG_COMBINATION_HELPER false
 #define DEBUG_MC2CMC2A           false
 #define DEBUG_MC1CMC1A           false
