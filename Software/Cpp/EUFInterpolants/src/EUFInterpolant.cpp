@@ -29,28 +29,20 @@ z3::expr EUFInterpolant::buildInterpolant(){
   addNegativeHornClauses();
   horn_clauses.conditionalElimination();
   
-  // TODO: Needs to obtain the original symbols
   auto non_reducible_hs_z3 = cvt.convert(horn_clauses.getHornClauses());
   auto simplified_hs = cvt.extraSimplification(non_reducible_hs_z3);
   
   auto reducible_hs = horn_clauses.getReducibleHornClauses();
-  // TODO: Needs to obtain the original symbols
   auto reducible_hs_z3 = cvt.convert(reducible_hs);
-
-  // TODO: Needs to obtain the original symbols
-  auto equations = cvt.convert(original_closure.getEquations());
-  // TODO: Needs to obtain the original symbols
-  auto uncomm_terms_elim = getUncommonTermsToElim(reducible_hs);
-
-  // FIX: There might be problems here
-  std::cout << "Equations " << equations << std::endl;
-  std::cout << "Uncommon terms to elim " << uncomm_terms_elim << std::endl;
-  std::cout << "Reducible horn clauses " << reducible_hs_z3 << std::endl;
-  auto exponential_hs = exponentialElimination(equations, uncomm_terms_elim, reducible_hs_z3);
-  std::cout << "Exponential" << std::endl;
-  std::cout << exponential_hs << std::endl;
   
-  auto simplified_exponential_hs = cvt.extraSimplification(exponential_hs);  
+  auto equations = cvt.convert(original_closure.getEquations());
+  auto uncomm_terms_elim = getUncommonTermsToElim(reducible_hs);
+  
+  auto exponential_hs = exponentialElimination(equations, uncomm_terms_elim, reducible_hs_z3);
+  auto simplified_exponential_hs = cvt.extraSimplification(exponential_hs);
+
+  std::cout << "Exponential " << exponential_hs << std::endl;
+  std::cout << "Simplified exponential " << simplified_exponential_hs << std::endl;
   
   return cvt.makeConjunction(simplified_hs) && cvt.makeConjunction(simplified_exponential_hs);
 }
@@ -149,27 +141,18 @@ z3::expr_vector EUFInterpolant::exponentialElimination(z3::expr_vector & equatio
     
     new_equations.resize(0);
 
-    for(auto equation : equations){
-      std::cout << "Inside exponential elimination - old equation ";
-      std::cout << equation << std::endl;
+    for(auto equation : equations)
       // Remark: substitutions can produce horn clauses!
       // so new_equations are not all equations!
       for(auto substitution : substitutions(equation, term_elim, hcs)){
-	std::cout << "Inside exponential elimination - substitution ";
-	std::cout << substitution << std::endl;
 	new_equations.push_back(substitution);
       }
-    }
 
     equations.resize(0);
     
     // Deep - copy
-    for(auto equation : new_equations){
-      std::cout << "Inside exponential elimination - new equation: ";
-      std::cout << equation << std::endl;
+    for(auto equation : new_equations) 
       equations.push_back(equation);
-    }
-    
   }
   return equations;
 }
@@ -189,8 +172,7 @@ z3::expr_vector EUFInterpolant::substitutions(z3::expr & equation,
     if(cvt.areEqual(term_elim, current_consequent_rhs)){
       to.push_back(current_consequent_lhs);
       auto new_equation = equation.substitute(from, to);
-      std::cout << "Old equation: " << equation << std::endl;
-      std::cout << "New equation: " << new_equation << std::endl;
+      
       // Only commit to do the substitution
       // if these formulas are different
       if(new_equation.id() != equation.id()){
@@ -199,10 +181,12 @@ z3::expr_vector EUFInterpolant::substitutions(z3::expr & equation,
 	else
 	  answer.push_back(implies(antecedent, new_equation));
       }
+      else
+	answer.push_back(new_equation);
+      
       to.pop_back();
     }
   }
-  std::cout << answer.size() << std::endl;
   return answer;
 }
 

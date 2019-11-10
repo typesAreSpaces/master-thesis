@@ -93,25 +93,39 @@ z3::expr_vector Converter::extraSimplification(const z3::expr_vector & formulas)
   z3::solver solver(formulas.ctx());
   z3::expr_vector answer(formulas.ctx());
   std::set<unsigned> filter;
+  bool areEquivalent;
   
   unsigned length = formulas.size();
-  for(unsigned i = 0; i < length; i++)
+  for(unsigned i = 0; i < length - 1; i++)
     for(unsigned j = i + 1; j < length; ++j){
+      areEquivalent = false;
       solver.push();
-      solver.add(not(implies(formulas[i], formulas[j])));
-      switch (solver.check()) {
-      case z3::unsat:   filter.insert(j);  break;
-      case z3::sat:     break;
-      case z3::unknown: break;
-      }
-      solver.pop();
-      solver.push();
+
       solver.add(not(implies(formulas[j], formulas[i])));
       switch (solver.check()) {
-      case z3::unsat:   filter.insert(i); break;
+      case z3::unsat:   filter.insert(i); areEquivalent = true; break;
       case z3::sat:     break;
       case z3::unknown: break;
       }
+      
+      solver.pop();
+      
+      solver.push();
+      
+      solver.add(not(implies(formulas[i], formulas[j])));
+      switch (solver.check()) {
+      case z3::unsat:
+	if(!areEquivalent)
+	  filter.insert(j);
+	else{
+	  std::cout << i << "-th formula: " << formulas[i] << std::endl;
+	  std::cout << j << "-th formula: " << formulas[j] << std::endl;
+	}
+	break;
+      case z3::sat:     break;
+      case z3::unknown: break;
+      }
+      
       solver.pop();
     }
   
@@ -120,3 +134,9 @@ z3::expr_vector Converter::extraSimplification(const z3::expr_vector & formulas)
       answer.push_back(formulas[i]);
   return answer;
 }
+
+
+
+
+
+

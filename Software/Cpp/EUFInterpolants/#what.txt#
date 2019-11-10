@@ -1,0 +1,2323 @@
+g++ -g -c -o obj/ConvertReprToZ3.o  -I./src/ -I./include/ -std=c++11 src/ConvertReprToZ3.cpp -Wall
+g++ -g -c -o obj/EUFInterpolant.o  -I./src/ -I./include/ -std=c++11 src/EUFInterpolant.cpp -Wall
+g++ -g -o main obj/HornClause.o obj/UnionFind.o obj/ConvertReprToZ3.o obj/Term.o obj/Signature.o obj/EUFInterpolant.o obj/Terms.o obj/SignatureTable.o obj/Node.o obj/CircularList.o obj/CongruenceClosure.o obj/main.o obj/HornClauses.o /home/jose/Documents/GithubProjects/z3/build/libz3.so -lpthread -Wall
+./main ./tests/smt2lib_2/kapurEUFExample.smt2 v
+Horn Clauses produced - after simplify:
+z2 = y2 -> s2 = f(y2,_f_2(v,_x2))
+z2 = y1 -> s2 = f(y1,_f_2(v,_x2))
+z2 = y2 && y1 = y2 -> s2 = f(y1,_f_2(v,_x2))
+z2 = y1 && y1 = y2 -> s2 = f(y1,_f_2(v,_x2))
+z1 = z2 -> s1 = s2
+z1 = y2 && z2 = y2 -> s1 = s2
+z1 = y1 && z2 = y1 -> s1 = s2
+z1 = y2 && y1 = y2 && z2 = y2 -> s1 = s2
+z1 = y2 && y1 = y2 && z2 = y1 -> s1 = s2
+z2 = y2 && y1 = y2 && z1 = y1 -> s1 = s2
+z1 = y1 && y1 = y2 && z2 = y1 -> s1 = s2
+z1 = y2 -> s1 = f(y2,_f_2(v,_x2))
+z1 = y1 -> s1 = f(y1,_f_2(v,_x2))
+z1 = y2 && y1 = y2 -> s1 = f(y1,_f_2(v,_x2))
+z1 = y1 && y1 = y2 -> s1 = f(y1,_f_2(v,_x2))
+y1 = y2 && y2 = f(y1,_f_2(v,_x2)) && v = f(y1,_f_2(v,_x2)) -> t = f(y2,_f_2(v,_x2))
+z1 = y1 && s1 = y2 && v = f(y2,_f_2(v,_x2)) -> t = f(y2,_f_2(v,_x2))
+y1 = y2 && y1 = f(y1,_f_2(v,_x2)) && v = f(y1,_f_2(v,_x2)) -> t = f(y1,_f_2(v,_x2))
+Ok 3, 4
+Ok 3, 5
+Ok 3, 6
+Ok 4, 5
+Ok 4, 6
+Ok 5, 6
+Exponential
+(ast-vector
+  (let ((a!1 (and (= z1 y1) (= s1 y2) (= v t)))
+        (a!2 (and (= y1 y2) (= y1 t) (= v t))))
+    (=> (and (= z2 y1)
+             (= y1 y2)
+             (= y2 s2)
+             (= v s2)
+             a!1
+             (= z2 y1)
+             (= y1 y2)
+             (= y1 s2)
+             (= v s2)
+             a!2
+             a!1
+             a!2
+             a!2
+             a!2
+             a!1)
+        (= (f t t) t)))
+  (let ((a!1 (and (= z1 y1) (= s1 y2) (= v t)))
+        (a!2 (and (= y1 y2) (= y1 t) (= v t))))
+    (=> (and (= z2 y2)
+             (= y1 y2)
+             (= y1 y2)
+             (= y2 s2)
+             (= v s2)
+             a!1
+             (= z2 y1)
+             (= y1 y2)
+             (= y1 s2)
+             (= v s2)
+             a!2
+             a!1
+             a!2
+             a!2
+             a!2
+             a!1)
+        (= (f t t) t)))
+  (let ((a!1 (and (= z1 y1) (= s1 y2) (= v t)))
+        (a!2 (and (= y1 y2) (= y1 t) (= v t))))
+    (=> (and (= z2 y1)
+             (= y1 y2)
+             (= y1 y2)
+             (= y2 s2)
+             (= v s2)
+             a!1
+             (= z2 y1)
+             (= y1 y2)
+             (= y1 s2)
+             (= v s2)
+             a!2
+             a!1
+             a!2
+             a!2
+             a!2
+             a!1)
+        (= (f t t) t)))
+  (let ((a!1 (and (= z1 y1) (= s1 y2) (= v t)))
+        (a!2 (and (= y1 y2) (= y1 t) (= v t))))
+    (=> (and (= z1 y1)
+             (= y1 y2)
+             (= y2 s1)
+             (= v s1)
+             a!1
+             (= z2 y1)
+             (= y1 y2)
+             (= y1 s2)
+             (= v s2)
+             a!2
+             a!1
+             a!2
+             a!2
+             a!2
+             a!1)
+        (= (f t t) t)))
+  (let ((a!1 (and (= z1 y1) (= s1 y2) (= v t)))
+        (a!2 (and (= y1 y2) (= y1 t) (= v t))))
+    (=> (and (= z1 y2)
+             (= y1 y2)
+             (= y1 y2)
+             (= y2 s1)
+             (= v s1)
+             a!1
+             (= z2 y1)
+             (= y1 y2)
+             (= y1 s2)
+             (= v s2)
+             a!2
+             a!1
+             a!2
+             a!2
+             a!2
+             a!1)
+        (= (f t t) t)))
+  (let ((a!1 (and (= z1 y1) (= s1 y2) (= v t)))
+        (a!2 (and (= y1 y2) (= y1 t) (= v t))))
+    (=> (and (= z1 y1)
+             (= y1 y2)
+             (= y1 y2)
+             (= y2 s1)
+             (= v s1)
+             a!1
+             (= z2 y1)
+             (= y1 y2)
+             (= y1 s2)
+             (= v s2)
+             a!2
+             a!1
+             a!2
+             a!2
+             a!2
+             a!1)
+        (= (f t t) t)))
+  (let ((a!1 (and (= z1 y1) (= s1 y2) (= v t)))
+        (a!2 (and (= y1 y2) (= y1 t) (= v t))))
+    (=> (and (= y1 y2)
+             (= y1 (f y1 v))
+             (= v (f y1 v))
+             (= y1 y2)
+             (= y2 t)
+             (= v t)
+             a!1
+             (= z2 y1)
+             (= y1 y2)
+             (= y1 s2)
+             (= v s2)
+             a!2
+             a!1
+             a!2
+             a!2
+             a!2
+             a!1)
+        (= (f t t) t)))
+  (let ((a!1 (and (= z1 y1) (= s1 y2) (= v t)))
+        (a!2 (and (= y1 y2) (= y1 t) (= v t))))
+    (=> (and (= z2 y1)
+             (= y1 y2)
+             (= y2 s2)
+             (= v s2)
+             a!1
+             (= z2 y2)
+             (= y1 y2)
+             (= y1 y2)
+             (= y1 s2)
+             (= v s2)
+             a!2
+             a!1
+             a!2
+             a!2
+             a!2
+             a!1)
+        (= (f t t) t)))
+  (let ((a!1 (and (= z1 y1) (= s1 y2) (= v t)))
+        (a!2 (and (= y1 y2) (= y1 t) (= v t))))
+    (=> (and (and (= z2 y2) (= y1 y2))
+             (= y1 y2)
+             (= y2 s2)
+             (= v s2)
+             a!1
+             (and (= z2 y2) (= y1 y2))
+             (= y1 y2)
+             (= y1 s2)
+             (= v s2)
+             a!2
+             a!1
+             a!2
+             a!2
+             a!2
+             a!1)
+        (= (f t t) t)))
+  (let ((a!1 (and (= z1 y1) (= s1 y2) (= v t)))
+        (a!2 (and (= y1 y2) (= y1 t) (= v t))))
+    (=> (and (= z2 y1)
+             (= y1 y2)
+             (= y1 y2)
+             (= y2 s2)
+             (= v s2)
+             a!1
+             (= z2 y2)
+             (= y1 y2)
+             (= y1 y2)
+             (= y1 s2)
+             (= v s2)
+             a!2
+             a!1
+             a!2
+             a!2
+             a!2
+             a!1)
+        (= (f t t) t)))
+  (let ((a!1 (and (= z1 y1) (= s1 y2) (= v t)))
+        (a!2 (and (= y1 y2) (= y1 t) (= v t))))
+    (=> (and (= z1 y1)
+             (= y1 y2)
+             (= y2 s1)
+             (= v s1)
+             a!1
+             (= z2 y2)
+             (= y1 y2)
+             (= y1 y2)
+             (= y1 s2)
+             (= v s2)
+             a!2
+             a!1
+             a!2
+             a!2
+             a!2
+             a!1)
+        (= (f t t) t)))
+  (let ((a!1 (and (= z1 y1) (= s1 y2) (= v t)))
+        (a!2 (and (= y1 y2) (= y1 t) (= v t))))
+    (=> (and (= z1 y2)
+             (= y1 y2)
+             (= y1 y2)
+             (= y2 s1)
+             (= v s1)
+             a!1
+             (= z2 y2)
+             (= y1 y2)
+             (= y1 y2)
+             (= y1 s2)
+             (= v s2)
+             a!2
+             a!1
+             a!2
+             a!2
+             a!2
+             a!1)
+        (= (f t t) t)))
+  (let ((a!1 (and (= z1 y1) (= s1 y2) (= v t)))
+        (a!2 (and (= y1 y2) (= y1 t) (= v t))))
+    (=> (and (= z1 y1)
+             (= y1 y2)
+             (= y1 y2)
+             (= y2 s1)
+             (= v s1)
+             a!1
+             (= z2 y2)
+             (= y1 y2)
+             (= y1 y2)
+             (= y1 s2)
+             (= v s2)
+             a!2
+             a!1
+             a!2
+             a!2
+             a!2
+             a!1)
+        (= (f t t) t)))
+  (let ((a!1 (and (= z1 y1) (= s1 y2) (= v t)))
+        (a!2 (and (= y1 y2) (= y1 t) (= v t))))
+    (=> (and (= y1 y2)
+             (= y1 (f y1 v))
+             (= v (f y1 v))
+             (= y1 y2)
+             (= y2 t)
+             (= v t)
+             a!1
+             (= z2 y2)
+             (= y1 y2)
+             (= y1 y2)
+             (= y1 s2)
+             (= v s2)
+             a!2
+             a!1
+             a!2
+             a!2
+             a!2
+             a!1)
+        (= (f t t) t)))
+  (let ((a!1 (and (= z1 y1) (= s1 y2) (= v t)))
+        (a!2 (and (= y1 y2) (= y1 t) (= v t))))
+    (=> (and (= z2 y1)
+             (= y1 y2)
+             (= y2 s2)
+             (= v s2)
+             a!1
+             (= z2 y1)
+             (= y1 y2)
+             (= y1 y2)
+             (= y1 s2)
+             (= v s2)
+             a!2
+             a!1
+             a!2
+             a!2
+             a!2
+             a!1)
+        (= (f t t) t)))
+  (let ((a!1 (and (= z1 y1) (= s1 y2) (= v t)))
+        (a!2 (and (= y1 y2) (= y1 t) (= v t))))
+    (=> (and (= z2 y2)
+             (= y1 y2)
+             (= y1 y2)
+             (= y2 s2)
+             (= v s2)
+             a!1
+             (= z2 y1)
+             (= y1 y2)
+             (= y1 y2)
+             (= y1 s2)
+             (= v s2)
+             a!2
+             a!1
+             a!2
+             a!2
+             a!2
+             a!1)
+        (= (f t t) t)))
+  (let ((a!1 (and (= z1 y1) (= s1 y2) (= v t)))
+        (a!2 (and (= y1 y2) (= y1 t) (= v t))))
+    (=> (and (and (= z2 y1) (= y1 y2))
+             (= y1 y2)
+             (= y2 s2)
+             (= v s2)
+             a!1
+             (and (= z2 y1) (= y1 y2))
+             (= y1 y2)
+             (= y1 s2)
+             (= v s2)
+             a!2
+             a!1
+             a!2
+             a!2
+             a!2
+             a!1)
+        (= (f t t) t)))
+  (let ((a!1 (and (= z1 y1) (= s1 y2) (= v t)))
+        (a!2 (and (= y1 y2) (= y1 t) (= v t))))
+    (=> (and (= z1 y1)
+             (= y1 y2)
+             (= y2 s1)
+             (= v s1)
+             a!1
+             (= z2 y1)
+             (= y1 y2)
+             (= y1 y2)
+             (= y1 s2)
+             (= v s2)
+             a!2
+             a!1
+             a!2
+             a!2
+             a!2
+             a!1)
+        (= (f t t) t)))
+  (let ((a!1 (and (= z1 y1) (= s1 y2) (= v t)))
+        (a!2 (and (= y1 y2) (= y1 t) (= v t))))
+    (=> (and (= z1 y2)
+             (= y1 y2)
+             (= y1 y2)
+             (= y2 s1)
+             (= v s1)
+             a!1
+             (= z2 y1)
+             (= y1 y2)
+             (= y1 y2)
+             (= y1 s2)
+             (= v s2)
+             a!2
+             a!1
+             a!2
+             a!2
+             a!2
+             a!1)
+        (= (f t t) t)))
+  (let ((a!1 (and (= z1 y1) (= s1 y2) (= v t)))
+        (a!2 (and (= y1 y2) (= y1 t) (= v t))))
+    (=> (and (= z1 y1)
+             (= y1 y2)
+             (= y1 y2)
+             (= y2 s1)
+             (= v s1)
+             a!1
+             (= z2 y1)
+             (= y1 y2)
+             (= y1 y2)
+             (= y1 s2)
+             (= v s2)
+             a!2
+             a!1
+             a!2
+             a!2
+             a!2
+             a!1)
+        (= (f t t) t)))
+  (let ((a!1 (and (= z1 y1) (= s1 y2) (= v t)))
+        (a!2 (and (= y1 y2) (= y1 t) (= v t))))
+    (=> (and (= y1 y2)
+             (= y1 (f y1 v))
+             (= v (f y1 v))
+             (= y1 y2)
+             (= y2 t)
+             (= v t)
+             a!1
+             (= z2 y1)
+             (= y1 y2)
+             (= y1 y2)
+             (= y1 s2)
+             (= v s2)
+             a!2
+             a!1
+             a!2
+             a!2
+             a!2
+             a!1)
+        (= (f t t) t)))
+  (let ((a!1 (and (= z1 y1) (= s1 y2) (= v t)))
+        (a!2 (and (= y1 y2) (= y1 t) (= v t))))
+    (=> (and (= z2 y1)
+             (= y1 y2)
+             (= y2 s2)
+             (= v s2)
+             a!1
+             (= z1 y1)
+             (= y1 y2)
+             (= y1 s1)
+             (= v s1)
+             a!2
+             a!1
+             a!2
+             a!2
+             a!2
+             a!1)
+        (= (f t t) t)))
+  (let ((a!1 (and (= z1 y1) (= s1 y2) (= v t)))
+        (a!2 (and (= y1 y2) (= y1 t) (= v t))))
+    (=> (and (= z2 y2)
+             (= y1 y2)
+             (= y1 y2)
+             (= y2 s2)
+             (= v s2)
+             a!1
+             (= z1 y1)
+             (= y1 y2)
+             (= y1 s1)
+             (= v s1)
+             a!2
+             a!1
+             a!2
+             a!2
+             a!2
+             a!1)
+        (= (f t t) t)))
+  (let ((a!1 (and (= z1 y1) (= s1 y2) (= v t)))
+        (a!2 (and (= y1 y2) (= y1 t) (= v t))))
+    (=> (and (= z2 y1)
+             (= y1 y2)
+             (= y1 y2)
+             (= y2 s2)
+             (= v s2)
+             a!1
+             (= z1 y1)
+             (= y1 y2)
+             (= y1 s1)
+             (= v s1)
+             a!2
+             a!1
+             a!2
+             a!2
+             a!2
+             a!1)
+        (= (f t t) t)))
+  (let ((a!1 (and (= z1 y1) (= s1 y2) (= v t)))
+        (a!2 (and (= y1 y2) (= y1 t) (= v t))))
+    (=> (and (= z1 y1)
+             (= y1 y2)
+             (= y2 s1)
+             (= v s1)
+             a!1
+             (= z1 y1)
+             (= y1 y2)
+             (= y1 s1)
+             (= v s1)
+             a!2
+             a!1
+             a!2
+             a!2
+             a!2
+             a!1)
+        (= (f t t) t)))
+  (let ((a!1 (and (= z1 y1) (= s1 y2) (= v t)))
+        (a!2 (and (= y1 y2) (= y1 t) (= v t))))
+    (=> (and (= z1 y2)
+             (= y1 y2)
+             (= y1 y2)
+             (= y2 s1)
+             (= v s1)
+             a!1
+             (= z1 y1)
+             (= y1 y2)
+             (= y1 s1)
+             (= v s1)
+             a!2
+             a!1
+             a!2
+             a!2
+             a!2
+             a!1)
+        (= (f t t) t)))
+  (let ((a!1 (and (= z1 y1) (= s1 y2) (= v t)))
+        (a!2 (and (= y1 y2) (= y1 t) (= v t))))
+    (=> (and (= z1 y1)
+             (= y1 y2)
+             (= y1 y2)
+             (= y2 s1)
+             (= v s1)
+             a!1
+             (= z1 y1)
+             (= y1 y2)
+             (= y1 s1)
+             (= v s1)
+             a!2
+             a!1
+             a!2
+             a!2
+             a!2
+             a!1)
+        (= (f t t) t)))
+  (let ((a!1 (and (= z1 y1) (= s1 y2) (= v t)))
+        (a!2 (and (= y1 y2) (= y1 t) (= v t))))
+    (=> (and (= y1 y2)
+             (= y1 (f y1 v))
+             (= v (f y1 v))
+             (= y1 y2)
+             (= y2 t)
+             (= v t)
+             a!1
+             (= z1 y1)
+             (= y1 y2)
+             (= y1 s1)
+             (= v s1)
+             a!2
+             a!1
+             a!2
+             a!2
+             a!2
+             a!1)
+        (= (f t t) t)))
+  (let ((a!1 (and (= z1 y1) (= s1 y2) (= v t)))
+        (a!2 (and (= y1 y2) (= y1 t) (= v t))))
+    (=> (and (= z2 y1)
+             (= y1 y2)
+             (= y2 s2)
+             (= v s2)
+             a!1
+             (= z1 y2)
+             (= y1 y2)
+             (= y1 y2)
+             (= y1 s1)
+             (= v s1)
+             a!2
+             a!1
+             a!2
+             a!2
+             a!2
+             a!1)
+        (= (f t t) t)))
+  (let ((a!1 (and (= z1 y1) (= s1 y2) (= v t)))
+        (a!2 (and (= y1 y2) (= y1 t) (= v t))))
+    (=> (and (= z2 y2)
+             (= y1 y2)
+             (= y1 y2)
+             (= y2 s2)
+             (= v s2)
+             a!1
+             (= z1 y2)
+             (= y1 y2)
+             (= y1 y2)
+             (= y1 s1)
+             (= v s1)
+             a!2
+             a!1
+             a!2
+             a!2
+             a!2
+             a!1)
+        (= (f t t) t)))
+  (let ((a!1 (and (= z1 y1) (= s1 y2) (= v t)))
+        (a!2 (and (= y1 y2) (= y1 t) (= v t))))
+    (=> (and (= z2 y1)
+             (= y1 y2)
+             (= y1 y2)
+             (= y2 s2)
+             (= v s2)
+             a!1
+             (= z1 y2)
+             (= y1 y2)
+             (= y1 y2)
+             (= y1 s1)
+             (= v s1)
+             a!2
+             a!1
+             a!2
+             a!2
+             a!2
+             a!1)
+        (= (f t t) t)))
+  (let ((a!1 (and (= z1 y1) (= s1 y2) (= v t)))
+        (a!2 (and (= y1 y2) (= y1 t) (= v t))))
+    (=> (and (= z1 y1)
+             (= y1 y2)
+             (= y2 s1)
+             (= v s1)
+             a!1
+             (= z1 y2)
+             (= y1 y2)
+             (= y1 y2)
+             (= y1 s1)
+             (= v s1)
+             a!2
+             a!1
+             a!2
+             a!2
+             a!2
+             a!1)
+        (= (f t t) t)))
+  (let ((a!1 (and (= z1 y1) (= s1 y2) (= v t)))
+        (a!2 (and (= y1 y2) (= y1 t) (= v t))))
+    (=> (and (and (= z1 y2) (= y1 y2))
+             (= y1 y2)
+             (= y2 s1)
+             (= v s1)
+             a!1
+             (and (= z1 y2) (= y1 y2))
+             (= y1 y2)
+             (= y1 s1)
+             (= v s1)
+             a!2
+             a!1
+             a!2
+             a!2
+             a!2
+             a!1)
+        (= (f t t) t)))
+  (let ((a!1 (and (= z1 y1) (= s1 y2) (= v t)))
+        (a!2 (and (= y1 y2) (= y1 t) (= v t))))
+    (=> (and (= z1 y1)
+             (= y1 y2)
+             (= y1 y2)
+             (= y2 s1)
+             (= v s1)
+             a!1
+             (= z1 y2)
+             (= y1 y2)
+             (= y1 y2)
+             (= y1 s1)
+             (= v s1)
+             a!2
+             a!1
+             a!2
+             a!2
+             a!2
+             a!1)
+        (= (f t t) t)))
+  (let ((a!1 (and (= z1 y1) (= s1 y2) (= v t)))
+        (a!2 (and (= y1 y2) (= y1 t) (= v t))))
+    (=> (and (= y1 y2)
+             (= y1 (f y1 v))
+             (= v (f y1 v))
+             (= y1 y2)
+             (= y2 t)
+             (= v t)
+             a!1
+             (= z1 y2)
+             (= y1 y2)
+             (= y1 y2)
+             (= y1 s1)
+             (= v s1)
+             a!2
+             a!1
+             a!2
+             a!2
+             a!2
+             a!1)
+        (= (f t t) t)))
+  (let ((a!1 (and (= z1 y1) (= s1 y2) (= v t)))
+        (a!2 (and (= y1 y2) (= y1 t) (= v t))))
+    (=> (and (= z2 y1)
+             (= y1 y2)
+             (= y2 s2)
+             (= v s2)
+             a!1
+             (= z1 y1)
+             (= y1 y2)
+             (= y1 y2)
+             (= y1 s1)
+             (= v s1)
+             a!2
+             a!1
+             a!2
+             a!2
+             a!2
+             a!1)
+        (= (f t t) t)))
+  (let ((a!1 (and (= z1 y1) (= s1 y2) (= v t)))
+        (a!2 (and (= y1 y2) (= y1 t) (= v t))))
+    (=> (and (= z2 y2)
+             (= y1 y2)
+             (= y1 y2)
+             (= y2 s2)
+             (= v s2)
+             a!1
+             (= z1 y1)
+             (= y1 y2)
+             (= y1 y2)
+             (= y1 s1)
+             (= v s1)
+             a!2
+             a!1
+             a!2
+             a!2
+             a!2
+             a!1)
+        (= (f t t) t)))
+  (let ((a!1 (and (= z1 y1) (= s1 y2) (= v t)))
+        (a!2 (and (= y1 y2) (= y1 t) (= v t))))
+    (=> (and (= z2 y1)
+             (= y1 y2)
+             (= y1 y2)
+             (= y2 s2)
+             (= v s2)
+             a!1
+             (= z1 y1)
+             (= y1 y2)
+             (= y1 y2)
+             (= y1 s1)
+             (= v s1)
+             a!2
+             a!1
+             a!2
+             a!2
+             a!2
+             a!1)
+        (= (f t t) t)))
+  (let ((a!1 (and (= z1 y1) (= s1 y2) (= v t)))
+        (a!2 (and (= y1 y2) (= y1 t) (= v t))))
+    (=> (and (= z1 y1)
+             (= y1 y2)
+             (= y2 s1)
+             (= v s1)
+             a!1
+             (= z1 y1)
+             (= y1 y2)
+             (= y1 y2)
+             (= y1 s1)
+             (= v s1)
+             a!2
+             a!1
+             a!2
+             a!2
+             a!2
+             a!1)
+        (= (f t t) t)))
+  (let ((a!1 (and (= z1 y1) (= s1 y2) (= v t)))
+        (a!2 (and (= y1 y2) (= y1 t) (= v t))))
+    (=> (and (= z1 y2)
+             (= y1 y2)
+             (= y1 y2)
+             (= y2 s1)
+             (= v s1)
+             a!1
+             (= z1 y1)
+             (= y1 y2)
+             (= y1 y2)
+             (= y1 s1)
+             (= v s1)
+             a!2
+             a!1
+             a!2
+             a!2
+             a!2
+             a!1)
+        (= (f t t) t)))
+  (let ((a!1 (and (= z1 y1) (= s1 y2) (= v t)))
+        (a!2 (and (= y1 y2) (= y1 t) (= v t))))
+    (=> (and (and (= z1 y1) (= y1 y2))
+             (= y1 y2)
+             (= y2 s1)
+             (= v s1)
+             a!1
+             (and (= z1 y1) (= y1 y2))
+             (= y1 y2)
+             (= y1 s1)
+             (= v s1)
+             a!2
+             a!1
+             a!2
+             a!2
+             a!2
+             a!1)
+        (= (f t t) t)))
+  (let ((a!1 (and (= z1 y1) (= s1 y2) (= v t)))
+        (a!2 (and (= y1 y2) (= y1 t) (= v t))))
+    (=> (and (= y1 y2)
+             (= y1 (f y1 v))
+             (= v (f y1 v))
+             (= y1 y2)
+             (= y2 t)
+             (= v t)
+             a!1
+             (= z1 y1)
+             (= y1 y2)
+             (= y1 y2)
+             (= y1 s1)
+             (= v s1)
+             a!2
+             a!1
+             a!2
+             a!2
+             a!2
+             a!1)
+        (= (f t t) t)))
+  (let ((a!1 (and (= y1 y2) (= y1 t) (= v t)))
+        (a!2 (and (and (= z1 y1) (= s1 y2)) (= v t))))
+    (=> (and (= z2 y1)
+             (= z2 y2)
+             (and (= z1 y1) (= s1 y2))
+             (= v s2)
+             (= y1 y2)
+             (= y1 s2)
+             (= v s2)
+             a!1
+             a!1
+             a!2
+             a!1
+             a!1
+             a!1
+             a!2)
+        (= (f t t) t)))
+  (let ((a!1 (and (= y1 y2) (= y1 t) (= v t)))
+        (a!2 (and (and (= z1 y1) (= s1 y2)) (= v t))))
+    (=> (and (= z2 y2)
+             (= y1 y2)
+             (= z2 y2)
+             (and (= z1 y1) (= s1 y2))
+             (= v s2)
+             (= y1 y2)
+             (= y1 s2)
+             (= v s2)
+             a!1
+             a!1
+             a!2
+             a!1
+             a!1
+             a!1
+             a!2)
+        (= (f t t) t)))
+  (let ((a!1 (and (= y1 y2) (= y1 t) (= v t)))
+        (a!2 (and (and (= z1 y1) (= s1 y2)) (= v t))))
+    (=> (and (= z2 y1)
+             (= y1 y2)
+             (= z2 y2)
+             (and (= z1 y1) (= s1 y2))
+             (= v s2)
+             (= y1 y2)
+             (= y1 s2)
+             (= v s2)
+             a!1
+             a!1
+             a!2
+             a!1
+             a!1
+             a!1
+             a!2)
+        (= (f t t) t)))
+  (let ((a!1 (and (= y1 y2) (= y1 t) (= v t)))
+        (a!2 (and (and (= z1 y1) (= s1 y2)) (= v t))))
+    (=> (and (= z1 y1)
+             (= z2 y2)
+             (and (= z1 y1) (= s1 y2))
+             (= v s2)
+             (= y1 y2)
+             (= y1 s1)
+             (= v s1)
+             a!1
+             a!1
+             a!2
+             a!1
+             a!1
+             a!1
+             a!2)
+        (= (f t t) t)))
+  (let ((a!1 (and (= y1 y2) (= y1 t) (= v t)))
+        (a!2 (and (and (= z1 y1) (= s1 y2)) (= v t))))
+    (=> (and (= z1 y2)
+             (= y1 y2)
+             (= z2 y2)
+             (and (= z1 y1) (= s1 y2))
+             (= v s2)
+             (= y1 y2)
+             (= y1 s1)
+             (= v s1)
+             a!1
+             a!1
+             a!2
+             a!1
+             a!1
+             a!1
+             a!2)
+        (= (f t t) t)))
+  (let ((a!1 (and (= y1 y2) (= y1 t) (= v t)))
+        (a!2 (and (and (= z1 y1) (= s1 y2)) (= v t))))
+    (=> (and (= z1 y1)
+             (= y1 y2)
+             (= z2 y2)
+             (and (= z1 y1) (= s1 y2))
+             (= v s2)
+             (= y1 y2)
+             (= y1 s1)
+             (= v s1)
+             a!1
+             a!1
+             a!2
+             a!1
+             a!1
+             a!1
+             a!2)
+        (= (f t t) t)))
+  (let ((a!1 (and (= y1 y2) (= y1 t) (= v t)))
+        (a!2 (and (and (= z1 y1) (= s1 y2)) (= v t))))
+    (=> (and (= y1 y2)
+             (= y1 (f y1 v))
+             (= v (f y1 v))
+             (= z2 y2)
+             (and (= z1 y1) (= s1 y2))
+             (= v s2)
+             a!1
+             a!1
+             a!1
+             a!2
+             a!1
+             a!1
+             a!1
+             a!2)
+        (= (f t t) t)))
+  (let ((a!1 (and (= y1 y2) (= y1 t) (= v t)))
+        (a!2 (and (and (= z1 y1) (= s1 y2)) (= v t))))
+    (=> (and (= z2 y1)
+             (= z1 y2)
+             (and (= z1 y1) (= s1 y2))
+             (= v s1)
+             (= y1 y2)
+             (= y1 s2)
+             (= v s2)
+             a!1
+             a!1
+             a!2
+             a!1
+             a!1
+             a!1
+             a!2)
+        (= (f t t) t)))
+  (let ((a!1 (and (= y1 y2) (= y1 t) (= v t)))
+        (a!2 (and (and (= z1 y1) (= s1 y2)) (= v t))))
+    (=> (and (= z2 y2)
+             (= y1 y2)
+             (= z1 y2)
+             (and (= z1 y1) (= s1 y2))
+             (= v s1)
+             (= y1 y2)
+             (= y1 s2)
+             (= v s2)
+             a!1
+             a!1
+             a!2
+             a!1
+             a!1
+             a!1
+             a!2)
+        (= (f t t) t)))
+  (let ((a!1 (and (= y1 y2) (= y1 t) (= v t)))
+        (a!2 (and (and (= z1 y1) (= s1 y2)) (= v t))))
+    (=> (and (= z2 y1)
+             (= y1 y2)
+             (= z1 y2)
+             (and (= z1 y1) (= s1 y2))
+             (= v s1)
+             (= y1 y2)
+             (= y1 s2)
+             (= v s2)
+             a!1
+             a!1
+             a!2
+             a!1
+             a!1
+             a!1
+             a!2)
+        (= (f t t) t)))
+  (let ((a!1 (and (= y1 y2) (= y1 t) (= v t)))
+        (a!2 (and (and (= z1 y1) (= s1 y2)) (= v t))))
+    (=> (and (= z1 y1)
+             (= z1 y2)
+             (and (= z1 y1) (= s1 y2))
+             (= v s1)
+             (= y1 y2)
+             (= y1 s1)
+             (= v s1)
+             a!1
+             a!1
+             a!2
+             a!1
+             a!1
+             a!1
+             a!2)
+        (= (f t t) t)))
+  (let ((a!1 (and (= y1 y2) (= y1 t) (= v t)))
+        (a!2 (and (and (= z1 y1) (= s1 y2)) (= v t))))
+    (=> (and (= z1 y2)
+             (= y1 y2)
+             (= z1 y2)
+             (and (= z1 y1) (= s1 y2))
+             (= v s1)
+             (= y1 y2)
+             (= y1 s1)
+             (= v s1)
+             a!1
+             a!1
+             a!2
+             a!1
+             a!1
+             a!1
+             a!2)
+        (= (f t t) t)))
+  (let ((a!1 (and (= y1 y2) (= y1 t) (= v t)))
+        (a!2 (and (and (= z1 y1) (= s1 y2)) (= v t))))
+    (=> (and (= z1 y1)
+             (= y1 y2)
+             (= z1 y2)
+             (and (= z1 y1) (= s1 y2))
+             (= v s1)
+             (= y1 y2)
+             (= y1 s1)
+             (= v s1)
+             a!1
+             a!1
+             a!2
+             a!1
+             a!1
+             a!1
+             a!2)
+        (= (f t t) t)))
+  (let ((a!1 (and (= y1 y2) (= y1 t) (= v t)))
+        (a!2 (and (and (= z1 y1) (= s1 y2)) (= v t))))
+    (=> (and (= y1 y2)
+             (= y1 (f y1 v))
+             (= v (f y1 v))
+             (= z1 y2)
+             (and (= z1 y1) (= s1 y2))
+             (= v s1)
+             a!1
+             a!1
+             a!1
+             a!2
+             a!1
+             a!1
+             a!1
+             a!2)
+        (= (f t t) t)))
+  (let ((a!1 (and (= z1 y1) (= s1 y2) (= v t)))
+        (a!2 (and (= y1 y2) (= y1 t) (= v t))))
+    (=> (and (= z2 y1)
+             (= y1 y2)
+             (= y2 s2)
+             (= v s2)
+             a!1
+             (= y1 y2)
+             (= y1 s2)
+             (= v s2)
+             a!2
+             a!2
+             a!1
+             a!2
+             a!2
+             a!2
+             a!1)
+        (= (f t t) t)))
+  (let ((a!1 (and (= z1 y1) (= s1 y2) (= v t)))
+        (a!2 (and (= y1 y2) (= y1 t) (= v t))))
+    (=> (and (= z2 y2)
+             (= y1 y2)
+             (= y1 y2)
+             (= y2 s2)
+             (= v s2)
+             a!1
+             (= y1 y2)
+             (= y1 s2)
+             (= v s2)
+             a!2
+             a!2
+             a!1
+             a!2
+             a!2
+             a!2
+             a!1)
+        (= (f t t) t)))
+  (let ((a!1 (and (= z1 y1) (= s1 y2) (= v t)))
+        (a!2 (and (= y1 y2) (= y1 t) (= v t))))
+    (=> (and (= z2 y1)
+             (= y1 y2)
+             (= y1 y2)
+             (= y2 s2)
+             (= v s2)
+             a!1
+             (= y1 y2)
+             (= y1 s2)
+             (= v s2)
+             a!2
+             a!2
+             a!1
+             a!2
+             a!2
+             a!2
+             a!1)
+        (= (f t t) t)))
+  (let ((a!1 (and (= z1 y1) (= s1 y2) (= v t)))
+        (a!2 (and (= y1 y2) (= y1 t) (= v t))))
+    (=> (and (= z1 y1)
+             (= y1 y2)
+             (= y2 s1)
+             (= v s1)
+             a!1
+             (= y1 y2)
+             (= y1 s1)
+             (= v s1)
+             a!2
+             a!2
+             a!1
+             a!2
+             a!2
+             a!2
+             a!1)
+        (= (f t t) t)))
+  (let ((a!1 (and (= z1 y1) (= s1 y2) (= v t)))
+        (a!2 (and (= y1 y2) (= y1 t) (= v t))))
+    (=> (and (= z1 y2)
+             (= y1 y2)
+             (= y1 y2)
+             (= y2 s1)
+             (= v s1)
+             a!1
+             (= y1 y2)
+             (= y1 s1)
+             (= v s1)
+             a!2
+             a!2
+             a!1
+             a!2
+             a!2
+             a!2
+             a!1)
+        (= (f t t) t)))
+  (let ((a!1 (and (= z1 y1) (= s1 y2) (= v t)))
+        (a!2 (and (= y1 y2) (= y1 t) (= v t))))
+    (=> (and (= z1 y1)
+             (= y1 y2)
+             (= y1 y2)
+             (= y2 s1)
+             (= v s1)
+             a!1
+             (= y1 y2)
+             (= y1 s1)
+             (= v s1)
+             a!2
+             a!2
+             a!1
+             a!2
+             a!2
+             a!2
+             a!1)
+        (= (f t t) t)))
+  (let ((a!1 (and (= z1 y1) (= s1 y2) (= v t)))
+        (a!2 (and (= y1 y2) (= y1 t) (= v t))))
+    (=> (and (= y1 y2)
+             (= y1 (f y1 v))
+             (= v (f y1 v))
+             (= y1 y2)
+             (= y2 t)
+             (= v t)
+             a!1
+             a!2
+             a!2
+             a!2
+             a!1
+             a!2
+             a!2
+             a!2
+             a!1)
+        (= (f t t) t)))
+  (let ((a!1 (and (and (= z1 y1) (= s1 y2)) (= v t)))
+        (a!2 (and (= y1 y2) (= y1 t) (= v t))))
+    (=> (and (= z2 y1)
+             (and (= z1 y1) (= s1 y2))
+             (= v (f y2 v))
+             a!1
+             (= y1 y2)
+             (= y1 s2)
+             (= v s2)
+             a!2
+             a!2
+             a!1
+             a!2
+             a!2
+             a!2
+             a!1)
+        (= (f t t) t)))
+  (let ((a!1 (and (and (= z1 y1) (= s1 y2)) (= v t)))
+        (a!2 (and (= y1 y2) (= y1 t) (= v t))))
+    (=> (and (= z2 y2)
+             (= y1 y2)
+             (and (= z1 y1) (= s1 y2))
+             (= v (f y2 v))
+             a!1
+             (= y1 y2)
+             (= y1 s2)
+             (= v s2)
+             a!2
+             a!2
+             a!1
+             a!2
+             a!2
+             a!2
+             a!1)
+        (= (f t t) t)))
+  (let ((a!1 (and (and (= z1 y1) (= s1 y2)) (= v t)))
+        (a!2 (and (= y1 y2) (= y1 t) (= v t))))
+    (=> (and (= z2 y1)
+             (= y1 y2)
+             (and (= z1 y1) (= s1 y2))
+             (= v (f y2 v))
+             a!1
+             (= y1 y2)
+             (= y1 s2)
+             (= v s2)
+             a!2
+             a!2
+             a!1
+             a!2
+             a!2
+             a!2
+             a!1)
+        (= (f t t) t)))
+  (let ((a!1 (and (and (= z1 y1) (= s1 y2)) (= v t)))
+        (a!2 (and (= y1 y2) (= y1 t) (= v t))))
+    (=> (and (= z1 y1)
+             (and (= z1 y1) (= s1 y2))
+             (= v (f y2 v))
+             a!1
+             (= y1 y2)
+             (= y1 s1)
+             (= v s1)
+             a!2
+             a!2
+             a!1
+             a!2
+             a!2
+             a!2
+             a!1)
+        (= (f t t) t)))
+  (let ((a!1 (and (and (= z1 y1) (= s1 y2)) (= v t)))
+        (a!2 (and (= y1 y2) (= y1 t) (= v t))))
+    (=> (and (= z1 y2)
+             (= y1 y2)
+             (and (= z1 y1) (= s1 y2))
+             (= v (f y2 v))
+             a!1
+             (= y1 y2)
+             (= y1 s1)
+             (= v s1)
+             a!2
+             a!2
+             a!1
+             a!2
+             a!2
+             a!2
+             a!1)
+        (= (f t t) t)))
+  (let ((a!1 (and (and (= z1 y1) (= s1 y2)) (= v t)))
+        (a!2 (and (= y1 y2) (= y1 t) (= v t))))
+    (=> (and (= z1 y1)
+             (= y1 y2)
+             (and (= z1 y1) (= s1 y2))
+             (= v (f y2 v))
+             a!1
+             (= y1 y2)
+             (= y1 s1)
+             (= v s1)
+             a!2
+             a!2
+             a!1
+             a!2
+             a!2
+             a!2
+             a!1)
+        (= (f t t) t)))
+  (let ((a!1 (and (and (= z1 y1) (= s1 y2)) (= v t)))
+        (a!2 (and (= y1 y2) (= y1 t) (= v t))))
+    (=> (and (= y1 y2)
+             (= y1 (f y1 v))
+             (= v (f y1 v))
+             (and (= z1 y1) (= s1 y2))
+             (= v (f y2 v))
+             a!1
+             a!2
+             a!2
+             a!2
+             a!1
+             a!2
+             a!2
+             a!2
+             a!1)
+        (= (f t t) t))))
+Ok 0, 1
+Ok 0, 2
+Ok 0, 3
+Ok 0, 4
+Ok 0, 5
+Ok 0, 7
+Ok 0, 8
+Ok 0, 9
+Ok 0, 10
+Ok 0, 11
+Ok 0, 12
+Ok 0, 14
+Ok 0, 15
+Ok 0, 16
+Ok 0, 17
+Ok 0, 18
+Ok 0, 19
+Ok 0, 21
+Ok 0, 22
+Ok 0, 23
+Ok 0, 28
+Ok 0, 29
+Ok 0, 30
+Ok 0, 35
+Ok 0, 36
+Ok 0, 37
+Ok 0, 42
+Ok 0, 43
+Ok 0, 44
+Ok 0, 45
+Ok 0, 46
+Ok 0, 47
+Ok 0, 49
+Ok 0, 50
+Ok 0, 51
+Ok 0, 56
+Ok 0, 57
+Ok 0, 58
+Ok 1, 2
+Ok 1, 3
+Ok 1, 4
+Ok 1, 5
+Ok 1, 7
+Ok 1, 8
+Ok 1, 9
+Ok 1, 10
+Ok 1, 11
+Ok 1, 12
+Ok 1, 14
+Ok 1, 15
+Ok 1, 16
+Ok 1, 17
+Ok 1, 18
+Ok 1, 19
+Ok 1, 21
+Ok 1, 22
+Ok 1, 23
+Ok 1, 28
+Ok 1, 29
+Ok 1, 30
+Ok 1, 35
+Ok 1, 36
+Ok 1, 37
+Ok 1, 42
+Ok 1, 43
+Ok 1, 44
+Ok 1, 45
+Ok 1, 46
+Ok 1, 47
+Ok 1, 49
+Ok 1, 50
+Ok 1, 51
+Ok 1, 56
+Ok 1, 57
+Ok 1, 58
+Ok 2, 3
+Ok 2, 4
+Ok 2, 5
+Ok 2, 7
+Ok 2, 8
+Ok 2, 9
+Ok 2, 10
+Ok 2, 11
+Ok 2, 12
+Ok 2, 14
+Ok 2, 15
+Ok 2, 16
+Ok 2, 17
+Ok 2, 18
+Ok 2, 19
+Ok 2, 21
+Ok 2, 22
+Ok 2, 23
+Ok 2, 28
+Ok 2, 29
+Ok 2, 30
+Ok 2, 35
+Ok 2, 36
+Ok 2, 37
+Ok 2, 42
+Ok 2, 43
+Ok 2, 44
+Ok 2, 45
+Ok 2, 46
+Ok 2, 47
+Ok 2, 49
+Ok 2, 50
+Ok 2, 51
+Ok 2, 56
+Ok 2, 57
+Ok 2, 58
+Ok 3, 4
+Ok 3, 5
+Ok 3, 7
+Ok 3, 8
+Ok 3, 9
+Ok 3, 10
+Ok 3, 11
+Ok 3, 12
+Ok 3, 14
+Ok 3, 15
+Ok 3, 16
+Ok 3, 17
+Ok 3, 18
+Ok 3, 19
+Ok 3, 21
+Ok 3, 22
+Ok 3, 23
+Ok 3, 28
+Ok 3, 29
+Ok 3, 30
+Ok 3, 35
+Ok 3, 36
+Ok 3, 37
+Ok 3, 42
+Ok 3, 43
+Ok 3, 44
+Ok 3, 45
+Ok 3, 46
+Ok 3, 47
+Ok 3, 49
+Ok 3, 50
+Ok 3, 51
+Ok 3, 56
+Ok 3, 57
+Ok 3, 58
+Ok 4, 5
+Ok 4, 7
+Ok 4, 8
+Ok 4, 9
+Ok 4, 10
+Ok 4, 11
+Ok 4, 12
+Ok 4, 14
+Ok 4, 15
+Ok 4, 16
+Ok 4, 17
+Ok 4, 18
+Ok 4, 19
+Ok 4, 21
+Ok 4, 22
+Ok 4, 23
+Ok 4, 28
+Ok 4, 29
+Ok 4, 30
+Ok 4, 35
+Ok 4, 36
+Ok 4, 37
+Ok 4, 42
+Ok 4, 43
+Ok 4, 44
+Ok 4, 45
+Ok 4, 46
+Ok 4, 47
+Ok 4, 49
+Ok 4, 50
+Ok 4, 51
+Ok 4, 56
+Ok 4, 57
+Ok 4, 58
+Ok 5, 7
+Ok 5, 8
+Ok 5, 9
+Ok 5, 10
+Ok 5, 11
+Ok 5, 12
+Ok 5, 14
+Ok 5, 15
+Ok 5, 16
+Ok 5, 17
+Ok 5, 18
+Ok 5, 19
+Ok 5, 21
+Ok 5, 22
+Ok 5, 23
+Ok 5, 28
+Ok 5, 29
+Ok 5, 30
+Ok 5, 35
+Ok 5, 36
+Ok 5, 37
+Ok 5, 42
+Ok 5, 43
+Ok 5, 44
+Ok 5, 45
+Ok 5, 46
+Ok 5, 47
+Ok 5, 49
+Ok 5, 50
+Ok 5, 51
+Ok 5, 56
+Ok 5, 57
+Ok 5, 58
+Ok 6, 13
+Ok 6, 20
+Ok 6, 27
+Ok 6, 34
+Ok 6, 41
+Ok 6, 48
+Ok 6, 55
+Ok 6, 62
+Ok 6, 63
+Ok 6, 64
+Ok 6, 65
+Ok 6, 66
+Ok 6, 67
+Ok 6, 68
+Ok 6, 69
+Ok 7, 8
+Ok 7, 9
+Ok 7, 10
+Ok 7, 11
+Ok 7, 12
+Ok 7, 14
+Ok 7, 15
+Ok 7, 16
+Ok 7, 17
+Ok 7, 18
+Ok 7, 19
+Ok 7, 21
+Ok 7, 22
+Ok 7, 23
+Ok 7, 28
+Ok 7, 29
+Ok 7, 30
+Ok 7, 35
+Ok 7, 36
+Ok 7, 37
+Ok 7, 42
+Ok 7, 43
+Ok 7, 44
+Ok 7, 45
+Ok 7, 46
+Ok 7, 47
+Ok 7, 49
+Ok 7, 50
+Ok 7, 51
+Ok 7, 56
+Ok 7, 57
+Ok 7, 58
+Ok 8, 9
+Ok 8, 10
+Ok 8, 11
+Ok 8, 12
+Ok 8, 14
+Ok 8, 15
+Ok 8, 16
+Ok 8, 17
+Ok 8, 18
+Ok 8, 19
+Ok 8, 21
+Ok 8, 22
+Ok 8, 23
+Ok 8, 28
+Ok 8, 29
+Ok 8, 30
+Ok 8, 35
+Ok 8, 36
+Ok 8, 37
+Ok 8, 42
+Ok 8, 43
+Ok 8, 44
+Ok 8, 45
+Ok 8, 46
+Ok 8, 47
+Ok 8, 49
+Ok 8, 50
+Ok 8, 51
+Ok 8, 56
+Ok 8, 57
+Ok 8, 58
+Ok 9, 10
+Ok 9, 11
+Ok 9, 12
+Ok 9, 14
+Ok 9, 15
+Ok 9, 16
+Ok 9, 17
+Ok 9, 18
+Ok 9, 19
+Ok 9, 21
+Ok 9, 22
+Ok 9, 23
+Ok 9, 28
+Ok 9, 29
+Ok 9, 30
+Ok 9, 35
+Ok 9, 36
+Ok 9, 37
+Ok 9, 42
+Ok 9, 43
+Ok 9, 44
+Ok 9, 45
+Ok 9, 46
+Ok 9, 47
+Ok 9, 49
+Ok 9, 50
+Ok 9, 51
+Ok 9, 56
+Ok 9, 57
+Ok 9, 58
+Ok 10, 11
+Ok 10, 12
+Ok 10, 14
+Ok 10, 15
+Ok 10, 16
+Ok 10, 17
+Ok 10, 18
+Ok 10, 19
+Ok 10, 21
+Ok 10, 22
+Ok 10, 23
+Ok 10, 28
+Ok 10, 29
+Ok 10, 30
+Ok 10, 35
+Ok 10, 36
+Ok 10, 37
+Ok 10, 42
+Ok 10, 43
+Ok 10, 44
+Ok 10, 45
+Ok 10, 46
+Ok 10, 47
+Ok 10, 49
+Ok 10, 50
+Ok 10, 51
+Ok 10, 56
+Ok 10, 57
+Ok 10, 58
+Ok 11, 12
+Ok 11, 14
+Ok 11, 15
+Ok 11, 16
+Ok 11, 17
+Ok 11, 18
+Ok 11, 19
+Ok 11, 21
+Ok 11, 22
+Ok 11, 23
+Ok 11, 28
+Ok 11, 29
+Ok 11, 30
+Ok 11, 35
+Ok 11, 36
+Ok 11, 37
+Ok 11, 42
+Ok 11, 43
+Ok 11, 44
+Ok 11, 45
+Ok 11, 46
+Ok 11, 47
+Ok 11, 49
+Ok 11, 50
+Ok 11, 51
+Ok 11, 56
+Ok 11, 57
+Ok 11, 58
+Ok 12, 14
+Ok 12, 15
+Ok 12, 16
+Ok 12, 17
+Ok 12, 18
+Ok 12, 19
+Ok 12, 21
+Ok 12, 22
+Ok 12, 23
+Ok 12, 28
+Ok 12, 29
+Ok 12, 30
+Ok 12, 35
+Ok 12, 36
+Ok 12, 37
+Ok 12, 42
+Ok 12, 43
+Ok 12, 44
+Ok 12, 45
+Ok 12, 46
+Ok 12, 47
+Ok 12, 49
+Ok 12, 50
+Ok 12, 51
+Ok 12, 56
+Ok 12, 57
+Ok 12, 58
+Ok 13, 20
+Ok 13, 27
+Ok 13, 34
+Ok 13, 41
+Ok 13, 48
+Ok 13, 55
+Ok 13, 62
+Ok 13, 63
+Ok 13, 64
+Ok 13, 65
+Ok 13, 66
+Ok 13, 67
+Ok 13, 68
+Ok 13, 69
+Ok 14, 15
+Ok 14, 16
+Ok 14, 17
+Ok 14, 18
+Ok 14, 19
+Ok 14, 21
+Ok 14, 22
+Ok 14, 23
+Ok 14, 28
+Ok 14, 29
+Ok 14, 30
+Ok 14, 35
+Ok 14, 36
+Ok 14, 37
+Ok 14, 42
+Ok 14, 43
+Ok 14, 44
+Ok 14, 45
+Ok 14, 46
+Ok 14, 47
+Ok 14, 49
+Ok 14, 50
+Ok 14, 51
+Ok 14, 56
+Ok 14, 57
+Ok 14, 58
+Ok 15, 16
+Ok 15, 17
+Ok 15, 18
+Ok 15, 19
+Ok 15, 21
+Ok 15, 22
+Ok 15, 23
+Ok 15, 28
+Ok 15, 29
+Ok 15, 30
+Ok 15, 35
+Ok 15, 36
+Ok 15, 37
+Ok 15, 42
+Ok 15, 43
+Ok 15, 44
+Ok 15, 45
+Ok 15, 46
+Ok 15, 47
+Ok 15, 49
+Ok 15, 50
+Ok 15, 51
+Ok 15, 56
+Ok 15, 57
+Ok 15, 58
+Ok 16, 17
+Ok 16, 18
+Ok 16, 19
+Ok 16, 21
+Ok 16, 22
+Ok 16, 23
+Ok 16, 28
+Ok 16, 29
+Ok 16, 30
+Ok 16, 35
+Ok 16, 36
+Ok 16, 37
+Ok 16, 42
+Ok 16, 43
+Ok 16, 44
+Ok 16, 45
+Ok 16, 46
+Ok 16, 47
+Ok 16, 49
+Ok 16, 50
+Ok 16, 51
+Ok 16, 56
+Ok 16, 57
+Ok 16, 58
+Ok 17, 18
+Ok 17, 19
+Ok 17, 21
+Ok 17, 22
+Ok 17, 23
+Ok 17, 28
+Ok 17, 29
+Ok 17, 30
+Ok 17, 35
+Ok 17, 36
+Ok 17, 37
+Ok 17, 42
+Ok 17, 43
+Ok 17, 44
+Ok 17, 45
+Ok 17, 46
+Ok 17, 47
+Ok 17, 49
+Ok 17, 50
+Ok 17, 51
+Ok 17, 56
+Ok 17, 57
+Ok 17, 58
+Ok 18, 19
+Ok 18, 21
+Ok 18, 22
+Ok 18, 23
+Ok 18, 28
+Ok 18, 29
+Ok 18, 30
+Ok 18, 35
+Ok 18, 36
+Ok 18, 37
+Ok 18, 42
+Ok 18, 43
+Ok 18, 44
+Ok 18, 45
+Ok 18, 46
+Ok 18, 47
+Ok 18, 49
+Ok 18, 50
+Ok 18, 51
+Ok 18, 56
+Ok 18, 57
+Ok 18, 58
+Ok 19, 21
+Ok 19, 22
+Ok 19, 23
+Ok 19, 28
+Ok 19, 29
+Ok 19, 30
+Ok 19, 35
+Ok 19, 36
+Ok 19, 37
+Ok 19, 42
+Ok 19, 43
+Ok 19, 44
+Ok 19, 45
+Ok 19, 46
+Ok 19, 47
+Ok 19, 49
+Ok 19, 50
+Ok 19, 51
+Ok 19, 56
+Ok 19, 57
+Ok 19, 58
+Ok 20, 27
+Ok 20, 34
+Ok 20, 41
+Ok 20, 48
+Ok 20, 55
+Ok 20, 62
+Ok 20, 63
+Ok 20, 64
+Ok 20, 65
+Ok 20, 66
+Ok 20, 67
+Ok 20, 68
+Ok 20, 69
+Ok 21, 22
+Ok 21, 23
+Ok 21, 28
+Ok 21, 29
+Ok 21, 30
+Ok 21, 35
+Ok 21, 36
+Ok 21, 37
+Ok 21, 42
+Ok 21, 43
+Ok 21, 44
+Ok 21, 45
+Ok 21, 46
+Ok 21, 47
+Ok 21, 49
+Ok 21, 50
+Ok 21, 51
+Ok 21, 56
+Ok 21, 57
+Ok 21, 58
+Ok 22, 23
+Ok 22, 28
+Ok 22, 29
+Ok 22, 30
+Ok 22, 35
+Ok 22, 36
+Ok 22, 37
+Ok 22, 42
+Ok 22, 43
+Ok 22, 44
+Ok 22, 45
+Ok 22, 46
+Ok 22, 47
+Ok 22, 49
+Ok 22, 50
+Ok 22, 51
+Ok 22, 56
+Ok 22, 57
+Ok 22, 58
+Ok 23, 28
+Ok 23, 29
+Ok 23, 30
+Ok 23, 35
+Ok 23, 36
+Ok 23, 37
+Ok 23, 42
+Ok 23, 43
+Ok 23, 44
+Ok 23, 45
+Ok 23, 46
+Ok 23, 47
+Ok 23, 49
+Ok 23, 50
+Ok 23, 51
+Ok 23, 56
+Ok 23, 57
+Ok 23, 58
+Ok 24, 25
+Ok 24, 26
+Ok 24, 31
+Ok 24, 32
+Ok 24, 33
+Ok 24, 38
+Ok 24, 39
+Ok 24, 40
+Ok 24, 52
+Ok 24, 53
+Ok 24, 54
+Ok 24, 59
+Ok 24, 60
+Ok 24, 61
+Ok 25, 26
+Ok 25, 31
+Ok 25, 32
+Ok 25, 33
+Ok 25, 38
+Ok 25, 39
+Ok 25, 40
+Ok 25, 52
+Ok 25, 53
+Ok 25, 54
+Ok 25, 59
+Ok 25, 60
+Ok 25, 61
+Ok 26, 31
+Ok 26, 32
+Ok 26, 33
+Ok 26, 38
+Ok 26, 39
+Ok 26, 40
+Ok 26, 52
+Ok 26, 53
+Ok 26, 54
+Ok 26, 59
+Ok 26, 60
+Ok 26, 61
+Ok 27, 34
+Ok 27, 41
+Ok 27, 48
+Ok 27, 55
+Ok 27, 62
+Ok 27, 63
+Ok 27, 64
+Ok 27, 65
+Ok 27, 66
+Ok 27, 67
+Ok 27, 68
+Ok 27, 69
+Ok 28, 29
+Ok 28, 30
+Ok 28, 35
+Ok 28, 36
+Ok 28, 37
+Ok 28, 42
+Ok 28, 43
+Ok 28, 44
+Ok 28, 45
+Ok 28, 46
+Ok 28, 47
+Ok 28, 49
+Ok 28, 50
+Ok 28, 51
+Ok 28, 56
+Ok 28, 57
+Ok 28, 58
+Ok 29, 30
+Ok 29, 35
+Ok 29, 36
+Ok 29, 37
+Ok 29, 42
+Ok 29, 43
+Ok 29, 44
+Ok 29, 45
+Ok 29, 46
+Ok 29, 47
+Ok 29, 49
+Ok 29, 50
+Ok 29, 51
+Ok 29, 56
+Ok 29, 57
+Ok 29, 58
+Ok 30, 35
+Ok 30, 36
+Ok 30, 37
+Ok 30, 42
+Ok 30, 43
+Ok 30, 44
+Ok 30, 45
+Ok 30, 46
+Ok 30, 47
+Ok 30, 49
+Ok 30, 50
+Ok 30, 51
+Ok 30, 56
+Ok 30, 57
+Ok 30, 58
+Ok 31, 32
+Ok 31, 33
+Ok 31, 38
+Ok 31, 39
+Ok 31, 40
+Ok 31, 52
+Ok 31, 53
+Ok 31, 54
+Ok 31, 59
+Ok 31, 60
+Ok 31, 61
+Ok 32, 33
+Ok 32, 38
+Ok 32, 39
+Ok 32, 40
+Ok 32, 52
+Ok 32, 53
+Ok 32, 54
+Ok 32, 59
+Ok 32, 60
+Ok 32, 61
+Ok 33, 38
+Ok 33, 39
+Ok 33, 40
+Ok 33, 52
+Ok 33, 53
+Ok 33, 54
+Ok 33, 59
+Ok 33, 60
+Ok 33, 61
+Ok 34, 41
+Ok 34, 48
+Ok 34, 55
+Ok 34, 62
+Ok 34, 63
+Ok 34, 64
+Ok 34, 65
+Ok 34, 66
+Ok 34, 67
+Ok 34, 68
+Ok 34, 69
+Ok 35, 36
+Ok 35, 37
+Ok 35, 42
+Ok 35, 43
+Ok 35, 44
+Ok 35, 45
+Ok 35, 46
+Ok 35, 47
+Ok 35, 49
+Ok 35, 50
+Ok 35, 51
+Ok 35, 56
+Ok 35, 57
+Ok 35, 58
+Ok 36, 37
+Ok 36, 42
+Ok 36, 43
+Ok 36, 44
+Ok 36, 45
+Ok 36, 46
+Ok 36, 47
+Ok 36, 49
+Ok 36, 50
+Ok 36, 51
+Ok 36, 56
+Ok 36, 57
+Ok 36, 58
+Ok 37, 42
+Ok 37, 43
+Ok 37, 44
+Ok 37, 45
+Ok 37, 46
+Ok 37, 47
+Ok 37, 49
+Ok 37, 50
+Ok 37, 51
+Ok 37, 56
+Ok 37, 57
+Ok 37, 58
+Ok 38, 39
+Ok 38, 40
+Ok 38, 52
+Ok 38, 53
+Ok 38, 54
+Ok 38, 59
+Ok 38, 60
+Ok 38, 61
+Ok 39, 40
+Ok 39, 52
+Ok 39, 53
+Ok 39, 54
+Ok 39, 59
+Ok 39, 60
+Ok 39, 61
+Ok 40, 52
+Ok 40, 53
+Ok 40, 54
+Ok 40, 59
+Ok 40, 60
+Ok 40, 61
+Ok 41, 48
+Ok 41, 55
+Ok 41, 62
+Ok 41, 63
+Ok 41, 64
+Ok 41, 65
+Ok 41, 66
+Ok 41, 67
+Ok 41, 68
+Ok 41, 69
+Ok 42, 43
+Ok 42, 44
+Ok 42, 45
+Ok 42, 46
+Ok 42, 47
+Ok 42, 49
+Ok 42, 50
+Ok 42, 51
+Ok 42, 56
+Ok 42, 57
+Ok 42, 58
+Ok 43, 44
+Ok 43, 45
+Ok 43, 46
+Ok 43, 47
+Ok 43, 49
+Ok 43, 50
+Ok 43, 51
+Ok 43, 56
+Ok 43, 57
+Ok 43, 58
+Ok 44, 45
+Ok 44, 46
+Ok 44, 47
+Ok 44, 49
+Ok 44, 50
+Ok 44, 51
+Ok 44, 56
+Ok 44, 57
+Ok 44, 58
+Ok 45, 46
+Ok 45, 47
+Ok 45, 49
+Ok 45, 50
+Ok 45, 51
+Ok 45, 56
+Ok 45, 57
+Ok 45, 58
+Ok 46, 47
+Ok 46, 49
+Ok 46, 50
+Ok 46, 51
+Ok 46, 56
+Ok 46, 57
+Ok 46, 58
+Ok 47, 49
+Ok 47, 50
+Ok 47, 51
+Ok 47, 56
+Ok 47, 57
+Ok 47, 58
+Ok 48, 55
+Ok 48, 62
+Ok 48, 63
+Ok 48, 64
+Ok 48, 65
+Ok 48, 66
+Ok 48, 67
+Ok 48, 68
+Ok 48, 69
+Ok 49, 50
+Ok 49, 51
+Ok 49, 56
+Ok 49, 57
+Ok 49, 58
+Ok 50, 51
+Ok 50, 56
+Ok 50, 57
+Ok 50, 58
+Ok 51, 56
+Ok 51, 57
+Ok 51, 58
+Ok 52, 53
+Ok 52, 54
+Ok 52, 59
+Ok 52, 60
+Ok 52, 61
+Ok 53, 54
+Ok 53, 59
+Ok 53, 60
+Ok 53, 61
+Ok 54, 59
+Ok 54, 60
+Ok 54, 61
+Ok 55, 62
+Ok 55, 63
+Ok 55, 64
+Ok 55, 65
+Ok 55, 66
+Ok 55, 67
+Ok 55, 68
+Ok 55, 69
+Ok 56, 57
+Ok 56, 58
+Ok 57, 58
+Ok 59, 60
+Ok 59, 61
+Ok 60, 61
+Ok 62, 63
+Ok 62, 64
+Ok 62, 65
+Ok 62, 66
+Ok 62, 67
+Ok 62, 68
+Ok 62, 69
+Ok 63, 64
+Ok 63, 65
+Ok 63, 66
+Ok 63, 67
+Ok 63, 68
+Ok 63, 69
+Ok 64, 65
+Ok 64, 66
+Ok 64, 67
+Ok 64, 68
+Ok 64, 69
+Ok 65, 66
+Ok 65, 67
+Ok 65, 68
+Ok 65, 69
+Ok 66, 67
+Ok 66, 68
+Ok 66, 69
+Ok 67, 68
+Ok 67, 69
+Ok 68, 69
+Simplified Exponential
+(ast-vector)
+7
+1
+Non reducible (ast-vector
+  (=> (= z1 z2) (= s1 s2))
+  (=> (and (= z1 y2) (= z2 y2)) (= s1 s2))
+  (=> (and (= z1 y1) (= z2 y1)) (= s1 s2))
+  (=> (and (= z1 y2) (= y1 y2) (= z2 y2)) (= s1 s2))
+  (=> (and (= z1 y2) (= y1 y2) (= z2 y1)) (= s1 s2))
+  (=> (and (= z2 y2) (= y1 y2) (= z1 y1)) (= s1 s2))
+  (=> (and (= z1 y1) (= y1 y2) (= z2 y1)) (= s1 s2)))
+qSimplified (ast-vector
+  (=> (= z1 z2) (= s1 s2)))
+The interpolant is: (and (=> (= z1 z2) (= s1 s2)) true)
