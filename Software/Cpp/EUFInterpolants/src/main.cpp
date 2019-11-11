@@ -21,18 +21,9 @@ int main(int argc, char ** argv){
     while(aux_expr.num_args() != 0)
       aux_expr = aux_expr.arg(0);
     
-    // CongruenceClosure cc_example(ctx, input_formula, symbols_to_elim, 0);
-    // std::cout << cc_example << std::endl;
-    // cc_example.addEquation(6, 11);
-    // std::cout << cc_example << std::endl;
-
-    // CongruenceClosure cc_example2(ctx, input_formula, symbols_to_elim, 1);
-    // cc_example.transferEqClassAndPreds(cc_example2);
-    // std::cout << cc_example << std::endl;
-    
     EUFInterpolant euf_interpolant_example(input_formula, symbols_to_elim, aux_expr.decl().range());
     auto result = euf_interpolant_example.buildInterpolant();
-    std::cout << "The interpolant is: " << result << std::endl;
+    std::cout << "The interpolant is: " << std::endl << result << std::endl;
   }
   return 0;
 }

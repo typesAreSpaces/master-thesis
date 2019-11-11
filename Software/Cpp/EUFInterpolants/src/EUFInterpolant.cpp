@@ -40,11 +40,9 @@ z3::expr EUFInterpolant::buildInterpolant(){
   
   auto exponential_hs = exponentialElimination(equations, uncomm_terms_elim, reducible_hs_z3);
   auto simplified_exponential_hs = cvt.extraSimplification(exponential_hs);
-
-  std::cout << "Exponential " << exponential_hs << std::endl;
-  std::cout << "Simplified exponential " << simplified_exponential_hs << std::endl;
+  auto common_simplified_exponential_hs = cvt.removeUncommonTerms(simplified_exponential_hs);
   
-  return cvt.makeConjunction(simplified_hs) && cvt.makeConjunction(simplified_exponential_hs);
+  return cvt.makeConjunction(simplified_hs) && cvt.makeConjunction(common_simplified_exponential_hs);
 }
 
 std::vector<HornClause*> EUFInterpolant::getHornClauses(){
@@ -118,17 +116,8 @@ z3::expr_vector EUFInterpolant::getUncommonTermsToElim(std::vector<HornClause*> 
     // v is a pointer to a Term
     // which is only added to 'answer' if it
     // is uncommon
-    if(!v->getSymbolCommonQ()){
-      // auto new_expr = cvt.convert(v);
-      // std::cout << "Expression" << std::endl;
-      // std::cout << v->getId() << std::endl;
-      // std::cout << "New expression converted" << std::endl;
-      // std::cout << new_expr << std::endl;
-      // std::cout << Z3_get_ast_id(ctx, new_expr) << std::endl;
-      // answer.insert(Z3_get_ast_id(ctx, new_expr));
-      // // answer.insert(v->getId());
+    if(!v->getSymbolCommonQ())
       answer.push_back(cvt.convert(v));
-    }
   }
   return answer;
 }
@@ -141,12 +130,15 @@ z3::expr_vector EUFInterpolant::exponentialElimination(z3::expr_vector & equatio
     
     new_equations.resize(0);
 
-    for(auto equation : equations)
+    for(auto equation : equations){
       // Remark: substitutions can produce horn clauses!
       // so new_equations are not all equations!
+      // std::cout << "------------------------------------------------" << std::endl;
       for(auto substitution : substitutions(equation, term_elim, hcs)){
+	// std::cout << substitution << std::endl;
 	new_equations.push_back(substitution);
       }
+    }
 
     equations.resize(0);
     
@@ -164,6 +156,7 @@ z3::expr_vector EUFInterpolant::substitutions(z3::expr & equation,
   z3::expr_vector answer(equation.ctx()), from(equation.ctx()), to(equation.ctx());
   from.push_back(term_elim);
   unsigned hcs_length = hcs.size();
+  std::set<unsigned> expr_ids;
   
   for(unsigned index_hc = 0; index_hc < hcs_length; ++index_hc){
     auto current_consequent_lhs = hcs[index_hc].arg(1).arg(0);
@@ -181,9 +174,12 @@ z3::expr_vector EUFInterpolant::substitutions(z3::expr & equation,
 	else
 	  answer.push_back(implies(antecedent, new_equation));
       }
-      else
-	answer.push_back(new_equation);
-      
+      else{
+	if(notInSet(new_equation.id(), expr_ids)){
+	  answer.push_back(new_equation);
+	  expr_ids.insert(new_equation.id());
+	}
+      }
       to.pop_back();
     }
   }

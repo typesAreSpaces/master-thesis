@@ -1,0 +1,35 @@
+g++ -g -c -o obj/ConvertReprToZ3.o  -I./src/ -I./include/ -std=c++11 src/ConvertReprToZ3.cpp -Wall
+g++ -g -c -o obj/EUFInterpolant.o  -I./src/ -I./include/ -std=c++11 src/EUFInterpolant.cpp -Wall
+g++ -g -o main obj/HornClause.o obj/UnionFind.o obj/ConvertReprToZ3.o obj/Term.o obj/Signature.o obj/EUFInterpolant.o obj/Terms.o obj/SignatureTable.o obj/Node.o obj/CircularList.o obj/CongruenceClosure.o obj/main.o obj/HornClauses.o /home/jose/Documents/GithubProjects/z3/build/libz3.so -lpthread -Wall
+./main ./tests/smt2lib_2/kapurEUFExample.smt2 v
+The interpolant is: 
+(let ((a!1 (and (= y1 y2) (= y1 s2) (= v s2)))
+      (a!2 (and (= y1 y2) (= y1 s1) (= v s1)))
+      (a!3 (and (and (= z1 y1) (= s1 y2)) (= v s2)))
+      (a!4 (and (and (= z1 y1) (= s1 y2)) (= v s1)))
+      (a!5 (and (and (= z1 y1) (= s1 y2)) (= v t))))
+(let ((a!6 (=> (and (and (= z1 y1) (= s1 y2))
+                    (= v (f y2 v))
+                    a!5
+                    a!5
+                    (= z2 y1)
+                    a!5)
+               (= (f s2 t) t))))
+  (and (=> (= z1 z2) (= s1 s2))
+       (= (f z1 v) s1)
+       (= (f z2 v) s2)
+       (=> (and (= z2 y1) (= z2 y2)) (= (f s2 s2) t))
+       (=> (and (= z1 y1) (= z2 y2)) (= (f s1 s2) t))
+       (=> (and (= z2 y2) (= y1 y2) a!1 (= z2 y2)) (= (f t s2) t))
+       (=> (and (= z1 y1) a!2 (= z2 y2)) (= (f t s2) t))
+       (=> (and (= z2 y1) (= z1 y2)) (= (f s2 s1) t))
+       (=> (and (= z1 y1) (= z1 y2)) (= (f s1 s1) t))
+       (=> (and (= z2 y1) a!1 (= z1 y2)) (= (f t s1) t))
+       (=> (and (= z1 y1) a!2 (= z1 y2)) (= (f t s1) t))
+       (=> (and (= z2 y1) (= y1 y2) (= y2 s2) (= v s2)) (= (f s2 t) t))
+       (=> (and (= z1 y1) (= y1 y2) (= y2 s1) (= v s1)) (= (f s1 t) t))
+       (=> (and (= z2 y2) (= z2 y1) a!3) (= (f s2 t) t))
+       (=> (and (= z1 y2) (= z2 y1) a!4) (= (f s2 t) t))
+       a!6
+       (=> (and (= z2 y2) (= z1 y1) a!3) (= (f s1 t) t))
+       (=> (and (= z1 y2) (= z1 y1) a!2 a!4) (= (f t t) t)))))

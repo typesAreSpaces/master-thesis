@@ -21,6 +21,7 @@ class Converter {
   z3::expr        getAntecedent(const z3::expr &);
   z3::expr        getConsequent(const z3::expr &);
   z3::expr_vector extraSimplification(const z3::expr_vector &);
+  z3::expr_vector removeUncommonTerms(const z3::expr_vector &);
  private:
   z3::context &    ctx;
   const z3::sort & sort_A;
