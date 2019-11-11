@@ -40,9 +40,10 @@ z3::expr EUFInterpolant::buildInterpolant(){
   
   auto exponential_hs = exponentialElimination(equations, uncomm_terms_elim, reducible_hs_z3);
   auto simplified_exponential_hs = cvt.extraSimplification(exponential_hs);
-  auto common_simplified_exponential_hs = cvt.removeUncommonTerms(simplified_exponential_hs);
-  
-  return cvt.makeConjunction(simplified_hs) && cvt.makeConjunction(common_simplified_exponential_hs);
+  // auto common_simplified_exponential_hs = cvt.removeUncommonTerms(simplified_exponential_hs);
+
+  return cvt.makeConjunction(simplified_hs) && cvt.makeConjunction(simplified_exponential_hs);
+  // return cvt.makeConjunction(simplified_hs) && cvt.makeConjunction(common_simplified_exponential_hs);
 }
 
 std::vector<HornClause*> EUFInterpolant::getHornClauses(){

@@ -146,6 +146,7 @@ z3::expr_vector Converter::extraSimplification(const z3::expr_vector & formulas)
 z3::expr_vector Converter::removeUncommonTerms(const z3::expr_vector & formulas){
   z3::solver solver(formulas.ctx());
   z3::expr_vector answer(formulas.ctx());
+  
   unsigned length = formulas.size();
   for(unsigned i = 0; i < length; ++i){
     // TODO: Continue working here
