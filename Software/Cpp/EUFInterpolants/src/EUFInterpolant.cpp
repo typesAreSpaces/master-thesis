@@ -127,33 +127,42 @@ z3::expr_vector EUFInterpolant::exponentialElimination(z3::expr_vector & equatio
 						       z3::expr_vector & terms_elim,
 						       z3::expr_vector & hcs){
   z3::expr_vector new_equations(equations.ctx());
+  z3::expr_vector solution(equations.ctx());
   std::map<unsigned, unsigned> num_uncomms;
-
-  for(auto hc : hcs){
-    num_uncomms[hc.id()] = 0; // TODO: Keep working here
-  }
+  std::set<std::string> symbols_to_elim = original_closure.getSymbolsToElim();
   
   for(auto term_elim : terms_elim){
-    
     new_equations.resize(0);
-
-    for(auto equation : equations){
-      // Remark: substitutions can produce horn clauses!
-      // so new_equations are not all equations!
-      // std::cout << "------------------------------------------------" << std::endl;
-      for(auto substitution : substitutions(equation, term_elim, hcs)){
-	// std::cout << substitution << std::endl;
-	new_equations.push_back(substitution);
-      }
-    }
-
-    equations.resize(0);
     
+    for(auto equation : equations){
+
+      unsigned num_uncomms = 0;
+      for(auto symbol : cvt.getSymbols(equation))
+	if(!(notInSet(symbol, symbols_to_elim)))
+	  ++num_uncomms;
+      
+      if(num_uncomms == 0)
+	solution.push_back(equation);
+      else{
+	if(num_uncomms > 0)
+	  // Remark: substitutions can produce horn clauses!
+	  // so new_equations are not all equations!
+	  for(auto substitution : substitutions(equation, term_elim, hcs)){
+	    // std::cout << substitution << std::endl;
+	    new_equations.push_back(substitution);
+	  }
+	else
+	  throw "Expressions cannot have negative number of uncommon symbols!";
+      }
+      
+    }
+    
+    equations.resize(0);
     // Deep - copy
     for(auto equation : new_equations) 
       equations.push_back(equation);
   }
-  return equations;
+  return solution;
 }
 
 
@@ -169,24 +178,22 @@ z3::expr_vector EUFInterpolant::substitutions(z3::expr & equation,
     auto current_consequent_lhs = hcs[index_hc].arg(1).arg(0);
     auto current_consequent_rhs = hcs[index_hc].arg(1).arg(1);
     auto antecedent = hcs[index_hc].arg(0);
-    if(cvt.areEqual(term_elim, current_consequent_rhs)){
+    
+    if((term_elim.id() == current_consequent_rhs.id())){
       to.push_back(current_consequent_lhs);
       auto new_equation = equation.substitute(from, to);
-      
-      // Only commit to do the substitution
-      // if these formulas are different
+      // If these formulas are different commit to do the substitution
       if(new_equation.id() != equation.id()){
 	if(new_equation.is_implies())
 	  answer.push_back(implies(antecedent && new_equation.arg(0), new_equation.arg(1)));
 	else
 	  answer.push_back(implies(antecedent, new_equation));
       }
-      else{
+      else
 	if(notInSet(new_equation.id(), expr_ids)){
 	  answer.push_back(new_equation);
 	  expr_ids.insert(new_equation.id());
 	}
-      }
       to.pop_back();
     }
   }

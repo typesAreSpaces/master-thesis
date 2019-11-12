@@ -71,10 +71,6 @@ z3::expr Converter::makeConjunction(const z3::expr_vector & v){
   return formula;
 }
 
-bool Converter::areEqual(const z3::expr & x, const z3::expr & y){
-  return x.id() == y.id();
-}
-
 z3::expr Converter::getAntecedent(const z3::expr & hc){
   if(hc.is_implies())
     return hc.arg(0);
@@ -126,10 +122,6 @@ z3::expr_vector Converter::extraSimplification(const z3::expr_vector & formulas)
       case z3::unsat:
 	if(!areEquivalent)
 	  filter.insert(_j);
-	// else{
-	//   std::cout << i << "-th formula: " << formulas[i] << std::endl;
-	//   std::cout << j << "-th formula: " << formulas[j] << std::endl;
-	// }
 	break;
       case z3::sat:     break;
       case z3::unknown: break;
@@ -154,4 +146,26 @@ z3::expr_vector Converter::removeUncommonTerms(const z3::expr_vector & formulas)
     // Remove them from formulas
   }
   return answer;
+}
+
+std::set<std::string> Converter::getSymbols(const z3::expr & formula){
+  std::set<std::string> symbols;
+  auxiliarGetSymbols(formula, symbols);
+  return symbols;
+}
+
+void Converter::auxiliarGetSymbols(const z3::expr & e, std::set<std::string> & symbols){
+  symbols.insert(e.decl().name().str());
+  // std::cout << "Formula " << e << std::endl;
+  // std::cout << "Name " << e.decl().name().str() << std::endl;
+  if (e.is_app()) {
+    unsigned num = e.num_args();
+    for (unsigned i = 0; i < num; ++i)
+      auxiliarGetSymbols(e.arg(i), symbols);
+  }
+  else if (e.is_quantifier()) {
+  }
+  else { 
+    assert(e.is_var());
+  }
 }
