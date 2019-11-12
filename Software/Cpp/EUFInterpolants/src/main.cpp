@@ -2,28 +2,50 @@
 #include <fstream>
 #include <cstdlib>
 #include <ctime>
-
 #include "EUFInterpolant.h"
 
 int main(int argc, char ** argv){
   
   if(argc >= 2) {
-    z3::context ctx;
-    z3::expr input_formula = ctx.parse_file(argv[1])[0];
-    z3::expr aux_expr = input_formula;
-    std::set<std::string> symbols_to_elim;
-    for(int index = 2; index < argc; ++index)
-      symbols_to_elim.insert(argv[index]);
-
-    // Find a leave node in input_formula
-    // in order to find the sort
-    // of every expression (convention)
-    while(aux_expr.num_args() != 0)
-      aux_expr = aux_expr.arg(0);
+    try {
+      z3::context ctx;
+      auto input_formula = ctx.parse_file(argv[1])[0];
+      std::set<std::string> symbols_to_elim;
+      auto aux_expr = input_formula;
     
-    EUFInterpolant euf_interpolant_example(input_formula, symbols_to_elim, aux_expr.decl().range());
-    auto result = euf_interpolant_example.buildInterpolant();
-    std::cout << "The interpolant is: " << std::endl << result << std::endl;
+      for(int index = 2; index < argc; ++index)
+	symbols_to_elim.insert(argv[index]);
+
+      // Find a leave node inside input_formula
+      // in order to find the sort
+      // of every expression (convention)
+      while(aux_expr.num_args() != 0)
+	aux_expr = aux_expr.arg(0);
+    
+      EUFInterpolant euf(input_formula, symbols_to_elim, aux_expr.decl().range());
+      auto result = euf.buildInterpolant();
+      std::cout << "The interpolant is: " << std::endl << result << std::endl;
+
+      // // Test if the output is an interpolant
+      // z3::solver s(ctx);
+      // s.add(!z3::implies(input_formula, result));
+      // switch(s.check()){
+      // case z3::unsat:
+      //   std::cout << "unsat" << std::endl;
+      //   break;
+      // case z3::sat:
+      //   std::cout << "sat" << std::endl;
+      //   break;
+      // case z3::unknown:
+      //   std::cout << "unknown" << std::endl;
+      //   break;
+      // }
+    }
+    catch(...){
+      std::cout << "File not found" << std::endl;
+    }
   }
+  else
+    std::cout << "Not enough arguments" << std::endl;
   return 0;
 }

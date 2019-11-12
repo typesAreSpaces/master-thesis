@@ -7,10 +7,10 @@
 (declare-fun f (A) A)
 
 (define-fun A1 () Bool
-						( and
-						(distinct (f x1) (f x2))
-						(= (f x1) (f x3))		
-						(= (f x1) (f x4))
-						)
-)
+  ( and
+    (distinct (f x1) (f x2))
+    (= (f x1) (f x3))		
+    (= (f x1) (f x4))
+    )
+  )
 (assert A1)

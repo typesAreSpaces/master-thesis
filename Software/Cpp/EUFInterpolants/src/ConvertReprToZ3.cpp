@@ -49,7 +49,20 @@ z3::expr Converter::convert(HornClause * hc){
   z3::expr formula(ctx);
   auto antecedent = hc->getAntecedent();
   auto consequent = hc->getConsequent();
-  formula = implies(convert(antecedent), convert(consequent));
+
+  if(antecedent.size() == 0){
+    if(consequent.first->getName() == "incomparable")
+      formula = ctx.bool_val(false);
+    else
+      formula = convert(consequent);
+  }
+  else{
+    if(consequent.first->getName() == "incomparable")
+      formula = implies(convert(antecedent), false);
+    else
+      formula = implies(convert(antecedent), convert(consequent));
+  }
+  
   return formula;
 }
 
