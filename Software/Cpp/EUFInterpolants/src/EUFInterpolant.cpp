@@ -127,6 +127,12 @@ z3::expr_vector EUFInterpolant::exponentialElimination(z3::expr_vector & equatio
 						       z3::expr_vector & terms_elim,
 						       z3::expr_vector & hcs){
   z3::expr_vector new_equations(equations.ctx());
+  std::map<unsigned, unsigned> num_uncomms;
+
+  for(auto hc : hcs){
+    num_uncomms[hc.id()] = 0; // TODO: Keep working here
+  }
+  
   for(auto term_elim : terms_elim){
     
     new_equations.resize(0);
