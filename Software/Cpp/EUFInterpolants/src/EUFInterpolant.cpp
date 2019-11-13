@@ -39,8 +39,8 @@ z3::expr EUFInterpolant::buildInterpolant(){
   auto uncomm_terms_elim = getUncommonTermsToElim(reducible_hs);
   
   auto exponential_hs = exponentialElimination(equations, uncomm_terms_elim, reducible_hs_z3);
-  auto simplified_exponential_hs = cvt.extraSimplification(exponential_hs);
-
+  auto simplified_exponential_hs = cvt.extraSimplification(exponential_hs);  
+  
   return cvt.makeConjunction(simplified_hs) && cvt.makeConjunction(simplified_exponential_hs);
 }
 
@@ -111,12 +111,15 @@ void EUFInterpolant::addNegativeHornClauses(){
 z3::expr_vector EUFInterpolant::getUncommonTermsToElim(std::vector<HornClause*> & horn_clauses){
   z3::expr_vector answer(original_closure.getCtx());
   for(auto horn_clause : horn_clauses){
-    Term* v = (*horn_clause).getConsequent().second;
+    auto v = (*horn_clause).getConsequent();
     // v is a pointer to a Term
     // which is only added to 'answer' if it
     // is uncommon
-    if(!v->getSymbolCommonQ())
-      answer.push_back(cvt.convert(v));
+    if(!(v.first)->getSymbolCommonQ())
+      answer.push_back(cvt.convert(v.first));
+    
+    if(!(v.second)->getSymbolCommonQ())
+      answer.push_back(cvt.convert(v.second));
   }
   return answer;
 }
@@ -129,9 +132,36 @@ z3::expr_vector EUFInterpolant::exponentialElimination(z3::expr_vector & equatio
   std::map<unsigned, unsigned> num_uncomms;
   std::set<std::string> symbols_to_elim = original_closure.getSymbolsToElim();
   
-  for(auto term_elim : terms_elim){
-    new_equations.resize(0);
-    
+  if(terms_elim.size() > 0)
+    for(auto term_elim : terms_elim) {
+
+      new_equations.resize(0);
+      
+      for(auto equation : equations){
+
+	unsigned num_uncomms = 0;
+	for(auto symbol : cvt.getSymbols(equation))
+	  if(!(notInSet(symbol, symbols_to_elim)))
+	    ++num_uncomms;
+	
+	if(num_uncomms == 0)
+	  solution.push_back(equation);
+	else{
+	  if(num_uncomms > 0)
+	    // Remark: substitutions can produce horn clauses!
+	    // so new_equations are not all equations!
+	    for(auto substitution : substitutions(equation, term_elim, hcs))
+	      new_equations.push_back(substitution);
+	  else
+	    throw "Expressions cannot have negative number of uncommon symbols!";
+	}
+      }
+      equations.resize(0);
+      // Deep - copy
+      for(auto equation : new_equations) 
+	equations.push_back(equation);
+    }
+  else
     for(auto equation : equations){
 
       unsigned num_uncomms = 0;
@@ -141,25 +171,7 @@ z3::expr_vector EUFInterpolant::exponentialElimination(z3::expr_vector & equatio
       
       if(num_uncomms == 0)
 	solution.push_back(equation);
-      else{
-	if(num_uncomms > 0)
-	  // Remark: substitutions can produce horn clauses!
-	  // so new_equations are not all equations!
-	  for(auto substitution : substitutions(equation, term_elim, hcs)){
-	    // std::cout << substitution << std::endl;
-	    new_equations.push_back(substitution);
-	  }
-	else
-	  throw "Expressions cannot have negative number of uncommon symbols!";
-      }
-      
     }
-    
-    equations.resize(0);
-    // Deep - copy
-    for(auto equation : new_equations) 
-      equations.push_back(equation);
-  }
   return solution;
 }
 

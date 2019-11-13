@@ -21,10 +21,17 @@ int main(int argc, char ** argv){
       // of every expression (convention)
       while(aux_expr.num_args() != 0)
 	aux_expr = aux_expr.arg(0);
-    
+      
       EUFInterpolant euf(input_formula, symbols_to_elim, aux_expr.decl().range());
       auto result = euf.buildInterpolant();
-      std::cout << "The interpolant is: " << std::endl << result << std::endl;
+      
+      std::cout << "Input formula is : " << std::endl << input_formula << std::endl;
+      std::cout << "Symbols to eliminate: " << std::endl;
+      for(auto symbol_name : symbols_to_elim)
+	std::cout << symbol_name << " ";
+      std::cout << std::endl;
+      std::cout << "The interpolant is: " << std::endl << result.simplify() << std::endl;
+      // std::cout << "The interpolant is: " << std::endl << result << std::endl;
 
       // // Test if the output is an interpolant
       // z3::solver s(ctx);
