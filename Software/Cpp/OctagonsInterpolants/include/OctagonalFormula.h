@@ -24,10 +24,10 @@ public:
   // OctagonalFormula invPosition(int);
   OctagonalFormula(int);
   ~OctagonalFormula();
-  int getS1();
-  int getS2();
-  char getN1();
-  char getN2();
+  char getS1();
+  char getS2();
+  int getN1();
+  int getN2();
   static int numgroup(int);
   // position :: Octagonal -> int
   int position();
