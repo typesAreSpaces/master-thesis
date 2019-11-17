@@ -1,6 +1,5 @@
 #include <iostream>
-#include <fstream>
-#include "Octagons.h"
+#include "OctagonsInterpolant.h"
 #include <z3++.h>
 #include <set>
 
