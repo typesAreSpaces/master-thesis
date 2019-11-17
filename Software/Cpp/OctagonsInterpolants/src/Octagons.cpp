@@ -20,7 +20,7 @@ Octagons::Octagons(std::istream & in) : numVar(-1) {
     in >> s1 >> n1 >> s2 >> n2 >> bound;
     OctagonalFormula temp(s1, n1, s2, n2);
     std::cout << "ok " << i << std::endl;
-    std::cout << "ok2 " << temp.getS1() << " " << temp.getN1() << " " << temp.getS2() << " " << temp.getN2() << " " << std::endl;
+    std::cout << "ok2 " <<e temp.getS1() << " " << temp.getN1() << " " << temp.getS2() << " " << temp.getN2() << " " << std::endl;
     // -----------------------------------
     // Normalization
     temp.normalize(bound);

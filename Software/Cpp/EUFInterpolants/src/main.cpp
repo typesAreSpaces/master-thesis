@@ -9,7 +9,8 @@ int main(int argc, char ** argv){
   if(argc >= 2) {
     try {
       z3::context ctx;
-      auto input_formula = ctx.parse_file(argv[1])[0];
+      auto input_formula = z3::mk_and(ctx.parse_file(argv[1]));
+      
       std::set<std::string> symbols_to_elim;
       auto aux_expr = input_formula;
     
@@ -28,7 +29,7 @@ int main(int argc, char ** argv){
       std::cout << "Input formula is : " << std::endl << input_formula << std::endl;
       std::cout << "Symbols to eliminate: " << std::endl;
       for(auto symbol_name : symbols_to_elim)
-	std::cout << symbol_name << " ";
+      	std::cout << symbol_name << " ";
       std::cout << std::endl;
       std::cout << "The interpolant is: " << std::endl << result.simplify() << std::endl;
       // std::cout << "The interpolant is: " << std::endl << result << std::endl;
