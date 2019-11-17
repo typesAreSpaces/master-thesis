@@ -19,15 +19,11 @@ Octagons::Octagons(std::istream & in) : numVar(-1) {
   for(int i = 0; i < numInequalities; ++i){
     in >> s1 >> n1 >> s2 >> n2 >> bound;
     OctagonalFormula temp(s1, n1, s2, n2);
-    std::cout << "ok " << i << std::endl;
-    std::cout << "ok2 " <<e temp.getS1() << " " << temp.getN1() << " " << temp.getS2() << " " << temp.getN2() << " " << std::endl;
     // -----------------------------------
     // Normalization
     temp.normalize(bound);
-    std::cout << "ok3 " << temp.getS1() << " " << temp.getN1() << " " << temp.getS2() << " " << temp.getN2() << " " << std::endl;
     // -----------------------------------
     updatePositions(temp);
-    std::cout << "ok4 " << temp.getS1() << " " << temp.getN1() << " " << temp.getS2() << " " << temp.getN2() << " " << std::endl;
     if(n1 > numVar)
       numVar = n1;
     if(n2 > numVar)
