@@ -39,3 +39,18 @@ clean:
 
 run: ./main
 	./main ./tests/smtlib2/test.smt2 x2
+	./main ./tests/smtlib2/test2.smt2 x2
+	./main ./tests/smtlib2/test3.smt2 x2
+	./main ./tests/smtlib2/test4.smt2 x2
+	./main ./tests/smtlib2/test5.smt2 x2
+	./main ./tests/smtlib2/test6.smt2 x2
+	./main ./tests/smtlib2/test7.smt2 x2
+	./main ./tests/smtlib2/test8.smt2 x2
+
+old: ./main
+	for files in /home/jose/Documents/GithubProjects/master-thesis/Software/Cpp/OctagonsInterpolants/tests/in_format/*; do \
+		./main $$files; \
+	done
+
+oldseg: ./main
+	./main /home/jose/Documents/GithubProjects/master-thesis/Software/Cpp/OctagonsInterpolants/tests/in_format/example_125_20_6.in

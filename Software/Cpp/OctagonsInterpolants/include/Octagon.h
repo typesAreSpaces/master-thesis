@@ -13,24 +13,25 @@
 #define INF           10000000
 
 class Octagon{
- private:
-  char s1, s2;
-  int n1, n2;
-  int position;
+  
+private:
+  char first_sign, second_sign;
+  int first_var_position, second_var_position;
+  int utvpi_position;
+  
 public:
   Octagon(char, char, int, int);
-  // 'invPosition' :: int -> Octagon
-  // Octagon invPosition(int);
   Octagon(int);
   ~Octagon();
 
-  const char getS1() const;
-  const char getS2() const;
-  const int getN1() const;
-  const int getN2() const;
+  const char getFirstSign() const;
+  const char getSecondSign() const;
+  const int  getFirstVarPosition() const;
+  const int  getSecondVarPosition() const;
+  const int  getUtvpiPosition();
   
-  const int getPosition() const;
-  int normalize(int);
+  void setUtvpiPosition(char, char, int, int);
+  int  normalize(int);
 
   friend std::ostream & operator << (std::ostream &, const Octagon &);
 };

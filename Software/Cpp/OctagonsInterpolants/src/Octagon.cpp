@@ -1,110 +1,145 @@
 #include "Octagon.h"
 
-Octagon::Octagon(char s1, char s2, int n1, int n2) :
-  s1(s1), s2(s2), n1(n1), n2(n2) {
-  if(s1 == '-' && n2 == -1)
-    this->position = 2*n1*n1;
-  if(s1 == '+' && n2 == -1)
-    this->position = 2*n1*n1 + 2*n1 + 1;
-  if(s1 == '-'){
-    if(s2 == '-')
-      this->position = 2*n1*n1 + 2*(n2 + 1) - 1; 
-    else
-      this->position = 2*n1*n1 + 2*(n2 + 1);
-  }
-  else{
-    if(s2 == '-')
-      this->position = 2*n1*n1 + 2*n1 + 1 + 2*(n2 + 1) - 1; 
-    else
-      this->position = 2*n1*n1 + 2*n1 + 1 + 2*(n2 + 1);
-  }
+Octagon::Octagon(char first_sign, char second_sign, int first_var_position, int second_var_position) :
+  first_sign(first_sign), second_sign(second_sign),
+  first_var_position(first_var_position), second_var_position(second_var_position) {
+  setUtvpiPosition(first_sign, second_sign, first_var_position, second_var_position);
 }
 
 Octagon::Octagon(int n){
+  // TODO: What does p2 mean?
   int num_group = floor(sqrt(n/2));
   if(n < 2*num_group*num_group + 2*num_group + 1){
     int p2 = 2*num_group*num_group;
     if(n == p2)
-      s1 = '-', n1 = num_group, s2 = '+', n2 = -1;
+      first_sign = '-',
+	first_var_position = num_group,
+	second_sign = '+',
+	second_var_position = -1;
     else{
       if((n - p2) % 2 == 0)
-	s1 = '-', n1 = num_group, s2 = '+', n2 = ceil((n - p2)/2.0) - 1;
+	first_sign = '-',
+	  first_var_position = num_group,
+	  second_sign = '+',
+	  second_var_position = ceil((n - p2)/2.0) - 1;
       else
-	s1 = '-', n1 = num_group, s2 = '-', n2 = ceil((n - p2)/2.0) - 1;
+	first_sign = '-',
+	  first_var_position = num_group,
+	  second_sign = '-',
+	  second_var_position = ceil((n - p2)/2.0) - 1;
     }
   }
   else{
     int p2 = 2*num_group*num_group + 2*num_group + 1;
     if(n == p2)
-      s1 = '+', n1 = num_group, s2 = '+', n2 = -1;
+      first_sign = '+',
+	first_var_position = num_group,
+	second_sign = '+',
+	second_var_position = -1;
     else{
       if((n - p2) % 2 == 0)
-	s1 = '+', n1 = num_group, s2 = '+', n2 = ceil((n - p2)/2.0) - 1;
+	first_sign = '+',
+	  first_var_position = num_group,
+	  second_sign = '+',
+	  second_var_position = ceil((n - p2)/2.0) - 1;
       else
-	s1 = '+', n1 = num_group, s2 = '-', n2 = ceil((n - p2)/2.0) - 1;
+	first_sign = '+',
+	  first_var_position = num_group,
+	  second_sign = '-',
+	  second_var_position = ceil((n - p2)/2.0) - 1;
     }
   }
+  setUtvpiPosition(first_sign, second_sign, first_var_position, second_var_position);
 }
 
 Octagon::~Octagon(){}
 
-const char Octagon::getS1() const {
-  return s1;
+const char Octagon::getFirstSign() const {
+  return first_sign;
 }
 
-const char Octagon::getS2() const {
-  return s2;
+const char Octagon::getSecondSign() const {
+  return second_sign;
 }
 
-const int Octagon::getN1() const {
-  return n1;
+const int Octagon::getFirstVarPosition() const {
+  return first_var_position;
 }
 
-const int Octagon::getN2() const {
-  return n2;
+const int Octagon::getSecondVarPosition() const {
+  return second_var_position;
 }
 
-const int Octagon::getPosition() const {
-  return position;
+const int Octagon::getUtvpiPosition() {
+  this->setUtvpiPosition(first_sign, second_sign, first_var_position, second_var_position);
+  return utvpi_position;
+}
+
+void Octagon::setUtvpiPosition(char first_sign, char second_sign, int first_var_position, int second_var_position) {  
+  if(first_sign == '-'){
+    if(second_sign == '-')
+      this->utvpi_position = 2*first_var_position*first_var_position + 2*(second_var_position + 1) - 1;
+    
+    else
+      this->utvpi_position = 2*first_var_position*first_var_position + 2*(second_var_position + 1);
+    
+  }
+  else{
+    if(second_sign == '-')
+      this->utvpi_position = 2*first_var_position*first_var_position + 2*first_var_position + 1 + 2*(second_var_position + 1) - 1;
+    
+    else
+      this->utvpi_position = 2*first_var_position*first_var_position + 2*first_var_position + 1 + 2*(second_var_position + 1);
+  }
 }
 
 int Octagon::normalize(int bound){
   int result = bound;
-  // FIX: Problems here
-  // If +/- x + -/+ x <= a, then return 0 <= a
-  if(s1 != s2 && n1 == n2){
+
+  if(first_var_position == second_var_position){
+    // If +/- x +/- x <= a, then return +/- x + 0 <= floor(a/2)
+    if(first_sign == second_sign){
+      second_var_position = -1;
+      result /= 2;
+    }
     // This is the encoding for 0 <= a
-    n1 = 0;
-    n2 = -1;
+    else{
+      first_var_position = 0;
+      second_var_position = -1;
+    }
   }
-  // If +/- x +/- x <= a, then return +/- x + 0 <= floor(a/2)
-  else if(s1 == s2 && n1 == n2){
-    n2 = -1;
-    result /= 2;
+  else{
+    // If first_sign x1 second_sign x2 <= a with x2 > x1, then return second_sign x2 first_sign x1 <= a
+    if(second_var_position > first_var_position){
+      int _first_sign = first_sign,
+	_second_sign = second_sign,
+	_first_var_position = first_var_position,
+	_second_var_position = second_var_position;
+      // Swapping
+      first_sign = _second_sign;
+      first_var_position = _second_var_position;
+      second_sign = _first_sign;
+      second_var_position = _first_var_position;
+    }
   }
-  // If s1 x1 s2 x2 <= a with x2 > x1, then return s2 x2 s1 x1 <= a
-  else if(n2 > n1){
-    int _s1 = s1, _s2 = s2, _n1 = n1, _n2 = n2;
-    s1 = _s2;
-    n1 = _n2;
-    s2 = _s1;
-    n2 = _n1;
-  }
+  
   return result;
 }
 
 std::ostream & operator << (std::ostream & os, const Octagon & x){
-  if(x.n2 == -1){
+  if(x.second_var_position == -1){
     // Octagons of the form +/- 0 +/- -1
     // is reserved for constant cases
-    if(x.n1 == 0 || x.n1 == -1)
+    if(x.first_var_position == 0 || x.first_var_position == -1)
       os << "Octagonal Formula: 0";
     // Octagons of the form +/- x +/- -1
     // is reserved for single variable inequalities
     else
-      os << "Octagonal Formula: " << x.s1 << " x_" << x.n1;
+      os << "Octagonal Formula: " << x.first_sign << " x_" << x.first_var_position;
   }
-  else
-    os << "Octagonal Formula: " << x.s1 << " x_" << x.n1 << " " << x.s2 << " x_" << x.n2;
+  else{
+    os << "Octagonal Formula: " << x.first_sign << " x_" << x.first_var_position
+       << " " << x.second_sign << " x_" << x.second_var_position;
+  }
   return os;
 }

@@ -1,25 +1,24 @@
 #ifndef _OCTAGONSINTER_
 #define _OCTAGONSINTER_
-#define DEBUG_OCT_INTER_ false
+#define DEBUG_OCT_INTER_ true
+#define PRINT_MSG        true
 
 #include <iostream>
 #include <vector>
 #include "Octagon.h"
 
-typedef std::vector<int> vi;
-
 class OctagonsInterpolant{
  private:
-  vi inequalities, variablesToEliminate;
-  std::vector<vi> pos, neg;
-  int numVar, numInequalities, numElimVar;
-  void updatePositions(const Octagon &);
-  void operate(std::ostream &, int, Octagon, Octagon);
+  std::vector<int> bounds, variables_to_eliminate;
+  std::vector<std::vector<int> > positive_var_positions, negative_var_positions;
+  int num_vars, num_inequalities, num_uncomm_vars;
+  void updatePositions(Octagon &);
+  void operate(int, Octagon &, Octagon &);
  public:
   OctagonsInterpolant(std::istream &);
   ~OctagonsInterpolant();
-  void printMessage(std::ostream &, bool, Octagon &, Octagon &, Octagon &);
-  void interpolation(std::ostream &);
+  void printMessage(Octagon &, Octagon &, Octagon &);
+  void buildInterpolat();
 };
 
 #endif
