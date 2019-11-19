@@ -19,20 +19,18 @@ OctagonsInterpolant::OctagonsInterpolant(std::istream & in) : num_vars(-1) {
   in >> num_inequalities;
   for(int i = 0; i < num_inequalities; ++i){
     in >> first_sign >> first_var_position >> second_sign >> second_var_position >> bound;
-    std::cout << first_sign << " " << first_var_position << " " << second_sign << " " << second_var_position << " " << bound << std::endl;
     Octagon temp(first_sign, second_sign, first_var_position, second_var_position);
+    int temp_position = temp.getUtvpiPosition();
     // -----------------------------------
     // Normalization
     bound = temp.normalize(bound);
     // -----------------------------------
-    std::cout << temp << std::endl;
-    std::cout << temp.getUtvpiPosition() << std::endl;
     updatePositions(temp);
     if(first_var_position > num_vars)
       num_vars = first_var_position;
     if(second_var_position > num_vars)
       num_vars = second_var_position;
-    bounds[temp.getUtvpiPosition()] = std::min(bounds[temp.getUtvpiPosition()], bound);
+    bounds[temp_position] = std::min(bounds[temp_position], bound);
   }
   // ----------------------------------------------------------------
 
@@ -55,9 +53,6 @@ void OctagonsInterpolant::updatePositions(Octagon & f){
 
   // Only perform the update operation if
   // the octagon is not of the form 0 <= a (i.e. with position different from 0)
-  std::cout << "Inside updatePosition " << f << std::endl;
-  std::cout << first_sign << " " << first_var_position << " " << second_sign << " " << second_var_position << std::endl;
-  std::cout << f_position << std::endl;
   if(f_position > 0){
     switch(first_sign){
     case '+':
@@ -115,11 +110,11 @@ void OctagonsInterpolant::operateBoth2Args(int var_to_elim, Octagon & x, Octagon
   
   // Case +/- x (...); -/+ x (...) 
   if(first_var_position_x == first_var_position_y && first_var_position_x == var_to_elim){
-    std::cout << "Case +/- x (...); -/+ x (...)" << std::endl;
     // Case +/- x +/- y <= b1; -/+ x +/- y <= b2
     if(second_sign_x == second_sign_y && second_var_position_x == second_var_position_y){
       Octagon temp(second_sign_x, '+', second_var_position_x, -1);
-      bounds[temp.getUtvpiPosition()] = std::min(bounds[temp.getUtvpiPosition()], (bound_x + bound_y)/2);
+      int temp_position = temp.getUtvpiPosition();
+      bounds[temp_position] = std::min(bounds[temp_position], (bound_x + bound_y)/2);
       updatePositions(temp);
 #if PRINT_MSG
       printMessage(x, y, temp);
@@ -127,7 +122,7 @@ void OctagonsInterpolant::operateBoth2Args(int var_to_elim, Octagon & x, Octagon
     }
     // Case +/- x +/- y <= b1; -/+ x -/+ y <= b2
     else if(second_sign_x != second_sign_y && second_var_position_x == second_var_position_y){
-      // Do nothing!
+      bounds[0] = std::min(bounds[0], bound_x + bound_y);
 #if PRINT_MSG
       std::cout << "Couldn't produce anything interesting (0 <= a)" << std::endl << std::endl;
 #endif
@@ -149,7 +144,8 @@ void OctagonsInterpolant::operateBoth2Args(int var_to_elim, Octagon & x, Octagon
 	first_var_position = second_var_position_y;
       }
       Octagon temp(first_sign, second_sign, first_var_position, second_var_position);
-      bounds[temp.getUtvpiPosition()] = std::min(bounds[temp.getUtvpiPosition()], bound_x + bound_y);
+      int temp_position = temp.getUtvpiPosition();
+      bounds[temp_position] = std::min(bounds[temp_position], bound_x + bound_y);
       updatePositions(temp);
 #if PRINT_MSG
       printMessage(x, y, temp);
@@ -159,11 +155,11 @@ void OctagonsInterpolant::operateBoth2Args(int var_to_elim, Octagon & x, Octagon
   
   // Case +/- x (...); (..) -/+ x (..)
   else if(first_var_position_x == second_var_position_y && first_var_position_x == var_to_elim){
-    std::cout << "// Case +/- x (...); (...) -/+ x (...)" << std::endl;
     // Case +/- x +/- y <= b1; +/- y -/+ x <= b2
     if(second_sign_x == first_sign_y && second_var_position_x == first_var_position_y){
       Octagon temp(second_sign_x, '+', second_var_position_x, -1);
-      bounds[temp.getUtvpiPosition()] = std::min(bounds[temp.getUtvpiPosition()], (bound_x + bound_y)/2);
+      int temp_position = temp.getUtvpiPosition();
+      bounds[temp_position] = std::min(bounds[temp_position], (bound_x + bound_y)/2);
       updatePositions(temp);
 #if PRINT_MSG
       printMessage(x, y, temp);
@@ -171,7 +167,7 @@ void OctagonsInterpolant::operateBoth2Args(int var_to_elim, Octagon & x, Octagon
     }
     // Case +/- x +/- y <= b1; -/+ y -/+ x <= b2
     else if(second_sign_x != first_sign_y && second_var_position_x == first_var_position_y){
-      // Do nothing!
+      bounds[0] = std::min(bounds[0], bound_x + bound_y);
 #if PRINT_MSG
       std::cout << "Couldn't produce anything interesting (0 <= a)" << std::endl << std::endl;
 #endif
@@ -193,7 +189,8 @@ void OctagonsInterpolant::operateBoth2Args(int var_to_elim, Octagon & x, Octagon
 	first_var_position = first_var_position_y;
       }
       Octagon temp(first_sign, second_sign, first_var_position, second_var_position);
-      bounds[temp.getUtvpiPosition()] = std::min(bounds[temp.getUtvpiPosition()], bound_x + bound_y);
+      int temp_position = temp.getUtvpiPosition();
+      bounds[temp_position] = std::min(bounds[temp_position], bound_x + bound_y);
       updatePositions(temp);
 #if PRINT_MSG
       printMessage(x, y, temp);
@@ -203,11 +200,11 @@ void OctagonsInterpolant::operateBoth2Args(int var_to_elim, Octagon & x, Octagon
   
   // Case (...) +/- x (...); -/+ x (...)
   else if(second_var_position_x == first_var_position_y && second_var_position_x == var_to_elim){
-    std::cout << "// Case (...) +/- x (...); -/+ x (...)" << std::endl;
     // Case +/- y +/- x <= b1; -/+ x +/- y <= b2
     if(first_sign_x == second_sign_y && first_var_position_x == second_var_position_y){
       Octagon temp(first_sign_x, '+', first_var_position_x, -1);
-      bounds[temp.getUtvpiPosition()] = std::min(bounds[temp.getUtvpiPosition()], (bound_x + bound_y)/2);
+      int temp_position = temp.getUtvpiPosition();
+      bounds[temp_position] = std::min(bounds[temp_position], (bound_x + bound_y)/2);
       updatePositions(temp);
 #if PRINT_MSG
       printMessage(x, y, temp);
@@ -215,7 +212,7 @@ void OctagonsInterpolant::operateBoth2Args(int var_to_elim, Octagon & x, Octagon
     }
     // Case +/- y +/- x <= b1; -/+ x -/+ y <= b2
     else if(first_sign_x != second_sign_y && first_var_position_x == second_var_position_y){
-      // Do nothing!
+      bounds[0] = std::min(bounds[0], bound_x + bound_y);
 #if PRINT_MSG
       std::cout << "Couldn't produce anything interesting (0 <= a)" << std::endl << std::endl;
 #endif
@@ -237,7 +234,8 @@ void OctagonsInterpolant::operateBoth2Args(int var_to_elim, Octagon & x, Octagon
 	first_var_position = second_var_position_y;
       }
       Octagon temp(first_sign, second_sign, first_var_position, second_var_position);
-      bounds[temp.getUtvpiPosition()] = std::min(bounds[temp.getUtvpiPosition()], bound_x + bound_y);
+      int temp_position = temp.getUtvpiPosition();
+      bounds[temp_position] = std::min(bounds[temp_position], bound_x + bound_y);
       updatePositions(temp);
 #if PRINT_MSG
       printMessage(x, y, temp);
@@ -247,11 +245,11 @@ void OctagonsInterpolant::operateBoth2Args(int var_to_elim, Octagon & x, Octagon
   
   // Case (...) +/- x (...); (...) -/+ x (...)
   else if(second_var_position_x == second_var_position_y && second_var_position_x == var_to_elim){
-    std::cout << "// Case (...) +/- x (...); (...) -/+ x (...)" << std::endl;
     // Case +/- y +/- x <= b1; +/- y -/+ x <= b2
     if(first_sign_x == first_sign_y && first_var_position_x == first_var_position_y){
       Octagon temp(first_sign_x, '+', first_var_position_x, -1);
-      bounds[temp.getUtvpiPosition()] = std::min(bounds[temp.getUtvpiPosition()], (bound_x + bound_y)/2);
+      int temp_position = temp.getUtvpiPosition();
+      bounds[temp_position] = std::min(bounds[temp_position], (bound_x + bound_y)/2);
       updatePositions(temp);
 #if PRINT_MSG
       printMessage(x, y, temp);
@@ -259,7 +257,7 @@ void OctagonsInterpolant::operateBoth2Args(int var_to_elim, Octagon & x, Octagon
     }
     // Case +/- y +/- x <= b1; -/+ y -/+ x <= b2
     else if(first_sign_x != first_sign_y && first_var_position_x == first_var_position_y){
-      // Do nothing!
+      bounds[0] = std::min(bounds[0], bound_x + bound_y);
 #if PRINT_MSG
       std::cout << "Couldn't produce anything interesting (0 <= a)" << std::endl << std::endl;
 #endif
@@ -281,7 +279,8 @@ void OctagonsInterpolant::operateBoth2Args(int var_to_elim, Octagon & x, Octagon
 	first_var_position = first_var_position_y;
       }
       Octagon temp(first_sign, second_sign, first_var_position, second_var_position);
-      bounds[temp.getUtvpiPosition()] = std::min(bounds[temp.getUtvpiPosition()], bound_x + bound_y);
+      int temp_position = temp.getUtvpiPosition();
+      bounds[temp_position] = std::min(bounds[temp_position], bound_x + bound_y);
       updatePositions(temp);
 #if PRINT_MSG
       printMessage(x, y, temp);
@@ -290,17 +289,40 @@ void OctagonsInterpolant::operateBoth2Args(int var_to_elim, Octagon & x, Octagon
   }
 }
 
-void OctagonsInterpolant::operateBoth1Arg(int var_to_elim, Octagon & x, Octagon & y){
-  // TODO: Implementation missing
+void OctagonsInterpolant::operateBoth1Arg(int var_to_elim, Octagon & x, Octagon & y){  
+  int first_var_position_x = x.getFirstVarPosition();
+  int first_var_position_y = y.getFirstVarPosition();
+  
+  int bound_x = bounds[x.getUtvpiPosition()], bound_y = bounds[y.getUtvpiPosition()];
+
+  // Case +/- x (-1); -/+ x + (-1) 
+  if(first_var_position_x == first_var_position_y && first_var_position_x == var_to_elim)
+    bounds[0] = std::min(bounds[0], bound_x + bound_y);
 }
 
 void OctagonsInterpolant::operate2Args1Arg(int var_to_elim, Octagon & x, Octagon & y){
-  // TODO: Implementation missing
+  char second_sign_x = x.getSecondSign();
+  
+  int first_var_position_x = x.getFirstVarPosition(), second_var_position_x = x.getSecondVarPosition();
+  int first_var_position_y = y.getFirstVarPosition();
+  
+  int bound_x = bounds[x.getUtvpiPosition()], bound_y = bounds[y.getUtvpiPosition()];
+  
+  // Case +/- x (...); -/+ x + (-1) 
+  if(first_var_position_x == first_var_position_y && first_var_position_x == var_to_elim){
+    Octagon temp(second_sign_x, '+', second_var_position_x, -1);
+    int temp_position = temp.getUtvpiPosition();
+    bounds[temp_position] = std::min(bounds[temp_position], bound_x + bound_y);
+    updatePositions(temp);
+#if PRINT_MSG
+    printMessage(x, y, temp);
+#endif
+  }
 }
 
-void OctagonsInterpolant::buildInterpolat(){
+void OctagonsInterpolant::buildInterpolant(){
       
-#if DEBUG_OCT_INTER_
+#if PRINT_INTER
   int max_num_ineqs = 2*(num_vars+1)*(num_vars+1);
   std::cout << "Initial Inequalities:" << std::endl;
   for(int i = 0; i < max_num_ineqs; ++i)
@@ -314,42 +336,43 @@ void OctagonsInterpolant::buildInterpolat(){
       
   // ----------------------------------------------------------------------------------------------------------------
   // Interpolation Algorithm
-  for(auto it : variables_to_eliminate){
-#if DEBUG_OCT_INTER_
-    std::cout << "Eliminating variable x_" << it << "\n";
+  for(auto var_to_eliminate : variables_to_eliminate){
+#if PRINT_INTER
+    std::cout << "Eliminating variable x_" << var_to_eliminate << "\n";
 #endif
     
-    for(auto x : positive_var_positions[it])
-      for(auto y : negative_var_positions[it]){
-	std::cout << x << " " << y << " " << it << std::endl;
+    for(auto x : positive_var_positions[var_to_eliminate])
+      for(auto y : negative_var_positions[var_to_eliminate]){
 	if(bounds[x] != INF && bounds[y] != INF){
 	  Octagon first_octagon = Octagon(x);
 	  Octagon second_octagon = Octagon(y);
-	  std::cout << "first octagon " << first_octagon << std::endl;
-	  std::cout << "second octagon " << second_octagon << std::endl;
 	  if(first_octagon.num_args() == 1){
 	    if(second_octagon.num_args() == 1)
-	      operateBoth1Arg(it, second_octagon, first_octagon);
+	      operateBoth1Arg(var_to_eliminate, second_octagon, first_octagon);
 	    else
-	      operate2Args1Arg(it, second_octagon, first_octagon);
+	      operate2Args1Arg(var_to_eliminate, second_octagon, first_octagon);
 	  }
 	  else{
 	    if(second_octagon.num_args() == 1)
-	      operate2Args1Arg(it, first_octagon, second_octagon);
+	      operate2Args1Arg(var_to_eliminate, first_octagon, second_octagon);
 	    else
-	      operateBoth2Args(it, first_octagon, second_octagon);
+	      operateBoth2Args(var_to_eliminate, first_octagon, second_octagon);
 	  }
 	}
       }
 
-    for(auto x : positive_var_positions[it])
+    // 'Delete' in positive_var_positions
+    // the variable just eliminated
+    for(auto x : positive_var_positions[var_to_eliminate])
       bounds[x] = INF;
     
-    for(auto x : negative_var_positions[it])
+    // 'Delete' in negative_var_positions
+    // the variable just eliminated
+    for(auto x : negative_var_positions[var_to_eliminate])
       bounds[x] = INF;
 
-#if DEBUG_OCT_INTER_
-    std::cout << "After Eliminating Variable x_" << it << "\n";
+#if PRINT_INTER
+    std::cout << "After Eliminating Variable x_" << var_to_eliminate << "\n";
     for(int i = 0; i < max_num_ineqs; ++i)
       if(bounds[i] != INF){
 	Octagon temp = Octagon(i);

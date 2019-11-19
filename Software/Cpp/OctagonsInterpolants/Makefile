@@ -52,5 +52,7 @@ old: ./main
 		./main $$files; \
 	done
 
-oldseg: ./main
-	./main /home/jose/Documents/GithubProjects/master-thesis/Software/Cpp/OctagonsInterpolants/tests/in_format/example_125_20_6.in
+valgrind-old: ./main
+	for files in /home/jose/Documents/GithubProjects/master-thesis/Software/Cpp/OctagonsInterpolants/tests/in_format/*; do \
+		valgrind ./main $$files; \
+	done

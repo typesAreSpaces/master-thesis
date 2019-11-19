@@ -37,7 +37,7 @@ int main(int argc, char ** argv){
     std::cout << argv[1] << std::endl;
 
     OctagonsInterpolant oc = OctagonsInterpolant(file);
-    oc.buildInterpolat();
+    oc.buildInterpolant();
   }
   return 0;
 }

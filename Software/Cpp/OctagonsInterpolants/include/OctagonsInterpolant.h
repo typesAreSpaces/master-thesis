@@ -1,7 +1,8 @@
 #ifndef _OCTAGONSINTER_
 #define _OCTAGONSINTER_
-#define DEBUG_OCT_INTER_ true
-#define PRINT_MSG        true
+#define DEBUG_OCT_INTER_ false
+#define PRINT_MSG        false
+#define PRINT_INTER      false
 
 #include <iostream>
 #include <vector>
@@ -20,7 +21,7 @@ class OctagonsInterpolant{
   OctagonsInterpolant(std::istream &);
   ~OctagonsInterpolant();
   void printMessage(Octagon &, Octagon &, Octagon &);
-  void buildInterpolat();
+  void buildInterpolant();
 };
 
 #endif
