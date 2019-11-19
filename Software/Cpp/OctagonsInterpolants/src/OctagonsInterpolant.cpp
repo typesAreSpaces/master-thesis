@@ -44,6 +44,13 @@ OctagonsInterpolant::OctagonsInterpolant(std::istream & in) : num_vars(-1) {
   // ----------------------------------------------------------------
 }
 
+OctagonsInterpolant::OctagonsInterpolant(const z3::expr & e, const std::set<std::string> & vars_to_elim){
+  unsigned num_args = e.num_args();
+  for(unsigned utvpi_index = 0; utvpi_index < num_args; ++utvpi_index){
+    std::cout << e.arg(utvpi_index) << std::endl;
+  }
+}
+
 OctagonsInterpolant::~OctagonsInterpolant(){}
 
 void OctagonsInterpolant::updatePositions(Octagon & f){
@@ -363,13 +370,13 @@ void OctagonsInterpolant::buildInterpolant(){
 
     // 'Delete' in positive_var_positions
     // the variable just eliminated
-    for(auto x : positive_var_positions[var_to_eliminate])
-      bounds[x] = INF;
+    for(auto index : positive_var_positions[var_to_eliminate])
+      bounds[index] = INF;
     
     // 'Delete' in negative_var_positions
     // the variable just eliminated
-    for(auto x : negative_var_positions[var_to_eliminate])
-      bounds[x] = INF;
+    for(auto index : negative_var_positions[var_to_eliminate])
+      bounds[index] = INF;
 
 #if PRINT_INTER
     std::cout << "After Eliminating Variable x_" << var_to_eliminate << "\n";

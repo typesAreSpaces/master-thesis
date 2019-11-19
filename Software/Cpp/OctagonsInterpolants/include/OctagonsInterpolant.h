@@ -4,8 +4,9 @@
 #define PRINT_MSG        false
 #define PRINT_INTER      false
 
-#include <iostream>
 #include <vector>
+#include <set>
+#include <z3++.h>
 #include "Octagon.h"
 
 class OctagonsInterpolant{
@@ -19,6 +20,7 @@ class OctagonsInterpolant{
   void operate2Args1Arg(int, Octagon &, Octagon &);
  public:
   OctagonsInterpolant(std::istream &);
+  OctagonsInterpolant(const z3::expr &, const std::set<std::string> &);
   ~OctagonsInterpolant();
   void printMessage(Octagon &, Octagon &, Octagon &);
   void buildInterpolant();
