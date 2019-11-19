@@ -1,0 +1,88 @@
+  // Case +/- x (...); -/+ x (...) 
+  if(first_var_position_x == first_var_position_y && first_var_position_x == var_to_elim){
+    std::cout << "Case +/- x (...); -/+ x (...)" << std::endl;
+    // Case +/- x +/- y <= b1; -/+ x +/- y <= b2
+    if(second_sign_x == second_sign_y && second_var_position_x == second_var_position_y){
+      Octagon temp(second_sign_x, '+', second_var_position_x, -1);
+      bounds[temp.getUtvpiPosition()] = std::min(bounds[temp.getUtvpiPosition()], (bound_x + bound_y)/2);
+      updatePositions(temp);
+#if PRINT_MSG
+      printMessage(x, y, temp);
+#endif
+    }
+    // Case +/- x +/- y <= b1; -/+ x -/+ y <= b2
+    else if(second_sign_x != second_sign_y && second_var_position_x == second_var_position_y){
+      // Do nothing!
+#if PRINT_MSG
+      std::cout << "Couldn't produce anything interesting (0 <= a)" << std::endl << std::endl;
+#endif
+    }
+    // Case +/- x first_sign y1 <= b1; -/+ x second_sign y2 <= b2; (with y1 != y2) 
+    else{
+      // Reorder as necessary so
+      // first_sign y1 second_sign y2 <= b (with y1 > y2)
+      if(second_var_position_x > second_var_position_y){
+	first_sign = second_sign_x;
+	first_var_position = second_var_position_x;
+	second_sign = second_sign_y;
+	second_var_position = second_var_position_y;
+      }
+      else{
+	second_sign = second_sign_x;
+	second_var_position = second_var_position_x;
+	first_sign = second_sign_y;
+	first_var_position = second_var_position_y;
+      }
+      Octagon temp(first_sign, second_sign, first_var_position, second_var_position);
+      bounds[temp.getUtvpiPosition()] = std::min(bounds[temp.getUtvpiPosition()], bound_x + bound_y);
+      updatePositions(temp);
+#if PRINT_MSG
+      printMessage(x, y, temp);
+#endif
+    }
+  }
+
+f(first_var_position_x, first_var_position_y, firs)
+
+if(first_var_position_x == second_var_position_y && first_var_position_x == var_to_elim){
+    std::cout << "// Case +/- x (...); (...) -/+ x (...)" << std::endl;
+    // Case +/- x +/- y <= b1; +/- y -/+ x <= b2
+    if(second_sign_x == first_sign_y && second_var_position_x == first_var_position_y){
+      Octagon temp(second_sign_x, '+', second_var_position_x, -1);
+      bounds[temp.getUtvpiPosition()] = std::min(bounds[temp.getUtvpiPosition()], (bound_x + bound_y)/2);
+      updatePositions(temp);
+#if PRINT_MSG
+      printMessage(x, y, temp);
+#endif
+    }
+    // Case +/- x +/- y <= b1; -/+ y -/+ x <= b2
+    else if(second_sign_x != first_sign_y && second_var_position_x == first_var_position_y){
+      // Do nothing!
+#if PRINT_MSG
+      std::cout << "Couldn't produce anything interesting (0 <= a)" << std::endl << std::endl;
+#endif
+    }
+    // Case +/- x first_sign y1 <= b1; second_sign y2 -/+ x <= b2; (with y1 != y2) 
+    else{
+      // Reorder as necessary so
+      // first_sign y1 second_sign y2 <= b (with y1 > y2)
+      if(second_var_position_x > first_var_position_y){
+	first_sign = second_sign_x;
+	first_var_position = second_var_position_x;
+	second_sign = first_sign_y;
+	second_var_position = first_var_position_y;
+      }
+      else{
+	second_sign = second_sign_x;
+	second_var_position = second_var_position_x;
+	first_sign = first_sign_y;
+	first_var_position = first_var_position_y;
+      }
+      Octagon temp(first_sign, second_sign, first_var_position, second_var_position);
+      bounds[temp.getUtvpiPosition()] = std::min(bounds[temp.getUtvpiPosition()], bound_x + bound_y);
+      updatePositions(temp);
+#if PRINT_MSG
+      printMessage(x, y, temp);
+#endif
+    }
+  }

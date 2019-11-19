@@ -75,6 +75,14 @@ const int Octagon::getUtvpiPosition() {
   return utvpi_position;
 }
 
+const int Octagon::num_args() const {
+  if(utvpi_position == 0)
+    return 0;
+  if(second_var_position == -1)
+    return 1;
+  return 2;
+}
+
 void Octagon::setUtvpiPosition(char first_sign, char second_sign, int first_var_position, int second_var_position) {  
   if(first_sign == '-'){
     if(second_sign == '-')

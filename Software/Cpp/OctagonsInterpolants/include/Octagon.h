@@ -29,6 +29,7 @@ public:
   const int  getFirstVarPosition() const;
   const int  getSecondVarPosition() const;
   const int  getUtvpiPosition();
+  const int  num_args() const;
   
   void setUtvpiPosition(char, char, int, int);
   int  normalize(int);

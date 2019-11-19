@@ -13,7 +13,9 @@ class OctagonsInterpolant{
   std::vector<std::vector<int> > positive_var_positions, negative_var_positions;
   int num_vars, num_inequalities, num_uncomm_vars;
   void updatePositions(Octagon &);
-  void operate(int, Octagon &, Octagon &);
+  void operateBoth2Args(int, Octagon &, Octagon &);
+  void operateBoth1Arg(int, Octagon &, Octagon &);
+  void operate2Args1Arg(int, Octagon &, Octagon &);
  public:
   OctagonsInterpolant(std::istream &);
   ~OctagonsInterpolant();
