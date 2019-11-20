@@ -1,6 +1,32 @@
 #include "OctagonsInterpolant.h"
 #include <map>
 
+int main(int argc, char ** argv){
+  
+  if(argc >= 2) {
+    try{
+      z3::context ctx;
+      auto input_formula = z3::mk_and(ctx.parse_file(argv[1])).simplify();
+	
+      std::set<std::string> symbols_to_elim;
+      for(int index = 2; index < argc; ++index){
+	symbols_to_elim.insert(argv[index]);
+      }
+      
+      OctagonsInterpolant oct(input_formula, symbols_to_elim);
+      oct.buildInterpolant();
+    }
+    catch(z3::exception & e){
+      std::cout << "File not found " << std::endl;
+      std::cout << e << std::endl;
+    }
+  }
+  else
+    std::cout << "Not enough arguments" << std::endl;
+  
+  return 0;
+}
+
 // int main(){
 
 //   Octagon temp1('+', '+', 2, 3);
@@ -59,30 +85,3 @@
 //   }
 //   return 0;
 // }
-
-int main(int argc, char ** argv){
-  
-  if(argc >= 2) {
-    try{
-      z3::context ctx;
-      auto input_formula = z3::mk_and(ctx.parse_file(argv[1])).simplify();
-      std::cout << input_formula << std::endl;
-	
-      std::set<std::string> symbols_to_elim;
-      for(int index = 2; index < argc; ++index){
-	symbols_to_elim.insert(argv[index]);
-      }
-      
-      OctagonsInterpolant oct(input_formula, symbols_to_elim);
-      oct.buildInterpolant();
-    }
-    catch(z3::exception & e){
-      std::cout << "File not found " << std::endl;
-      std::cout << e << std::endl;
-    }
-  }
-  else
-    std::cout << "Not enough arguments" << std::endl;
-  
-  return 0;
-}
