@@ -8,13 +8,15 @@ int main(int argc, char ** argv){
       z3::context ctx;
       auto input_formula = z3::mk_and(ctx.parse_file(argv[1])).simplify();
 	
-      std::set<std::string> symbols_to_elim;
-      for(int index = 2; index < argc; ++index){
-	symbols_to_elim.insert(argv[index]);
-      }
+      std::vector<std::string> symbols_to_elim;
+      for(int index = 2; index < argc; ++index)
+	symbols_to_elim.push_back(argv[index]);
       
       OctagonsInterpolant oct(input_formula, symbols_to_elim);
-      oct.buildInterpolant();
+      auto result = oct.buildInterpolant();
+
+      std::cout << "Input formula: " << input_formula << std::endl;
+      std::cout << "Interpolant: " << result << std::endl;
     }
     catch(z3::exception & e){
       std::cout << "File not found " << std::endl;

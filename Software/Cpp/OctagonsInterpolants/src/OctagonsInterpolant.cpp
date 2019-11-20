@@ -1,6 +1,6 @@
 #include "OctagonsInterpolant.h"
 
-OctagonsInterpolant::OctagonsInterpolant(std::istream & in) : num_vars(-1) {
+OctagonsInterpolant::OctagonsInterpolant(z3::context & ctx, std::istream & in) : ctx(ctx), num_vars(-1) {
 
   int first_var_position, second_var_position, bound;
   char first_sign, second_sign;
@@ -44,13 +44,14 @@ OctagonsInterpolant::OctagonsInterpolant(std::istream & in) : num_vars(-1) {
   // ----------------------------------------------------------------
 }
 
-OctagonsInterpolant::OctagonsInterpolant(const z3::expr & e, const std::set<std::string> & vars_to_elim){
+OctagonsInterpolant::OctagonsInterpolant(const z3::expr & e,
+					 const std::vector<std::string> & vars_to_elim) : ctx(e.ctx()){
   unsigned num_ineqs = e.num_args();
   this->num_inequalities = static_cast<int>(num_ineqs);
   this->num_vars = 1;
   int & ref_counter = this->num_vars;
   TablePosition index_map;
-  std::vector<std::string> names;      
+  std::vector<std::string> names;
   getSymbols(e, ref_counter, index_map, names);
 
   int first_var_position, second_var_position, bound;
@@ -138,8 +139,9 @@ OctagonsInterpolant::OctagonsInterpolant(const z3::expr & e, const std::set<std:
   // Getting the number of variables to eliminate
   this->num_uncomm_vars = static_cast<int>(vars_to_elim.size());
   for(auto var_to_elim : vars_to_elim)
-    variables_to_eliminate.push_back(index_map[e.ctx().int_const(var_to_elim.c_str()).id()]);
+    variables_to_eliminate.push_back(index_map[ctx.int_const(var_to_elim.c_str()).id()]);
   // ----------------------------------------------------------------
+  this->names = names;
 }
 
 OctagonsInterpolant::~OctagonsInterpolant(){}
@@ -439,9 +441,10 @@ void OctagonsInterpolant::auxiliarGetSymbols(const z3::expr & e, int & counter,
   }
 }
 
-void OctagonsInterpolant::buildInterpolant(){
+z3::expr OctagonsInterpolant::buildInterpolant(){
       
 #if PRINT_INTER
+  std::cout << "Initial (encoded) UTVPI system" << std::endl;
   int max_num_ineqs = 2*(num_vars+1)*(num_vars+1);
   for(int i = 0; i < max_num_ineqs; ++i){
     if(bounds[i] != INF){
@@ -496,7 +499,46 @@ void OctagonsInterpolant::buildInterpolant(){
 	std::cout << temp;
 	std::cout << " <= " << bounds[i] << "\n";
       }
+    std::cout << std::endl;
 #endif
   }
+
+  z3::expr_vector result_vect(ctx);
+
+  for(int i = 0; i < max_num_ineqs; ++i){
+    if(bounds[i] != INF){
+      Octagon temp = Octagon(i);
+      
+      char first_sign = temp.getFirstSign(), second_sign = temp.getSecondSign();
+      int first_var_position = temp.getFirstVarPosition(), second_var_position = temp.getSecondVarPosition();
+      
+      switch(temp.num_args()){
+      case 0:
+	return ctx.bool_val(false);
+      case 1:
+	{
+	  if(first_sign == '+')
+	    result_vect.push_back(ctx.int_const(names[first_var_position].c_str()) <= bounds[i]);
+	  else if(first_sign == '-')
+	    result_vect.push_back((-1 * ctx.int_const(names[first_var_position].c_str())) <= bounds[i]);
+	}
+	break;
+      case 2:
+	{
+	  if(first_sign == '+' && second_sign == '+')
+	    result_vect.push_back((ctx.int_const(names[first_var_position].c_str()) + ctx.int_const(names[second_var_position].c_str())) <= bounds[i]);
+	  else if(first_sign == '+' && second_sign == '-')
+	    result_vect.push_back((ctx.int_const(names[first_var_position].c_str()) + (-1 * ctx.int_const(names[second_var_position].c_str()))) <= bounds[i]);    
+	  else if(first_sign == '-' && second_sign == '+')
+	    result_vect.push_back(((-1 * ctx.int_const(names[first_var_position].c_str())) + ctx.int_const(names[second_var_position].c_str())) <= bounds[i]);
+	  else if(first_sign == '-' && second_sign == '-')
+	    result_vect.push_back(((-1 * ctx.int_const(names[first_var_position].c_str())) + (-1 * ctx.int_const(names[second_var_position].c_str()))) <= bounds[i]);
+	}
+	break;
+      }
+    }
+  }
+  
+  return mk_and(result_vect);
   // ----------------------------------------------------------------------------------------------------------------
 }

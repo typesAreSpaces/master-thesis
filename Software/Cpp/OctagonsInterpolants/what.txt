@@ -1,194 +1,129 @@
-tests/in_format/example_101_28_1.in
-Octagonal Formula: - x_5 + x_4 <= -17
-Octagonal Formula: + x_5 + x_0 <= -29
-Octagonal Formula: + x_5 - x_2 <= 9
-Octagonal Formula: + x_5 + x_2 <= 47
-Octagonal Formula: + x_5 - x_3 <= -38
-Octagonal Formula: + x_5 + x_3 <= 46
-Octagonal Formula: - x_6 + x_0 <= -34
-Octagonal Formula: - x_6 + x_1 <= -21
-Octagonal Formula: - x_7 <= -37
-Octagonal Formula: - x_7 + x_5 <= -47
-Octagonal Formula: - x_7 - x_6 <= -6
-Octagonal Formula: + x_7 <= 16
-Octagonal Formula: + x_7 + x_1 <= -9
-Octagonal Formula: + x_7 - x_2 <= 39
-Octagonal Formula: - x_8 - x_4 <= -13
-Octagonal Formula: - x_8 + x_6 <= 22
-Octagonal Formula: - x_8 - x_7 <= 41
-Octagonal Formula: + x_8 + x_0 <= -7
-Octagonal Formula: + x_8 + x_1 <= -22
-Octagonal Formula: + x_8 - x_2 <= -13
-Octagonal Formula: - x_9 - x_1 <= 6
-Octagonal Formula: - x_9 + x_3 <= -13
-Octagonal Formula: - x_9 - x_8 <= -16
-Octagonal Formula: + x_9 + x_5 <= -36
-Octagonal Formula: - x_10 + x_0 <= -5
-Octagonal Formula: - x_10 + x_7 <= 29
-Octagonal Formula: + x_10 - x_0 <= -19
-Octagonal Formula: + x_10 + x_5 <= -8
-Octagonal Formula: - x_11 + x_0 <= 17
-Octagonal Formula: - x_11 + x_3 <= -5
-Octagonal Formula: - x_11 - x_4 <= 45
-Octagonal Formula: - x_11 + x_5 <= -26
-Octagonal Formula: - x_11 - x_7 <= 11
-Octagonal Formula: - x_11 + x_7 <= 40
-Octagonal Formula: + x_11 - x_5 <= 15
-Octagonal Formula: + x_11 - x_9 <= 31
-Octagonal Formula: - x_12 - x_2 <= 45
-Octagonal Formula: - x_12 - x_3 <= 44
-Octagonal Formula: - x_12 - x_4 <= 8
-Octagonal Formula: - x_12 - x_7 <= -48
-Octagonal Formula: + x_12 - x_3 <= 15
-Octagonal Formula: - x_13 - x_0 <= 12
-Octagonal Formula: + x_13 + x_6 <= 45
-Octagonal Formula: - x_14 + x_0 <= 4
-Octagonal Formula: - x_14 + x_8 <= -3
-Octagonal Formula: - x_14 + x_10 <= 9
-Octagonal Formula: + x_14 + x_11 <= -16
-Octagonal Formula: + x_15 - x_10 <= -11
-Octagonal Formula: + x_15 - x_12 <= -38
-Octagonal Formula: - x_16 <= -38
-Octagonal Formula: - x_16 + x_2 <= 22
-Octagonal Formula: + x_16 - x_11 <= 28
-Octagonal Formula: + x_17 - x_8 <= 18
-Octagonal Formula: + x_17 - x_14 <= 17
-Octagonal Formula: - x_18 + x_4 <= 30
-Octagonal Formula: - x_18 - x_7 <= -13
-Octagonal Formula: - x_18 + x_10 <= -29
-Octagonal Formula: - x_19 - x_16 <= -1
-Octagonal Formula: + x_19 - x_1 <= -29
-Octagonal Formula: + x_19 + x_6 <= 18
-Octagonal Formula: + x_19 + x_7 <= -36
-Octagonal Formula: - x_20 - x_1 <= 21
-Octagonal Formula: - x_20 + x_3 <= 37
-Octagonal Formula: - x_20 - x_4 <= 49
-Octagonal Formula: - x_20 + x_10 <= -17
-Octagonal Formula: - x_20 - x_11 <= -30
-Octagonal Formula: - x_20 + x_15 <= -41
-Octagonal Formula: - x_20 - x_16 <= 26
-Octagonal Formula: + x_20 - x_14 <= -43
-Octagonal Formula: + x_20 - x_17 <= -6
-Octagonal Formula: - x_21 + x_6 <= 12
-Octagonal Formula: - x_21 - x_19 <= 28
-Octagonal Formula: + x_21 - x_7 <= 33
-Octagonal Formula: + x_21 - x_14 <= -39
-Octagonal Formula: - x_22 - x_2 <= 45
-Octagonal Formula: + x_22 + x_1 <= 14
-Octagonal Formula: + x_22 + x_4 <= 32
-Octagonal Formula: - x_23 - x_19 <= -21
-Octagonal Formula: + x_23 - x_1 <= 41
-Octagonal Formula: + x_23 - x_5 <= -47
-Octagonal Formula: - x_24 + x_9 <= -23
-Octagonal Formula: - x_24 - x_14 <= -29
-Octagonal Formula: + x_24 + x_1 <= -30
-Octagonal Formula: + x_24 - x_10 <= -27
-Octagonal Formula: + x_24 - x_13 <= 38
-Octagonal Formula: - x_25 + x_1 <= 29
-Octagonal Formula: - x_25 - x_4 <= -29
-Octagonal Formula: + x_25 + x_20 <= 40
-Octagonal Formula: + x_25 + x_23 <= 49
-Octagonal Formula: - x_26 + x_19 <= 38
-Octagonal Formula: + x_26 + x_2 <= 34
-Octagonal Formula: + x_26 - x_12 <= -23
-Octagonal Formula: + x_26 + x_19 <= -31
-Octagonal Formula: - x_27 - x_3 <= 23
-Octagonal Formula: + x_27 + x_8 <= 42
-Octagonal Formula: - x_28 - x_10 <= 24
-Octagonal Formula: - x_28 + x_10 <= 34
+./main ./tests/smtlib2/test.smt2 x2
+Initial (encoded) UTVPI system
+Octagonal Formula: + x_1 + x_0 <= 1
+Octagonal Formula: + x_2 + x_0 <= 3
+Octagonal Formula: + x_2 + x_1 <= 2
 
-Eliminating variable x_14
-After Eliminating Variable x_14
-Octagonal Formula: - x_5 + x_4 <= -17
-Octagonal Formula: + x_5 + x_0 <= -29
-Octagonal Formula: + x_5 - x_2 <= 9
-Octagonal Formula: + x_5 + x_2 <= 47
-Octagonal Formula: + x_5 - x_3 <= -38
-Octagonal Formula: + x_5 + x_3 <= 46
-Octagonal Formula: - x_6 + x_0 <= -34
-Octagonal Formula: - x_6 + x_1 <= -21
-Octagonal Formula: - x_7 <= -37
-Octagonal Formula: - x_7 + x_5 <= -47
-Octagonal Formula: - x_7 - x_6 <= -6
-Octagonal Formula: + x_7 <= 16
-Octagonal Formula: + x_7 + x_1 <= -9
-Octagonal Formula: + x_7 - x_2 <= 39
-Octagonal Formula: - x_8 - x_4 <= -13
-Octagonal Formula: - x_8 + x_6 <= 22
-Octagonal Formula: - x_8 - x_7 <= 41
-Octagonal Formula: + x_8 + x_0 <= -7
-Octagonal Formula: + x_8 + x_1 <= -22
-Octagonal Formula: + x_8 - x_2 <= -13
-Octagonal Formula: - x_9 - x_1 <= 6
-Octagonal Formula: - x_9 + x_3 <= -13
-Octagonal Formula: - x_9 - x_8 <= -16
-Octagonal Formula: + x_9 + x_5 <= -36
-Octagonal Formula: - x_10 + x_0 <= -5
-Octagonal Formula: - x_10 + x_7 <= 29
-Octagonal Formula: + x_10 - x_0 <= -19
-Octagonal Formula: + x_10 + x_5 <= -8
-Octagonal Formula: - x_11 + x_0 <= 17
-Octagonal Formula: - x_11 + x_3 <= -5
-Octagonal Formula: - x_11 - x_4 <= 45
-Octagonal Formula: - x_11 + x_5 <= -26
-Octagonal Formula: - x_11 - x_7 <= 11
-Octagonal Formula: - x_11 + x_7 <= 40
-Octagonal Formula: + x_11 - x_5 <= 15
-Octagonal Formula: + x_11 - x_9 <= 31
-Octagonal Formula: - x_12 - x_2 <= 45
-Octagonal Formula: - x_12 - x_3 <= 44
-Octagonal Formula: - x_12 - x_4 <= 8
-Octagonal Formula: - x_12 - x_7 <= -48
-Octagonal Formula: + x_12 - x_3 <= 15
-Octagonal Formula: - x_13 - x_0 <= 12
-Octagonal Formula: + x_13 + x_6 <= 45
-Octagonal Formula: - x_14 + x_0 <= 4
-Octagonal Formula: - x_14 + x_8 <= -3
-Octagonal Formula: - x_14 + x_10 <= 9
-Octagonal Formula: + x_14 + x_11 <= -16
-Octagonal Formula: + x_15 - x_10 <= -11
-Octagonal Formula: + x_15 - x_12 <= -38
-Octagonal Formula: - x_16 <= -38
-Octagonal Formula: - x_16 + x_2 <= 22
-Octagonal Formula: + x_16 - x_11 <= 28
-Octagonal Formula: + x_17 - x_8 <= 18
-Octagonal Formula: - x_18 + x_4 <= 30
-Octagonal Formula: - x_18 - x_7 <= -13
-Octagonal Formula: - x_18 + x_10 <= -29
-Octagonal Formula: - x_19 - x_16 <= -1
-Octagonal Formula: + x_19 - x_1 <= -29
-Octagonal Formula: + x_19 + x_6 <= 18
-Octagonal Formula: + x_19 + x_7 <= -36
-Octagonal Formula: - x_20 - x_1 <= 21
-Octagonal Formula: - x_20 + x_3 <= 37
-Octagonal Formula: - x_20 - x_4 <= 49
-Octagonal Formula: - x_20 + x_10 <= -17
-Octagonal Formula: - x_20 - x_11 <= -30
-Octagonal Formula: - x_20 + x_15 <= -41
-Octagonal Formula: - x_20 - x_16 <= 26
-Octagonal Formula: + x_20 - x_17 <= -6
-Octagonal Formula: - x_21 + x_6 <= 12
-Octagonal Formula: - x_21 - x_19 <= 28
-Octagonal Formula: + x_21 - x_7 <= 33
-Octagonal Formula: - x_22 - x_2 <= 45
-Octagonal Formula: + x_22 + x_1 <= 14
-Octagonal Formula: + x_22 + x_4 <= 32
-Octagonal Formula: - x_23 - x_19 <= -21
-Octagonal Formula: + x_23 - x_1 <= 41
-Octagonal Formula: + x_23 - x_5 <= -47
-Octagonal Formula: - x_24 + x_9 <= -23
-Octagonal Formula: + x_24 + x_1 <= -30
-Octagonal Formula: + x_24 - x_10 <= -27
-Octagonal Formula: + x_24 - x_13 <= 38
-Octagonal Formula: - x_25 + x_1 <= 29
-Octagonal Formula: - x_25 - x_4 <= -29
-Octagonal Formula: + x_25 + x_20 <= 40
-Octagonal Formula: + x_25 + x_23 <= 49
-Octagonal Formula: - x_26 + x_19 <= 38
-Octagonal Formula: + x_26 + x_2 <= 34
-Octagonal Formula: + x_26 - x_12 <= -23
-Octagonal Formula: + x_26 + x_19 <= -31
-Octagonal Formula: - x_27 - x_3 <= 23
-Octagonal Formula: + x_27 + x_8 <= 42
-Octagonal Formula: - x_28 - x_10 <= 24
-Octagonal Formula: - x_28 + x_10 <= 34
+Eliminating variable x_1
+After Eliminating Variable x_1
+Octagonal Formula: + x_2 + x_0 <= 3
+
+Input formula: (and (<= (+ x1 x2) 1) (<= (+ x2 x3) 2) (<= (+ x3 x1) 3))
+Interpolant: (and (<= (+ x3 x1) 3))
+./main ./tests/smtlib2/test2.smt2 x2
+Initial (encoded) UTVPI system
+Octagonal Formula: - x_1 + x_0 <= 0
+Octagonal Formula: - x_2 + x_1 <= 0
+Octagonal Formula: + x_2 - x_0 <= 0
+
+Eliminating variable x_1
+After Eliminating Variable x_1
+Octagonal Formula: - x_2 + x_0 <= 0
+Octagonal Formula: + x_2 - x_0 <= 0
+
+Input formula: (and (<= (+ x1 (* (- 1) x2)) 0)
+     (<= (+ x2 (* (- 1) x3)) 0)
+     (<= (+ x3 (* (- 1) x1)) 0))
+Interpolant: (and (<= (+ (* (- 1) x3) x1) 0) (<= (+ x3 (* (- 1) x1)) 0))
+./main ./tests/smtlib2/test3.smt2 x2
+Initial (encoded) UTVPI system
+Octagonal Formula: - x_1 + x_0 <= 0
+Octagonal Formula: - x_2 + x_1 <= 0
+Octagonal Formula: + x_2 - x_0 <= 0
+
+Eliminating variable x_1
+After Eliminating Variable x_1
+Octagonal Formula: - x_2 + x_0 <= 0
+Octagonal Formula: + x_2 - x_0 <= 0
+
+Input formula: (and (<= (+ x1 (* (- 1) x2)) 0)
+     (<= (+ x2 (* (- 1) x3)) 0)
+     (<= (+ x3 (* (- 1) x1)) 0))
+Interpolant: (and (<= (+ (* (- 1) x3) x1) 0) (<= (+ x3 (* (- 1) x1)) 0))
+./main ./tests/smtlib2/test4.smt2 x2
+Initial (encoded) UTVPI system
+Octagonal Formula: - x_1 + x_0 <= 5
+Octagonal Formula: - x_2 + x_1 <= -6
+Octagonal Formula: + x_2 - x_0 <= -44
+
+Eliminating variable x_1
+After Eliminating Variable x_1
+Octagonal Formula: - x_2 + x_0 <= -1
+Octagonal Formula: + x_2 - x_0 <= -44
+
+Input formula: (and (<= (+ x1 (* (- 1) x2)) 5)
+     (<= (+ x2 (* (- 1) x3)) (- 6))
+     (<= (+ x3 (* (- 1) x1)) (- 44)))
+Interpolant: (and (<= (+ (* (- 1) x3) x1) (- 1)) (<= (+ x3 (* (- 1) x1)) (- 44)))
+./main ./tests/smtlib2/test5.smt2 x2
+Initial (encoded) UTVPI system
+Octagonal Formula: - x_1 + x_0 <= 5
+Octagonal Formula: - x_2 + x_1 <= -6
+Octagonal Formula: + x_2 - x_0 <= -44
+
+Eliminating variable x_1
+After Eliminating Variable x_1
+Octagonal Formula: - x_2 + x_0 <= -1
+Octagonal Formula: + x_2 - x_0 <= -44
+
+Input formula: (and (<= (+ x1 (* (- 1) x2)) 5)
+     (<= (+ x2 (* (- 1) x3)) (- 6))
+     (<= (+ x3 (* (- 1) x1)) (- 44)))
+Interpolant: (and (<= (+ (* (- 1) x3) x1) (- 1)) (<= (+ x3 (* (- 1) x1)) (- 44)))
+./main ./tests/smtlib2/test6.smt2 x2
+Initial (encoded) UTVPI system
+Octagonal Formula: - x_1 + x_0 <= 5
+Octagonal Formula: - x_2 - x_0 <= -44
+Octagonal Formula: - x_2 + x_1 <= -6
+
+Eliminating variable x_1
+After Eliminating Variable x_1
+Octagonal Formula: - x_2 - x_0 <= -44
+Octagonal Formula: - x_2 + x_0 <= -1
+
+Input formula: (and (<= (+ x1 (* (- 1) x2)) 5)
+     (<= (+ x2 (* (- 1) x3)) (- 6))
+     (<= (+ (* (- 1) x3) (* (- 1) x1)) (- 44)))
+Interpolant: (and (<= (+ (* (- 1) x3) (* (- 1) x1)) (- 44)) (<= (+ (* (- 1) x3) x1) (- 1)))
+./main ./tests/smtlib2/test7.smt2 x2
+Initial (encoded) UTVPI system
+Octagonal Formula: + x_0 <= -44
+Octagonal Formula: - x_1 <= -44
+Octagonal Formula: - x_1 + x_0 <= 5
+Octagonal Formula: - x_2 <= -44
+Octagonal Formula: - x_2 - x_0 <= -44
+Octagonal Formula: - x_2 + x_1 <= -6
+
+Eliminating variable x_1
+After Eliminating Variable x_1
+Octagonal Formula: + x_0 <= -44
+Octagonal Formula: - x_2 <= -44
+Octagonal Formula: - x_2 - x_0 <= -44
+Octagonal Formula: - x_2 + x_0 <= -1
+
+Input formula: (and (<= (+ x1 (* (- 1) x2)) 5)
+     (<= (+ x2 (* (- 1) x3)) (- 6))
+     (<= (+ (* (- 1) x3) (* (- 1) x1)) (- 44))
+     (<= x1 (- 44))
+     (>= x2 44)
+     (>= x3 44))
+Interpolant: (and (<= (+ x1 null) (- 44))
+     (<= (+ (* (- 1) x3) null) (- 44))
+     (<= (+ (* (- 1) x3) (* (- 1) x1)) (- 44))
+     (<= (+ (* (- 1) x3) x1) (- 1)))
+./main ./tests/smtlib2/test8.smt2 x2
+Initial (encoded) UTVPI system
+Octagonal Formula: - x_0 <= -34
+Octagonal Formula: + x_0 <= -45
+Octagonal Formula: - x_1 - x_0 <= -5
+Octagonal Formula: - x_1 + x_0 <= -5
+Octagonal Formula: + x_1 - x_0 <= -5
+Octagonal Formula: + x_1 + x_0 <= -5
+
+Eliminating variable x_1
+After Eliminating Variable x_1
+Octagonal Formula: 0 <= -10
+Octagonal Formula: - x_0 <= -34
+Octagonal Formula: + x_0 <= -45
+
+Makefile:41: recipe for target 'run' failed
