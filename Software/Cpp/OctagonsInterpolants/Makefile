@@ -47,6 +47,9 @@ run: ./main
 	./main ./tests/smtlib2/test7.smt2 x2
 	./main ./tests/smtlib2/test8.smt2 x2
 
+runproblem: ./main
+	./main ./tests/smtlib2/test6.smt2 x2
+
 old: ./main
 	for files in /home/jose/Documents/GithubProjects/master-thesis/Software/Cpp/OctagonsInterpolants/tests/in_format/*; do \
 		./main $$files; \

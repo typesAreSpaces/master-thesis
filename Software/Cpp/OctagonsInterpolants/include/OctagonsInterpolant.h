@@ -2,12 +2,15 @@
 #define _OCTAGONSINTER_
 #define DEBUG_OCT_INTER_ false
 #define PRINT_MSG        false
-#define PRINT_INTER      false
+#define PRINT_INTER      true
 
 #include <vector>
 #include <set>
+#include <map>
 #include <z3++.h>
 #include "Octagon.h"
+
+typedef std::map<unsigned, int> TablePosition;
 
 class OctagonsInterpolant{
  private:
@@ -18,6 +21,8 @@ class OctagonsInterpolant{
   void operateBoth2Args(int, Octagon &, Octagon &);
   void operateBoth1Arg(int, Octagon &, Octagon &);
   void operate2Args1Arg(int, Octagon &, Octagon &);
+  void getSymbols(const z3::expr &, int &, TablePosition &, std::vector<std::string> &);
+  void auxiliarGetSymbols(const z3::expr &, int &, TablePosition &, std::vector<std::string> &);
  public:
   OctagonsInterpolant(std::istream &);
   OctagonsInterpolant(const z3::expr &, const std::set<std::string> &);

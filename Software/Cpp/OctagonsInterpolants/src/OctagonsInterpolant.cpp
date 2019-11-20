@@ -20,10 +20,10 @@ OctagonsInterpolant::OctagonsInterpolant(std::istream & in) : num_vars(-1) {
   for(int i = 0; i < num_inequalities; ++i){
     in >> first_sign >> first_var_position >> second_sign >> second_var_position >> bound;
     Octagon temp(first_sign, second_sign, first_var_position, second_var_position);
-    int temp_position = temp.getUtvpiPosition();
     // -----------------------------------
     // Normalization
     bound = temp.normalize(bound);
+    int temp_position = temp.getUtvpiPosition();
     // -----------------------------------
     updatePositions(temp);
     if(first_var_position > num_vars)
@@ -45,10 +45,101 @@ OctagonsInterpolant::OctagonsInterpolant(std::istream & in) : num_vars(-1) {
 }
 
 OctagonsInterpolant::OctagonsInterpolant(const z3::expr & e, const std::set<std::string> & vars_to_elim){
-  unsigned num_args = e.num_args();
-  for(unsigned utvpi_index = 0; utvpi_index < num_args; ++utvpi_index){
-    std::cout << e.arg(utvpi_index) << std::endl;
+  unsigned num_ineqs = e.num_args();
+  this->num_inequalities = static_cast<int>(num_ineqs);
+  this->num_vars = 1;
+  int & ref_counter = this->num_vars;
+  TablePosition index_map;
+  std::vector<std::string> names;      
+  getSymbols(e, ref_counter, index_map, names);
+
+  int first_var_position, second_var_position, bound;
+  char first_sign, second_sign;
+
+  // 2*num_vars*num_vars + 4*num_args + 10 is an upperbound
+  // of the number of all the possible utvpis with
+  // the given number of variables
+  bounds.resize(2*num_vars*num_vars + 4*num_vars + 10);
+  positive_var_positions.resize(num_vars),
+    negative_var_positions.resize(num_vars);
+  
+  for(auto & it : bounds)
+    it = INF;
+  
+  // ----------------------------------------------------------------
+  // Getting the number of inequalities
+  for(unsigned i = 0; i < num_ineqs; ++i){
+    auto current_utvpi = e.arg(i);
+    auto lhs = current_utvpi.arg(0);
+    auto rhs = current_utvpi.arg(1);
+    auto current_pred_name = current_utvpi.decl().name().str();
+    bound = rhs.get_numeral_int();
+    
+    switch(lhs.num_args()){
+    case 0:
+      // One variable
+      if(current_pred_name == "<=")
+	first_sign = '+';
+      else if (current_pred_name == ">="){
+	first_sign = '-';
+	bound = -bound;
+      }
+      else throw "Not an utvpi formula";
+      first_var_position = index_map[lhs.id()];
+      second_sign = '+';
+      second_var_position = -1;
+      break;
+    case 2:
+      // Two variables
+      switch(lhs.arg(0).num_args()){
+      case 0:
+	first_var_position = index_map[lhs.arg(0).id()];
+	first_sign = '+';
+	break;
+      case 2:
+	first_var_position = index_map[lhs.arg(0).arg(1).id()];
+	first_sign = '-';
+	break;
+      default:
+	throw "Not an utvpi formula";
+	break;
+      }
+      switch(lhs.arg(1).num_args()){
+      case 0:
+	second_var_position = index_map[lhs.arg(1).id()];
+	second_sign = '+';
+	break;
+      case 2:
+	second_var_position = index_map[lhs.arg(1).arg(1).id()];
+	second_sign = '-';
+	break;
+      default:
+	throw "Not an utvpi formula";
+	break;
+      }
+      break;
+    default:
+      throw "Not an utvpi formula";
+      break;
+    }
+    // ----------------------------------------------------------------
+    Octagon temp(first_sign, second_sign, first_var_position, second_var_position);
+    // -----------------------------------
+    // Normalization
+    bound = temp.normalize(bound);
+    int temp_position = temp.getUtvpiPosition();
+    // -----------------------------------
+    updatePositions(temp);
+    bounds[temp_position] = std::min(bounds[temp_position], bound);
   }
+  // ----------------------------------------------------------------
+
+  // ----------------------------------------------------------------
+  // Getting the number of variables to eliminate
+  this->num_uncomm_vars = static_cast<int>(vars_to_elim.size());
+  for(auto var_to_elim : vars_to_elim)
+    variables_to_eliminate.push_back(index_map[e.ctx().int_const(var_to_elim.c_str()).id()]);
+  // ----------------------------------------------------------------
 }
 
 OctagonsInterpolant::~OctagonsInterpolant(){}
@@ -327,27 +418,46 @@ void OctagonsInterpolant::operate2Args1Arg(int var_to_elim, Octagon & x, Octagon
   }
 }
 
+void OctagonsInterpolant::getSymbols(const z3::expr & formula, int & counter,
+				     TablePosition & table, std::vector<std::string> & names){  
+  auxiliarGetSymbols(formula, counter, table, names);
+  for(auto it : table)
+    --table[it.first];
+  --counter;
+}
+
+void OctagonsInterpolant::auxiliarGetSymbols(const z3::expr & e, int & counter,
+					     TablePosition & table, std::vector<std::string> & names){
+  if (e.is_app()){
+    unsigned num = e.num_args();
+    if(num == 0 && e.decl().decl_kind() != Z3_OP_ANUM && table[e.id()] == 0){
+      table[e.id()] = counter++;
+      names.push_back(e.decl().name().str());
+    }
+    for (unsigned i = 0; i < num; ++i)
+      auxiliarGetSymbols(e.arg(i), counter, table, names);
+  }
+}
+
 void OctagonsInterpolant::buildInterpolant(){
       
 #if PRINT_INTER
   int max_num_ineqs = 2*(num_vars+1)*(num_vars+1);
-  std::cout << "Initial Inequalities:" << std::endl;
-  for(int i = 0; i < max_num_ineqs; ++i)
+  for(int i = 0; i < max_num_ineqs; ++i){
     if(bounds[i] != INF){
       Octagon temp = Octagon(i);
       std::cout << temp;
       std::cout << " <= " << bounds[i] << std::endl;
     }
+  }
   std::cout << std::endl;
 #endif
-      
   // ----------------------------------------------------------------------------------------------------------------
   // Interpolation Algorithm
   for(auto var_to_eliminate : variables_to_eliminate){
 #if PRINT_INTER
     std::cout << "Eliminating variable x_" << var_to_eliminate << "\n";
 #endif
-    
     for(auto x : positive_var_positions[var_to_eliminate])
       for(auto y : negative_var_positions[var_to_eliminate]){
 	if(bounds[x] != INF && bounds[y] != INF){

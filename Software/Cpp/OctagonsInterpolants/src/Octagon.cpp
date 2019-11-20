@@ -7,49 +7,40 @@ Octagon::Octagon(char first_sign, char second_sign, int first_var_position, int 
 }
 
 Octagon::Octagon(int n){
-  // TODO: What does p2 mean?
-  int num_group = floor(sqrt(n/2));
-  if(n < 2*num_group*num_group + 2*num_group + 1){
-    int p2 = 2*num_group*num_group;
-    if(n == p2)
-      first_sign = '-',
-	first_var_position = num_group,
-	second_sign = '+',
-	second_var_position = -1;
-    else{
-      if((n - p2) % 2 == 0)
-	first_sign = '-',
-	  first_var_position = num_group,
-	  second_sign = '+',
-	  second_var_position = ceil((n - p2)/2.0) - 1;
-      else
-	first_sign = '-',
-	  first_var_position = num_group,
-	  second_sign = '-',
-	  second_var_position = ceil((n - p2)/2.0) - 1;
-    }
+  utvpi_position = n;
+  if(n == 0){
+    first_sign = '+', first_var_position = -1, second_sign = '+', second_var_position = -1;
   }
   else{
-    int p2 = 2*num_group*num_group + 2*num_group + 1;
-    if(n == p2)
-      first_sign = '+',
-	first_var_position = num_group,
-	second_sign = '+',
-	second_var_position = -1;
+    int num_group = sqrt((n-1)/2);
+    first_var_position = num_group;
+    int first_elem_num_group = 2*num_group*num_group + 1;
+    int first_pos_num_group = first_elem_num_group + 2*num_group + 1;
+    if(n < first_pos_num_group){
+      first_sign = '-';
+      if(n == first_elem_num_group)
+	second_sign = '+', second_var_position = -1;
+      else{
+	second_var_position = (n - first_elem_num_group - 1)/2;
+	if(n % 2 == 0)
+	  second_sign = '-';
+	else
+	  second_sign = '+';
+      }
+    }
     else{
-      if((n - p2) % 2 == 0)
-	first_sign = '+',
-	  first_var_position = num_group,
-	  second_sign = '+',
-	  second_var_position = ceil((n - p2)/2.0) - 1;
-      else
-	first_sign = '+',
-	  first_var_position = num_group,
-	  second_sign = '-',
-	  second_var_position = ceil((n - p2)/2.0) - 1;
+      first_sign = '+';
+      if(n == first_pos_num_group)
+	second_sign = '+', second_var_position = -1;
+      else{
+	second_var_position = (n - first_pos_num_group - 1)/2;
+	if(n % 2 == 0)
+	  second_sign = '+';
+	else
+	  second_sign = '-';
+      }
     }
   }
-  setUtvpiPosition(first_sign, second_sign, first_var_position, second_var_position);
 }
 
 Octagon::~Octagon(){}
@@ -83,21 +74,30 @@ const int Octagon::num_args() const {
   return 2;
 }
 
-void Octagon::setUtvpiPosition(char first_sign, char second_sign, int first_var_position, int second_var_position) {  
-  if(first_sign == '-'){
-    if(second_sign == '-')
-      this->utvpi_position = 2*first_var_position*first_var_position + 2*(second_var_position + 1) - 1;
-    
-    else
-      this->utvpi_position = 2*first_var_position*first_var_position + 2*(second_var_position + 1);
-    
-  }
+
+// Preconditions:
+// first_var_position > second_var_position
+// + (-1) + (-1) should have position 0
+// The least var_position is 0
+void Octagon::setUtvpiPosition(char first_sign, char second_sign, int first_var_position, int second_var_position) {
+  if(first_sign == '+' && second_sign == '+' && first_var_position == -1 && second_var_position == -1)
+    this->utvpi_position = 0;
   else{
-    if(second_sign == '-')
-      this->utvpi_position = 2*first_var_position*first_var_position + 2*first_var_position + 1 + 2*(second_var_position + 1) - 1;
+    int first_elem_num_group = 2*first_var_position*first_var_position + 1;
+    int first_pos_num_group = first_elem_num_group + 2*first_var_position + 1;
+    if(first_sign == '-'){
+      if(second_sign == '-')
+	this->utvpi_position = first_elem_num_group + 2*(second_var_position + 1) - 1;
+      else
+	this->utvpi_position = first_elem_num_group + 2*(second_var_position + 1);
+    }
+    else{
+      if(second_sign == '-')
+	this->utvpi_position = first_pos_num_group + 2*(second_var_position + 1) - 1 ;
     
-    else
-      this->utvpi_position = 2*first_var_position*first_var_position + 2*first_var_position + 1 + 2*(second_var_position + 1);
+      else
+	this->utvpi_position = first_pos_num_group + 2*(second_var_position + 1);
+    }
   }
 }
 
@@ -107,12 +107,15 @@ int Octagon::normalize(int bound){
   if(first_var_position == second_var_position){
     // If +/- x +/- x <= a, then return +/- x + 0 <= floor(a/2)
     if(first_sign == second_sign){
+      second_sign = '+';
       second_var_position = -1;
       result /= 2;
     }
     // This is the encoding for 0 <= a
     else{
-      first_var_position = 0;
+      first_sign = '+';
+      second_sign = '+';
+      first_var_position = -1;
       second_var_position = -1;
     }
   }
@@ -138,7 +141,7 @@ std::ostream & operator << (std::ostream & os, const Octagon & x){
   if(x.second_var_position == -1){
     // Octagons of the form +/- 0 +/- -1
     // is reserved for constant cases
-    if(x.first_var_position == 0 || x.first_var_position == -1)
+    if(x.first_var_position == -1 && x.first_sign == '+' && x.second_sign == '+')
       os << "Octagonal Formula: 0";
     // Octagons of the form +/- x +/- -1
     // is reserved for single variable inequalities
