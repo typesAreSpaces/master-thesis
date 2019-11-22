@@ -401,7 +401,7 @@ void OctagonsInterpolant::operateBoth1Arg(int var_to_elim, Octagon & x, Octagon 
 }
 
 void OctagonsInterpolant::operate2Args1Arg(int var_to_elim, Octagon & x, Octagon & y){
-  char second_sign_x = x.getSecondSign();
+  char first_sign_x = x.getFirstSign(), second_sign_x = x.getSecondSign();
   
   int first_var_position_x = x.getFirstVarPosition(), second_var_position_x = x.getSecondVarPosition();
   int first_var_position_y = y.getFirstVarPosition();
@@ -411,6 +411,17 @@ void OctagonsInterpolant::operate2Args1Arg(int var_to_elim, Octagon & x, Octagon
   // Case +/- x (...); -/+ x + (-1) 
   if(first_var_position_x == first_var_position_y && first_var_position_x == var_to_elim){
     Octagon temp(second_sign_x, '+', second_var_position_x, -1);
+    int temp_position = temp.getUtvpiPosition();
+    bounds[temp_position] = std::min(bounds[temp_position], bound_x + bound_y);
+    updatePositions(temp);
+#if PRINT_MSG
+    printMessage(x, y, temp);
+#endif
+  }
+
+  // Case (...) +/- x; -/+ x + (-1)
+  else if (second_var_position_x == first_var_position_y && second_var_position_x == var_to_elim){
+    Octagon temp(first_sign_x, '+', first_var_position_x, -1);
     int temp_position = temp.getUtvpiPosition();
     bounds[temp_position] = std::min(bounds[temp_position], bound_x + bound_y);
     updatePositions(temp);
@@ -442,10 +453,12 @@ void OctagonsInterpolant::auxiliarGetSymbols(const z3::expr & e, int & counter,
 }
 
 z3::expr OctagonsInterpolant::buildInterpolant(){
-      
+
+  int max_num_ineqs = 2*(num_vars+1)*(num_vars+1);
+  std::cout << max_num_ineqs << std::endl;
+  std::cout << bounds.size() << std::endl;
 #if PRINT_INTER
   std::cout << "Initial (encoded) UTVPI system" << std::endl;
-  int max_num_ineqs = 2*(num_vars+1)*(num_vars+1);
   for(int i = 0; i < max_num_ineqs; ++i){
     if(bounds[i] != INF){
       Octagon temp = Octagon(i);

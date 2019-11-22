@@ -9,7 +9,7 @@
 // In fact, the maximal octagonal formula is + m + (m - 1)
 // Hence, the maximum number of inequalities is 2*m^2 + 4*m + 1
 #define MAX_NUM_VARS  500
-#define MAX_NUM_INEQS 2*MAX_NUM_VARS*MAX_NUM_VARS + 4*MAX_NUM_VARS + 10
+#define MAX_NUM_INEQS 2*(MAX_NUM_VARS+1)*(MAX_NUM_VARS+1) + 1
 #define INF           2147483647
 
 class Octagon{

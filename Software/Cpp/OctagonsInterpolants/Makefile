@@ -37,20 +37,15 @@ main: $(OBJS) $(Z3DIR)/build/libz3.$(Z3EXT)
 clean:
 	rm -f $(OBJS)
 
-run: ./main
-	./main ./tests/smtlib2/test.smt2 x2
-	./main ./tests/smtlib2/test2.smt2 x2
-	./main ./tests/smtlib2/test3.smt2 x2
-	./main ./tests/smtlib2/test4.smt2 x2
-	./main ./tests/smtlib2/test5.smt2 x2
-	./main ./tests/smtlib2/test6.smt2 x2
+problem: ./main
 	./main ./tests/smtlib2/test7.smt2 x2
-	./main ./tests/smtlib2/test8.smt2 x2
 
-runproblem: ./main
-	./main ./tests/smtlib2/test6.smt2 x2
+runsmt2: ./main
+	for files in /home/jose/Documents/GithubProjects/master-thesis/Software/Cpp/OctagonsInterpolants/tests/smtlib2/*; do \
+		./main $$files x2; \
+	done
 
-old: ./main
+old-format: ./main
 	for files in /home/jose/Documents/GithubProjects/master-thesis/Software/Cpp/OctagonsInterpolants/tests/in_format/*; do \
 		./main $$files; \
 	done
