@@ -37,11 +37,9 @@ main: $(OBJS) $(Z3DIR)/build/libz3.$(Z3EXT)
 clean:
 	rm -f $(OBJS)
 
-problem: ./main
-	./main ./tests/smtlib2/test7.smt2 x2
-
 runsmt2: ./main
 	for files in /home/jose/Documents/GithubProjects/master-thesis/Software/Cpp/OctagonsInterpolants/tests/smtlib2/*; do \
+		echo $$files; \
 		./main $$files x2; \
 	done
 

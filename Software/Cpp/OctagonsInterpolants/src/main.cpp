@@ -17,6 +17,21 @@ int main(int argc, char ** argv){
 
       std::cout << "Input formula: " << input_formula << std::endl;
       std::cout << "Interpolant: " << result << std::endl;
+
+      // // Test if the output is an interpolant
+      // z3::solver s(ctx);
+      // s.add(!z3::implies(input_formula, result));
+      // switch(s.check()){
+      // case z3::unsat:
+      //   std::cout << "unsat" << std::endl;
+      //   break;
+      // case z3::sat:
+      //   std::cout << "sat" << std::endl;
+      //   break;
+      // case z3::unknown:
+      //   std::cout << "unknown" << std::endl;
+      //   break;
+      // }
     }
     catch(z3::exception & e){
       std::cout << "File not found " << std::endl;

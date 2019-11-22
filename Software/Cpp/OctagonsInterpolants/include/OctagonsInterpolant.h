@@ -2,7 +2,7 @@
 #define _OCTAGONSINTER_
 #define DEBUG_OCT_INTER_ false
 #define PRINT_MSG        false
-#define PRINT_INTER      true
+#define PRINT_INTER      false
 
 #include <vector>
 #include <set>

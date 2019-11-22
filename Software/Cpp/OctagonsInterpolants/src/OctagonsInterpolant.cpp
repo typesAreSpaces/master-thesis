@@ -57,10 +57,10 @@ OctagonsInterpolant::OctagonsInterpolant(const z3::expr & e,
   int first_var_position, second_var_position, bound;
   char first_sign, second_sign;
 
-  // 2*num_vars*num_vars + 4*num_args + 10 is an upperbound
-  // of the number of all the possible utvpis with
+  // 2*(num_vars+1)*(num_vars+1) + 1 is 
+  // the number of all the possible utvpis with
   // the given number of variables
-  bounds.resize(2*num_vars*num_vars + 4*num_vars + 10);
+  bounds.resize(2*(num_vars+1)*(num_vars+1) + 1);
   positive_var_positions.resize(num_vars),
     negative_var_positions.resize(num_vars);
   
@@ -454,9 +454,7 @@ void OctagonsInterpolant::auxiliarGetSymbols(const z3::expr & e, int & counter,
 
 z3::expr OctagonsInterpolant::buildInterpolant(){
 
-  int max_num_ineqs = 2*(num_vars+1)*(num_vars+1);
-  std::cout << max_num_ineqs << std::endl;
-  std::cout << bounds.size() << std::endl;
+  int max_num_ineqs = bounds.size();
 #if PRINT_INTER
   std::cout << "Initial (encoded) UTVPI system" << std::endl;
   for(int i = 0; i < max_num_ineqs; ++i){
