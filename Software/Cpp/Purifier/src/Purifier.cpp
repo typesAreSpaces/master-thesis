@@ -62,6 +62,7 @@ void Purifier::traverse(z3::expr & e){
     }
     }
   }
+  throw "The expression is not quantifier-free";
 }
 
 z3::expr Purifier::purifyOctagonTerm(z3::expr & e){
