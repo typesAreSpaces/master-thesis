@@ -62,7 +62,8 @@ void Purifier::traverse(z3::expr & e){
     }
     }
   }
-  throw "The expression is not quantifier-free";
+  else
+    throw "The expression is not quantifier-free";
 }
 
 z3::expr Purifier::purifyOctagonTerm(z3::expr & e){
@@ -109,7 +110,8 @@ z3::expr Purifier::purifyOctagonTerm(z3::expr & e){
     }
     }
   }
-  throw "The expression is not quantifier-free";
+  else 
+    throw "The expression is not quantifier-free";
 }
 
 z3::expr Purifier::purifyEUFTerm(z3::expr & e){
@@ -160,7 +162,8 @@ z3::expr Purifier::purifyEUFTerm(z3::expr & e){
     }
     }
   }
-  throw "The expression is not quantifier free";
+  else 
+    throw "The expression is not quantifier free";
 }
 
 std::ostream & operator << (std::ostream & os, Purifier & p){
