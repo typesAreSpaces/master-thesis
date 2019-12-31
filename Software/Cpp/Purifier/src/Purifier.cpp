@@ -34,6 +34,7 @@ void Purifier::traverse(z3::expr & e){
   if (e.is_app()) {
     unsigned num = e.num_args();
     auto f = e.decl();
+    
     switch(f.decl_kind()){
     case Z3_OP_AND:{
       for(unsigned i = 0; i < num; i++){
@@ -70,6 +71,7 @@ z3::expr Purifier::purifyOctagonTerm(z3::expr & e){
   if(e.is_app()){
     unsigned num = e.num_args();
     auto f = e.decl();
+    
     switch(f.decl_kind()){
     case Z3_OP_UMINUS: {
       auto unitary_arg = e.arg(0);
@@ -105,9 +107,8 @@ z3::expr Purifier::purifyOctagonTerm(z3::expr & e){
 	return fresh_constant;
       }
     }
-    default:{
+    default:
       throw "The expression doesnt belong to Octagons nor EUF theory";
-    }
     }
   }
   else 
@@ -157,9 +158,8 @@ z3::expr Purifier::purifyEUFTerm(z3::expr & e){
 	return f(args);
       }
     }
-    default:{      
+    default:
       throw "The expression doesnt belong to Octagons nor EUF theory";
-    }
     }
   }
   else 

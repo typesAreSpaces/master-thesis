@@ -17,7 +17,13 @@ int main(){
   // z3::expr formula = x <= f(x);
   
   z3::func_decl f = c.function("f", Q, Q, Q);
-  z3::expr formula = f(x, 0) >= z && f(y, 0) <= z && x >= y && y >= x && (z - f(x, 0) >= -1) && -x <= 0;
+  z3::expr formula =
+    f(x, 0) >= z
+    && f(y, 0) <= z
+    && x >= y
+    && y >= x
+    && (z - f(x, 0) >= -1)
+    && -x <= 0;
   
   std::cout << "Original: " << formula << std::endl;
 
