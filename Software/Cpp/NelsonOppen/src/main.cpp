@@ -2,6 +2,7 @@
 
 int main(){
   
+  z3::set_param("proof", "true");
   z3::context c;
   
   z3::sort Q = c.real_sort();
@@ -29,8 +30,25 @@ int main(){
   
   std::cout << "Original: " << formula << std::endl;
 
-  Purifier p = Purifier(formula);
-  std::cout << p << std::endl;
-  
+  //  Purifier p = Purifier(formula);
+  // std::cout << p << std::endl;
+
+  z3::solver s(c);
+  s.add(formula, "formula");
+
+  switch(s.check()){
+  case z3::sat:
+    std::cout << "Sat" << std::endl;
+    break; 
+  case z3::unsat:{
+    std::cout << "Unsat" << std::endl;
+    std::cout << s.proof() << std::endl;
+    break;
+  }
+  case z3::unknown:
+    std::cout << "Unknown" << std::endl;
+    break; 
+  }
+    
   return 0;
 }
