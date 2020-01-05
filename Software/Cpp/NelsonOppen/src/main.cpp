@@ -12,23 +12,42 @@ bool earlyExit(std::vector<bool> & visited, z3::expr const & e){
   return false;
 }
 
+void extractHypothesisFromProof(z3::expr const & proof){
+  if (proof.is_app()) {
+    unsigned num = proof.num_args();   
+    for (unsigned i = 0; i < num; i++) 
+      extractHypothesisFromProof(proof.arg(i));
+    
+    z3::func_decl f = proof.decl();
+    switch(f.decl_kind()){
+    case Z3_OP_PR_HYPOTHESIS:{
+      std::cout << "Hypothesis" << f.name() << " " << proof << std::endl;
+      break;
+    }
+      
+    default:
+      break;
+    }
+  }
+  else if (proof.is_quantifier())
+    extractHypothesisFromProof(proof.body());
+  else 
+    assert(proof.is_var());
+}
+
 void collectEqualitiesFromProof(std::vector<bool> & visited,
 				std::vector<bool> & consequent_visited,
 				z3::expr_vector & consequents,
-				z3::expr const & e) {
-  if(earlyExit(visited, e))
+				z3::expr const & proof) {
+  if(earlyExit(visited, proof))
     return;
     
-  if (e.is_app()) {
-    unsigned num = e.num_args();
-    
+  if (proof.is_app()) {
+    unsigned num = proof.num_args();
     for (unsigned i = 0; i < num; i++) 
-      collectEqualitiesFromProof(visited, consequent_visited, consequents, e.arg(i));
+      collectEqualitiesFromProof(visited, consequent_visited, consequents, proof.arg(i));
     
-    // do something
-    // Example: print the visited expression
-    
-    z3::func_decl f = e.decl();
+    z3::func_decl f = proof.decl();
     switch(f.decl_kind()){
       // case Z3_OP_PR_REFLEXIVITY:
       // case Z3_OP_PR_SYMMETRY:
@@ -41,11 +60,9 @@ void collectEqualitiesFromProof(std::vector<bool> & visited,
     case Z3_OP_PR_REWRITE:
     case Z3_OP_PR_REWRITE_STAR:{
 
-      auto consequent = e.arg(num - 1).simplify();
-
+      auto consequent = proof.arg(num - 1).simplify();
       if(earlyExit(consequent_visited, consequent))
 	return;
-      
       // Check if the consequent isn't trivial
       if(consequent.decl().decl_kind() == Z3_OP_TRUE)
 	break;
@@ -63,6 +80,11 @@ void collectEqualitiesFromProof(std::vector<bool> & visited,
 	     || consequent.arg(0).decl().decl_kind() == Z3_OP_GT))
       	break;
 
+      auto num_args_consequent = consequent.num_args() - 1;
+      for(unsigned i = 0; i < num_args_consequent; i++)
+	extractHypothesisFromProof(consequent.arg(i));
+	
+      
       consequents.push_back(consequent);
       // std::cout << f.name() << " " << consequent
       // 		<< " " << consequent.id() << std::endl;
@@ -72,14 +94,10 @@ void collectEqualitiesFromProof(std::vector<bool> & visited,
       break;
     }
   }
-  else if (e.is_quantifier()) {
-    collectEqualitiesFromProof(visited, consequent_visited, consequents, e.body());
-    // do something
-  }
-  else { 
-    assert(e.is_var());
-    // do something
-  }
+  else if (proof.is_quantifier()) 
+    collectEqualitiesFromProof(visited, consequent_visited, consequents, proof.body());
+  else
+    assert(proof.is_var());
 }
 
 int main(){
@@ -115,7 +133,7 @@ int main(){
   std::cout << "Original input formula:" << std::endl;
   std::cout << formula << std::endl;
 
-  Purifier p = Purifier(formula);
+  // Purifier p = Purifier(formula);
 
   z3::solver s(c);
   s.add(formula);
@@ -126,7 +144,10 @@ int main(){
     break; 
   case z3::unsat:{
     std::cout << "Unsat" << std::endl;
-    // std::cout << s.proof() << std::endl;
+    
+    std::cout << "Unsat proof" << std::endl;
+    std::cout << s.proof() << std::endl;
+    
     std::vector<bool> visited;
     std::vector<bool> consequent_visited;
     z3::expr_vector consequents(c);
