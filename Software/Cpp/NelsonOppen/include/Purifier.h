@@ -18,7 +18,7 @@ class Purifier{
   std::map<unsigned, unsigned> map_euf;
   static unsigned              fresh_var_id;
 
-  void     traverse(z3::expr &);
+
   void     purify();
   z3::expr purifyEUFTerm(z3::expr &);
   z3::expr purifyOctagonTerm(z3::expr &);
@@ -30,6 +30,7 @@ public:
 
   z3::expr getEUF();
   z3::expr getOctagon();
+  void     traverse(z3::expr &);
   
   friend std::ostream & operator << (std::ostream &, Purifier &);
 };
