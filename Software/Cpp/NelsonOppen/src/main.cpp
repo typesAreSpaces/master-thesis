@@ -1,75 +1,79 @@
 #include "Purifier.h"
 #include <vector>
 
-void collectEqualitiesFromProof(std::vector<bool> & visited, z3::expr const & e) {
+bool earlyExit(std::vector<bool> & visited, z3::expr const & e){
   if (visited.size() <= e.id()) {
     visited.resize(e.id()+1, false);
   }
   if (visited[e.id()]) {
-    return;
+    return true;
   }
   visited[e.id()] = true;
+  return false;
+}
+
+void collectEqualitiesFromProof(std::vector<bool> & visited,
+				std::vector<bool> & consequent_visited,
+				z3::expr_vector & proofs,
+				z3::expr const & e) {
+  if(earlyExit(visited, e))
+    return;
     
   if (e.is_app()) {
     unsigned num = e.num_args();
     
-    for (unsigned i = 0; i < num; i++) {
-      collectEqualitiesFromProof(visited, e.arg(i));
-    }
-
+    for (unsigned i = 0; i < num; i++) 
+      collectEqualitiesFromProof(visited, consequent_visited, proofs, e.arg(i));
+    
     // do something
     // Example: print the visited expression
     
     z3::func_decl f = e.decl();
     switch(f.decl_kind()){
-    case Z3_OP_PR_REFLEXIVITY:
-    case Z3_OP_PR_SYMMETRY:
+      // case Z3_OP_PR_REFLEXIVITY:
+      // case Z3_OP_PR_SYMMETRY:
     case Z3_OP_PR_TRANSITIVITY:
     case Z3_OP_PR_TRANSITIVITY_STAR:
-    case Z3_OP_PR_MONOTONICITY:{
-
-      auto conclusion = e.arg(num - 1).simplify();
-      // Check if the conclusion isn't trivial
-      if(conclusion.decl().decl_kind() == Z3_OP_TRUE)
-	break;
-      // Avoid relations between equalities
-      if(conclusion.num_args() > 0
-	 && conclusion.decl().decl_kind() == Z3_OP_EQ
-	 && (conclusion.arg(0).decl().decl_kind() == Z3_OP_EQ))
-      	break;
-      // Avoid anything but equalities
-      if(conclusion.decl().decl_kind() != Z3_OP_EQ)
-	break;
-      std::cout << f.name() << " " << conclusion
-		<< " " << conclusion.id() << std::endl << std::endl;
-    }
+    case Z3_OP_PR_MONOTONICITY:
     case Z3_OP_PR_UNIT_RESOLUTION:
     case Z3_OP_PR_MODUS_PONENS:
     case Z3_OP_PR_TH_LEMMA:
     case Z3_OP_PR_REWRITE:
     case Z3_OP_PR_REWRITE_STAR:{
-      auto conclusion = e.arg(num - 1).simplify();
-      // Check if the conclusion isn't trivial
-      if(conclusion.decl().decl_kind() == Z3_OP_TRUE)
+
+      auto consequent = e.arg(num - 1).simplify();
+
+      if(earlyExit(consequent_visited, consequent))
+	return;
+      
+      // Check if the consequent isn't trivial
+      if(consequent.decl().decl_kind() == Z3_OP_TRUE)
 	break;
-      // Avoid relations between equalities
-      if(conclusion.num_args() > 0
-	 && conclusion.decl().decl_kind() == Z3_OP_EQ
-	 && (conclusion.arg(0).decl().decl_kind() == Z3_OP_EQ))
-      	break;
       // Avoid anything but equalities
-      if(conclusion.decl().decl_kind() != Z3_OP_EQ)
+      if(consequent.decl().decl_kind() != Z3_OP_EQ)
 	break;
-      std::cout << f.name() << " " << conclusion
-		<< " " << conclusion.id() << std::endl << std::endl;
-      break;
+      // Avoid relations between {equalities, dis-equalities, <, >, <=, >=}
+      if(consequent.num_args() > 0
+	 && consequent.decl().decl_kind() == Z3_OP_EQ
+	 && (consequent.arg(0).decl().decl_kind() == Z3_OP_EQ
+	     || consequent.arg(0).decl().decl_kind() == Z3_OP_DISTINCT
+	     || consequent.arg(0).decl().decl_kind() == Z3_OP_LE
+	     || consequent.arg(0).decl().decl_kind() == Z3_OP_GE
+	     || consequent.arg(0).decl().decl_kind() == Z3_OP_LT
+	     || consequent.arg(0).decl().decl_kind() == Z3_OP_GT))
+      	break;
+
+      proofs.push_back(consequent);
+      // std::cout << f.name() << " " << consequent
+      // 		<< " " << consequent.id() << std::endl << std::endl;
     }
+      
     default:
       break;
     }
   }
   else if (e.is_quantifier()) {
-    collectEqualitiesFromProof(visited, e.body());
+    collectEqualitiesFromProof(visited, consequent_visited, proofs, e.body());
     // do something
   }
   else { 
@@ -111,7 +115,7 @@ int main(){
   std::cout << "Original input formula:" << std::endl;
   std::cout << formula << std::endl;
 
-  //  Purifier p = Purifier(formula);
+  Purifier p = Purifier(formula);
   // std::cout << p << std::endl;
 
   z3::solver s(c);
@@ -126,7 +130,13 @@ int main(){
     // std::cout << s.proof() << std::endl;
     std::cout << "Traversing the proof:" << std::endl;
     std::vector<bool> visited;
-    collectEqualitiesFromProof(visited, s.proof());
+    std::vector<bool> consequent_visited;
+    z3::expr_vector proofs(c);
+    collectEqualitiesFromProof(visited, consequent_visited, proofs, s.proof());
+    std::cout << "Terms collected:" <<  std::endl;
+    auto num = proofs.size();
+    for(unsigned i = 0; i < num; i++)
+      std::cout << i << ". " << proofs[i] << std::endl;
     
     break;
   }
