@@ -14,7 +14,7 @@ bool earlyExit(std::vector<bool> & visited, z3::expr const & e){
 
 void collectEqualitiesFromProof(std::vector<bool> & visited,
 				std::vector<bool> & consequent_visited,
-				z3::expr_vector & proofs,
+				z3::expr_vector & consequents,
 				z3::expr const & e) {
   if(earlyExit(visited, e))
     return;
@@ -23,7 +23,7 @@ void collectEqualitiesFromProof(std::vector<bool> & visited,
     unsigned num = e.num_args();
     
     for (unsigned i = 0; i < num; i++) 
-      collectEqualitiesFromProof(visited, consequent_visited, proofs, e.arg(i));
+      collectEqualitiesFromProof(visited, consequent_visited, consequents, e.arg(i));
     
     // do something
     // Example: print the visited expression
@@ -63,9 +63,9 @@ void collectEqualitiesFromProof(std::vector<bool> & visited,
 	     || consequent.arg(0).decl().decl_kind() == Z3_OP_GT))
       	break;
 
-      proofs.push_back(consequent);
+      consequents.push_back(consequent);
       // std::cout << f.name() << " " << consequent
-      // 		<< " " << consequent.id() << std::endl << std::endl;
+      // 		<< " " << consequent.id() << std::endl;
     }
       
     default:
@@ -73,7 +73,7 @@ void collectEqualitiesFromProof(std::vector<bool> & visited,
     }
   }
   else if (e.is_quantifier()) {
-    collectEqualitiesFromProof(visited, consequent_visited, proofs, e.body());
+    collectEqualitiesFromProof(visited, consequent_visited, consequents, e.body());
     // do something
   }
   else { 
@@ -116,7 +116,6 @@ int main(){
   std::cout << formula << std::endl;
 
   Purifier p = Purifier(formula);
-  // std::cout << p << std::endl;
 
   z3::solver s(c);
   s.add(formula);
@@ -126,17 +125,16 @@ int main(){
     std::cout << "Sat" << std::endl;
     break; 
   case z3::unsat:{
-    std::cout << "Unsat" << std::endl << std::endl;
+    std::cout << "Unsat" << std::endl;
     // std::cout << s.proof() << std::endl;
-    std::cout << "Traversing the proof:" << std::endl;
     std::vector<bool> visited;
     std::vector<bool> consequent_visited;
-    z3::expr_vector proofs(c);
-    collectEqualitiesFromProof(visited, consequent_visited, proofs, s.proof());
+    z3::expr_vector consequents(c);
+    collectEqualitiesFromProof(visited, consequent_visited, consequents, s.proof());
     std::cout << "Terms collected:" <<  std::endl;
-    auto num = proofs.size();
+    auto num = consequents.size();
     for(unsigned i = 0; i < num; i++)
-      std::cout << i << ". " << proofs[i] << std::endl;
+      std::cout << i << ". " << consequents[i] << std::endl;
     
     break;
   }
