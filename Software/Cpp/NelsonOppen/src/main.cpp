@@ -153,40 +153,39 @@ int main(){
   // std::cout << formula << std::endl;
 
   Purifier p = Purifier(formula);
-  std::cout << formula << std::endl;
 
   std::cout << p << std::endl;
 
-  // z3::solver s(c);
-  // addConjunction(s, formula);
+  z3::solver s(c);
+  addConjunction(s, formula);
 
-  // switch(s.check()){
-  // case z3::sat:
-  //   std::cout << "Sat" << std::endl;
-  //   break; 
-  // case z3::unsat:{
-  //   std::cout << "Unsat" << std::endl;
+  switch(s.check()){
+  case z3::sat:
+    std::cout << "Sat" << std::endl;
+    break; 
+  case z3::unsat:{
+    std::cout << "Unsat" << std::endl;
     
-  //   // std::cout << "Unsat proof" << std::endl;
-  //   // std::cout << s.proof() << std::endl;
+    // std::cout << "Unsat proof" << std::endl;
+    // std::cout << s.proof() << std::endl;
     
-  //   std::vector<bool> visited;
-  //   std::vector<bool> consequent_visited;
-  //   z3::expr_vector consequents(c);
-  //   collectEqualitiesFromProof(visited, consequent_visited, consequents, s.proof());
+    std::vector<bool> visited;
+    std::vector<bool> consequent_visited;
+    z3::expr_vector consequents(c);
+    collectEqualitiesFromProof(visited, consequent_visited, consequents, s.proof());
 
-  //   std::cout << std::endl;
-  //   std::cout << "Terms collected:" <<  std::endl;
-  //   auto num = consequents.size();
-  //   for(unsigned i = 0; i < num; i++)
-  //     std::cout << i << ". " << consequents[i].arg(0) << " = " << consequents[i].arg(1) << std::endl;
+    std::cout << std::endl;
+    std::cout << "Terms collected:" <<  std::endl;
+    auto num = consequents.size();
+    for(unsigned i = 0; i < num; i++)
+      std::cout << i << ". " << consequents[i].arg(0) << " = " << consequents[i].arg(1) << std::endl;
     
-  //   break;
-  // }
-  // case z3::unknown:
-  //   std::cout << "Unknown" << std::endl;
-  //   break; 
-  // }
+    break;
+  }
+  case z3::unknown:
+    std::cout << "Unknown" << std::endl;
+    break; 
+  }
     
   return 0;
 }

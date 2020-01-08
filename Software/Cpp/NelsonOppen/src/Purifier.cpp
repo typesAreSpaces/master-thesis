@@ -34,10 +34,7 @@ void Purifier::purify() {
 }
 
 void Purifier::traverse(z3::expr & e){
-  if(earlyExit(e))
-    return;
-  
-  std::cout << "Debugging " << e << std::endl;
+  // std::cout << "Debugging " << e << std::endl;
   
   if (e.is_app()) {
     unsigned num = e.num_args();
@@ -73,9 +70,6 @@ void Purifier::traverse(z3::expr & e){
 }
 
 z3::expr Purifier::purifyOctagonTerm(z3::expr & e){
-  if(earlyExit(e))
-    return e;
-  
   if(e.is_app()){
     unsigned num = e.num_args();
     auto f = e.decl();
@@ -120,10 +114,7 @@ z3::expr Purifier::purifyOctagonTerm(z3::expr & e){
   throw "The expression is not quantifier-free";
 }
 
-z3::expr Purifier::purifyEUFTerm(z3::expr & e){
-  if(earlyExit(e))
-    return e;
-  
+z3::expr Purifier::purifyEUFTerm(z3::expr & e){  
   if(e.is_app()){
     unsigned num = e.num_args();
     auto f = e.decl();
