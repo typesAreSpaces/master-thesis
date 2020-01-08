@@ -36,13 +36,10 @@ void Purifier::purify() {
 void Purifier::traverse(z3::expr & e){
   if(earlyExit(e))
     return;
-  
   std::cout << "Debugging " << e << std::endl;
-  
   if (e.is_app()) {
     unsigned num = e.num_args();
-    auto f = e.decl();
-    
+    auto f = e.decl(); 
     switch(f.decl_kind()){
     case Z3_OP_AND:{
       for(unsigned i = 0; i < num; i++){
@@ -75,7 +72,6 @@ void Purifier::traverse(z3::expr & e){
 z3::expr Purifier::purifyOctagonTerm(z3::expr & e){
   if(earlyExit(e))
     return e;
-  
   if(e.is_app()){
     unsigned num = e.num_args();
     auto f = e.decl();
@@ -123,7 +119,6 @@ z3::expr Purifier::purifyOctagonTerm(z3::expr & e){
 z3::expr Purifier::purifyEUFTerm(z3::expr & e){
   if(earlyExit(e))
     return e;
-  
   if(e.is_app()){
     unsigned num = e.num_args();
     auto f = e.decl();
@@ -210,14 +205,20 @@ void Purifier::split(z3::expr const & e){
 }
 
 bool Purifier::earlyExit(z3::expr const & e){
-  if(visited.size() <= e.id())
+  if (visited.size() <= e.id()) {
     visited.resize(e.id()+1, false);
+  }
 
   if(visited[e.id()])
     return true;
+  
+  unsigned num = e.num_args();
+  for(unsigned i = 0; i < num; i++)
+    if(!visited[e.arg(i).id()])
+      return false;
     
   visited[e.id()] = true;
-  return false;
+  return true;
 }
 
 std::ostream & operator << (std::ostream & os, Purifier & p){
