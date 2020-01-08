@@ -14,9 +14,6 @@ Purifier::~Purifier(){
 }
 
 void Purifier::purify() {
-  // POST TODO: Optimize this procedure
-  // It seems that there is some redundant work
-  // by passing the formula with substitutions again
   while(true){
     traverse(formula);
     
@@ -34,18 +31,14 @@ void Purifier::purify() {
 }
 
 void Purifier::traverse(z3::expr & e){
-  // std::cout << "Debugging " << e << std::endl;
-  
   if (e.is_app()) {
-    unsigned num = e.num_args();
     auto f = e.decl();
     
     switch(f.decl_kind()){
     case Z3_OP_AND:{
-      for(unsigned i = 0; i < num; i++){
-	auto argument = e.arg(i);
-	traverse(argument);
-      }
+      auto lhs = e.arg(0), rhs = e.arg(1);
+      traverse(lhs);
+      traverse(rhs);
       return;
     }
     case Z3_OP_EQ:
@@ -170,8 +163,8 @@ void Purifier::split(z3::expr const & e){
 
   switch(f.decl_kind()){
   case Z3_OP_AND:{
-    for(unsigned i = 0; i < num; i++)
-      split(e.arg(i));
+    split(e.arg(0));
+    split(e.arg(1));
     return;
   }
   case Z3_OP_EQ:
