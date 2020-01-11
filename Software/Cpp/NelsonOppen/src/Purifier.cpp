@@ -158,7 +158,6 @@ z3::expr Purifier::purifyEUFTerm(z3::expr & e){
 
 
 void Purifier::split(z3::expr const & e){
-  unsigned num = e.num_args();
   auto f = e.decl();
 
   switch(f.decl_kind()){
