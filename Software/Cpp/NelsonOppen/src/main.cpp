@@ -1,5 +1,5 @@
 #include "Purifier.h"
-#include "Util.h"
+#include "UtilsProof.h"
 #include <vector>
 
 int main(){
@@ -11,24 +11,22 @@ int main(){
   z3::expr x1 = c.constant("x1", _s);
   z3::expr x2 = c.constant("x2", _s);
   z3::expr x3 = c.constant("x3", _s);
+  z3::func_decl g = c.function("g", _s, _s);
   
-  // z3::func_decl f = c.function("f", _s, _s);
-  // z3::expr formula = f(f(x1) - f(x2)) != f(x3) && x1 <= x2 && (x2 + x3) <= x1 && 0 <= x3 && f(x1) <= f(x2);
-  // z3::expr formula = f(f(x1) - f(x2)) != f(x3) && x1 <= x2 && (x2 + x3) <= x1 && 0 <= x3;
+  z3::func_decl f = c.function("f", _s, _s);
+  z3::expr formula = f(f(x1) - f(x2)) != f(x3) && x1 <= x2 && (x2 + x3) <= x1 && 0 <= x3 && f(x1) <= f(x2);
   // z3::expr formula = x1 <= f(x1);
   // z3::expr formula = (x2 >= x1) && ((x1 - x3) >= x2) && (x3 >= 0)
   //    && (f(f(x1) - f(x2)) != f(x3));
-
-  // z3::func_decl g = c.function("g", _s, _s);
   // z3::expr formula = g(f(x1 - 2)) == x1 + 2 && g(f(x2)) == x2 - 2 && (x2 + 1 == x1 - 1);
   
-  z3::func_decl f = c.function("f", _s, _s, _s);
-  z3::expr formula =
-    f(x1, 0) >= x3
-    && f(x2, 0) <= x3
-    && x1 >= x2
-    && x2 >= x1
-    && (x3 - f(x1, 0) >= 1);
+  // z3::func_decl f = c.function("f", _s, _s, _s);
+  // z3::expr formula =
+  //   f(x1, 0) >= x3
+  //   && f(x2, 0) <= x3
+  //   && x1 >= x2
+  //   && x2 >= x1
+  //   && (x3 - f(x1, 0) >= 1);
   
   // std::cout << "Original input formula:" << std::endl;
   // std::cout << formula << std::endl;
@@ -46,13 +44,7 @@ int main(){
   case z3::unsat:{
     std::cout << "Unsat" << std::endl;
     
-    // std::cout << "Unsat proof" << std::endl;
-    // std::cout << s.proof() << std::endl;
-    
-    std::vector<bool> visited;
-    std::vector<bool> consequent_visited;
-    z3::expr_vector consequents(c);
-    collectEqualitiesFromProof(visited, consequent_visited, consequents, s.proof());
+    z3::expr_vector consequents = collectEqualitiesFromProof(s.proof());
 
     std::cout << std::endl;
     std::cout << "Terms collected:" <<  std::endl;

@@ -1,4 +1,4 @@
-#include "Util.h"
+#include "UtilsProof.h"
 
 void addConjunction(z3::solver & s, z3::expr const & e){
     if (e.is_app()) {
@@ -14,7 +14,7 @@ void addConjunction(z3::solver & s, z3::expr const & e){
 	return;
       }
   }
-  throw "Wrong e-term";
+  throw "Wrong term";
 }
 
 bool earlyExit(std::vector<bool> & visited, z3::expr const & e){
@@ -36,15 +36,14 @@ void extractHypothesisFromProof(z3::expr const & proof){
     
     z3::func_decl proof_decl = proof.decl();
     switch(proof_decl.decl_kind()){
-    case Z3_OP_PR_TH_LEMMA:{
+    case Z3_OP_PR_TH_LEMMA:
       std::cout << proof_decl.name() << std::endl;
       return;
-    }
+      
     case Z3_OP_PR_HYPOTHESIS:
-    case Z3_OP_PR_ASSERTED:{
+    case Z3_OP_PR_ASSERTED:
       std::cout << proof_decl.name() << " " << proof.arg(0) << std::endl;
       return;
-    }
       
     default:
       return;
@@ -53,22 +52,31 @@ void extractHypothesisFromProof(z3::expr const & proof){
   throw "Wrong proof-term";
 }
 
-void collectEqualitiesFromProof(std::vector<bool> & visited,
-				std::vector<bool> & consequent_visited,
-				z3::expr_vector & consequents,
-				z3::expr const & proof) {
+z3::expr_vector collectEqualitiesFromProof(z3::expr const & proof){
+  std::vector<bool> visited;
+  std::vector<bool> consequent_visited;
+  z3::expr_vector consequents(proof.ctx());
+  collectEqualitiesFromProofAux(visited, consequent_visited, consequents, proof);
+  return consequents;
+}
+
+void collectEqualitiesFromProofAux(std::vector<bool> & visited,
+				   std::vector<bool> & consequent_visited,
+				   z3::expr_vector & consequents,
+				   z3::expr const & proof) {
   if(earlyExit(visited, proof))
     return;
     
   if (proof.is_app()) {
     unsigned num = proof.num_args();
     for (unsigned i = 0; i < num; i++) 
-      collectEqualitiesFromProof(visited, consequent_visited, consequents, proof.arg(i));
+      collectEqualitiesFromProofAux(visited, consequent_visited, consequents, proof.arg(i));
     
     z3::func_decl proof_decl = proof.decl();
     switch(proof_decl.decl_kind()) {
       // case Z3_OP_PR_REFLEXIVITY:
       // case Z3_OP_PR_SYMMETRY:
+    case Z3_OP_PR_ASSERTED:
     case Z3_OP_PR_HYPOTHESIS:
     case Z3_OP_PR_TRANSITIVITY:
     case Z3_OP_PR_TRANSITIVITY_STAR:
@@ -93,21 +101,19 @@ void collectEqualitiesFromProof(std::vector<bool> & visited,
       case Z3_OP_LT:
       case Z3_OP_GT:
 	return;
-      default:{
-	
-	std::cout << std::endl;
-	std::cout << "Consequent " << consequent.arg(0) << " = " << consequent.arg(1) << std::endl;
-	std::cout << "Reason " << proof_decl.name() << std::endl;
-	
+      default:
+	// We only collect equalities between variables
+	if(consequent.arg(0).num_args() != 0 || consequent.arg(1).num_args() != 0)
+	  return;
+	// std::cout << std::endl;
+	// std::cout << "Consequent " << consequent.arg(0) << " = " << consequent.arg(1) << std::endl;
+	// std::cout << "Reason " << proof_decl.name() << std::endl;
 	auto num_subproofs = num - 1;
 	for(unsigned i = 0; i < num_subproofs; i++)
 	  extractHypothesisFromProof(proof.arg(i));
 	
 	consequents.push_back(consequent);
-	// std::cout << proof_decl.name() << " " << consequent
-	// 		<< " " << consequent.id() << std::endl;
 	return;
-      }
       }
     }
       

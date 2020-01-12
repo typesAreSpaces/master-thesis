@@ -168,7 +168,9 @@ void Purifier::split(z3::expr const & e){
   }
   case Z3_OP_EQ:
   case Z3_OP_DISTINCT:{
-      
+    // We check the lhs of the equation/disequation
+    // because we keep the old term "from" on that
+    // side
     switch(e.arg(0).decl().decl_kind()){
     case Z3_OP_UNINTERPRETED:{
       euf_component.push_back(e);
@@ -190,17 +192,6 @@ void Purifier::split(z3::expr const & e){
   default:
     throw "Predicate not allowed";
   }
-}
-
-bool Purifier::earlyExit(z3::expr const & e){
-  if(visited.size() <= e.id())
-    visited.resize(e.id()+1, false);
-
-  if(visited[e.id()])
-    return true;
-    
-  visited[e.id()] = true;
-  return false;
 }
 
 std::ostream & operator << (std::ostream & os, Purifier & p){

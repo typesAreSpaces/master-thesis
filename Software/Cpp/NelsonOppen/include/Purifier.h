@@ -29,7 +29,6 @@ class Purifier{
   z3::expr purifyEUFTerm(z3::expr &);
   z3::expr purifyOctagonTerm(z3::expr &);
   void     split(z3::expr const &);
-  bool     earlyExit(z3::expr const &);
   
 public:
   Purifier(z3::expr &);
