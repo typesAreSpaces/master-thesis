@@ -1,5 +1,4 @@
-#include "Purifier.h"
-#include "UtilsProof.h"
+#include "ExtPurifier.h"
 #include <vector>
 
 int main(){
@@ -12,52 +11,27 @@ int main(){
   z3::expr x2 = c.constant("x2", _s);
   z3::expr x3 = c.constant("x3", _s);
   z3::func_decl g = c.function("g", _s, _s);
+ 
+  z3::func_decl f1 = c.function("f", _s, _s);
+  // z3::expr formula1 = x1 <= f1(x1);
+  z3::expr formula2 = x2 >= x1 && (x1 - x3) >= x2 && x3 >= 0 && f1(f1(x1) - f1(x2)) != f1(x3);
+  // z3::expr formula3 = g(f1(x1 - 2)) == x1 + 2 && g(f1(x2)) == x2 - 2 && (x2 + 1 == x1 - 1);
   
-  z3::func_decl f = c.function("f", _s, _s);
-  z3::expr formula = f(f(x1) - f(x2)) != f(x3) && x1 <= x2 && (x2 + x3) <= x1 && 0 <= x3 && f(x1) <= f(x2);
-  // z3::expr formula = x1 <= f(x1);
-  // z3::expr formula = (x2 >= x1) && ((x1 - x3) >= x2) && (x3 >= 0)
-  //    && (f(f(x1) - f(x2)) != f(x3));
-  // z3::expr formula = g(f(x1 - 2)) == x1 + 2 && g(f(x2)) == x2 - 2 && (x2 + 1 == x1 - 1);
-  
-  // z3::func_decl f = c.function("f", _s, _s, _s);
-  // z3::expr formula =
-  //   f(x1, 0) >= x3
-  //   && f(x2, 0) <= x3
+  z3::func_decl f2 = c.function("f", _s, _s, _s);
+  // z3::expr formula4 = f2(x1, 0) >= x3
+  //   && f2(x2, 0) <= x3
   //   && x1 >= x2
   //   && x2 >= x1
-  //   && (x3 - f(x1, 0) >= 1);
+  //   && (x3 - f2(x1, 0) >= 1);
+ 
+  z3::expr & formula_current_test = formula2;
+  std::cout << "Original input formula:" << std::endl;
+  std::cout << formula_current_test << std::endl;
   
-  // std::cout << "Original input formula:" << std::endl;
-  // std::cout << formula << std::endl;
+  ExtPurifier p = ExtPurifier(formula_current_test);
+  // std::cout << p << std::endl;
 
-  Purifier p = Purifier(formula);
-  std::cout << p << std::endl;
-
-  z3::solver s(c);
-  addConjunction(s, formula);
-
-  switch(s.check()){
-  case z3::sat:
-    std::cout << "Sat" << std::endl;
-    break; 
-  case z3::unsat:{
-    std::cout << "Unsat" << std::endl;
-    
-    z3::expr_vector consequents = collectEqualitiesFromProof(s.proof());
-
-    std::cout << std::endl;
-    std::cout << "Terms collected:" <<  std::endl;
-    auto num = consequents.size();
-    for(unsigned i = 0; i < num; i++)
-      std::cout << i << ". " << consequents[i].arg(0) << " = " << consequents[i].arg(1) << std::endl;
-    
-    break;
-  }
-  case z3::unknown:
-    std::cout << "Unknown" << std::endl;
-    break; 
-  }
-    
+  p.test();
+  
   return 0;
 }

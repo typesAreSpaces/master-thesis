@@ -9,12 +9,15 @@
 
 class Purifier{
 
+
+ protected:
   z3::context &                ctx;
   z3::expr &                   formula;
-
+  
   std::map<unsigned, unsigned> map_oct;
   std::map<unsigned, unsigned> map_euf;
   
+ private:  
   z3::expr_vector              from;
   z3::expr_vector              to;
   
@@ -22,7 +25,6 @@ class Purifier{
   z3::expr_vector              octagon_component;
   
   static unsigned              fresh_var_id;
-  std::vector<bool>            visited;
 
   void     purify();
   void     traverse(z3::expr &);
