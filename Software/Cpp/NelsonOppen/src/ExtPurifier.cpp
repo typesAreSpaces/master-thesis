@@ -3,7 +3,8 @@
 ExtPurifier::ExtPurifier(z3::expr & e) :
   Purifier(e),
   euf_solver(e.ctx(), "QF_UF"), oct_solver(e.ctx(), "QF_LIA"),
-  combined_solver(e.ctx(), "QF_UFLIA")
+  combined_solver(e.ctx(), "QF_UFLIA"),
+  euf_consequents(e.ctx()), oct_consequents(e.ctx())
 {
   // Notes: A QF_UF solver might not be able to produce models
   // if it has interpreted terms (i.e. terms with sort int in this case)
@@ -68,20 +69,14 @@ void ExtPurifier::extractHypothesisFromProof(z3::expr const & proof){
   throw "Wrong proof-term";
 }
 
-z3::expr_vector ExtPurifier::collectEqualitiesFromProof(z3::expr const & proof){
-  z3::expr_vector consequents(proof.ctx());
-  collectEqualitiesFromProofAux(consequents, proof);
-  return consequents;
-}
-
-void ExtPurifier::collectEqualitiesFromProofAux(z3::expr_vector & consequents, z3::expr const & proof) {
+void ExtPurifier::collectEqualitiesFromProof(z3::expr const & proof) {
   if(earlyExit(this->visited, proof))
     return;
     
   if (proof.is_app()) {
     unsigned num = proof.num_args();
     for (unsigned i = 0; i < num; i++) 
-      collectEqualitiesFromProofAux(consequents, proof.arg(i));
+      collectEqualitiesFromProof(proof.arg(i));
     
     z3::func_decl proof_decl = proof.decl();
     switch(proof_decl.decl_kind()) {
@@ -126,9 +121,10 @@ void ExtPurifier::collectEqualitiesFromProofAux(z3::expr_vector & consequents, z
 	  extractHypothesisFromProof(proof.arg(i));
 
 	// FIX: We need to separate the consequents produced
-	// into their correspondant logic using the extractHypothesisFromProof function,
-	// somehow
-	consequents.push_back(consequent);
+	// into their correspondant logic using the extractHypothesisFromProof
+	// function, somehow
+	this->euf_consequents.push_back(consequent);
+	this->oct_consequents.push_back(consequent);
 	return;
       }
     }
@@ -150,13 +146,13 @@ void ExtPurifier::test(){
   case z3::unsat:{
     std::cout << "Unsat" << std::endl;
     
-    z3::expr_vector consequents = collectEqualitiesFromProof(combined_solver.proof());
+    collectEqualitiesFromProof(combined_solver.proof());
 
     std::cout << std::endl;
     std::cout << "Terms collected:" <<  std::endl;
-    auto num = consequents.size();
+    auto num = this->euf_consequents.size();
     for(unsigned i = 0; i < num; i++)
-      std::cout << i << ". " << consequents[i].arg(0) << " = " << consequents[i].arg(1) << std::endl;
+      std::cout << i << ". " << this->euf_consequents[i].arg(0) << " = " << this->euf_consequents[i].arg(1) << std::endl;
     
     break;
   }

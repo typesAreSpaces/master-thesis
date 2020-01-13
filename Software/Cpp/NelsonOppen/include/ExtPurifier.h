@@ -10,12 +10,14 @@ class ExtPurifier : public Purifier{
   z3::solver        euf_solver;
   z3::solver        oct_solver;
   z3::solver        combined_solver;
+  z3::expr_vector   euf_consequents;
+  z3::expr_vector   oct_consequents;
   
-  void            addConjunction(z3::expr const &);
-  bool            earlyExit(std::vector<bool> &, z3::expr const &);
-  void            extractHypothesisFromProof(z3::expr const &);
-  z3::expr_vector collectEqualitiesFromProof(z3::expr const &);
-  void            collectEqualitiesFromProofAux(z3::expr_vector &, z3::expr const &);
+  void addConjunction(z3::expr const &);
+  bool earlyExit(std::vector<bool> &, z3::expr const &);
+  void extractHypothesisFromProof(z3::expr const &);
+  void collectEqualitiesFromProof(z3::expr const &);
+  
 public:
   ExtPurifier(z3::expr &);
   ~ExtPurifier();
