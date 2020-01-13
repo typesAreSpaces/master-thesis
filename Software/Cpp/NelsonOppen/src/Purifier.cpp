@@ -4,8 +4,8 @@ unsigned Purifier::fresh_var_id = 0;
 
 Purifier::Purifier(z3::expr & e) :
   ctx(e.ctx()), formula(e),
-  from(e.ctx()), to(e.ctx()),
-  euf_component(e.ctx()), octagon_component(e.ctx()){
+  euf_component(e.ctx()), oct_component(e.ctx()),
+  from(e.ctx()), to(e.ctx()){
   purify();
   split(formula);
 }
@@ -177,7 +177,7 @@ void Purifier::split(z3::expr const & e){
       return;
     }
     default:{
-      octagon_component.push_back(e);
+      oct_component.push_back(e);
       return;
     }
     }
@@ -186,7 +186,7 @@ void Purifier::split(z3::expr const & e){
   case Z3_OP_GE:
   case Z3_OP_LT:
   case Z3_OP_GT:{
-    octagon_component.push_back(e);
+    oct_component.push_back(e);
     return;
   }
   default:
@@ -200,8 +200,8 @@ std::ostream & operator << (std::ostream & os, Purifier & p){
   for(unsigned i = 0; i < num_euf; i++)
     os << p.euf_component[i] << std::endl;
   os << "Octagon-component" << std::endl;
-  unsigned num_octagon = p.octagon_component.size();
-  for(unsigned i = 0; i < num_octagon; i++)
-    os << p.octagon_component[i] << std::endl;
+  unsigned num_oct = p.oct_component.size();
+  for(unsigned i = 0; i < num_oct; i++)
+    os << p.oct_component[i] << std::endl;
   return os;
 }

@@ -17,12 +17,12 @@ class Purifier{
   std::map<unsigned, unsigned> map_oct;
   std::map<unsigned, unsigned> map_euf;
   
+  z3::expr_vector              euf_component;
+  z3::expr_vector              oct_component;
+  
  private:  
   z3::expr_vector              from;
   z3::expr_vector              to;
-  
-  z3::expr_vector              euf_component;
-  z3::expr_vector              octagon_component;
   
   static unsigned              fresh_var_id;
 

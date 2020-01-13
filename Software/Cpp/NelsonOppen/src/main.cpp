@@ -1,5 +1,5 @@
 #include "ExtPurifier.h"
-#include <vector>
+#define _DEBUG_ true
 
 int main(){
   
@@ -25,14 +25,16 @@ int main(){
     && (x3 - f2(x1, 0) >= 1);
  
   z3::expr & formula_current_test = formula2;
-  
+#if _DEBUG_  
   std::cout << "Original input formula:" << std::endl;
-  std::cout << formula_current_test << std::endl; 
+  std::cout << formula_current_test << std::endl;
+#endif
   
   ExtPurifier p = ExtPurifier(formula_current_test);
+#if _DEBUG_  
   std::cout << "Formula after purification" << std::endl;
-  std::cout << formula_current_test << std::endl; 
-  std::cout << p << std::endl;
+  std::cout << formula_current_test << std::endl;
+#endif
 
   p.test();
   
