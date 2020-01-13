@@ -1,28 +1,23 @@
-#include "ExtPurifier.h"
+#include "ThCombInterpolator.h"
 
-ExtPurifier::ExtPurifier(z3::expr & e) :
+ThCombInterpolator::ThCombInterpolator(z3::expr & e) :
   Purifier(e),
   euf_solver(e.ctx(), "QF_UF"), oct_solver(e.ctx(), "QF_LIA"),
-  combined_solver(e.ctx(), "QF_UFLIA"),
   euf_consequents(e.ctx()), oct_consequents(e.ctx())
 {
-  // Notes: A QF_UF solver might not be able to produce models
-  // if it has interpreted terms (i.e. terms with sort int in this case)
-  // Since we don't need the models, we will only deal with unknown and
-  // unsats answers from solver.check()
-  unsigned num = this->euf_component.size();
+  unsigned num = euf_component.size();
   for(unsigned i = 0; i < num; i++)
     euf_solver.add(euf_component[i]);
 
-  num = this->oct_component.size();
+  num = oct_component.size();
   for(unsigned i = 0; i < num; i++)
     oct_solver.add(oct_component[i]);
 }
 
-ExtPurifier::~ExtPurifier(){
+ThCombInterpolator::~ThCombInterpolator(){
 }
 
-bool ExtPurifier::isProvable(z3::solver & s, z3::expr const & e){
+bool ThCombInterpolator::isProvable(z3::solver & s, z3::expr const & e){
   s.push();
   s.add(!e);
   bool answer = s.check() == z3::unsat;
@@ -30,24 +25,24 @@ bool ExtPurifier::isProvable(z3::solver & s, z3::expr const & e){
   return answer;
 }
 
-void ExtPurifier::addConjunction(z3::expr const & e){
+void ThCombInterpolator::addConjunction(z3::solver & s, z3::expr const & e){
     if (e.is_app()) {
       z3::func_decl e_decl = e.decl();
       switch(e_decl.decl_kind()){
       case Z3_OP_AND:{
-	addConjunction(e.arg(0));
-	addConjunction(e.arg(1));
+	addConjunction(s, e.arg(0));
+	addConjunction(s, e.arg(1));
 	return;
       }
       default:
-	this->combined_solver.add(e);
+	s.add(e);
 	return;
       }
   }
   throw "Wrong term";
 }
 
-bool ExtPurifier::earlyExit(std::vector<bool> & visited, z3::expr const & e){
+bool ThCombInterpolator::earlyExit(std::vector<bool> & visited, z3::expr const & e){
   if (visited.size() <= e.id()) {
     visited.resize(e.id()+1, false);
   }
@@ -60,7 +55,7 @@ bool ExtPurifier::earlyExit(std::vector<bool> & visited, z3::expr const & e){
 
 // FIX: We need to do something more useful with this function
 // Currently, all it does it printing stuff
-void ExtPurifier::extractHypothesisFromProof(z3::expr const & proof){
+void ThCombInterpolator::extractHypothesisFromProof(z3::expr const & proof){
   if (proof.is_app()) {
     unsigned num = proof.num_args();   
     for (unsigned i = 0; i < num; i++) 
@@ -88,8 +83,8 @@ void ExtPurifier::extractHypothesisFromProof(z3::expr const & proof){
   throw "Wrong proof-term";
 }
 
-void ExtPurifier::collectEqualitiesFromProof(z3::expr const & proof) {
-  if(earlyExit(this->visited, proof))
+void ThCombInterpolator::collectEqualitiesFromProof(z3::expr const & proof) {
+  if(earlyExit(visited, proof))
     return;
     
   if (proof.is_app()) {
@@ -103,7 +98,7 @@ void ExtPurifier::collectEqualitiesFromProof(z3::expr const & proof) {
       auto consequent = proof.arg(num - 1).simplify();
       auto consequent_kind = consequent.decl().decl_kind();
       // Avoid visited consequents and anything but equalities
-      if(earlyExit(this->consequent_visited, consequent) || consequent_kind != Z3_OP_EQ)
+      if(earlyExit(consequent_visited, consequent) || consequent_kind != Z3_OP_EQ)
 	return;
       // Avoid 'high-order equalities'
       // between {==, !=, <, >, <=, >=}
@@ -116,8 +111,8 @@ void ExtPurifier::collectEqualitiesFromProof(z3::expr const & proof) {
       case Z3_OP_GT:
 	return;
       default:	
-	this->euf_solver.add(consequent);
-	this->euf_consequents.push_back(consequent);
+	euf_solver.add(consequent);
+	euf_consequents.push_back(consequent);
 	return;
       }
     }
@@ -135,7 +130,7 @@ void ExtPurifier::collectEqualitiesFromProof(z3::expr const & proof) {
       auto consequent = proof.arg(num - 1).simplify();
       auto consequent_kind = consequent.decl().decl_kind();
       // Avoid visited consequents and anything but equalities
-      if(earlyExit(this->consequent_visited, consequent) || consequent_kind != Z3_OP_EQ)
+      if(earlyExit(consequent_visited, consequent) || consequent_kind != Z3_OP_EQ)
 	return;
       // Avoid 'high-order equalities'
       // between {==, !=, <, >, <=, >=}
@@ -148,41 +143,24 @@ void ExtPurifier::collectEqualitiesFromProof(z3::expr const & proof) {
       case Z3_OP_GT:
 	return;
       default:	
-	// // We only collect equalities between variables
-	// if(consequent.arg(0).num_args() != 0 || consequent.arg(1).num_args() != 0)
-	//   return;
-	// #if _DEBUGEXTPURIFIER_
-	// std::cout << "Consequent " << consequent.arg(0) << " = " << consequent.arg(1) << std::endl;
-	// std::cout << "Reason " << proof_decl.name() << std::endl;
-	// #endif
-	// auto num_subproofs = num - 1;
-	// for(unsigned i = 0; i < num_subproofs; i++)
-	//   extractHypothesisFromProof(proof.arg(i));
-	
-
-	// FIX: We need to separate the consequents produced
-	// into their correspondant logic using the extractHypothesisFromProof
-	// function, somehow
-
 	if(isProvable(oct_solver, consequent)){
-	  this->oct_solver.add(consequent);
-	  this->oct_consequents.push_back(consequent);
+	  oct_solver.add(consequent);
+	  euf_solver.add(consequent);
+	  oct_consequents.push_back(consequent);
 #if _DEBUGEXTPURIFIER_
 	  std::cout << consequent << " added to euf" << std::endl;
 #endif
 	}
 	else if(isProvable(euf_solver, consequent)){
-	  this->euf_solver.add(consequent);
-	  this->euf_consequents.push_back(consequent);
+	  oct_solver.add(consequent);
+	  euf_solver.add(consequent);
+	  euf_consequents.push_back(consequent);
 #if _DEBUGEXTPURIFIER_
 	  std::cout << consequent << " added to oct" << std::endl;
 #endif
 	}
-	else{
-#if _DEBUGEXTPURIFIER_
-	  std::cout << "hmm " << consequent << std::endl;
-#endif
-	}
+	else
+	  throw "Error in collectEqualitiesFromProof. Is the proof wrong? Perhaps my algorithm isn't complete.";
 	return;
       }
     }
@@ -194,43 +172,49 @@ void ExtPurifier::collectEqualitiesFromProof(z3::expr const & proof) {
   throw "Wrong proof-term";
 }
 
-void ExtPurifier::test(){
-  addConjunction(this->formula);
-
+void ThCombInterpolator::collectEqualities(){
+  z3::solver combined_solver(formula.ctx(), "QF_UFLIA");
+  addConjunction(combined_solver, formula);
+  
   switch(combined_solver.check()){
   case z3::sat:
     std::cout << "Sat" << std::endl;
-    break; 
+    return;
   case z3::unsat:{
     std::cout << "Unsat" << std::endl;
     collectEqualitiesFromProof(combined_solver.proof());
-
-#if _DEBUGEXTPURIFIER_
-    std::cout << "Equalities collected" <<  std::endl;
-    std::cout << "EUF equalities" << std::endl;
-    auto num = this->euf_consequents.size();
-    for(unsigned i = 0; i < num; i++){
-      std::cout << i << ". " << this->euf_consequents[i].arg(0) << " = " << this->euf_consequents[i].arg(1) << std::endl;
-    }
-
-    std::cout << "OCT equalities" << std::endl;
-    num = this->oct_consequents.size();
-    for(unsigned i = 0; i < num; i++){
-      std::cout << i << ". " << this->oct_consequents[i].arg(0) << " = " << this->oct_consequents[i].arg(1) << std::endl;
-    }
-
-    std::cout << (euf_solver.check() == z3::unsat) << std::endl;
-    std::cout << (oct_solver.check() == z3::unsat) << std::endl;
-#endif
-    break;
+    return;
   }
   case z3::unknown:
     std::cout << "Unknown" << std::endl;
-    break; 
+    return;
   }
 }
 
-std::ostream & operator << (std::ostream & os, ExtPurifier & p){
-  os << "Implement this";
+std::ostream & operator << (std::ostream & os, ThCombInterpolator & p){
+    os << "Equalities collected" <<  std::endl;
+    
+    os << "EUF equalities" << std::endl;
+    unsigned num = p.euf_consequents.size();
+    for(unsigned i = 0; i < num; i++)
+      os << i << ". " << p.euf_consequents[i].arg(0) << " = " << p.euf_consequents[i].arg(1) << std::endl;
+
+    os << "OCT equalities" << std::endl;
+    num = p.oct_consequents.size();
+    for(unsigned i = 0; i < num; i++)
+      os << i << ". " << p.oct_consequents[i].arg(0) << " = " << p.oct_consequents[i].arg(1) << std::endl;
+
+    auto euf_ans = p.euf_solver.check();
+    auto oct_ans = p.oct_solver.check();
+
+    if(euf_ans != z3::unsat && oct_ans != z3::unsat)
+      os << "Neither of the solvers reached a contradiction";
+    else{    
+      if(p.euf_solver.check() == z3::unsat)
+	os << "The QF_UF solver reached a contradiction" << std::endl;
+      if (p.oct_solver.check() == z3::unsat)
+	os << "The QF_LIA solver reached a contradiction" << std::endl;
+    }
+    
   return os;
 }

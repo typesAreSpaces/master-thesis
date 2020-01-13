@@ -1,4 +1,4 @@
-#include "ExtPurifier.h"
+#include "ThCombInterpolator.h"
 #define _DEBUG_ true
 
 int main(){
@@ -30,13 +30,14 @@ int main(){
   std::cout << formula_current_test << std::endl;
 #endif
   
-  ExtPurifier p = ExtPurifier(formula_current_test);
+  ThCombInterpolator p = ThCombInterpolator(formula_current_test);
 #if _DEBUG_  
   std::cout << "Formula after purification" << std::endl;
   std::cout << formula_current_test << std::endl;
 #endif
 
-  p.test();
+  p.collectEqualities();
+  std::cout << p << std::endl;
   
   return 0;
 }
