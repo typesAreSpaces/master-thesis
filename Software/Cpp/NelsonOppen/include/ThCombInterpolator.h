@@ -16,8 +16,7 @@ class ThCombInterpolator : public Purifier{
   bool isProvable(z3::solver &, z3::expr const &);
   void addConjunction(z3::solver &, z3::expr const &);
   bool earlyExit(std::vector<bool> &, z3::expr const &);
-  void extractHypothesisFromProof(z3::expr const &);
-  void collectEqualitiesFromProof(z3::expr const &);
+  void traverseProof(z3::expr const &);
   
 public:
   ThCombInterpolator(z3::expr &);

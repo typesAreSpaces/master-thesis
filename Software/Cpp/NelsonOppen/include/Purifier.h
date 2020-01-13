@@ -9,22 +9,20 @@
 
 class Purifier{
 
-
- protected:
-  z3::context &                ctx;
-  z3::expr &                   formula;
+protected:
+  z3::context & ctx;
+  z3::expr    & formula;
   
   std::map<unsigned, unsigned> map_oct;
   std::map<unsigned, unsigned> map_euf;
   
-  z3::expr_vector              euf_component;
-  z3::expr_vector              oct_component;
+  z3::expr_vector euf_component;
+  z3::expr_vector oct_component;
   
- private:  
-  z3::expr_vector              from;
-  z3::expr_vector              to;
-  
-  static unsigned              fresh_var_id;
+private:  
+  z3::expr_vector from;
+  z3::expr_vector to;
+  static unsigned fresh_var_id;
 
   void     purify();
   void     traverse(z3::expr &);

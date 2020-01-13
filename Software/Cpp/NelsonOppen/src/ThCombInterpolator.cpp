@@ -53,44 +53,14 @@ bool ThCombInterpolator::earlyExit(std::vector<bool> & visited, z3::expr const &
   return false;
 }
 
-// FIX: We need to do something more useful with this function
-// Currently, all it does it printing stuff
-void ThCombInterpolator::extractHypothesisFromProof(z3::expr const & proof){
-  if (proof.is_app()) {
-    unsigned num = proof.num_args();   
-    for (unsigned i = 0; i < num; i++) 
-      extractHypothesisFromProof(proof.arg(i));
-    
-    z3::func_decl proof_decl = proof.decl();
-    switch(proof_decl.decl_kind()){
-    case Z3_OP_PR_TH_LEMMA:
-#if _DEBUGEXTPURIFIER_
-      std::cout << proof_decl.name() << std::endl;
-#endif
-      return;
-      
-    case Z3_OP_PR_HYPOTHESIS:
-    case Z3_OP_PR_ASSERTED:
-#if _DEBUGEXTPURIFIER_
-      std::cout << proof_decl.name() << " " << proof.arg(0) << std::endl;
-#endif
-      return;
-      
-    default:
-      return;
-    }
-  }
-  throw "Wrong proof-term";
-}
-
-void ThCombInterpolator::collectEqualitiesFromProof(z3::expr const & proof) {
+void ThCombInterpolator::traverseProof(z3::expr const & proof) {
   if(earlyExit(visited, proof))
     return;
     
   if (proof.is_app()) {
     unsigned num = proof.num_args();
     for (unsigned i = 0; i < num; i++) 
-      collectEqualitiesFromProof(proof.arg(i));
+      traverseProof(proof.arg(i));
     
     z3::func_decl proof_decl = proof.decl();
     switch(proof_decl.decl_kind()) {
@@ -160,7 +130,7 @@ void ThCombInterpolator::collectEqualitiesFromProof(z3::expr const & proof) {
 #endif
 	}
 	else
-	  throw "Error in collectEqualitiesFromProof. Is the proof wrong? Perhaps my algorithm isn't complete.";
+	  throw "Error in traverseProof. Is the proof wrong? Perhaps my algorithm isn't complete.";
 	return;
       }
     }
@@ -182,7 +152,7 @@ void ThCombInterpolator::collectEqualities(){
     return;
   case z3::unsat:{
     std::cout << "Unsat" << std::endl;
-    collectEqualitiesFromProof(combined_solver.proof());
+    traverseProof(combined_solver.proof());
     return;
   }
   case z3::unknown:
