@@ -5,6 +5,10 @@ ExtPurifier::ExtPurifier(z3::expr & e) :
   euf_solver(e.ctx(), "QF_UF"), oct_solver(e.ctx(), "QF_LIA"),
   combined_solver(e.ctx(), "QF_UFLIA")
 {
+  // Notes: A QF_UF solver might not be able to produce models
+  // if it has interpreted terms (i.e. terms with sort int in this case)
+  // Since we don't need the models, we will only deal with unknown and
+  // unsats answers from solver.check()
 }
 
 ExtPurifier::~ExtPurifier(){
