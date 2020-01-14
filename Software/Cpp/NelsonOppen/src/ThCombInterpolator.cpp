@@ -80,9 +80,46 @@ void ThCombInterpolator::traverseProof(z3::expr const & proof) {
       case Z3_OP_LT:
       case Z3_OP_GT:
 	return;
-      default:	
+      default:
+	std::cout << "CONSEQUENT" << std::endl;
+	std::cout << consequent << std::endl;
+	if(consequent.id() == 298){
+	  std::cout << "THE PROBLEMATIC" << std::endl;
+	  euf_solver.add(!consequent);
+	  std::cout << "EUF ASSERTIONS" << std::endl;
+	  std::cout << euf_solver.assertions() << std::endl;
+	  switch(euf_solver.check()){
+	  case z3::unsat:
+	    std::cout << "unsat" << std::endl;
+	    break;
+	  case z3::sat:
+	    std::cout << "sat" << std::endl;
+	    std::cout << euf_solver.get_model() << std::endl;
+	    break;
+	  case z3::unknown:
+	    std::cout << "unknown" << std::endl;
+	    break;
+	  }
+	  throw "fuck";
+	}
+	switch(euf_solver.check()){
+	case z3::unsat:
+	  std::cout << "unsat" << std::endl;
+	  break;
+	case z3::sat:
+	  std::cout << "sat" << std::endl;
+	  std::cout << euf_solver.get_model() << std::endl;
+	  break;
+	case z3::unknown:
+	  std::cout << "unknown" << std::endl;
+	  break;
+	}
 	euf_solver.add(consequent);
+	oct_solver.add(consequent);
 	euf_consequents.push_back(consequent);
+#if _DEBUGEXTPURIFIER_
+	std::cout << consequent << " added to euf" << std::endl;
+#endif       
 	return;
       }
     }
@@ -114,23 +151,23 @@ void ThCombInterpolator::traverseProof(z3::expr const & proof) {
 	return;
       default:	
 	if(isProvable(oct_solver, consequent)){
-	  oct_solver.add(consequent);
 	  euf_solver.add(consequent);
+	  oct_solver.add(consequent);
 	  oct_consequents.push_back(consequent);
-#if _DEBUGEXTPURIFIER_
-	  std::cout << consequent << " added to euf" << std::endl;
-#endif
-	}
-	else if(isProvable(euf_solver, consequent)){
-	  oct_solver.add(consequent);
-	  euf_solver.add(consequent);
-	  euf_consequents.push_back(consequent);
 #if _DEBUGEXTPURIFIER_
 	  std::cout << consequent << " added to oct" << std::endl;
 #endif
 	}
+	else if(isProvable(euf_solver, consequent)){
+	  euf_solver.add(consequent);
+	  oct_solver.add(consequent);
+	  euf_consequents.push_back(consequent);
+#if _DEBUGEXTPURIFIER_
+	  std::cout << consequent << " added to euf" << std::endl;
+#endif
+	}
 	else
-	  throw "Error in traverseProof. Is the proof wrong? Perhaps my algorithm isn't complete.";
+	  throw "Error in traverseProof::'rest'. Is the proof wrong? Perhaps my algorithm isn't complete.";
 	return;
       }
     }
