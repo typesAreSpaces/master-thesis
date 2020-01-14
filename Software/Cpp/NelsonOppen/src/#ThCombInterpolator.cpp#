@@ -84,6 +84,8 @@ void ThCombInterpolator::traverseProof(z3::expr const & proof) {
 	if(consequent.id() == 298){
 	  std::cout << "THE PROBLEMATIC" << std::endl;
 	  auto temp = mk_and(euf_solver.assertions());
+	  euf_solver.reset();
+	  euf_solver.add(temp);
 	  euf_solver.add(!consequent);
 	  
 	  switch(euf_solver.check()){
@@ -92,33 +94,12 @@ void ThCombInterpolator::traverseProof(z3::expr const & proof) {
 	    break;
 	  case z3::sat:{
 	    std::cout << "sat" << std::endl;
-	    std::cout << euf_solver.statistics() << std::endl;
+	    std::cout << "assertions" << std::endl;
 	    std::cout << euf_solver.assertions() << std::endl;
 
-	    auto temp2 = mk_and(euf_solver.assertions());
+	    
 	    euf_solver.reset();
-	    // euf_solver.add(temp);
-	    addConjunction(euf_solver, temp);
-	    euf_solver.add(!consequent);
-
-	    switch(euf_solver.check()){
-	    case z3::unsat:{
-	      std::cout << "again unsat" << std::endl;
-	      std::cout << euf_solver.statistics() << std::endl;
-	      std::cout << euf_solver.assertions() << std::endl;
-	      break;
-	    }
-	    case z3::sat:{
-	      std::cout << "again sat" << std::endl;
-	      break;
-	    }
-	    case z3::unknown:{
-	      std::cout << "again unknown" << std::endl;
-	      std::cout << euf_solver.statistics() << std::endl;
-	      std::cout << euf_solver.assertions() << std::endl;
-	      break;
-	    }
-	    }
+	    euf_solver.add(temp);
 	    
 	    break;
 	  }

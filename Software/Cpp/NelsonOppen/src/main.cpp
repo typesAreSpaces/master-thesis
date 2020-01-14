@@ -38,6 +38,34 @@ int main(){
 
   p.collectEqualities();
   std::cout << p << std::endl;
+
+  // z3::solver ss(c, "QF_UF");
+  // z3::expr a1 = c.constant("a1", f1.range());
+  // z3::expr a2 = c.constant("a2", f1.range());
+  // z3::expr a3 = c.constant("a3", f1.range());
+  // z3::expr a4 = c.constant("a4", f1.range());
+  // z3::expr a5 = c.constant("a5", f1.range());
+
+  // ss.add(g(f1(a2)) == a1);
+  // ss.add(g(f1(x2)) == a3);
+  // ss.add(a5 == a4);
+  // ss.add(g(f1(x2)) == a3);
+  // ss.add(x2 == 2 + a3);
+  // ss.add(!(f1(x2) == f1(2 + a3)));
+
+  // std::cout << ss.assertions() << std::endl;
+
+  // switch(ss.check()){
+  // case z3::unsat:
+  //   std::cout << "unsat" << std::endl;
+  //   break;
+  // case z3::sat:
+  //   std::cout << "sat" << std::endl;
+  //   break;
+  // case z3::unknown:
+  //   std::cout << "unknown" << std::endl;
+  //   break;
+  // }
   
   return 0;
 }
