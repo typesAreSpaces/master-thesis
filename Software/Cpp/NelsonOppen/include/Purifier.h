@@ -11,7 +11,7 @@ class Purifier{
 
 protected:
   z3::context & ctx;
-  z3::expr    & formula;
+  z3::expr    formula;
   
   std::map<unsigned, unsigned> map_oct;
   std::map<unsigned, unsigned> map_euf;
@@ -24,18 +24,18 @@ private:
   z3::expr_vector to;
   static unsigned fresh_var_id;
 
-  void     purify();
-  void     traverse(z3::expr &);
+  void     purify(z3::expr const &);
+  z3::expr traverse(z3::expr const &);
   void     split(z3::expr const &);
-  z3::expr purifyEUFTerm(z3::expr &);
-  z3::expr purifyOctagonTerm(z3::expr &);
+  z3::expr purifyOctagonTerm(z3::expr const &);
+  z3::expr purifyEUFTerm(z3::expr const &);
   
 public:
-  Purifier(z3::expr &);
+  Purifier(z3::expr const &);
   ~Purifier();
 
-  z3::expr purifyEUFEq(z3::expr &);
-  z3::expr purifyOctEq(z3::expr &);
+  z3::expr purifyEUFEq(z3::expr const &);
+  z3::expr purifyOctEq(z3::expr const &);
   
   friend std::ostream & operator << (std::ostream &, Purifier &);
 };

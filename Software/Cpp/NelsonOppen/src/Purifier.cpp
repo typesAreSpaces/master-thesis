@@ -3,11 +3,11 @@
 
 unsigned Purifier::fresh_var_id = 0;
 
-Purifier::Purifier(z3::expr & e) :
-  ctx(e.ctx()), formula(e),
+Purifier::Purifier(z3::expr const & e) :
+  ctx(e.ctx()), formula(e.ctx()),
   euf_component(e.ctx()), oct_component(e.ctx()),
   from(e.ctx()), to(e.ctx()){
-  purify();
+  purify(e);
   split(formula);
 #if _DEBUGPURIFIER_
   std::cout << *this << std::endl;
@@ -17,48 +17,30 @@ Purifier::Purifier(z3::expr & e) :
 Purifier::~Purifier(){
 }
 
-void Purifier::purify() {
-  while(true){
-    traverse(formula);
-    
-    unsigned num_substitutions = from.size();
-    if(num_substitutions == 0)
-      return;
-    
-    formula = formula.substitute(from, to);
-    for(unsigned i = 0; i < num_substitutions; i++)
-      formula = formula && from[i] == to[i];
-      
-    from.resize(0);
-    to.resize(0);
-  }
+void Purifier::purify(z3::expr const & e) {
+  formula = traverse(e);
+  unsigned num_substitutions = from.size();
+  for(unsigned i = 0; i < num_substitutions; i++)
+    formula = formula && from[i] == to[i];
+  from.resize(0);
+  to.resize(0);
 }
 
-void Purifier::traverse(z3::expr & e){
+z3::expr Purifier::traverse(z3::expr const & e){
   if (e.is_app()) {
     auto f = e.decl();
     
     switch(f.decl_kind()){
-    case Z3_OP_AND:{
-      auto lhs = e.arg(0), rhs = e.arg(1);
-      traverse(lhs);
-      traverse(rhs);
-      return;
-    }
+    case Z3_OP_AND:
+      return f(traverse(e.arg(0)), traverse(e.arg(1)));
     case Z3_OP_EQ:
-    case Z3_OP_DISTINCT:{
-      auto lhs = e.arg(0), rhs = e.arg(1);
-      e = f(purifyEUFTerm(lhs), purifyEUFTerm(rhs));
-      return;
-    }
+    case Z3_OP_DISTINCT:
+      return f(purifyEUFTerm(e.arg(0)), purifyEUFTerm(e.arg(1)));
     case Z3_OP_LE:    
     case Z3_OP_GE:
     case Z3_OP_LT:
-    case Z3_OP_GT:{
-      auto lhs = e.arg(0), rhs = e.arg(1);
-      e = f(purifyOctagonTerm(lhs), purifyOctagonTerm(rhs));
-      return;
-    }
+    case Z3_OP_GT:
+      return f(purifyOctagonTerm(e.arg(0)), purifyOctagonTerm(e.arg(1)));
     default:
       throw "Predicate not allowed";
     }
@@ -66,24 +48,20 @@ void Purifier::traverse(z3::expr & e){
   throw "The expression is not quantifier-free";
 }
 
-z3::expr Purifier::purifyOctagonTerm(z3::expr & e){
+z3::expr Purifier::purifyOctagonTerm(z3::expr const & e){
   if(e.is_app()){
     unsigned num = e.num_args();
     auto f = e.decl();
     
     switch(f.decl_kind()){
-    case Z3_OP_UMINUS: {
-      auto unitary_arg = e.arg(0);
-      return f(purifyOctagonTerm(unitary_arg));
-    }
+    case Z3_OP_UMINUS:
+      return f(purifyOctagonTerm(e.arg(0)));
     case Z3_OP_ADD:
     case Z3_OP_SUB:
     case Z3_OP_MUL:
     case Z3_OP_DIV:
-    case Z3_OP_IDIV:{
-      auto lhs = e.arg(0), rhs = e.arg(1);
-      return f(purifyOctagonTerm(lhs), purifyOctagonTerm(rhs));
-    }
+    case Z3_OP_IDIV:
+      return f(purifyOctagonTerm(e.arg(0)), purifyOctagonTerm(e.arg(1)));
     case Z3_OP_ANUM:
       return e;
     case Z3_OP_UNINTERPRETED:{
@@ -111,7 +89,7 @@ z3::expr Purifier::purifyOctagonTerm(z3::expr & e){
   throw "The expression is not quantifier-free";
 }
 
-z3::expr Purifier::purifyEUFTerm(z3::expr & e){  
+z3::expr Purifier::purifyEUFTerm(z3::expr const & e){
   if(e.is_app()){
     unsigned num = e.num_args();
     auto f = e.decl();
@@ -148,8 +126,7 @@ z3::expr Purifier::purifyEUFTerm(z3::expr & e){
       
       z3::expr_vector args(ctx);
       for(unsigned i = 0; i < num; i++){
-	auto temp_arg = e.arg(i);
-	args.push_back(purifyEUFTerm(temp_arg));
+	args.push_back(purifyEUFTerm(e.arg(i)));
       }
       return f(args);
     }
@@ -165,27 +142,23 @@ void Purifier::split(z3::expr const & e){
   auto f = e.decl();
 
   switch(f.decl_kind()){
-  case Z3_OP_AND:{
+  case Z3_OP_AND:
     split(e.arg(0));
     split(e.arg(1));
     return;
-  }
   case Z3_OP_EQ:
-  case Z3_OP_DISTINCT:{
+  case Z3_OP_DISTINCT:
     // We check the lhs of the equation/disequation
     // because we keep the old term "from" on that
     // side
     switch(e.arg(0).decl().decl_kind()){
-    case Z3_OP_UNINTERPRETED:{
+    case Z3_OP_UNINTERPRETED:
       euf_component.push_back(e);
       return;
-    }
-    default:{
+    default:
       oct_component.push_back(e);
       return;
     }
-    }
-  }
   case Z3_OP_LE:    
   case Z3_OP_GE:
   case Z3_OP_LT:
@@ -198,25 +171,21 @@ void Purifier::split(z3::expr const & e){
   }
 }
 
-z3::expr Purifier::purifyEUFEq(z3::expr & eq){
+z3::expr Purifier::purifyEUFEq(z3::expr const & eq){
   auto f = eq.decl();
   switch(f.decl_kind()){
-  case Z3_OP_EQ:{
-    auto lhs = eq.arg(0), rhs = eq.arg(1);
-    return f(purifyEUFTerm(lhs), purifyEUFTerm(rhs));
-  }
+  case Z3_OP_EQ:
+    return f(purifyEUFTerm(eq.arg(0)), purifyEUFTerm(eq.arg(1)));
   default:
     throw "Not an equality";
   }
 }
 
-z3::expr Purifier::purifyOctEq(z3::expr & eq){
+z3::expr Purifier::purifyOctEq(z3::expr const & eq){
   auto f = eq.decl();
   switch(f.decl_kind()){
-  case Z3_OP_EQ:{
-    auto lhs = eq.arg(0), rhs = eq.arg(1);
-    return f(purifyOctagonTerm(lhs), purifyOctagonTerm(rhs));
-  }
+  case Z3_OP_EQ:
+    return f(purifyOctagonTerm(eq.arg(0)), purifyOctagonTerm(eq.arg(1)));
   default:
     throw "Not an equality";
   }
@@ -224,12 +193,12 @@ z3::expr Purifier::purifyOctEq(z3::expr & eq){
 
 std::ostream & operator << (std::ostream & os, Purifier & p){
   os << "EUF-component" << std::endl;
-  unsigned num_euf = p.euf_component.size();
-  for(unsigned i = 0; i < num_euf; i++)
+  unsigned num = p.euf_component.size();
+  for(unsigned i = 0; i < num; i++)
     os << p.euf_component[i] << std::endl;
   os << "Octagon-component" << std::endl;
-  unsigned num_oct = p.oct_component.size();
-  for(unsigned i = 0; i < num_oct; i++)
+  num = p.oct_component.size();
+  for(unsigned i = 0; i < num; i++)
     os << p.oct_component[i] << std::endl;
   return os;
 }

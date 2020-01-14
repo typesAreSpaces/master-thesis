@@ -25,7 +25,7 @@ int main(){
     && x2 >= x1
     && (x3 - f2(x1, 0) >= 1);
  
-  z3::expr & formula_current_test = formula4;
+  z3::expr & formula_current_test = formula2;
 #if _DEBUG_  
   std::cout << "Original input formula:" << std::endl;
   std::cout << formula_current_test << std::endl;
