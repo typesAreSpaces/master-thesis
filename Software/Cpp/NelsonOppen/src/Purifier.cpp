@@ -1,4 +1,5 @@
 #include "Purifier.h"
+#define _DEBUGPURIFIER_ true
 
 unsigned Purifier::fresh_var_id = 0;
 
@@ -8,6 +9,9 @@ Purifier::Purifier(z3::expr & e) :
   from(e.ctx()), to(e.ctx()){
   purify();
   split(formula);
+#if _DEBUGPURIFIER_
+  std::cout << *this << std::endl;
+#endif
 }
 
 Purifier::~Purifier(){
@@ -191,6 +195,30 @@ void Purifier::split(z3::expr const & e){
   }
   default:
     throw "Predicate not allowed";
+  }
+}
+
+z3::expr Purifier::purifyEUFEq(z3::expr & eq){
+  auto f = eq.decl();
+  switch(f.decl_kind()){
+  case Z3_OP_EQ:{
+    auto lhs = eq.arg(0), rhs = eq.arg(1);
+    return f(purifyEUFTerm(lhs), purifyEUFTerm(rhs));
+  }
+  default:
+    throw "Not an equality";
+  }
+}
+
+z3::expr Purifier::purifyOctEq(z3::expr & eq){
+  auto f = eq.decl();
+  switch(f.decl_kind()){
+  case Z3_OP_EQ:{
+    auto lhs = eq.arg(0), rhs = eq.arg(1);
+    return f(purifyOctagonTerm(lhs), purifyOctagonTerm(rhs));
+  }
+  default:
+    throw "Not an equality";
   }
 }
 

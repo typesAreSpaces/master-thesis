@@ -1,4 +1,5 @@
 #include "ThCombInterpolator.h"
+#define _DEBUGEXTPURIFIER_ false
 
 ThCombInterpolator::ThCombInterpolator(z3::expr & e) :
   Purifier(e),
@@ -176,7 +177,8 @@ std::ostream & operator << (std::ostream & os, ThCombInterpolator & p){
     os << "OCT equalities" << std::endl;
     num = p.oct_consequents.size();
     for(unsigned i = 0; i < num; i++)
-      os << i << ". " << p.oct_consequents[i].arg(0) << " = " << p.oct_consequents[i].arg(1) << std::endl;
+      //      os << i << ". " << p.oct_consequents[i].arg(0) << " = " << p.oct_consequents[i].arg(1) << std::endl;
+      os << i << ". " << p.oct_consequents[i] << std::endl;
 
     auto euf_ans = p.euf_solver.check();
     auto oct_ans = p.oct_solver.check();

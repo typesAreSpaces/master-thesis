@@ -26,13 +26,16 @@ private:
 
   void     purify();
   void     traverse(z3::expr &);
+  void     split(z3::expr const &);
   z3::expr purifyEUFTerm(z3::expr &);
   z3::expr purifyOctagonTerm(z3::expr &);
-  void     split(z3::expr const &);
   
 public:
   Purifier(z3::expr &);
   ~Purifier();
+
+  z3::expr purifyEUFEq(z3::expr &);
+  z3::expr purifyOctEq(z3::expr &);
   
   friend std::ostream & operator << (std::ostream &, Purifier &);
 };

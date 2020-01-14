@@ -1,6 +1,5 @@
 #ifndef _THCOMB_
 #define _THCOMB_
-#define _DEBUGEXTPURIFIER_ false
 
 #include "Purifier.h"
 
