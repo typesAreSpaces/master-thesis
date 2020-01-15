@@ -18,7 +18,7 @@ class ThCombInterpolator : public Purifier{
   void traverseProof(z3::expr const &);
   
 public:
-  ThCombInterpolator(z3::expr &);
+  ThCombInterpolator(z3::expr const &);
   ~ThCombInterpolator();
 
   void collectEqualities();

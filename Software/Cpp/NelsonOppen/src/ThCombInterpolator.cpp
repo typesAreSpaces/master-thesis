@@ -1,7 +1,7 @@
 #include "ThCombInterpolator.h"
 #define _DEBUGEXTPURIFIER_ false
 
-ThCombInterpolator::ThCombInterpolator(z3::expr & e) :
+ThCombInterpolator::ThCombInterpolator(z3::expr const & e) :
   Purifier(e),
   euf_solver(e.ctx(), "QF_UF"), oct_solver(e.ctx(), "QF_LIA"),
   euf_consequents(e.ctx()), oct_consequents(e.ctx())
@@ -30,11 +30,10 @@ void ThCombInterpolator::addConjunction(z3::solver & s, z3::expr const & e){
     if (e.is_app()) {
       z3::func_decl e_decl = e.decl();
       switch(e_decl.decl_kind()){
-      case Z3_OP_AND:{
+      case Z3_OP_AND:
 	addConjunction(s, e.arg(0));
 	addConjunction(s, e.arg(1));
 	return;
-      }
       default:
 	s.add(e);
 	return;
@@ -44,12 +43,12 @@ void ThCombInterpolator::addConjunction(z3::solver & s, z3::expr const & e){
 }
 
 bool ThCombInterpolator::earlyExit(std::vector<bool> & visited, z3::expr const & e){
-  if (visited.size() <= e.id()) {
+  if (visited.size() <= e.id())
     visited.resize(e.id()+1, false);
-  }
-  if (visited[e.id()]) {
+  
+  if (visited[e.id()])
     return true;
-  }
+  
   visited[e.id()] = true;
   return false;
 }
@@ -81,7 +80,9 @@ void ThCombInterpolator::traverseProof(z3::expr const & proof) {
       case Z3_OP_LT:
       case Z3_OP_GT:
 	return;
-      default:
+      default:{
+	std::cout << "consequent " << consequent << std::endl;
+	std::cout << "purified using EUF " << purifyEUFEq(consequent) << std::endl; // Keep working here
 	euf_solver.add(consequent);
 	oct_solver.add(consequent);
 	euf_consequents.push_back(consequent);
@@ -89,6 +90,7 @@ void ThCombInterpolator::traverseProof(z3::expr const & proof) {
 	std::cout << consequent << " added to euf" << std::endl;
 #endif       
 	return;
+      }
       }
     }
       // case Z3_OP_PR_REFLEXIVITY:

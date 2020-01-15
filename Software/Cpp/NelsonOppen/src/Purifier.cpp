@@ -174,8 +174,16 @@ void Purifier::split(z3::expr const & e){
 z3::expr Purifier::purifyEUFEq(z3::expr const & eq){
   auto f = eq.decl();
   switch(f.decl_kind()){
-  case Z3_OP_EQ:
-    return f(purifyEUFTerm(eq.arg(0)), purifyEUFTerm(eq.arg(1)));
+  case Z3_OP_EQ:{
+    auto purified = f(purifyEUFTerm(eq.arg(0)), purifyEUFTerm(eq.arg(1)));
+    unsigned num = from.size();
+    for(unsigned i = 0; i < num; i++)
+      purified = purified && from[i] == to[i];
+    from.resize(0);
+    to.resize(0);
+    return purified;
+    
+  }
   default:
     throw "Not an equality";
   }
@@ -184,8 +192,15 @@ z3::expr Purifier::purifyEUFEq(z3::expr const & eq){
 z3::expr Purifier::purifyOctEq(z3::expr const & eq){
   auto f = eq.decl();
   switch(f.decl_kind()){
-  case Z3_OP_EQ:
-    return f(purifyOctagonTerm(eq.arg(0)), purifyOctagonTerm(eq.arg(1)));
+  case Z3_OP_EQ:{
+    auto purified = f(purifyOctagonTerm(eq.arg(0)), purifyOctagonTerm(eq.arg(1)));
+    unsigned num = from.size();
+    for(unsigned i = 0; i < num; i++)
+      purified = purified && from[i] == to[i];
+    from.resize(0);
+    to.resize(0);
+    return purified;
+  }
   default:
     throw "Not an equality";
   }
