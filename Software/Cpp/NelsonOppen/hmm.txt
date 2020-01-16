@@ -1,2 +1,0 @@
-g++ -g -c -o obj/Purifier.o  -I./include/ -std=c++11 src/Purifier.cpp -Wall
-Makefile:31: recipe for target 'obj/Purifier.o' failed
