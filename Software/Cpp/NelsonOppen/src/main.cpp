@@ -27,7 +27,7 @@ void check_implied_equalities(z3::expr_vector & v, z3::solver & s){
   case Z3_L_UNDEF:
     std::cout << "unknown" << std::endl;
     break;
-  } 
+  }
 }
 
 int main(){
