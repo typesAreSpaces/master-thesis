@@ -5,7 +5,8 @@
 #include <string>
 
 int main(int argc, char ** argv){
-	std::string input_info(argv[1]);
+  
+  std::string input_info(argv[1]);
   std::ifstream file(input_info);
 	
   std::string input;
