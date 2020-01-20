@@ -19,22 +19,23 @@ IDIR = ./include
 ODIR = ./obj
 SDIR = ./src
 CC = g++
-FLAGS = -I$(IDIR)/ -std=c++11
+FLAGS = -I$(IDIR) -std=c++11
 
 SRC = $(wildcard $(SDIR)/*.cpp)
 OBJS = $(patsubst $(SDIR)/%.cpp, $(ODIR)/%.o, $(SRC))
 DEPS = $(wildcard $(IDIR)/*.h)
 
-all: main
+all: thcombination
 
 $(ODIR)/%.o: $(SDIR)/%.cpp $(DEPS)
 	$(CC) -g -c -o $@  $(FLAGS) $< -Wall
 
-main: $(OBJS) $(Z3DIR)/build/libz3.$(Z3EXT)
+thcombination: $(OBJS) $(Z3DIR)/build/libz3.$(Z3EXT)
 	$(CC) -g -o $@ $^ -lpthread -Wall
 
-clean:
-	rm -rf obj/*
+run: thcombination
+	./thcombination
 
-run: main
-	./main
+.PHONY: clean
+clean:
+	rm -rf $(ODIR)/* thcombination

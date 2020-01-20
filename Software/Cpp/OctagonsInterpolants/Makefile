@@ -19,36 +19,36 @@ IDIR = ./include
 ODIR = ./obj
 SDIR = ./src
 CC = g++
-FLAGS = -I$(IDIR)/ -std=c++11
+FLAGS = -I$(IDIR) -std=c++11
 
 SRC = $(wildcard $(SDIR)/*.cpp)
 OBJS = $(patsubst $(SDIR)/%.cpp, $(ODIR)/%.o, $(SRC))
 DEPS = $(wildcard $(IDIR)/*.h)
 
-all: main
-
+all: octagon_interpolator
 
 $(ODIR)/%.o: $(SDIR)/%.cpp $(DEPS)
 	$(CC) -g -c -o $@  $(FLAGS) $< -Wall
 
-main: $(OBJS) $(Z3DIR)/build/libz3.$(Z3EXT)
+octagon_interpolator: $(OBJS) $(Z3DIR)/build/libz3.$(Z3EXT)
 	$(CC) -g -o $@ $^ -lpthread -Wall
 
-clean:
-	rm -f $(OBJS)
-
-runsmt2: ./main
-	for files in /home/jose/Documents/GithubProjects/master-thesis/Software/Cpp/OctagonsInterpolants/tests/smtlib2/*; do \
+run: ./octagon_interpolator
+	for files in ./tests/smtlib2/*; do \
 		echo $$files; \
-		./main $$files x2; \
+		./octagon_interpolator $$files x2; \
 	done
 
-old-format: ./main
-	for files in /home/jose/Documents/GithubProjects/master-thesis/Software/Cpp/OctagonsInterpolants/tests/in_format/*; do \
-		./main $$files; \
+old-format: ./octagon_interpolator
+	for files in ./tests/in_format/*; do \
+		./octagon_interpolator $$files; \
 	done
 
-valgrind-old: ./main
-	for files in /home/jose/Documents/GithubProjects/master-thesis/Software/Cpp/OctagonsInterpolants/tests/in_format/*; do \
-		valgrind ./main $$files; \
+valgrind-old: ./octagon_interpolator
+	for files in ./tests/in_format/*; do \
+		valgrind ./octagon_interpolator $$files; \
 	done
+
+.PHONY: clean
+clean:
+	rm -rf $(ODIR)/* octagon_interpolator

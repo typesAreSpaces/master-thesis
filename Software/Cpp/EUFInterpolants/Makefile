@@ -35,6 +35,7 @@ $(ODIR)/%.o: $(SDIR)/%.cpp $(DEPS)
 euf_interpolator: $(OBJS) $(Z3DIR)/build/libz3.$(Z3EXT)
 	$(CC) -g -o $@ $^ -lpthread -Wall
 
+# no longer used
 check_correctness_congruence_closure:
 	$(CC) -o $(CONGRUENCE_CLOSURE_TEST)/$@ $(CONGRUENCE_CLOSURE_TEST)/congruence_closure_performance.cpp -I./include -I./src -std=c++11 obj/CircularList.o obj/CongruenceClosure.o obj/Signature.o obj/SignatureTable.o obj/Terms.o obj/UnionFind.o obj/Term.o $(Z3DIR)/build/libz3.$(Z3EXT)
 	rm -rf $(CONGRUENCE_CLOSURE_TEST)/$@.txt
@@ -45,6 +46,7 @@ check_correctness_congruence_closure:
 		done; \
 	done
 
+# no longer used
 check_performance_congruence_closure:
 	$(CC) -o $(CONGRUENCE_CLOSURE_TEST)/$@ $(CONGRUENCE_CLOSURE_TEST)/congruence_closure_performance.cpp -I./include -I./src -std=c++11 obj/CircularList.o obj/CongruenceClosure.o obj/Signature.o obj/SignatureTable.o obj/Terms.o obj/UnionFind.o obj/Term.o $(Z3DIR)/build/libz3.$(Z3EXT)
 	rm -rf $(CONGRUENCE_CLOSURE_TEST)/$@.txt
