@@ -62,43 +62,43 @@ check_performance_congruence_closure:
 	./$(CONGRUENCE_CLOSURE_TEST)/processing $(CONGRUENCE_CLOSURE_TEST)/$@.txt > $(CONGRUENCE_CLOSURE_TEST)/results.txt
 
 run : euf_interpolator
-#	./euf_interpolator ./tests/smtlib2_files/kapurEUFExample.smt2 v
-#	./euf_interpolator ./tests/smtlib2_files/simple.smt2 f 
-#	./euf_interpolator ./tests/smtlib2_files/simple2.smt2 f
-	./euf_interpolator ./tests/smtlib2_files/simple2_2.smt2 f
-#	./euf_interpolator ./tests/smtlib2_files/simple3.smt2 f
-#	./euf_interpolator ./tests/smtlib2_files/three_arguments.smt2 f
-#	./euf_interpolator ./tests/smtlib2_files/three_arguments2.smt2 f
-#	./euf_interpolator ./tests/smtlib2_files/three_arguments3.smt2 f
-#	./euf_interpolator ./tests/smtlib2_files/kapurEUFExample2.smt2 f
+#	./euf_interpolator ./tests/smtlib_files/kapurEUFExample.smt2 v
+#	./euf_interpolator ./tests/smtlib_files/simple.smt2 f 
+#	./euf_interpolator ./tests/smtlib_files/simple2.smt2 f
+	./euf_interpolator ./tests/smtlib_files/simple2_2.smt2 f
+#	./euf_interpolator ./tests/smtlib_files/simple3.smt2 f
+#	./euf_interpolator ./tests/smtlib_files/three_arguments.smt2 f
+#	./euf_interpolator ./tests/smtlib_files/three_arguments2.smt2 f
+#	./euf_interpolator ./tests/smtlib_files/three_arguments3.smt2 f
+#	./euf_interpolator ./tests/smtlib_files/kapurEUFExample2.smt2 f
 #	./euf_interpolator /home/jose/Downloads/QF_UF-master/2018-Goel-hwbench/QF_UF_firewire_tree.5.prop3_ab_reg_max.smt2 f
 #	./euf_interpolator /home/jose/Downloads/QF_UF-master/2018-Goel-hwbench/QF_UF_firewire_tree.5.prop3_ab_reg_max.smt2 y$1
 #	./euf_interpolator /home/jose/Downloads/QF_UF-master/2018-Goel-hwbench/QF_UF_firewire_tree.3.prop2_ab_reg_max.smt2 f
 #	./euf_interpolator /home/jose/Downloads/QF_UF-master/2018-Goel-hwbench/QF_UF_needham.3.prop4_ab_reg_max.smt2 f
 
 debug : euf_interpolator
-	gdb --args ./euf_interpolator ./tests/smtlib2_files/kapurEUFExample.smt2 v
-#	gdb --args ./euf_interpolator ./tests/smtlib2_files/simple.smt2 f 
-#	gdb --args ./euf_interpolator ./tests/smtlib2_files/simple2.smt2 f
-#	gdb --args ./euf_interpolator ./tests/smtlib2_files/simple3.smt2 f
-#	gcd --args ./euf_interpolator ./tests/smtlib2_files/three_arguments.smt2 f
-#	gcd --args ./euf_interpolator ./tests/smtlib2_files/three_arguments2.smt2 f
-#	gcd --args ./euf_interpolator ./tests/smtlib2_files/three_arguments3.smt2 f		
-#	gdb --args ./euf_interpolator ./tests/smtlib2_files/kapurEUFExample2.smt2 f
+	gdb --args ./euf_interpolator ./tests/smtlib_files/kapurEUFExample.smt2 v
+#	gdb --args ./euf_interpolator ./tests/smtlib_files/simple.smt2 f 
+#	gdb --args ./euf_interpolator ./tests/smtlib_files/simple2.smt2 f
+#	gdb --args ./euf_interpolator ./tests/smtlib_files/simple3.smt2 f
+#	gcd --args ./euf_interpolator ./tests/smtlib_files/three_arguments.smt2 f
+#	gcd --args ./euf_interpolator ./tests/smtlib_files/three_arguments2.smt2 f
+#	gcd --args ./euf_interpolator ./tests/smtlib_files/three_arguments3.smt2 f		
+#	gdb --args ./euf_interpolator ./tests/smtlib_files/kapurEUFExample2.smt2 f
 #	gdb --args ./euf_interpolator /home/jose/Downloads/QF_UF-master/2018-Goel-hwbench/QF_UF_firewire_tree.5.prop3_ab_reg_max.smt2 f
 #	gdb --args ./euf_interpolator /home/jose/Downloads/QF_UF-master/2018-Goel-hwbench/QF_UF_firewire_tree.5.prop3_ab_reg_max.smt2 y$1
 #	gdb --args ./euf_interpolator /home/jose/Downloads/QF_UF-master/2018-Goel-hwbench/QF_UF_firewire_tree.3.prop2_ab_reg_max.smt2 f
 #	gdb --args ./euf_interpolator /home/jose/Downloads/QF_UF-master/2018-Goel-hwbench/QF_UF_needham.3.prop4_ab_reg_max.smt2 f
 
 valgrind : euf_interpolator
-	valgrind ./euf_interpolator ./tests/smtlib2_files/kapurEUFExample.smt2 v
-#	valgrind ./euf_interpolator ./tests/smtlib2_files/simple.smt2 f 
-#	valgrind ./euf_interpolator ./tests/smtlib2_files/simple2.smt2 f
-#	valgrind ./euf_interpolator ./tests/smtlib2_files/simple2.smt3 f
-#	valgrind ./euf_interpolator ./tests/smtlib2_files/three_arguments.smt2 f
-#	valgrind ./euf_interpolator ./tests/smtlib2_files/three_arguments2.smt2 f
-#	valgrind ./euf_interpolator ./tests/smtlib2_files/three_arguments3.smt2 f
-#	valgrind ./euf_interpolator ./tests/smtlib2_files/kapurEUFExample2.smt2 f
+	valgrind ./euf_interpolator ./tests/smtlib_files/kapurEUFExample.smt2 v
+#	valgrind ./euf_interpolator ./tests/smtlib_files/simple.smt2 f 
+#	valgrind ./euf_interpolator ./tests/smtlib_files/simple2.smt2 f
+#	valgrind ./euf_interpolator ./tests/smtlib_files/simple2.smt3 f
+#	valgrind ./euf_interpolator ./tests/smtlib_files/three_arguments.smt2 f
+#	valgrind ./euf_interpolator ./tests/smtlib_files/three_arguments2.smt2 f
+#	valgrind ./euf_interpolator ./tests/smtlib_files/three_arguments3.smt2 f
+#	valgrind ./euf_interpolator ./tests/smtlib_files/kapurEUFExample2.smt2 f
 #	valgrind ./euf_interpolator /home/jose/Downloads/QF_UF-master/2018-Goel-hwbench/QF_UF_firewire_tree.5.prop3_ab_reg_max.smt2 f
 #	valgrind ./euf_interpolator /home/jose/Downloads/QF_UF-master/2018-Goel-hwbench/QF_UF_firewire_tree.5.prop3_ab_reg_max.smt2 y$1
 #	valgrind ./euf_interpolator /home/jose/Downloads/QF_UF-master/2018-Goel-hwbench/QF_UF_firewire_tree.3.prop2_ab_reg_max.smt2 f

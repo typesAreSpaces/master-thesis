@@ -7,3 +7,4 @@
 	    (and (= x y) (distinct (f x) (f y)))
 )
 (assert input_formula)
+(compute-elim-interpolant input_formula f x f y)
