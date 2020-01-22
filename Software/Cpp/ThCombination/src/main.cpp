@@ -69,7 +69,8 @@ int main(){
   // std::cout << p << std::endl;
 
   z3::solver s(ctx, "QF_UFLIA");
-  s.add(formula1);
+  s.add(formula5);
+  
   
   z3::expr_vector terms(ctx);
   terms.push_back(x1);
