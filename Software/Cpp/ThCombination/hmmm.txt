@@ -1,68 +1,39 @@
 unit-resolution(asserted(p(x)),
-                mp(mp(asserted(Not(p(a1))),
-                      monotonicity(monotonicity(asserted(a1 ==
-                                        1),
-                                        p(a1) == p(1)),
-                                   Not(p(a1)) == Not(p(1))),
-                      Not(p(1))),
-                   monotonicity(symm(monotonicity(th-lemma(asserted(x >=
-                                        1),
-                                        unit-resolution(unit-resolution(th-lemma(Or(x ==
-                                        2,
-                                        Not(x <= 2),
-                                        Not(x >= 2))),
-                                        unit-resolution(th-lemma(Or(x <=
-                                        2,
-                                        x >= 3)),
-                                        unit-resolution(unit-resolution(th-lemma(Or(x ==
-                                        3,
-                                        Not(x <= 3),
-                                        Not(x >= 3))),
-                                        asserted(x <= 3),
-                                        Or(x == 3,
-                                        Not(x >= 3))),
-                                        lemma(unit-resolution(asserted(p(x)),
-                                        mp(mp(asserted(Not(p(a3))),
-                                        monotonicity(monotonicity(asserted(a3 ==
-                                        3),
-                                        p(a3) == p(3)),
-                                        Not(p(a3)) ==
-                                        Not(p(3))),
-                                        Not(p(3))),
-                                        monotonicity(symm(monotonicity(hypothesis(x ==
-                                        3),
-                                        p(x) == p(3)),
-                                        p(3) == p(x)),
-                                        Not(p(3)) ==
-                                        Not(p(x))),
-                                        Not(p(x))),
-                                        False),
-                                        Not(x == 3)),
-                                        Not(x >= 3)),
-                                        x <= 2),
-                                        Or(x == 2,
-                                        Not(x >= 2))),
-                                        lemma(unit-resolution(asserted(p(x)),
-                                        mp(mp(asserted(Not(p(a2))),
-                                        monotonicity(monotonicity(asserted(a2 ==
+                mp(mp(asserted(Not(p(a2))),
+                      monotonicity(monotonicity(asserted(a2 ==
                                         2),
                                         p(a2) == p(2)),
-                                        Not(p(a2)) ==
-                                        Not(p(2))),
-                                        Not(p(2))),
+                                   Not(p(a2)) == Not(p(2))),
+                      Not(p(2))),
+                   monotonicity(symm(monotonicity(th-lemma(unit-resolution(unit-resolution(th-lemma(Or(x ==
+                                        1,
+                                        Not(x <= 1),
+                                        Not(x >= 1))),
+                                        asserted(x >= 1),
+                                        Or(x == 1,
+                                        Not(x <= 1))),
+                                        lemma(unit-resolution(asserted(p(x)),
+                                        mp(mp(asserted(Not(p(a1))),
+                                        monotonicity(monotonicity(asserted(a1 ==
+                                        1),
+                                        p(a1) == p(1)),
+                                        Not(p(a1)) ==
+                                        Not(p(1))),
+                                        Not(p(1))),
                                         monotonicity(symm(monotonicity(hypothesis(x ==
-                                        2),
-                                        p(x) == p(2)),
-                                        p(2) == p(x)),
-                                        Not(p(2)) ==
+                                        1),
+                                        p(x) == p(1)),
+                                        p(1) == p(x)),
+                                        Not(p(1)) ==
                                         Not(p(x))),
                                         Not(p(x))),
                                         False),
-                                        Not(x == 2)),
-                                        Not(x >= 2)),
-                                        x == 1),
-                                        p(x) == p(1)),
-                                     p(1) == p(x)),
-                                Not(p(1)) == Not(p(x))),
+                                        Not(x == 1)),
+                                        Not(x <= 1)),
+                                        asserted(x <= 2),
+                                        x == 2),
+                                        p(x) == p(2)),
+                                     p(2) == p(x)),
+                                Not(p(2)) == Not(p(x))),
                    Not(p(x))),
                 False)
