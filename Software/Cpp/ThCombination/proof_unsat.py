@@ -3,13 +3,14 @@
 from z3 import *
 
 set_param(proof=True)
+set_param(v2=True)
 
 Z = IntSort()
 x1, x2, x3 = Ints("x1 x2 x3")
 f = Function("f", Z, Z, Z)
 
 s = Solver()
-s.set("smt.mbqi", False)
+# s.set(mbqi=True)
 # s.push()
 # s.add(f(x1, 0) >= x3)
 # s.add((x3- f(x1, 0)) >= 1)
@@ -18,6 +19,7 @@ s.set("smt.mbqi", False)
 # s.pop()
 
 s.push()
+print s.help()
 B = BoolSort()
 p = Function("p", Z, B)
 a1, a2, a3, x = Ints("a1 a2 a3 x")
