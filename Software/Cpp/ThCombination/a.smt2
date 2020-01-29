@@ -1,0 +1,8 @@
+(set-option :produce-proofs true)
+(declare-fun a () Int)
+(declare-fun b () Int)
+(declare-fun c () Int)
+(define-fun conj () Bool (iff (distinct a c) (distinct (+ a b) (+ c b))))
+(assert (not conj))
+(check-sat)
+(get-proof)
