@@ -1,397 +1,72 @@
-abce (bool) eliminate blocked clauses using asymmetric literals (default: false)
-acce (bool) eliminate covered clauses using asymmetric added literals (default: false)
-add_bound_lower (rational) (default: -2) lower bound to be added to unbounded variables.
-add_bound_upper (rational) (default: 2) upper bound to be added to unbounded variables.
-aig_per_assertion (bool) (default: true) process one assertion at a time.
-algebraic_number_evaluator (bool) simplify/evaluate expressions containing (algebraic) irrational numbers. (default: true)
-arith.auto_config_simplex (bool) force simplex solver in auto_config (default: false)
-arith.branch_cut_ratio (unsigned int) branch/cut ratio for linear integer arithmetic (default: 2)
-arith.dump_lemmas (bool) dump arithmetic theory lemmas to files (default: false)
-arith.eager_eq_axioms (bool) eager equality axioms (default: true)
-arith.euclidean_solver (bool) eucliean solver for linear integer arithmetic (default: false)
-arith.greatest_error_pivot (bool) Pivoting strategy (default: false)
-arith.ignore_int (bool) treat integer variables as real (default: false)
-arith.int_eq_branch (bool) branching using derived integer equations (default: false)
-arith.nl (bool) (incomplete) nonlinear arithmetic support based on Groebner basis and interval propagation (default: true)
-arith.nl.branching (bool) branching on integer variables in non linear clusters (default: true)
-arith.nl.gb (bool) groebner Basis computation, this option is ignored when arith.nl=false (default: true)
-arith.nl.rounds (unsigned int) threshold for number of (nested) final checks for non linear arithmetic (default: 1024)
-arith.propagate_eqs (bool) propagate (cheap) equalities (default: true)
-arith.propagation_mode (unsigned int) 0 - no propagation, 1 - propagate existing literals, 2 - refine bounds (default: 2)
-arith.random_initial_value (bool) use random initial values in the simplex-based procedure for linear arithmetic (default: false)
-arith.reflect (bool) reflect arithmetical operators to the congruence closure (default: true)
-arith.solver (unsigned int) arithmetic solver: 0 - no solver, 1 - bellman-ford based solver (diff. logic only), 2 - simplex based solver, 3 - floyd-warshall based solver (diff. logic only) and no theory combination 4 - utvpi, 5 - infinitary lra, 6 - lra solver (default: 2)
-arith_ineq_lhs (bool) rewrite inequalities so that right-hand-side is a constant. (default: false)
-arith_lhs (bool) all monomials are moved to the left-hand-side, and the right-hand-side is just a constant. (default: false)
-array.extensional (bool) extensional array theory (default: true)
-array.weak (bool) weak array theory (default: false)
-asymm_branch (bool) asymmetric branching (default: true)
-asymm_branch.all (bool) asymmetric branching on all literals per clause (default: false)
-asymm_branch.delay (unsigned int) number of simplification rounds to wait until invoking asymmetric branch simplification (default: 1)
-asymm_branch.limit (unsigned int) approx. maximum number of literals visited during asymmetric branching (default: 100000000)
-asymm_branch.rounds (unsigned int) maximal number of rounds to run asymmetric branch simplifications if progress is made (default: 2)
-asymm_branch.sampled (bool) use sampling based asymmetric branching based on binary implication graph (default: true)
-ate (bool) asymmetric tautology elimination (default: true)
-auto_config (bool) automatically configure solver (default: true)
-backtrack.conflicts (unsigned int) number of conflicts before enabling chronological backtracking (default: 4000)
-backtrack.scopes (unsigned int) number of scopes to enable chronological backtracking (default: 100)
-bca (bool) blocked clause addition - add blocked binary clauses (default: false)
-bce (bool) eliminate blocked clauses (default: false)
-bce_at (unsigned int) eliminate blocked clauses only once at the given simplification round (default: 2)
-bce_delay (unsigned int) delay eliminate blocked clauses until simplification round (default: 2)
-binspr (bool) enable SPR inferences of binary propagation redundant clauses. This inprocessing step eliminates models (default: false)
-bit2bool (bool) try to convert bit-vector terms of size 1 into Boolean terms (default: true)
-blast_add (bool) (default: true) bit-blast adders.
-blast_distinct (bool) expand a distinct predicate into a quadratic number of disequalities (default: false)
-blast_distinct_threshold (unsigned int) when blast_distinct is true, only distinct expressions with less than this number of arguments are blasted (default: 4294967295)
-blast_eq_value (bool) blast (some) Bit-vector equalities into bits (default: false)
-blast_full (bool) (default: false) bit-blast any term with bit-vector sort, this option will make E-matching ineffective in any pattern containing bit-vector terms.
-blast_mul (bool) (default: true) bit-blast multipliers (and dividers, remainders).
-blast_quant (bool) (default: false) bit-blast quantified variables.
-blocked_clause_limit (unsigned int) maximum number of literals visited during blocked clause elimination (default: 100000000)
-bprop_on_pivoted_rows (bool) propagate bounds on rows changed by the pivot operation (default: true)
-branching.anti_exploration (bool) apply anti-exploration heuristic for branch selection (default: false)
-branching.heuristic (symbol) branching heuristic vsids, lrb or chb (default: vsids)
-burst_search (unsigned int) number of conflicts before first global simplification (default: 100)
-bv.enable_int2bv (bool) enable support for int2bv and bv2int operators (default: true)
-bv.reflect (bool) create enode for every bit-vector term (default: true)
-bv_extract_prop (bool) attempt to partially propagate extraction inwards (default: false)
-bv_ineq_consistency_test_max (unsigned int) max size of conjunctions on which to perform consistency test based on inequalities on bitvectors. (default: 0)
-bv_ite2id (bool) rewrite ite that can be simplified to identity (default: false)
-bv_le_extra (bool) additional bu_(u/s)le simplifications (default: false)
-bv_not_simpl (bool) apply simplifications for bvnot (default: false)
-bv_sort_ac (bool) sort the arguments of all AC operators (default: false)
-bv_trailing (bool) lean removal of trailing zeros (default: false)
-bv_urem_simpl (bool) additional simplification for bvurem (default: false)
-bvnot2arith (bool) replace (bvnot x) with (bvsub -1 x) (default: false)
-cache_all (bool) cache all intermediate results. (default: false)
-cancel_backup_file (symbol) file to save partial search state if search is canceled (default: )
-candidate_models (bool) (default: false) create candidate models even when quantifier or theory reasoning is incomplete.
-cardinality.encoding (symbol) encoding used for at-most-k constraints: grouped, bimander, ordered, unate, circuit (default: grouped)
-cardinality.solver (bool) use cardinality solver (default: true)
-case_split (unsigned int) 0 - case split based on variable activity, 1 - similar to 0, but delay case splits created during the search, 2 - similar to 0, but cache the relevancy, 3 - case split based on relevancy (structural splitting), 4 - case split on relevancy and activity, 5 - case split on relevancy and current goal, 6 - activity-based case split with theory-aware branching activity (default: 1)
-cce (bool) eliminate covered clauses (default: false)
-check_lemmas (bool) check lemmas on the fly using an independent nlsat solver (default: false)
-clause_proof (bool) record a clausal proof (default: false)
-cofactor_equalities (bool) (default: true) use equalities to rewrite bodies of ite-expressions. This is potentially expensive.
-common_patterns (bool) (default: true) minimize the number of auxiliary variables during CNF encoding by identifing commonly used patterns
-compact (bool) try to compact function graph (i.e., function interpretations that are lookup tables) (default: true)
-compile_equality (bool) (default:false) compile equalities into pseudo-Boolean equality
-complete (bool) (default: true) add constraints to make sure that any interpretation of a underspecified arithmetic operators is a function. The result will include additional uninterpreted functions/constants: /0, div0, mod0, 0^0, neg-root
-completion (bool) enable/disable model completion (default: false)
-context_solve (bool) (default: false) solve equalities under disjunctions.
-core.extend_nonlocal_patterns (bool) extend unsat cores with literals that have quantifiers with patterns that contain symbols which are not in the quantifier's body (default: false)
-core.extend_patterns (bool) extend unsat core with literals that trigger (potential) quantifier instances (default: false)
-core.extend_patterns.max_distance (unsigned int) limits the distance of a pattern-extended unsat core (default: 4294967295)
-core.minimize (bool) minimize computed core (default: false)
-core.minimize_partial (bool) apply partial (cheap) core minimization (default: false)
-core.validate (bool) validate unsat core produced by SMT context (default: false)
-ctrl_c (bool) enable interrupts from ctrl-c (default: true)
-dack (unsigned int) 0 - disable dynamic ackermannization, 1 - expand Leibniz's axiom if a congruence is the root of a conflict, 2 - expand Leibniz's axiom if a congruence is used during conflict resolution (default: 1)
-dack.eq (bool) enable dynamic ackermannization for transtivity of equalities (default: false)
-dack.factor (double) number of instance per conflict (default: 0.1)
-dack.gc (unsigned int) Dynamic ackermannization garbage collection frequency (per conflict) (default: 2000)
-dack.gc_inv_decay (double) Dynamic ackermannization garbage collection decay (default: 0.8)
-dack.threshold (unsigned int)  number of times the congruence rule must be used before Leibniz's axiom is expanded (default: 10)
-ddfw.init_clause_weight (unsigned int) initial clause weight for DDFW local search (default: 8)
-ddfw.reinit_base (unsigned int) increment basis for geometric backoff scheme of re-initialization of weights (default: 10000)
-ddfw.restart_base (unsigned int) number of flips used a starting point for hessitant restart backoff (default: 100000)
-ddfw.threads (unsigned int) number of ddfw threads to run in parallel with sat solver (default: 0)
-ddfw.use_reward_pct (unsigned int) percentage to pick highest reward variable when it has reward 0 (default: 15)
-ddfw_search (bool) use ddfw local search instead of CDCL (default: false)
-delay_units (bool) if true then z3 will not restart when a unit clause is learned (default: false)
-delay_units_threshold (unsigned int) maximum number of learned unit clauses before restarting, ignored if delay_units is false (default: 32)
-dimacs.core (bool) extract core from DIMACS benchmarks (default: false)
-distributivity (bool) (default: true) minimize the number of auxiliary variables during CNF encoding by applying distributivity over unshared subformulas
-distributivity_blowup (unsigned int) (default: 32) maximum overhead for applying distributivity during CNF encoding
-div0_ackermann_limit (unsigned int) a bound for number of congruence Ackermann lemmas for div0 modelling (default: 1000)
-drat.activity (bool) dump variable activities (default: false)
-drat.binary (bool) use Binary DRAT output format (default: false)
-drat.check_sat (bool) build up internal trace, check satisfying model (default: false)
-drat.check_unsat (bool) build up internal proof and check (default: false)
-drat.file (symbol) file to dump DRAT proofs (default: )
-dt_lazy_splits (unsigned int) How lazy datatype splits are performed: 0- eager, 1- lazy for infinite types, 2- lazy (default: 1)
-dyn_sub_res (bool) dynamic subsumption resolution for minimizing learned clauses (default: true)
-elim_and (bool) conjunctions are rewritten using negation and disjunctions (default: false)
-elim_inverses (bool) (default: true) eliminate inverse trigonometric functions (asin, acos, atan).
-elim_ite (bool) eliminate ite in favor of and/or (default: true)
-elim_rem (bool) replace (rem x y) with (ite (>= y 0) (mod x y) (- (mod x y))). (default: false)
-elim_root_objects (bool) (default: true) eliminate root objects.
-elim_sign_ext (bool) expand sign-ext operator using concat and extract (default: true)
-elim_to_real (bool) eliminate to_real from arithmetic predicates that contain only integers. (default: false)
-elim_vars (bool) enable variable elimination using resolution during simplification (default: true)
-elim_vars_bdd (bool) enable variable elimination using BDD recompilation during simplification (default: true)
-elim_vars_bdd_delay (unsigned int) delay elimination of variables using BDDs until after simplification round (default: 3)
-eliminate_variables_as_block (bool) (default: true) eliminate variables as a block (true) or one at a time (false)
-ematching (bool) E-Matching based quantifier instantiation (default: true)
-enable_hnf (bool) enable hnf cuts (default: true)
-enforce_model_conversion (bool) apply model transformation on new assertions (default: false)
-eq2ineq (bool) expand equalities into two inequalities (default: false)
-expand_nested_stores (bool) replace nested stores by a lambda expression (default: false)
-expand_power (bool) expand (^ t k) into (* t ... t) if  1 < k <= max_degree. (default: false)
-expand_select_store (bool) replace a (select (store ...) ...) term by an if-then-else term (default: false)
-expand_store_eq (bool) reduce (store ...) = (store ...) with a common base into selects (default: false)
-expand_tan (bool) replace (tan x) with (/ (sin x) (cos x)). (default: false)
-factor (bool) (default: true) factor polynomials.
-factor_max_prime (unsigned int) parameter for the polynomial factorization procedure in the algebraic number module. Z3 polynomial factorization is composed of three steps: factorization in GF(p), lifting and search. This parameter limits the maximum prime number p to be used in the first step (default: 31)
-factor_num_primes (unsigned int) parameter for the polynomial factorization procedure in the algebraic number module. Z3 polynomial factorization is composed of three steps: factorization in GF(p), lifting and search. The search space may be reduced by factoring the polynomial in different GF(p)'s. This parameter specify the maximum number of finite factorizations to be considered, before lifiting and searching (default: 1)
-factor_search_size (unsigned int) parameter for the polynomial factorization procedure in the algebraic number module. Z3 polynomial factorization is composed of three steps: factorization in GF(p), lifting and search. This parameter can be used to limit the search space (default: 5000)
-fail_if_inconclusive (bool) (default: true) fail if found unsat (sat) for under (over) approximated goal.
-flat (bool) create nary applications for and,or,+,*,bvadd,bvmul,bvand,bvor,bvxor (default: true)
-force_cleanup (bool) force cleanup to remove tautologies and simplify clauses (default: false)
-gc (symbol) garbage collection strategy: psm, glue, glue_psm, dyn_psm (default: glue_psm)
-gc.burst (bool) perform eager garbage collection during initialization (default: false)
-gc.defrag (bool) defragment clauses when garbage collecting (default: true)
-gc.increment (unsigned int) increment to the garbage collection threshold (default: 500)
-gc.initial (unsigned int) learned clauses garbage collection frequency (default: 20000)
-gc.k (unsigned int) learned clauses that are inactive for k gc rounds are permanently deleted (only used in dyn_psm) (default: 7)
-gc.small_lbd (unsigned int) learned clauses with small LBD are never deleted (only used in dyn_psm) (default: 3)
-gcd_rounding (bool) use gcd rounding on integer arithmetic atoms. (default: false)
-hi_div0 (bool) use the 'hardware interpretation' for division by zero (for bit-vector terms) (default: true)
-hoist_cmul (bool) hoist constant multiplication over summation to minimize number of multiplications (default: false)
-hoist_ite (bool) hoist shared summands under ite expressions (default: false)
-hoist_mul (bool) hoist multiplication over summation to minimize number of multiplications (default: false)
-ignore_labels (bool) remove/ignore labels in the input formula, this option is ignored if proofs are enabled (default: false)
-ignore_patterns_on_ground_qbody (bool) ignores patterns on quantifiers that don't mention their bound variables. (default: true)
-ignore_solver1 (bool) if true, solver 2 is always used (default: false)
-inline_def (bool) inline local function definitions ignoring possible expansion (default: false)
-inline_vars (bool) inline variables that can be isolated from equations (default: false)
-inprocess.max (unsigned int) maximal number of inprocessing passes (default: 4294967295)
-ite_chaing (bool) (default: true) minimize the number of auxiliary variables during CNF encoding by identifing if-then-else chains
-ite_extra (bool) (default: true) add redundant clauses (that improve unit propagation) when encoding if-then-else formulas
-ite_extra_rules (bool) extra ite simplifications, these additional simplifications may reduce size locally but increase globally (default: false)
-ite_solver (bool) (default: true) use if-then-else solver.
-keep_cardinality_constraints (bool) (default: false) retain cardinality constraints (don't bit-blast them) and use built-in cardinality solver
-lazy (unsigned int) how lazy the solver is. (default: 0)
-learned (bool) (default: false) collect also learned clauses.
-lemma_gc_strategy (unsigned int) lemma garbage collection strategy: 0 - fixed, 1 - geometric, 2 - at restart, 3 - none (default: 0)
-lia2pb_max_bits (unsigned int) (default: 32) maximum number of bits to be used (per variable) in lia2pb.
-lia2pb_partial (bool) (default: false) partial lia2pb conversion.
-lia2pb_total_bits (unsigned int) (default: 2048) total number of bits to be used (per problem) in lia2pb.
-local_ctx (bool) perform local (i.e., cheap) context simplifications (default: false)
-local_ctx_limit (unsigned int) limit for applying local context simplifier (default: 4294967295)
-local_search (bool) use local search instead of CDCL (default: false)
-local_search_dbg_flips (bool) write debug information for number of flips (default: false)
-local_search_mode (symbol) local search algorithm, either default wsat or qsat (default: wsat)
-local_search_threads (unsigned int) number of local search threads to find satisfiable solution (default: 0)
-log_lemmas (bool) display lemmas as self-contained SMT formulas (default: false)
-logic (symbol) logic used to setup the SMT solver (default: )
-lookahead.cube.cutoff (symbol) cutoff type used to create lookahead cubes: depth, freevars, psat, adaptive_freevars, adaptive_psat (default: depth)
-lookahead.cube.depth (unsigned int) cut-off depth to create cubes. Used when lookahead.cube.cutoff is depth. (default: 1)
-lookahead.cube.fraction (double) adaptive fraction to create lookahead cubes. Used when lookahead.cube.cutoff is adaptive_freevars or adaptive_psat (default: 0.4)
-lookahead.cube.freevars (double) cube free variable fraction. Used when lookahead.cube.cutoff is freevars (default: 0.8)
-lookahead.cube.psat.clause_base (double) clause base for PSAT cutoff (default: 2)
-lookahead.cube.psat.trigger (double) trigger value to create lookahead cubes for PSAT cutoff. Used when lookahead.cube.cutoff is psat (default: 5)
-lookahead.cube.psat.var_exp (double) free variable exponent for PSAT cutoff (default: 1)
-lookahead.delta_fraction (double) number between 0 and 1, the smaller the more literals are selected for double lookahead (default: 1.0)
-lookahead.double (bool) enable doubld lookahead (default: true)
-lookahead.global_autarky (bool) prefer to branch on variables that occur in clauses that are reduced (default: false)
-lookahead.preselect (bool) use pre-selection of subset of variables for branching (default: false)
-lookahead.reward (symbol) select lookahead heuristic: ternary, heule_schur (Heule Schur), heuleu (Heule Unit), unit, or march_cu (default: march_cu)
-lookahead.use_learned (bool) use learned clauses when selecting lookahead literal (default: false)
-lookahead_scores (bool) extract lookahead scores. A utility that can only be used from the DIMACS front-end (default: false)
-lookahead_simplify (bool) use lookahead solver during simplification (default: false)
-lookahead_simplify.bca (bool) add learned binary clauses as part of lookahead simplification (default: true)
-macro_finder (bool) try to find universally quantified formulas that can be viewed as macros (default: false)
-max_args (unsigned int) (default: 128) maximum number of arguments (per application) that will be considered by the greedy (quadratic) heuristic.
-max_conflicts (unsigned int) maximum number of conflicts (default: 4294967295)
-max_degree (unsigned int) max degree of algebraic numbers (and power operators) processed by simplifier. (default: 64)
-max_depth (unsigned int) (default: 1024) maximum term depth.
-max_memory (unsigned int) maximum amount of memory in megabytes (default: 4294967295)
-max_prime (unsigned int) (default: infty) Z3 polynomial factorization is composed of three steps: factorization in GF(p), lifting and search. This parameter limits the maximum prime number p to be used in the first step.
-max_rounds (unsigned int) (default: 4) maximum number of rounds.
-max_search_size (unsigned int) (default: infty) Z3 polynomial factorization is composed of three steps: factorization in GF(p), lifting and search. This parameter can be used to limit the search space.
-max_steps (unsigned int) maximum number of steps (default: 4294967295)
-mbqi (bool) model based quantifier instantiation (MBQI) (default: true)
-mbqi.force_template (unsigned int) some quantifiers can be used as templates for building interpretations for functions. Z3 uses heuristics to decide whether a quantifier will be used as a template or not. Quantifiers with weight >= mbqi.force_template are forced to be used as a template (default: 10)
-mbqi.id (string) Only use model-based instantiation for quantifiers with id's beginning with string (default: )
-mbqi.max_cexs (unsigned int) initial maximal number of counterexamples used in MBQI, each counterexample generates a quantifier instantiation (default: 1)
-mbqi.max_cexs_incr (unsigned int) increment for MBQI_MAX_CEXS, the increment is performed after each round of MBQI (default: 0)
-mbqi.max_iterations (unsigned int) maximum number of rounds of MBQI (default: 1000)
-mbqi.trace (bool) generate tracing messages for Model Based Quantifier Instantiation (MBQI). It will display a message before every round of MBQI, and the quantifiers that were not satisfied (default: false)
-min (bool) minimize cost (default: false)
-min_mag (unsigned int) Z3 represents algebraic numbers using a (square-free) polynomial p and an isolating interval (which contains one and only one root of p). This interval may be refined during the computations. This parameter specifies whether to cache the value of a refined interval or not. It says the minimal size of an interval for caching purposes is 1/2^16 (default: 16)
-minimize_conflicts (bool) minimize conflicts (default: false)
-minimize_lemmas (bool) minimize learned clauses (default: true)
-mode (symbol) NNF translation mode: skolem (skolem normal form), quantifiers (skolem normal form + quantifiers in NNF), full (default: skolem)
-model (bool) model generation for solvers, this parameter can be overwritten when creating a solver (default: true)
-mul2concat (bool) replace multiplication by a power of two into a concatenation (default: false)
-mul_to_power (bool) collpase (* t ... t) into (^ t k), it is ignored if expand_power is true. (default: false)
-nla2bv_bv_size (unsigned int) (default: 4) default bit-vector size used by nla2bv tactic.
-nla2bv_divisor (unsigned int) (default: 2) nla2bv tactic parameter.
-nla2bv_max_bv_size (unsigned int) (default: inf) maximum bit-vector size used by nla2bv tactic
-nla2bv_root (unsigned int) (default: 2) nla2bv tactic encodes reals into bit-vectors using expressions of the form a+b*sqrt(c), this parameter sets the value of c used in the encoding.
-norm_int_only (bool) (default: true) normalize only the bounds of integer constants.
-num_primes (unsigned int) (default: 1) Z3 polynomial factorization is composed of three steps: factorization in GF(p), lifting and search. The search space may be reduced by factoring the polynomial in different GF(p)'s. This parameter specify the maximum number of finite factorizations to be considered, before lifiting and searching.
-override_incremental (bool) override incremental safety gaps. Enable elimination of blocked clauses and variables even if solver is reused (default: false)
-partial (bool) enable/disable partial function interpretations (default: false)
-pb.conflict_frequency (unsigned int) conflict frequency for Pseudo-Boolean theory (default: 1000)
-pb.learn_complements (bool) learn complement literals for Pseudo-Boolean theory (default: true)
-pb.lemma_format (symbol) generate either cardinality or pb lemmas (default: cardinality)
-pb.min_arity (unsigned int) minimal arity to compile pb/cardinality constraints to CNF (default: 9)
-pb.resolve (symbol) resolution strategy for boolean algebra solver: cardinality, rounding (default: cardinality)
-pb.solver (symbol) method for handling Pseudo-Boolean constraints: circuit (arithmetical circuit), sorting (sorting circuit), totalizer (use totalizer encoding), binary_merge, segmented, solver (use native solver) (default: solver)
-pb2bv_all_clauses_limit (unsigned int) (default: 8) maximum number of literals for using equivalent CNF encoding of PB constraint.
-pb2bv_cardinality_limit (unsigned int) (default: inf) limit for using arc-consistent cardinality constraint encoding.
-phase (symbol) phase selection strategy: always_false, always_true, basic_caching, random, caching (default: caching)
-phase.sticky (bool) use sticky phase caching (default: true)
-phase_selection (unsigned int) phase selection heuristic: 0 - always false, 1 - always true, 2 - phase caching, 3 - phase caching conservative, 4 - phase caching conservative 2, 5 - random, 6 - number of occurrences, 7 - theory (default: 3)
-print_stats (bool) print statistic (default: false)
-prob_search (bool) use probsat local search instead of CDCL (default: false)
-probing (bool) apply failed literal detection during simplification (default: true)
-probing_binary (bool) probe binary clauses (default: true)
-probing_cache (bool) add binary literals as lemmas (default: true)
-probing_cache_limit (unsigned int) cache binaries unless overall memory usage exceeds cache limit (default: 1024)
-probing_limit (unsigned int) limit to the number of probe calls (default: 5000000)
-produce_models (bool) (default: false) model generation.
-proof (bool) proof generation, it must be enabled when the Z3 context is created (default: false)
-propagate.prefetch (bool) prefetch watch lists for assigned literals (default: true)
-propagate_eq (bool) (default: false) enable equality propagation from bounds.
-pull_cheap_ite (bool) pull if-then-else terms when cheap. (default: false)
-pull_nested_quantifiers (bool) pull nested quantifiers (default: false)
-push_ite_arith (bool) push if-then-else over arithmetic terms. (default: false)
-push_ite_bv (bool) push if-then-else over bit-vector terms. (default: false)
-push_to_real (bool) distribute to_real over * and +. (default: true)
-qe_nonlinear (bool) (default: false) enable virtual term substitution.
-qi.cost (string) expression specifying what is the cost of a given quantifier instantiation (default: (+ weight generation))
-qi.eager_threshold (double) threshold for eager quantifier instantiation (default: 10.0)
-qi.lazy_threshold (double) threshold for lazy quantifier instantiation (default: 20.0)
-qi.max_instances (unsigned int) maximum number of quantifier instantiations (default: 4294967295)
-qi.max_multi_patterns (unsigned int) specify the number of extra multi patterns (default: 0)
-qi.profile (bool) profile quantifier instantiation (default: false)
-qi.profile_freq (unsigned int) how frequent results are reported by qi.profile (default: 4294967295)
-qi.quick_checker (unsigned int) specify quick checker mode, 0 - no quick checker, 1 - using unsat instances, 2 - using both unsat and no-sat instances (default: 0)
-quasi_macros (bool) try to find universally quantified formulas that are quasi-macros (default: false)
-random_freq (double) frequency of random case splits (default: 0.01)
-random_seed (unsigned int) random seed (default: 0)
-randomize (bool) randomize selection of a witness in nlsat. (default: true)
-recfun.depth (unsigned int) initial depth for maxrec expansion (default: 2)
-recfun.native (bool) use native rec-fun solver (default: true)
-refine_inj_axioms (bool) refine injectivity axioms (default: true)
-relevancy (unsigned int) relevancy propagation heuristic: 0 - disabled, 1 - relevancy is tracked by only affects quantifier instantiation, 2 - relevancy is tracked, and an atom is only asserted if it is relevant (default: 2)
-reorder (bool) reorder variables. (default: true)
-reorder.activity_scale (unsigned int) scaling factor for activity update (default: 100)
-reorder.base (unsigned int) number of conflicts per random reorder  (default: 4294967295)
-reorder.itau (double) inverse temperature for softmax (default: 4.0)
-rep_freq (unsigned int) the report frequency, in how many iterations print the cost and other info  (default: 0)
-rephase.base (unsigned int) number of conflicts per rephase  (default: 1000)
-resolution.cls_cutoff1 (unsigned int) limit1 - total number of problems clauses for the second cutoff of Boolean variable elimination (default: 100000000)
-resolution.cls_cutoff2 (unsigned int) limit2 - total number of problems clauses for the second cutoff of Boolean variable elimination (default: 700000000)
-resolution.limit (unsigned int) approx. maximum number of literals visited during variable elimination (default: 500000000)
-resolution.lit_cutoff_range1 (unsigned int) second cutoff (total number of literals) for Boolean variable elimination, for problems containing less than res_cls_cutoff1 clauses (default: 700)
-resolution.lit_cutoff_range2 (unsigned int) second cutoff (total number of literals) for Boolean variable elimination, for problems containing more than res_cls_cutoff1 and less than res_cls_cutoff2 (default: 400)
-resolution.lit_cutoff_range3 (unsigned int) second cutoff (total number of literals) for Boolean variable elimination, for problems containing more than res_cls_cutoff2 (default: 300)
-resolution.occ_cutoff (unsigned int) first cutoff (on number of positive/negative occurrences) for Boolean variable elimination (default: 10)
-resolution.occ_cutoff_range1 (unsigned int) second cutoff (number of positive/negative occurrences) for Boolean variable elimination, for problems containing less than res_cls_cutoff1 clauses (default: 8)
-resolution.occ_cutoff_range2 (unsigned int) second cutoff (number of positive/negative occurrences) for Boolean variable elimination, for problems containing more than res_cls_cutoff1 and less than res_cls_cutoff2 (default: 5)
-resolution.occ_cutoff_range3 (unsigned int) second cutoff (number of positive/negative occurrences) for Boolean variable elimination, for problems containing more than res_cls_cutoff2 (default: 3)
-restart (symbol) restart strategy: static, luby, ema or geometric (default: ema)
-restart.emafastglue (double) ema alpha factor for fast moving average (default: 0.03)
-restart.emaslowglue (double) ema alpha factor for slow moving average (default: 1e-05)
-restart.factor (double) restart increment factor for geometric strategy (default: 1.5)
-restart.fast (bool) use fast restart approach only removing less active literals. (default: true)
-restart.initial (unsigned int) initial restart (number of conflicts) (default: 2)
-restart.margin (double) margin between fast and slow restart factors. For ema (default: 1.1)
-restart.max (unsigned int) maximal number of restarts. (default: 4294967295)
-restart_factor (double) when using geometric (or inner-outer-geometric) progression of restarts, it specifies the constant used to multiply the current restart threshold (default: 1.1)
-restart_strategy (unsigned int) 0 - geometric, 1 - inner-outer-geometric, 2 - luby, 3 - fixed, 4 - arithmetic (default: 1)
-restricted_quasi_macros (bool) try to find universally quantified formulas that are restricted quasi-macros (default: false)
-retain_blocked_clauses (bool) retain blocked clauses as lemmas (default: true)
-rewrite_patterns (bool) rewrite patterns. (default: false)
-rlimit (unsigned int) default resource limit used for solvers. Unrestricted when set to 0. (default: 0)
-scc (bool) eliminate Boolean variables by computing strongly connected components (default: true)
-scc.tr (bool) apply transitive reduction, eliminate redundant binary clauses (default: true)
-search.sat.conflicts (unsigned int) period for solving for sat (in number of conflicts) (default: 400)
-search.unsat.conflicts (unsigned int) period for solving for unsat (in number of conflicts) (default: 400)
-seed (unsigned int) random seed. (default: 0)
-seq.split_w_len (bool) enable splitting guided by length constraints (default: true)
-shuffle_vars (bool) use a random variable order. (default: false)
-simplex_strategy (unsigned int) simplex strategy for the solver (default: 0)
-simplify.delay (unsigned int) set initial delay of simplification by a conflict count (default: 0)
-simplify_conflicts (bool) simplify conflicts using equalities before resolving them in nlsat solver. (default: true)
-sk_hack (bool) hack for VCC (default: false)
-smtlib2_log (symbol) file to save solver interaction (default: )
-solve_eqs_max_occs (unsigned int) (default: infty) maximum number of occurrences for considering a variable for gaussian eliminations.
-solver2_timeout (unsigned int) fallback to solver 1 after timeout even when in incremental model (default: 4294967295)
-solver2_unknown (unsigned int) what should be done when solver 2 returns unknown: 0 - just return unknown, 1 - execute solver 1 if quantifier free problem, 2 - execute solver 1 (default: 1)
-som (bool) put polynomials in sum-of-monomials form (default: false)
-som_blowup (unsigned int) maximum increase of monomials generated when putting a polynomial in sum-of-monomials normal form (default: 10)
-sort_store (bool) sort nested stores when the indices are known to be different (default: false)
-sort_sums (bool) sort the arguments of + application. (default: false)
-split_concat_eq (bool) split equalities of the form (= (concat t1 t2) t3) (default: false)
-split_factors (bool) (default: true) apply simplifications such as (= (* p1 p2) 0) --> (or (= p1 0) (= p2 0)).
-str.aggressive_length_testing (bool) prioritize testing concrete length values over generating more options (default: false)
-str.aggressive_unroll_testing (bool) prioritize testing concrete regex unroll counts over generating more options (default: true)
-str.aggressive_value_testing (bool) prioritize testing concrete string constant values over generating more options (default: false)
-str.binary_search_start (unsigned int) initial upper bound for theory_str binary search (default: 64)
-str.fast_length_tester_cache (bool) cache length tester constants instead of regenerating them (default: false)
-str.fast_value_tester_cache (bool) cache value tester constants instead of regenerating them (default: true)
-str.finite_overlap_models (bool) attempt a finite model search for overlapping variables instead of completely giving up on the arrangement (default: false)
-str.overlap_priority (double) theory-aware priority for overlapping variable cases; use smt.theory_aware_branching=true (default: -0.1)
-str.regex_automata (bool) use automata-based reasoning for regular expressions (Z3str3 only) (default: true)
-str.regex_automata_difficulty_threshold (unsigned int) difficulty threshold for regex automata heuristics (default: 1000)
-str.regex_automata_failed_automaton_threshold (unsigned int) number of failed automaton construction attempts after which a full automaton is automatically built (default: 10)
-str.regex_automata_failed_intersection_threshold (unsigned int) number of failed automaton intersection attempts after which intersection is always computed (default: 10)
-str.regex_automata_intersection_difficulty_threshold (unsigned int) difficulty threshold for regex intersection heuristics (default: 1000)
-str.regex_automata_length_attempt_threshold (unsigned int) number of length/path constraint attempts before checking unsatisfiability of regex terms (default: 10)
-str.string_constant_cache (bool) cache all generated string constants generated from anywhere in theory_str (default: true)
-str.strong_arrangements (bool) assert equivalences instead of implications when generating string arrangement axioms (default: true)
-str.use_binary_search (bool) use a binary search heuristic for finding concrete length values for free variables in theory_str (set to False to use linear search) (default: false)
-string_solver (symbol) solver for string/sequence theories. options are: 'z3str3' (specialized string solver), 'seq' (sequence solver), 'auto' (use static features to choose best solver), 'empty' (a no-op solver that forces an answer unknown if strings were used), 'none' (no solver) (default: seq)
-subsumption (bool) eliminate subsumed clauses (default: true)
-subsumption.limit (unsigned int) approx. maximum number of literals visited during subsumption (and subsumption resolution) (default: 100000000)
-theory_aware_branching (bool) Allow the context to use extra information from theory solvers regarding literal branching prioritization. (default: false)
-theory_case_split (bool) Allow the context to use heuristics involving theory case splits, which are a set of literals of which exactly one can be assigned True. If this option is false, the context will generate extra axioms to enforce this instead. (default: false)
-theory_solver (bool) (default: true) use theory solvers.
-threads (unsigned int) number of parallel threads to use (default: 1)
-timeout (unsigned int) timeout on the solver object; overwrites a global timeout (default: 4294967295)
-udiv2mul (bool) convert constant udiv to mul (default: false)
-unit_walk (bool) use unit-walk search instead of CDCL (default: false)
-unit_walk_threads (unsigned int) number of unit-walk search threads to find satisfiable solution (default: 0)
-unsat_core (bool) unsat-core generation for solvers, this parameter can be overwritten when creating a solver, not every solver in Z3 supports unsat core generation (default: false)
-v1 (bool) use Z3 version 1.x pretty printer (default: false)
-v2 (bool) use Z3 version 2.x (x <= 16) pretty printer (default: false)
-variable_decay (unsigned int) multiplier (divided by 100) for the VSIDS activity increment (default: 110)
-xor.solver (bool) use xor solver (default: false)
-zero_accuracy (unsigned int) one of the most time-consuming operations in the real algebraic number module is determining the sign of a polynomial evaluated at a sample point with non-rational algebraic number values. Let k be the value of this option. If k is 0, Z3 uses precise computation. Otherwise, the result of a polynomial evaluation is considered to be 0 if Z3 can show it is inside the interval (-1/2^k, 1/2^k) (default: 0)
-
-None
-unit-resolution(asserted(p(x)),
-                mp(mp(asserted(Not(p(a2))),
-                      monotonicity(monotonicity(asserted(a2 ==
-                                        2),
-                                        p(a2) == p(2)),
-                                   Not(p(a2)) == Not(p(2))),
-                      Not(p(2))),
-                   monotonicity(symm(monotonicity(th-lemma(unit-resolution(unit-resolution(th-lemma(Or(x ==
-                                        1,
-                                        Not(x <= 1),
-                                        Not(x >= 1))),
-                                        asserted(x >= 1),
-                                        Or(x == 1,
-                                        Not(x <= 1))),
-                                        lemma(unit-resolution(asserted(p(x)),
-                                        mp(mp(asserted(Not(p(a1))),
-                                        monotonicity(monotonicity(asserted(a1 ==
-                                        1),
-                                        p(a1) == p(1)),
-                                        Not(p(a1)) ==
-                                        Not(p(1))),
-                                        Not(p(1))),
-                                        monotonicity(symm(monotonicity(hypothesis(x ==
-                                        1),
-                                        p(x) == p(1)),
-                                        p(1) == p(x)),
-                                        Not(p(1)) ==
-                                        Not(p(x))),
-                                        Not(p(x))),
-                                        False),
-                                        Not(x == 1)),
-                                        Not(x <= 1)),
-                                        asserted(x <= 2),
-                                        x == 2),
-                                        p(x) == p(2)),
-                                     p(2) == p(x)),
-                                Not(p(2)) == Not(p(x))),
-                   Not(p(x))),
-                False)
+unit-resolution(
+	asserted(p(x)),
+	mp(
+		mp(
+			asserted(Not(p(b))),
+			monotonicity(
+				monotonicity(
+					asserted(b == 2),
+					p(b) == p(2)
+				),
+				Not(p(b)) == Not(p(2))
+			),
+			Not(p(2))
+		),
+		monotonicity(
+			symm(
+				monotonicity(
+					th-lemma(
+						unit-resolution(
+							unit-resolution(
+								th-lemma(
+									Or(x == 1, Not(x <= 1), Not(x >= 1))
+								),
+								asserted(x >= 1),
+								Or(x == 1, Not(x <= 1))
+							),
+							lemma(
+								unit-resolution(
+									asserted(p(x)),
+									mp(
+										mp(
+											asserted(Not(p(a))),
+											monotonicity(
+												monotonicity(
+													asserted(a == 1),
+													p(a) == p(1)
+												),
+												Not(p(a)) == Not(p(1))
+											),
+											Not(p(1))
+										),
+										monotonicity(
+											symm(
+												monotonicity(
+													hypothesis(x == 1),
+													p(x) == p(1)
+												),
+												p(1) == p(x)
+											),
+											Not(p(1)) == Not(p(x))
+										),
+										Not(p(x))
+									),
+									False
+								),
+								Not(x == 1)
+							),
+							Not(x <= 1)
+						),
+						asserted(x <= 2),
+						x == 2
+					),
+					p(x) == p(2)
+				),
+				p(2) == p(x)
+			),
+			Not(p(2)) == Not(p(x))
+		),
+		Not(p(x))
+	),
+	False
+)
