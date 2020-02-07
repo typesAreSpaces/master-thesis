@@ -1,72 +1,70 @@
-unit-resolution(
-	asserted(p(x)),
+th-lemma(
 	mp(
-		mp(
-			asserted(Not(p(b))),
+		asserted(
+			f(x1, 0) >= x2 + 1
+		),
+		trans(
 			monotonicity(
-				monotonicity(
-					asserted(b == 2),
-					p(b) == p(2)
+				rewrite(
+					x2 + 1 == 1 + x2
 				),
-				Not(p(b)) == Not(p(2))
+				(f(x1, 0) >= x2 + 1) == (f(x1, 0) >= 1 + x2)
 			),
-			Not(p(2))
+			rewrite(
+				(f(x1, 0) >= 1 + x2) == (x2 + -1*f(x1, 0) <= -1)
+			),
+			(f(x1, 0) >= x2 + 1) == (x2 + -1*f(x1, 0) <= -1)
+		),
+		x2 + -1*f(x1, 0) <= -1
+	),
+	unit-resolution(
+		th-lemma(
+			Or(Not(x2 + -1*x3 == -1), x2 + -1*x3 >= -1)
+		),
+		mp(
+			asserted(
+				x2 == x3 - 1
+			),
+			trans(
+				monotonicity(
+					trans(
+						rewrite(
+							x3 - 1 == x3 + -1*1
+						),
+						trans(
+							monotonicity(
+								rewrite(-1*1 == -1),
+								x3 + -1*1 == x3 + -1
+							),
+							rewrite(
+								x3 + -1 == -1 + x3
+							),
+							x3 + -1*1 == -1 + x3
+						),
+						x3 - 1 == -1 + x3
+					),
+					(x2 == x3 - 1) == (x2 == -1 + x3)
+				),
+				rewrite(
+					(x2 == -1 + x3) == (x2 + -1*x3 == -1)
+				),
+				(x2 == x3 - 1) == (x2 + -1*x3 == -1)
+			),
+			x2 + -1*x3 == -1
+		),
+		x2 + -1*x3 >= -1
+	),
+	mp(
+		asserted(
+			x3 - f(x1, 0) >= 1
 		),
 		monotonicity(
-			symm(
-				monotonicity(
-					th-lemma(
-						unit-resolution(
-							unit-resolution(
-								th-lemma(
-									Or(x == 1, Not(x <= 1), Not(x >= 1))
-								),
-								asserted(x >= 1),
-								Or(x == 1, Not(x <= 1))
-							),
-							lemma(
-								unit-resolution(
-									asserted(p(x)),
-									mp(
-										mp(
-											asserted(Not(p(a))),
-											monotonicity(
-												monotonicity(
-													asserted(a == 1),
-													p(a) == p(1)
-												),
-												Not(p(a)) == Not(p(1))
-											),
-											Not(p(1))
-										),
-										monotonicity(
-											symm(
-												monotonicity(
-													hypothesis(x == 1),
-													p(x) == p(1)
-												),
-												p(1) == p(x)
-											),
-											Not(p(1)) == Not(p(x))
-										),
-										Not(p(x))
-									),
-									False
-								),
-								Not(x == 1)
-							),
-							Not(x <= 1)
-						),
-						asserted(x <= 2),
-						x == 2
-					),
-					p(x) == p(2)
-				),
-				p(2) == p(x)
+			rewrite(
+				x3 - f(x1, 0) == x3 + -1*f(x1, 0)
 			),
-			Not(p(2)) == Not(p(x))
+			(x3 - f(x1, 0) >= 1) == (x3 + -1*f(x1, 0) >= 1)
 		),
-		Not(p(x))
+		x3 + -1*f(x1, 0) >= 1
 	),
 	False
 )
