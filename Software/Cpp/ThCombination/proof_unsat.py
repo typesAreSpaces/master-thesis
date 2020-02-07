@@ -10,6 +10,7 @@ x1, x2, x3 = Ints("x1 x2 x3")
 f = Function("f", Z, Z, Z)
 
 s = Solver()
+print s.help()
 # s.set(mbqi=True)
 # s.push()
 # s.add(f(x1, 0) >= x3)
