@@ -7,6 +7,9 @@
 #include <map>
 #include <vector>
 
+// Accepts a *conjunction* of literals
+// in QF_UFLIA
+
 class Purifier{
 
 protected:
@@ -18,6 +21,9 @@ protected:
   
   z3::expr_vector euf_component;
   z3::expr_vector oct_component;
+  
+  z3::expr purifyEUFEq(z3::expr const &); // I suspect I wont use function in the future
+  z3::expr purifyOctEq(z3::expr const &); // I suspect I wont use function in the future
   
 private:  
   z3::expr_vector from;
@@ -33,9 +39,6 @@ private:
 public:
   Purifier(z3::expr const &);
   ~Purifier();
-
-  z3::expr purifyEUFEq(z3::expr const &);
-  z3::expr purifyOctEq(z3::expr const &);
   
   friend std::ostream & operator << (std::ostream &, Purifier &);
 };
