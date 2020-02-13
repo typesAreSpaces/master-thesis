@@ -18,8 +18,7 @@ void addConjunction(z3::solver & s, z3::expr const & e){
 }
 
 void traverseProof1(z3::expr const & proof) {
-  //if(proof.is_app()){
-  if(proof.get_sort().name().str() == "Proof"){
+  if(proof.is_app()){
     unsigned num = proof.num_args();
 
     z3::func_decl proof_decl = proof.decl();
@@ -56,7 +55,7 @@ void traverseProof1(z3::expr const & proof) {
 }
 
 void traverseProof2(z3::expr const & proof) {
-  if(proof.get_sort().name().str() == "Proof"){
+  if(proof.is_app()){
     unsigned num = proof.num_args();
 
     z3::func_decl proof_decl = proof.decl();
