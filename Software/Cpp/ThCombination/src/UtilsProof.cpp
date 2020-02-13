@@ -45,7 +45,8 @@ void traverseProof1(z3::expr const & proof) {
     }
     default:{
       traverseProof2(proof);
-      std::cout << " |- " << proof.arg(num - 1) << std::endl;
+      // std::cout << " hmm |- " << proof.arg(num - 1) << std::endl;
+      std::cout << "mysterious step: |- " << proof.arg(num - 1) << std::endl;
       
       return;
     }
@@ -66,7 +67,7 @@ void traverseProof2(z3::expr const & proof) {
     case Z3_OP_PR_UNIT_RESOLUTION:
     case Z3_OP_PR_TH_LEMMA:{
       traverseProof1(proof);
-      std::cout << "hmm " << proof.arg(num - 1) << ", ";
+      // std::cout << "hmm " << proof.arg(num - 1) << ", ";
       
       return;
     }
