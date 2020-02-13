@@ -81,15 +81,15 @@ int main(){
   // std::cout << test << std::endl;
 
   z3::solver s(ctx, "QF_UFLIA");
-  // s.add(1 <= x1);
-  // s.add(x1 <= 2);
-  // s.add(a1 == 1);
-  // s.add(a2 == 2);
-  // s.add(p(x1));
-  // s.add(not(p(a1)));
-  // s.add(not(p(a2)));
-  s.add(formula_a);
-  s.add(formula_b);
+  s.add(1 <= x1);
+  s.add(x1 <= 2);
+  s.add(a == 1);
+  s.add(b == 2);
+  s.add(p(x1));
+  s.add(not(p(a)));
+  s.add(not(p(b)));
+  // s.add(formula_a);
+  // s.add(formula_b);
   if(s.check() == z3::unsat){
     try{
       traverseProof1(s.proof());

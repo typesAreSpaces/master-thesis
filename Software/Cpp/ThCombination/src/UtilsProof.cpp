@@ -29,6 +29,9 @@ void traverseProof1(z3::expr const & proof) {
     case Z3_OP_PR_LEMMA:
     case Z3_OP_PR_UNIT_RESOLUTION:
     case Z3_OP_PR_TH_LEMMA:{
+      for(unsigned i = 0; i < num - 1; i++)
+	traverseProof1(proof.arg(i));
+      
       std::cout << proof_decl.name() << ": ";
       
       for(unsigned i = 0; i < num - 1; i++){
@@ -38,15 +41,14 @@ void traverseProof1(z3::expr const & proof) {
       
       std::cout << " |- " << proof.arg(num - 1) << std::endl;
       
-      for(unsigned i = 0; i < num - 1; i++)
-	traverseProof1(proof.arg(i));
-      
       return;
     }
     default:{
       traverseProof2(proof);
+      
       // std::cout << " hmm |- " << proof.arg(num - 1) << std::endl;
-      std::cout << "mysterious step: |- " << proof.arg(num - 1) << std::endl;
+      std::cout << proof_decl.name() << ": ";
+      std::cout << "(mysterious step) |- " << proof.arg(num - 1) << std::endl;
       
       return;
     }
