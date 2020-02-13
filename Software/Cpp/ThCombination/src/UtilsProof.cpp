@@ -24,9 +24,19 @@ void traverseProof1(z3::expr const & proof) {
     z3::func_decl proof_decl = proof.decl();
     
     switch(proof_decl.decl_kind()){
+    case Z3_OP_PR_LEMMA:{      
+      std::cout << proof_decl.name() << ": ";
       
+      for(unsigned i = 0; i < num - 1; i++){
+	unsigned temp_size = proof.arg(i).num_args();
+	std::cout << proof.arg(i).arg(temp_size - 1) << ", ";
+      }
+      
+      std::cout << " |- " << proof.arg(num - 1) << std::endl;
+      
+      return;
+    }
     case Z3_OP_PR_ASSERTED:
-    case Z3_OP_PR_LEMMA:
     case Z3_OP_PR_UNIT_RESOLUTION:
     case Z3_OP_PR_TH_LEMMA:{
       for(unsigned i = 0; i < num - 1; i++)
