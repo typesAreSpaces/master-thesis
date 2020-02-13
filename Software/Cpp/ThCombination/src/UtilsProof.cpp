@@ -25,17 +25,17 @@ void traverseProof1(z3::expr const & proof) {
     
     switch(proof_decl.decl_kind()){
     case Z3_OP_PR_LEMMA:{      
-      std::cout << proof_decl.name() << ": ";
+      	std::cout << proof_decl.name() << ": ";
       
-      for(unsigned i = 0; i < num - 1; i++){
-	unsigned temp_size = proof.arg(i).num_args();
-	std::cout << proof.arg(i).arg(temp_size - 1) << ", ";
+      	for(unsigned i = 0; i < num - 1; i++){
+      	  unsigned temp_size = proof.arg(i).num_args();
+      	  std::cout << proof.arg(i).arg(temp_size - 1) << ", ";
+      	}
+      
+      	std::cout << "|- " << proof.arg(num - 1) << std::endl;
+      
+      	return;
       }
-      
-      std::cout << " |- " << proof.arg(num - 1) << std::endl;
-      
-      return;
-    }
     case Z3_OP_PR_ASSERTED:
     case Z3_OP_PR_UNIT_RESOLUTION:
     case Z3_OP_PR_TH_LEMMA:{
@@ -49,17 +49,20 @@ void traverseProof1(z3::expr const & proof) {
 	std::cout << proof.arg(i).arg(temp_size - 1) << ", ";
       }
       
-      std::cout << " |- " << proof.arg(num - 1) << std::endl;
+      std::cout << "|- " << proof.arg(num - 1) << std::endl;
       
       return;
     }
     default:{
-      traverseProof2(proof);
+      z3::expr_vector hyps(proof.ctx());
+      traverseProof2(proof, hyps);
       
-      // std::cout << " hmm |- " << proof.arg(num - 1) << std::endl;
-      std::cout << proof_decl.name() << ": ";
-      std::cout << "(mysterious step) |- " << proof.arg(num - 1) << std::endl;
-      
+      std::cout << "provable: ";
+      unsigned num_hyps = hyps.size();
+      for(unsigned i = 0; i < num_hyps; i++)
+	std::cout << hyps[i] << ", ";
+      std::cout << "|- " << proof.arg(num - 1) << std::endl;
+
       return;
     }
     }
@@ -67,7 +70,7 @@ void traverseProof1(z3::expr const & proof) {
   throw "Wrong proof-term in traverseProof1";
 }
 
-void traverseProof2(z3::expr const & proof) {
+void traverseProof2(z3::expr const & proof, z3::expr_vector & hyps) {
   if(proof.is_app()){
     unsigned num = proof.num_args();
 
@@ -79,13 +82,13 @@ void traverseProof2(z3::expr const & proof) {
     case Z3_OP_PR_UNIT_RESOLUTION:
     case Z3_OP_PR_TH_LEMMA:{
       traverseProof1(proof);
-      // std::cout << "hmm " << proof.arg(num - 1) << ", ";
+      hyps.push_back(proof.arg(num - 1));
       
       return;
     }
     default:{
       for(unsigned i = 0; i < num - 1; i++)
-	traverseProof2(proof.arg(i));
+	traverseProof2(proof.arg(i), hyps);
       
       return;
     }
