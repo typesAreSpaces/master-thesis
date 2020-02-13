@@ -17,111 +17,129 @@ void addConjunction(z3::solver & s, z3::expr const & e){
   throw "Wrong term";
 }
 
-bool earlyExit(std::vector<bool> & visited, z3::expr const & e){
-  if (visited.size() <= e.id()) {
-    visited.resize(e.id()+1, false);
+void traverseProof1(z3::expr const & proof) {
+  //if(proof.is_app()){
+  if(proof.get_sort().name().str() == "Proof"){
+    unsigned num = proof.num_args();
+
+    z3::func_decl proof_decl = proof.decl();
+    
+    switch(proof_decl.decl_kind()){
+      
+    case Z3_OP_PR_ASSERTED:
+    case Z3_OP_PR_LEMMA:
+    case Z3_OP_PR_UNIT_RESOLUTION:
+    case Z3_OP_PR_TH_LEMMA:{
+      std::cout << proof_decl.name() << ": ";
+      
+      for(unsigned i = 0; i < num - 1; i++){
+	unsigned temp_size = proof.arg(i).num_args();
+	std::cout << proof.arg(i).arg(temp_size - 1) << ", ";
+      }
+      
+      std::cout << " |- " << proof.arg(num - 1) << std::endl;
+      
+      for(unsigned i = 0; i < num - 1; i++)
+	traverseProof1(proof.arg(i));
+      
+      return;
+    }
+    default:{
+      traverseProof2(proof);
+      std::cout << " |- " << proof.arg(num - 1) << std::endl;
+      
+      return;
+    }
+    }
   }
-  if (visited[e.id()]) {
-    return true;
-  }
-  visited[e.id()] = true;
-  return false;
+  throw "Wrong proof-term in traverseProof1";
 }
 
-void extractHypothesisFromProof(z3::expr const & proof){
-  if (proof.is_app()) {
-    unsigned num = proof.num_args();   
-    for (unsigned i = 0; i < num; i++) 
-      extractHypothesisFromProof(proof.arg(i));
-    
+void traverseProof2(z3::expr const & proof) {
+  if(proof.get_sort().name().str() == "Proof"){
+    unsigned num = proof.num_args();
+
     z3::func_decl proof_decl = proof.decl();
     switch(proof_decl.decl_kind()){
-    case Z3_OP_PR_TH_LEMMA:
-      std::cout << proof_decl.name() << std::endl;
-      return;
       
-    case Z3_OP_PR_HYPOTHESIS:
     case Z3_OP_PR_ASSERTED:
-      std::cout << proof_decl.name() << " " << proof.arg(0) << std::endl;
-      return;
+    case Z3_OP_PR_LEMMA:
+    case Z3_OP_PR_UNIT_RESOLUTION:
+    case Z3_OP_PR_TH_LEMMA:{
+      traverseProof1(proof);
+      std::cout << "hmm " << proof.arg(num - 1) << ", ";
       
-    default:
       return;
+    }
+    default:{
+      for(unsigned i = 0; i < num - 1; i++)
+	traverseProof2(proof.arg(i));
+      
+      return;
+    }
     }
   }
-  throw "Wrong proof-term";
+  throw "Wrong proof-term in traverseProof2";
 }
 
-z3::expr_vector collectEqualitiesFromProof(z3::expr const & proof){
-  std::vector<bool> visited;
-  std::vector<bool> consequent_visited;
-  z3::expr_vector consequents(proof.ctx());
-  collectEqualitiesFromProofAux(visited, consequent_visited, consequents, proof);
-  return consequents;
-}
 
-void collectEqualitiesFromProofAux(std::vector<bool> & visited,
-				   std::vector<bool> & consequent_visited,
-				   z3::expr_vector & consequents,
-				   z3::expr const & proof) {
-  if(earlyExit(visited, proof))
-    return;
+  // if(earlyExit(visited, proof))
+  //   return;
     
-  if (proof.is_app()) {
-    unsigned num = proof.num_args();
-    for (unsigned i = 0; i < num; i++) 
-      collectEqualitiesFromProofAux(visited, consequent_visited, consequents, proof.arg(i));
+  // if (proof.is_app()) {
+  //   unsigned num = proof.num_args();
+  //   for (unsigned i = 0; i < num; i++) 
+  //     collectEqualitiesFromProofAux(visited, consequent_visited, consequents, proof.arg(i));
     
-    z3::func_decl proof_decl = proof.decl();
-    switch(proof_decl.decl_kind()) {
-      // case Z3_OP_PR_REFLEXIVITY:
-      // case Z3_OP_PR_SYMMETRY:
-    case Z3_OP_PR_ASSERTED:
-    case Z3_OP_PR_HYPOTHESIS:
-    case Z3_OP_PR_TRANSITIVITY:
-    case Z3_OP_PR_TRANSITIVITY_STAR:
-    case Z3_OP_PR_MONOTONICITY:
-    case Z3_OP_PR_UNIT_RESOLUTION:
-    case Z3_OP_PR_MODUS_PONENS:
-    case Z3_OP_PR_TH_LEMMA:
-    case Z3_OP_PR_REWRITE:
-    case Z3_OP_PR_REWRITE_STAR:{
-      auto consequent = proof.arg(num - 1).simplify();
-      auto consequent_kind = consequent.decl().decl_kind();
-      // Avoid visited consequents and anything but equalities
-      if(earlyExit(consequent_visited, consequent) || consequent_kind != Z3_OP_EQ)
-	return;
-      // Avoid 'high-order equalities'
-      // between {==, !=, <, >, <=, >=}
-      switch(consequent.arg(0).decl().decl_kind()){
-      case Z3_OP_EQ:
-      case Z3_OP_DISTINCT:
-      case Z3_OP_LE:
-      case Z3_OP_GE:
-      case Z3_OP_LT:
-      case Z3_OP_GT:
-	return;
-      default:	
-	// // We only collect equalities between variables
-	if(consequent.arg(0).num_args() != 0 || consequent.arg(1).num_args() != 0)
-	  return;
+  //   z3::func_decl proof_decl = proof.decl();
+  //   switch(proof_decl.decl_kind()) {
+  //     // case Z3_OP_PR_REFLEXIVITY:
+  //     // case Z3_OP_PR_SYMMETRY:
+  //   case Z3_OP_PR_ASSERTED:
+  //   case Z3_OP_PR_HYPOTHESIS:
+  //   case Z3_OP_PR_TRANSITIVITY:
+  //   case Z3_OP_PR_TRANSITIVITY_STAR:
+  //   case Z3_OP_PR_MONOTONICITY:
+  //   case Z3_OP_PR_UNIT_RESOLUTION:
+  //   case Z3_OP_PR_MODUS_PONENS:
+  //   case Z3_OP_PR_TH_LEMMA:
+  //   case Z3_OP_PR_REWRITE:
+  //   case Z3_OP_PR_REWRITE_STAR:{
+  //     auto consequent = proof.arg(num - 1).simplify();
+  //     auto consequent_kind = consequent.decl().decl_kind();
+  //     // Avoid visited consequents and anything but equalities
+  //     if(earlyExit(consequent_visited, consequent) || consequent_kind != Z3_OP_EQ)
+  // 	return;
+  //     // Avoid 'high-order equalities'
+  //     // between {==, !=, <, >, <=, >=}
+  //     switch(consequent.arg(0).decl().decl_kind()){
+  //     case Z3_OP_EQ:
+  //     case Z3_OP_DISTINCT:
+  //     case Z3_OP_LE:
+  //     case Z3_OP_GE:
+  //     case Z3_OP_LT:
+  //     case Z3_OP_GT:
+  // 	return;
+  //     default:	
+  // 	// // We only collect equalities between variables
+  // 	if(consequent.arg(0).num_args() != 0 || consequent.arg(1).num_args() != 0)
+  // 	  return;
 	
-	std::cout << std::endl;
-	std::cout << "Consequent " << consequent.arg(0) << " = " << consequent.arg(1) << std::endl;
-	std::cout << "Reason " << proof_decl.name() << std::endl;
+  // 	std::cout << std::endl;
+  // 	std::cout << "Consequent " << consequent.arg(0) << " = " << consequent.arg(1) << std::endl;
+  // 	std::cout << "Reason " << proof_decl.name() << std::endl;
 	
-	auto num_subproofs = num - 1;
-	for(unsigned i = 0; i < num_subproofs; i++)
-	  extractHypothesisFromProof(proof.arg(i));
+  // 	auto num_subproofs = num - 1;
+  // 	for(unsigned i = 0; i < num_subproofs; i++)
+  // 	  extractHypothesisFromProof(proof.arg(i));
 	
-	consequents.push_back(consequent);
-	return;
-      }
-    }
+  // 	consequents.push_back(consequent);
+  // 	return;
+  //     }
+  //   }
       
-    default:
-      return;
-    }
-  }  
-  throw "Wrong proof-term";
-}
+  //   default:
+  //     return;
+  //   }
+  // }  
+  // throw "Wrong proof-term";
