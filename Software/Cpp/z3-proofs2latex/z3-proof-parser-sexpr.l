@@ -55,8 +55,12 @@
 "add-th-lemma"    {yylval.sval = strdup(yytext); return T_PROOF_RULE;}
 "del-redundant"   {yylval.sval = strdup(yytext); return T_PROOF_RULE;}
 "proof-trail"     {yylval.sval = strdup(yytext); return T_PROOF_RULE;}
+"provable"        {yylval.sval = strdup(yytext); return T_PROOF_RULE;}
 "("		  {return PAREN_LEFT;}
 ")"		  {return PAREN_RIGHT;}
+","               {return COMMA;}
+":"               {return COLON;}
+"|-"              {return VDASH;}
 "<"               {yylval.sval = "<"; return REL_SYM;}
 ">"               {yylval.sval = ">"; return REL_SYM;}
 "<="              {yylval.sval = "\\leq"; return REL_SYM;}

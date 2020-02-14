@@ -1,5 +1,0 @@
-(declare-fun x1 () Int)
-(declare-fun x3 () Int)
-(declare-fun f (Int Int) Int)
-(assert (>= (f x1 0) x3))
-(assert (>= (- x3 (f x1 0)) 1))

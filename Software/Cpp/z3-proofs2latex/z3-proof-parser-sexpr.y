@@ -4,53 +4,13 @@
 #include <stdlib.h>
 
     unsigned _varwidth = 2000;
-    unsigned new_proof_tree = 0;
-    unsigned new_term_tree = 0;
+    unsigned proof_num = 0;
 
     extern int yylex();
     extern int yyparse();
     extern FILE* yyin;
 
     void yyerror(const char* s);
-
-    void term_begin(char * s, char extra){
-	if(new_proof_tree == 0){
-	    if(new_term_tree == 0)
-		printf("$");
-	    printf("%c%s", extra, s);
-	}
-	else{
-	    if(new_term_tree == 0)
-		printf("\\infer0[definition]{");
-	    printf("\\hspace{0.001cm}%c%s", extra, s);
-	}
-	new_term_tree++;
-    }
-    void term_end(char extra){
-	new_term_tree--;
-	printf("%c", extra);
-	if(new_proof_tree == 0){
-	    if(new_term_tree == 0)
-		printf("$");
-	}
-	else{
-	    if(new_term_tree == 0)
-		printf("}");
-	}
-    }
-
-    void proof_begin(){
-        if(new_proof_tree == 0)
-	    printf("\\begin{prooftree}");
-	new_proof_tree++;
-    }
-
-    void proof_end(int num_args, char * proof_name){
-        new_proof_tree--;
-	printf("\\infer%d[%s]{}", num_args, proof_name);
-	if (new_proof_tree == 0)
-	    printf("\\end{prooftree}");
-    }
 
     %}
 
@@ -60,8 +20,9 @@
 }
 
 %token<sval> MINUS_SYM REL_SYM OP_SYM T_PROOF_RULE T_NAME
-%token PAREN_LEFT PAREN_RIGHT T_LET
+%token PAREN_LEFT PAREN_RIGHT T_LET COMMA COLON VDASH
 %type<ival> expressions
+%type<ival> hyps
 
 %start parse
 
@@ -73,18 +34,32 @@ parse:
 \n\\usepackage{amssymb}\
 \n\\usepackage{amsmath}\
 \n\\begin{document}\n", _varwidth); }
-expression
-{ printf("\n\\end{document}\n"); }
+proofs
+{ printf("\n\\end{document}\n"); return 0; }
+;
+
+proofs:
+proof
+| proof proofs
+;
+
+proof:
+{ printf("Proof number %d:\\begin{prooftree}\n", ++proof_num); }
+T_PROOF_RULE COLON hyps { printf("\\infer%d[%s]{", $4, $2); } VDASH expression { printf("}\n"); }
+{ printf("\\end{prooftree}\n"); }
 ;
 
 expression:
-T_NAME { term_begin($1, '('); term_end(')'); }
-| PAREN_LEFT T_LET PAREN_LEFT bindings PAREN_RIGHT expression PAREN_RIGHT
-| PAREN_LEFT MINUS_SYM    { term_begin($2, '(');  } expressions PAREN_RIGHT { term_end(')');     }
-| PAREN_LEFT REL_SYM      { term_begin($2, '(');  } expressions PAREN_RIGHT { term_end(')');     }
-| PAREN_LEFT OP_SYM       { term_begin($2, '(');  } expressions PAREN_RIGHT { term_end(')');     }
-| PAREN_LEFT T_PROOF_RULE { proof_begin();        } expressions PAREN_RIGHT { proof_end($4, $2); }
-| PAREN_LEFT T_NAME       { term_begin($2, '(');  } expressions PAREN_RIGHT { term_end(')');     }
+T_NAME { printf("(%s)", $1); }
+| PAREN_LEFT T_LET PAREN_LEFT { printf("(let ("); } bindings PAREN_RIGHT expression PAREN_RIGHT { printf(")"); }
+| PAREN_LEFT MINUS_SYM    { printf("(%s", $2);  } expressions PAREN_RIGHT { printf(")"); }
+| PAREN_LEFT REL_SYM      { printf("(%s", $2);  } expressions PAREN_RIGHT { printf(")"); }
+| PAREN_LEFT OP_SYM       { printf("(%s", $2);  } expressions PAREN_RIGHT { printf(")"); }
+| PAREN_LEFT T_NAME       { printf("(%s", $2);  } expressions PAREN_RIGHT { printf(")"); }
+;
+
+hyps: { $$ = 0; }
+| { printf("\\infer0[x]{"); } expression { printf("}\n"); } COMMA hyps { $$ = $5 + 1; }
 ;
 
 expressions:
@@ -93,8 +68,8 @@ expression { $$ = 1; }
 ;
 
 bindings:
-PAREN_LEFT T_NAME expression PAREN_RIGHT { printf("\n\nProof/Definition of %s\n\n", $2); }
-| PAREN_LEFT T_NAME expression PAREN_RIGHT { printf("\n\nProof/Definition of %s\n\n", $2); } bindings
+PAREN_LEFT T_NAME { printf("(%s", $2); } expression PAREN_RIGHT { printf(")"); }
+| bindings PAREN_LEFT T_NAME { printf("(%s", $3); } expression PAREN_RIGHT { printf(")"); }
 ;
 
 %%
