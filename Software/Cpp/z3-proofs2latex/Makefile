@@ -1,4 +1,6 @@
-all: print_proof
+CC = gcc
+
+all: z3-proof-parser-sexpr
 
 z3-proof-parser-sexpr.tab.c z3-proof-parser-sexpr.tab.h:	z3-proof-parser-sexpr.y
 	bison -d z3-proof-parser-sexpr.y

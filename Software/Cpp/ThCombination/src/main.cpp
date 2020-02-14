@@ -55,50 +55,54 @@ int main(){
   z3::func_decl g = ctx.function("g", int_sort, int_sort);
   z3::func_decl f1 = ctx.function("f", int_sort, int_sort);
   z3::func_decl f2 = ctx.function("f", int_sort, int_sort, int_sort);
-  z3::func_decl p = ctx.function("p", int_sort, bool_sort);
+  z3::func_decl p = ctx.function("p", int_sort, int_sort);
   
-  // z3::expr formula1 = x1 <= f1(x1) && x2 == x3;
-  // z3::expr formula2 = x2 >= x1 && (x1 - x3) >= x2 && x3 >= 0 && f1(f1(x1) - f1(x2)) != f1(x3);
-  // z3::expr formula3 = g(f1(x1 - 2)) == x1 + 2 && g(f1(x2)) == x2 - 2 && (x2 + 1 == x1 - 1);
+  z3::expr formula1 = x1 <= f1(x1) && x2 == x3;
+  z3::expr formula2 = x2 >= x1 && (x1 - x3) >= x2 && x3 >= 0 && f1(f1(x1) - f1(x2)) != f1(x3);
+  z3::expr formula3 = g(f1(x1 - 2)) == x1 + 2 && g(f1(x2)) == x2 - 2 && (x2 + 1 == x1 - 1);
  
-  // z3::expr formula4 = f2(x1, 0) >= x3
-  //   && f2(x2, 0) <= x3
-  //   && x1 >= x2
-  //   && x2 >= x1
-  //   && (x3 - f2(x1, 0) >= 1);
-  // z3::expr formula5 = f2(x1, 0) >= x3
-  //   && f2(x2, 0) <= x3
-  //   && x1 >= x2 + 0
-  //   && 4*x1 + 5*x2 <= 23
-  //   && -5*x1 - 5*x3 > 21
-  //   && x2 >= x1
-  //   && (x3 - f2(x1, 0) >= 1);
+  z3::expr formula4 = f2(x1, 0) >= x3
+    && f2(x2, 0) <= x3
+    && x1 >= x2
+    && x2 >= x1
+    && (x3 - f2(x1, 0) >= 1);
+  z3::expr formula5 = f2(x1, 0) >= x3
+    && f2(x2, 0) <= x3
+    && x1 >= x2 + 0
+    && 4*x1 + 5*x2 <= 23
+    && -5*x1 - 5*x3 > 21
+    && x2 >= x1
+    && (x3 - f2(x1, 0) >= 1);
 
-  z3::expr formula_a = f1(x1) + x2 == x3 && y3 == f1(y1) + y2 && y1 <= x1;
-  z3::expr formula_b = x2 == g(b) && y2 == g(b) && x1 <= y1 && x3 < y3;
+  // z3::expr formula_a = f1(x1) + x2 == x3 && y3 == f1(y1) + y2 && y1 <= x1;
+  // z3::expr formula_b = x2 == g(b) && y2 == g(b) && x1 <= y1 && x3 < y3;
+
+  z3::expr formula_a = 1 <= x1 && a == 1 && (p(x1) == 3) && (p(a) == 4);
+  z3::expr formula_b = x1 <= 2 && b == 2 && (p(b) == 5);
   
-  // ThCombInterpolator test = ThCombInterpolator(ctx, formula_a, formula_b);
-  // std::cout << test << std::endl;
+  ThCombInterpolator test = ThCombInterpolator(ctx, formula_a, formula_b);
+  std::cout << test << std::endl;
 
-  z3::solver s(ctx, "QF_UFLIA");
-  s.add(1 <= x1);
-  s.add(x1 <= 2);
-  s.add(a == 1);
-  s.add(b == 2);
-  s.add(p(x1));
-  s.add(not(p(a)));
-  s.add(not(p(b)));
-  // s.add(formula_a);
-  // s.add(formula_b);
-  if(s.check() == z3::unsat){
-    try{
-      traverseProof1(s.proof());
-    }
-    catch(char const * e){
-      std::cout << e << std::endl;
-    }
+  // z3::solver s(ctx, "QF_UFLIA");
+  // // s.add(1 <= x1);
+  // // s.add(x1 <= 2);
+  // // s.add(a == 1);
+  // // s.add(b == 2);
+  // // s.add(p(x1));
+  // // s.add(not(p(a)));
+  // // s.add(not(p(b)));
+  // // s.add(formula_a);
+  // // s.add(formula_b);
+  // s.add(formula2);
+  // if(s.check() == z3::unsat){
+  //   try{
+  //     traverseProof1(s.proof());
+  //   }
+  //   catch(char const * e){
+  //     std::cout << e << std::endl;
+  //   }
 
-  }
+  // }
   
   // z3::expr_vector terms(ctx);
   // terms.push_back(x1);

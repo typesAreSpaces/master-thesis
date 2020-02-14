@@ -60,6 +60,7 @@
 ")"		  {return PAREN_RIGHT;}
 ","               {return COMMA;}
 ":"               {return COLON;}
+";"               {printf(" Interpolant: "); return SEMI_COLON;}
 "|-"              {return VDASH;}
 "<"               {yylval.sval = "<"; return REL_SYM;}
 ">"               {yylval.sval = ">"; return REL_SYM;}

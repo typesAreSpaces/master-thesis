@@ -36,6 +36,14 @@ thcombination: $(OBJS) $(Z3DIR)/build/libz3.$(Z3EXT)
 run: thcombination
 	./thcombination
 
+parser:
+	make -C ../z3-proofs2latex
+
+print_proof: ../z3-proofs2latex/z3-proof-parser-sexpr thcombination
+	./thcombination > $@.txt
+	$^ < $@.txt > $@.tex
+	pdflatex $@.tex
+
 .PHONY: clean
 clean:
-	rm -rf $(ODIR)/* thcombination
+	rm -rf $(ODIR)/* thcombination print_proof*

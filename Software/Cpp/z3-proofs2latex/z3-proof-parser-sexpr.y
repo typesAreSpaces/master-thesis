@@ -3,7 +3,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-    unsigned _varwidth = 2000;
+    unsigned _varwidth = 4000;
     unsigned proof_num = 0;
 
     extern int yylex();
@@ -20,8 +20,8 @@
 }
 
 %token<sval> MINUS_SYM REL_SYM OP_SYM T_PROOF_RULE T_NAME
-%token PAREN_LEFT PAREN_RIGHT T_LET COMMA COLON VDASH
-%type<ival> expressions
+%token PAREN_LEFT PAREN_RIGHT T_LET COMMA COLON VDASH SEMI_COLON
+%type<ival> expressions 
 %type<ival> hyps
 
 %start parse
@@ -33,6 +33,7 @@ parse:
 \n\\usepackage{ebproof}\
 \n\\usepackage{amssymb}\
 \n\\usepackage{amsmath}\
+\n\\usepackage{xcolor}\
 \n\\begin{document}\n", _varwidth); }
 proofs
 { printf("\n\\end{document}\n"); return 0; }
@@ -43,9 +44,13 @@ proof
 | proof proofs
 ;
 
+interpolant:
+{ printf("\\textcolor{red}{"); } SEMI_COLON expression { printf("}"); }
+; 
+
 proof:
 { printf("Proof number %d:\\begin{prooftree}\n", ++proof_num); }
-T_PROOF_RULE COLON hyps { printf("\\infer%d[%s]{", $4, $2); } VDASH expression { printf("}\n"); }
+T_PROOF_RULE COLON hyps { printf("\\infer%d[%s]{", $4, $2); } VDASH expression interpolant { printf("}\n"); }
 { printf("\\end{prooftree}\n"); }
 ;
 
@@ -59,7 +64,7 @@ T_NAME { printf("(%s)", $1); }
 ;
 
 hyps: { $$ = 0; }
-| { printf("\\infer0[x]{"); } expression { printf("}\n"); } COMMA hyps { $$ = $5 + 1; }
+| { printf("\\infer0[x]{"); } expression interpolant { printf("}\n"); } COMMA hyps { $$ = $6 + 1; }
 ;
 
 expressions:

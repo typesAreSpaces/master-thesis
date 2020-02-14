@@ -3,7 +3,7 @@
 
 ThCombInterpolator::ThCombInterpolator(z3::context & ctx,
 				       z3::expr const & formula_a, z3::expr const & formula_b) :
-  part_a(formula_a), part_b(formula_b),
+  ctx(ctx), part_a(formula_a), part_b(formula_b),
   euf_solver(ctx, "QF_UF"), oct_solver(ctx, "QF_LIA")
 {
   // unsigned num = euf_component.size();
@@ -42,107 +42,109 @@ void ThCombInterpolator::addConjunction(z3::solver & s, z3::expr const & e){
   throw "Wrong term";
 }
 
-// void ThCombInterpolator::traverseProof(z3::expr const & proof) {
-//   if(earlyExit(visited, proof))
-//     return;
-    
-//   if (proof.is_app()) {
-//     unsigned num = proof.num_args();
-//     for (unsigned i = 0; i < num; i++) 
-//       traverseProof(proof.arg(i));
-    
-//     z3::func_decl proof_decl = proof.decl();
-//     switch(proof_decl.decl_kind()) {
-//     case Z3_OP_PR_MONOTONICITY:{
-//       auto consequent = proof.arg(num - 1).simplify();
-//       auto consequent_kind = consequent.decl().decl_kind();
-//       // Avoid visited consequents and anything but equalities
-//       if(earlyExit(consequent_visited, consequent) || consequent_kind != Z3_OP_EQ)
-// 	return;
-//       // Avoid 'high-order equalities'
-//       // between {==, !=, <, >, <=, >=}
-//       switch(consequent.arg(0).decl().decl_kind()){
-//       case Z3_OP_EQ:
-//       case Z3_OP_DISTINCT:
-//       case Z3_OP_LE:
-//       case Z3_OP_GE:
-//       case Z3_OP_LT:
-//       case Z3_OP_GT:
-// 	return;
-//       default:{
-// 	std::cout << "consequent " << consequent << std::endl;
-// 	// std::cout << "purified using EUF " << purifyEUFEq(consequent) << std::endl; // Keep working here
-// 	euf_solver.add(consequent);
-// 	oct_solver.add(consequent);
-// 	euf_consequents.push_back(consequent);
-// #if _DEBUGEXTPURIFIER_
-// 	std::cout << consequent << " added to euf" << std::endl;
-// #endif       
-// 	return;
-//       }
-//       }
-//     }
-//       // case Z3_OP_PR_REFLEXIVITY:
-//       // case Z3_OP_PR_SYMMETRY:
-//     case Z3_OP_PR_ASSERTED:
-//     case Z3_OP_PR_HYPOTHESIS:
-//     case Z3_OP_PR_TRANSITIVITY:
-//     case Z3_OP_PR_TRANSITIVITY_STAR:
-//     case Z3_OP_PR_UNIT_RESOLUTION:
-//     case Z3_OP_PR_MODUS_PONENS:
-//     case Z3_OP_PR_TH_LEMMA:
-//     case Z3_OP_PR_REWRITE:
-//     case Z3_OP_PR_REWRITE_STAR:{
-//       auto consequent = proof.arg(num - 1).simplify();
-//       auto consequent_kind = consequent.decl().decl_kind();
-//       // Avoid visited consequents and anything but equalities
-//       if(earlyExit(consequent_visited, consequent) || consequent_kind != Z3_OP_EQ)
-// 	return;
-//       // Avoid 'high-order equalities'
-//       // between {==, !=, <, >, <=, >=}
-//       switch(consequent.arg(0).decl().decl_kind()){
-//       case Z3_OP_EQ:
-//       case Z3_OP_DISTINCT:
-//       case Z3_OP_LE:
-//       case Z3_OP_GE:
-//       case Z3_OP_LT:
-//       case Z3_OP_GT:
-// 	return;
-//       default:	
-// 	if(isProvable(oct_solver, consequent)){
-// 	  euf_solver.add(consequent);
-// 	  oct_solver.add(consequent);
-// 	  oct_consequents.push_back(consequent);
-// #if _DEBUGEXTPURIFIER_
-// 	  std::cout << consequent << " added to oct" << std::endl;
-// #endif
-// 	}
-// 	else if(isProvable(euf_solver, consequent)){
-// 	  euf_solver.add(consequent);
-// 	  oct_solver.add(consequent);
-// 	  euf_consequents.push_back(consequent);
-// #if _DEBUGEXTPURIFIER_
-// 	  std::cout << consequent << " added to euf" << std::endl;
-// #endif
-// 	}
-// 	else
-// 	  throw "Error in traverseProof::'rest'. Is the proof wrong? Perhaps my algorithm isn't complete.";
-// 	return;
-//       }
-//     }
-      
-//     default:
-//       return;
-//     }
-//   }  
-//   throw "Wrong proof-term";
-// }
+void ThCombInterpolator::printf___(z3::expr const & proof){
+  
+  unsigned num = proof.num_args();
+  z3::func_decl proof_decl = proof.decl();
+  
+  std::cout << proof_decl.name() << ": ";    
+  for(unsigned i = 0; i < num - 1; i++){
+    unsigned temp_size = proof.arg(i).num_args();
+    std::cout << proof.arg(i).arg(temp_size - 1) << " ; " << proof.arg(i).arg(temp_size - 1) << ", ";
+  }
+  std::cout << "|- " << proof.arg(num - 1) << " ; " << proof.arg(num - 1) << std::endl;
+}
+
+void ThCombInterpolator::traverseProof1(z3::expr const & proof) {
+  if(proof.is_app()){
+    unsigned num = proof.num_args();
+    z3::func_decl proof_decl = proof.decl();
+    switch(proof_decl.decl_kind()){
+    case Z3_OP_PR_LEMMA:{      
+      // Printing -----
+      printf___(proof);
+      //          -----
+      return;
+    }
+    case Z3_OP_PR_ASSERTED:{
+      // Printing -----
+      printf___(proof);
+      //          -----
+      return;
+    }
+    case Z3_OP_PR_UNIT_RESOLUTION:{
+      for(unsigned i = 0; i < num - 1; i++)
+	traverseProof1(proof.arg(i));
+      // Printing -----
+      printf___(proof);
+      //          -----
+      return;
+    }
+    case Z3_OP_PR_TH_LEMMA:{
+      for(unsigned i = 0; i < num - 1; i++)
+	traverseProof1(proof.arg(i));
+      // Printing -----
+      printf___(proof);
+      //          -----
+      return;
+    }
+    default:{
+      z3::expr_vector hyps(proof.ctx());
+      traverseProof2(proof, hyps);
+      // Printing ------------------------------------------
+      std::cout << proof_decl.name() << ": ";
+      unsigned num_hyps = hyps.size();
+      for(unsigned i = 0; i < num_hyps; i++)
+	std::cout << hyps[i] << " ; " << hyps[i] << ", "; 
+      std::cout << "|- " << proof.arg(num - 1) << " ; " << proof.arg(num - 1) << std::endl;
+      //          ------------------------------------------
+      return;
+    }
+    }
+  }
+  throw "Wrong proof-term in traverseProof1";
+}
+
+void ThCombInterpolator::traverseProof2(z3::expr const & proof, z3::expr_vector & hyps) {
+  if(proof.is_app()){
+    unsigned num = proof.num_args();
+    z3::func_decl proof_decl = proof.decl();
+    switch(proof_decl.decl_kind()){      
+    case Z3_OP_PR_ASSERTED:
+    case Z3_OP_PR_LEMMA:
+    case Z3_OP_PR_UNIT_RESOLUTION:
+    case Z3_OP_PR_TH_LEMMA:{
+      traverseProof1(proof);
+      hyps.push_back(proof.arg(num - 1));
+      return;
+    }
+    default:{      
+      for(unsigned i = 0; i < num - 1; i++)
+	traverseProof2(proof.arg(i), hyps);
+      return;
+    }
+    }
+  }
+  throw "Wrong proof-term in traverseProof2";
+}
 
 void ThCombInterpolator::getInterpolant(){
   // Traverse Proof of QF_UFLIA
 }
 
 std::ostream & operator << (std::ostream & os, ThCombInterpolator & p){
+  z3::solver temp_solver(p.ctx, "QF_UFLIA");
+  
+  p.part_a.addEufFormulasToSolver(temp_solver);
+  p.part_a.addOctFormulasToSolver(temp_solver);
+  p.part_b.addEufFormulasToSolver(temp_solver);
+  p.part_b.addOctFormulasToSolver(temp_solver);
+  
+  if(temp_solver.check() == z3::unsat){
+    // std::cout << temp_solver.proof() << std::endl;
+    p.traverseProof1(temp_solver.proof());
+  }
+  
   os << "Returns interpolant";
   return os;
 }
