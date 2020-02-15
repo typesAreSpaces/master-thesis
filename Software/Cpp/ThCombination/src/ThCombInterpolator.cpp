@@ -18,6 +18,43 @@ ThCombInterpolator::ThCombInterpolator(z3::context & ctx,
 ThCombInterpolator::~ThCombInterpolator(){
 }
 
+void ThCombInterpolator::checkImpliedEqualities(z3::expr_vector & v, z3::solver & s){
+  // -----------------------------------
+  // // Client code example
+  // z3::expr_vector terms(ctx);
+  // terms.push_back(x1);
+  // terms.push_back(x2);
+  // terms.push_back(x3);
+
+  // check_implied_equalities(terms, s);
+  // -----------------------------------
+  unsigned num = v.size();
+  Z3_ast   terms[num];
+  unsigned class_ids[num];
+  
+  for(unsigned i = 0; i < num; i++){
+    terms[i] = v[i];
+    class_ids[i] = 0;
+  }
+  
+  auto check = Z3_get_implied_equalities(v.ctx(), s, num, terms, class_ids);
+
+  switch(check){
+  case Z3_L_TRUE:
+    std::cout << "sat" << std::endl;
+    for(unsigned i = 0; i < num; i++)
+      std::cout << "Class " << Z3_ast_to_string(v.ctx(), terms[i])
+		<< " -> " << class_ids[i] << std::endl;
+    break;
+  case Z3_L_FALSE:
+    std::cout << "unsat" << std::endl;
+    break;
+  case Z3_L_UNDEF:
+    std::cout << "unknown" << std::endl;
+    break;
+  }
+}
+
 bool ThCombInterpolator::isProvable(z3::solver & s, z3::expr const & e){
   s.push();
   s.add(!e);
@@ -50,9 +87,11 @@ void ThCombInterpolator::printf___(z3::expr const & proof){
   std::cout << proof_decl.name() << ": ";    
   for(unsigned i = 0; i < num - 1; i++){
     unsigned temp_size = proof.arg(i).num_args();
-    std::cout << proof.arg(i).arg(temp_size - 1) << " ; " << proof.arg(i).arg(temp_size - 1) << ", ";
+    auto partial_interpolant = proof.arg(i).arg(temp_size - 1);
+    std::cout << proof.arg(i).arg(temp_size - 1) << " ; " << partial_interpolant << ", ";
   }
-  std::cout << "|- " << proof.arg(num - 1) << " ; " << proof.arg(num - 1) << std::endl;
+  auto partial_interpolant = proof.arg(num - 1);
+  std::cout << "|- " << proof.arg(num - 1) << " ; " << partial_interpolant << std::endl;
 }
 
 void ThCombInterpolator::traverseProof1(z3::expr const & proof) {
@@ -94,9 +133,12 @@ void ThCombInterpolator::traverseProof1(z3::expr const & proof) {
       // Printing ------------------------------------------
       std::cout << proof_decl.name() << ": ";
       unsigned num_hyps = hyps.size();
-      for(unsigned i = 0; i < num_hyps; i++)
-	std::cout << hyps[i] << " ; " << hyps[i] << ", "; 
-      std::cout << "|- " << proof.arg(num - 1) << " ; " << proof.arg(num - 1) << std::endl;
+      for(unsigned i = 0; i < num_hyps; i++){
+	auto partial_interpolant = hyps[i];
+	std::cout << hyps[i] << " ; " << partial_interpolant << ", ";
+      }
+      auto partial_interpolant = proof.arg(num - 1);
+      std::cout << "|- " << proof.arg(num - 1) << " ; " << partial_interpolant << std::endl;
       //          ------------------------------------------
       return;
     }
@@ -141,7 +183,6 @@ std::ostream & operator << (std::ostream & os, ThCombInterpolator & p){
   p.part_b.addOctFormulasToSolver(temp_solver);
   
   if(temp_solver.check() == z3::unsat){
-    // std::cout << temp_solver.proof() << std::endl;
     p.traverseProof1(temp_solver.proof());
   }
   

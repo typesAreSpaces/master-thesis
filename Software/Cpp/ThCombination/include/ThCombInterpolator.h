@@ -10,8 +10,13 @@ class ThCombInterpolator {
   z3::solver euf_solver;
   z3::solver oct_solver;
 
+  void checkImpliedEqualities(z3::expr_vector &, z3::solver &);
   bool isProvable(z3::solver &, z3::expr const &);
   void addConjunction(z3::solver &, z3::expr const &);
+
+  z3::expr partialInterpolantConvex();
+  z3::expr partialInterpolantClauses();
+  z3::expr partialInterpolantThLemmas();
   
   void printf___(z3::expr const &);
   void traverseProof1(z3::expr const &);
