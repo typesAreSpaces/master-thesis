@@ -7,21 +7,9 @@
 #include <set>
 #include <vector>
 
-class Rename {
-
-  z3::expr const & part_a;
-  z3::expr const & part_b;
-  std::set<std::string> a_local_names;
-  std::set<std::string> common_names;
-  std::vector<bool> visited;
-
-  void     traversePartA(z3::expr const &);
-  void     traversePartB(z3::expr const &);
-  z3::expr reformulate(z3::expr const &);
-  
-public:
-  Rename(z3::expr const &, z3::expr const &);
-  ~Rename();
-};
+void     traversePartA(z3::expr const &, std::vector<bool> &, std::set<std::string> &);
+void     traversePartB(z3::expr const &, std::vector<bool> &, std::set<std::string> &, std::set<std::string> &);
+z3::expr reformulate(z3::expr const &, std::set<std::string> &, std::set<std::string> &);
+void     rename(z3::expr &, z3::expr &);
 
 #endif
