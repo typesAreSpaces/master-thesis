@@ -44,6 +44,10 @@ print_proof: ../z3-proofs2latex/z3-proof-parser-sexpr thcombination
 	$^ < $@.txt > $@.tex
 	pdflatex $@.tex
 
+.PHONY: clean_proof
+clean_proof:
+	rm print_proof*
+
 .PHONY: clean
 clean:
 	rm -rf $(ODIR)/* thcombination print_proof*
