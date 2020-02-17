@@ -2,16 +2,16 @@ UNAME = $(shell uname)
 WHO = $(shell whoami)
 ifeq ($(UNAME), Linux)
 	ifeq ($(WHO), jose.castellanosjoo)
-	Z3DIR = /nfs/student/j/jose.castellanosjoo/Documents/GitProjects/z3
+	Z3DIR = /nfs/student/j/jose.castellanosjoo/Documents/GitProjects/z3__
 	endif
 	ifeq ($(WHO), jose)
-# Z3DIR = /home/jose/Documents/Github\ Projects/z3
-	Z3DIR = /home/jose/Documents/GithubProjects/z3
+# Z3DIR = /home/jose/Documents/Github\ Projects/z3__
+	Z3DIR = /home/jose/Documents/GithubProjects/z3__
 	endif
 Z3EXT = so
 endif
 ifeq ($(UNAME), Darwin)
-Z3DIR = /Users/joseabelcastellanosjoo/Documents/Applications/z3
+Z3DIR = /Users/joseabelcastellanosjoo/Documents/Applications/z3__
 Z3EXT = dylib
 endif
 
