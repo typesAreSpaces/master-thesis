@@ -18,6 +18,9 @@ class ThCombInterpolator {
   z3::expr partialInterpolantConvex();
   z3::expr partialInterpolantClauses();
   z3::expr partialInterpolantThLemmas();
+  // The first argument is a partial interpolant
+  // The second argument is a proof
+  z3::expr partialInterpolantUnitResolution(z3::expr const &, z3::expr const &);
   
   void printf___(z3::expr const &);
   void traverseProof1(z3::expr const &);
