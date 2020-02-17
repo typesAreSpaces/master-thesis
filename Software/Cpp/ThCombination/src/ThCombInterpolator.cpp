@@ -87,10 +87,10 @@ void ThCombInterpolator::printf___(z3::expr const & proof){
   std::cout << proof_decl.name() << ": ";    
   for(unsigned i = 0; i < num - 1; i++){
     unsigned temp_size = proof.arg(i).num_args();
-    auto partial_interpolant = proof.arg(i).arg(temp_size - 1);
+    auto partial_interpolant = proof.arg(i).arg(temp_size - 1); // Work here
     std::cout << proof.arg(i).arg(temp_size - 1) << " ; " << partial_interpolant << ", ";
   }
-  auto partial_interpolant = proof.arg(num - 1);
+  auto partial_interpolant = proof.arg(num - 1); // Work here
   std::cout << "|- " << proof.arg(num - 1) << " ; " << partial_interpolant << std::endl;
 }
 
@@ -131,13 +131,13 @@ void ThCombInterpolator::traverseProof1(z3::expr const & proof) {
       z3::expr_vector hyps(proof.ctx());
       traverseProof2(proof, hyps);
       // Printing ------------------------------------------
-      std::cout << proof_decl.name() << ": ";
+      std::cout << "provable: ";
       unsigned num_hyps = hyps.size();
       for(unsigned i = 0; i < num_hyps; i++){
-	auto partial_interpolant = hyps[i];
+	auto partial_interpolant = hyps[i]; // Work here
 	std::cout << hyps[i] << " ; " << partial_interpolant << ", ";
       }
-      auto partial_interpolant = proof.arg(num - 1);
+      auto partial_interpolant = proof.arg(num - 1); // Work here
       std::cout << "|- " << proof.arg(num - 1) << " ; " << partial_interpolant << std::endl;
       //          ------------------------------------------
       return;
