@@ -27,26 +27,8 @@ int main(){
   // z3::expr formula_a = 1 <= x && a == 1 && f(x) == 3 && f(a) == 4;
   // z3::expr formula_b = x <= 2 && b == 2 && f(b) == 5;
   
-  // ThCombInterpolator test = ThCombInterpolator(ctx, formula_a, formula_b);
-  // std::cout << test << std::endl;
-
-  std::cout << "Old Part a" << std::endl;
-  std::cout << formula_a << std::endl;
-  std::cout << "is common? " << std::endl;
-  std::cout << formula_a.is_common() << std::endl;
-  std::cout << "Old Part b" << std::endl;
-  std::cout << formula_b << std::endl;
-  std::cout << "is common? " << std::endl;
-  std::cout << formula_b.is_common() << std::endl;
-  rename(formula_a, formula_b);
-  std::cout << "New Part a" << std::endl;
-  std::cout << formula_a << std::endl;
-  std::cout << "is common? " << std::endl;
-  std::cout << formula_a.is_common() << std::endl;
-  std::cout << "New Part b" << std::endl;
-  std::cout << formula_b << std::endl;
-  std::cout << "is common? " << std::endl;
-  std::cout << formula_b.is_common() << std::endl;
+  ThCombInterpolator test = ThCombInterpolator(ctx, formula_a, formula_b);
+  std::cout << test << std::endl;
   
   return 0;
 }
