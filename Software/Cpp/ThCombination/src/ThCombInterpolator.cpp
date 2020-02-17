@@ -4,7 +4,8 @@
 ThCombInterpolator::ThCombInterpolator(z3::context & ctx,
 				       z3::expr const & formula_a, z3::expr const & formula_b) :
   ctx(ctx), part_a(formula_a), part_b(formula_b),
-  euf_solver(ctx, "QF_UF"), oct_solver(ctx, "QF_LIA")
+  euf_solver(ctx, "QF_UF"), oct_solver(ctx, "QF_LIA"),
+  partial_interpolants(ctx)
 {
   // unsigned num = euf_component.size();
   // for(unsigned i = 0; i < num; i++)
@@ -79,6 +80,18 @@ void ThCombInterpolator::addConjunction(z3::solver & s, z3::expr const & e){
   throw "Wrong term";
 }
 
+z3::expr ThCombInterpolator::partialInterpolantConvex(){
+  return ctx.bool_val(true);
+}
+
+z3::expr ThCombInterpolator::partialInterpolantClauses(){
+  return ctx.bool_val(true);
+}
+
+z3::expr ThCombInterpolator::partialInterpolantThLemmas(){
+  return ctx.bool_val(true);
+}
+
 void ThCombInterpolator::printf___(z3::expr const & proof){
   
   unsigned num = proof.num_args();
@@ -94,33 +107,32 @@ void ThCombInterpolator::printf___(z3::expr const & proof){
   std::cout << "|- " << proof.arg(num - 1) << " ; " << partial_interpolant << std::endl;
 }
 
+// Invariant: Insert a partial interpolant in the consequent of a proof
+// before calling printf__
 void ThCombInterpolator::traverseProof1(z3::expr const & proof) {
   if(proof.is_app()){
     unsigned num = proof.num_args();
     z3::func_decl proof_decl = proof.decl();
     switch(proof_decl.decl_kind()){
-    case Z3_OP_PR_LEMMA:{      
+    case Z3_OP_PR_LEMMA:{
+      // Invariant --------------------------------------------------------
+      auto consequent = proof.arg(num - 1);
+      partial_interpolants.insert(consequent, partialInterpolantClauses());
+      //           --------------------------------------------------------
       // Printing -----
       printf___(proof);
       //          -----
       return;
     }
     case Z3_OP_PR_ASSERTED:{
-      // Printing -----
-      std::cout << "From asserted" << std::endl;
-      std::cout << proof.arg(0).is_common() << std::endl;
-      std::cout << proof.arg(0).is_a_pure() << std::endl;
-      std::cout << proof.arg(0).is_b_pure() << std::endl;
+      // Invariant ------------------------------------------------
       auto asserted = proof.arg(0);
-      if(asserted.is_common()){
-	
-      }
-      else if(asserted.is_a_pure()){
-	
-      }
-      else{
-	
-      }
+      if(part_a.inside(asserted))
+	partial_interpolants.insert(asserted, ctx.bool_val(false));
+      else
+	partial_interpolants.insert(asserted, ctx.bool_val(true));
+      //           ------------------------------------------------
+      // Printing -----
       printf___(proof);
       //          -----
       return;
@@ -128,6 +140,11 @@ void ThCombInterpolator::traverseProof1(z3::expr const & proof) {
     case Z3_OP_PR_UNIT_RESOLUTION:{
       for(unsigned i = 0; i < num - 1; i++)
 	traverseProof1(proof.arg(i));
+      
+      // Invariant -----------------------------------------------
+      auto consequent = proof.arg(num - 1);
+      partial_interpolants.insert(consequent, ctx.bool_val(true)); // Wrong! Just momentarily
+      //           -----------------------------------------------
       // Printing -----
       printf___(proof);
       //          -----
@@ -136,6 +153,10 @@ void ThCombInterpolator::traverseProof1(z3::expr const & proof) {
     case Z3_OP_PR_TH_LEMMA:{
       for(unsigned i = 0; i < num - 1; i++)
 	traverseProof1(proof.arg(i));
+      // Invariant ---------------------------------------------------------
+      auto consequent = proof.arg(num - 1);
+      partial_interpolants.insert(consequent, partialInterpolantThLemmas());
+      //           ---------------------------------------------------------
       // Printing -----
       printf___(proof);
       //          -----

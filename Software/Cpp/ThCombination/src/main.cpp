@@ -22,27 +22,21 @@ int main(){
   z3::func_decl f = ctx.function("f", int_sort, int_sort);
   z3::func_decl g = ctx.function("g", int_sort, int_sort);
 
-  z3::expr formula_a = f(x1) + x2 == x3 && y3 == f(y1) + y2 && y1 <= x1;
-  z3::expr formula_b = x2 == g(b) && y2 == g(b) && x1 <= y1 && x3 < y3;
-  // z3::expr formula_a = 1 <= x && a == 1 && f(x) == 3 && f(a) == 4;
-  // z3::expr formula_b = x <= 2 && b == 2 && f(b) == 5;
+  // z3::expr formula_a = f(x1) + x2 == x3 && y3 == f(y1) + y2 && y1 <= x1;
+  // z3::expr formula_b = x2 == g(b) && y2 == g(b) && x1 <= y1 && x3 < y3;
+  z3::expr formula_a = 1 <= x && a == 1 && f(x) == 3 && f(a) == 4;
+  z3::expr formula_b = x <= 2 && b == 2 && f(b) == 5;
   
-  // ThCombInterpolator test = ThCombInterpolator(ctx, formula_a, formula_b);
-  // std::cout << test << std::endl;
+  ThCombInterpolator test = ThCombInterpolator(ctx, formula_a, formula_b);
+  std::cout << test << std::endl;
 
-  z3::expr_map my_map(ctx);
-  std::cout << my_map.size() << std::endl;
-  my_map.insert(formula_a, formula_b);
-  std::cout << my_map.size() << std::endl;
-  std::cout << my_map << std::endl;
+  // z3::expr_map my_map(ctx);
+  // std::cout << my_map.size() << std::endl;
+  // my_map.insert(formula_a, formula_b);
+  // std::cout << my_map.size() << std::endl;
+  // std::cout << my_map << std::endl;
 
-  std::cout << my_map.find(formula_a) << std::endl;
-  
-  // for(auto x : m){
-  //   std::cout << x.first << " " << x.second << std::endl;
-  // }
-  
-  
-  
+  // std::cout << my_map.find(formula_a) << std::endl;
+ 
   return 0;
 }

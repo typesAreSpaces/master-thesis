@@ -39,6 +39,7 @@ public:
 
   void addEufFormulasToSolver(z3::solver &);
   void addOctFormulasToSolver(z3::solver &);
+  bool inside(z3::expr const &);
   
   friend std::ostream & operator << (std::ostream &, Purifier &);
 };

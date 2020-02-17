@@ -198,6 +198,18 @@ void Purifier::addOctFormulasToSolver(z3::solver & s){
     s.add(oct_component[i]);
 }
 
+bool Purifier::inside(z3::expr const & e){
+  unsigned num = euf_component.size();
+  for(unsigned i = 0; i < num; i++)
+    if(e.id() == euf_component[i].id())
+      return true;
+  num = oct_component.size();
+  for(unsigned i = 0; i < num; i++)
+    if(e.id() == oct_component[i].id())
+      return true;
+  return false;
+}
+
 std::ostream & operator << (std::ostream & os, Purifier & p){
   os << "EUF-component" << std::endl;
   unsigned num = p.euf_component.size();

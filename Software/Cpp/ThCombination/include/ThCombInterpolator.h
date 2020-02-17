@@ -5,14 +5,15 @@
 
 class ThCombInterpolator {
   z3::context & ctx;
-  Purifier   part_a;
-  Purifier   part_b;
-  z3::solver euf_solver;
-  z3::solver oct_solver;
+  Purifier      part_a;
+  Purifier      part_b;
+  z3::solver    euf_solver;
+  z3::solver    oct_solver;
+  z3::expr_map  partial_interpolants;
 
   void checkImpliedEqualities(z3::expr_vector &, z3::solver &);
-  bool isProvable(z3::solver &, z3::expr const &);
-  void addConjunction(z3::solver &, z3::expr const &);
+  bool isProvable(z3::solver &, z3::expr const &);     // Perhaps this wont be used that much (??)
+  void addConjunction(z3::solver &, z3::expr const &); // Perhaps this wont be used that much (?)
 
   z3::expr partialInterpolantConvex();
   z3::expr partialInterpolantClauses();
