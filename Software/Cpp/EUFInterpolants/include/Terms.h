@@ -2,10 +2,8 @@
 #define _TERMS_
 #define notInSet(y, x) x.find(y) == x.end()
 
-#include <iostream>
 #include <stack>
 #include <map>
-#include <vector>
 #include <set>
 #include <z3++.h>
 #include "Term.h"

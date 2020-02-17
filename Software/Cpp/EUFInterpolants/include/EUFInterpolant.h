@@ -1,11 +1,7 @@
 #ifndef _EUF_INTERPOLANT_
 #define _EUF_INTERPOLANT_
 
-#include "CongruenceClosure.h"
-#include "HornClauses.h"
 #include "ConvertReprToZ3.h"
-#include <map>
-#include <set>
 
 class EUFInterpolant {
  public:

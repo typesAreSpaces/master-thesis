@@ -1,7 +1,6 @@
 #ifndef _VERTEX_
 #define _VERTEX_
 
-#include <iostream>
 #include <vector>
 #include <cassert>
 #include "CircularList.h"

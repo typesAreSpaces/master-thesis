@@ -1,8 +1,6 @@
 #ifndef _CONG_CLOSURE
 #define _CONG_CLOSURE
 
-#include <map>
-#include "Terms.h"
 #include "SignatureTable.h"
 
 // SymbolLocation : SymbolName -> Set of Locations

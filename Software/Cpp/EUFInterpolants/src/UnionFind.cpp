@@ -8,7 +8,7 @@ UnionFind::UnionFind(unsigned n){
     representative[i] = i;
 }
 
-UnionFind::UnionFind(std::vector<unsigned> values):
+UnionFind::UnionFind(const std::vector<unsigned> & values):
   representative(values){};
 
 UnionFind::~UnionFind(){

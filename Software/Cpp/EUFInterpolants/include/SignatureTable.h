@@ -4,8 +4,7 @@
 #include <utility>
 #include <unordered_map>
 #include "Signature.h"
-#include "Term.h"
-#include "UnionFind.h"
+#include "Terms.h"
 
 typedef std::unordered_map<UnarySignature, Term*, UnarySignature::Hash> UnaryTerms;
 typedef std::unordered_map<BinarySignature, Term*, BinarySignature::Hash> BinaryTerms; 

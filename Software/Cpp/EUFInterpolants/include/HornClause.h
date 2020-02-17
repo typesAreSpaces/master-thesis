@@ -1,12 +1,7 @@
 #ifndef _HORN_CLAUSE_
 #define _HORN_CLAUSE_
 
-#include <assert.h>
-#include <vector>
-#include <set>
-#include <utility>
 #include <algorithm>
-#include "Term.h"
 #include "CongruenceClosure.h"
 
 typedef std::pair<Term*, Term*> EquationTerm;

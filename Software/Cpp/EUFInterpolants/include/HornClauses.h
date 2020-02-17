@@ -1,12 +1,7 @@
 #ifndef _HORN_CLAUSES_
 #define _HORN_CLAUSES_
-#define notInSet(y, x) x.find(y) == x.end()
 
 #include "HornClause.h"
-#include "Terms.h"
-#include <vector>
-#include <set>
-#include <map>
 
 // Match1 : Uncommon Term -> Positions of Horn Clauses
 typedef std::map<Term*, std::vector<unsigned> > Match1;

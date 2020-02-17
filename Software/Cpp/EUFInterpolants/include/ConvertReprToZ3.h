@@ -1,11 +1,7 @@
 #ifndef _REPR_
 #define _REPR_
-#define notInSet(y, x) x.find(y) == x.end()
 
-#include <map>
-#include "Term.h"
-#include "Terms.h"
-#include "HornClause.h"
+#include "HornClauses.h"
 
 class Converter {
  public:
