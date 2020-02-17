@@ -45,13 +45,13 @@ void ThCombInterpolator::checkImpliedEqualities(z3::expr_vector & v, z3::solver 
     for(unsigned i = 0; i < num; i++)
       std::cout << "Class " << Z3_ast_to_string(v.ctx(), terms[i])
 		<< " -> " << class_ids[i] << std::endl;
-    break;
+    return;
   case Z3_L_FALSE:
     std::cout << "unsat" << std::endl;
-    break;
+    return;
   case Z3_L_UNDEF:
     std::cout << "unknown" << std::endl;
-    break;
+    return;
   }
 }
 
