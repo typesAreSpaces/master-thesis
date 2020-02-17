@@ -100,10 +100,10 @@ void ThCombInterpolator::printf___(z3::expr const & proof){
   std::cout << proof_decl.name() << ": ";    
   for(unsigned i = 0; i < num - 1; i++){
     unsigned temp_size = proof.arg(i).num_args();
-    auto partial_interpolant = proof.arg(i).arg(temp_size - 1); // Work here
+    auto partial_interpolant = partial_interpolants.find(proof.arg(i).arg(temp_size - 1));
     std::cout << proof.arg(i).arg(temp_size - 1) << " ; " << partial_interpolant << ", ";
   }
-  auto partial_interpolant = proof.arg(num - 1); // Work here
+  auto partial_interpolant = partial_interpolants.find(proof.arg(num - 1));
   std::cout << "|- " << proof.arg(num - 1) << " ; " << partial_interpolant << std::endl;
 }
 
@@ -119,9 +119,11 @@ void ThCombInterpolator::traverseProof1(z3::expr const & proof) {
       auto consequent = proof.arg(num - 1);
       partial_interpolants.insert(consequent, partialInterpolantClauses());
       //           --------------------------------------------------------
-      // Printing -----
-      printf___(proof);
-      //          -----
+      // Printing --------------------------------------------------------------------------
+      std::cout << proof_decl.name() << ": ";
+      auto partial_interpolant = partial_interpolants.find(consequent);
+      std::cout << "|- " << proof.arg(num - 1) << " ; " << partial_interpolant << std::endl;
+      //          --------------------------------------------------------------------------
       return;
     }
     case Z3_OP_PR_ASSERTED:{
@@ -153,6 +155,7 @@ void ThCombInterpolator::traverseProof1(z3::expr const & proof) {
     case Z3_OP_PR_TH_LEMMA:{
       for(unsigned i = 0; i < num - 1; i++)
 	traverseProof1(proof.arg(i));
+      
       // Invariant ---------------------------------------------------------
       auto consequent = proof.arg(num - 1);
       partial_interpolants.insert(consequent, partialInterpolantThLemmas());
@@ -169,10 +172,12 @@ void ThCombInterpolator::traverseProof1(z3::expr const & proof) {
       std::cout << "provable: ";
       unsigned num_hyps = hyps.size();
       for(unsigned i = 0; i < num_hyps; i++){
-	auto partial_interpolant = hyps[i]; // Work here
+	auto partial_interpolant = partial_interpolants.find(hyps[i]); // Possible potential problem
 	std::cout << hyps[i] << " ; " << partial_interpolant << ", ";
       }
-      auto partial_interpolant = proof.arg(num - 1); // Work here
+      auto consequent = proof.arg(num - 1);
+      partial_interpolants.insert(consequent, ctx.bool_val(true)); // Wrong! Just momentarily
+      auto partial_interpolant = partial_interpolants.find(consequent);
       std::cout << "|- " << proof.arg(num - 1) << " ; " << partial_interpolant << std::endl;
       //          ------------------------------------------
       return;

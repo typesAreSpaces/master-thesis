@@ -1,0 +1,19 @@
+asserted: |- (= (f x) oct_2) ; false
+asserted: |- (= 3 oct_2) ; false
+th-lemma: |- (or (= x 2) (not (<= x 2)) (not (>= x 2))) ; true
+asserted: |- (<= x 2) ; true
+th-lemma: |- (or (>= x 2) (<= x 1)) ; true
+th-lemma: |- (or (= x 1) (not (<= x 1)) (not (>= x 1))) ; true
+asserted: |- (<= 1 x) ; false
+provable: (<= 1 x) ; false, |- (>= x 1) ; true
+unit-resolution: (or (= x 1) (not (<= x 1)) (not (>= x 1))) ; true, (>= x 1) ; true, |- (or (= x 1) (not (<= x 1))) ; true
+lemma: |- (not (= x 1)) ; true
+unit-resolution: (or (= x 1) (not (<= x 1))) ; true, (not (= x 1)) ; true, |- (not (<= x 1)) ; true
+unit-resolution: (or (>= x 2) (<= x 1)) ; true, (not (<= x 1)) ; true, |- (>= x 2) ; true
+unit-resolution: (or (= x 2) (not (<= x 2)) (not (>= x 2))) ; true, (<= x 2) ; true, (>= x 2) ; true, |- (= x 2) ; true
+asserted: |- (= (f b) oct_4) ; true
+asserted: |- (= 5 oct_4) ; true
+asserted: |- (= b oct_5) ; true
+asserted: |- (= 2 oct_5) ; true
+provable: (= (f x) oct_2) ; false, (= 3 oct_2) ; false, (= x 2) ; true, (= (f b) oct_4) ; true, (= 5 oct_4) ; true, (= b oct_5) ; true, (= 2 oct_5) ; true, |- false ; true
+Returns interpolant

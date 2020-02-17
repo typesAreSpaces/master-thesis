@@ -1,0 +1,97 @@
+\documentclass[varwidth=4000pt]{standalone}
+\usepackage{ebproof}
+\usepackage{amssymb}
+\usepackage{amsmath}
+\usepackage{xcolor}
+\begin{document}
+Proof number 1:\begin{prooftree}
+\infer0[asserted]{(=(f(x))(oct_2))\textcolor{red}{ Interpolant: (false)}}
+\end{prooftree}
+
+Proof number 2:\begin{prooftree}
+\infer0[asserted]{(=(3)(oct_2))\textcolor{red}{ Interpolant: (false)}}
+\end{prooftree}
+
+Proof number 3:\begin{prooftree}
+\infer0[th-lemma]{(or(=(x)(2))(not(\leq(x)(2)))(not(\geq(x)(2))))\textcolor{red}{ Interpolant: (true)}}
+\end{prooftree}
+
+Proof number 4:\begin{prooftree}
+\infer0[asserted]{(\leq(x)(2))\textcolor{red}{ Interpolant: (true)}}
+\end{prooftree}
+
+Proof number 5:\begin{prooftree}
+\infer0[th-lemma]{(or(\geq(x)(2))(\leq(x)(1)))\textcolor{red}{ Interpolant: (true)}}
+\end{prooftree}
+
+Proof number 6:\begin{prooftree}
+\infer0[th-lemma]{(or(=(x)(1))(not(\leq(x)(1)))(not(\geq(x)(1))))\textcolor{red}{ Interpolant: (true)}}
+\end{prooftree}
+
+Proof number 7:\begin{prooftree}
+\infer0[asserted]{(\leq(1)(x))\textcolor{red}{ Interpolant: (false)}}
+\end{prooftree}
+
+Proof number 8:\begin{prooftree}
+\infer0[x]{(\leq(1)(x))\textcolor{red}{ Interpolant: (false)}}
+\infer1[provable]{(\geq(x)(1))\textcolor{red}{ Interpolant: (true)}}
+\end{prooftree}
+
+Proof number 9:\begin{prooftree}
+\infer0[x]{(or(=(x)(1))(not(\leq(x)(1)))(not(\geq(x)(1))))\textcolor{red}{ Interpolant: (true)}}
+\infer0[x]{(\geq(x)(1))\textcolor{red}{ Interpolant: (true)}}
+\infer2[unit-resolution]{(or(=(x)(1))(not(\leq(x)(1))))\textcolor{red}{ Interpolant: (true)}}
+\end{prooftree}
+
+Proof number 10:\begin{prooftree}
+\infer0[lemma]{(not(=(x)(1)))\textcolor{red}{ Interpolant: (true)}}
+\end{prooftree}
+
+Proof number 11:\begin{prooftree}
+\infer0[x]{(or(=(x)(1))(not(\leq(x)(1))))\textcolor{red}{ Interpolant: (true)}}
+\infer0[x]{(not(=(x)(1)))\textcolor{red}{ Interpolant: (true)}}
+\infer2[unit-resolution]{(not(\leq(x)(1)))\textcolor{red}{ Interpolant: (true)}}
+\end{prooftree}
+
+Proof number 12:\begin{prooftree}
+\infer0[x]{(or(\geq(x)(2))(\leq(x)(1)))\textcolor{red}{ Interpolant: (true)}}
+\infer0[x]{(not(\leq(x)(1)))\textcolor{red}{ Interpolant: (true)}}
+\infer2[unit-resolution]{(\geq(x)(2))\textcolor{red}{ Interpolant: (true)}}
+\end{prooftree}
+
+Proof number 13:\begin{prooftree}
+\infer0[x]{(or(=(x)(2))(not(\leq(x)(2)))(not(\geq(x)(2))))\textcolor{red}{ Interpolant: (true)}}
+\infer0[x]{(\leq(x)(2))\textcolor{red}{ Interpolant: (true)}}
+\infer0[x]{(\geq(x)(2))\textcolor{red}{ Interpolant: (true)}}
+\infer3[unit-resolution]{(=(x)(2))\textcolor{red}{ Interpolant: (true)}}
+\end{prooftree}
+
+Proof number 14:\begin{prooftree}
+\infer0[asserted]{(=(f(b))(oct_4))\textcolor{red}{ Interpolant: (true)}}
+\end{prooftree}
+
+Proof number 15:\begin{prooftree}
+\infer0[asserted]{(=(5)(oct_4))\textcolor{red}{ Interpolant: (true)}}
+\end{prooftree}
+
+Proof number 16:\begin{prooftree}
+\infer0[asserted]{(=(b)(oct_5))\textcolor{red}{ Interpolant: (true)}}
+\end{prooftree}
+
+Proof number 17:\begin{prooftree}
+\infer0[asserted]{(=(2)(oct_5))\textcolor{red}{ Interpolant: (true)}}
+\end{prooftree}
+
+Proof number 18:\begin{prooftree}
+\infer0[x]{(=(f(x))(oct_2))\textcolor{red}{ Interpolant: (false)}}
+\infer0[x]{(=(3)(oct_2))\textcolor{red}{ Interpolant: (false)}}
+\infer0[x]{(=(x)(2))\textcolor{red}{ Interpolant: (true)}}
+\infer0[x]{(=(f(b))(oct_4))\textcolor{red}{ Interpolant: (true)}}
+\infer0[x]{(=(5)(oct_4))\textcolor{red}{ Interpolant: (true)}}
+\infer0[x]{(=(b)(oct_5))\textcolor{red}{ Interpolant: (true)}}
+\infer0[x]{(=(2)(oct_5))\textcolor{red}{ Interpolant: (true)}}
+\infer7[provable]{(false)\textcolor{red}{ Interpolant: (true)}}
+\end{prooftree}
+
+
+\end{document}
