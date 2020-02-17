@@ -3,7 +3,7 @@ CircularList<T>::CircularList() : length(0), elements(nullptr) {}
 
 template <typename T>
 CircularList<T>::~CircularList(){
-  node<T> * curr_ptr;
+  Node<T> * curr_ptr;
   if(!this->empty()){
     this->length = 0;
     curr_ptr = elements->next;
@@ -34,7 +34,7 @@ void CircularList<T>::add(const T & element){
 
 template <typename T>
 void CircularList<T>::addEmpty(const T & element){
-  node<T> * new_elements = new node<T>;
+  Node<T> * new_elements = new Node<T>;
   new_elements->data = element;
   new_elements->next = new_elements;
   elements = new_elements;
@@ -42,7 +42,7 @@ void CircularList<T>::addEmpty(const T & element){
 
 template <typename T>
 void CircularList<T>::addNonEmpty(const T & element){
-  node<T> * new_elements = new node<T>;
+  Node<T> * new_elements = new Node<T>;
   new_elements->data = element;
   new_elements->next = elements->next;
   elements->next = new_elements;
@@ -57,7 +57,7 @@ void CircularList<T>::merge(CircularList<T> & circular_list){
       this->elements = circular_list.elements;
     }
     else{
-      node<T> * new_elements = this->elements->next;
+      Node<T> * new_elements = this->elements->next;
       this->elements->next = circular_list.elements->next;
       circular_list.elements->next = new_elements;
       this->length += circular_list.length;
@@ -68,17 +68,17 @@ void CircularList<T>::merge(CircularList<T> & circular_list){
 }
 
 template <typename T>
-const node<T> & CircularList<T>::getElements(){
+const Node<T> & CircularList<T>::getElements(){
   return elements;
 }
 
 template <typename T>
-node<T> * CircularList<T>::begin(){
+Node<T> * CircularList<T>::begin(){
   return elements->next;
 }
 
 template <typename T>
-node<T> * CircularList<T>::end(){
+Node<T> * CircularList<T>::end(){
   return elements;
 }
 
@@ -88,7 +88,7 @@ bool CircularList<T>::empty(){
 }
 
 template <typename T>
-CircularList<T>::iterator::iterator(node<T> * n) : _it(n){};
+CircularList<T>::iterator::iterator(Node<T> * n) : _it(n){};
 
 template <typename T>
 CircularList<T>::iterator::~iterator(){};
@@ -100,17 +100,17 @@ typename CircularList<T>::iterator& CircularList<T>::iterator::operator++(){
 }
 
 template <typename T>
-bool CircularList<T>::iterator:: operator ==(node<T> * n) const{
+bool CircularList<T>::iterator:: operator ==(Node<T> * n) const{
   return (_it == n);
 }
 
 template <typename T>
-bool CircularList<T>::iterator:: operator !=(node<T> * n) const{
+bool CircularList<T>::iterator:: operator !=(Node<T> * n) const{
   return (_it != n);
 }
 
 template <typename T>
-node<T>& CircularList<T>::iterator:: operator *(){
+Node<T>& CircularList<T>::iterator:: operator *(){
   return *_it;
 }
 

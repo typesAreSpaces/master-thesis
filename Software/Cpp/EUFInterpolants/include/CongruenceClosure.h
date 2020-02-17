@@ -10,7 +10,13 @@ typedef std::vector<Term*> Pending;
 typedef std::vector<std::pair<Term*, Term*> > Combine;
 
 class CongruenceClosure : public Terms {
- public:
+  
+  SignatureTable  sigTable;
+  void            processEquations();
+  void            setCommonRepresentatives();
+  unsigned        name;
+  
+public:
   CongruenceClosure(z3::context &, const z3::expr &);
   CongruenceClosure(z3::context &, const z3::expr &, const UncommonSymbols &);
   ~CongruenceClosure();
@@ -26,12 +32,6 @@ class CongruenceClosure : public Terms {
   const SymbolLocations & getSymbolLocations();
   
   friend std::ostream & operator << (std::ostream &, CongruenceClosure &);
-  
- private:
-  SignatureTable  sigTable;
-  void            processEquations();
-  void            setCommonRepresentatives();
-  unsigned        name;
 };
 
 #endif

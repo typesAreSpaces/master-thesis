@@ -2,9 +2,9 @@
 #define NODE_H
 
 template <typename T>
-struct node {
+struct Node {
   T data;
-  struct node * next;
+  struct Node * next;
 };
 
 #endif

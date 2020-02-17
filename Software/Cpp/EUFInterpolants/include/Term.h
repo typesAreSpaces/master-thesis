@@ -6,7 +6,17 @@
 #include "CircularList.h"
 
 class Term {
- public:
+
+  std::string         name;
+  bool                is_symbol_common;
+  bool                is_defined;
+  // A term is `defined` when we specify
+  // its successors and predecessors
+  unsigned            id, arity, original_arity;
+  std::vector<Term*>  successors, original_successors;
+  CircularList<Term*> predecessors;
+  
+public:
   Term(std::string, unsigned, unsigned);
   Term();
   ~Term();
@@ -41,16 +51,6 @@ class Term {
   friend bool                operator <=(const Term &, const Term &);
   friend bool                operator >(const Term &, const Term &);
   friend bool                operator >=(const Term &, const Term &);
- private:
-
-  std::string         name;
-  bool                is_symbol_common;
-  bool                is_defined;
-  // A term is `defined` when we specify
-  // its successors and predecessors
-  unsigned            id, arity, original_arity;
-  std::vector<Term*>  successors, original_successors;
-  CircularList<Term*> predecessors;
 };
 
 #endif

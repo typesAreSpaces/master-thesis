@@ -10,6 +10,11 @@ typedef std::unordered_map<UnarySignature, Term*, UnarySignature::Hash> UnaryTer
 typedef std::unordered_map<BinarySignature, Term*, BinarySignature::Hash> BinaryTerms; 
 
 class SignatureTable {
+  
+protected:
+  UnaryTerms unaryTable;
+  BinaryTerms binaryTable;
+  
 public:
   SignatureTable();
   ~SignatureTable();
@@ -19,9 +24,6 @@ public:
   UnarySignature getUnarySignature(Term*, UnionFind &);
   BinarySignature getBinarySignature(Term*, UnionFind &);
   friend std::ostream & operator << (std::ostream &, const SignatureTable &);
- protected:
-  UnaryTerms unaryTable;
-  BinaryTerms binaryTable;
 };
 
 #endif

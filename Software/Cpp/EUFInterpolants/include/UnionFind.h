@@ -4,9 +4,10 @@
 #include <iostream>
 #include <vector>
 
-class UnionFind{
-private:
+class UnionFind {
+  
   std::vector<unsigned> representative;
+  
 public:
   UnionFind();
   UnionFind(unsigned);
