@@ -107,6 +107,20 @@ void ThCombInterpolator::traverseProof1(z3::expr const & proof) {
     }
     case Z3_OP_PR_ASSERTED:{
       // Printing -----
+      std::cout << "From asserted" << std::endl;
+      std::cout << proof.arg(0).is_common() << std::endl;
+      std::cout << proof.arg(0).is_a_pure() << std::endl;
+      std::cout << proof.arg(0).is_b_pure() << std::endl;
+      auto asserted = proof.arg(0);
+      if(asserted.is_common()){
+	
+      }
+      else if(asserted.is_a_pure()){
+	
+      }
+      else{
+	
+      }
       printf___(proof);
       //          -----
       return;

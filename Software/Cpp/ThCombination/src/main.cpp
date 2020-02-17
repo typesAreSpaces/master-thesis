@@ -27,8 +27,22 @@ int main(){
   // z3::expr formula_a = 1 <= x && a == 1 && f(x) == 3 && f(a) == 4;
   // z3::expr formula_b = x <= 2 && b == 2 && f(b) == 5;
   
-  ThCombInterpolator test = ThCombInterpolator(ctx, formula_a, formula_b);
-  std::cout << test << std::endl;
+  // ThCombInterpolator test = ThCombInterpolator(ctx, formula_a, formula_b);
+  // std::cout << test << std::endl;
+
+  z3::expr_map my_map(ctx);
+  std::cout << my_map.size() << std::endl;
+  my_map.insert(formula_a, formula_b);
+  std::cout << my_map.size() << std::endl;
+  std::cout << my_map << std::endl;
+
+  std::cout << my_map.find(formula_a) << std::endl;
+  
+  // for(auto x : m){
+  //   std::cout << x.first << " " << x.second << std::endl;
+  // }
+  
+  
   
   return 0;
 }
