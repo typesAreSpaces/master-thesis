@@ -1,112 +1,80 @@
 #include "EUFInterpolant.h"
 #define DEBUG_EUFINTERPOLANT false
 
-// typedef std::pair<Term*, Term*> EquationTerm;
+EUFInterpolant::EUFInterpolant(z3::expr const & part_a) :
+  horn_clauses(), subterms(part_a.ctx()) {
+  init(part_a);
+  // eliminationOfUncommonFSyms();
+}
 
-// EUFInterpolant::EUFInterpolant(const z3::expr & e, const z3::sort & s) :
-//   auxiliar_closure(e.ctx(), e),
-//   original_closure(e.ctx(), e),
-//   cvt(e.ctx(), s),
-//   horn_clauses(original_closure, auxiliar_closure),
-//   contradiction(original_closure.getOriginalTerm(0), original_closure.getOriginalTerm(0))
-// {
-// }
 
-// EUFInterpolant::EUFInterpolant(const z3::expr & e, const UncommonSymbols & symbols_to_elim, const z3::sort & s) :
-//   auxiliar_closure(e.ctx(), e, symbols_to_elim),
-//   original_closure(e.ctx(), e, symbols_to_elim),
-//   cvt(e.ctx(), s),
-//   horn_clauses(original_closure, auxiliar_closure),
-//   contradiction(original_closure.getOriginalTerm(0), original_closure.getOriginalTerm(0))
-// {
-// }
+EUFInterpolant::~EUFInterpolant(){
+}
 
-// EUFInterpolant::~EUFInterpolant(){
-// }
-
-// z3::expr EUFInterpolant::buildInterpolant(){
-//   eliminationOfUncommonFSyms();
-//   addNegativeHornClauses();
-//   horn_clauses.conditionalElimination();
+void EUFInterpolant::buildInterpolant(){
+  eliminationOfUncommonFSyms();
+  // horn_clauses.conditionalElimination();
   
-//   auto non_reducible_hs_z3 = cvt.convert(horn_clauses.getHornClauses());
-//   auto simplified_hs = cvt.extraSimplification(non_reducible_hs_z3);
+  // auto non_reducible_hs_z3 = cvt.convert(horn_clauses.getHornClauses());
+  // auto simplified_hs = cvt.extraSimplification(non_reducible_hs_z3);  
+  // auto reducible_hs = horn_clauses.getReducibleHornClauses();
+  // auto reducible_hs_z3 = cvt.convert(reducible_hs);
+  // auto equations = cvt.convert(original_closure.getEquations());
+  // auto uncomm_terms_elim = getUncommonTermsToElim(reducible_hs); // (???) but... ------------------
+  // auto exponential_hs = exponentialElimination(equations, uncomm_terms_elim, reducible_hs_z3); <--|
+  // auto simplified_exponential_hs = cvt.extraSimplification(exponential_hs);  
   
-//   auto reducible_hs = horn_clauses.getReducibleHornClauses();
-//   auto reducible_hs_z3 = cvt.convert(reducible_hs);
-  
-//   auto equations = cvt.convert(original_closure.getEquations());
-//   auto uncomm_terms_elim = getUncommonTermsToElim(reducible_hs);
-  
-//   auto exponential_hs = exponentialElimination(equations, uncomm_terms_elim, reducible_hs_z3);
-//   auto simplified_exponential_hs = cvt.extraSimplification(exponential_hs);  
-  
-//   return cvt.makeConjunction(simplified_hs) && cvt.makeConjunction(simplified_exponential_hs);
-// }
+  // return cvt.makeConjunction(simplified_hs) && cvt.makeConjunction(simplified_exponential_hs);
+  return;
+}
 
-// std::vector<HornClause*> EUFInterpolant::getHornClauses(){
-//   return horn_clauses.getHornClauses();
-// }
 
-// // If a symbol is the symbol name of an uncommon
-// // term then we expose the arguments of all the
-// // terms (locations) that contain such symbol
-// void EUFInterpolant::eliminationOfUncommonFSyms(){
-//   for(auto map_iterator : original_closure.getSymbolLocations()){
-//     auto symbol_name = map_iterator.first;
-//     // We don't include in the Exposure method new introduced symbols
-//     // nor equalities, disequalities, nor the initial conjuction
-//     if(symbol_name[0] != '=' && symbol_name != "distinct"
-//        && symbol_name != "and" && symbol_name[0] != '_'){
-//       auto locations = map_iterator.second;
-      
-//       bool expose = false;
-//       for(auto location : locations)
-// 	if(!original_closure.getReprTerm(location)->getSymbolCommonQ()){
-// 	  expose = true;
-// 	  break;
-// 	}
-      
-//       if(expose){
-// 	unsigned number_of_locations = locations.size();
-// 	for(unsigned location_i = 0; location_i < number_of_locations - 1; ++location_i)
-// 	  for(unsigned location_j = location_i + 1; location_j < number_of_locations; ++location_j)
-// 	    // Exposing two terms that have the same symbol name
-// 	    if(locations[location_i] != locations[location_j])
-// 	      horn_clauses.addHornClause(auxiliar_closure.getOriginalTerm(locations[location_i]),
-// 					 auxiliar_closure.getOriginalTerm(locations[location_j]),
-// 					 false);
-	  
-//       }
-//     }
-//   }
-// }
+void EUFInterpolant::init(z3::expr const & e){
+  if(e.is_app()){
+    if(visited.size() <= e.id()){
+      visited.resize(e.id() + 1, false);
+      subterms.resize(e.id() + 1);
+    }
+    if(visited[e.id()])
+      return;
+    
+    visited[e.id()] = true;
+    subterms.set(e.id(), (z3::expr&) e);
+    
+    unsigned num = e.num_args();
+    for(unsigned i = 0; i < num; i++)
+      init(e.arg(i));
 
-// void EUFInterpolant::addNegativeHornClauses(){
-//   auto disequations = original_closure.getDisequations();
-//   Term * lhs, * rhs;
-  
-//   for(auto disequation : disequations){
-	
-//     lhs = auxiliar_closure.getOriginalTerm(disequation.first.id());
-//     rhs = auxiliar_closure.getOriginalTerm(disequation.second.id());
+    z3::func_decl f = e.decl();
+    switch(f.decl_kind()){
+    case Z3_OP_DISTINCT:{
+      // TODO:
+      // Take the lhs (x) and rhs (y) and produce the Horn Clause
+      // repr(x) = repr(y) -> false
+      return;
+    }
+    case Z3_OP_UNINTERPRETED:
+      if(num > 0 && !e.is_common())
+	uncommon_positions[f.name().str()].push_back(e.id());
+    default:
+      return;
+    }
+  }
+  throw "Problem @ EUFInterpolant::init. The expression e is not an application term.";
+}
 
-//     // Add HornClauses unfolding arguments
-//     if(lhs->getName() == rhs->getName()){
-//       assert(lhs->getArity() == rhs->getArity());
-//       horn_clauses.addHornClause(lhs, rhs, true);
-//     }
-//     else{
-//       // Just add HornClauses using the representative
-//       std::vector<EquationTerm> antecedent;
-//       antecedent.push_back(std::make_pair(lhs, rhs));
-//       // Add HornClauses 'directly' using the antecedent
-//       // and contradiction as consequent
-//       horn_clauses.addHornClause(antecedent, contradiction, true); // Needs testing
-//     }
-//   }
-//   return;
-// }
+void EUFInterpolant::eliminationOfUncommonFSyms(){
+  for(auto iterator : uncommon_positions){
+    unsigned current_num_uncomms = iterator.second.size();
+    for(unsigned index_1 = 0; index_1 < current_num_uncomms - 1; index_1++)
+      for(unsigned index_2 = index_1 + 1; index_2 < current_num_uncomms; index_2++){
+	// TODO:
+	std::cout << "Create Horn clauses for this pair" << std::endl;
+	std::cout << "1. " << subterms[iterator.second[index_1]] << std::endl;
+	std::cout << "2. " << subterms[iterator.second[index_2]] << std::endl;
+      }
+  }
+}
 
 // z3::expr_vector EUFInterpolant::getUncommonTermsToElim(std::vector<HornClause*> & horn_clauses){
 //   z3::expr_vector answer(original_closure.getCtx());
@@ -210,7 +178,18 @@
 //   return answer;
 // }
 
-// // Not implemented yet!
-// std::ostream & operator << (std::ostream & os, EUFInterpolant & euf){
-//   return os;
-// }
+std::ostream & operator << (std::ostream & os, const EUFInterpolant & euf){
+  unsigned num = euf.subterms.size();
+  std::cout << "All the subterms:" << std::endl;
+  for(unsigned i = 0; i < num; i++){
+    if(euf.visited[i])
+      std::cout << euf.subterms[i] << std::endl;
+  }
+  std::cout << "All uncommon terms:" << std::endl;
+  for(auto x : euf.uncommon_positions){
+    std::cout << "For (" << x.first << "):" << std::endl;
+    for(auto y : x.second)
+      std::cout << y << " " << euf.subterms[y] << std::endl;
+  }
+  return os;
+}

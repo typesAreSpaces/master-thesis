@@ -2,9 +2,9 @@
 // #include <fstream>
 // #include <cstdlib>
 // #include <ctime>
-// #include "EUFInterpolant.h"
-#include "Rename.h"
 #include <z3++.h>
+#include "Rename.h"
+#include "EUFInterpolant.h"
 
 int main(int argc, char ** argv){
   
@@ -25,12 +25,9 @@ int main(int argc, char ** argv){
   
   z3::expr alpha = f(z1, v) == s1 && f(z2, v) == s2 && f(f(y1, v), f(y2, v)) == t;
   rename(alpha, uncomms);
-
-  std::cout << alpha.is_common() << std::endl;
       
-  // EUFInterpolant euf(input_formula, symbols_to_elim, aux_expr.decl().range());
-  // auto result = euf.buildInterpolant();
-      
+  EUFInterpolant euf(alpha);
+  euf.buildInterpolant();
 
   return 0;
 }

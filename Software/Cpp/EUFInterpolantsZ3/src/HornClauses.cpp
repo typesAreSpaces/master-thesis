@@ -9,11 +9,11 @@
 #define DEBUG_MC1CMC2A           false
 #define DEBUG_MC1CMC1A2          false
 
-// HornClauses::HornClauses(CongruenceClosure & original_closure,
-// 			 CongruenceClosure & auxiliar_closure) :
-//   original_cc(original_closure), auxiliar_cc(auxiliar_closure)
-// {
-// }
+HornClauses::HornClauses(){
+}
+
+HornClauses::~HornClauses(){
+}
 
 // HornClauses::~HornClauses(){
 //   for(auto it : horn_clauses)
