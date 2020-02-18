@@ -27,7 +27,7 @@ int main(int argc, char ** argv){
   rename(alpha, uncomms);
       
   EUFInterpolant euf(alpha);
-  euf.buildInterpolant();
+  // euf.buildInterpolant();
 
   return 0;
 }
