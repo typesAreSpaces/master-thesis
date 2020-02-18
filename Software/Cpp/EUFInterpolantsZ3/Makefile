@@ -33,6 +33,9 @@ $(ODIR)/%.o: $(SDIR)/%.cpp $(DEPS)
 euf_interpolator: $(OBJS) $(Z3DIR)/build/libz3.$(Z3EXT)
 	$(CC) -g -o $@ $^ -lpthread -Wall
 
+run: euf_interpolator
+	./euf_interpolator
+
 .PHONY: clean
 clean:
 	rm -rf $(ODIR)/* euf_interpolator

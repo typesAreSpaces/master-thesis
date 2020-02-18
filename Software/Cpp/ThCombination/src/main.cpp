@@ -36,7 +36,7 @@ int main(){
   // my_map.insert(formula_b, ctx.bool_val(true));
   // std::cout << my_map.size() << std::endl;
   // std::cout << my_map << std::endl;
-
+    
   // std::cout << my_map.find(formula_a) << std::endl;
  
   return 0;
