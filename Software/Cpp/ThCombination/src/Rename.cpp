@@ -9,6 +9,12 @@ void rename(z3::expr & a, z3::expr & b){
   traversePartB(b, visited, a_local_names, common_names);
   a = reformulate(a, a_local_names, common_names);
   b = reformulate(b, a_local_names, common_names);
+  return;
+}
+
+void rename(z3::expr & a, const std::set<std::string> & uncommon_names){
+  a = reformulate(a, uncommon_names);
+  return;
 }
 
 void traversePartA(z3::expr const & e,
@@ -99,8 +105,8 @@ void traversePartB(z3::expr const & e,
 }
 
 z3::expr reformulate(z3::expr const & e,
-		     std::set<std::string> & a_local_names,
-		     std::set<std::string> & common_names){
+		     const std::set<std::string> & a_local_names,
+		     const std::set<std::string> & common_names){
   if(e.is_app()){
     unsigned num = e.num_args();
     auto f = e.decl();
@@ -144,6 +150,54 @@ z3::expr reformulate(z3::expr const & e,
       else{
 	// It is a b local symbol
 	auto new_f = z3::function(("b_" + name).c_str(), domain_sorts, f.range());
+	return new_f(new_args);
+      } 
+    }
+    }
+  }
+  throw "Problem @ reformulate: The formula e is not an expression.";
+}
+
+z3::expr reformulate(z3::expr const & e,
+		     const std::set<std::string> & uncommon_names){
+  if(e.is_app()){
+    unsigned num = e.num_args();
+    auto f = e.decl();
+    z3::expr_vector new_args(e.ctx());
+    z3::sort_vector domain_sorts(e.ctx());
+    for(unsigned i = 0; i < num; i++){
+      new_args.push_back(reformulate(e.arg(i), uncommon_names));
+      domain_sorts.push_back(f.domain(i));
+    }
+    auto name = f.name().str();
+    switch(f.decl_kind()){
+    case Z3_OP_ANUM:
+      return e;
+    case Z3_OP_UMINUS:
+      return f(reformulate(e.arg(0), uncommon_names));
+    case Z3_OP_AND:
+    case Z3_OP_EQ:
+    case Z3_OP_DISTINCT:
+    case Z3_OP_LE:
+    case Z3_OP_GE:
+    case Z3_OP_LT:
+    case Z3_OP_GT:
+    case Z3_OP_ADD:
+    case Z3_OP_SUB:
+    case Z3_OP_MUL:
+    case Z3_OP_DIV:
+    case Z3_OP_IDIV:
+      return f(reformulate(e.arg(0), uncommon_names),
+	       reformulate(e.arg(1), uncommon_names));
+    default:{
+      if(uncommon_names.find(name) != uncommon_names.end()){
+	// It is a common symbol
+	auto new_f = z3::function(("a_" + name).c_str(), domain_sorts, f.range());
+	return new_f(new_args);
+      }
+      else{
+	// It is a b local symbol
+	auto new_f = z3::function(("c_" + name).c_str(), domain_sorts, f.range());
 	return new_f(new_args);
       } 
     }
