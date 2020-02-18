@@ -1,5 +1,9 @@
 #include "HornClause.h"
 
+HornClause::HornClause(z3::expr_vector const & antecedent, z3::expr const & consequent) :
+  antecedent(antecedent), consequent(consequent){
+}
+
 // // HornClause produces a horn clause for the form
 // // /\_i repr(u_i) = repr(v_i) => repr(f(u_1, ..., u_n)) = repr(f(v_1, ..., v_n))
 // // such that Term u = f(u_1, ..., u_n), Term v = f(v_1, ..., v_n)
@@ -87,32 +91,21 @@
 //   this->local_equiv_class = cc.getDeepEquivalenceClass();
 // }
 
-// HornClause::~HornClause(){
-// }
+HornClause::~HornClause(){
+}
 
 // bool HornClause::checkTriviality(UnionFind & uf){
 //   return (uf.find(consequent.first->getId())
 // 	  == uf.find(consequent.second->getId()));
 // }
 
-// bool HornClause::getAntecedentCommon(){
-//   return is_antecedent_common;
-// }
-// bool HornClause::getConsequentCommon(){
-//   return is_consequent_common;
-// }
+z3::expr_vector const & HornClause::getAntecedent(){
+  return antecedent;
+}
 
-// bool HornClause::getMaximalConsequent(){
-//   return consequent.first->getSymbolCommonQ();
-// }
-
-// std::vector<EquationTerm> & HornClause::getAntecedent(){
-//   return antecedent;
-// }
-
-// EquationTerm & HornClause::getConsequent(){
-//   return consequent;
-// }
+z3::expr const & HornClause::getConsequent(){
+  return consequent;
+}
 
 // UnionFind & HornClause::getLocalUF(){
 //   return local_equiv_class;
@@ -188,16 +181,15 @@
 //   return hc2 > hc1;
 // }
 
-// std::ostream & operator << (std::ostream & os, const HornClause & hc){
-//   bool flag = true;
-//   for(auto it : hc.antecedent){
-//     if(flag)
-//       os << it.first->to_string() << " = " << it.second->to_string();
-//     else
-//       os << " && " <<  it.first->to_string() << " = " << it.second->to_string();
-//     flag = false;
-//   }
-//   os << " -> " << hc.consequent.first->to_string()
-//      << " = " << hc.consequent.second->to_string();
-//   return os;
-// }
+std::ostream & operator << (std::ostream & os, const HornClause & hc){
+  bool flag = true;
+  unsigned num_antecedent = hc.antecedent.size();
+  for(unsigned i = 0; i < num_antecedent; i++){
+    os << hc.antecedent[i];
+    if(!flag)
+      os << " && ";
+    flag = false;
+  }
+  os << hc.consequent;
+  return os;
+}

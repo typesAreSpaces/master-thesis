@@ -1,6 +1,7 @@
 #ifndef _HORN_CLAUSES_
 #define _HORN_CLAUSES_
 
+#include <vector>
 #include "HornClause.h"
 
 /* // Match1 : Uncommon Term -> Positions of Horn Clauses */
@@ -9,9 +10,9 @@
 /* typedef std::map<EquationTerm, std::vector<unsigned> > Match2; */
 /* typedef std::set<std::pair<unsigned, unsigned> > SetOfUnsignedPairs; */
 
-/* class HornClauses { */
+class HornClauses {
 
-/*   std::vector<HornClause*>         horn_clauses; */
+  std::vector<HornClause*>         horn_clauses;
 /*   Match1                           mc1_antecedent, mc1_consequent; */
 /*   Match2                           mc2_antecedent, mc2_consequent; */
 /*   Match2                           reduced; */
@@ -43,9 +44,9 @@
 /*   Term * getTerm(unsigned); */
 /*   Term * getTerm(Term *); */
   
-/* public: */
-/*   HornClauses(CongruenceClosure &, CongruenceClosure &); */
-/*   ~HornClauses(); */
+public:
+  HornClauses();
+  ~HornClauses();
   
 /*   // Adds a Horn clause using two terms of the form f(t_1, ..., t_n) and f(t'_1, ..., t'_n) */
 /*   void                     addHornClause(Term*, Term*, bool); */
@@ -59,6 +60,6 @@
 /*   friend std::ostream &    operator << (std::ostream &, const HornClauses &); */
 /*   std::ostream &           printMatch1(std::ostream &, Match1 &); */
 /*   std::ostream &           printMatch2(std::ostream &, Match2 &); */
-/* }; */
+};
 
 #endif

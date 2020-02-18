@@ -1,43 +1,35 @@
 #ifndef _HORN_CLAUSE_
 #define _HORN_CLAUSE_
 
-#include <algorithm>
+#include <z3++.h>
 
-/* typedef std::pair<Term*, Term*> EquationTerm; */
+class HornClause {
+  
+  z3::expr_vector const & antecedent;
+  z3::expr const &        consequent;
+  // The operator < heavily depends on this structure
+  // UnionFind       local_equiv_class;
+  // void            normalize(CongruenceClosure & cc);
+  // void            orient();
+  
+public:
+  HornClause(z3::expr_vector const &, z3::expr const &);
+  ~HornClause();
+  
+  // bool                        checkTriviality(UnionFind &);
 
-/* class HornClause { */
-
-/*   bool                      is_antecedent_common, is_consequent_common; */
-/*   std::vector<EquationTerm> antecedent; */
-/*   // The operator < heavily depends on this structure */
-/*   UnionFind                 local_equiv_class; */
-/*   EquationTerm              consequent; */
-/*   void                      normalize(CongruenceClosure & cc); */
-/*   void                      orient(); */
-/*   static bool               compareEquations(const EquationTerm &, const EquationTerm &); */
+  // bool                        getAntecedentCommon();
+  // bool                        getConsequentCommon();
+  // bool                        getMaximalConsequent();
   
-/* public: */
-/*   HornClause(CongruenceClosure &, */
-/* 	     Term*, Term*, */
-/* 	     bool);  */
-/*   HornClause(CongruenceClosure &, */
-/* 	     std::vector<EquationTerm> &, EquationTerm &); */
-/*   ~HornClause(); */
+  z3::expr_vector const & getAntecedent();
+  z3::expr const &        getConsequent();
+  // UnionFind &    getLocalUF();
   
-/*   bool                        checkTriviality(UnionFind &); */
-
-/*   bool                        getAntecedentCommon(); */
-/*   bool                        getConsequentCommon(); */
-/*   bool                        getMaximalConsequent(); */
+  // friend bool    operator <(HornClause &, HornClause &);
+  // friend bool    operator >(HornClause &, HornClause &);
   
-/*   std::vector<EquationTerm> & getAntecedent(); */
-/*   EquationTerm &              getConsequent(); */
-/*   UnionFind &                 getLocalUF(); */
-  
-/*   friend bool                 operator <(HornClause &, HornClause &); */
-/*   friend bool                 operator >(HornClause &, HornClause &); */
-  
-/*   friend std::ostream &       operator << (std::ostream &, const HornClause &); */
-/* }; */
+  friend std::ostream & operator << (std::ostream &, const HornClause &);
+};
 
 #endif
