@@ -65,17 +65,9 @@ void EUFInterpolant::init(z3::expr const & e, unsigned & min_id, std::vector<boo
 
     z3::func_decl f = e.decl();
     switch(f.decl_kind()){
-    case Z3_OP_DISTINCT:{
-      // DONT CREATE HORN CLAUSES YET
-      // uf IS STILL NOT DEFINED!
-      // z3::expr_vector hc_body(ctx);
-      // hc_body.push_back(e.arg(0) == e.arg(1)); // <-- TODO: Should we change this to representatives?      
-      // HornClause * hc = new HornClause(uf, ctx, hc_body, contradiction);
-      // horn_clauses.add(hc);
+    case Z3_OP_DISTINCT:
       disequalities.push_back(e);
-
       return;
-    }
     case Z3_OP_UNINTERPRETED:
       if(num > 0 && !e.is_common())
 	uncommon_positions[f.name().str()].push_back(e.id());

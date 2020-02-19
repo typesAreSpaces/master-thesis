@@ -160,78 +160,78 @@ HornClauses::~HornClauses(){
 // }
 
 // // -------------------------------------
-// // It fills the data structures
-// // Match1 mc1_antecedent, mc1_consequent
-// // Match2 mc2_antecedent, mc2_consequent
-// // when a new horn clause is introduced
-// // -------------------------------------
-// // Precondition: 
-// // All HornClauses here are assumed
-// // to be normalized 
-// // -------------------------------------
-// void HornClauses::makeMatches(HornClause * hc, unsigned current_index){
-// #if DEBUG_MAKE_MATCHES
-//   std::cout << "Making matches for " << *hc << std::endl;
-// #endif
-//   EquationTerm & hc_consequent = hc->getConsequent();
+// It fills the data structures
+// Match1 mc1_antecedent, mc1_consequent
+// Match2 mc2_antecedent, mc2_consequent
+// when a new horn clause is introduced
+// -------------------------------------
+// Precondition: 
+// All HornClauses here are assumed
+// to be normalized 
+// -------------------------------------
+void HornClauses::makeMatches(HornClause * hc, unsigned current_index){
+#if DEBUG_MAKE_MATCHES
+  std::cout << "Making matches for " << *hc << std::endl;
+#endif
+  EquationTerm & hc_consequent = hc->getConsequent();
 
-//   // -----------------------------------------------------------------------------------
-//   // Processing the antedecent of the current Horn Clause
-//   for(auto equation_iterator : hc->getAntecedent()) {
-//     // If the first term is uncommon,
-//     // then the equation is uncommon due to
-//     // the normalizing ordering used
-//     if(!equation_iterator.first->getSymbolCommonQ()){
-// #if DEBUG_MAKE_MATCHES
-//       std::cout << "It was added to mc2_antecedent" << std::endl;
-// #endif
-//       mc2_antecedent[std::make_pair(equation_iterator.first,
-// 				    equation_iterator.second)].push_back(current_index);
-//       // We also consider the mc2_antecedent as two
-//       // mc1_antecedent elements
-//       mc1_antecedent[equation_iterator.first].push_back(current_index);
-//       mc1_antecedent[equation_iterator.second].push_back(current_index);
-//     }
-//     else{
-//       // If the first term is common and
-//       // the second term is common, then
-//       // there is nothing to do!
-//       if(!equation_iterator.second->getSymbolCommonQ()){
-// #if DEBUG_MAKE_MATCHES
-// 	std::cout << "It was added to mc1_antecedent" << std::endl;
-// #endif
-// 	mc1_antecedent[equation_iterator.second].push_back(current_index);
-//       }
-//     }
-//   }
-//   // -----------------------------------------------------------------------------------
+  // -----------------------------------------------------------------------------------
+  // Processing the antedecent of the current Horn Clause
+  for(auto equation_iterator : hc->getAntecedent()){
+    // If the first term is uncommon,
+    // then the equation is uncommon due to
+    // the normalizing ordering used
+    if(!equation_iterator.first->getSymbolCommonQ()){
+#if DEBUG_MAKE_MATCHES
+      std::cout << "It was added to mc2_antecedent" << std::endl;
+#endif
+      mc2_antecedent[std::make_pair(equation_iterator.first,
+				    equation_iterator.second)].push_back(current_index);
+      // We also consider the mc2_antecedent as two
+      // mc1_antecedent elements
+      mc1_antecedent[equation_iterator.first].push_back(current_index);
+      mc1_antecedent[equation_iterator.second].push_back(current_index);
+    }
+    else{
+      // If the first term is common and
+      // the second term is common, then
+      // there is nothing to do!
+      if(!equation_iterator.second->getSymbolCommonQ()){
+#if DEBUG_MAKE_MATCHES
+	std::cout << "It was added to mc1_antecedent" << std::endl;
+#endif
+	mc1_antecedent[equation_iterator.second].push_back(current_index);
+      }
+    }
+  }
+  // -----------------------------------------------------------------------------------
   
-//   // -----------------------------------------------------------------------------
-//   // Processing the consequent of the current Horn Clause
-//   if(!hc_consequent.first->getSymbolCommonQ()){
-// #if DEBUG_MAKE_MATCHES
-//     std::cout << "It was added to mc2_consequent" << std::endl;
-// #endif
-//     mc2_consequent[std::make_pair(hc_consequent.first,
-// 				  hc_consequent.second)].push_back(current_index);
-//     // We also consider the mc2_consequent as two
-//     // mc1_consequent elements
-//     mc1_consequent[hc_consequent.first].push_back(current_index);
-//     mc1_consequent[hc_consequent.second].push_back(current_index);
-//   }
-//   else{
-//     if(!hc_consequent.second->getSymbolCommonQ()){
-// #if DEBUG_MAKE_MATCHES
-//       std::cout << "It was added to mc1_consequent" << std::endl;
-// #endif
-//       mc1_consequent[hc_consequent.second].push_back(current_index);
-//     }
-//     // If the first term is common and
-//     // the second term is common, then
-//     // there is nothing to do
-//   }
-//   // -----------------------------------------------------------------------------
-// }
+  // -----------------------------------------------------------------------------
+  // Processing the consequent of the current Horn Clause
+  if(!hc_consequent.first->getSymbolCommonQ()){
+#if DEBUG_MAKE_MATCHES
+    std::cout << "It was added to mc2_consequent" << std::endl;
+#endif
+    mc2_consequent[std::make_pair(hc_consequent.first,
+				  hc_consequent.second)].push_back(current_index);
+    // We also consider the mc2_consequent as two
+    // mc1_consequent elements
+    mc1_consequent[hc_consequent.first].push_back(current_index);
+    mc1_consequent[hc_consequent.second].push_back(current_index);
+  }
+  else{
+    if(!hc_consequent.second->getSymbolCommonQ()){
+#if DEBUG_MAKE_MATCHES
+      std::cout << "It was added to mc1_consequent" << std::endl;
+#endif
+      mc1_consequent[hc_consequent.second].push_back(current_index);
+    }
+    // If the first term is common and
+    // the second term is common, then
+    // there is nothing to do
+  }
+  // -----------------------------------------------------------------------------
+}
 
 // void HornClauses::combinationHelper(HornClause * hc){
 //   auxiliar_cc.transferEqClassAndPreds(original_cc);
@@ -385,6 +385,7 @@ void HornClauses::add(HornClause * hc){
     horn_clauses.push_back(hc);
     return;
   }
+  makeMatches(hc, horn_clauses.size());
 }
 
 // void HornClauses::addHornClause(Term* u, Term* v, bool is_disequation){

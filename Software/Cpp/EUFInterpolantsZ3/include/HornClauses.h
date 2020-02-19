@@ -26,7 +26,7 @@ class HornClauses {
   // void mergeType2AndType4(HornClause *, HornClause *);
   
   // void simplifyHornClauses();
-  // void makeMatches(HornClause *, unsigned);
+  void makeMatches(HornClause *, unsigned);
   // void combinationHelper(HornClause *);
   // void mc2ConsequentAndmc2Antecedent(SetOfUnsignedPairs &, bool &); 
   // void mc1ConsequentAndmc1Antecedent(SetOfUnsignedPairs &, bool &);
