@@ -2,7 +2,9 @@
 // #include <fstream>
 // #include <cstdlib>
 // #include <ctime>
+
 #include <z3++.h>
+#include <algorithm>
 #include "Rename.h"
 #include "EUFInterpolant.h"
 
@@ -27,6 +29,7 @@ int main(int argc, char ** argv){
   rename(alpha, uncomms);
       
   EUFInterpolant euf(alpha);
+  std::cout << euf << std::endl;
   // euf.buildInterpolant();
 
   return 0;

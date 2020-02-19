@@ -1,7 +1,6 @@
 #ifndef _HORN_CLAUSES_
 #define _HORN_CLAUSES_
 
-#include <vector>
 #include "HornClause.h"
 
 /* // Match1 : Uncommon Term -> Positions of Horn Clauses */
@@ -12,10 +11,10 @@
 
 class HornClauses {
 
-  std::vector<HornClause*>         horn_clauses;
+  std::vector<HornClause>         horn_clauses;
 /*   Match1                           mc1_antecedent, mc1_consequent; */
 /*   Match2                           mc2_antecedent, mc2_consequent; */
-/*   Match2                           reduced; */
+/*   Match2                           reduced; x*/
 /*   std::map<EquationTerm, unsigned> reduced_length; */
 /*   CongruenceClosure &              original_cc; */
 /*   // Remainder: This auxiliar_cc must be reset */

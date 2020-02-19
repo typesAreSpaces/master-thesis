@@ -4,20 +4,22 @@
 #include <set>
 #include <map>
 #include "HornClauses.h"
-#include "UnionFind.h"
 
 typedef std::map<std::string, std::vector<unsigned> > UncommonPositions;
 
 class EUFInterpolant {
 
-  z3::context &     ctx; 
-  z3::expr_vector   subterms;
+  z3::context &     ctx;
+  unsigned          min_id;
+  z3::expr_vector   subterms; // <--- Note: elements below min_id are undefined
   UncommonPositions uncommon_positions;
   UnionFind         uf;
   HornClauses       horn_clauses;
 
-  void              init(z3::expr const &, unsigned &, std::vector<bool> &);  // Defines: (partially) horn_clauses, subterms, and uncommon_positions.
-  void              exposeUncommons(); // Adds more elements to horn_clauses. horn_clauses are totally defined now.
+  // The following function defines (partially) horn_clauses, subterms, and uncommon_positions.
+  void              init(z3::expr const &, unsigned &, std::vector<bool> &);
+  // The following function adds more elements to horn_clauses. horn_clauses are totally defined now.
+  void              exposeUncommons();
   z3::expr_vector   conditionalReplacement(z3::expr_vector &); // Pending (1)
   z3::expr_vector   substitutions(z3::expr &, z3::expr &, z3::expr_vector &); // (??)
   

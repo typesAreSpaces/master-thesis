@@ -2,30 +2,31 @@
 #define DEBUG_EUFINTERPOLANT false
 
 EUFInterpolant::EUFInterpolant(z3::expr const & part_a) :
-  ctx(part_a.ctx()), subterms(ctx),
+  ctx(part_a.ctx()), min_id(part_a.id()), subterms(ctx),
   uncommon_positions(), uf(), horn_clauses() {
   
-  unsigned min_id = part_a.id();
   std::vector<bool> visited;
   init(part_a, min_id, visited);
 
-  // There is an extra padding for non-apps z3::expressions
-  // Fixing subterms
+  // There is extra padding for non-apps-z3::expressions
   z3::expr_vector aux_subterms(ctx);
   z3::expr_vector::iterator it = subterms.begin(), end = subterms.end();
   for(unsigned i = 0; i < min_id; i++) ++it;
   for(; it != end; ++it) aux_subterms.push_back(*it);
-  subterms = aux_subterms;
-  // Fixing uncommon_positions
-  for(auto & it : uncommon_positions)
-    for(auto & position : it.second)
-      position -= min_id;
 
-  unsigned num_terms = subterms.size();
-  unsigned class_ids[num_terms];
+  unsigned aux_num_terms = aux_subterms.size();
+  unsigned aux_class_ids[aux_num_terms];
   z3::solver euf_solver(ctx, "QF_UF");
   euf_solver.add(part_a);
-  if(euf_solver.implied_equalities(num_terms, subterms, class_ids) != z3::unsat){
+  if(euf_solver.implied_equalities(aux_num_terms, aux_subterms, aux_class_ids) != z3::unsat){
+    unsigned num_terms = subterms.size();
+    unsigned class_ids[num_terms];
+    for(unsigned i = 0; i < num_terms; i++){
+      if(i < min_id)
+	class_ids[i] = i;
+      else
+	class_ids[i] = aux_class_ids[i - min_id] + min_id;
+    }
     uf = UnionFind(class_ids, num_terms);
     exposeUncommons();
     return;
@@ -79,11 +80,10 @@ void EUFInterpolant::exposeUncommons(){
     unsigned current_num_uncomms = iterator.second.size();
     for(unsigned index_1 = 0; index_1 < current_num_uncomms - 1; index_1++)
       for(unsigned index_2 = index_1 + 1; index_2 < current_num_uncomms; index_2++){
-	// TODO:
+	// TODO: Implement HornClauses.addHornClause()
 	std::cout << "Create Horn clauses for this pair" << std::endl;
 	std::cout << "1. " << subterms[iterator.second[index_1]] << std::endl;
 	std::cout << "2. " << subterms[iterator.second[index_2]] << std::endl;
-	// i.e. Implement HornClauses.addHornClause()
       }
   }
 }
@@ -151,12 +151,12 @@ z3::expr EUFInterpolant::buildInterpolant(){
 }
 
 std::ostream & operator << (std::ostream & os, EUFInterpolant & euf){
-  
   unsigned num = euf.subterms.size();
   std::cout << "All the subterms:" << std::endl;
   for(unsigned i = 0; i < num; i++){
-    std::cout << "Original: " << euf.subterms[i]
-	      << " Representative " << euf.subterms[euf.uf.find(i)] << std::endl;
+    if(i >= euf.min_id)
+      std::cout << "Original: " << euf.subterms[i]
+		<< " Representative " << euf.subterms[euf.uf.find(euf.subterms[i].id())] << std::endl;
   }
   return os;
 }

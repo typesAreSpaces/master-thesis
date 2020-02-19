@@ -1,25 +1,29 @@
 #ifndef _HORN_CLAUSE_
 #define _HORN_CLAUSE_
 
+#include <algorithm>
 #include <z3++.h>
+#include "UnionFind.h"
 
 class HornClause {
-  
-  z3::expr_vector const & antecedent;
-  z3::expr const &        consequent;
-  // The operator < heavily depends on this structure
-  // UnionFind       local_equiv_class;
-  bool            checkTriviality();
-  void            normalize(); // Incomplete implementation
-  void            orient();    // Incomplete implementation
+
+  UnionFind &       uf;
+  z3::expr_vector & antecedent;
+  z3::expr &        consequent;
+
+  bool checkTriviality();
+  static bool compareEquations(const z3::expr &, const z3::expr &);
+  // Incomplete implementation
+  void normalize();
+  // Incomplete implementation
+  void orient();
   
 public:
-  HornClause(z3::expr_vector const &, z3::expr const &);
+  HornClause(UnionFind &, z3::expr_vector &, z3::expr &);
   ~HornClause();
   
-  z3::expr_vector const & getAntecedent();
-  z3::expr const &        getConsequent();
-  // UnionFind &    getLocalUF();
+  z3::expr_vector & getAntecedent();
+  z3::expr &        getConsequent();
   
   friend bool operator <(const HornClause &, const HornClause &);
   friend bool operator >(const HornClause &, const HornClause &);
