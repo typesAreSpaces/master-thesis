@@ -11,24 +11,29 @@ class EUFInterpolant {
 
   z3::context &     ctx;
   unsigned          min_id;
-  z3::expr_vector   subterms; // <--- Note: elements below min_id are undefined
+  // Note: elements below min_id are undefined
+  z3::expr_vector   subterms;
   UncommonPositions uncommon_positions;
   UnionFind         uf;
   HornClauses       horn_clauses;
+  z3::expr          contradiction;
+  z3::expr_vector   disequalities;
+  unsigned          size;
 
   // The following function defines (partially) horn_clauses, subterms, and uncommon_positions.
-  void              init(z3::expr const &, unsigned &, std::vector<bool> &);
-  z3::expr_vector   buildHCBody(z3::expr const &, z3::expr const &);
-  // The following function adds more elements to horn_clauses. horn_clauses are totally defined now.
-  void              exposeUncommons();
-  z3::expr_vector   conditionalReplacement(z3::expr_vector &); // Pending (1)
-  z3::expr_vector   substitutions(z3::expr &, z3::expr &, z3::expr_vector &); // (??)
+  void            init(z3::expr const &, unsigned &, std::vector<bool> &);
+  z3::expr_vector buildHCBody(z3::expr const &, z3::expr const &);
+  void            disequalitiesToHCS();
+  void            exposeUncommons();
+  // The following function adds more elements to horn_clauses. horn_clauses will be totally defined then.
+  z3::expr_vector conditionalReplacement(z3::expr_vector &);                // TODO:
+  z3::expr_vector substitutions(z3::expr &, z3::expr &, z3::expr_vector &); // TODO:
   
  public:
   EUFInterpolant(z3::expr const &);
   ~EUFInterpolant();
-  z3::expr              buildInterpolant(); // Pending (2)
-  friend std::ostream & operator << (std::ostream &, EUFInterpolant &);
+  z3::expr              buildInterpolant();                                 // TODO:
+  friend std::ostream & operator << (std::ostream &, EUFInterpolant &);     // TEMP:
 };
 
 #endif

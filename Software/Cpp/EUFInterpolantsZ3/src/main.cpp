@@ -8,6 +8,18 @@
 #include "Rename.h"
 #include "EUFInterpolant.h"
 
+// class A {
+//   z3::expr & e;
+// public:
+//   A(z3::expr & e) : e(e){
+//   }
+//   ~A(){
+//   }
+//   z3::expr & getExpr(){
+//     return e;
+//   }
+// };
+
 int main(int argc, char ** argv){
   
   z3::context ctx;  
@@ -25,13 +37,16 @@ int main(int argc, char ** argv){
   std::set<std::string> uncomms;
   uncomms.insert("v");
   
-  z3::expr alpha = f(z1, v) == s1 && f(z2, v) == s2 && f(f(y1, v), f(y2, v)) == t;
+  z3::expr alpha = f(z1, v) == s1 && f(z2, v) == s2 && f(f(y1, v), f(y2, v)) == t && s1 != t;
   rename(alpha, uncomms);
       
   EUFInterpolant euf(alpha);
-  // std::cout << euf << std::endl;
+  std::cout << euf << std::endl;
     
   // euf.buildInterpolant();
 
+  // A * whatever = new A(alpha);
+  // std::cout << whatever->getExpr() << std::endl;
+  
   return 0;
 }

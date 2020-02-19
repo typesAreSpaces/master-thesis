@@ -1,27 +1,12 @@
 #include "HornClause.h"
 
-HornClause::HornClause(UnionFind & uf, z3::expr_vector & antecedent, z3::expr & consequent) :
-  uf(uf), antecedent(antecedent), consequent(consequent){
+HornClause::HornClause(UnionFind & uf, z3::context & ctx, z3::expr_vector antecedent, z3::expr consequent) :
+  uf(uf), ctx(ctx), antecedent(antecedent), consequent(consequent){
   normalize();
   orient();
 }
 
 HornClause::~HornClause(){
-}
-
-z3::expr_vector & HornClause::getAntecedent(){
-  return antecedent;
-}
-
-z3::expr & HornClause::getConsequent(){
-  return consequent;
-}
-
-bool HornClause::checkTriviality(){
-  z3::solver temp_euf_solver(consequent.ctx(), "QF_UF");
-  temp_euf_solver.add(z3::mk_and(antecedent));
-  temp_euf_solver.add(not(consequent));
-  return temp_euf_solver.check() == z3::unsat;
 }
 
 bool HornClause::compareEquation(const z3::expr & eq1, const z3::expr & eq2){
@@ -60,7 +45,7 @@ bool HornClause::compareTerm(const z3::expr & t1, const z3::expr & t2){
 // sorting these elements using the following heuristic:
 // HornClause::compareEquation
 void HornClause::normalize(){
-  z3::expr_vector aux_z3_vec(consequent.ctx());
+  z3::expr_vector aux_z3_vec(ctx);
   std::vector<z3::expr> aux_vec{};
   unsigned num_terms = antecedent.size();
   for(unsigned i = 0; i < num_terms; i++)
@@ -80,8 +65,8 @@ void HornClause::normalize(){
 // The < relation on (Term, Term) is HornClause::compareTerm
 void HornClause::orient(){
 
-  z3::expr_vector aux_antecedent(consequent.ctx());
-  z3::expr current_lhs(consequent.ctx()), current_rhs(consequent.ctx());
+  z3::expr_vector aux_antecedent(ctx);
+  z3::expr current_lhs(ctx), current_rhs(ctx);
   unsigned num = antecedent.size();
   for(unsigned i = 0; i < num; i++){
     current_lhs = antecedent[i].arg(0), current_rhs = antecedent[i].arg(1);
@@ -91,10 +76,26 @@ void HornClause::orient(){
       aux_antecedent.push_back(antecedent[i]);
   }
   antecedent = aux_antecedent;
+  
+  std::string consequent_name = consequent.decl().name().str();
+  if(consequent_name == "false")
+    return;
   current_lhs = consequent.arg(0), current_rhs = consequent.arg(1);
   if(compareTerm(current_lhs, current_rhs))
     consequent = (current_rhs == current_lhs);
   return;
+}
+
+bool HornClause::checkTriviality(){
+  return uf.find(consequent.arg(0).id()) == uf.find(consequent.arg(1).id());
+}
+
+z3::expr_vector & HornClause::getAntecedent(){
+  return antecedent;
+}
+
+z3::expr & HornClause::getConsequent(){
+  return consequent;
 }
 
 // Definition: > \in HornClause \times HornClause
@@ -116,7 +117,7 @@ bool operator > (const HornClause & hc1, const HornClause & hc2){
   unsigned num_antecedent_2 = hc2.antecedent.size();
 
   if(num_antecedent_2 > num_antecedent_1){
-    z3::solver temp_euf_solver(hc1.consequent.ctx(), "QF_UF");
+    z3::solver temp_euf_solver(hc1.ctx, "QF_UF");
     temp_euf_solver.add(z3::mk_and(hc2.antecedent));
     temp_euf_solver.add(not(z3::mk_and(hc1.antecedent)));
     return temp_euf_solver.check() == z3::unsat;

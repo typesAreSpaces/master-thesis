@@ -7,20 +7,21 @@
 
 class HornClause {
 
-  UnionFind &       uf;
-  z3::expr_vector & antecedent;
-  z3::expr &        consequent;
+  UnionFind &     uf;
+  z3::context &   ctx;
+  z3::expr_vector antecedent;
+  z3::expr        consequent;
 
-  bool            checkTriviality();
-  static bool     compareEquation(const z3::expr &, const z3::expr &);
-  static bool     compareTerm(const z3::expr &, const z3::expr &);
-  void            normalize();
-  void            orient();
+  static bool compareEquation(const z3::expr &, const z3::expr &);
+  static bool compareTerm(const z3::expr &, const z3::expr &);
+  void        normalize();
+  void        orient();
   
 public:
-  HornClause(UnionFind &, z3::expr_vector &, z3::expr &);
+  HornClause(UnionFind &, z3::context &, z3::expr_vector, z3::expr);
   ~HornClause();
   
+  bool              checkTriviality();
   z3::expr_vector & getAntecedent();
   z3::expr &        getConsequent();
   
