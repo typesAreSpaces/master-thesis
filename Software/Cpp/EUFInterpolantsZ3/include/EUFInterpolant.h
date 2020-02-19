@@ -18,6 +18,7 @@ class EUFInterpolant {
 
   // The following function defines (partially) horn_clauses, subterms, and uncommon_positions.
   void              init(z3::expr const &, unsigned &, std::vector<bool> &);
+  z3::expr_vector   buildHCBody(z3::expr const &, z3::expr const &);
   // The following function adds more elements to horn_clauses. horn_clauses are totally defined now.
   void              exposeUncommons();
   z3::expr_vector   conditionalReplacement(z3::expr_vector &); // Pending (1)

@@ -78,12 +78,19 @@ void EUFInterpolant::init(z3::expr const & e, unsigned & min_id, std::vector<boo
   throw "Problem @ EUFInterpolant::init. The expression e is not an application term.";
 }
 
+z3::expr_vector EUFInterpolant::buildHCBody(z3::expr const & t1, z3::expr const & t2){
+  z3::expr_vector hc_body(ctx);
+  unsigned num_args = t1.num_args();
+  for(unsigned i = 0; i < num_args; i++)
+    hc_body.push_back(t1.arg(i) == t2.arg(i));
+  return hc_body;
+}
+
 void EUFInterpolant::exposeUncommons(){
   for(auto iterator : uncommon_positions){
     unsigned current_num_uncomms = iterator.second.size();
     if(current_num_uncomms < 2)
       break;
-    unsigned num_args = subterms[iterator.second[0]].num_args();
     for(unsigned index_1 = 0; index_1 < current_num_uncomms - 1; index_1++)
       for(unsigned index_2 = index_1 + 1; index_2 < current_num_uncomms; index_2++){
 	// TODO: Implement HornClauses.addHornClause()
@@ -91,10 +98,10 @@ void EUFInterpolant::exposeUncommons(){
 	std::cout << "Create a Horn Clause for this pair" << std::endl;
 	std::cout << "1. " << t1 << std::endl;
 	std::cout << "2. " << t2 << std::endl;
-	z3::expr_vector hc_body(ctx);
-	for(unsigned i = 0; i < num_args; i++)
-	  hc_body.push_back(t1.arg(i) == t2.arg(i));
-	z3::expr hc_head = subterms[uf.find(t1.id())] == subterms[uf.find(t2.id())];
+	
+	z3::expr_vector hc_body = buildHCBody(t1, t2);
+	z3::expr        hc_head = subterms[uf.find(t1.id())] == subterms[uf.find(t2.id())];
+	
 	HornClause hc(uf, hc_body, hc_head);
 	std::cout << "Resulting Horn Clause" << std::endl;
 	std::cout << hc << std::endl;

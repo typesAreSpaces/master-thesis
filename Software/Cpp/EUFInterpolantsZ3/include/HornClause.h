@@ -11,11 +11,11 @@ class HornClause {
   z3::expr_vector & antecedent;
   z3::expr &        consequent;
 
-  bool        checkTriviality();
-  static bool compareEquation(const z3::expr &, const z3::expr &);
-  static bool compareTerm(const z3::expr &, const z3::expr &);
-  void        normalize();
-  void        orient();
+  bool            checkTriviality();
+  static bool     compareEquation(const z3::expr &, const z3::expr &);
+  static bool     compareTerm(const z3::expr &, const z3::expr &);
+  void            normalize();
+  void            orient();
   
 public:
   HornClause(UnionFind &, z3::expr_vector &, z3::expr &);
