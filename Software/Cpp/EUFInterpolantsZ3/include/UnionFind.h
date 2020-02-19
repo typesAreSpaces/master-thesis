@@ -3,11 +3,13 @@
 
 #include <iostream>
 #include <vector>
+#include <cassert>
 
 class UnionFind {
   
   std::vector<unsigned> representative;
   std::vector<unsigned> rank;
+  unsigned size;
   
 public:
   UnionFind();

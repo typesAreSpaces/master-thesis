@@ -29,6 +29,9 @@ EUFInterpolant::EUFInterpolant(z3::expr const & part_a) :
     }
     uf = UnionFind(class_ids, num_terms);
     exposeUncommons();
+
+    std::cout << "Play here" << std::endl;
+    
     return;
   }
   throw "Problem @ EUFInterpolant::EUFInterpolant. The z3::expr const & part_a was unsatisfiable.";
@@ -78,12 +81,23 @@ void EUFInterpolant::init(z3::expr const & e, unsigned & min_id, std::vector<boo
 void EUFInterpolant::exposeUncommons(){
   for(auto iterator : uncommon_positions){
     unsigned current_num_uncomms = iterator.second.size();
+    if(current_num_uncomms < 2)
+      break;
+    unsigned num_args = subterms[iterator.second[0]].num_args();
     for(unsigned index_1 = 0; index_1 < current_num_uncomms - 1; index_1++)
       for(unsigned index_2 = index_1 + 1; index_2 < current_num_uncomms; index_2++){
 	// TODO: Implement HornClauses.addHornClause()
-	std::cout << "Create Horn clauses for this pair" << std::endl;
-	std::cout << "1. " << subterms[iterator.second[index_1]] << std::endl;
-	std::cout << "2. " << subterms[iterator.second[index_2]] << std::endl;
+	z3::expr t1 = subterms[iterator.second[index_1]], t2 = subterms[iterator.second[index_2]];
+	std::cout << "Create a Horn Clause for this pair" << std::endl;
+	std::cout << "1. " << t1 << std::endl;
+	std::cout << "2. " << t2 << std::endl;
+	z3::expr_vector hc_body(ctx);
+	for(unsigned i = 0; i < num_args; i++)
+	  hc_body.push_back(t1.arg(i) == t2.arg(i));
+	z3::expr hc_head = subterms[uf.find(t1.id())] == subterms[uf.find(t2.id())];
+	HornClause hc(uf, hc_body, hc_head);
+	std::cout << "Resulting Horn Clause" << std::endl;
+	std::cout << hc << std::endl;
       }
   }
 }
