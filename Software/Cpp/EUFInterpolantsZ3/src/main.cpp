@@ -41,7 +41,7 @@ int main(int argc, char ** argv){
   rename(alpha, uncomms);
       
   EUFInterpolant euf(alpha);
-  std::cout << euf << std::endl;
+  // std::cout << euf << std::endl;
     
   // euf.buildInterpolant();
 

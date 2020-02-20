@@ -1,7 +1,6 @@
 #ifndef _EUF_INTERPOLANT_
 #define _EUF_INTERPOLANT_
 
-#include <set>
 #include <map>
 #include "HornClauses.h"
 

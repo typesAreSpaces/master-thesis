@@ -3,27 +3,24 @@
 
 EUFInterpolant::EUFInterpolant(z3::expr const & part_a) :
   ctx(part_a.ctx()), min_id(part_a.id()), subterms(ctx),
-  uncommon_positions(), uf(), horn_clauses(ctx),
-  contradiction(ctx), disequalities(ctx) {
+  uncommon_positions(), uf(), horn_clauses(ctx, part_a.id() + 1),
+  contradiction(ctx), disequalities(ctx), size(part_a.id() + 1) {
   
   contradiction = ctx.bool_val(false);
-  std::vector<bool> visited;
+  std::vector<bool> visited(size, false);
+  subterms.resize(size);
   init(part_a, min_id, visited);
   
   // There is extra padding for non-apps-z3::expressions
+  unsigned aux_num_terms = size - min_id;
+  unsigned aux_class_ids[aux_num_terms];
   z3::expr_vector aux_subterms(ctx);
-  z3::expr_vector::iterator it = subterms.begin(), end = subterms.end();
-  for(unsigned i = 0; i < min_id; i++) ++it;
-  for(; it != end; ++it) aux_subterms.push_back(*it);
+  for(unsigned i = min_id; i < size; i++)
+    aux_subterms.push_back(subterms[i]);
 
-  unsigned aux_num_terms = aux_subterms.size();
-  unsigned aux_class_ids[aux_num_terms];  
   z3::solver euf_solver(ctx, "QF_UF");
   euf_solver.add(part_a);
-  
   if(euf_solver.implied_equalities(aux_num_terms, aux_subterms, aux_class_ids) != z3::unsat){
-    
-    size = subterms.size();
     unsigned class_ids[size];
     for(unsigned i = 0; i < size; i++){
       if(i < min_id)
@@ -35,6 +32,8 @@ EUFInterpolant::EUFInterpolant(z3::expr const & part_a) :
     
     disequalitiesToHCS();
     exposeUncommons();
+
+    std::cout << horn_clauses << std::endl;
     
     return;
   }
@@ -49,10 +48,6 @@ void EUFInterpolant::init(z3::expr const & e, unsigned & min_id, std::vector<boo
   if(e.is_app()){
     if(e.id() < min_id)
       min_id = e.id();
-    if(visited.size() <= e.id()){
-      visited.resize(e.id() + 1, false);
-      subterms.resize(e.id() + 1);
-    }
     if(visited[e.id()])
       return;
     
