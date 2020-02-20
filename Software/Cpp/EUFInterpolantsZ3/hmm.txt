@@ -7,8 +7,6 @@ It was added to mc1_consequent
 It was added to mc1_consequent
 --------Making matches for (= a_v (c_f c_y2 a_v)) && (= c_z1 (c_f c_y1 a_v)) -> (= c_s1 c_t)
 It was added to mc2_antecedent
--- PROBLEM
-(= a_v (c_f c_y2 a_v))
 It was added to mc1_antecedent
 --------Making matches for (= c_z2 c_y1) -> (= c_s2 (c_f c_y1 a_v))
 It was added to mc1_consequent
@@ -17,31 +15,37 @@ It was added to mc1_consequent
 --------Making matches for (= c_z2 (c_f c_y1 a_v)) && (= a_v (c_f c_y2 a_v)) -> (= c_s2 c_t)
 It was added to mc1_antecedent
 It was added to mc2_antecedent
--- PROBLEM
-(= a_v (c_f c_y2 a_v))
 --------Making matches for (= c_y1 c_y2) -> (= (c_f c_y1 a_v) (c_f c_y2 a_v))
 It was added to mc2_consequent
 --------Making matches for (= c_y1 (c_f c_y1 a_v)) && (= a_v (c_f c_y2 a_v)) -> (= c_t (c_f c_y1 a_v))
 It was added to mc1_antecedent
 It was added to mc2_antecedent
--- PROBLEM
-(= a_v (c_f c_y2 a_v))
 It was added to mc1_consequent
 --------Making matches for (= c_y2 (c_f c_y1 a_v)) && (= a_v (c_f c_y2 a_v)) -> (= c_t (c_f c_y2 a_v))
 It was added to mc1_antecedent
 It was added to mc2_antecedent
--- PROBLEM
-(= a_v (c_f c_y2 a_v))
 It was added to mc1_consequent
-Deleting (= c_s1 c_t) -> false
-Deleting (= c_z1 c_z2) -> (= c_s1 c_s2)
-Deleting (= c_z1 c_y1) -> (= c_s1 (c_f c_y1 a_v))
-Deleting (= c_z1 c_y2) -> (= c_s1 (c_f c_y2 a_v))
-Deleting (= a_v (c_f c_y2 a_v)) && (= c_z1 (c_f c_y1 a_v)) -> (= c_s1 c_t)
-Deleting (= c_z2 c_y1) -> (= c_s2 (c_f c_y1 a_v))
-Deleting (= c_z2 c_y2) -> (= c_s2 (c_f c_y2 a_v))
-Deleting (= c_z2 (c_f c_y1 a_v)) && (= a_v (c_f c_y2 a_v)) -> (= c_s2 c_t)
-Deleting (= c_y1 c_y2) -> (= (c_f c_y1 a_v) (c_f c_y2 a_v))
-Deleting (= c_y1 (c_f c_y1 a_v)) && (= a_v (c_f c_y2 a_v)) -> (= c_t (c_f c_y1 a_v))
-Deleting (= c_y2 (c_f c_y1 a_v)) && (= a_v (c_f c_y2 a_v)) -> (= c_t (c_f c_y2 a_v))
-Makefile:37: recipe for target 'run' failed
+Horn clauses produced
+1. 0x55bc8b89d0b0 (= c_s1 c_t) -> false
+2. 0x55bc8b89b380 (= c_z1 c_z2) -> (= c_s1 c_s2)
+3. 0x55bc8b88aad0 (= c_z1 c_y1) -> (= c_s1 (c_f c_y1 a_v))
+4. 0x55bc8b89a640 (= c_z1 c_y2) -> (= c_s1 (c_f c_y2 a_v))
+5. 0x55bc8b8a42e0 (= a_v (c_f c_y2 a_v)) && (= c_z1 (c_f c_y1 a_v)) -> (= c_s1 c_t)
+6. 0x55bc8b89add0 (= c_z2 c_y1) -> (= c_s2 (c_f c_y1 a_v))
+7. 0x55bc8b89ad10 (= c_z2 c_y2) -> (= c_s2 (c_f c_y2 a_v))
+8. 0x55bc8b8a7940 (= c_z2 (c_f c_y1 a_v)) && (= a_v (c_f c_y2 a_v)) -> (= c_s2 c_t)
+9. 0x55bc8b8978b0 (= c_y1 c_y2) -> (= (c_f c_y1 a_v) (c_f c_y2 a_v))
+10. 0x55bc8b831080 (= c_y1 (c_f c_y1 a_v)) && (= a_v (c_f c_y2 a_v)) -> (= c_t (c_f c_y1 a_v))
+11. 0x55bc8b89ad70 (= c_y2 (c_f c_y1 a_v)) && (= a_v (c_f c_y2 a_v)) -> (= c_t (c_f c_y2 a_v))
+mc1_antecedent
+26: 4 7 9 10 
+36: 4 7 9 10 
+38: 4 7 9 10 
+mc1_consequent
+36: 2 5 8 9 
+38: 3 6 8 10 
+mc2_antecedent
+57: 4 7 9 10 
+mc2_consequent
+62: 8 
+
