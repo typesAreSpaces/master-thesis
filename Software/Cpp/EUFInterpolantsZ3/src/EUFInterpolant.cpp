@@ -32,8 +32,6 @@ EUFInterpolant::EUFInterpolant(z3::expr const & part_a) :
     
     disequalitiesToHCS();
     exposeUncommons();
-
-    std::cout << horn_clauses << std::endl;
     
     return;
   }

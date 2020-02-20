@@ -17,6 +17,7 @@ class HornClauses {
   Match1                           mc1_antecedent, mc1_consequent;
   Match2                           mc2_antecedent, mc2_consequent;
   unsigned                         _size;
+  unsigned                         curr_num_horn_clauses = 0;
   // Match2                           reduced;
   // std::map<EquationTerm, unsigned> reduced_length;
 

@@ -17,8 +17,11 @@ HornClauses::HornClauses(z3::context & ctx, unsigned size) : ctx(ctx), _size(siz
 }
 
 HornClauses::~HornClauses(){
-  for(auto it : horn_clauses)
+  for(auto it : horn_clauses){
+    std::cout << "Deleting ";
+    std::cout <<  *it << std::endl;
     delete it;
+  }
 }
 
 // // -------------------------------------
@@ -33,7 +36,7 @@ HornClauses::~HornClauses(){
 // -------------------------------------
 void HornClauses::makeMatches(HornClause * hc, unsigned current_index){
 #if DEBUG_MAKE_MATCHES
-  std::cout << "Making matches for " << *hc << std::endl;
+  std::cout << "--------Making matches for " << *hc << std::endl;
 #endif
   auto hc_consequent = hc->getConsequent();
   auto consequent_name = hc_consequent.decl().name().str();
@@ -48,7 +51,9 @@ void HornClauses::makeMatches(HornClause * hc, unsigned current_index){
 #if DEBUG_MAKE_MATCHES
       std::cout << "It was added to mc2_antecedent" << std::endl;
 #endif
-      mc2_antecedent[equation_iterator.id()].push_back(current_index);
+      std::cout << "-- PROBLEM" << std::endl;
+      std::cout << equation_iterator << std::endl;
+      // mc2_antecedent[equation_iterator.id()].push_back(current_index);
       // We also consider the mc2_antecedent as two
       // mc1_antecedent elements
       mc1_antecedent[equation_iterator.arg(0).id()].push_back(current_index);
@@ -362,14 +367,13 @@ void HornClauses::add(HornClause * hc){
       return;
     }
     horn_clauses.push_back(hc);
-    // debugging -------------------
-    // std::cout << *this << std::endl;
-    //           -------------------
-    makeMatches(hc, horn_clauses.size());
+    curr_num_horn_clauses++;
+    makeMatches(hc, curr_num_horn_clauses - 1);
     return;
   default:
     horn_clauses.push_back(hc);
-    makeMatches(hc, horn_clauses.size());
+    curr_num_horn_clauses++;
+    makeMatches(hc, curr_num_horn_clauses - 1); 
     return;
   }
 }
@@ -492,6 +496,7 @@ std::ostream & operator << (std::ostream & os, const HornClauses & hcs){
     os << i << ". " << it << " " << *it << std::endl;
     ++i;
   }
+  
   // i = 0;
   // os << "mc1_antecedent" << std::endl;
   // for(auto x : hcs.mc1_antecedent){
@@ -524,8 +529,6 @@ std::ostream & operator << (std::ostream & os, const HornClauses & hcs){
   //     os << y << " ";
   //   os << std::endl;
   // }
-
-  std::cout << "what" << std::endl;
   
   return os;
 }

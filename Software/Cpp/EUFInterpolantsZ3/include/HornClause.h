@@ -7,10 +7,11 @@
 
 class HornClause {
 
-  UnionFind &     uf;
-  z3::context &   ctx;
-  z3::expr_vector antecedent;
-  z3::expr        consequent;
+  UnionFind &       uf;
+  z3::context &     ctx;
+  z3::expr_vector   antecedent;
+  z3::expr          consequent;
+  std::vector<bool> matched;
 
   static bool compareEquation(const z3::expr &, const z3::expr &);
   static bool compareTerm(const z3::expr &, const z3::expr &);
