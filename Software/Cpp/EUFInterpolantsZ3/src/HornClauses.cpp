@@ -9,23 +9,24 @@
 #define DEBUG_MC1CMC2A           false
 #define DEBUG_MC1CMC1A2          false
 
-void match::push_back(z3::expr const & e, unsigned i){
+void Match::push_back(z3::expr const & e, unsigned i){
   if(m_vec.size() <= e.id())
     m_vec.resize(e.id() + 1);
   m_vec[e.id()].push_back(i);
 }
 
-std::ostream & operator << (std::ostream & os, const match & m){
+std::ostream & operator << (std::ostream & os, const Match & m){
   unsigned i = 0;
-  for(auto x : m.m_vec){
-    if(x.size() > 0){
-      os << i << ": ";
-      for(auto y : x)
-	os << y << " ";
+  for(auto positions : m.m_vec){
+    if(positions.size() > 0){
+      os << i++ << ": ";
+      for(auto position : positions)
+	os << position << " ";
       os << std::endl;
     }
     i++;
   }
+  std::cout << "Total size: " << m.m_vec.size();
   return os;
 }
 
@@ -387,65 +388,65 @@ void HornClauses::add(HornClause * hc){
   }
 }
 
-// void HornClauses::conditionalElimination(){
-//   bool change = true;
-//   SetOfUnsignedPairs prev_combinations;
-//   unsigned old_horn_clauses_size, new_horn_clauses_size;
+void HornClauses::conditionalElimination(){
+  bool change = true;
+  SetOfUnsignedPairs prev_combinations;
+  unsigned old_horn_clauses_size, new_horn_clauses_size;
   
-//   while(change){
+  while(change){
 	
-//     change = false;
-//     old_horn_clauses_size = horn_clauses.size();
+    change = false;
+    old_horn_clauses_size = horn_clauses.size();
 
-//     // 1.
-//     // This part covers cases:
-//     // 1. Type 2.1 + Type 3
-//     // 2. Type 2.1 + Type 4
-//     // Some Type 4 + Type 3 || Type 4
-//     // with mc2_consequent x mc2_antecedent
-//     mc2ConsequentAndmc2Antecedent(prev_combinations, change);
+    // 1.
+    // This part covers cases:
+    // 1. Type 2.1 + Type 3
+    // 2. Type 2.1 + Type 4
+    // Some Type 4 + Type 3 || Type 4
+    // with mc2_consequent x mc2_antecedent
+    mc2ConsequentAndmc2Antecedent(prev_combinations, change);
 
-//     // 2.
-//     // This part covers cases:
-//     // 4. Type 2 + Type 3
-//     // 5. Type 2 + Type 4
-//     // with mc1_consequent x mc1_antecedent
-//     mc1ConsequentAndmc1Antecedent(prev_combinations, change);
+    // 2.
+    // This part covers cases:
+    // 4. Type 2 + Type 3
+    // 5. Type 2 + Type 4
+    // with mc1_consequent x mc1_antecedent
+    mc1ConsequentAndmc1Antecedent(prev_combinations, change);
 
-//     // 3.
-//     // This part covers cases:
-//     // 4. Type 2 + Type 3
-//     // 5. Type 2 + Type 4
-//     // with mc1_consequent x mc2_antecedent
-//     mc1ConsequentAndmc2Antecedent(prev_combinations, change);
+    // 3.
+    // This part covers cases:
+    // 4. Type 2 + Type 3
+    // 5. Type 2 + Type 4
+    // with mc1_consequent x mc2_antecedent
+    mc1ConsequentAndmc2Antecedent(prev_combinations, change);
 
-//     // 4.
-//     // This part covers cases:
-//     // 3. Type 2 + Type 2
-//     // with mc1_consequent x mc1_consequent
-//     mc1ConsequentAndmc1Consequent(prev_combinations, change);
+    // 4.
+    // This part covers cases:
+    // 3. Type 2 + Type 2
+    // with mc1_consequent x mc1_consequent
+    mc1ConsequentAndmc1Consequent(prev_combinations, change);
 
-//     // Update the match data structures
-//     mc1_antecedent.clear();
-//     mc1_consequent.clear();
-//     mc2_antecedent.clear();
-//     mc2_consequent.clear();
+    // Update the match data structures
+    mc1_antecedent.clear();
+    mc1_consequent.clear();
+    mc2_antecedent.clear();
+    mc2_consequent.clear();
 	
-//     new_horn_clauses_size = horn_clauses.size();
-//     for(unsigned index = old_horn_clauses_size; index < new_horn_clauses_size; ++index)
-//       makeMatches(horn_clauses[index], index);
-//   }
+    new_horn_clauses_size = horn_clauses.size();
+    for(unsigned index = old_horn_clauses_size; index < new_horn_clauses_size; ++index)
+      makeMatches(horn_clauses[index], index);
+  }
   
-//   simplifyHornClauses();
+  simplifyHornClauses();
  
-// #if DEBUG_CE
-//   std::cout << "Horn Clauses produced - after simplify:" << std::endl;
-//   for(auto it : reduced)
-//     for(unsigned i = 0; i < reduced_length[it.first]; ++i)
-//       std::cout << *horn_clauses[it.second[i]] << std::endl;
-// #endif 
-//   auxiliar_cc.transferEqClassAndPreds(original_cc);
-// }
+#if DEBUG_CE
+  std::cout << "Horn Clauses produced - after simplify:" << std::endl;
+  for(auto it : reduced)
+    for(unsigned i = 0; i < reduced_length[it.first]; ++i)
+      std::cout << *horn_clauses[it.second[i]] << std::endl;
+#endif 
+  auxiliar_cc.transferEqClassAndPreds(original_cc);
+}
 
 unsigned HornClauses::size(){
   return horn_clauses.size();
@@ -479,29 +480,6 @@ HornClause* HornClauses::operator[](unsigned i){
 //   return new_hcs;
 // }
 
-// std::ostream & HornClauses::printMatch1(std::ostream & os, Match1 & m1){
-//   for(auto term_it : m1){
-//     os << term_it.first->to_string()
-//        << std::endl;
-//     for(auto position : m1[term_it.first])
-//       os << position << " ";
-//     os << std::endl;
-//   }
-//   return os;
-// }
-
-// std::ostream & HornClauses::printMatch2(std::ostream & os, Match2 & m2){
-//   for(auto equation_it : m2){
-//     os << equation_it.first.first->to_string()
-//        << " = " << equation_it.first.second->to_string()
-//        << std::endl;
-//     for(auto position : m2[equation_it.first])
-//       os << position << " ";
-//     os << std::endl;
-//   }
-//   return os;
-// }
-
 std::ostream & operator << (std::ostream & os, const HornClauses & hcs){
   unsigned i = 1;
   
@@ -511,13 +489,13 @@ std::ostream & operator << (std::ostream & os, const HornClauses & hcs){
     ++i;
   }
   
-  os << "mc1_antecedent" << std::endl;
-  os << hcs.mc1_antecedent;
-  os << "mc1_consequent" << std::endl;
-  os << hcs.mc1_consequent;
-  os << "mc2_antecedent" << std::endl;
-  os << hcs.mc2_antecedent;
-  os << "mc2_consequent" << std::endl;
+  os << "mc1_antecedent"   << std::endl;
+  os << hcs.mc1_antecedent << std::endl;
+  os << "mc1_consequent"   << std::endl;
+  os << hcs.mc1_consequent << std::endl;
+  os << "mc2_antecedent"   << std::endl;
+  os << hcs.mc2_antecedent << std::endl;
+  os << "mc2_consequent"   << std::endl;
   os << hcs.mc2_consequent;
   
   return os;
