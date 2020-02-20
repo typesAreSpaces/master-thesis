@@ -1,0 +1,40 @@
+Making matches for (= c_s1 c_t) -> false
+Making matches for (= c_z1 c_z2) -> (= c_s1 c_s2)
+Making matches for (= c_z1 c_y1) -> (= c_s1 (c_f c_y1 a_v))
+It was added to mc1_consequent
+Making matches for (= c_z1 c_y2) -> (= c_s1 (c_f c_y2 a_v))
+It was added to mc1_consequent
+Making matches for (= a_v (c_f c_y2 a_v)) && (= c_z1 (c_f c_y1 a_v)) -> (= c_s1 c_t)
+It was added to mc2_antecedent
+It was added to mc1_antecedent
+Making matches for (= c_z2 c_y1) -> (= c_s2 (c_f c_y1 a_v))
+It was added to mc1_consequent
+Making matches for (= c_z2 c_y2) -> (= c_s2 (c_f c_y2 a_v))
+It was added to mc1_consequent
+Making matches for (= c_z2 (c_f c_y1 a_v)) && (= a_v (c_f c_y2 a_v)) -> (= c_s2 c_t)
+It was added to mc1_antecedent
+It was added to mc2_antecedent
+Making matches for (= c_y1 c_y2) -> (= (c_f c_y1 a_v) (c_f c_y2 a_v))
+It was added to mc2_consequent
+Making matches for (= c_y1 (c_f c_y1 a_v)) && (= a_v (c_f c_y2 a_v)) -> (= c_t (c_f c_y1 a_v))
+It was added to mc1_antecedent
+It was added to mc2_antecedent
+It was added to mc1_consequent
+Making matches for (= c_y2 (c_f c_y1 a_v)) && (= a_v (c_f c_y2 a_v)) -> (= c_t (c_f c_y2 a_v))
+It was added to mc1_antecedent
+It was added to mc2_antecedent
+It was added to mc1_consequent
+Horn clauses produced
+1. 0x7986b80 (= c_s1 c_t) -> false
+2. 0x7990340 (= c_z1 c_z2) -> (= c_s1 c_s2)
+3. 0x79965c0 (= c_z1 c_y1) -> (= c_s1 (c_f c_y1 a_v))
+4. 0x799e340 (= c_z1 c_y2) -> (= c_s1 (c_f c_y2 a_v))
+5. 0x79a5e00 (= a_v (c_f c_y2 a_v)) && (= c_z1 (c_f c_y1 a_v)) -> (= c_s1 c_t)
+6. 0x79b1cd0 (= c_z2 c_y1) -> (= c_s2 (c_f c_y1 a_v))
+7. 0x79b9790 (= c_z2 c_y2) -> (= c_s2 (c_f c_y2 a_v))
+8. 0x79c1250 (= c_z2 (c_f c_y1 a_v)) && (= a_v (c_f c_y2 a_v)) -> (= c_s2 c_t)
+9. 0x79cd0a0 (= c_y1 c_y2) -> (= (c_f c_y1 a_v) (c_f c_y2 a_v))
+10. 0x79d5720 (= c_y1 (c_f c_y1 a_v)) && (= a_v (c_f c_y2 a_v)) -> (= c_t (c_f c_y1 a_v))
+11. 0x79e2890 (= c_y2 (c_f c_y1 a_v)) && (= a_v (c_f c_y2 a_v)) -> (= c_t (c_f c_y2 a_v))
+what
+
