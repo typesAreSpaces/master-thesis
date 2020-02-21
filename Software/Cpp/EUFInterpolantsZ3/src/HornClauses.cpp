@@ -4,31 +4,10 @@
 #define DEBUG_MAKE_MATCHES       false
 #define DEBUG_CE                 false
 #define DEBUG_COMBINATION_HELPER false
-#define DEBUG_MC2CMC2A           false
+#define DEBUG_MC2CMC2A           true
 #define DEBUG_MC1CMC1A           false
 #define DEBUG_MC1CMC2A           false
 #define DEBUG_MC1CMC1A2          false
-
-void Match::push_back(z3::expr const & e, unsigned i){
-  if(m_vec.size() <= e.id())
-    m_vec.resize(e.id() + 1);
-  m_vec[e.id()].push_back(i);
-}
-
-std::ostream & operator << (std::ostream & os, const Match & m){
-  unsigned i = 0;
-  for(auto positions : m.m_vec){
-    if(positions.size() > 0){
-      os << i++ << ": ";
-      for(auto position : positions)
-	os << position << " ";
-      os << std::endl;
-    }
-    i++;
-  }
-  std::cout << "Total size: " << m.m_vec.size();
-  return os;
-}
 
 HornClauses::HornClauses(z3::context & ctx) : ctx(ctx){
 }
@@ -244,29 +223,27 @@ void HornClauses::makeMatches(HornClause * hc, unsigned current_index){
 //   // Same as mergeType2AndType3
 // }
 
-// // Elimination of h_left : * -> uncom_1 = uncom_2, h_right : * ^ uncom_1 = uncom_2 ^ * -> *
-// void HornClauses::mc2ConsequentAndmc2Antecedent(SetOfUnsignedPairs & prev_combinations, bool & change){
-//   for(auto map_equation_positions : mc2_consequent){
-//     auto equation = map_equation_positions.first;
-//     for(unsigned left_consequent : mc2_consequent[equation])
-//       for(unsigned right_antecedent : mc2_antecedent[equation]){
-// 	if(notInSet(std::make_pair(left_consequent, right_antecedent), prev_combinations)
-// 	   && notInSet(std::make_pair(right_antecedent, left_consequent), prev_combinations)){
-// #if DEBUG_MC2CMC2A
-// 	  std::cout << "1. Combine " << left_consequent << ", "
-// 		    << right_antecedent << std::endl
-// 		    << *horn_clauses[left_consequent] << std::endl
-// 		    << " with " << std::endl
-// 		    << *horn_clauses[right_antecedent]
-// 		    << std::endl;
-// #endif			
-// 	  prev_combinations.insert(std::make_pair(left_consequent, right_antecedent));
-// 	  mergeType2_1AndType3(horn_clauses[left_consequent], horn_clauses[right_antecedent], equation);
-// 	  change = true;
-// 	}
-//       }
-//   }
-// }
+// Elimination of h_left : * -> uncom_1 = uncom_2, h_right : * ^ uncom_1 = uncom_2 ^ * -> *
+void HornClauses::mc2ConsequentAndmc2Antecedent(SetOfUnsignedPairs & prev_combinations, bool & change){
+  unsigned _size = mc2_consequent.size();
+  for(unsigned i = 0; i < _size; i++)
+    for(unsigned left_position : mc2_consequent[i]) 
+      for(unsigned right_position : mc2_antecedent[i])
+	if(notInSet(std::make_pair(left_position, right_position), prev_combinations)
+	   && notInSet(std::make_pair(right_position, left_position), prev_combinations)){
+#if DEBUG_MC2CMC2A
+	  std::cout << "1. Combine " << left_position << ", "
+		    << right_position << std::endl
+		    << *horn_clauses[left_position] << std::endl
+		    << " with " << std::endl
+		    << *horn_clauses[right_position]
+		    << std::endl;
+#endif			
+	  // prev_combinations.insert(std::make_pair(left_consequent, right_antecedent));
+	  // mergeType2_1AndType3(horn_clauses[left_consequent], horn_clauses[right_antecedent], equation);
+	  // change = true;
+	}
+}
 
 // // Elimination of h_left : * -> com_1 = uncom, h_right : * ^ com_2 = uncom ^ * -> *
 // void HornClauses::mc1ConsequentAndmc1Antecedent(SetOfUnsignedPairs & prev_combinations, bool & change){  
@@ -391,12 +368,12 @@ void HornClauses::add(HornClause * hc){
 void HornClauses::conditionalElimination(){
   bool change = true;
   SetOfUnsignedPairs prev_combinations;
-  unsigned old_horn_clauses_size, new_horn_clauses_size;
+  unsigned old_size, new_size;
   
   while(change){
 	
     change = false;
-    old_horn_clauses_size = horn_clauses.size();
+    old_size = horn_clauses.size();
 
     // 1.
     // This part covers cases:
@@ -411,41 +388,40 @@ void HornClauses::conditionalElimination(){
     // 4. Type 2 + Type 3
     // 5. Type 2 + Type 4
     // with mc1_consequent x mc1_antecedent
-    mc1ConsequentAndmc1Antecedent(prev_combinations, change);
+    // mc1ConsequentAndmc1Antecedent(prev_combinations, change);
 
     // 3.
     // This part covers cases:
     // 4. Type 2 + Type 3
     // 5. Type 2 + Type 4
     // with mc1_consequent x mc2_antecedent
-    mc1ConsequentAndmc2Antecedent(prev_combinations, change);
+    // mc1ConsequentAndmc2Antecedent(prev_combinations, change);
 
     // 4.
     // This part covers cases:
     // 3. Type 2 + Type 2
     // with mc1_consequent x mc1_consequent
-    mc1ConsequentAndmc1Consequent(prev_combinations, change);
+    // mc1ConsequentAndmc1Consequent(prev_combinations, change);
 
     // Update the match data structures
-    mc1_antecedent.clear();
-    mc1_consequent.clear();
-    mc2_antecedent.clear();
-    mc2_consequent.clear();
+    // mc1_antecedent.clear();
+    // mc1_consequent.clear();
+    // mc2_antecedent.clear();
+    // mc2_consequent.clear();
 	
-    new_horn_clauses_size = horn_clauses.size();
-    for(unsigned index = old_horn_clauses_size; index < new_horn_clauses_size; ++index)
-      makeMatches(horn_clauses[index], index);
+    new_size = horn_clauses.size();
+    for(unsigned i = old_size; i < new_size; i++)
+      makeMatches(horn_clauses[i], i);
   }
   
-  simplifyHornClauses();
+  // simplifyHornClauses();
  
-#if DEBUG_CE
-  std::cout << "Horn Clauses produced - after simplify:" << std::endl;
-  for(auto it : reduced)
-    for(unsigned i = 0; i < reduced_length[it.first]; ++i)
-      std::cout << *horn_clauses[it.second[i]] << std::endl;
-#endif 
-  auxiliar_cc.transferEqClassAndPreds(original_cc);
+// #if DEBUG_CE
+//   std::cout << "Horn Clauses produced - after simplify:" << std::endl;
+//   for(auto it : reduced)
+//     for(unsigned i = 0; i < reduced_length[it.first]; ++i)
+//       std::cout << *horn_clauses[it.second[i]] << std::endl;
+// #endif 
 }
 
 unsigned HornClauses::size(){

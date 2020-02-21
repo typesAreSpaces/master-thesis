@@ -33,7 +33,8 @@ EUFInterpolant::EUFInterpolant(z3::expr const & part_a) :
     disequalitiesToHCS();
     exposeUncommons();
 
-    std::cout << horn_clauses << std::endl;
+    // Keep working here
+    buildInterpolant();
     
     return;
   }
@@ -146,7 +147,7 @@ z3::expr_vector EUFInterpolant::conditionalReplacement(z3::expr_vector & terms_t
 // }
 
 z3::expr EUFInterpolant::buildInterpolant(){
-  // horn_clauses.conditionalElimination(); // TODO: Implement the following
+  horn_clauses.conditionalElimination(); // TODO: Implement the following
   
   // auto non_reducible_hs_z3 = cvt.convert(horn_clauses.getHornClauses());
   // auto simplified_hs = cvt.extraSimplification(non_reducible_hs_z3);  

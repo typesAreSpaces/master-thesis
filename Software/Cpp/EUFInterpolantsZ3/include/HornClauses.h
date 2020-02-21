@@ -1,18 +1,10 @@
 #ifndef _HORN_CLAUSES_
 #define _HORN_CLAUSES_
+#define notInSet(y, x) x.find(y) == x.end()
 
 #include <set>
 #include "HornClause.h"
-
-// For historical reference
-// Match1 : Uncommon term (indexed by its id) -> Positions of Horn Clauses
-// Match2 : Uncommon equation (indexed by its id) -> Positions of Horn Clauses
-class Match {
-  std::vector<std::vector<unsigned> > m_vec;
-public:
-  void push_back(z3::expr const &, unsigned);
-  friend std::ostream & operator << (std::ostream &, const Match &);
-};
+#include "Match.h"
 
 typedef std::set<std::pair<unsigned, unsigned> > SetOfUnsignedPairs;
 

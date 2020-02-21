@@ -1,7 +1,6 @@
 #ifndef _RENAME_
 #define _RENAME_
 
-#include <iostream>
 #include <string>
 #include <z3++.h>
 #include <set>
