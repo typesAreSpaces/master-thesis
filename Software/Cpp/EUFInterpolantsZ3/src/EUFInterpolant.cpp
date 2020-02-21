@@ -33,8 +33,6 @@ EUFInterpolant::EUFInterpolant(z3::expr const & part_a) :
     disequalitiesToHCS();
     exposeUncommons();
 
-    std::cout << horn_clauses << std::endl;
-
     // Keep working here
     buildInterpolant();
     
@@ -89,7 +87,7 @@ void EUFInterpolant::disequalitiesToHCS(){
   for(unsigned i = 0; i < num_disequalities; i++){
     z3::expr_vector hc_body(ctx);
     hc_body.push_back(disequalities[i].arg(0) == disequalities[i].arg(1)); // <-- TODO: Should we change this to representatives?
-    horn_clauses.add(new HornClause(uf, ctx, hc_body, contradiction));
+    horn_clauses.add(new HornClause(uf, ctx, subterms, hc_body, contradiction));
   }
 }
 
@@ -103,7 +101,7 @@ void EUFInterpolant::exposeUncommons(){
 	z3::expr t1 = subterms[iterator.second[index_1]], t2 = subterms[iterator.second[index_2]];
 	z3::expr_vector hc_body = buildHCBody(t1, t2);
 	z3::expr        hc_head = subterms[uf.find(t1.id())] == subterms[uf.find(t2.id())];
-	horn_clauses.add(new HornClause(uf, ctx, hc_body, hc_head));
+	horn_clauses.add(new HornClause(uf, ctx, subterms, hc_body, hc_head));
       }
   }
   return;

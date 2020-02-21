@@ -20,6 +20,7 @@ class HornClauses {
   // Match2                           reduced;
   // std::map<EquationTerm, unsigned> reduced_length;
 
+  void makeMatchesHelper(const z3::expr &, unsigned, Match &, Match &);
   void makeMatches(HornClause *, unsigned);
   // void combinationHelper(HornClause *);
   void simplifyHornClauses(); // TODO: NEXT NEXT NEXT

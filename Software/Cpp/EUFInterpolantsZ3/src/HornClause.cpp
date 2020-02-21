@@ -1,11 +1,27 @@
 #include "HornClause.h"
 
-HornClause::HornClause(UnionFind & uf, z3::context & ctx, z3::expr_vector antecedent, z3::expr consequent) :
-  uf(uf), ctx(ctx), antecedent(antecedent), consequent(consequent){
+HornClause::HornClause(UnionFind & uf, z3::context & ctx, z3::expr_vector & subterms, z3::expr_vector antecedent, z3::expr consequent) :
+  uf(uf), ctx(ctx), subterms(subterms), antecedent(antecedent), consequent(consequent){
   normalize();
-  for(auto hyp : antecedent)
+  orient();
+  for(auto hyp : antecedent){
     is_common_antecedent = is_common_antecedent && hyp.is_common();
-  orient();    
+    if(subterms.size() <= hyp.id())
+      subterms.resize(hyp.id() + 1);
+    auto lhs = hyp.arg(0), rhs = hyp.arg(1);
+    subterms.set(hyp.id(), hyp);
+    subterms.set(lhs.id(), lhs);
+    subterms.set(rhs.id(), rhs);
+  }
+  if(consequent.decl().name().str() == "false")
+    return;
+  if(subterms.size() <= consequent.id())
+    subterms.resize(consequent.id() + 1);
+  auto lhs = consequent.arg(0), rhs = consequent.arg(1);
+  subterms.set(consequent.id(), consequent);
+  subterms.set(lhs.id(), lhs);
+  subterms.set(rhs.id(), rhs);
+  return;
 }
 
 HornClause::~HornClause(){
@@ -66,7 +82,6 @@ void HornClause::normalize(){
 // (/\_i u_i = v_i) => a = b, where u_i >= v_i and a >= b
 // The < relation on (Term, Term) is HornClause::compareTerm
 void HornClause::orient(){
-
   z3::expr_vector aux_antecedent(ctx);
   z3::expr current_lhs(ctx), current_rhs(ctx);
   unsigned num = antecedent.size();

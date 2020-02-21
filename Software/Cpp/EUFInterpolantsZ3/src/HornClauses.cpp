@@ -1,7 +1,7 @@
 #include "HornClauses.h"
 #define DEBUG_HORN_CLAUSES       false
 #define DEBUG_ADDINGHC           false
-#define DEBUG_MAKE_MATCHES       false
+#define DEBUG_MAKE_MATCHES       true
 #define DEBUG_CE                 false
 #define DEBUG_COMBINATION_HELPER false
 #define DEBUG_MC2CMC2A           true
@@ -19,96 +19,74 @@ HornClauses::~HornClauses(){
     delete it;
 }
 
-// -------------------------------------
-// It fills the data structures
-// Match1 mc1_antecedent, mc1_consequent
-// Match2 mc2_antecedent, mc2_consequent
-// when a new horn clause is introduced
-// -------------------------------------
-// Precondition: 
-// All HornClauses here are assumed
-// to be normalized 
-// -------------------------------------
-void HornClauses::makeMatches(HornClause * hc, unsigned current_index){
-#if DEBUG_MAKE_MATCHES
-  std::cout << "--------Making matches for " << *hc << std::endl;
-#endif
-  // ---------------------------------------------------------------------
-  // Processing the antedecent of the current Horn Clause ----------------
-  for(auto equation_iterator : hc->getAntecedent()){
-    // If the first term is uncommon,
-    // then the equation is uncommon due to
-    // the normalizing ordering used
-
-    if(subterms.size() <= equation_iterator.id())
-      ((z3::expr_vector)subterms).resize(equation_iterator.id() + 1);
-    
-    auto lhs = equation_iterator.arg(0), rhs = equation_iterator.arg(1);
-    ((z3::expr_vector)subterms).set(equation_iterator.id(), equation_iterator);
-    ((z3::expr_vector)subterms).set(lhs.id(), lhs);
-    ((z3::expr_vector)subterms).set(rhs.id(), rhs);
-    
-    if(!lhs.is_common()){
-#if DEBUG_MAKE_MATCHES
-      std::cout << "It was added to mc2_antecedent" << std::endl;
-#endif
-      mc2_antecedent.push_back(equation_iterator, current_index);
-      // We also consider the mc2_antecedent as two
-      // mc1_antecedent elements
-      mc1_antecedent.push_back(lhs, current_index);
-      mc1_antecedent.push_back(rhs, current_index);
-    }
-    else{
-      // If the first term is common and
-      // the second term is common, then
-      // there is nothing to do!
-      if(!rhs.is_common()){
-#if DEBUG_MAKE_MATCHES
-	std::cout << "It was added to mc1_antecedent" << std::endl;
-#endif
-	mc1_antecedent.push_back(rhs, current_index);
-      }
-    }
-  }
-  // ---------------------------------------------------------------------
-
-  // ---------------------------------------------------------------
-  // Processing the consequent of the current Horn Clause ----------
-  auto hc_consequent = hc->getConsequent();
-  auto consequent_name = hc_consequent.decl().name().str();
-  if(subterms.size() <= hc_consequent.id())
-    ((z3::expr_vector)subterms).resize(hc_consequent.id() + 1);
-  
-  if(consequent_name == "false")
-    return;
-
-  auto lhs = hc_consequent.arg(0), rhs = hc_consequent.arg(1);
-  ((z3::expr_vector)subterms).set(hc_consequent.id(), hc_consequent);
-  ((z3::expr_vector)subterms).set(lhs.id(), lhs);
-  ((z3::expr_vector)subterms).set(rhs.id(), rhs);
-  
+void HornClauses::makeMatchesHelper(const z3::expr & equality,
+				    unsigned current_index,
+				    Match & m1, Match & m2){
+  auto lhs = equality.arg(0), rhs = equality.arg(1);
+  // If the first term is uncommon,
+  // then the equation is uncommon due to
+  // the normalizing ordering used
   if(!lhs.is_common()){
 #if DEBUG_MAKE_MATCHES
-    std::cout << "It was added to mc2_consequent" << std::endl;
+    std::cout << "----------------It was added to m2" << std::endl;
 #endif
-    mc2_consequent.push_back(hc_consequent, current_index);
+    m2.push_back(equality, current_index);
     // We also consider the mc2_consequent as two
     // mc1_consequent elements
-    mc1_consequent.push_back(lhs, current_index);
-    mc1_consequent.push_back(rhs, current_index);
+    m1.push_back(lhs, current_index);
+    m1.push_back(rhs, current_index);
   }
   else{
     if(!rhs.is_common()){
 #if DEBUG_MAKE_MATCHES
-      std::cout << "It was added to mc1_consequent" << std::endl;
+      std::cout << "----------------It was added to m1" << std::endl;
 #endif
-      mc1_consequent.push_back(rhs, current_index);
+      m1.push_back(rhs, current_index);
     }
     // If the first term is common and
     // the second term is common, then
     // there is nothing to do
   }
-  // ---------------------------------------------------------------
+}
+
+// --------------------------------------
+// This function fills the following data
+// structures
+// Match mc1_antecedent, mc1_consequent
+// Match mc2_antecedent, mc2_consequent
+// when a new horn clause is introduced
+// --------------------------------------
+// Precondition: 
+// All HornClauses here are assumed
+// to be normalized and oriented
+// --------------------------------------
+void HornClauses::makeMatches(HornClause * hc, unsigned current_index){
+#if DEBUG_MAKE_MATCHES
+  std::cout << "----Making matches for " << *hc << std::endl;
+#endif
+  // -----------------------------------------------------------------------------------
+  // Processing the antedecent of the current Horn Clause ------------------------------
+  for(auto equation_iterator : hc->getAntecedent()){
+    // If the first term is uncommon,
+    // then the equation is uncommon due to
+    // the normalizing ordering used
+#if DEBUG_MAKE_MATCHES
+    std::cout << "--------Processing the antecedent" << std::endl;
+#endif
+    makeMatchesHelper(equation_iterator, current_index, mc1_antecedent, mc2_antecedent);
+  }
+  // -----------------------------------------------------------------------------------
+  // -----------------------------------------------------------------------------
+  // Processing the consequent of the current Horn Clause ------------------------
+  auto hc_consequent = hc->getConsequent();
+  auto consequent_name = hc_consequent.decl().name().str();
+  if(consequent_name == "false")
+    return;
+#if DEBUG_MAKE_MATCHES
+  std::cout << "--------Processing the consequent" << std::endl;
+#endif
+  makeMatchesHelper(hc_consequent, current_index, mc1_consequent, mc2_consequent);
+  // -----------------------------------------------------------------------------
   return;
 }
 
@@ -122,6 +100,15 @@ void HornClauses::makeMatches(HornClause * hc, unsigned current_index){
 //     delete hc;
 //     return;
 //   }
+// #if DEBUG_COMBINATION_HELPER
+//   std::cout << "Inside combination helper: " << *hc << " was added!" << std::endl << std::endl;
+// #endif
+  
+//   horn_clauses.push_back(hc);
+//   // makeMatches is called for all the additions
+//   // done by combinationHelper inside
+//   // HornClauses::conditionalElimination
+// }
 
 // // This method removes unnecessary
 // // extra Horn Clauses
@@ -302,11 +289,8 @@ void HornClauses::mc1ConsequentAndmc2Antecedent(SetOfUnsignedPairs & prev_combin
     for(auto h_left : mc1_consequent[i]){
       for(unsigned j = min_id; j < _size_mc2_antecedent; j++){
 	if(mc2_antecedent[j].size() > 0){
-	  auto equation_antecedent = subterms[j];
-	  // KEEP WORKING HERE
-	  std::cout << equation_antecedent << std::endl;
-	  if(equation_antecedent.arg(0).id() == h_left
-	     || equation_antecedent.arg(1).id() == h_left){
+	  auto equation_right = subterms[j];
+	  if(equation_right.arg(0).id() == i || equation_right.arg(1).id() == i){
 	    for(auto h_right : mc2_antecedent[j]){
 	      if(notInSet(std::make_pair(h_left, h_right), prev_combinations)
 		 && notInSet(std::make_pair(h_left, h_right), prev_combinations)
@@ -333,38 +317,29 @@ void HornClauses::mc1ConsequentAndmc2Antecedent(SetOfUnsignedPairs & prev_combin
 
 // Elimination of h_left :  * -> com_1 = uncom_1, h_right : * -> com_2 = uncom_1
 void HornClauses::mc1ConsequentAndmc1Consequent(SetOfUnsignedPairs & prev_combinations, bool & change){
-//   for(auto map_vertex_positions : mc1_consequent){
-//     auto vertex = map_vertex_positions.first;
-//     for(unsigned left_consequent : mc1_consequent[vertex])
-//       for(unsigned right_consequent : mc1_consequent[vertex]){
-//   	if(left_consequent != right_consequent
-// 	   && notInSet(std::make_pair(left_consequent, right_consequent), prev_combinations)
-//   	   && notInSet(std::make_pair(right_consequent, left_consequent), prev_combinations)
-//   	   && horn_clauses[left_consequent]->getAntecedentCommon()
-//   	   && horn_clauses[right_consequent]->getAntecedentCommon()){
-// #if DEBUG_MC1CMC1A2
-//   	  std::cout << "4. Combine " << left_consequent << ", "
-// 		    << right_consequent << std::endl
-//   		    << *horn_clauses[left_consequent] << std::endl
-//   		    << " with " << std::endl << *horn_clauses[right_consequent]
-//   		    << std::endl;
-// #endif	    
-//   	  prev_combinations.insert(std::make_pair(left_consequent, right_consequent));
-//   	  mergeType2AndType2(horn_clauses[left_consequent], horn_clauses[right_consequent], vertex);
-//   	  change = true;
-//   	}
-//       }
-//   }
-// }
-  
-// #if DEBUG_COMBINATION_HELPER
-//   std::cout << "Inside combination helper: " << *hc << " was added!" << std::endl << std::endl;
-// #endif
-  
-//   horn_clauses.push_back(hc);
-//   // makeMatches is called for all the additions
-//   // done by combinationHelper inside
-//   // HornClauses::conditionalElimination
+  unsigned _size = mc1_consequent.size();
+  for(unsigned i = min_id; i < _size; i++){
+    for(auto h_left : mc1_consequent[i]){
+      for(auto h_right : mc1_consequent[i]){
+	if(h_left != h_right
+	   && notInSet(std::make_pair(h_left, h_right), prev_combinations)
+  	   && notInSet(std::make_pair(h_right, h_left), prev_combinations)
+  	   && horn_clauses[h_left]->isCommonAntecedent()
+  	   && horn_clauses[h_right]->isCommonAntecedent()){
+#if DEBUG_MC1CMC1A2
+  	  std::cout << "4. Combine " << h_left << ", "
+		    << h_right << std::endl
+  		    << *horn_clauses[h_left] << std::endl
+  		    << " with " << std::endl << *horn_clauses[h_right]
+  		    << std::endl;
+#endif	    
+  	  // prev_combinations.insert(std::make_pair(h_left, h_right));
+  	  // mergeType2AndType2(horn_clauses[h_left], horn_clauses[h_right], vertex);
+  	  // change = true;
+	}
+      }
+    }
+  }
 }
 
 // template<typename A>
@@ -487,8 +462,7 @@ HornClause* HornClauses::operator[](unsigned i){
 // }
 
 std::ostream & operator << (std::ostream & os, const HornClauses & hcs){
-  unsigned i = 1;
-  
+  unsigned i = 0;
   std::cout << "Horn clauses produced" << std::endl;
   for(auto it : hcs.horn_clauses){
     os << i << ". " << it << " " << *it << std::endl;
