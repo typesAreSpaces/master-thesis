@@ -3,7 +3,7 @@
 
 EUFInterpolant::EUFInterpolant(z3::expr const & part_a) :
   ctx(part_a.ctx()), min_id(part_a.id()), subterms(ctx),
-  uncommon_positions(), uf(), horn_clauses(ctx),
+  uncommon_positions(), uf(), horn_clauses(ctx, subterms, min_id),
   contradiction(ctx), disequalities(ctx), size(part_a.id() + 1) {
   
   contradiction = ctx.bool_val(false);
@@ -32,6 +32,8 @@ EUFInterpolant::EUFInterpolant(z3::expr const & part_a) :
     
     disequalitiesToHCS();
     exposeUncommons();
+
+    std::cout << horn_clauses << std::endl;
 
     // Keep working here
     buildInterpolant();

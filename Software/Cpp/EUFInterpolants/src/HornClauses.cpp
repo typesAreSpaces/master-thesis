@@ -166,9 +166,12 @@ void HornClauses::mc1ConsequentAndmc2Antecedent(SetOfUnsignedPairs & prev_combin
   for(auto map_vertex_positions_consequent : mc1_consequent){
     auto vertex = map_vertex_positions_consequent.first; // (uncom_1)
     for(unsigned left_consequent : mc1_consequent[vertex]){
+      
       for(auto map_equation_positions_antecedent : mc2_antecedent){
 	auto equation_antecedent = map_equation_positions_antecedent.first;
+	
 	if(equation_antecedent.first == vertex || equation_antecedent.second == vertex){
+	  
 	  for(unsigned right_antecedent : mc2_antecedent[equation_antecedent]){
 	    if(notInSet(std::make_pair(left_consequent, right_antecedent), prev_combinations)
 	       && notInSet(std::make_pair(right_antecedent, left_consequent), prev_combinations)

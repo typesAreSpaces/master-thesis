@@ -3,7 +3,9 @@
 HornClause::HornClause(UnionFind & uf, z3::context & ctx, z3::expr_vector antecedent, z3::expr consequent) :
   uf(uf), ctx(ctx), antecedent(antecedent), consequent(consequent){
   normalize();
-  orient();
+  for(auto hyp : antecedent)
+    is_common_antecedent = is_common_antecedent && hyp.is_common();
+  orient();    
 }
 
 HornClause::~HornClause(){
@@ -96,6 +98,10 @@ z3::expr_vector & HornClause::getAntecedent(){
 
 z3::expr & HornClause::getConsequent(){
   return consequent;
+}
+
+bool HornClause::isCommonAntecedent(){
+  return is_common_antecedent;
 }
 
 // Definition: > \in HornClause \times HornClause

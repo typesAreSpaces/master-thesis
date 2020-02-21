@@ -12,6 +12,7 @@ class HornClause {
   z3::expr_vector   antecedent;
   z3::expr          consequent;
   std::vector<bool> matched;
+  bool              is_common_antecedent = true;
 
   static bool compareEquation(const z3::expr &, const z3::expr &);
   static bool compareTerm(const z3::expr &, const z3::expr &);
@@ -25,6 +26,7 @@ public:
   bool              checkTriviality();
   z3::expr_vector & getAntecedent();
   z3::expr &        getConsequent();
+  bool              isCommonAntecedent();
   
   friend bool operator <(const HornClause &, const HornClause &);
   friend bool operator >(const HornClause &, const HornClause &);

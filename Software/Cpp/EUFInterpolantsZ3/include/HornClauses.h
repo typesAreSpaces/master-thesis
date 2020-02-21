@@ -11,6 +11,8 @@ typedef std::set<std::pair<unsigned, unsigned> > SetOfUnsignedPairs;
 class HornClauses {
 
   z3::context &             ctx;
+  const z3::expr_vector &   subterms;
+  unsigned &                min_id;
   std::vector<HornClause *> horn_clauses;
   Match                     mc1_antecedent, mc1_consequent;
   Match                     mc2_antecedent, mc2_consequent;
@@ -37,7 +39,7 @@ class HornClauses {
   // static void swap(std::vector<A> &, unsigned, unsigned);
   
  public:
-  HornClauses(z3::context &);
+  HornClauses(z3::context &, const z3::expr_vector &, unsigned &);
   ~HornClauses();
 
   void add(HornClause *);

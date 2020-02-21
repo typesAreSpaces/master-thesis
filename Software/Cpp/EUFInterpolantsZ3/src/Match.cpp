@@ -49,7 +49,7 @@ std::ostream & operator << (std::ostream & os, const Match & m){
   unsigned i = 0;
   for(auto positions : m.m_vec){
     if(positions.size() > 0){
-      os << i++ << ": ";
+      os << i << ": ";
       for(auto position : positions)
 	os << position << " ";
       os << std::endl;
