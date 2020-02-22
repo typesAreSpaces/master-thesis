@@ -44,9 +44,6 @@ int main(int argc, char ** argv){
   // std::cout << euf << std::endl;
     
   // euf.buildInterpolant();
-
-  // A * whatever = new A(alpha);
-  // std::cout << whatever->getExpr() << std::endl;
   
   return 0;
 }

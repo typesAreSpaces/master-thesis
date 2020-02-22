@@ -119,6 +119,10 @@ bool HornClause::isCommonAntecedent(){
   return is_common_antecedent;
 }
 
+bool HornClause::isCommonConsequent(){
+  return consequent.is_common();
+}
+
 // Definition: > \in HornClause \times HornClause
 // Let hc1 be of the form (/\_{i=0}^m u_i   = v_i  ) => a_1 = a_2
 // Let hc2 be of the form (/\_{j=0}^n u_j^' = v_j^') => b_1 = b_2

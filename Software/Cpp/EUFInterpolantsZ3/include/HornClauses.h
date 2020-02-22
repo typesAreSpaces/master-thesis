@@ -25,7 +25,7 @@ class HornClauses {
   // void combinationHelper(HornClause *);
   void simplifyHornClauses(); // TODO: NEXT NEXT NEXT
 
-  // void mergeType2_1AndType3(HornClause *, HornClause *, EquationTerm &);
+  void mergeType2_1AndType3(HornClause *, HornClause *, const z3::expr &);
   // void mergeType2_1AndType4(HornClause *, HornClause *);
   // void mergeType2AndType2(HornClause *, HornClause *, Term *);
   // void mergeType2AndType3(HornClause *, HornClause *, Term *);
@@ -34,6 +34,7 @@ class HornClauses {
   void mc2ConsequentAndmc2Antecedent(SetOfUnsignedPairs &, bool &); // TODO: NEXT NEXT
   void mc1ConsequentAndmc1Antecedent(SetOfUnsignedPairs &, bool &); // TODO: NEXT NEXT
   void mc1ConsequentAndmc2Antecedent(SetOfUnsignedPairs &, bool &); // TODO: NEXT NEXT
+  // void mc1ConsequentAndmc2Consequent
   void mc1ConsequentAndmc1Consequent(SetOfUnsignedPairs &, bool &); // TODO: NEXT NEXT
   
   // template<typename A>

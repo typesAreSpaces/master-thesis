@@ -33,6 +33,8 @@ EUFInterpolant::EUFInterpolant(z3::expr const & part_a) :
     disequalitiesToHCS();
     exposeUncommons();
 
+    // std::cout << horn_clauses << std::endl;
+
     // Keep working here
     buildInterpolant();
     
@@ -74,11 +76,15 @@ void EUFInterpolant::init(z3::expr const & e, unsigned & min_id, std::vector<boo
   throw "Problem @ EUFInterpolant::init. The expression e is not an application term.";
 }
 
+z3::expr EUFInterpolant::repr(const z3::expr & t){
+  return subterms[uf.find(t.id())];
+}
+
 z3::expr_vector EUFInterpolant::buildHCBody(z3::expr const & t1, z3::expr const & t2){
   z3::expr_vector hc_body(ctx);
   unsigned num_args = t1.num_args();
   for(unsigned i = 0; i < num_args; i++)
-    hc_body.push_back(t1.arg(i) == t2.arg(i)); // <-- TODO: Should we change this to representatives?
+    hc_body.push_back(repr(t1.arg(i)) == repr(t2.arg(i)));
   return hc_body;
 }
 
@@ -86,7 +92,7 @@ void EUFInterpolant::disequalitiesToHCS(){
   unsigned num_disequalities = disequalities.size();
   for(unsigned i = 0; i < num_disequalities; i++){
     z3::expr_vector hc_body(ctx);
-    hc_body.push_back(disequalities[i].arg(0) == disequalities[i].arg(1)); // <-- TODO: Should we change this to representatives?
+    hc_body.push_back(repr(disequalities[i].arg(0)) == repr(disequalities[i].arg(1)));
     horn_clauses.add(new HornClause(uf, ctx, subterms, hc_body, contradiction));
   }
 }
@@ -100,7 +106,7 @@ void EUFInterpolant::exposeUncommons(){
       for(unsigned index_2 = index_1 + 1; index_2 < current_num_uncomms; index_2++){
 	z3::expr t1 = subterms[iterator.second[index_1]], t2 = subterms[iterator.second[index_2]];
 	z3::expr_vector hc_body = buildHCBody(t1, t2);
-	z3::expr        hc_head = subterms[uf.find(t1.id())] == subterms[uf.find(t2.id())];
+	z3::expr        hc_head = repr(t1) == repr(t2);
 	horn_clauses.add(new HornClause(uf, ctx, subterms, hc_body, hc_head));
       }
   }

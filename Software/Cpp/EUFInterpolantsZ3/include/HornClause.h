@@ -28,6 +28,7 @@ public:
   z3::expr_vector & getAntecedent();
   z3::expr &        getConsequent();
   bool              isCommonAntecedent();
+  bool              isCommonConsequent();
   
   friend bool operator <(const HornClause &, const HornClause &);
   friend bool operator >(const HornClause &, const HornClause &);
