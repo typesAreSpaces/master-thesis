@@ -8,6 +8,7 @@
 #define DEBUG_MC1CMC1A           true
 #define DEBUG_MC1CMC2A           true
 #define DEBUG_MC1CMC1A2          true
+#define DEBUG_MATCHES            false
 
 HornClauses::HornClauses(z3::context & ctx, const z3::expr_vector & subterms, unsigned & min_id) :
   ctx(ctx),
@@ -434,11 +435,15 @@ void HornClauses::conditionalElimination(){
 // #endif 
 }
 
-unsigned HornClauses::size(){
+unsigned HornClauses::size() const {
   return horn_clauses.size();
 }
 
-std::vector<HornClause*> & HornClauses::getHornClauses(){
+unsigned HornClauses::maxID() const {
+  return subterms.size();
+}
+
+const std::vector<HornClause*> & HornClauses::getHornClauses() const {
   return horn_clauses;
 }
 
@@ -473,6 +478,8 @@ std::ostream & operator << (std::ostream & os, const HornClauses & hcs){
     os << i << ". " << it << " " << *it << std::endl;
     ++i;
   }
+
+#if DEBUG_MATCHES
   os << "mc1_antecedent"   << std::endl;
   Match::iterator it = hcs.mc1_antecedent.begin(), end = hcs.mc1_antecedent.end();
   i = 0;
@@ -524,6 +531,6 @@ std::ostream & operator << (std::ostream & os, const HornClauses & hcs){
     }
     i++;
   }
-  
+#endif  
   return os;
 }

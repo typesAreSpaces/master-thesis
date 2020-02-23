@@ -3,6 +3,7 @@
 
 #include <map>
 #include "HornClauses.h"
+#include "Hornsat.h"
 
 typedef std::map<std::string, std::vector<unsigned> > UncommonPositions;
 

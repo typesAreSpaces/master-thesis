@@ -5,6 +5,7 @@
 #include <iostream>
 #include <queue>
 #include <vector>
+#include "HornClauses.h"
 
 struct Clause {
   unsigned clause_id;
@@ -75,6 +76,7 @@ class Hornsat {
   unsigned num_pos;
  public:
   Hornsat(std::istream &);
+  Hornsat(const HornClauses &);
   ~Hornsat();
   void satisfiable();
   bool isConsistent();

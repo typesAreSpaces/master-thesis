@@ -36,6 +36,34 @@ Hornsat::Hornsat(std::istream & in) : consistent(true), num_pos(0){
   }
 }
 
+Hornsat::Hornsat(const HornClauses & hcs){
+  unsigned num_hcs = hcs.size(), num_literals = hcs.maxID();
+  list_of_literals.resize(num_literals);
+  num_args.resize(num_hcs);
+  pos_lit_list.resize(num_hcs);
+  unsigned index_hc = 0;
+  for(auto horn_clause : hcs.getHornClauses()){
+
+    // Horn clause body processing
+    num_args.insert(index_hc, horn_clause->getAntecedent().size());
+    for(auto antecedent : horn_clause->getAntecedent())
+      list_of_literals[antecedent.id()].clause_list = list_of_literals[antecedent.id()].clause_list->add(index_hc);
+
+    // Horn clause head processing
+    auto consequent = horn_clause->getConsequent();
+    pos_lit_list.list_of_clauses[index_hc] = consequent.id();
+
+    // This checks if the Horn Clause is a fact
+    if(num_args.list_of_clauses[index_hc] == 0){
+      list_of_literals[consequent.id()].val = true;
+      facts.push(index_hc);
+      ++num_pos;
+    }
+
+    index_hc++;
+  }
+}
+
 Hornsat::~Hornsat(){
   for(auto literal : list_of_literals){
     for(auto it = literal.clause_list->begin(), end = literal.clause_list->end();
