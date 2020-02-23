@@ -33,14 +33,14 @@ EUFInterpolant::EUFInterpolant(z3::expr const & part_a) :
     disequalitiesToHCS();
     exposeUncommons();
 
-    std::cout << horn_clauses << std::endl;
+    // std::cout << horn_clauses << std::endl;
 
-    Hornsat hsat(horn_clauses);
-    hsat.satisfiable();
-    std::cout << hsat << std::endl;
+    // Hornsat hsat(horn_clauses);
+    // hsat.satisfiable();
+    // std::cout << hsat << std::endl;
 
     // Keep working here
-    // buildInterpolant();
+    buildInterpolant();
     
     return;
   }
