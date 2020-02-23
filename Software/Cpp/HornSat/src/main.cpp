@@ -2,31 +2,34 @@
 #include <fstream>
 #include "Hornsat.h"
 
-int main(int argc, char ** argv){
+void checkSatisfiability(Hornsat & A){
+  A.satisfiable();
   
-  Hornsat * A;
-  
-  if(argc == 2){
-    std::ifstream file;
-    file.open(argv[1], std::ifstream::in);
-    A = new Hornsat(file);
-    file.close();
-  }
-  else if(argc == 1)
-    A = new Hornsat(std::cin);
-  else
-    return 0;
-  
-  A->satisfiable();
-  
-  if(A->isConsistent()){
+  if(A.isConsistent()){
     std::cout << "Satisfiable Horn Clause" << std::endl;
-    std::cout << *A << std::endl;
+    std::cout << A << std::endl;
   }
   else
-    std::cout << "Unsatisfiable Horn Clause" << std::endl;
-  
-  delete A;
-  
-  return 0;
+    std::cout << "Unsatisfiable Horn Clause" << std::endl;  
+}
+
+int main(int argc, char ** argv){
+
+  switch(argc){
+  case 1:{
+    Hornsat A(std::cin);
+    checkSatisfiability(A);
+    return 0;
+  }
+  case 2:{
+    std::ifstream file;
+    file.open(argv[1]);
+    Hornsat A(file);
+    checkSatisfiability(A);
+    file.close();
+    return 0;
+  }
+  default:
+    return 1;
+  }
 }
