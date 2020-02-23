@@ -32,34 +32,52 @@ Hornsat::Hornsat(std::istream & in) : consistent(true), num_pos(0){
       list_of_literals[input].val = true;
       facts.push(index_hc);
       ++num_pos;
+      if(input == FALSELITERAL)
+	consistent = false;
     }   
   }
 }
 
-Hornsat::Hornsat(const HornClauses & hcs){
+Hornsat::Hornsat(const HornClauses & hcs) : consistent(true), num_pos(0){
   unsigned num_hcs = hcs.size(), num_literals = hcs.maxID();
   list_of_literals.resize(num_literals);
   num_args.resize(num_hcs);
   pos_lit_list.resize(num_hcs);
+  
   unsigned index_hc = 0;
   for(auto horn_clause : hcs.getHornClauses()){
 
     // Horn clause body processing
-    num_args.insert(index_hc, horn_clause->getAntecedent().size());
-    for(auto antecedent : horn_clause->getAntecedent())
-      list_of_literals[antecedent.id()].clause_list = list_of_literals[antecedent.id()].clause_list->add(index_hc);
+    // Remark: We only have equations in the antecedent
+    num_args.insert(index_hc, horn_clause->numUncommAntecedent());
+    for(auto antecedent : horn_clause->getAntecedent()){       
+      Literal * literal = &list_of_literals[antecedent.id()];
+      literal->lclass = antecedent.arg(0).id();
+      literal->rclass = antecedent.arg(1).id();
+      literal->clause_list = literal->clause_list->add(index_hc);
+    }
 
     // Horn clause head processing
     auto consequent = horn_clause->getConsequent();
-    pos_lit_list.list_of_clauses[index_hc] = consequent.id();
+    Literal * literal = &list_of_literals[consequent.decl().name().str() == "false" ? FALSELITERAL : consequent.id()];
+    
+    if(literal->literal_id == 0)
+      pos_lit_list.list_of_clauses[index_hc] = FALSELITERAL;
+    else{
+      pos_lit_list.list_of_clauses[index_hc] = consequent.id();
+      literal->lclass = consequent.arg(0).id();
+      literal->rclass = consequent.arg(1).id();
+    }
 
     // This checks if the Horn Clause is a fact
     if(num_args.list_of_clauses[index_hc] == 0){
-      list_of_literals[consequent.id()].val = true;
+      literal->val = true;
       facts.push(index_hc);
       ++num_pos;
+      if(literal->literal_id == 0)
+	consistent = false;
     }
-
+    
     index_hc++;
   }
 }
@@ -103,6 +121,36 @@ void Hornsat::satisfiable(){
   }
 }
 
+void Hornsat::satisfiable(UnionFind & uf){
+  unsigned clause1 = 0, node = 0, nextnode = 0, u = 0, v = 0;
+  while(!facts.empty() && consistent){
+    node = facts.front();
+    facts.pop();
+    auto clause_list_cur_lit = list_of_literals[node].clause_list;
+    auto it = clause_list_cur_lit->begin(), end = clause_list_cur_lit->end();
+    for(; it != end; ++it){
+      clause1 = (*it)->clause_id;
+      --num_args.list_of_clauses[clauses1];
+      if(num_args.list[clause1] == 0){
+	nextnode = pos_lit_list.list_of_clauses[clause1];
+	if(!list_of_literals[nextnode].val){
+	  if(nextnode > FALSELITERAL){
+	    facts.push(nextnode);
+	    list_of_literals[nextnode].val = true;
+	    u = list_of_literals[nextnode].lclass, v = list_of_literals[nextnode].rclass;
+	    if(uf.find(u) != uf.find(v))
+	    // Something else with u, v, FIND(u, R), FIND(v, R)
+	  }
+	  else
+	    consistent = false;
+	}
+      }
+    }
+    if(facts.empty() && consistent)
+      // closure();
+  }
+}
+
 bool Hornsat::isConsistent(){
   return consistent;
 }
@@ -113,7 +161,10 @@ std::ostream & operator << (std::ostream & os, const Hornsat & hsat){
   //   os << "Literal " << i << ": " << hsat.list_of_literals[i].val << std::endl;
 
   for(auto x : hsat.list_of_literals)
-    os << "Literal " << x.literal_id << " Assigment: " << x.val << std::endl;
-  os << "Done";
+    os << "Literal " << x.literal_id
+       << " LClass: " << x.lclass
+       << " RClass: " << x.rclass
+       << " Assigment: " << x.val << std::endl;
+  os << "Consistent: " << (hsat.consistent ? "Yes" : "No");
   return os;
 }

@@ -44,12 +44,17 @@ struct Clause {
 struct Literal {
   static unsigned curr_num_literals;
   unsigned literal_id;
+  unsigned lclass, rclass;
   bool val;
   struct Clause * clause_list;
+  
   Literal(unsigned literal_id, bool val, struct Clause * clause_list) :
-    literal_id(literal_id),
+  literal_id(literal_id), lclass(0), rclass(0),
     val(val), clause_list(clause_list){}
   Literal() : Literal(curr_num_literals++, false, nullptr) {}
+  static void print(){
+    std::cout << "current number of literals " << curr_num_literals << std::endl; 
+  }
 };
 
 struct Count {
@@ -69,16 +74,17 @@ struct Count {
 };
 
 class Hornsat {
+  bool consistent;
+  unsigned num_pos;
   std::vector<Literal> list_of_literals;
   std::queue<unsigned> facts;
   Count num_args, pos_lit_list;
-  bool consistent;
-  unsigned num_pos;
  public:
   Hornsat(std::istream &);
   Hornsat(const HornClauses &);
   ~Hornsat();
   void satisfiable();
+  void satisfiable(UnionFind &);
   bool isConsistent();
   friend std::ostream & operator << (std::ostream &, const Hornsat &);
 };

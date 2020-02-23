@@ -6,6 +6,8 @@ HornClause::HornClause(UnionFind & uf, z3::context & ctx, z3::expr_vector & subt
   orient();
   for(auto hyp : antecedent){
     is_common_antecedent = is_common_antecedent && hyp.is_common();
+    if(!hyp.is_common())
+      num_uncomm_antecedent++;
     if(subterms.size() <= hyp.id())
       subterms.resize(hyp.id() + 1);
     auto lhs = hyp.arg(0), rhs = hyp.arg(1);
@@ -13,8 +15,10 @@ HornClause::HornClause(UnionFind & uf, z3::context & ctx, z3::expr_vector & subt
     subterms.set(lhs.id(), lhs);
     subterms.set(rhs.id(), rhs);
   }
-  if(consequent.decl().name().str() == "false")
+  if(consequent.decl().name().str() == "false"){
+    subterms.set(consequent.id(), consequent);
     return;
+  }
   if(subterms.size() <= consequent.id())
     subterms.resize(consequent.id() + 1);
   auto lhs = consequent.arg(0), rhs = consequent.arg(1);
@@ -121,6 +125,10 @@ bool HornClause::isCommonAntecedent(){
 
 bool HornClause::isCommonConsequent(){
   return consequent.is_common();
+}
+
+unsigned HornClause::numUncommAntecedent(){
+  return num_uncomm_antecedent;
 }
 
 // Definition: > \in HornClause \times HornClause

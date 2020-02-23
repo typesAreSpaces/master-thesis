@@ -35,12 +35,14 @@ EUFInterpolant::EUFInterpolant(z3::expr const & part_a) :
 
     // std::cout << horn_clauses << std::endl;
 
-    // Hornsat hsat(horn_clauses);
-    // hsat.satisfiable();
-    // std::cout << hsat << std::endl;
+    Hornsat hsat(horn_clauses);
+    UnionFind aux_uf(uf);
+    hsat.satisfiable(aux_uf);
+
+    std::cout << hsat << std::endl;
 
     // Keep working here
-    buildInterpolant();
+    // buildInterpolant();
     
     return;
   }
