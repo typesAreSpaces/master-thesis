@@ -18,7 +18,7 @@ public:
   void merge(unsigned, unsigned);
   void link(unsigned, unsigned);
   unsigned find(unsigned);
-  friend std::ostream & operator << (std::ostream &, UnionFind &);
+  friend std::ostream & operator << (std::ostream &, const UnionFind &);
 };
 
 #endif

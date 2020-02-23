@@ -24,11 +24,11 @@ public:
   HornClause(UnionFind &, z3::context &, z3::expr_vector &, z3::expr_vector, z3::expr);
   ~HornClause();
   
-  bool              checkTriviality();
-  z3::expr_vector & getAntecedent();
-  z3::expr &        getConsequent();
-  bool              isCommonAntecedent();
-  bool              isCommonConsequent();
+  bool                    checkTriviality();
+  const z3::expr_vector & getAntecedent() const;
+  const z3::expr &        getConsequent() const;
+  bool                    isCommonAntecedent();
+  bool                    isCommonConsequent();
   
   friend bool operator <(const HornClause &, const HornClause &);
   friend bool operator >(const HornClause &, const HornClause &);

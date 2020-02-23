@@ -36,9 +36,12 @@ unsigned UnionFind::find(unsigned x){
   return representative[x];
 }
 
-std::ostream & operator << (std::ostream & os, UnionFind & uf){
+std::ostream & operator << (std::ostream & os, const UnionFind & uf){
   for(unsigned i = 0; i < uf.representative.size(); ++i)
     os << "ID: " << i
-       << " Representative: " << uf.find(i) << std::endl;
+       << " Representative: " << uf.representative[i]
+       << " Rank:  " << uf.rank[i]
+       << std::endl;
+  os << "(Remaider) The current representatives are not compressed.";
   return os;
 }

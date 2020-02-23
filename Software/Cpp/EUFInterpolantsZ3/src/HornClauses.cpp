@@ -356,8 +356,7 @@ void HornClauses::mc1ConsequentAndmc1Consequent(SetOfUnsignedPairs & prev_combin
 // }
 
 void HornClauses::add(HornClause * hc){
-  
-  z3::expr & consequent = hc->getConsequent();
+  const z3::expr & consequent = hc->getConsequent();
   switch(consequent.decl().decl_kind()){
   case Z3_OP_EQ:
     if(hc->checkTriviality()){

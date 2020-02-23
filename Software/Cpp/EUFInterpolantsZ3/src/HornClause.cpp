@@ -107,11 +107,11 @@ bool HornClause::checkTriviality(){
   return uf.find(consequent.arg(0).id()) == uf.find(consequent.arg(1).id());
 }
 
-z3::expr_vector & HornClause::getAntecedent(){
+const z3::expr_vector & HornClause::getAntecedent() const {
   return antecedent;
 }
 
-z3::expr & HornClause::getConsequent(){
+const z3::expr & HornClause::getConsequent() const {
   return consequent;
 }
 
