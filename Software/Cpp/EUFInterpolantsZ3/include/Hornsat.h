@@ -58,11 +58,24 @@ struct Literal {
   }
 };
 
+enum EquationSide { LHS, RHS };
+
+struct ClassListPos {
+  Literal * lit_pointer;
+  EquationSide eq_pos;
+  ClassListPos(Literal * lit_pointer, EquationSide eq_pos) :
+    lit_pointer(lit_pointer), eq_pos(eq_pos){}
+  friend std::ostream & operator << (std::ostream & os, const ClassListPos & clp){
+    os << clp.lit_pointer->literal_id << (clp.eq_pos == LHS ? " LHS" : " RHS");
+    return os;
+  }
+};
+
 class Hornsat {
   bool consistent;
   unsigned num_pos;
   std::vector<Literal> list_of_literals;
-  std::vector<std::vector<Literal*> > classlist;
+  std::vector<std::vector<ClassListPos> > classlist;
   std::queue<unsigned> facts;
   std::vector<unsigned> num_args, pos_lit_list;
 

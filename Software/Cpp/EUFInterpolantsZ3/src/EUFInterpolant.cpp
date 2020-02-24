@@ -33,6 +33,7 @@ EUFInterpolant::EUFInterpolant(z3::expr const & part_a) :
     disequalitiesToHCS();
     exposeUncommons();
 
+    // Stress test
     z3::sort test_sort = ctx.uninterpreted_sort("A");
     z3::expr test_y2 = ctx.constant("c_y2", test_sort);
     z3::expr test_y1 = ctx.constant("c_y1", test_sort);

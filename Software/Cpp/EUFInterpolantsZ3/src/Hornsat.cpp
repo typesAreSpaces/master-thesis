@@ -61,11 +61,11 @@ Hornsat::Hornsat(const HornClauses & hcs) : consistent(true), num_pos(0){
 	
 	literal->l_id = antecedent.arg(0).id();
 	literal->lclass = antecedent.arg(0).id();
-	classlist[literal->lclass].push_back(literal);
+	classlist[literal->l_id].push_back(ClassListPos(literal, LHS));
 
 	literal->r_id = antecedent.arg(1).id();
 	literal->rclass = antecedent.arg(1).id();
-	classlist[literal->rclass].push_back(literal);
+	classlist[literal->r_id].push_back(ClassListPos(literal, RHS));
 
 	literal->clause_list = literal->clause_list->add(index_hc);
       }
@@ -74,19 +74,18 @@ Hornsat::Hornsat(const HornClauses & hcs) : consistent(true), num_pos(0){
       auto consequent = horn_clause->getConsequent();
       Literal * literal = &list_of_literals[consequent.decl().name().str() == "false" ? FALSELITERAL : consequent.id()];
     
-      if(literal->literal_id == 0)
+      if(literal->literal_id == FALSELITERAL)
 	pos_lit_list[index_hc] = FALSELITERAL;
       else{
 	pos_lit_list[index_hc] = consequent.id();
 	
 	literal->l_id = consequent.arg(0).id();
 	literal->lclass = consequent.arg(0).id();
-	// classlist[literal->lclass].push_back(&literal->lclass); // Here
-	classlist[literal->lclass].push_back(literal);
+	classlist[literal->l_id].push_back(ClassListPos(literal, LHS));
+	
 	literal->r_id = consequent.arg(1).id();
 	literal->rclass = consequent.arg(1).id();
-	// classlist[literal->rclass].push_back(&literal->rclass); // Here
-	classlist[literal->lclass].push_back(literal);
+	classlist[literal->r_id].push_back(ClassListPos(literal, RHS));
       }
 
       // This checks if the Horn Clause is a fact
@@ -94,7 +93,7 @@ Hornsat::Hornsat(const HornClauses & hcs) : consistent(true), num_pos(0){
 	literal->val = true;
 	facts.push(consequent.id());
 	++num_pos;
-	if(literal->literal_id == 0)
+	if(literal->literal_id == FALSELITERAL)
 	  consistent = false;
       }
     }
@@ -118,11 +117,24 @@ void Hornsat::unionupdate(UnionFind & uf, unsigned x, unsigned y){
     y = aux;
   }
   uf.merge(x, y);
-  for(auto u : uf.getEquivClass(y)){
+  for(auto u : uf.getEquivClass(y))
     for(auto p : classlist[u]){
-      std::cout << "inside unionupdate " << p->literal_id << std::endl;
+      std::cout << "inside unionupdate " << p << std::endl;
+      if(!list_of_literals[p.lit_pointer->literal_id].val){
+	switch(p.eq_pos){
+	case LHS:
+	  list_of_literals[p.lit_pointer->literal_id].lclass = x;
+	  break;
+	case RHS:
+	  list_of_literals[p.lit_pointer->literal_id].rclass = x;
+	  break;
+	}
+	if(list_of_literals[p.lit_pointer->literal_id].lclass == list_of_literals[p.lit_pointer->literal_id].rclass){
+	  facts.push(p.lit_pointer->literal_id);
+	  list_of_literals[p.lit_pointer->literal_id].val = true;
+	}
+      }
     }
-  }
 }
 
 void Hornsat::satisfiable(){
@@ -167,32 +179,28 @@ void Hornsat::satisfiable(UnionFind & uf){
     std::cout << "horn clauses where the node appears in the antecedent" << std::endl; // DEBUGGING
     for(; it != end; ++it){
       clause1 = (*it)->clause_id;
-      std::cout << "yei " << clause1 << std::endl; // DEBUGGING
-      std::cout << "yei1 " << num_args[clause1] << std::endl; // DEBUGGING
       --num_args[clause1];
-      std::cout << "yei2 " << num_args[clause1] << std::endl; // DEBUGGING
       if(num_args[clause1] == 0){
 	nextnode = pos_lit_list[clause1];
-	std::cout << "nextnode " << nextnode << std::endl; // DEBUGGING
 	if(!list_of_literals[nextnode].val){
 	  if(nextnode > FALSELITERAL){
 	    facts.push(nextnode);
 	    list_of_literals[nextnode].val = true;
-	    u = list_of_literals[nextnode].lclass, v = list_of_literals[nextnode].rclass;
-	    if(uf.find(u) != uf.find(v)){
-	      std::cout << "Missing implementation 1" << std::endl;
+	    u = list_of_literals[nextnode].l_id, v = list_of_literals[nextnode].r_id;
+	    if(uf.find(u) != uf.find(v))
 	      unionupdate(uf, u, v);
-	    }
-
 	  }
 	  else
 	    consistent = false;
 	}
       }
     }
-    if(facts.empty() && consistent){
-      std::cout << "Missing implementation 2" << std::endl;
-    }
+    // Since we only deal with constant equations
+    // the update procedure reduces to unionupdate.
+    // Hence, the pending list will always be empty
+    // for this case.
+    // if(facts.empty() && consistent)
+    //   congclosure(pending, queue, H);
   }
 }
 
