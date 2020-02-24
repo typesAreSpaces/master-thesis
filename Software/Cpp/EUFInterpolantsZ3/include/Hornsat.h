@@ -12,8 +12,7 @@ struct Clause {
   struct Clause * next;
   Clause(unsigned id, struct Clause * clause) : clause_id(id), next(clause){}
   struct Clause * add(unsigned element){
-    struct Clause * r = new Clause(element, this);
-    return r;
+    return new Clause(element, this);
   }
   class iterator {
     struct Clause * it;
@@ -45,16 +44,19 @@ struct Literal {
   static unsigned curr_num_literals;
   unsigned literal_id;
   unsigned l_id, r_id;
-  unsigned lclass, rclass;
+  unsigned l_class, r_class;
   bool val;
   struct Clause * clause_list;
   
   Literal(unsigned literal_id, bool val, struct Clause * clause_list) :
-  literal_id(literal_id), l_id(0), r_id(0), lclass(0), rclass(0),
+  literal_id(literal_id), l_id(0), r_id(0), l_class(0), r_class(0),
     val(val), clause_list(clause_list){}
   Literal() : Literal(curr_num_literals++, false, nullptr) {}
-  static void print(){
-    std::cout << "current number of literals " << curr_num_literals << std::endl; 
+  friend std::ostream & operator << (std::ostream & os, const Literal & l){
+    os << "Literal: " << l.literal_id
+       << " Equation: " << l.l_id << "=" << l.r_id << " (" << l.l_class << "=" << l.r_class << ")"
+       << " Val: " << l.val;
+    return os;
   }
 };
 
@@ -62,11 +64,11 @@ enum EquationSide { LHS, RHS };
 
 struct ClassListPos {
   Literal * lit_pointer;
-  EquationSide eq_pos;
-  ClassListPos(Literal * lit_pointer, EquationSide eq_pos) :
-    lit_pointer(lit_pointer), eq_pos(eq_pos){}
+  EquationSide eq_side;
+  ClassListPos(Literal * lit_pointer, EquationSide eq_side) :
+    lit_pointer(lit_pointer), eq_side(eq_side){}
   friend std::ostream & operator << (std::ostream & os, const ClassListPos & clp){
-    os << clp.lit_pointer->literal_id << (clp.eq_pos == LHS ? " LHS" : " RHS");
+    os << *(clp.lit_pointer) << (clp.eq_side == LHS ? " LHS" : " RHS");
     return os;
   }
 };

@@ -46,13 +46,13 @@ Hornsat::Hornsat(const HornClauses & hcs) : consistent(true), num_pos(0){
   num_args.resize(num_hcs);
   pos_lit_list.resize(num_hcs);
 #if DEBUGGING
-  std::cout << "Horn Clauses processed by Hornsat" << std::endl; // DEBUGGING
+  std::cout << "Horn Clauses processed by Hornsat" << std::endl;
 #endif
   unsigned index_hc = 0;
   for(auto horn_clause : hcs.getHornClauses()){
     // We only process Horn clauses with uncommon consequent
 #if DEBUGGING
-    std::cout << index_hc << " " << *horn_clause << std::endl; // DEBUGGING
+    std::cout << index_hc << " " << *horn_clause << std::endl;
 #endif
     if(!horn_clause->isCommonConsequent()){ // Remove second disjunct
       // Horn clause body processing
@@ -60,16 +60,16 @@ Hornsat::Hornsat(const HornClauses & hcs) : consistent(true), num_pos(0){
       num_args[index_hc] = horn_clause->numUncommAntecedent();
       for(auto antecedent : horn_clause->getAntecedent()){
 #if DEBUGGING
-	std::cout << "literals " << antecedent.id() << " " << antecedent << std::endl; // DEBUGGING
+	std::cout << "literals " << antecedent.id() << " " << antecedent << std::endl;
 #endif
 	Literal * literal = &list_of_literals[antecedent.id()];
 	
 	literal->l_id = antecedent.arg(0).id();
-	literal->lclass = antecedent.arg(0).id();
+	literal->l_class = antecedent.arg(0).id();
 	classlist[literal->l_id].push_back(ClassListPos(literal, LHS));
 
 	literal->r_id = antecedent.arg(1).id();
-	literal->rclass = antecedent.arg(1).id();
+	literal->r_class = antecedent.arg(1).id();
 	classlist[literal->r_id].push_back(ClassListPos(literal, RHS));
 
 	literal->clause_list = literal->clause_list->add(index_hc);
@@ -77,7 +77,12 @@ Hornsat::Hornsat(const HornClauses & hcs) : consistent(true), num_pos(0){
 
       // Horn clause head processing
       auto consequent = horn_clause->getConsequent();
-      Literal * literal = &list_of_literals[consequent.decl().name().str() == "false" ? FALSELITERAL : consequent.id()];
+#if DEBUGGING
+      std::cout << "literals " << consequent.id() << " " << consequent << std::endl;
+#endif
+      Literal * literal = &list_of_literals[consequent.decl().name().str() == "false" ?
+					    FALSELITERAL :
+					    consequent.id()];
     
       if(literal->literal_id == FALSELITERAL)
 	pos_lit_list[index_hc] = FALSELITERAL;
@@ -85,11 +90,11 @@ Hornsat::Hornsat(const HornClauses & hcs) : consistent(true), num_pos(0){
 	pos_lit_list[index_hc] = consequent.id();
 	
 	literal->l_id = consequent.arg(0).id();
-	literal->lclass = consequent.arg(0).id();
+	literal->l_class = consequent.arg(0).id();
 	classlist[literal->l_id].push_back(ClassListPos(literal, LHS));
 	
 	literal->r_id = consequent.arg(1).id();
-	literal->rclass = consequent.arg(1).id();
+	literal->r_class = consequent.arg(1).id();
 	classlist[literal->r_id].push_back(ClassListPos(literal, RHS));
       }
 
@@ -121,27 +126,35 @@ void Hornsat::unionupdate(UnionFind & uf, unsigned x, unsigned y){
     x = y;
     y = aux;
   }
-  uf.merge(x, y);
-  for(auto u : uf.getEquivClass(y))
-    for(auto p : classlist[u]){
 #if DEBUGGING
-	std::cout << "Inside unionupdate " << p << std::endl; // DEBUGGING
+  std::cout << "Inside unionupdate: " << x << std::endl;
+#endif
+  auto end = uf.end(y);  
+  for(auto u = uf.begin(y); u != end; ++u){
+    for(auto p : classlist[*u]){
+#if DEBUGGING
+      std::cout << "Before, Term: " << *u << " " << p << std::endl;
 #endif
       if(!p.lit_pointer->val){
-	switch(p.eq_pos){
+	switch(p.eq_side){
 	case LHS:
-	  p.lit_pointer->lclass = x;
+	  p.lit_pointer->l_class = x;
 	  break;
 	case RHS:
-	  p.lit_pointer->rclass = x;
+	  p.lit_pointer->r_class = x;
 	  break;
 	}
-	if(p.lit_pointer->lclass == p.lit_pointer->rclass){
+	if(p.lit_pointer->l_class == p.lit_pointer->r_class){
 	  facts.push(p.lit_pointer->literal_id);
 	  p.lit_pointer->val= true;
 	}
       }
+#if DEBUGGING
+      std::cout << "After,  Term: " << *u << " " << p << std::endl;
+#endif
     }
+  }
+  uf.merge(x, y);
 }
 
 void Hornsat::satisfiable(){
@@ -180,12 +193,20 @@ void Hornsat::satisfiable(UnionFind & uf){
   while(!facts.empty() && consistent){
     node = facts.front();
     facts.pop();
+#if DEBUGGING
     std::cout << "node " << node << std::endl; // DEBUGGING
+#endif
+
     auto clause_list_cur_lit = list_of_literals[node].clause_list;
     auto it = clause_list_cur_lit->begin(), end = clause_list_cur_lit->end();
+#if DEBUGGING
     std::cout << "horn clauses where the node appears in the antecedent" << std::endl; // DEBUGGING
+#endif
     for(; it != end; ++it){
       clause1 = (*it)->clause_id;
+#if DEBUGGING
+      std::cout << "clause id: " << clause1 << std::endl;
+#endif
       --num_args[clause1];
       if(num_args[clause1] == 0){
 	nextnode = pos_lit_list[clause1];
@@ -222,8 +243,8 @@ std::ostream & operator << (std::ostream & os, const Hornsat & hsat){
 
   for(auto x : hsat.list_of_literals)
     os << "Literal " << x.literal_id
-       << " LClass: " << x.lclass
-       << " RClass: " << x.rclass
+       << " LClass: " << x.l_class
+       << " RClass: " << x.r_class
        << " Assigment: " << x.val << std::endl;
   os << "Consistent: " << (hsat.consistent ? "Yes" : "No");
   return os;

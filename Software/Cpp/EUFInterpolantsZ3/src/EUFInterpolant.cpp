@@ -47,6 +47,12 @@ EUFInterpolant::EUFInterpolant(z3::expr const & part_a) :
     z3::expr test_head = (test_y1 == f(test_y1, test_v));
     horn_clauses.add(new HornClause(uf, ctx, subterms, test_body, test_head));
 
+    // DEBUGGING/TESTING
+    unsigned aaa = size;
+    for(unsigned i = min_id; i < aaa; i++)
+      std::cout << i << " " << subterms[i] << std::endl;
+    // DEBUGGING/TESTING
+
     Hornsat hsat(horn_clauses);
     UnionFind aux_uf(uf);
     hsat.satisfiable(aux_uf);

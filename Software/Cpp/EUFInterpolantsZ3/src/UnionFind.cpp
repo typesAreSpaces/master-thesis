@@ -37,13 +37,13 @@ unsigned UnionFind::find(unsigned x){
 }
 
 bool UnionFind::greater(unsigned x, unsigned y){
-  return rank[find(x)] > rank[find(y)];
+  return rank[x] > rank[y];
 }
 
 std::vector<unsigned> UnionFind::getEquivClass(unsigned x){
   std::vector<unsigned> ans;
   for(unsigned i = 0; i < size; i++)
-    if(find(i) == find(x))
+    if(find(i) == x)
       ans.push_back(i);
   return ans;
 }
