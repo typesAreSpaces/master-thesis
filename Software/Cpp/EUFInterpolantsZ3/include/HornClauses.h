@@ -12,7 +12,7 @@ class HornClauses {
 
   z3::context &             ctx;
   const z3::expr_vector &   subterms;
-  unsigned &                min_id;
+  const unsigned &          min_id;
   std::vector<HornClause *> horn_clauses;
   Match                     mc1_antecedent, mc1_consequent;
   Match                     mc2_antecedent, mc2_consequent;
@@ -41,10 +41,10 @@ class HornClauses {
   // static void swap(std::vector<A> &, unsigned, unsigned);
   
  public:
-  HornClauses(z3::context &, const z3::expr_vector &, unsigned &);
+  HornClauses(z3::context &, const z3::expr_vector &, const unsigned &);
   ~HornClauses();
 
-  void add(HornClause *);
+  void                             add(HornClause *);
   void                             conditionalElimination();                // TODO: NEXT
   unsigned                         size() const;
   unsigned                         maxID() const;

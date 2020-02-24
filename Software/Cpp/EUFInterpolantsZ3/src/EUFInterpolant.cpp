@@ -65,7 +65,7 @@ EUFInterpolant::EUFInterpolant(z3::expr const & part_a) :
     // std::cout << hsat << std::endl;
 
     // Keep working here
-    // buildInterpolant();
+    buildInterpolant();
     
     return;
   }

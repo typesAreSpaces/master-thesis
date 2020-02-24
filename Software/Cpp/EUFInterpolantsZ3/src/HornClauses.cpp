@@ -10,7 +10,7 @@
 #define DEBUG_MC1CMC1A2          true
 #define DEBUG_MATCHES            false
 
-HornClauses::HornClauses(z3::context & ctx, const z3::expr_vector & subterms, unsigned & min_id) :
+HornClauses::HornClauses(z3::context & ctx, const z3::expr_vector & subterms, const unsigned & min_id) :
   ctx(ctx),
   subterms(subterms), min_id(min_id){
 }
@@ -367,10 +367,10 @@ void HornClauses::add(HornClause * hc){
     curr_num_horn_clauses++;
     makeMatches(hc, curr_num_horn_clauses - 1);
     return;
-  default:
+  default: // The contradiction/false-value
     horn_clauses.push_back(hc);
     curr_num_horn_clauses++;
-    makeMatches(hc, curr_num_horn_clauses - 1); 
+    makeMatches(hc, curr_num_horn_clauses - 1);
     return;
   }
 }
