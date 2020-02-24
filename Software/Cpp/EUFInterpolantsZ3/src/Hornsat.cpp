@@ -17,18 +17,18 @@ Hornsat::Hornsat(std::istream & in) : consistent(true), num_pos(0){
     in >> input;
 
     // Horn clause body processing
-    num_args.insert(index_hc, input - 1);
-    for(unsigned j = num_args.get(index_hc); j > 0; --j){
+    num_args[index_hc] = input - 1;
+    for(unsigned j = num_args[index_hc]; j > 0; --j){
       in >> input;
       list_of_literals[input].clause_list = list_of_literals[input].clause_list->add(index_hc);
     }
 
     // Horn clause head processing
     in >> input;
-    pos_lit_list.list_of_clauses[index_hc] = input;
+    pos_lit_list[index_hc] = input;
     
     // This checks if the Horn Clause is a fact
-    if(num_args.list_of_clauses[index_hc] == 0){
+    if(num_args[index_hc] == 0){
       list_of_literals[input].val = true;
       facts.push(index_hc);
       ++num_pos;
@@ -41,43 +41,49 @@ Hornsat::Hornsat(std::istream & in) : consistent(true), num_pos(0){
 Hornsat::Hornsat(const HornClauses & hcs) : consistent(true), num_pos(0){
   unsigned num_hcs = hcs.size(), num_literals = hcs.maxID();
   list_of_literals.resize(num_literals);
+  classlist.resize(num_literals);
   num_args.resize(num_hcs);
   pos_lit_list.resize(num_hcs);
   
   unsigned index_hc = 0;
   for(auto horn_clause : hcs.getHornClauses()){
+    // We only process Horn clauses with uncommon consequent
+    if(!horn_clause->isCommonConsequent()){
+      // Horn clause body processing
+      // Remark: We only have equations in the antecedent
+      num_args[index_hc] = horn_clause->numUncommAntecedent();
+      for(auto antecedent : horn_clause->getAntecedent()){       
+	Literal * literal = &list_of_literals[antecedent.id()];
+	literal->lclass = antecedent.arg(0).id();
+	classlist[literal->lclass].push_back(&literal->lclass);
+	literal->rclass = antecedent.arg(1).id();
+	classlist[literal->rclass].push_back(&literal->rclass);
+	literal->clause_list = literal->clause_list->add(index_hc);
+      }
 
-    // Horn clause body processing
-    // Remark: We only have equations in the antecedent
-    num_args.insert(index_hc, horn_clause->numUncommAntecedent());
-    for(auto antecedent : horn_clause->getAntecedent()){       
-      Literal * literal = &list_of_literals[antecedent.id()];
-      literal->lclass = antecedent.arg(0).id();
-      literal->rclass = antecedent.arg(1).id();
-      literal->clause_list = literal->clause_list->add(index_hc);
-    }
-
-    // Horn clause head processing
-    auto consequent = horn_clause->getConsequent();
-    Literal * literal = &list_of_literals[consequent.decl().name().str() == "false" ? FALSELITERAL : consequent.id()];
+      // Horn clause head processing
+      auto consequent = horn_clause->getConsequent();
+      Literal * literal = &list_of_literals[consequent.decl().name().str() == "false" ? FALSELITERAL : consequent.id()];
     
-    if(literal->literal_id == 0)
-      pos_lit_list.list_of_clauses[index_hc] = FALSELITERAL;
-    else{
-      pos_lit_list.list_of_clauses[index_hc] = consequent.id();
-      literal->lclass = consequent.arg(0).id();
-      literal->rclass = consequent.arg(1).id();
-    }
-
-    // This checks if the Horn Clause is a fact
-    if(num_args.list_of_clauses[index_hc] == 0){
-      literal->val = true;
-      facts.push(index_hc);
-      ++num_pos;
       if(literal->literal_id == 0)
-	consistent = false;
+	pos_lit_list[index_hc] = FALSELITERAL;
+      else{
+	pos_lit_list[index_hc] = consequent.id();
+	literal->lclass = consequent.arg(0).id();
+	classlist[literal->lclass].push_back(&literal->lclass);
+	literal->rclass = consequent.arg(1).id();
+	classlist[literal->rclass].push_back(&literal->rclass);
+      }
+
+      // This checks if the Horn Clause is a fact
+      if(num_args[index_hc] == 0){
+	literal->val = true;
+	facts.push(index_hc);
+	++num_pos;
+	if(literal->literal_id == 0)
+	  consistent = false;
+      }
     }
-    
     index_hc++;
   }
 }
@@ -90,6 +96,21 @@ Hornsat::~Hornsat(){
   }
 }
 
+void Hornsat::unionupdate(UnionFind & uf, unsigned x, unsigned y){
+  unsigned aux;
+  if(uf.greater(y, x)){
+    aux = x;
+    x = y;
+    y = aux;
+  }
+  uf.merge(x, y);
+  for(auto u : uf.getEquivClass(y)){
+    for(auto p : classlist[u]){
+      std::cout << *p << std::endl;
+    }
+  }
+}
+
 void Hornsat::satisfiable(){
   unsigned clause1 = 0, clause2 = 0, literal = 0, nextpos = 0, newnumclause = 0, oldnumclause = num_pos;
   while(!facts.empty() && consistent){
@@ -97,14 +118,14 @@ void Hornsat::satisfiable(){
     for(unsigned i = 0; i < oldnumclause && consistent; ++i){
       clause1 = facts.front();
       facts.pop();
-      nextpos = pos_lit_list.list_of_clauses[clause1];
+      nextpos = pos_lit_list[clause1];
       auto clause_list_cur_lit = list_of_literals[nextpos].clause_list;
       auto it = clause_list_cur_lit->begin(), end = clause_list_cur_lit->end();
       for(; it != end; ++it){
 	clause2 = (*it)->clause_id;
-	--num_args.list_of_clauses[clause2];
-	if(num_args.list_of_clauses[clause2] == 0){
-	  literal = pos_lit_list.list_of_clauses[clause2];
+	--num_args[clause2];
+	if(num_args[clause2] == 0){
+	  literal = pos_lit_list[clause2];
 	  if(!list_of_literals[literal].val){
 	    if (literal > FALSELITERAL){
 	      list_of_literals[literal].val = true;
@@ -130,16 +151,17 @@ void Hornsat::satisfiable(UnionFind & uf){
     auto it = clause_list_cur_lit->begin(), end = clause_list_cur_lit->end();
     for(; it != end; ++it){
       clause1 = (*it)->clause_id;
-      --num_args.list_of_clauses[clauses1];
-      if(num_args.list[clause1] == 0){
-	nextnode = pos_lit_list.list_of_clauses[clause1];
+      --num_args[clause1];
+      if(num_args[clause1] == 0){
+	nextnode = pos_lit_list[clause1];
 	if(!list_of_literals[nextnode].val){
 	  if(nextnode > FALSELITERAL){
 	    facts.push(nextnode);
 	    list_of_literals[nextnode].val = true;
 	    u = list_of_literals[nextnode].lclass, v = list_of_literals[nextnode].rclass;
 	    if(uf.find(u) != uf.find(v))
-	    // Something else with u, v, FIND(u, R), FIND(v, R)
+	      std::cout << "Missing implementation 1" << std::endl;
+	      // Something else with u, v, FIND(u, R), FIND(v, R)
 	  }
 	  else
 	    consistent = false;
@@ -147,6 +169,7 @@ void Hornsat::satisfiable(UnionFind & uf){
       }
     }
     if(facts.empty() && consistent)
+      std::cout << "Missing implementation 2" << std::endl;
       // closure();
   }
 }

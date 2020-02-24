@@ -36,6 +36,18 @@ unsigned UnionFind::find(unsigned x){
   return representative[x];
 }
 
+bool UnionFind::greater(unsigned x, unsigned y){
+  return rank[find(x)] > rank[find(y)];
+}
+
+std::vector<unsigned> UnionFind::getEquivClass(unsigned x){
+  std::vector<unsigned> ans;
+  for(unsigned i = 0; i < size; i++)
+    if(find(i) == find(x))
+      ans.push_back(i);
+  return ans;
+}
+
 std::ostream & operator << (std::ostream & os, const UnionFind & uf){
   for(unsigned i = 0; i < uf.representative.size(); ++i)
     os << "ID: " << i

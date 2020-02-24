@@ -18,6 +18,8 @@ public:
   void merge(unsigned, unsigned);
   void link(unsigned, unsigned);
   unsigned find(unsigned);
+  bool greater(unsigned, unsigned);
+  std::vector<unsigned> getEquivClass(unsigned);
   friend std::ostream & operator << (std::ostream &, const UnionFind &);
 };
 

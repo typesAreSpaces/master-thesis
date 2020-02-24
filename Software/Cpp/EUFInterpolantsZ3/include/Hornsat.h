@@ -57,28 +57,16 @@ struct Literal {
   }
 };
 
-struct Count {
-  std::vector<unsigned> list_of_clauses;
-  void insert(unsigned index_hc, unsigned element){
-    list_of_clauses[index_hc] = element;
-  }
-  unsigned get(unsigned index_hc){
-    return list_of_clauses[index_hc];
-  }
-  void resize(unsigned i){
-    list_of_clauses.resize(i);
-  }
-  unsigned size() const {
-    return list_of_clauses.size();
-  }
-};
-
 class Hornsat {
   bool consistent;
   unsigned num_pos;
   std::vector<Literal> list_of_literals;
+  std::vector<std::vector<unsigned*> > classlist;
   std::queue<unsigned> facts;
-  Count num_args, pos_lit_list;
+  std::vector<unsigned> num_args, pos_lit_list;
+
+  void unionupdate(UnionFind &, unsigned, unsigned);
+  
  public:
   Hornsat(std::istream &);
   Hornsat(const HornClauses &);

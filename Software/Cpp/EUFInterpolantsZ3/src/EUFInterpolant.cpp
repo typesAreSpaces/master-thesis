@@ -39,7 +39,7 @@ EUFInterpolant::EUFInterpolant(z3::expr const & part_a) :
     UnionFind aux_uf(uf);
     hsat.satisfiable(aux_uf);
 
-    std::cout << hsat << std::endl;
+    // std::cout << hsat << std::endl;
 
     // Keep working here
     // buildInterpolant();
