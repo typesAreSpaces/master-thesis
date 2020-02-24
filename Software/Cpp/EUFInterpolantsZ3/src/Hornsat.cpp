@@ -1,7 +1,7 @@
 #include "Hornsat.h"
-#define DEBUGGING_SATISFIABLE true
-#define DEBUGGING_UNIONUPDATE true
-#define DEBUGGING_CONSTRUCTOR true
+#define DEBUGGING_SATISFIABLE false
+#define DEBUGGING_UNIONUPDATE false
+#define DEBUGGING_CONSTRUCTOR false
 
 unsigned Literal::curr_num_literals = 0;
 
@@ -98,7 +98,7 @@ Hornsat::Hornsat(const HornClauses & hcs, UnionFind & uf) : consistent(true), nu
       // This checks if the Horn Clause is a fact
       if(num_args[index_hc] == 0){
 	literal->val = true;
-	facts.push(literal->literal_id);
+	facts.push(index_hc);
 	++num_pos;
 	if(literal->literal_id == FALSELITERAL)
 	  consistent = false;
@@ -116,7 +116,7 @@ Hornsat::~Hornsat(){
   }
 }
 
-void Hornsat::unionupdate(UnionFind & uf, unsigned x, unsigned y){
+void Hornsat::unionupdate(UnionFind & uf, unsigned x, unsigned y, unsigned clause){
   unsigned aux;
   if(uf.greater(y, x)){
     aux = x;
@@ -142,7 +142,7 @@ void Hornsat::unionupdate(UnionFind & uf, unsigned x, unsigned y){
 	  break;
 	}
 	if(p.lit_pointer->l_class == p.lit_pointer->r_class){
-	  facts.push(p.lit_pointer->literal_id);
+	  facts.push(clause);
 	  p.lit_pointer->val= true;
 	}
       }
@@ -185,10 +185,12 @@ void Hornsat::satisfiable(){
   }
 }
 
-void Hornsat::satisfiable(UnionFind & uf){
-  unsigned clause1 = 0, node = 0, nextnode = 0, u = 0, v = 0;
+std::vector<Replacement> Hornsat::satisfiable(UnionFind & uf){
+  std::vector<Replacement> ans;
+  unsigned clause1 = 0, clause2 = 0, node = 0, nextnode = 0, u = 0, v = 0;
   while(!facts.empty() && consistent){
-    node = facts.front();
+    clause1 = facts.front();
+    node = pos_lit_list[clause1];
     facts.pop();
 #if DEBUGGING_SATISFIABLE
     std::cout << "node " << node << std::endl;
@@ -199,21 +201,24 @@ void Hornsat::satisfiable(UnionFind & uf){
     std::cout << "horn clauses where the node appears in the antecedent" << std::endl;
 #endif
     for(; it != end; ++it){
-      clause1 = (*it)->clause_id;
+      clause2 = (*it)->clause_id;
 #if DEBUGGING_SATISFIABLE
-      std::cout << "clause id: " << clause1 << std::endl;
+      std::cout << "clause id: " << clause2 << std::endl;
 #endif
-      --num_args[clause1];
-      // TODO: Capture the propagation that just happened here
-      if(num_args[clause1] == 0){
-	nextnode = pos_lit_list[clause1];
+      --num_args[clause2];
+      // TODO: Capture the propagation indicated below
+      // std::cout << "Merge: " << clause1 << " and " << clause2 << std::endl;
+      ans.push_back(Replacement(clause1, clause2));
+      
+      if(num_args[clause2] == 0){
+	nextnode = pos_lit_list[clause2];
 	if(!list_of_literals[nextnode].val){
 	  if(nextnode > FALSELITERAL){
-	    facts.push(nextnode);
+	    facts.push(clause2);
 	    list_of_literals[nextnode].val = true;
 	    u = list_of_literals[nextnode].l_id, v = list_of_literals[nextnode].r_id;
 	    if(uf.find(u) != uf.find(v))
-	      unionupdate(uf, u, v);
+	      unionupdate(uf, u, v, clause2);
 	  }
 	  else
 	    consistent = false;
@@ -227,6 +232,7 @@ void Hornsat::satisfiable(UnionFind & uf){
     // if(facts.empty() && consistent)
     //   congclosure(pending, queue, H);
   }
+  return ans;
 }
 
 bool Hornsat::isConsistent(){
@@ -234,10 +240,6 @@ bool Hornsat::isConsistent(){
 }
 
 std::ostream & operator << (std::ostream & os, const Hornsat & hsat){
-  // unsigned _size = hsat.list_of_literals.size();
-  // for(unsigned i = 0; i < _size; ++i)
-  //   os << "Literal " << i << ": " << hsat.list_of_literals[i].val << std::endl;
-
   for(auto x : hsat.list_of_literals)
     os << "Literal " << x.literal_id
        << " LClass: " << x.l_class

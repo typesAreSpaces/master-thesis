@@ -73,23 +73,36 @@ struct ClassListPos {
   }
 };
 
+struct Replacement {
+  unsigned clause1, clause2;
+  Replacement(unsigned clause1, unsigned clause2) :
+    clause1(clause1), clause2(clause2){}
+  friend std::ostream & operator << (std::ostream & os, const Replacement & r){
+    os << "Merge " << r.clause1 << " with " << r.clause2;
+    return os;
+  }
+};
+
+typedef std::vector<std::vector<ClassListPos> > ClassList;
+
 class Hornsat {
   bool consistent;
   unsigned num_pos;
   std::vector<Literal> list_of_literals;
-  std::vector<std::vector<ClassListPos> > class_list;
+  ClassList class_list;
   std::queue<unsigned> facts;
   std::vector<unsigned> num_args, pos_lit_list;
 
-  void unionupdate(UnionFind &, unsigned, unsigned);
+  void unionupdate(UnionFind &, unsigned, unsigned, unsigned);
   
  public:
   Hornsat(std::istream &);
   Hornsat(const HornClauses &, UnionFind &);
   ~Hornsat();
   void satisfiable();
-  void satisfiable(UnionFind &);
+  std::vector<Replacement> satisfiable(UnionFind &);
   bool isConsistent();
+  
   friend std::ostream & operator << (std::ostream &, const Hornsat &);
 };
 
