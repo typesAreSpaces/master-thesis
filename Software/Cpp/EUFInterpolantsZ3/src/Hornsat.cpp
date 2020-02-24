@@ -1,4 +1,5 @@
 #include "Hornsat.h"
+#define DEBUGGING true
 
 unsigned Literal::curr_num_literals = 0;
 
@@ -44,19 +45,23 @@ Hornsat::Hornsat(const HornClauses & hcs) : consistent(true), num_pos(0){
   classlist.resize(num_literals);
   num_args.resize(num_hcs);
   pos_lit_list.resize(num_hcs);
-
+#if DEBUGGING
   std::cout << "Horn Clauses processed by Hornsat" << std::endl; // DEBUGGING
+#endif
   unsigned index_hc = 0;
   for(auto horn_clause : hcs.getHornClauses()){
     // We only process Horn clauses with uncommon consequent
+#if DEBUGGING
     std::cout << index_hc << " " << *horn_clause << std::endl; // DEBUGGING
-
+#endif
     if(!horn_clause->isCommonConsequent()){ // Remove second disjunct
       // Horn clause body processing
       // Remark: We only have equations in the antecedent
       num_args[index_hc] = horn_clause->numUncommAntecedent();
       for(auto antecedent : horn_clause->getAntecedent()){
+#if DEBUGGING
 	std::cout << "literals " << antecedent.id() << " " << antecedent << std::endl; // DEBUGGING
+#endif
 	Literal * literal = &list_of_literals[antecedent.id()];
 	
 	literal->l_id = antecedent.arg(0).id();
@@ -119,19 +124,21 @@ void Hornsat::unionupdate(UnionFind & uf, unsigned x, unsigned y){
   uf.merge(x, y);
   for(auto u : uf.getEquivClass(y))
     for(auto p : classlist[u]){
-      std::cout << "inside unionupdate " << p << std::endl;
-      if(!list_of_literals[p.lit_pointer->literal_id].val){
+#if DEBUGGING
+	std::cout << "Inside unionupdate " << p << std::endl; // DEBUGGING
+#endif
+      if(!p.lit_pointer->val){
 	switch(p.eq_pos){
 	case LHS:
-	  list_of_literals[p.lit_pointer->literal_id].lclass = x;
+	  p.lit_pointer->lclass = x;
 	  break;
 	case RHS:
-	  list_of_literals[p.lit_pointer->literal_id].rclass = x;
+	  p.lit_pointer->rclass = x;
 	  break;
 	}
-	if(list_of_literals[p.lit_pointer->literal_id].lclass == list_of_literals[p.lit_pointer->literal_id].rclass){
+	if(p.lit_pointer->lclass == p.lit_pointer->rclass){
 	  facts.push(p.lit_pointer->literal_id);
-	  list_of_literals[p.lit_pointer->literal_id].val = true;
+	  p.lit_pointer->val= true;
 	}
       }
     }
