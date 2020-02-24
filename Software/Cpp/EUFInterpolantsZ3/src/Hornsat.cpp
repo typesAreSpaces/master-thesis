@@ -44,20 +44,28 @@ Hornsat::Hornsat(const HornClauses & hcs) : consistent(true), num_pos(0){
   classlist.resize(num_literals);
   num_args.resize(num_hcs);
   pos_lit_list.resize(num_hcs);
-  
+
+  std::cout << "Horn Clauses processed by Hornsat" << std::endl; // DEBUGGING
   unsigned index_hc = 0;
   for(auto horn_clause : hcs.getHornClauses()){
     // We only process Horn clauses with uncommon consequent
-    if(!horn_clause->isCommonConsequent()){
+    std::cout << index_hc << " " << *horn_clause << std::endl; // DEBUGGING
+
+    if(!horn_clause->isCommonConsequent() || horn_clause->getAntecedent().size() == 0){ // Remove second disjunct
       // Horn clause body processing
       // Remark: We only have equations in the antecedent
       num_args[index_hc] = horn_clause->numUncommAntecedent();
-      for(auto antecedent : horn_clause->getAntecedent()){       
+      for(auto antecedent : horn_clause->getAntecedent()){
 	Literal * literal = &list_of_literals[antecedent.id()];
+	
+	literal->l_id = antecedent.arg(0).id();
 	literal->lclass = antecedent.arg(0).id();
-	classlist[literal->lclass].push_back(&literal->lclass);
+	classlist[literal->lclass].push_back(literal);
+
+	literal->r_id = antecedent.arg(1).id();
 	literal->rclass = antecedent.arg(1).id();
-	classlist[literal->rclass].push_back(&literal->rclass);
+	classlist[literal->rclass].push_back(literal);
+
 	literal->clause_list = literal->clause_list->add(index_hc);
       }
 
@@ -69,10 +77,15 @@ Hornsat::Hornsat(const HornClauses & hcs) : consistent(true), num_pos(0){
 	pos_lit_list[index_hc] = FALSELITERAL;
       else{
 	pos_lit_list[index_hc] = consequent.id();
+	
+	literal->l_id = consequent.arg(0).id();
 	literal->lclass = consequent.arg(0).id();
-	classlist[literal->lclass].push_back(&literal->lclass);
+	// classlist[literal->lclass].push_back(&literal->lclass); // Here
+	classlist[literal->lclass].push_back(literal);
+	literal->r_id = consequent.arg(1).id();
 	literal->rclass = consequent.arg(1).id();
-	classlist[literal->rclass].push_back(&literal->rclass);
+	// classlist[literal->rclass].push_back(&literal->rclass); // Here
+	classlist[literal->lclass].push_back(literal);
       }
 
       // This checks if the Horn Clause is a fact
@@ -106,7 +119,7 @@ void Hornsat::unionupdate(UnionFind & uf, unsigned x, unsigned y){
   uf.merge(x, y);
   for(auto u : uf.getEquivClass(y)){
     for(auto p : classlist[u]){
-      std::cout << *p << std::endl;
+      std::cout << p << std::endl;
     }
   }
 }
@@ -145,13 +158,18 @@ void Hornsat::satisfiable(){
 void Hornsat::satisfiable(UnionFind & uf){
   unsigned clause1 = 0, node = 0, nextnode = 0, u = 0, v = 0;
   while(!facts.empty() && consistent){
-    node = facts.front();
+    node = pos_lit_list[facts.front()];
     facts.pop();
+    std::cout << "node " << node << std::endl;
     auto clause_list_cur_lit = list_of_literals[node].clause_list;
     auto it = clause_list_cur_lit->begin(), end = clause_list_cur_lit->end();
+    std::cout << "horn clauses where the node appears in the antecedent" << std::endl;
     for(; it != end; ++it){
       clause1 = (*it)->clause_id;
+      std::cout << "yei " << clause1 << std::endl;
+      std::cout << "yei2 " << num_args[clause1] << std::endl;
       --num_args[clause1];
+      std::cout << "yei2 " << num_args[clause1] << std::endl;
       if(num_args[clause1] == 0){
 	nextnode = pos_lit_list[clause1];
 	if(!list_of_literals[nextnode].val){
@@ -159,18 +177,20 @@ void Hornsat::satisfiable(UnionFind & uf){
 	    facts.push(nextnode);
 	    list_of_literals[nextnode].val = true;
 	    u = list_of_literals[nextnode].lclass, v = list_of_literals[nextnode].rclass;
-	    if(uf.find(u) != uf.find(v))
+	    if(uf.find(u) != uf.find(v)){
 	      std::cout << "Missing implementation 1" << std::endl;
-	      // Something else with u, v, FIND(u, R), FIND(v, R)
+	      unionupdate(uf, u, v);
+	    }
+
 	  }
 	  else
 	    consistent = false;
 	}
       }
     }
-    if(facts.empty() && consistent)
+    if(facts.empty() && consistent){
       std::cout << "Missing implementation 2" << std::endl;
-      // closure();
+    }
   }
 }
 

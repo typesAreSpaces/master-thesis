@@ -42,7 +42,7 @@ struct Clause {
 };
 
 struct Literal {
-  static unsigned curr_num_literals;
+  static unsigned curr_num_literalso;
   unsigned literal_id;
   unsigned l_id, r_id;
   unsigned lclass, rclass;

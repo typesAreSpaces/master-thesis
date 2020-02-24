@@ -33,7 +33,14 @@ EUFInterpolant::EUFInterpolant(z3::expr const & part_a) :
     disequalitiesToHCS();
     exposeUncommons();
 
-    // std::cout << horn_clauses << std::endl;
+    z3::sort test_sort = ctx.uninterpreted_sort("A");
+    
+    z3::expr test_z1 = ctx.constant("c_z1", test_sort);
+    z3::expr test_y1 = ctx.constant("c_y1", test_sort);
+    
+    z3::expr_vector test_body(ctx);
+    z3::expr test_head = test_z1 == test_y1;
+    horn_clauses.add(new HornClause(uf, ctx, subterms, test_body, test_head));
 
     Hornsat hsat(horn_clauses);
     UnionFind aux_uf(uf);
