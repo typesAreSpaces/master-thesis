@@ -34,12 +34,16 @@ EUFInterpolant::EUFInterpolant(z3::expr const & part_a) :
     exposeUncommons();
 
     z3::sort test_sort = ctx.uninterpreted_sort("A");
-    
-    z3::expr test_z1 = ctx.constant("c_z1", test_sort);
+    z3::expr test_y2 = ctx.constant("c_y2", test_sort);
     z3::expr test_y1 = ctx.constant("c_y1", test_sort);
+    z3::expr test_s1 = ctx.constant("c_s1", test_sort);
+    z3::expr test_z2 = ctx.constant("c_z2", test_sort);
+    z3::expr test_v = ctx.constant("a_v", test_sort);
+    z3::func_decl f = ctx.function("c_f", test_sort, test_sort, test_sort);
     
     z3::expr_vector test_body(ctx);
-    z3::expr test_head = test_z1 == test_y1;
+    test_body.push_back((test_s1 == f(test_y2, test_v)));
+    z3::expr test_head = (test_y1 == f(test_y1, test_v));
     horn_clauses.add(new HornClause(uf, ctx, subterms, test_body, test_head));
 
     Hornsat hsat(horn_clauses);

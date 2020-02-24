@@ -51,11 +51,12 @@ Hornsat::Hornsat(const HornClauses & hcs) : consistent(true), num_pos(0){
     // We only process Horn clauses with uncommon consequent
     std::cout << index_hc << " " << *horn_clause << std::endl; // DEBUGGING
 
-    if(!horn_clause->isCommonConsequent() || horn_clause->getAntecedent().size() == 0){ // Remove second disjunct
+    if(!horn_clause->isCommonConsequent()){ // Remove second disjunct
       // Horn clause body processing
       // Remark: We only have equations in the antecedent
       num_args[index_hc] = horn_clause->numUncommAntecedent();
       for(auto antecedent : horn_clause->getAntecedent()){
+	std::cout << "literals " << antecedent.id() << " " << antecedent << std::endl; // DEBUGGING
 	Literal * literal = &list_of_literals[antecedent.id()];
 	
 	literal->l_id = antecedent.arg(0).id();
@@ -91,7 +92,7 @@ Hornsat::Hornsat(const HornClauses & hcs) : consistent(true), num_pos(0){
       // This checks if the Horn Clause is a fact
       if(num_args[index_hc] == 0){
 	literal->val = true;
-	facts.push(index_hc);
+	facts.push(consequent.id());
 	++num_pos;
 	if(literal->literal_id == 0)
 	  consistent = false;
@@ -119,7 +120,7 @@ void Hornsat::unionupdate(UnionFind & uf, unsigned x, unsigned y){
   uf.merge(x, y);
   for(auto u : uf.getEquivClass(y)){
     for(auto p : classlist[u]){
-      std::cout << p << std::endl;
+      std::cout << "inside unionupdate " << p->literal_id << std::endl;
     }
   }
 }
@@ -158,20 +159,21 @@ void Hornsat::satisfiable(){
 void Hornsat::satisfiable(UnionFind & uf){
   unsigned clause1 = 0, node = 0, nextnode = 0, u = 0, v = 0;
   while(!facts.empty() && consistent){
-    node = pos_lit_list[facts.front()];
+    node = facts.front();
     facts.pop();
-    std::cout << "node " << node << std::endl;
+    std::cout << "node " << node << std::endl; // DEBUGGING
     auto clause_list_cur_lit = list_of_literals[node].clause_list;
     auto it = clause_list_cur_lit->begin(), end = clause_list_cur_lit->end();
-    std::cout << "horn clauses where the node appears in the antecedent" << std::endl;
+    std::cout << "horn clauses where the node appears in the antecedent" << std::endl; // DEBUGGING
     for(; it != end; ++it){
       clause1 = (*it)->clause_id;
-      std::cout << "yei " << clause1 << std::endl;
-      std::cout << "yei2 " << num_args[clause1] << std::endl;
+      std::cout << "yei " << clause1 << std::endl; // DEBUGGING
+      std::cout << "yei1 " << num_args[clause1] << std::endl; // DEBUGGING
       --num_args[clause1];
-      std::cout << "yei2 " << num_args[clause1] << std::endl;
+      std::cout << "yei2 " << num_args[clause1] << std::endl; // DEBUGGING
       if(num_args[clause1] == 0){
 	nextnode = pos_lit_list[clause1];
+	std::cout << "nextnode " << nextnode << std::endl; // DEBUGGING
 	if(!list_of_literals[nextnode].val){
 	  if(nextnode > FALSELITERAL){
 	    facts.push(nextnode);
