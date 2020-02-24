@@ -77,7 +77,7 @@ class Hornsat {
   bool consistent;
   unsigned num_pos;
   std::vector<Literal> list_of_literals;
-  std::vector<std::vector<ClassListPos> > classlist;
+  std::vector<std::vector<ClassListPos> > class_list;
   std::queue<unsigned> facts;
   std::vector<unsigned> num_args, pos_lit_list;
 
@@ -85,7 +85,7 @@ class Hornsat {
   
  public:
   Hornsat(std::istream &);
-  Hornsat(const HornClauses &);
+  Hornsat(const HornClauses &, UnionFind &);
   ~Hornsat();
   void satisfiable();
   void satisfiable(UnionFind &);
