@@ -47,11 +47,12 @@ EUFInterpolant::EUFInterpolant(z3::expr const & part_a) :
     z3::expr test_head = (test_y1 == f(test_y1, test_v));
     horn_clauses.add(new HornClause(uf, ctx, subterms, test_body, test_head));
 
-    // DEBUGGING/TESTING
-    unsigned aaa = size;
-    for(unsigned i = min_id; i < aaa; i++)
-      std::cout << i << " " << subterms[i] << std::endl;
-    // DEBUGGING/TESTING
+    z3::expr_vector test_body2(ctx);
+    test_body2.push_back((test_s1 == f(test_y2, test_v)));
+    test_body2.push_back((test_y1 == f(test_y1, test_v)));
+    z3::expr test_head2 = (test_y2 == test_v);
+    horn_clauses.add(new HornClause(uf, ctx, subterms, test_body2, test_head2));
+    // Stress test
 
     Hornsat hsat(horn_clauses);
     UnionFind aux_uf(uf);

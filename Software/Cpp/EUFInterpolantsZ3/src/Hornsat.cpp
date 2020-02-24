@@ -1,5 +1,5 @@
 #include "Hornsat.h"
-#define DEBUGGING true
+#define DEBUGGING false
 
 unsigned Literal::curr_num_literals = 0;
 
@@ -127,7 +127,7 @@ void Hornsat::unionupdate(UnionFind & uf, unsigned x, unsigned y){
     y = aux;
   }
 #if DEBUGGING
-  std::cout << "Inside unionupdate: " << x << std::endl;
+  std::cout << "Inside unionupdate: " << x << " " << y << std::endl;
 #endif
   auto end = uf.end(y);  
   for(auto u = uf.begin(y); u != end; ++u){
