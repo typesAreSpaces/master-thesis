@@ -65,7 +65,7 @@ EUFInterpolant::EUFInterpolant(z3::expr const & part_a) :
     // std::cout << hsat << std::endl;
 
     // Keep working here
-    buildInterpolant();
+    buildInterpolant(replacements);
     
     return;
   }
@@ -181,8 +181,8 @@ z3::expr_vector EUFInterpolant::conditionalReplacement(z3::expr_vector & terms_t
 //   return answer;
 // }
 
-z3::expr EUFInterpolant::buildInterpolant(){
-  horn_clauses.conditionalElimination(); // TODO: Implement the following
+z3::expr EUFInterpolant::buildInterpolant(std::vector<Replacement> replacements){
+  horn_clauses.conditionalElimination(replacements); // TODO: Implement the following
   
   // auto non_reducible_hs_z3 = cvt.convert(horn_clauses.getHornClauses());
   // auto simplified_hs = cvt.extraSimplification(non_reducible_hs_z3);  

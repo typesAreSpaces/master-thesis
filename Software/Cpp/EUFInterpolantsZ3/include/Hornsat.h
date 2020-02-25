@@ -6,6 +6,7 @@
 #include <queue>
 #include <vector>
 #include "HornClauses.h"
+#include "Replacement.h"
 
 struct Clause {
   unsigned clause_id;
@@ -69,16 +70,6 @@ struct ClassListPos {
     lit_pointer(lit_pointer), eq_side(eq_side){}
   friend std::ostream & operator << (std::ostream & os, const ClassListPos & clp){
     os << *(clp.lit_pointer) << (clp.eq_side == LHS ? " LHS" : " RHS");
-    return os;
-  }
-};
-
-struct Replacement {
-  unsigned clause1, clause2;
-  Replacement(unsigned clause1, unsigned clause2) :
-    clause1(clause1), clause2(clause2){}
-  friend std::ostream & operator << (std::ostream & os, const Replacement & r){
-    os << "Merge " << r.clause1 << " with " << r.clause2;
     return os;
   }
 };
