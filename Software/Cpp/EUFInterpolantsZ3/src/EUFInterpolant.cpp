@@ -25,85 +25,47 @@ EUFInterpolant::EUFInterpolant(z3::expr const & part_a) :
   CongruenceClosure cc(subterms, cc_list, uf);  
   cc.buildCongruenceClosure(pending, combine);
 
-  // disequalitiesToHCS();
-  // exposeUncommons();
+  disequalitiesToHCS();
+  exposeUncommons();
   // std::cout << horn_clauses << std::endl;
+
+  // // Stress test ----------------------------------------------------------------------
+  // z3::sort test_sort = ctx.uninterpreted_sort("A");
+  // z3::expr test_y2 = ctx.constant("c_y2", test_sort);
+  // z3::expr test_y1 = ctx.constant("c_y1", test_sort);
+  // z3::expr test_s1 = ctx.constant("c_s1", test_sort);
+  // z3::expr test_s2 = ctx.constant("c_s2", test_sort);
+  // z3::expr test_z2 = ctx.constant("c_z2", test_sort);
+  // z3::expr test_v = ctx.constant("a_v", test_sort);
+  // z3::func_decl f = ctx.function("c_f", test_sort, test_sort, test_sort);
   
-  // UnionFind aux_uf(uf);
-  // Hornsat hsat(horn_clauses, aux_uf);
-  // // Keep working here
-  // auto replacements = hsat.satisfiable(aux_uf);
+  // z3::expr_vector test_body(ctx);
+  // test_body.push_back((test_s2 == f(test_y1, test_v)));
+  // z3::expr test_head = (test_y1 == f(test_y1, test_v));
+  // horn_clauses.add(new HornClause(uf, ctx, subterms, test_body, test_head, cc_list));
+  
+  // z3::expr_vector test_body2(ctx);
+  // test_body2.push_back((test_s1 == f(test_y2, test_v)));
+  // test_body2.push_back((test_y1 == f(test_y1, test_v)));
+  // z3::expr test_head2 = (test_y2 == test_v);
+  // horn_clauses.add(new HornClause(uf, ctx, subterms, test_body2, test_head2, cc_list));
+  // // Stress test ----------------------------------------------------------------------
+  
+  UnionFind aux_uf(uf);
+  Hornsat hsat(horn_clauses, aux_uf);
+  // Keep working here
+  auto replacements = hsat.satisfiable(aux_uf);
     
-  // for(auto x : replacements)
-  //   std::cout << "Merge " << *horn_clauses[x.clause1]
-  // 		<< " with " << *horn_clauses[x.clause2] << std::endl;
+  for(auto x : replacements)
+    std::cout << "Merge " << *horn_clauses[x.clause1]
+	      << " with " << *horn_clauses[x.clause2] << std::endl;
 
-  // std::cout << hsat << std::endl;
+  std::cout << hsat << std::endl;
 
-  // buildInterpolant(replacements);
+  buildInterpolant(replacements);
   return;
   
-  // // There is extra padding for non-apps-z3::expressions
-  // unsigned aux_num_terms = size - min_id;
-  // unsigned aux_class_ids[aux_num_terms];
-  // z3::expr_vector aux_subterms(ctx);
-  // for(unsigned i = min_id; i < size; i++)
-  //   aux_subterms.push_back(subterms[i]);
-
-  // z3::solver euf_solver(ctx, "QF_UF");
-  // euf_solver.add(part_a);
-  // if(euf_solver.implied_equalities(aux_num_terms, aux_subterms, aux_class_ids) != z3::unsat){
-  //   unsigned class_ids[size];
-  //   for(unsigned i = 0; i < size; i++){
-  //     if(i < min_id)
-  // 	class_ids[i] = i;
-  //     else
-  // 	class_ids[i] = aux_class_ids[i - min_id] + min_id;
-  //   }
-  //   uf = UnionFind(class_ids, size);
-    
-  //   disequalitiesToHCS();
-  //   exposeUncommons();
-
-  //   // std::cout << horn_clauses << std::endl;
-
-  //   // Stress test ----------------------------------------------------------------------
-  //   z3::sort test_sort = ctx.uninterpreted_sort("A");
-  //   z3::expr test_y2 = ctx.constant("c_y2", test_sort);
-  //   z3::expr test_y1 = ctx.constant("c_y1", test_sort);
-  //   z3::expr test_s1 = ctx.constant("c_s1", test_sort);
-  //   z3::expr test_s2 = ctx.constant("c_s2", test_sort);
-  //   z3::expr test_z2 = ctx.constant("c_z2", test_sort);
-  //   z3::expr test_v = ctx.constant("a_v", test_sort);
-  //   z3::func_decl f = ctx.function("c_f", test_sort, test_sort, test_sort);
-    
-  //   z3::expr_vector test_body(ctx);
-  //   test_body.push_back((test_s2 == f(test_y1, test_v)));
-  //   z3::expr test_head = (test_y1 == f(test_y1, test_v));
-  //   horn_clauses.add(new HornClause(uf, ctx, subterms, test_body, test_head, cc_list));
-
-  //   z3::expr_vector test_body2(ctx);
-  //   test_body2.push_back((test_s1 == f(test_y2, test_v)));
-  //   test_body2.push_back((test_y1 == f(test_y1, test_v)));
-  //   z3::expr test_head2 = (test_y2 == test_v);
-  //   horn_clauses.add(new HornClause(uf, ctx, subterms, test_body2, test_head2, cc_list));
-  //   // Stress test ----------------------------------------------------------------------
-    
-  //   UnionFind aux_uf(uf);
-  //   Hornsat hsat(horn_clauses, aux_uf);
-  //   auto replacements = hsat.satisfiable(aux_uf);
-    
-  //   // for(auto x : replacements)
-  //   //   std::cout << "Merge " << *horn_clauses[x.clause1]
-  //   // 		<< " with " << *horn_clauses[x.clause2] << std::endl;
-
-  //   // std::cout << hsat << std::endl;
-
-  //   // Keep working here
-  //   buildInterpolant(replacements);
-  //   return;
-  // }
-  throw "Problem @ EUFInterpolant::EUFInterpolant. The z3::expr const & part_a was unsatisfiable.";
+  // throw "Problem @ EUFInterpolant::EUFInterpolant. The z3::expr const & part_a was unsatisfiable.";
 }
 
 
