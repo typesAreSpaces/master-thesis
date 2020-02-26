@@ -1,7 +1,7 @@
 #include "Hornsat.h"
-#define DEBUGGING_SATISFIABLE false
-#define DEBUGGING_UNIONUPDATE false
-#define DEBUGGING_CONSTRUCTOR false
+#define DEBUGGING_SATISFIABLE true
+#define DEBUGGING_UNIONUPDATE true
+#define DEBUGGING_CONSTRUCTOR true
 
 unsigned Literal::curr_num_literals = 0;
 
@@ -42,7 +42,7 @@ Hornsat::Hornsat(std::istream & in) : consistent(true), num_pos(0){
 }
 
 Hornsat::Hornsat(const HornClauses & hcs, UnionFind & uf) : consistent(true), num_pos(0){
-  unsigned num_hcs = hcs.size(), num_literals = hcs.maxID();
+  unsigned num_hcs = hcs.size(), num_literals = hcs.maxID() + 1;
   list_of_literals.resize(num_literals);
   class_list.resize(num_literals);
   num_args.resize(num_hcs);
@@ -55,26 +55,39 @@ Hornsat::Hornsat(const HornClauses & hcs, UnionFind & uf) : consistent(true), nu
 #if DEBUGGING_CONSTRUCTOR
     std::cout << index_hc << " " << *horn_clause << std::endl;
 #endif
+    std::cout << "---------------------------------------------------------" << class_list[0].size() << std::endl;
     // We only process Horn clauses with uncommon consequent
     if(!horn_clause->isCommonConsequent()){      
       // Horn clause body processing
       // Remark: We only have equations in the antecedent
       num_args[index_hc] = horn_clause->numUncommAntecedent();
+      std::cout << "---------------------------------------------------------" << class_list[0].size() << std::endl;
       for(auto antecedent : horn_clause->getAntecedent()){
 #if DEBUGGING_CONSTRUCTOR
 	std::cout << "literals " << antecedent.id() << " " << antecedent << std::endl;
+	std::cout << class_list.size() << std::endl;
 #endif
+	std::cout << "---------------------------------------------------------" << class_list[0].size() << std::endl;
 	Literal * literal = &list_of_literals[antecedent.id()];
-	literal->clause_list = literal->clause_list->add(index_hc);
-
+		std::cout << "---------------------------------------------------------" << class_list[0].size() << std::endl;
 	literal->l_id = antecedent.arg(0).id();
-	literal->l_class = uf.find(literal->l_id);
-	class_list[literal->l_id].push_back(ClassListPos(literal, LHS));
-
+		std::cout << "---------------------------------------------------------" << class_list[0].size() << std::endl;
 	literal->r_id = antecedent.arg(1).id();
+		std::cout << "---------------------------------------------------------" << class_list[0].size() << std::endl;
+	literal->l_class = uf.find(literal->l_id);
+	std::cout << "---------------------------------------------------------" << class_list[0].size() << std::endl;
 	literal->r_class = uf.find(literal->r_id);
-	class_list[literal->r_id].push_back(ClassListPos(literal, RHS));
+	std::cout << "---------------------------------------------------------" << class_list[0].size() << std::endl;
+	literal->clause_list = literal->clause_list->add(index_hc);
+	std::cout << "---------------------------------------------------------" << class_list[0].size() << std::endl;
+	std::cout << literal << std::endl;
+	std::cout << "---------------------------------------------------------" << class_list[0].size() << std::endl;
+	class_list[literal->l_id].emplace_back(literal, LHS);
+	std::cout << "---------------------------------------------------------" << class_list[0].size() << std::endl;
+	class_list[literal->r_id].emplace_back(literal, RHS);
+	    std::cout << "---------------------------------------------------------" << class_list[0].size() << std::endl;
       }
+          std::cout << "---------------------------------------------------------" << class_list[0].size() << std::endl;
 
       // Horn clause head processing
       auto consequent = horn_clause->getConsequent();
@@ -84,16 +97,18 @@ Hornsat::Hornsat(const HornClauses & hcs, UnionFind & uf) : consistent(true), nu
       Literal * literal = &list_of_literals[consequent.decl().name().str() == "false" ?
 					    FALSELITERAL :
 					    consequent.id()];
+      
       pos_lit_list[index_hc] = literal->literal_id;
       if(literal->literal_id > FALSELITERAL){
 	literal->l_id = consequent.arg(0).id();
-	literal->l_class = uf.find(literal->l_id);
-	class_list[literal->l_id].push_back(ClassListPos(literal, LHS));
-	
 	literal->r_id = consequent.arg(1).id();
+	literal->l_class = uf.find(literal->l_id);
 	literal->r_class = uf.find(literal->r_id);
-	class_list[literal->r_id].push_back(ClassListPos(literal, RHS));
+	std::cout << literal << std::endl;
+	class_list[literal->l_id].emplace_back(literal, LHS);
+	class_list[literal->r_id].emplace_back(literal, RHS);
       }
+      std::cout << "---------------------------------------------------------" << class_list[0].size() << std::endl;
 
       // This checks if the Horn Clause is a fact
       if(num_args[index_hc] == 0){
@@ -103,17 +118,29 @@ Hornsat::Hornsat(const HornClauses & hcs, UnionFind & uf) : consistent(true), nu
 	if(literal->literal_id == FALSELITERAL)
 	  consistent = false;
       }
+      std::cout << "---------------------------------------------------------" << class_list[0].size() << std::endl;
     }
     index_hc++;
+    std::cout << "---------------------------------------------------------" << class_list[0].size() << std::endl;
   }
+  unsigned ohmygod;
+  std::cin >> ohmygod;
+  // for(auto why : class_list)
+  //   std::cout << "------------------------------------------------" << why.size() << " ";
+  // std::cout << std::endl;
 }
 
 Hornsat::~Hornsat(){
   for(auto literal : list_of_literals){
     for(auto it = literal.clause_list->begin(), end = literal.clause_list->end();
-	it != end; ++it)
-      delete (*it);    
+	it != end; ++it){
+      std::cout << "IDKnowwww " << (*it)->clause_id << std::endl;
+      delete (*it);
+    }
   }
+#if DEBUG_DESTRUCTORS
+  std::cout << "Done ~Hornsat" << std::endl;
+#endif
 }
 
 void Hornsat::unionupdate(UnionFind & uf, unsigned x, unsigned y, unsigned clause){
@@ -218,16 +245,16 @@ std::vector<Replacement> Hornsat::satisfiable(UnionFind & uf){
 	    list_of_literals[nextnode].val = true;
 	    u = list_of_literals[nextnode].l_id, v = list_of_literals[nextnode].r_id;
 	    if(uf.find(u) != uf.find(v))
-	      unionupdate(uf, u, v, clause2);
+	      unionupdate(uf, u, v, clause2); // Here is a mistake!
 	  }
 	  else
 	    consistent = false;
 	}
       }
     }
-    // Since we only deal with constant equations
-    // the update procedure reduces to unionupdate.
-    // Hence, the pending list will always be empty
+    // Since we only deal with constant equations            // FALSE:
+    // the update procedure reduces to unionupdate.          // Because pending (or combine) should not be empty
+    // Hence, the pending list will always be empty          // at the beginning!
     // for this case.
     // if(facts.empty() && consistent)
     //   congclosure(pending, queue, H);

@@ -1,6 +1,7 @@
 #ifndef _HORNSAT_
 #define _HORNSAT_
 #define FALSELITERAL 0
+#define DEBUG_DESTRUCTORS true
 
 #include <iostream>
 #include <queue>
@@ -12,6 +13,11 @@ struct Clause {
   unsigned clause_id;
   struct Clause * next;
   Clause(unsigned id, struct Clause * clause) : clause_id(id), next(clause){}
+  ~Clause(){
+#if DEBUG_DESTRUCTORS
+    std::cout << "Done ~Clause with " << clause_id  << std::endl;
+#endif
+  }
   struct Clause * add(unsigned element){
     return new Clause(element, this);
   }
@@ -59,6 +65,11 @@ struct Literal {
        << " Val: " << l.val;
     return os;
   }
+  ~Literal(){
+#if DEBUG_DESTRUCTORS
+    std::cout << "Done ~Literal with " << literal_id  << std::endl;
+#endif
+  }
 };
 
 enum EquationSide { LHS, RHS };
@@ -71,6 +82,12 @@ struct ClassListPos {
   friend std::ostream & operator << (std::ostream & os, const ClassListPos & clp){
     os << *(clp.lit_pointer) << (clp.eq_side == LHS ? " LHS" : " RHS");
     return os;
+  }
+  ~ClassListPos(){
+#if DEBUG_DESTRUCTORS
+    // std::cout << "Done ~ClassListPos with " << std::endl;
+    std::cout << "Done ~ClassListPos with " << lit_pointer << (eq_side == LHS ? " LHS" : " RHS") << std::endl;
+#endif
   }
 };
 

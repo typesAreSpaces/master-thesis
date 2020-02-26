@@ -9,6 +9,7 @@
 #define DEBUG_MC1CMC2A           true
 #define DEBUG_MC1CMC1A2          true
 #define DEBUG_MATCHES            false
+#define DEBUG_DESTRUCTOR_HCS     true
 
 HornClauses::HornClauses(z3::context & ctx, const z3::expr_vector & subterms, const unsigned & min_id) :
   ctx(ctx),
@@ -18,6 +19,9 @@ HornClauses::HornClauses(z3::context & ctx, const z3::expr_vector & subterms, co
 HornClauses::~HornClauses(){
   for(auto it : horn_clauses)
     delete it;
+#if DEBUG_DESTRUCTOR_HCS
+  std::cout << "Done ~HornClauses" << std::endl;
+#endif
 }
 
 // void HornClauses::combinationHelper(HornClause * hc){

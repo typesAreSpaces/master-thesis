@@ -1,4 +1,5 @@
 #include "HornClause.h"
+#define DEBUG_DESTRUCTOR_HC true
 
 HornClause::HornClause(UnionFind & uf, z3::context & ctx, z3::expr_vector & subterms, z3::expr_vector antecedent, z3::expr consequent) :
   uf(uf), ctx(ctx), subterms(subterms), antecedent(antecedent), consequent(consequent){
@@ -8,9 +9,9 @@ HornClause::HornClause(UnionFind & uf, z3::context & ctx, z3::expr_vector & subt
     is_common_antecedent = is_common_antecedent && hyp.is_common();
     if(!hyp.is_common())
       num_uncomm_antecedent++;
+    auto lhs = hyp.arg(0), rhs = hyp.arg(1);
     if(subterms.size() <= hyp.id())
       subterms.resize(hyp.id() + 1);
-    auto lhs = hyp.arg(0), rhs = hyp.arg(1);
     subterms.set(hyp.id(), hyp);
     subterms.set(lhs.id(), lhs);
     subterms.set(rhs.id(), rhs);
@@ -21,7 +22,9 @@ HornClause::HornClause(UnionFind & uf, z3::context & ctx, z3::expr_vector & subt
   }
   if(subterms.size() <= consequent.id())
     subterms.resize(consequent.id() + 1);
+
   auto lhs = consequent.arg(0), rhs = consequent.arg(1);
+
   subterms.set(consequent.id(), consequent);
   subterms.set(lhs.id(), lhs);
   subterms.set(rhs.id(), rhs);
@@ -29,6 +32,10 @@ HornClause::HornClause(UnionFind & uf, z3::context & ctx, z3::expr_vector & subt
 }
 
 HornClause::~HornClause(){
+#if DEBUG_DESTRUCTOR_HC
+  std::cout << antecedent << " -> " << consequent << std::endl;
+  std::cout << "Done ~HornClause" << std::endl;
+#endif
 }
 
 bool HornClause::compareEquation(const z3::expr & eq1, const z3::expr & eq2){

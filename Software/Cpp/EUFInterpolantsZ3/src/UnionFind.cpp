@@ -1,4 +1,5 @@
 #include "UnionFind.h"
+#define DEBUG_DESTRUCTOR_UF true
 
 UnionFind::UnionFind(){
 };
@@ -8,6 +9,9 @@ UnionFind::UnionFind(unsigned array[], unsigned size) :
 }
 
 UnionFind::~UnionFind(){
+#if DEBUG_DESTRUCTOR_UF
+  std::cout << "Done ~UnionFind" << std::endl;
+#endif
 };
 
 // The first argument becomes the new

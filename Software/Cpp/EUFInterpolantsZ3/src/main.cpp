@@ -3,22 +3,9 @@
 // #include <cstdlib>
 // #include <ctime>
 
-#include <z3++.h>
 #include <algorithm>
 #include "Rename.h"
 #include "EUFInterpolant.h"
-
-// class A {
-//   z3::expr & e;
-// public:
-//   A(z3::expr & e) : e(e){
-//   }
-//   ~A(){
-//   }
-//   z3::expr & getExpr(){
-//     return e;
-//   }
-// };
 
 int main(int argc, char ** argv){
   
@@ -34,12 +21,14 @@ int main(int argc, char ** argv){
   z3::expr v = ctx.constant("v", my_sort);
   z3::expr t = ctx.constant("t", my_sort);
   z3::func_decl f = ctx.function("f", my_sort, my_sort, my_sort);
+  z3::func_decl g = ctx.function("g", my_sort, my_sort);
   std::set<std::string> uncomms;
   uncomms.insert("v");
   
-  z3::expr alpha = f(z1, v) == s1 && f(z2, v) == s2 && f(f(y1, v), f(y2, v)) == t && s1 != t;
+  // z3::expr alpha = f(z1, v) == s1 && f(z2, v) == s2 && f(f(y1, v), f(y2, v)) == t && s1 != t;
+  z3::expr alpha = f(z1, v) == s1 && f(f(y1, v), f(y2, v)) == t && s1 != t && g(g(s1)) == s2 && g(g(f(y1, v))) == f(y2, v);
   rename(alpha, uncomms);
-      
+
   EUFInterpolant euf(alpha);
   // std::cout << euf << std::endl;
     

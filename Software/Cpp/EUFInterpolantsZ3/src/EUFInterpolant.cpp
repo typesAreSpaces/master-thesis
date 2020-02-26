@@ -1,9 +1,10 @@
 #include "EUFInterpolant.h"
+#define DEBUG_DESTRUCTOR_EUF true
 #define DEBUG_EUFINTERPOLANT false
 
 EUFInterpolant::EUFInterpolant(z3::expr const & part_a) :
   ctx(part_a.ctx()), min_id(part_a.id()), subterms(ctx),
-  uncommon_positions(), uf(), horn_clauses(ctx, subterms, min_id),
+  fsym_positions(), uf(), horn_clauses(ctx, subterms, min_id),
   contradiction(ctx), disequalities(ctx), size(part_a.id() + 1) {
   
   contradiction = ctx.bool_val(false);
@@ -33,26 +34,29 @@ EUFInterpolant::EUFInterpolant(z3::expr const & part_a) :
     disequalitiesToHCS();
     exposeUncommons();
 
-    // Stress test -------------------------------------------------------------
-    z3::sort test_sort = ctx.uninterpreted_sort("A");
-    z3::expr test_y2 = ctx.constant("c_y2", test_sort);
-    z3::expr test_y1 = ctx.constant("c_y1", test_sort);
-    z3::expr test_s1 = ctx.constant("c_s1", test_sort);
-    z3::expr test_z2 = ctx.constant("c_z2", test_sort);
-    z3::expr test_v = ctx.constant("a_v", test_sort);
-    z3::func_decl f = ctx.function("c_f", test_sort, test_sort, test_sort);
-    
-    z3::expr_vector test_body(ctx);
-    test_body.push_back((test_s1 == f(test_y2, test_v)));
-    z3::expr test_head = (test_y1 == f(test_y1, test_v));
-    horn_clauses.add(new HornClause(uf, ctx, subterms, test_body, test_head));
+    std::cout << horn_clauses << std::endl;
 
-    z3::expr_vector test_body2(ctx);
-    test_body2.push_back((test_s1 == f(test_y2, test_v)));
-    test_body2.push_back((test_y1 == f(test_y1, test_v)));
-    z3::expr test_head2 = (test_y2 == test_v);
-    horn_clauses.add(new HornClause(uf, ctx, subterms, test_body2, test_head2));
-    // Stress test -------------------------------------------------------------
+    // // Stress test -------------------------------------------------------------
+    // z3::sort test_sort = ctx.uninterpreted_sort("A");
+    // z3::expr test_y2 = ctx.constant("c_y2", test_sort);
+    // z3::expr test_y1 = ctx.constant("c_y1", test_sort);
+    // z3::expr test_s1 = ctx.constant("c_s1", test_sort);
+    // z3::expr test_s2 = ctx.constant("c_s2", test_sort);
+    // z3::expr test_z2 = ctx.constant("c_z2", test_sort);
+    // z3::expr test_v = ctx.constant("a_v", test_sort);
+    // z3::func_decl f = ctx.function("c_f", test_sort, test_sort, test_sort);
+    
+    // z3::expr_vector test_body(ctx);
+    // test_body.push_back((test_s2 == f(test_y1, test_v)));
+    // z3::expr test_head = (test_y1 == f(test_y1, test_v));
+    // horn_clauses.add(new HornClause(uf, ctx, subterms, test_body, test_head));
+
+    // z3::expr_vector test_body2(ctx);
+    // test_body2.push_back((test_s1 == f(test_y2, test_v)));
+    // test_body2.push_back((test_y1 == f(test_y1, test_v)));
+    // z3::expr test_head2 = (test_y2 == test_v);
+    // horn_clauses.add(new HornClause(uf, ctx, subterms, test_body2, test_head2));
+    // // Stress test -------------------------------------------------------------
     
     UnionFind aux_uf(uf);
     Hornsat hsat(horn_clauses, aux_uf);
@@ -60,13 +64,13 @@ EUFInterpolant::EUFInterpolant(z3::expr const & part_a) :
     
     for(auto x : replacements)
       std::cout << "Merge " << *horn_clauses[x.clause1]
-		<< " with " << *horn_clauses[x.clause2] << std::endl;
+    		<< " with " << *horn_clauses[x.clause2] << std::endl;
 
     // std::cout << hsat << std::endl;
 
     // Keep working here
     buildInterpolant(replacements);
-    
+    std::cout << "ok111" << std::endl;
     return;
   }
   throw "Problem @ EUFInterpolant::EUFInterpolant. The z3::expr const & part_a was unsatisfiable.";
@@ -74,6 +78,9 @@ EUFInterpolant::EUFInterpolant(z3::expr const & part_a) :
 
 
 EUFInterpolant::~EUFInterpolant(){
+#if DEBUG_DESTRUCTOR_EUF
+  std::cout << "Bye EUFInterpolant" << std::endl;
+#endif 
 }
 
 void EUFInterpolant::init(z3::expr const & e, unsigned & min_id, std::vector<bool> & visited){
@@ -96,8 +103,9 @@ void EUFInterpolant::init(z3::expr const & e, unsigned & min_id, std::vector<boo
       disequalities.push_back(e);
       return;
     case Z3_OP_UNINTERPRETED:
-      if(num > 0 && !e.is_common())
-	uncommon_positions[f.name().str()].push_back(e.id());
+      // if(num > 0 && !e.is_common())
+      if(num > 0)
+	fsym_positions[f.name().str()].push_back(e.id());
     default:
       return;
     }
@@ -127,17 +135,21 @@ void EUFInterpolant::disequalitiesToHCS(){
 }
 
 void EUFInterpolant::exposeUncommons(){
-  for(auto iterator : uncommon_positions){
-    unsigned current_num_uncomms = iterator.second.size();
-    if(current_num_uncomms < 2)
-      break;
-    for(unsigned index_1 = 0; index_1 < current_num_uncomms - 1; index_1++)
-      for(unsigned index_2 = index_1 + 1; index_2 < current_num_uncomms; index_2++){
-	z3::expr t1 = subterms[iterator.second[index_1]], t2 = subterms[iterator.second[index_2]];
-	z3::expr_vector hc_body = buildHCBody(t1, t2);
-	z3::expr        hc_head = repr(t1) == repr(t2);
-	horn_clauses.add(new HornClause(uf, ctx, subterms, hc_body, hc_head));
-      }
+  for(auto iterator : fsym_positions){
+    unsigned current_num = iterator.second.size();
+    if(current_num >= 2){
+      for(unsigned index_1 = 0; index_1 < current_num - 1; index_1++)
+	for(unsigned index_2 = index_1 + 1; index_2 < current_num; index_2++){
+	  z3::expr t1 = subterms[iterator.second[index_1]], t2 = subterms[iterator.second[index_2]];
+	  z3::expr_vector hc_body = buildHCBody(t1, t2);
+	  z3::expr        hc_head = repr(t1) == repr(t2);
+	
+	  std::cout << "original ";
+	  std::cout << hc_body << " -> " << hc_head << std::endl;
+	
+	  horn_clauses.add(new HornClause(uf, ctx, subterms, hc_body, hc_head));
+	}
+    }
   }
   return;
 }

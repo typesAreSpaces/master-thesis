@@ -5,7 +5,7 @@
 #include "HornClauses.h"
 #include "Hornsat.h"
 
-typedef std::map<std::string, std::vector<unsigned> > UncommonPositions;
+typedef std::map<std::string, std::vector<unsigned> > FSymPositions;
 
 class EUFInterpolant {
 
@@ -13,7 +13,7 @@ class EUFInterpolant {
   unsigned          min_id;
   // Note: elements below min_id are undefined
   z3::expr_vector   subterms;
-  UncommonPositions uncommon_positions;
+  FSymPositions     fsym_positions;
   UnionFind         uf;
   HornClauses       horn_clauses;
   z3::expr          contradiction;

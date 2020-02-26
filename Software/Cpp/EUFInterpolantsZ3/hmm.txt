@@ -1,0 +1,298 @@
+./euf_interpolator
+Done ~UnionFind
+original (ast-vector
+  (= c_z1 c_y1)
+  (= a_v a_v)) -> (= c_s1 (c_f c_y1 a_v))
+original (ast-vector
+  (= c_z1 c_y2)
+  (= a_v a_v)) -> (= c_s1 (c_g (c_g (c_f c_y1 a_v))))
+original (ast-vector
+  (= c_z1 (c_f c_y1 a_v))
+  (= a_v (c_g (c_g (c_f c_y1 a_v))))) -> (= c_s1 c_t)
+original (ast-vector
+  (= c_y1 c_y2)
+  (= a_v a_v)) -> (= (c_f c_y1 a_v) (c_g (c_g (c_f c_y1 a_v))))
+original (ast-vector
+  (= c_y1 (c_f c_y1 a_v))
+  (= a_v (c_g (c_g (c_f c_y1 a_v))))) -> (= (c_f c_y1 a_v) c_t)
+original (ast-vector
+  (= c_y2 (c_f c_y1 a_v))
+  (= a_v (c_g (c_g (c_f c_y1 a_v))))) -> (= (c_g (c_g (c_f c_y1 a_v))) c_t)
+original (ast-vector
+  (= c_s1 (c_g c_s1))) -> (= (c_g c_s1) c_s2)
+original (ast-vector
+  (= c_s1 (c_f c_y1 a_v))) -> (= (c_g c_s1) (c_g (c_f c_y1 a_v)))
+original (ast-vector
+  (= c_s1 (c_g (c_f c_y1 a_v)))) -> (= (c_g c_s1) (c_g (c_g (c_f c_y1 a_v))))
+original (ast-vector
+  (= (c_g c_s1) (c_f c_y1 a_v))) -> (= c_s2 (c_g (c_f c_y1 a_v)))
+original (ast-vector
+  (= (c_g c_s1) (c_g (c_f c_y1 a_v)))) -> (= c_s2 (c_g (c_g (c_f c_y1 a_v))))
+original (ast-vector
+  (= (c_f c_y1 a_v) (c_g (c_f c_y1 a_v)))) -> (= (c_g (c_f c_y1 a_v)) (c_g (c_g (c_f c_y1 a_v))))
+Horn clauses produced
+0. 0x55c607f78b40 (= c_s1 c_t) -> false
+1. 0x55c607f7d3e0 (= c_z1 c_y1) -> (= c_s1 (c_f c_y1 a_v))
+2. 0x55c607f78bf0 (= c_z1 c_y2) -> (= c_s1 (c_g (c_g (c_f c_y1 a_v))))
+3. 0x55c607ef37e0 (= a_v (c_g (c_g (c_f c_y1 a_v)))) && (= c_z1 (c_f c_y1 a_v)) -> (= c_s1 c_t)
+4. 0x55c607f71040 (= c_y1 c_y2) -> (= (c_g (c_g (c_f c_y1 a_v))) (c_f c_y1 a_v))
+5. 0x55c607f70d90 (= c_y1 (c_f c_y1 a_v)) && (= a_v (c_g (c_g (c_f c_y1 a_v)))) -> (= c_t (c_f c_y1 a_v))
+6. 0x55c607f71320 (= c_y2 (c_f c_y1 a_v)) && (= a_v (c_g (c_g (c_f c_y1 a_v)))) -> (= c_t (c_g (c_g (c_f c_y1 a_v))))
+7. 0x55c607f7d370 (= c_s1 (c_g c_s1)) -> (= c_s2 (c_g c_s1))
+8. 0x55c607f715f0 (= c_s1 (c_f c_y1 a_v)) -> (= (c_g c_s1) (c_g (c_f c_y1 a_v)))
+9. 0x55c607f70ca0 (= c_s1 (c_g (c_f c_y1 a_v))) -> (= (c_g c_s1) (c_g (c_g (c_f c_y1 a_v))))
+10. 0x55c607f7cd30 (= (c_g c_s1) (c_f c_y1 a_v)) -> (= c_s2 (c_g (c_f c_y1 a_v)))
+11. 0x55c607f70f60 (= (c_g c_s1) (c_g (c_f c_y1 a_v))) -> (= c_s2 (c_g (c_g (c_f c_y1 a_v))))
+12. 0x55c607f8a9e0 (= (c_g (c_f c_y1 a_v)) (c_f c_y1 a_v)) -> (= (c_g (c_f c_y1 a_v)) (c_g (c_g (c_f c_y1 a_v))))
+
+Horn Clauses processed by Hornsat
+0 (= c_s1 c_t) -> false
+1 (= c_z1 c_y1) -> (= c_s1 (c_f c_y1 a_v))
+literals 77 (= c_z1 c_y1)
+literals 72 (= c_s1 (c_f c_y1 a_v))
+2 (= c_z1 c_y2) -> (= c_s1 (c_g (c_g (c_f c_y1 a_v))))
+literals 74 (= c_z1 c_y2)
+Done ~ClassListPos with 0x55c607f8c060 LHS
+literals 65 (= c_s1 (c_g (c_g (c_f c_y1 a_v))))
+Done ~ClassListPos with 0x55c607f8bfc0 LHS
+3 (= a_v (c_g (c_g (c_f c_y1 a_v)))) && (= c_z1 (c_f c_y1 a_v)) -> (= c_s1 c_t)
+4 (= c_y1 c_y2) -> (= (c_g (c_g (c_f c_y1 a_v))) (c_f c_y1 a_v))
+literals 63 (= c_y1 c_y2)
+Done ~ClassListPos with 0x55c607f8c060 RHS
+Done ~ClassListPos with 0x55c607f8c000 RHS
+literals 62 (= (c_g (c_g (c_f c_y1 a_v))) (c_f c_y1 a_v))
+Done ~ClassListPos with 0x55c607f8bee0 RHS
+Done ~ClassListPos with 0x55c607f8bfc0 RHS
+5 (= c_y1 (c_f c_y1 a_v)) && (= a_v (c_g (c_g (c_f c_y1 a_v)))) -> (= c_t (c_f c_y1 a_v))
+literals 59 (= c_y1 (c_f c_y1 a_v))
+Done ~ClassListPos with 0x55c607f8c060 RHS
+Done ~ClassListPos with 0x55c607f8bea0 LHS
+Done ~ClassListPos with 0x55c607f8bfc0 RHS
+Done ~ClassListPos with 0x55c607f8be80 RHS
+literals 64 (= a_v (c_g (c_g (c_f c_y1 a_v))))
+Done ~ClassListPos with 0x55c607f8bee0 RHS
+Done ~ClassListPos with 0x55c607f8be80 LHS
+literals 57 (= c_t (c_f c_y1 a_v))
+6 (= c_y2 (c_f c_y1 a_v)) && (= a_v (c_g (c_g (c_f c_y1 a_v)))) -> (= c_t (c_g (c_g (c_f c_y1 a_v))))
+literals 80 (= c_y2 (c_f c_y1 a_v))
+Done ~ClassListPos with 0x55c607f8c000 RHS
+Done ~ClassListPos with 0x55c607f8bea0 RHS
+Done ~ClassListPos with 0x55c607f8bfc0 RHS
+Done ~ClassListPos with 0x55c607f8be80 RHS
+Done ~ClassListPos with 0x55c607f8be20 RHS
+Done ~ClassListPos with 0x55c607f8bde0 RHS
+literals 64 (= a_v (c_g (c_g (c_f c_y1 a_v))))
+Done ~ClassListPos with 0x55c607f8bec0 LHS
+literals 78 (= c_t (c_g (c_g (c_f c_y1 a_v))))
+Done ~ClassListPos with 0x55c607f8bde0 LHS
+Done ~ClassListPos with 0x55c607f8bee0 RHS
+Done ~ClassListPos with 0x55c607f8be80 LHS
+Done ~ClassListPos with 0x55c607f8bec0 RHS
+Done ~ClassListPos with 0x55c607f8bec0 RHS
+7 (= c_s1 (c_g c_s1)) -> (= c_s2 (c_g c_s1))
+8 (= c_s1 (c_f c_y1 a_v)) -> (= (c_g c_s1) (c_g (c_f c_y1 a_v)))
+literals 72 (= c_s1 (c_f c_y1 a_v))
+Done ~ClassListPos with 0x55c607f8bfc0 LHS
+Done ~ClassListPos with 0x55c607f8bee0 LHS
+literals 71 (= (c_g c_s1) (c_g (c_f c_y1 a_v)))
+9 (= c_s1 (c_g (c_f c_y1 a_v))) -> (= (c_g c_s1) (c_g (c_g (c_f c_y1 a_v))))
+literals 70 (= c_s1 (c_g (c_f c_y1 a_v)))
+Done ~ClassListPos with 0x55c607f8bfa0 RHS
+literals 69 (= (c_g c_s1) (c_g (c_g (c_f c_y1 a_v))))
+Done ~ClassListPos with 0x55c607f8bfa0 LHS
+10 (= (c_g c_s1) (c_f c_y1 a_v)) -> (= c_s2 (c_g (c_f c_y1 a_v)))
+literals 68 (= (c_g c_s1) (c_f c_y1 a_v))
+Done ~ClassListPos with 0x55c607f8bfa0 LHS
+Done ~ClassListPos with 0x55c607f8bf60 LHS
+literals 66 (= c_s2 (c_g (c_f c_y1 a_v)))
+Done ~ClassListPos with 0x55c607f8bfa0 RHS
+Done ~ClassListPos with 0x55c607f8bf80 RHS
+11 (= (c_g c_s1) (c_g (c_f c_y1 a_v))) -> (= c_s2 (c_g (c_g (c_f c_y1 a_v))))
+literals 71 (= (c_g c_s1) (c_g (c_f c_y1 a_v)))
+literals 60 (= c_s2 (c_g (c_g (c_f c_y1 a_v))))
+Done ~ClassListPos with 0x55c607f8bf00 LHS
+12 (= (c_g (c_f c_y1 a_v)) (c_f c_y1 a_v)) -> (= (c_g (c_f c_y1 a_v)) (c_g (c_g (c_f c_y1 a_v))))
+literals 93 (= (c_g (c_f c_y1 a_v)) (c_f c_y1 a_v))
+Done ~ClassListPos with 0x55c607f8bfa0 RHS
+Done ~ClassListPos with 0x55c607f8bf80 RHS
+Done ~ClassListPos with 0x55c607f8bf00 RHS
+Done ~ClassListPos with 0x55c607f8bfa0 RHS
+literals 92 (= (c_g (c_f c_y1 a_v)) (c_g (c_g (c_f c_y1 a_v))))
+---------------------------------------------------------5894314097896
+node 72
+horn clauses where the node appears in the antecedent
+clause id: 8
+Inside unionupdate: 45 50
+Before, Term: 50 Literal: 71 Equation: 45=50 (45=50) Val: 1 RHS
+After,  Term: 50 Literal: 71 Equation: 45=50 (45=50) Val: 1 RHS
+Done ~ClassListPos with 0x55c607f8bfa0 RHS
+Before, Term: 50 Literal: 70 Equation: 33=50 (33=50) Val: 0 RHS
+After,  Term: 50 Literal: 70 Equation: 33=50 (33=45) Val: 0 RHS
+Done ~ClassListPos with 0x55c607f8bf80 RHS
+Before, Term: 50 Literal: 66 Equation: 47=50 (47=50) Val: 0 RHS
+After,  Term: 50 Literal: 66 Equation: 47=50 (47=45) Val: 0 RHS
+Done ~ClassListPos with 0x55c607f8bf00 RHS
+Before, Term: 50 Literal: 71 Equation: 45=50 (45=50) Val: 1 RHS
+After,  Term: 50 Literal: 71 Equation: 45=50 (45=50) Val: 1 RHS
+Done ~ClassListPos with 0x55c607f8bfa0 RHS
+Before, Term: 50 Literal: 0 Equation: 50=36 (50=36) Val: 0 LHS
+After,  Term: 50 Literal: 0 Equation: 50=36 (45=36) Val: 0 LHS
+Done ~ClassListPos with 0x55c607f8c260 LHS
+Before, Term: 50 Literal: 92 Equation: 50=51 (50=51) Val: 0 LHS
+After,  Term: 50 Literal: 92 Equation: 50=51 (45=51) Val: 0 LHS
+Done ~ClassListPos with 0x55c607f8c240 LHS
+node 65
+horn clauses where the node appears in the antecedent
+node 62
+horn clauses where the node appears in the antecedent
+node 71
+horn clauses where the node appears in the antecedent
+clause id: 11
+Inside unionupdate: 47 51
+Before, Term: 51 Literal: 65 Equation: 33=51 (33=51) Val: 1 RHS
+After,  Term: 51 Literal: 65 Equation: 33=51 (33=51) Val: 1 RHS
+Done ~ClassListPos with 0x55c607f8bee0 RHS
+Before, Term: 51 Literal: 62 Equation: 51=36 (51=36) Val: 1 LHS
+After,  Term: 51 Literal: 62 Equation: 51=36 (51=36) Val: 1 LHS
+Done ~ClassListPos with 0x55c607f8be80 LHS
+Before, Term: 51 Literal: 64 Equation: 31=51 (31=51) Val: 0 RHS
+After,  Term: 51 Literal: 64 Equation: 31=51 (31=47) Val: 0 RHS
+Done ~ClassListPos with 0x55c607f8bec0 RHS
+Before, Term: 51 Literal: 64 Equation: 31=51 (31=47) Val: 0 RHS
+After,  Term: 51 Literal: 64 Equation: 31=51 (31=47) Val: 0 RHS
+Done ~ClassListPos with 0x55c607f8bec0 RHS
+Before, Term: 51 Literal: 78 Equation: 40=51 (40=51) Val: 0 RHS
+After,  Term: 51 Literal: 78 Equation: 40=51 (40=47) Val: 0 RHS
+Done ~ClassListPos with 0x55c607f8c080 RHS
+Before, Term: 51 Literal: 69 Equation: 45=51 (45=51) Val: 0 RHS
+After,  Term: 51 Literal: 69 Equation: 45=51 (45=47) Val: 0 RHS
+Done ~ClassListPos with 0x55c607f8bf60 RHS
+Before, Term: 51 Literal: 60 Equation: 47=51 (47=51) Val: 1 RHS
+After,  Term: 51 Literal: 60 Equation: 47=51 (47=51) Val: 1 RHS
+Done ~ClassListPos with 0x55c607f8be40 RHS
+Before, Term: 51 Literal: 92 Equation: 50=51 (45=51) Val: 0 RHS
+After,  Term: 51 Literal: 92 Equation: 50=51 (45=47) Val: 0 RHS
+Done ~ClassListPos with 0x55c607f8c240 RHS
+node 60
+horn clauses where the node appears in the antecedent
+Merge (= c_z1 c_y1) -> (= c_s1 (c_f c_y1 a_v)) with (= c_s1 (c_f c_y1 a_v)) -> (= (c_g c_s1) (c_g (c_f c_y1 a_v)))
+Merge (= c_s1 (c_f c_y1 a_v)) -> (= (c_g c_s1) (c_g (c_f c_y1 a_v))) with (= (c_g c_s1) (c_g (c_f c_y1 a_v))) -> (= c_s2 (c_g (c_g (c_f c_y1 a_v))))
+ok1
+ok111
+Done ~Literal with 0
+Done ~Literal with 1
+Done ~Literal with 2
+Done ~Literal with 3
+Done ~Literal with 4
+Done ~Literal with 5
+Done ~Literal with 6
+Done ~Literal with 7
+Done ~Literal with 8
+Done ~Literal with 9
+Done ~Literal with 10
+Done ~Literal with 11
+Done ~Literal with 12
+Done ~Literal with 13
+Done ~Literal with 14
+Done ~Literal with 15
+Done ~Literal with 16
+Done ~Literal with 17
+Done ~Literal with 18
+Done ~Literal with 19
+Done ~Literal with 20
+Done ~Literal with 21
+Done ~Literal with 22
+Done ~Literal with 23
+Done ~Literal with 24
+Done ~Literal with 25
+Done ~Literal with 26
+Done ~Literal with 27
+Done ~Literal with 28
+Done ~Literal with 29
+Done ~Literal with 30
+Done ~Literal with 31
+Done ~Literal with 32
+Done ~Literal with 33
+Done ~Literal with 34
+Done ~Literal with 35
+Done ~Literal with 36
+Done ~Literal with 37
+Done ~Literal with 38
+Done ~Literal with 39
+Done ~Literal with 40
+Done ~Literal with 41
+Done ~Literal with 42
+Done ~Literal with 43
+Done ~Literal with 44
+Done ~Literal with 45
+Done ~Literal with 46
+Done ~Literal with 47
+Done ~Literal with 48
+Done ~Literal with 49
+Done ~Literal with 50
+Done ~Literal with 51
+Done ~Literal with 52
+Done ~Literal with 53
+Done ~Literal with 54
+Done ~Literal with 55
+Done ~Literal with 56
+Done ~Literal with 57
+Done ~Literal with 58
+IDKnowwww 5
+Done ~Clause with 5
+Done ~Literal with 59
+Done ~Literal with 60
+Done ~Literal with 61
+Done ~Literal with 62
+IDKnowwww 4
+Done ~Clause with 4
+Done ~Literal with 63
+IDKnowwww 6
+Done ~Clause with 6
+IDKnowwww 5
+Done ~Clause with 5
+Done ~Literal with 64
+Done ~Literal with 65
+Done ~Literal with 66
+Done ~Literal with 67
+IDKnowwww 10
+Done ~Clause with 10
+Done ~Literal with 68
+Done ~Literal with 69
+IDKnowwww 9
+Done ~Clause with 9
+Done ~Literal with 70
+IDKnowwww 11
+Done ~Clause with 11
+Done ~Literal with 71
+IDKnowwww 8
+Done ~Clause with 8
+Done ~Literal with 72
+Done ~Literal with 73
+IDKnowwww 2
+Done ~Clause with 2
+Done ~Literal with 74
+Done ~Literal with 75
+Done ~Literal with 76
+IDKnowwww 1
+Done ~Clause with 1
+Done ~Literal with 77
+Done ~Literal with 78
+Done ~Literal with 79
+IDKnowwww 6
+Done ~Clause with 6
+Done ~Literal with 80
+Done ~Literal with 81
+Done ~Literal with 82
+Done ~Literal with 83
+Done ~Literal with 84
+Done ~Literal with 85
+Done ~Literal with 86
+Done ~Literal with 87
+Done ~Literal with 88
+Done ~Literal with 89
+Done ~Literal with 90
+Done ~Literal with 91
+Done ~Literal with 92
+Done ~Hornsat
+Makefile:37: recipe for target 'run' failed

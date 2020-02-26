@@ -1,10 +1,15 @@
 #include "Match.h"
+#define DEBUG_DESTRUCTOR_MATCH true
 
 Match::Match() {}
 
 Match::Match(std::vector<std::vector<unsigned> > m_vec) : m_vec(m_vec) {}
 
-Match::~Match() {}
+Match::~Match() {
+#if DEBUG_DESTRUCTOR_MATCH
+  std::cout << "Done ~Match" << std::endl;
+#endif
+}
 
 unsigned Match::size(){
   return m_vec.size();
