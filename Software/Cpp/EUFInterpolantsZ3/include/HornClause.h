@@ -2,8 +2,11 @@
 #define _HORN_CLAUSE_
 
 #include <algorithm>
+#include <list>
 #include <z3++.h>
 #include "UnionFind.h"
+
+typedef std::vector<std::list<unsigned> > CCList;
 
 class HornClause {
 
@@ -12,6 +15,7 @@ class HornClause {
   z3::expr_vector & subterms;
   z3::expr_vector   antecedent;
   z3::expr          consequent;
+  CCList &          cc_list;
   std::vector<bool> matched;
   bool              is_common_antecedent = true;
   unsigned          num_uncomm_antecedent = 0;
@@ -22,7 +26,7 @@ class HornClause {
   void        orient();
   
 public:
-  HornClause(UnionFind &, z3::context &, z3::expr_vector &, z3::expr_vector, z3::expr);
+  HornClause(UnionFind &, z3::context &, z3::expr_vector &, z3::expr_vector, z3::expr, CCList &);
   ~HornClause();
   
   bool                    checkTriviality();

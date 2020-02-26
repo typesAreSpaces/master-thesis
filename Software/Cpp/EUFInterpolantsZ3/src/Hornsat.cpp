@@ -1,7 +1,7 @@
 #include "Hornsat.h"
-#define DEBUGGING_SATISFIABLE true
-#define DEBUGGING_UNIONUPDATE true
-#define DEBUGGING_CONSTRUCTOR true
+#define DEBUGGING_SATISFIABLE false
+#define DEBUGGING_UNIONUPDATE false
+#define DEBUGGING_CONSTRUCTOR false
 
 unsigned Literal::curr_num_literals = 0;
 

@@ -2,10 +2,12 @@
 #define _EUF_INTERPOLANT_
 
 #include <map>
+#include <list>
 #include "HornClauses.h"
 #include "Hornsat.h"
 
 typedef std::map<std::string, std::vector<unsigned> > FSymPositions;
+typedef std::vector<std::list<unsigned> > CCList;
 
 class EUFInterpolant {
 
@@ -19,9 +21,12 @@ class EUFInterpolant {
   z3::expr          contradiction;
   z3::expr_vector   disequalities;
   unsigned          size;
+  CCList            cc_list;
+  
 
   // The following function defines (partially) horn_clauses, subterms, and uncommon_positions.
   void            init(z3::expr const &, unsigned &, std::vector<bool> &);
+  void            initCCList(z3::expr const &);
   z3::expr        repr(const z3::expr &);
   z3::expr_vector buildHCBody(z3::expr const &, z3::expr const &);
   void            disequalitiesToHCS();

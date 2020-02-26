@@ -10,7 +10,9 @@ EUFInterpolant::EUFInterpolant(z3::expr const & part_a) :
   contradiction = ctx.bool_val(false);
   std::vector<bool> visited(size, false);
   subterms.resize(size);
+  cc_list.resize(size);
   init(part_a, min_id, visited);
+  initCCList(part_a);
   
   // There is extra padding for non-apps-z3::expressions
   unsigned aux_num_terms = size - min_id;
@@ -36,7 +38,7 @@ EUFInterpolant::EUFInterpolant(z3::expr const & part_a) :
 
     // std::cout << horn_clauses << std::endl;
 
-    // Stress test -------------------------------------------------------------
+    // Stress test ----------------------------------------------------------------------
     z3::sort test_sort = ctx.uninterpreted_sort("A");
     z3::expr test_y2 = ctx.constant("c_y2", test_sort);
     z3::expr test_y1 = ctx.constant("c_y1", test_sort);
@@ -49,18 +51,31 @@ EUFInterpolant::EUFInterpolant(z3::expr const & part_a) :
     z3::expr_vector test_body(ctx);
     test_body.push_back((test_s2 == f(test_y1, test_v)));
     z3::expr test_head = (test_y1 == f(test_y1, test_v));
-    horn_clauses.add(new HornClause(uf, ctx, subterms, test_body, test_head));
+    horn_clauses.add(new HornClause(uf, ctx, subterms, test_body, test_head, cc_list));
 
     z3::expr_vector test_body2(ctx);
     test_body2.push_back((test_s1 == f(test_y2, test_v)));
     test_body2.push_back((test_y1 == f(test_y1, test_v)));
     z3::expr test_head2 = (test_y2 == test_v);
-    horn_clauses.add(new HornClause(uf, ctx, subterms, test_body2, test_head2));
-    // Stress test -------------------------------------------------------------
+    horn_clauses.add(new HornClause(uf, ctx, subterms, test_body2, test_head2, cc_list));
+    // Stress test ----------------------------------------------------------------------
     
     UnionFind aux_uf(uf);
     Hornsat hsat(horn_clauses, aux_uf);
     auto replacements = hsat.satisfiable(aux_uf);
+
+    std::cout << "Printing predecessors" << std::endl;
+    unsigned i = 0;
+    std::cout << cc_list.size() << std::endl;
+    for(auto x : cc_list){
+      if(x.size() > 0 && i >= min_id){
+	std::cout << "Predecessors for " << i << " " << subterms[i] << ":" << std::endl;
+	for(auto y : x)
+	  std::cout << "\t" << y << " " << subterms[y] << " ";
+	std::cout << std::endl;
+      }
+      i++;
+    }
     
     // for(auto x : replacements)
     //   std::cout << "Merge " << *horn_clauses[x.clause1]
@@ -112,6 +127,23 @@ void EUFInterpolant::init(z3::expr const & e, unsigned & min_id, std::vector<boo
   throw "Problem @ EUFInterpolant::init. The expression e is not an application term.";
 }
 
+void EUFInterpolant::initCCList(z3::expr const & e){
+  if(e.is_app()){
+    
+    std::cout << "Visiting " << e.id() << " " << e << " " << subterms.size() << std::endl;
+    
+    unsigned num = e.num_args();
+    for(unsigned i = 0; i < num; i++){
+      cc_list[e.arg(i).id()].push_back(e.id());
+      initCCList(e.arg(i));
+    }
+    return;
+  }
+  throw "Problem @ EUFInterpolant::initCCList. The expression e is not an application term.";
+}
+
+
+
 z3::expr EUFInterpolant::repr(const z3::expr & t){
   return subterms[uf.find(t.id())];
 }
@@ -129,7 +161,7 @@ void EUFInterpolant::disequalitiesToHCS(){
   for(unsigned i = 0; i < num_disequalities; i++){
     z3::expr_vector hc_body(ctx);
     hc_body.push_back(repr(disequalities[i].arg(0)) == repr(disequalities[i].arg(1)));
-    horn_clauses.add(new HornClause(uf, ctx, subterms, hc_body, contradiction));
+    horn_clauses.add(new HornClause(uf, ctx, subterms, hc_body, contradiction, cc_list));
   }
 }
 
@@ -144,7 +176,7 @@ void EUFInterpolant::exposeUncommons(){
 	  if(!t1.is_common() || !t2.is_common()){
 	    z3::expr_vector hc_body = buildHCBody(t1, t2);
 	    z3::expr        hc_head = repr(t1) == repr(t2);
-	    horn_clauses.add(new HornClause(uf, ctx, subterms, hc_body, hc_head));
+	    horn_clauses.add(new HornClause(uf, ctx, subterms, hc_body, hc_head, cc_list));
 	  }
 	}
     
