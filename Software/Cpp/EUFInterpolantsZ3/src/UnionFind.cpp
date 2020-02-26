@@ -1,5 +1,5 @@
 #include "UnionFind.h"
-#define DEBUG_DESTRUCTOR_UF true
+#define DEBUG_DESTRUCTOR_UF false
 
 UnionFind::UnionFind(){
 };

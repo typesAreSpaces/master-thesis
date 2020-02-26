@@ -9,7 +9,7 @@
 #define DEBUG_MC1CMC2A           true
 #define DEBUG_MC1CMC1A2          true
 #define DEBUG_MATCHES            false
-#define DEBUG_DESTRUCTOR_HCS     true
+#define DEBUG_DESTRUCTOR_HCS     false
 
 HornClauses::HornClauses(z3::context & ctx, const z3::expr_vector & subterms, const unsigned & min_id) :
   ctx(ctx),

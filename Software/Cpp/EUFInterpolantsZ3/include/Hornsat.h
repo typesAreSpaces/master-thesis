@@ -1,7 +1,7 @@
 #ifndef _HORNSAT_
 #define _HORNSAT_
 #define FALSELITERAL 0
-#define DEBUG_DESTRUCTORS true
+#define DEBUG_DESTRUCTORS false
 
 #include <iostream>
 #include <queue>
@@ -54,9 +54,8 @@ struct Literal {
   unsigned l_class, r_class;
   bool val;
   struct Clause * clause_list;
-  
   Literal(unsigned literal_id, bool val, struct Clause * clause_list) :
-  literal_id(literal_id), l_id(0), r_id(0), l_class(0), r_class(0),
+    literal_id(literal_id), l_id(0), r_id(0), l_class(0), r_class(0),
     val(val), clause_list(clause_list){}
   Literal() : Literal(curr_num_literals++, false, nullptr) {}
   friend std::ostream & operator << (std::ostream & os, const Literal & l){
@@ -85,7 +84,6 @@ struct ClassListPos {
   }
   ~ClassListPos(){
 #if DEBUG_DESTRUCTORS
-    // std::cout << "Done ~ClassListPos with " << std::endl;
     std::cout << "Done ~ClassListPos with " << lit_pointer << (eq_side == LHS ? " LHS" : " RHS") << std::endl;
 #endif
   }

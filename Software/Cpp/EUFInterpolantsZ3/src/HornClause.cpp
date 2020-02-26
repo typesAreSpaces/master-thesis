@@ -1,5 +1,5 @@
 #include "HornClause.h"
-#define DEBUG_DESTRUCTOR_HC true
+#define DEBUG_DESTRUCTOR_HC false
 
 HornClause::HornClause(UnionFind & uf, z3::context & ctx, z3::expr_vector & subterms, z3::expr_vector antecedent, z3::expr consequent) :
   uf(uf), ctx(ctx), subterms(subterms), antecedent(antecedent), consequent(consequent){
@@ -33,7 +33,6 @@ HornClause::HornClause(UnionFind & uf, z3::context & ctx, z3::expr_vector & subt
 
 HornClause::~HornClause(){
 #if DEBUG_DESTRUCTOR_HC
-  std::cout << antecedent << " -> " << consequent << std::endl;
   std::cout << "Done ~HornClause" << std::endl;
 #endif
 }
