@@ -1,11 +1,16 @@
 #include "UnionFind.h"
 #define DEBUG_DESTRUCTOR_UF false
 
-UnionFind::UnionFind(){
+UnionFind::UnionFind() : size(0){
 };
 
+UnionFind::UnionFind(unsigned size) : representative(size, 0), rank(size, 1), size(size){
+  for(unsigned i = 0; i < size; i++)
+    representative[i] = i;
+}
+
 UnionFind::UnionFind(unsigned array[], unsigned size) :
-  representative(array, array + size), rank(size, 0), size(size){
+  representative(array, array + size), rank(size, 1), size(size){
 }
 
 UnionFind::~UnionFind(){
@@ -16,6 +21,12 @@ UnionFind::~UnionFind(){
 
 // The first argument becomes the new
 // representative, always
+void UnionFind::combine(unsigned x, unsigned y){
+  representative[find(y)] = find(x);
+  rank[find(x)] += rank[find(y)];
+  return;
+}
+
 void UnionFind::merge(unsigned x, unsigned y){
   assert(x < size && y < size);
   link(find(x), find(y));
@@ -25,11 +36,11 @@ void UnionFind::merge(unsigned x, unsigned y){
 void UnionFind::link(unsigned x, unsigned y){
   if(rank[x] > rank[y]){
     representative[y] = x;
+    rank[x] += rank[y];
     return;
   }
   representative[x] = y;
-  if(rank[x] == rank[y])
-    rank[y]++;
+  rank[y] += rank[x];
   return;
 }
 

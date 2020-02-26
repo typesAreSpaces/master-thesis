@@ -3,6 +3,7 @@
 
 #include <map>
 #include <list>
+#include "CongruenceClosure.h"
 #include "HornClauses.h"
 #include "Hornsat.h"
 
@@ -27,6 +28,7 @@ class EUFInterpolant {
   // The following function defines (partially) horn_clauses, subterms, and uncommon_positions.
   void            init(z3::expr const &, unsigned &, std::vector<bool> &);
   void            initCCList(z3::expr const &);
+  void            processEqs(z3::expr const &);
   z3::expr        repr(const z3::expr &);
   z3::expr_vector buildHCBody(z3::expr const &, z3::expr const &);
   void            disequalitiesToHCS();

@@ -13,8 +13,10 @@ class UnionFind {
   
 public:
   UnionFind();
+  UnionFind(unsigned);
   UnionFind(unsigned [], unsigned);
   ~UnionFind();
+  void combine(unsigned, unsigned);
   void merge(unsigned, unsigned);
   void link(unsigned, unsigned);
   unsigned find(unsigned);

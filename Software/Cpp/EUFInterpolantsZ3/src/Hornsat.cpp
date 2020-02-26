@@ -124,9 +124,8 @@ Hornsat::~Hornsat(){
 }
 
 void Hornsat::unionupdate(UnionFind & uf, unsigned x, unsigned y, unsigned clause){
-  unsigned aux;
   if(uf.greater(y, x)){
-    aux = x;
+    unsigned aux = x;
     x = y;
     y = aux;
   }
@@ -158,7 +157,7 @@ void Hornsat::unionupdate(UnionFind & uf, unsigned x, unsigned y, unsigned claus
 #endif
     }
   }
-  uf.merge(x, y);
+  uf.combine(x, y);
 }
 
 void Hornsat::satisfiable(){

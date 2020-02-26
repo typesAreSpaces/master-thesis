@@ -1,0 +1,48 @@
+./euf_interpolator
+All the subterms:
+Original: c_z1 Representative c_z1
+Original: a_v Representative a_v
+Original: (c_f c_z1 a_v) Representative c_s1
+Original: c_s1 Representative c_s1
+Original: (= (c_f c_z1 a_v) c_s1) Representative (= (c_f c_z1 a_v) c_s1)
+Original: c_y1 Representative c_y1
+Original: (c_f c_y1 a_v) Representative (c_f c_y1 a_v)
+Original: c_y2 Representative c_y2
+Original: (c_f c_y2 a_v) Representative (c_g (c_g (c_f c_y1 a_v)))
+Original: (c_f (c_f c_y1 a_v) (c_f c_y2 a_v)) Representative c_t
+Original: c_t Representative c_t
+Original: (= (c_f (c_f c_y1 a_v) (c_f c_y2 a_v)) c_t) Representative (= (c_f (c_f c_y1 a_v) (c_f c_y2 a_v)) c_t)
+Original: (and (= (c_f c_z1 a_v) c_s1) (= (c_f (c_f c_y1 a_v) (c_f c_y2 a_v)) c_t)) Representative (and (= (c_f c_z1 a_v) c_s1) (= (c_f (c_f c_y1 a_v) (c_f c_y2 a_v)) c_t))
+Original: (distinct c_s1 c_t) Representative (distinct c_s1 c_t)
+Original: (and (= (c_f c_z1 a_v) c_s1)
+     (= (c_f (c_f c_y1 a_v) (c_f c_y2 a_v)) c_t)
+     (distinct c_s1 c_t)) Representative (and (= (c_f c_z1 a_v) c_s1)
+     (= (c_f (c_f c_y1 a_v) (c_f c_y2 a_v)) c_t)
+     (distinct c_s1 c_t))
+Original: (c_g c_s1) Representative (c_g c_s1)
+Original: (c_g (c_g c_s1)) Representative c_s2
+Original: c_s2 Representative c_s2
+Original: (= (c_g (c_g c_s1)) c_s2) Representative (= (c_g (c_g c_s1)) c_s2)
+Original: (and (= (c_f c_z1 a_v) c_s1)
+     (= (c_f (c_f c_y1 a_v) (c_f c_y2 a_v)) c_t)
+     (distinct c_s1 c_t)
+     (= (c_g (c_g c_s1)) c_s2)) Representative (and (= (c_f c_z1 a_v) c_s1)
+     (= (c_f (c_f c_y1 a_v) (c_f c_y2 a_v)) c_t)
+     (distinct c_s1 c_t)
+     (= (c_g (c_g c_s1)) c_s2))
+Original: (c_g (c_f c_y1 a_v)) Representative (c_g (c_f c_y1 a_v))
+Original: (c_g (c_g (c_f c_y1 a_v))) Representative (c_g (c_g (c_f c_y1 a_v)))
+Original: (= (c_g (c_g (c_f c_y1 a_v))) (c_f c_y2 a_v)) Representative (= (c_g (c_g (c_f c_y1 a_v))) (c_f c_y2 a_v))
+Original: (let ((a!1 (= (c_g (c_g (c_f c_y1 a_v))) (c_f c_y2 a_v))))
+  (and (= (c_f c_z1 a_v) c_s1)
+       (= (c_f (c_f c_y1 a_v) (c_f c_y2 a_v)) c_t)
+       (distinct c_s1 c_t)
+       (= (c_g (c_g c_s1)) c_s2)
+       a!1)) Representative (let ((a!1 (= (c_g (c_g (c_f c_y1 a_v))) (c_f c_y2 a_v))))
+  (and (= (c_f c_z1 a_v) c_s1)
+       (= (c_f (c_f c_y1 a_v) (c_f c_y2 a_v)) c_t)
+       (distinct c_s1 c_t)
+       (= (c_g (c_g c_s1)) c_s2)
+       a!1))
+Horn clauses produced:
+

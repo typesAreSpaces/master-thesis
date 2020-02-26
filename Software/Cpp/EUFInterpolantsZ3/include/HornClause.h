@@ -20,8 +20,6 @@ class HornClause {
   bool              is_common_antecedent = true;
   unsigned          num_uncomm_antecedent = 0;
 
-  static bool compareEquation(const z3::expr &, const z3::expr &);
-  static bool compareTerm(const z3::expr &, const z3::expr &);
   void        normalize();
   void        orient();
   
@@ -35,6 +33,9 @@ public:
   bool                    isCommonAntecedent();
   bool                    isCommonConsequent();
   unsigned                numUncommAntecedent();
+
+  static bool compareEquation(const z3::expr &, const z3::expr &);
+  static bool compareTerm(const z3::expr &, const z3::expr &);
   
   friend bool operator <(const HornClause &, const HornClause &);
   friend bool operator >(const HornClause &, const HornClause &);

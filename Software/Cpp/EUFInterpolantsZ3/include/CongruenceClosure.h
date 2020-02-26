@@ -1,6 +1,6 @@
 #ifndef _CONG_CLOSURE__
 #define _CONG_CLOSURE_
-#define DEBUG_DESTRUCTORS_CC true
+#define DEBUG_DESTRUCTORS_CC false
 
 #include <iostream>
 #include <unordered_map>
@@ -8,6 +8,7 @@
 #include <utility>
 #include <z3++.h>
 #include "UnionFind.h"
+#include "HornClause.h"
 
 class SignatureTable {
   std::unordered_map<std::size_t, unsigned> sig_table;

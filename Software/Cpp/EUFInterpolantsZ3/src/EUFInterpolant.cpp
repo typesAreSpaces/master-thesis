@@ -12,81 +12,94 @@ EUFInterpolant::EUFInterpolant(z3::expr const & part_a) :
   subterms.resize(size);
   cc_list.resize(size);
   init(part_a, min_id, visited);
+  uf = UnionFind(size);
   initCCList(part_a);
+  processEqs(part_a);
   
-  // There is extra padding for non-apps-z3::expressions
-  unsigned aux_num_terms = size - min_id;
-  unsigned aux_class_ids[aux_num_terms];
-  z3::expr_vector aux_subterms(ctx);
+  std::list<unsigned> pending;
   for(unsigned i = min_id; i < size; i++)
-    aux_subterms.push_back(subterms[i]);
+    if(subterms[i].num_args() > 0)
+      pending.push_back(i);
+  std::list<std::pair<unsigned, unsigned> > combine;
+  
+  CongruenceClosure cc(subterms, cc_list, uf);  
+  cc.buildCongruenceClosure(pending, combine);
 
-  z3::solver euf_solver(ctx, "QF_UF");
-  euf_solver.add(part_a);
-  if(euf_solver.implied_equalities(aux_num_terms, aux_subterms, aux_class_ids) != z3::unsat){
-    unsigned class_ids[size];
-    for(unsigned i = 0; i < size; i++){
-      if(i < min_id)
-	class_ids[i] = i;
-      else
-	class_ids[i] = aux_class_ids[i - min_id] + min_id;
-    }
-    uf = UnionFind(class_ids, size);
+  return;
+  
+  // // There is extra padding for non-apps-z3::expressions
+  // unsigned aux_num_terms = size - min_id;
+  // unsigned aux_class_ids[aux_num_terms];
+  // z3::expr_vector aux_subterms(ctx);
+  // for(unsigned i = min_id; i < size; i++)
+  //   aux_subterms.push_back(subterms[i]);
+
+  // z3::solver euf_solver(ctx, "QF_UF");
+  // euf_solver.add(part_a);
+  // if(euf_solver.implied_equalities(aux_num_terms, aux_subterms, aux_class_ids) != z3::unsat){
+  //   unsigned class_ids[size];
+  //   for(unsigned i = 0; i < size; i++){
+  //     if(i < min_id)
+  // 	class_ids[i] = i;
+  //     else
+  // 	class_ids[i] = aux_class_ids[i - min_id] + min_id;
+  //   }
+  //   uf = UnionFind(class_ids, size);
     
-    disequalitiesToHCS();
-    exposeUncommons();
+  //   disequalitiesToHCS();
+  //   exposeUncommons();
 
-    // std::cout << horn_clauses << std::endl;
+  //   // std::cout << horn_clauses << std::endl;
 
-    // Stress test ----------------------------------------------------------------------
-    z3::sort test_sort = ctx.uninterpreted_sort("A");
-    z3::expr test_y2 = ctx.constant("c_y2", test_sort);
-    z3::expr test_y1 = ctx.constant("c_y1", test_sort);
-    z3::expr test_s1 = ctx.constant("c_s1", test_sort);
-    z3::expr test_s2 = ctx.constant("c_s2", test_sort);
-    z3::expr test_z2 = ctx.constant("c_z2", test_sort);
-    z3::expr test_v = ctx.constant("a_v", test_sort);
-    z3::func_decl f = ctx.function("c_f", test_sort, test_sort, test_sort);
+  //   // Stress test ----------------------------------------------------------------------
+  //   z3::sort test_sort = ctx.uninterpreted_sort("A");
+  //   z3::expr test_y2 = ctx.constant("c_y2", test_sort);
+  //   z3::expr test_y1 = ctx.constant("c_y1", test_sort);
+  //   z3::expr test_s1 = ctx.constant("c_s1", test_sort);
+  //   z3::expr test_s2 = ctx.constant("c_s2", test_sort);
+  //   z3::expr test_z2 = ctx.constant("c_z2", test_sort);
+  //   z3::expr test_v = ctx.constant("a_v", test_sort);
+  //   z3::func_decl f = ctx.function("c_f", test_sort, test_sort, test_sort);
     
-    z3::expr_vector test_body(ctx);
-    test_body.push_back((test_s2 == f(test_y1, test_v)));
-    z3::expr test_head = (test_y1 == f(test_y1, test_v));
-    horn_clauses.add(new HornClause(uf, ctx, subterms, test_body, test_head, cc_list));
+  //   z3::expr_vector test_body(ctx);
+  //   test_body.push_back((test_s2 == f(test_y1, test_v)));
+  //   z3::expr test_head = (test_y1 == f(test_y1, test_v));
+  //   horn_clauses.add(new HornClause(uf, ctx, subterms, test_body, test_head, cc_list));
 
-    z3::expr_vector test_body2(ctx);
-    test_body2.push_back((test_s1 == f(test_y2, test_v)));
-    test_body2.push_back((test_y1 == f(test_y1, test_v)));
-    z3::expr test_head2 = (test_y2 == test_v);
-    horn_clauses.add(new HornClause(uf, ctx, subterms, test_body2, test_head2, cc_list));
-    // Stress test ----------------------------------------------------------------------
+  //   z3::expr_vector test_body2(ctx);
+  //   test_body2.push_back((test_s1 == f(test_y2, test_v)));
+  //   test_body2.push_back((test_y1 == f(test_y1, test_v)));
+  //   z3::expr test_head2 = (test_y2 == test_v);
+  //   horn_clauses.add(new HornClause(uf, ctx, subterms, test_body2, test_head2, cc_list));
+  //   // Stress test ----------------------------------------------------------------------
     
-    UnionFind aux_uf(uf);
-    Hornsat hsat(horn_clauses, aux_uf);
-    auto replacements = hsat.satisfiable(aux_uf);
+  //   UnionFind aux_uf(uf);
+  //   Hornsat hsat(horn_clauses, aux_uf);
+  //   auto replacements = hsat.satisfiable(aux_uf);
 
-    std::cout << "Printing predecessors" << std::endl;
-    unsigned i = 0;
-    std::cout << cc_list.size() << std::endl;
-    for(auto x : cc_list){
-      if(x.size() > 0 && i >= min_id){
-	std::cout << "Predecessors for " << i << " " << subterms[i] << ":" << std::endl;
-	for(auto y : x)
-	  std::cout << "\t" << y << " " << subterms[y] << " ";
-	std::cout << std::endl;
-      }
-      i++;
-    }
+  //   std::cout << "Printing predecessors" << std::endl;
+  //   unsigned i = 0;
+  //   std::cout << cc_list.size() << std::endl;
+  //   for(auto x : cc_list){
+  //     if(x.size() > 0 && i >= min_id){
+  // 	std::cout << "Predecessors for " << i << " " << subterms[i] << ":" << std::endl;
+  // 	for(auto y : x)
+  // 	  std::cout << "\t" << y << " " << subterms[y] << " ";
+  // 	std::cout << std::endl;
+  //     }
+  //     i++;
+  //   }
     
-    // for(auto x : replacements)
-    //   std::cout << "Merge " << *horn_clauses[x.clause1]
-    // 		<< " with " << *horn_clauses[x.clause2] << std::endl;
+  //   // for(auto x : replacements)
+  //   //   std::cout << "Merge " << *horn_clauses[x.clause1]
+  //   // 		<< " with " << *horn_clauses[x.clause2] << std::endl;
 
-    // std::cout << hsat << std::endl;
+  //   // std::cout << hsat << std::endl;
 
-    // Keep working here
-    buildInterpolant(replacements);
-    return;
-  }
+  //   // Keep working here
+  //   buildInterpolant(replacements);
+  //   return;
+  // }
   throw "Problem @ EUFInterpolant::EUFInterpolant. The z3::expr const & part_a was unsatisfiable.";
 }
 
@@ -129,9 +142,6 @@ void EUFInterpolant::init(z3::expr const & e, unsigned & min_id, std::vector<boo
 
 void EUFInterpolant::initCCList(z3::expr const & e){
   if(e.is_app()){
-    
-    std::cout << "Visiting " << e.id() << " " << e << " " << subterms.size() << std::endl;
-    
     unsigned num = e.num_args();
     for(unsigned i = 0; i < num; i++){
       cc_list[e.arg(i).id()].push_back(e.id());
@@ -142,7 +152,26 @@ void EUFInterpolant::initCCList(z3::expr const & e){
   throw "Problem @ EUFInterpolant::initCCList. The expression e is not an application term.";
 }
 
+void EUFInterpolant::processEqs(z3::expr const & e){
+  if(e.is_app()){ 
+    unsigned num = e.num_args();
+    for(unsigned i = 0; i < num; i++)
+      processEqs(e.arg(i));
 
+    z3::func_decl f = e.decl();
+    switch(f.decl_kind()){
+    case Z3_OP_EQ:
+      if(HornClause::compareTerm(e.arg(0), e.arg(1)))
+      	uf.combine(e.arg(1).id(), e.arg(0).id());
+      else
+      	uf.combine(e.arg(0).id(), e.arg(1).id());
+      return;
+    default:
+      return;
+    }
+  }
+  throw "Problem @ EUFInterpolant::processEqs. The expression e is not an application term.";
+}
 
 z3::expr EUFInterpolant::repr(const z3::expr & t){
   return subterms[uf.find(t.id())];
@@ -244,16 +273,20 @@ z3::expr EUFInterpolant::buildInterpolant(std::vector<Replacement> replacements)
 }
 
 std::ostream & operator << (std::ostream & os, EUFInterpolant & euf){
-  unsigned num = euf.size;
+  unsigned num = euf.size, num_changes = 0;
   std::cout << "All the subterms:" << std::endl;
   for(unsigned i = euf.min_id; i < num; i++){
+    // std::cout << "Original: " << i
+    // 	      << " Representative " << euf.uf.find(i) << std::endl;
     std::cout << "Original: " << euf.subterms[i]
-	      << " Representative " << euf.subterms[euf.uf.find(euf.subterms[i].id())] << std::endl;
+    	      << " Representative " << euf.subterms[euf.uf.find(euf.subterms[i].id())] << std::endl;
+    if(i != euf.uf.find(i))
+      num_changes++;
   }
 
   std::cout << "Horn clauses produced:" << std::endl;
   for(HornClause * x : euf.horn_clauses.getHornClauses())
     std::cout << *x << std::endl;
-  
+  std::cout << "Number of differences between term and its representative: " << num_changes;
   return os;
 }

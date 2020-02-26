@@ -1,5 +1,4 @@
 #include "CongruenceClosure.h"
-#define DEBUG_DESTRUCTOR_CC true
 
 
 CongruenceClosure::CongruenceClosure(const z3::expr_vector & terms, CCList & cc_list, UnionFind & uf) :
@@ -7,7 +6,7 @@ CongruenceClosure::CongruenceClosure(const z3::expr_vector & terms, CCList & cc_
 }
 
 CongruenceClosure::~CongruenceClosure(){
-#if DEBUG_DESTRUCTOR_CC
+#if DEBUG_DESTRUCTORS_CC
   std::cout << "Done ~CongruenceClosure" << std::endl;
 #endif
 }
@@ -35,11 +34,18 @@ void CongruenceClosure::buildCongruenceClosure(std::list<unsigned> & pending, st
 	  v = w;
 	  w = aux;
 	}
+	if(HornClause::compareTerm(terms[uf.find(v)], terms[uf.find(w)])){
+	  unsigned aux = v;
+	  v = w;
+	  w = aux;
+	}
 	for(auto u : cc_list[w]){
 	  sig_table.erase(terms[u]);
 	  pending.push_back(u);
 	}
-	uf.merge(uf.find(v), uf.find(w));
+	// CHANGES CAN HAPPEN HERE
+	uf.combine(uf.find(v), uf.find(w));
+	cc_list[uf.find(v)].splice(cc_list[uf.find(v)].end(), cc_list[uf.find(w)]);
       }
     }
   }
