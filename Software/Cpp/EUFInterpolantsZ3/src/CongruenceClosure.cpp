@@ -11,7 +11,8 @@ CongruenceClosure::~CongruenceClosure(){
 #endif
 }
 
-void CongruenceClosure::buildCongruenceClosure(std::list<unsigned> & pending, std::list<std::pair<unsigned, unsigned> > & combine){
+void CongruenceClosure::buildCongruenceClosure(std::list<unsigned> & pending,
+					       std::list<std::pair<unsigned, unsigned> > & combine){
   while(!pending.empty()){
     combine.clear();
     for(auto v_id : pending){

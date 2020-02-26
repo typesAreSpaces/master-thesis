@@ -211,9 +211,8 @@ std::vector<Replacement> Hornsat::satisfiable(UnionFind & uf){
 #if DEBUGGING_SATISFIABLE
       std::cout << "Clause id: " << clause2 << std::endl;
 #endif
-      --num_args[clause2];
+      --num_args[clause2]; // WRONG: This should decrement only if the clause involved is uncommon
       // TODO: Capture the propagation indicated below
-      // std::cout << "Merge: " << clause1 << " and " << clause2 << std::endl;
       ans.push_back(Replacement(clause1, clause2));
       
       if(num_args[clause2] == 0){

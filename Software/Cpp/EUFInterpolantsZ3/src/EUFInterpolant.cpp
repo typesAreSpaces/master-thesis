@@ -25,6 +25,22 @@ EUFInterpolant::EUFInterpolant(z3::expr const & part_a) :
   CongruenceClosure cc(subterms, cc_list, uf);  
   cc.buildCongruenceClosure(pending, combine);
 
+  // disequalitiesToHCS();
+  // exposeUncommons();
+  // std::cout << horn_clauses << std::endl;
+  
+  // UnionFind aux_uf(uf);
+  // Hornsat hsat(horn_clauses, aux_uf);
+  // // Keep working here
+  // auto replacements = hsat.satisfiable(aux_uf);
+    
+  // for(auto x : replacements)
+  //   std::cout << "Merge " << *horn_clauses[x.clause1]
+  // 		<< " with " << *horn_clauses[x.clause2] << std::endl;
+
+  // std::cout << hsat << std::endl;
+
+  // buildInterpolant(replacements);
   return;
   
   // // There is extra padding for non-apps-z3::expressions
@@ -76,19 +92,6 @@ EUFInterpolant::EUFInterpolant(z3::expr const & part_a) :
   //   UnionFind aux_uf(uf);
   //   Hornsat hsat(horn_clauses, aux_uf);
   //   auto replacements = hsat.satisfiable(aux_uf);
-
-  //   std::cout << "Printing predecessors" << std::endl;
-  //   unsigned i = 0;
-  //   std::cout << cc_list.size() << std::endl;
-  //   for(auto x : cc_list){
-  //     if(x.size() > 0 && i >= min_id){
-  // 	std::cout << "Predecessors for " << i << " " << subterms[i] << ":" << std::endl;
-  // 	for(auto y : x)
-  // 	  std::cout << "\t" << y << " " << subterms[y] << " ";
-  // 	std::cout << std::endl;
-  //     }
-  //     i++;
-  //   }
     
   //   // for(auto x : replacements)
   //   //   std::cout << "Merge " << *horn_clauses[x.clause1]
@@ -208,7 +211,6 @@ void EUFInterpolant::exposeUncommons(){
 	    horn_clauses.add(new HornClause(uf, ctx, subterms, hc_body, hc_head, cc_list));
 	  }
 	}
-    
   }
   return;
 }
