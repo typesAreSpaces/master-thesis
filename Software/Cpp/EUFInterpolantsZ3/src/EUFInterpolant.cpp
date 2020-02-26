@@ -51,16 +51,16 @@ EUFInterpolant::EUFInterpolant(z3::expr const & part_a) :
   // horn_clauses.add(new HornClause(uf, ctx, subterms, test_body2, test_head2, cc_list));
   // // Stress test ----------------------------------------------------------------------
   
-  UnionFind aux_uf(uf);
-  Hornsat hsat(horn_clauses, aux_uf);
+  UnionFind hornsat_uf(uf);
+  Hornsat hsat(horn_clauses, hornsat_uf);
   // Keep working here
-  auto replacements = hsat.satisfiable(aux_uf);
+  auto replacements = hsat.satisfiable(hornsat_uf);
     
   for(auto x : replacements)
     std::cout << "Merge " << *horn_clauses[x.clause1]
 	      << " with " << *horn_clauses[x.clause2] << std::endl;
 
-  std::cout << hsat << std::endl;
+  // std::cout << hsat << std::endl;
 
   buildInterpolant(replacements);
   return;

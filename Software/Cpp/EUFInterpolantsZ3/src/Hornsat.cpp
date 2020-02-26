@@ -1,7 +1,7 @@
 #include "Hornsat.h"
-#define DEBUGGING_SATISFIABLE true
-#define DEBUGGING_UNIONUPDATE true
-#define DEBUGGING_CONSTRUCTOR true
+#define DEBUGGING_SATISFIABLE false
+#define DEBUGGING_UNIONUPDATE false
+#define DEBUGGING_CONSTRUCTOR false
 
 unsigned Literal::curr_num_literals = 0;
 
@@ -16,7 +16,8 @@ Hornsat::Hornsat(std::istream & in) : consistent(true), num_pos(0){
   pos_lit_list.resize(num_hcs);
   
   for(unsigned index_hc = 0; index_hc < num_hcs; index_hc++){
-    // The following input represents the number of antecendents plus 1 (consequent) of a Horn clause (old format)
+    // The following input represents the number of
+    // antecendents plus 1 (consequent) of a Horn clause (old format)
     in >> input;
 
     // Horn clause body processing

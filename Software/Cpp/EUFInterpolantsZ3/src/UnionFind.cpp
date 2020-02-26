@@ -13,6 +13,11 @@ UnionFind::UnionFind(unsigned array[], unsigned size) :
   representative(array, array + size), rank(size, 1), size(size){
 }
 
+UnionFind::UnionFind(const UnionFind & other) :
+  representative(other.representative),
+  rank(other.rank), size(other.size){
+}
+
 UnionFind::~UnionFind(){
 #if DEBUG_DESTRUCTOR_UF
   std::cout << "Done ~UnionFind" << std::endl;
@@ -61,6 +66,18 @@ std::vector<unsigned> UnionFind::getEquivClass(unsigned x){
     if(find(i) == x)
       ans.push_back(i);
   return ans;
+}
+
+bool UnionFind::operator ==(const UnionFind & other){
+  if(size != other.size)
+    return false;
+  for(unsigned i = 0; i < size; i++){
+    if(representative[i] != other.representative[i])
+      return false;
+    if(rank[i] != other.rank[i])
+      return false;
+  }
+  return true;
 }
 
 std::ostream & operator << (std::ostream & os, const UnionFind & uf){

@@ -15,6 +15,7 @@ public:
   UnionFind();
   UnionFind(unsigned);
   UnionFind(unsigned [], unsigned);
+  UnionFind(const UnionFind &);
   ~UnionFind();
   void combine(unsigned, unsigned);
   void merge(unsigned, unsigned);
@@ -44,6 +45,7 @@ public:
     return r;
   }
   iterator end(unsigned m_element){ return iterator(this, m_element, size); }
+  bool operator ==(const UnionFind &);
   friend std::ostream & operator << (std::ostream &, const UnionFind &);
 };
 

@@ -96,6 +96,9 @@ class Hornsat {
   unsigned num_pos;
   std::vector<Literal> list_of_literals;
   ClassList class_list;
+  // facts is a queue of all the (temporary)
+  // clauses that have true value
+  // in their antecedent literals
   std::queue<unsigned> facts;
   std::vector<unsigned> num_args, pos_lit_list;
 
