@@ -49,9 +49,30 @@ EUFInterpolant::EUFInterpolant(z3::expr const & part_a) :
   // z3::expr test_head2 = (test_y2 == test_v);
   // horn_clauses.add(new HornClause(uf, ctx, subterms, test_body2, test_head2, cc_list));
   // // Stress test ----------------------------------------------------------------------
-  
+
+  // ----------------------------------------------------------------------------------------------------
+  // Define second congruence closure for Hornsat -------------------------------------------------------
   UnionFind hornsat_uf(uf);
+  CCList hornsat_list(cc_list);
+  CongruenceClosure hornsat_cc(subterms, hornsat_list, hornsat_uf);
+  assert(pending.empty());
+  for(unsigned i = min_id; i < size; i++)
+    if(subterms[i].num_args() > 0)
+      pending.push_back(i);
+  hornsat_cc.buildCongruenceClosure(pending);
+  unsigned num_changes = 0;
+  for(unsigned i = min_id; i < size; i++){
+    // std::cout << "Original: " << i
+    // 	      << " Representative " << euf.uf.find(i) << std::endl;
+    std::cout << "Original: " << subterms[i]
+    	      << " Representative " << subterms[hornsat_uf.find(subterms[i].id())] << std::endl;
+    if(i != hornsat_uf.find(i))
+      num_changes++;
+  }
+  std::cout << "Number of differences between term and its representative: " << num_changes << std::endl;
   Hornsat hsat(horn_clauses, hornsat_uf);
+  // ----------------------------------------------------------------------------------------------------
+  
   // Keep working here
   auto replacements = hsat.satisfiable(hornsat_uf, cc);
     
