@@ -1,7 +1,9 @@
 #include "CongruenceClosure.h"
 
-CongruenceClosure::CongruenceClosure(const z3::expr_vector & terms, CCList & cc_list, UnionFind & uf) :
-  terms(terms), cc_list(cc_list), uf(uf), sig_table(uf){
+CongruenceClosure::CongruenceClosure(const z3::expr_vector & terms, CCList & cc_list, UnionFind & uf, const unsigned & min_id) :
+  terms(terms), cc_list(cc_list),
+  uf(uf), sig_table(uf),
+  min_id(min_id), size(terms.size()){
 }
 
 CongruenceClosure::~CongruenceClosure(){

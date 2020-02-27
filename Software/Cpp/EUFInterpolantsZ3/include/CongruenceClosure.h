@@ -57,8 +57,10 @@ class CongruenceClosure {
   CCList &                cc_list;
   UnionFind &             uf;
   SignatureTable          sig_table;
+  const unsigned &        min_id;
+  const unsigned &        size;
  public:
-  CongruenceClosure(const z3::expr_vector &, CCList &, UnionFind &);
+  CongruenceClosure(const z3::expr_vector &, CCList &, UnionFind &, const unsigned &);
   void buildCongruenceClosure(std::list<unsigned> &);
   ~CongruenceClosure();
   friend std::ostream & operator << (std::ostream &, const CongruenceClosure &);

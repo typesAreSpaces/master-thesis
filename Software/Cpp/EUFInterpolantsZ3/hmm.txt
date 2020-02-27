@@ -1,0 +1,130 @@
+g++ -g -c -o obj/EUFInterpolant.o  -I./src -I./include -std=c++11 src/EUFInterpolant.cpp -Wall
+g++ -g -o euf_interpolator obj/Match.o obj/Rename.o obj/HornClause.o obj/Hornsat.o obj/EUFInterpolant.o obj/CongruenceClosure.o obj/UnionFind.o obj/main.o obj/HornClauses.o /home/jose/Documents/GithubProjects/z3__/build/libz3.so -lpthread -Wall
+./euf_interpolator
+BEGIN Debugging-------------------------
+30 c_z1
+END   Debugging-------------------------
+BEGIN Debugging-------------------------
+31 a_v
+END   Debugging-------------------------
+BEGIN Debugging-------------------------
+32 (c_f c_z1 a_v)
+END   Debugging-------------------------
+BEGIN Debugging-------------------------
+33 c_s1
+END   Debugging-------------------------
+BEGIN Debugging-------------------------
+34 (= (c_f c_z1 a_v) c_s1)
+END   Debugging-------------------------
+BEGIN Debugging-------------------------
+35 c_y1
+END   Debugging-------------------------
+BEGIN Debugging-------------------------
+36 (c_f c_y1 a_v)
+END   Debugging-------------------------
+BEGIN Debugging-------------------------
+37 c_y2
+END   Debugging-------------------------
+BEGIN Debugging-------------------------
+38 (c_f c_y2 a_v)
+END   Debugging-------------------------
+BEGIN Debugging-------------------------
+39 (c_f (c_f c_y1 a_v) (c_f c_y2 a_v))
+END   Debugging-------------------------
+BEGIN Debugging-------------------------
+40 c_t
+END   Debugging-------------------------
+BEGIN Debugging-------------------------
+41 (= (c_f (c_f c_y1 a_v) (c_f c_y2 a_v)) c_t)
+END   Debugging-------------------------
+BEGIN Debugging-------------------------
+42 (and (= (c_f c_z1 a_v) c_s1) (= (c_f (c_f c_y1 a_v) (c_f c_y2 a_v)) c_t))
+END   Debugging-------------------------
+BEGIN Debugging-------------------------
+43 (distinct c_s1 c_t)
+END   Debugging-------------------------
+BEGIN Debugging-------------------------
+44 (and (= (c_f c_z1 a_v) c_s1)
+     (= (c_f (c_f c_y1 a_v) (c_f c_y2 a_v)) c_t)
+     (distinct c_s1 c_t))
+END   Debugging-------------------------
+BEGIN Debugging-------------------------
+45 (c_g c_s1)
+END   Debugging-------------------------
+BEGIN Debugging-------------------------
+46 (c_g (c_g c_s1))
+END   Debugging-------------------------
+BEGIN Debugging-------------------------
+47 c_s2
+END   Debugging-------------------------
+BEGIN Debugging-------------------------
+48 (= (c_g (c_g c_s1)) c_s2)
+END   Debugging-------------------------
+BEGIN Debugging-------------------------
+49 (and (= (c_f c_z1 a_v) c_s1)
+     (= (c_f (c_f c_y1 a_v) (c_f c_y2 a_v)) c_t)
+     (distinct c_s1 c_t)
+     (= (c_g (c_g c_s1)) c_s2))
+END   Debugging-------------------------
+BEGIN Debugging-------------------------
+50 (c_g (c_f c_y1 a_v))
+END   Debugging-------------------------
+BEGIN Debugging-------------------------
+51 (c_g (c_g (c_f c_y1 a_v)))
+END   Debugging-------------------------
+BEGIN Debugging-------------------------
+52 (= (c_g (c_g (c_f c_y1 a_v))) (c_f c_y2 a_v))
+END   Debugging-------------------------
+BEGIN Debugging-------------------------
+53 (let ((a!1 (= (c_g (c_g (c_f c_y1 a_v))) (c_f c_y2 a_v))))
+  (and (= (c_f c_z1 a_v) c_s1)
+       (= (c_f (c_f c_y1 a_v) (c_f c_y2 a_v)) c_t)
+       (distinct c_s1 c_t)
+       (= (c_g (c_g c_s1)) c_s2)
+       a!1))
+END   Debugging-------------------------
+Horn Clauses processed by Hornsat
+0 (= c_s1 c_t) -> false
+1 (= c_z1 c_y1) -> (= c_s1 (c_f c_y1 a_v))
+Literals inside antedecent 25 (= c_z1 c_y1)
+Literals inside consequent 13 (= c_s1 (c_f c_y1 a_v))
+2 (= c_z1 c_y2) -> (= c_s1 (c_g (c_g (c_f c_y1 a_v))))
+Literals inside antedecent 14 (= c_z1 c_y2)
+Literals inside consequent 23 (= c_s1 (c_g (c_g (c_f c_y1 a_v))))
+3 (= a_v (c_g (c_g (c_f c_y1 a_v)))) && (= c_z1 (c_f c_y1 a_v)) -> (= c_s1 c_t)
+4 (= c_y1 c_y2) -> (= (c_g (c_g (c_f c_y1 a_v))) (c_f c_y1 a_v))
+Literals inside antedecent 21 (= c_y1 c_y2)
+Literals inside consequent 27 (= (c_g (c_g (c_f c_y1 a_v))) (c_f c_y1 a_v))
+5 (= c_y1 (c_f c_y1 a_v)) && (= a_v (c_g (c_g (c_f c_y1 a_v)))) -> (= c_t (c_f c_y1 a_v))
+Literals inside antedecent 19 (= c_y1 (c_f c_y1 a_v))
+Literals inside antedecent 26 (= a_v (c_g (c_g (c_f c_y1 a_v))))
+Literals inside consequent 28 (= c_t (c_f c_y1 a_v))
+6 (= c_y2 (c_f c_y1 a_v)) && (= a_v (c_g (c_g (c_f c_y1 a_v)))) -> (= c_t (c_g (c_g (c_f c_y1 a_v))))
+Literals inside antedecent 15 (= c_y2 (c_f c_y1 a_v))
+Literals inside antedecent 26 (= a_v (c_g (c_g (c_f c_y1 a_v))))
+Literals inside consequent 17 (= c_t (c_g (c_g (c_f c_y1 a_v))))
+7 (= c_s1 (c_f c_y1 a_v)) -> (= (c_g c_s1) (c_g (c_f c_y1 a_v)))
+Literals inside antedecent 13 (= c_s1 (c_f c_y1 a_v))
+Literals inside consequent 29 (= (c_g c_s1) (c_g (c_f c_y1 a_v)))
+8 (= c_s1 (c_g (c_f c_y1 a_v))) -> (= (c_g c_s1) (c_g (c_g (c_f c_y1 a_v))))
+Literals inside antedecent 54 (= c_s1 (c_g (c_f c_y1 a_v)))
+Literals inside consequent 55 (= (c_g c_s1) (c_g (c_g (c_f c_y1 a_v))))
+9 (= (c_g c_s1) (c_f c_y1 a_v)) -> (= c_s2 (c_g (c_f c_y1 a_v)))
+Literals inside antedecent 56 (= (c_g c_s1) (c_f c_y1 a_v))
+Literals inside consequent 57 (= c_s2 (c_g (c_f c_y1 a_v)))
+10 (= (c_g c_s1) (c_g (c_f c_y1 a_v))) -> (= c_s2 (c_g (c_g (c_f c_y1 a_v))))
+Literals inside antedecent 29 (= (c_g c_s1) (c_g (c_f c_y1 a_v)))
+Literals inside consequent 58 (= c_s2 (c_g (c_g (c_f c_y1 a_v))))
+11 (= (c_g (c_f c_y1 a_v)) (c_f c_y1 a_v)) -> (= (c_g (c_f c_y1 a_v)) (c_g (c_g (c_f c_y1 a_v))))
+Literals inside antedecent 61 (= (c_g (c_f c_y1 a_v)) (c_f c_y1 a_v))
+Literals inside consequent 60 (= (c_g (c_f c_y1 a_v)) (c_g (c_g (c_f c_y1 a_v))))
+satisfiable using a CongruenceClosure
+Literal coming from facts: 13
+Literal coming from facts: 13 (= c_s1 (c_f c_y1 a_v))
+Horn clauses such that the node appears in the antecedent:
+Clause id: 7
+Literal coming from facts: 23
+Literal coming from facts: 23 (= c_s1 (c_g (c_g (c_f c_y1 a_v))))
+Horn clauses such that the node appears in the antecedent:
+Literal coming from facts: 27
+Makefile:37: recipe for target 'run' failed

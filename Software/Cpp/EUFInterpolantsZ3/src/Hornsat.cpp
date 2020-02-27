@@ -1,50 +1,53 @@
 #include "Hornsat.h"
-#define DEBUGGING_SATISFIABLE false
+#define DEBUGGING_SATISFIABLE true
 #define DEBUGGING_UNIONUPDATE false
-#define DEBUGGING_CONSTRUCTOR false
+#define DEBUGGING_CONSTRUCTOR true
 
 unsigned Literal::curr_num_literals = 0;
 
-// num_dis_pos_literals = number of distinct positive literals in A
-// num_basic_horn_clauses = number of basic Horn Clauses in A
-Hornsat::Hornsat(std::istream & in) : consistent(true), num_pos(0){
-  unsigned input, num_literals, num_hcs;
-  in >> num_literals >> num_hcs;
+// // num_dis_pos_literals = number of distinct positive literals in A
+// // num_basic_horn_clauses = number of basic Horn Clauses in A
+// Hornsat::Hornsat(std::istream & in) : consistent(true), num_pos(0){
+//   Literal::curr_num_literals = 0;
+//   unsigned input;
+//   in >> num_literals >> num_hcs;
 
-  list_of_literals.resize(num_literals);
-  num_args.resize(num_hcs);
-  pos_lit_list.resize(num_hcs);
+//   list_of_literals.resize(num_literals);
+//   num_args.resize(num_hcs);
+//   pos_lit_list.resize(num_hcs);
   
-  for(unsigned index_hc = 0; index_hc < num_hcs; index_hc++){
-    // The following input represents the number of
-    // antecendents plus 1 (consequent) of a Horn clause (old format)
-    in >> input;
+//   for(unsigned index_hc = 0; index_hc < num_hcs; index_hc++){
+//     // The following input represents the number of
+//     // antecendents plus 1 (consequent) of a Horn clause (old format)
+//     in >> input;
 
-    // Horn clause body processing
-    num_args[index_hc] = input - 1;
-    for(unsigned j = num_args[index_hc]; j > 0; --j){
-      in >> input;
-      list_of_literals[input].clause_list = list_of_literals[input].clause_list->add(index_hc);
-    }
+//     // Horn clause body processing
+//     num_args[index_hc] = input - 1;
+//     for(unsigned j = num_args[index_hc]; j > 0; --j){
+//       in >> input;
+//       list_of_literals[input].clause_list = list_of_literals[input].clause_list->add(index_hc);
+//     }
 
-    // Horn clause head processing
-    in >> input;
-    pos_lit_list[index_hc] = input;
+//     // Horn clause head processing
+//     in >> input;
+//     pos_lit_list[index_hc] = input;
     
-    // This checks if the Horn Clause is a fact
-    if(num_args[index_hc] == 0){
-      list_of_literals[input].val = true;
-      facts.push(index_hc);
-      ++num_pos;
-      if(input == FALSELITERAL)
-	consistent = false;
-    }   
-  }
-}
+//     // This checks if the Horn Clause is a fact
+//     if(num_args[index_hc] == 0){
+//       list_of_literals[input].val = true;
+//       facts.push(index_hc);
+//       ++num_pos;
+//       if(input == FALSELITERAL)
+// 	consistent = false;
+//     }   
+//   }
+// }
 
-Hornsat::Hornsat(const HornClauses & hcs, UnionFind & uf) : consistent(true), num_pos(0){
-  unsigned num_hcs = hcs.size(), num_literals = hcs.maxID() + 1;
-
+Hornsat::Hornsat(const HornClauses & hcs, UnionFind & uf) :
+  subterms(hcs.getSubterms()),
+  consistent(true), num_pos(0),
+  num_hcs(hcs.size()), num_literals(hcs.maxID() + 1){
+  Literal::curr_num_literals = 0;
   list_of_literals.resize(num_literals);
   class_list.resize(num_literals);
   num_args.resize(num_hcs);
@@ -161,6 +164,17 @@ void Hornsat::unionupdate(UnionFind & uf, unsigned x, unsigned y, unsigned claus
   uf.combine(x, y);
 }
 
+void Hornsat::update(CongruenceClosure & cc, std::list<unsigned> & pending, std::queue<unsigned> & facts, unsigned u, unsigned v, unsigned clause){
+  // TODO: Implement this
+  unionupdate(cc.uf, u, v, clause);
+  return;
+}
+
+void Hornsat::congclosure(CongruenceClosure & cc, std::list<unsigned> & pending, std::queue<unsigned> & facts){
+  // TODO: Implement this
+  return;
+}
+
 void Hornsat::satisfiable(){
   unsigned clause1 = 0, clause2 = 0, literal = 0, nextpos = 0, newnumclause = 0, oldnumclause = num_pos;
   while(!facts.empty() && consistent){
@@ -192,9 +206,18 @@ void Hornsat::satisfiable(){
   }
 }
 
-std::vector<Replacement> Hornsat::satisfiable(UnionFind & uf, CongruenceClosure & cc){
+std::vector<Replacement> Hornsat::satisfiable(CongruenceClosure & cc){
   std::vector<Replacement> ans;
   unsigned clause0 = 0, clause1 = 0, node = 0, nextnode = 0, u = 0, v = 0;
+  // ------------------------------------
+  std::list<unsigned> pending;
+  for(unsigned i = cc.min_id; i < cc.size; i++)
+    if(cc.terms[i].num_args() > 0)
+      pending.push_back(i);
+  // ------------------------------------
+#if DEBUGGING_SATISFIABLE
+  std::cout << "satisfiable using a CongruenceClosure" << std::endl;
+#endif
   
   while(!facts.empty() && consistent){
     clause0 = facts.front();
@@ -202,6 +225,7 @@ std::vector<Replacement> Hornsat::satisfiable(UnionFind & uf, CongruenceClosure 
     facts.pop();
 #if DEBUGGING_SATISFIABLE
     std::cout << "Literal coming from facts: " << node << std::endl;
+    std::cout << "Literal coming from facts: " << node << " " << subterms[node] << std::endl;
     std::cout << "Horn clauses such that the node appears in the antecedent:" << std::endl;
 #endif
     auto clause_list_cur_lit = list_of_literals[node].clause_list;
@@ -224,20 +248,16 @@ std::vector<Replacement> Hornsat::satisfiable(UnionFind & uf, CongruenceClosure 
 	    list_of_literals[nextnode].val = true;
 	    u = list_of_literals[nextnode].l_id,
 	      v = list_of_literals[nextnode].r_id;
-	    if(uf.find(u) != uf.find(v))
-	      unionupdate(uf, u, v, clause1); // WRONG: Here is a mistake!
+	    if(cc.uf.find(u) != cc.uf.find(v))
+	      update(cc, pending, facts, u, v, clause1);
 	  }
 	  else
 	    consistent = false;
 	}
       }
     }
-    // Since we only deal with constant equations            // FALSE:
-    // the update procedure reduces to unionupdate.          // Because pending (or combine) should not be empty
-    // Hence, the pending list will always be empty          // at the beginning!
-    // for this case.
-    // if(facts.empty() && consistent)
-    //   congclosure(pending, queue, H);
+    if(facts.empty() && consistent)
+      congclosure(cc, pending, facts);
   }
   return ans;
 }

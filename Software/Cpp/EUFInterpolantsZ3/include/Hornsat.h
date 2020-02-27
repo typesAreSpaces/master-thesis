@@ -93,10 +93,11 @@ struct ClassListPos {
 typedef std::vector<std::vector<ClassListPos> > ClassList;
 
 class Hornsat {
-  bool consistent;
-  unsigned num_pos;
-  std::vector<Literal> list_of_literals;
-  ClassList class_list;
+  const z3::expr_vector & subterms;
+  bool                    consistent;
+  unsigned                num_pos, num_hcs, num_literals;
+  std::vector<Literal>    list_of_literals;
+  ClassList               class_list;
   // facts is a queue of all the (temporary)
   // clauses that have true value
   // in their antecedent literals
@@ -104,15 +105,15 @@ class Hornsat {
   std::vector<unsigned> num_args, pos_lit_list;
 
   void unionupdate(UnionFind &, unsigned, unsigned, unsigned);
-  void update();
-  void congclosure();
+  void update(CongruenceClosure &, std::list<unsigned> &, std::queue<unsigned> &, unsigned, unsigned, unsigned);
+  void congclosure(CongruenceClosure &, std::list<unsigned> &, std::queue<unsigned> &);
   
  public:
-  Hornsat(std::istream &);
+  // Hornsat(std::istream &);
   Hornsat(const HornClauses &, UnionFind &);
   ~Hornsat();
   void satisfiable();
-  std::vector<Replacement> satisfiable(UnionFind &, CongruenceClosure &);
+  std::vector<Replacement> satisfiable(CongruenceClosure &);
   bool isConsistent();
   
   friend std::ostream & operator << (std::ostream &, const Hornsat &);

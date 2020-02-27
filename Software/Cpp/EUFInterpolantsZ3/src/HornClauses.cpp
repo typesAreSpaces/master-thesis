@@ -11,9 +11,8 @@
 #define DEBUG_MATCHES            false
 #define DEBUG_DESTRUCTOR_HCS     false
 
-HornClauses::HornClauses(z3::context & ctx, const z3::expr_vector & subterms, const unsigned & min_id) :
-  ctx(ctx),
-  subterms(subterms), min_id(min_id){
+HornClauses::HornClauses(z3::context & ctx, const z3::expr_vector & subterms) :
+  ctx(ctx), subterms(subterms){
 }
 
 HornClauses::~HornClauses(){
@@ -146,6 +145,10 @@ const std::vector<HornClause*> & HornClauses::getHornClauses() const {
 
 HornClause* HornClauses::operator[](unsigned i){
   return horn_clauses[i];
+}
+
+const z3::expr_vector & HornClauses::getSubterms() const {
+  return subterms;
 }
 
 // std::vector<HornClause*> HornClauses::getHornClauses(){

@@ -13,7 +13,6 @@ class HornClauses {
 
   z3::context &             ctx;
   const z3::expr_vector &   subterms;
-  const unsigned &          min_id;
   std::vector<HornClause *> horn_clauses;
   unsigned                  curr_num_horn_clauses = 0;
   // Match2                           reduced;
@@ -26,7 +25,7 @@ class HornClauses {
   // static void swap(std::vector<A> &, unsigned, unsigned);
   
  public:
-  HornClauses(z3::context &, const z3::expr_vector &, const unsigned &);
+  HornClauses(z3::context &, const z3::expr_vector &);
   ~HornClauses();
 
   void                             add(HornClause *);
@@ -35,6 +34,7 @@ class HornClauses {
   unsigned                         maxID() const;
   const std::vector<HornClause*> & getHornClauses() const;
   HornClause *                     operator[] (unsigned);
+  const z3::expr_vector &          getSubterms() const;
   // void                       getTermsToReplace(z3::expr_vector &);                       // TODO:
   // std::vector<HornClause*>   getReducibleHornClauses();
   friend std::ostream &            operator << (std::ostream &, const HornClauses &);

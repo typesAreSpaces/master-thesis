@@ -4,28 +4,39 @@
 
 EUFInterpolant::EUFInterpolant(z3::expr const & part_a) :
   ctx(part_a.ctx()), min_id(part_a.id()), subterms(ctx),
-  fsym_positions(), uf(), horn_clauses(ctx, subterms, min_id),
+  fsym_positions(), uf(), horn_clauses(ctx, subterms),
   contradiction(ctx), disequalities(ctx), size(part_a.id() + 1) {
   
   contradiction = ctx.bool_val(false);
   std::vector<bool> visited(size, false);
   subterms.resize(size);
   cc_list.resize(size);
+
+  // The following defines min_id, visited,
+  // subterms, disequalities, and fsym_positions
   init(part_a, min_id, visited);
-  
-  uf = UnionFind(size);
+  // The following defines cc_list
   initCCList(part_a);
+  // The following defines uf
+  uf = UnionFind(size);
   processEqs(part_a);
+
+  // The following sets up a
+  // congruence closure data structure
+  CongruenceClosure cc(subterms, cc_list, uf, min_id);
   std::list<unsigned> pending;
   for(unsigned i = min_id; i < size; i++)
     if(subterms[i].num_args() > 0)
       pending.push_back(i);
-  
-  CongruenceClosure cc(subterms, cc_list, uf);  
   cc.buildCongruenceClosure(pending);
+  assert(pending.empty());
 
+  // Converting disequalities to Horn Clauses
   disequalitiesToHCS();
+
+  // Unconditional uncommon symbol elimination step
   exposeUncommons();
+  
   // std::cout << horn_clauses << std::endl;
 
   // // Stress test ----------------------------------------------------------------------
@@ -50,38 +61,21 @@ EUFInterpolant::EUFInterpolant(z3::expr const & part_a) :
   // horn_clauses.add(new HornClause(uf, ctx, subterms, test_body2, test_head2, cc_list));
   // // Stress test ----------------------------------------------------------------------
 
-  // ----------------------------------------------------------------------------------------------------
-  // Define second congruence closure for Hornsat -------------------------------------------------------
-  UnionFind hornsat_uf(uf);
+  // ----------------------------------------------------------------------
+  // Additional data structures for conditional uncommon symbol elimination
   CCList hornsat_list(cc_list);
-  CongruenceClosure hornsat_cc(subterms, hornsat_list, hornsat_uf);
-  assert(pending.empty());
-  for(unsigned i = min_id; i < size; i++)
-    if(subterms[i].num_args() > 0)
-      pending.push_back(i);
-  hornsat_cc.buildCongruenceClosure(pending);
-  unsigned num_changes = 0;
-  for(unsigned i = min_id; i < size; i++){
-    // std::cout << "Original: " << i
-    // 	      << " Representative " << euf.uf.find(i) << std::endl;
-    std::cout << "Original: " << subterms[i]
-    	      << " Representative " << subterms[hornsat_uf.find(subterms[i].id())] << std::endl;
-    if(i != hornsat_uf.find(i))
-      num_changes++;
-  }
-  std::cout << "Number of differences between term and its representative: " << num_changes << std::endl;
+  UnionFind hornsat_uf(uf);
+  CongruenceClosure hornsat_cc(subterms, hornsat_list, hornsat_uf, min_id);
   Hornsat hsat(horn_clauses, hornsat_uf);
-  // ----------------------------------------------------------------------------------------------------
-  
-  // Keep working here
-  auto replacements = hsat.satisfiable(hornsat_uf, cc);
-    
+  // // -------------------------------------------------------------------
+  auto replacements = hsat.satisfiable(hornsat_cc);
   for(auto x : replacements)
     std::cout << "Merge " << *horn_clauses[x.clause1]
 	      << " with " << *horn_clauses[x.clause2] << std::endl;
-
+  // // -------------------------------------------------------------------
   // std::cout << hsat << std::endl;
-
+  // ----------------------------------------------------------------------
+  
   buildInterpolant(replacements);
   return;
   
@@ -109,6 +103,11 @@ void EUFInterpolant::init(z3::expr const & e, unsigned & min_id, std::vector<boo
     for(unsigned i = 0; i < num; i++)
       init(e.arg(i), min_id, visited);
 
+    // FATAL: BEING PROBLEM HERE
+    std::cout << "BEGIN Debugging-------------------------" << std::endl;
+    std::cout << e.id() << " " << e << std::endl;
+    std::cout << "END   Debugging-------------------------" << std::endl;
+    
     z3::func_decl f = e.decl();
     switch(f.decl_kind()){
     case Z3_OP_DISTINCT:
