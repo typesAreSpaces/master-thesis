@@ -68,6 +68,16 @@ std::vector<unsigned> UnionFind::getEquivClass(unsigned x){
   return ans;
 }
 
+void UnionFind::increaseSize(unsigned sz){
+  representative.resize(sz);
+  rank.resize(sz);
+  for(unsigned i = size; i < sz; i++){
+    representative[i] = i;
+    rank[i] = 1;
+  }
+  size = sz;
+}
+
 bool UnionFind::operator ==(const UnionFind & other){
   if(size != other.size)
     return false;
@@ -86,6 +96,7 @@ std::ostream & operator << (std::ostream & os, const UnionFind & uf){
        << " Representative: " << uf.representative[i]
        << " Rank:  " << uf.rank[i]
        << std::endl;
+  os << "Size " << uf.size << std::endl;
   os << "(Remaider) The current representatives are not compressed.";
   return os;
 }

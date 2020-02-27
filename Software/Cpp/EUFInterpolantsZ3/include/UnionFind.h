@@ -45,6 +45,7 @@ public:
     return r;
   }
   iterator end(unsigned m_element){ return iterator(this, m_element, size); }
+  void increaseSize(unsigned);
   bool operator ==(const UnionFind &);
   friend std::ostream & operator << (std::ostream &, const UnionFind &);
 };

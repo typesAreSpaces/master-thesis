@@ -76,9 +76,10 @@ EUFInterpolant::EUFInterpolant(z3::expr const & part_a) :
   
   // ----------------------------------------------------------------------
   // Additional data structures for conditional uncommon symbol elimination
-  CCList hornsat_list(cc_list);                                             // PROBLEM: This cc_list has the original number of subterms
-  UnionFind hornsat_uf(uf);                                                 // PROBLEM: This uf has the original number of subterms
-  CongruenceClosure hornsat_cc(min_id, subterms, hornsat_list, hornsat_uf); // PROBLEM: Subterms wont match cardinality with hornsat_uf
+  CCList hornsat_list(cc_list);                                             
+  UnionFind hornsat_uf(uf);                                                 
+  hornsat_uf.increaseSize(subterms.size());
+  CongruenceClosure hornsat_cc(min_id, subterms, hornsat_list, hornsat_uf);
   Hornsat hsat(horn_clauses, hornsat_uf);
   // // -------------------------------------------------------------------
   
