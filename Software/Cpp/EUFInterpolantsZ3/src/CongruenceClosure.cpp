@@ -1,6 +1,5 @@
 #include "CongruenceClosure.h"
 
-
 CongruenceClosure::CongruenceClosure(const z3::expr_vector & terms, CCList & cc_list, UnionFind & uf) :
   terms(terms), cc_list(cc_list), uf(uf), sig_table(uf){
 }
@@ -11,8 +10,8 @@ CongruenceClosure::~CongruenceClosure(){
 #endif
 }
 
-void CongruenceClosure::buildCongruenceClosure(std::list<unsigned> & pending,
-					       std::list<std::pair<unsigned, unsigned> > & combine){
+void CongruenceClosure::buildCongruenceClosure(std::list<unsigned> & pending){
+  std::list<std::pair<unsigned, unsigned> > combine;
   while(!pending.empty()){
     combine.clear();
     for(auto v_id : pending){

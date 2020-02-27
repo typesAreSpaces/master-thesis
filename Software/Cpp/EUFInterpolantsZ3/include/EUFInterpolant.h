@@ -3,7 +3,6 @@
 
 #include <map>
 #include <list>
-#include "CongruenceClosure.h"
 #include "HornClauses.h"
 #include "Hornsat.h"
 

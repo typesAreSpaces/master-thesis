@@ -6,6 +6,7 @@
 #include <iostream>
 #include <queue>
 #include <vector>
+#include "CongruenceClosure.h"
 #include "HornClauses.h"
 #include "Replacement.h"
 
@@ -103,13 +104,15 @@ class Hornsat {
   std::vector<unsigned> num_args, pos_lit_list;
 
   void unionupdate(UnionFind &, unsigned, unsigned, unsigned);
+  void update();
+  void congclosure();
   
  public:
   Hornsat(std::istream &);
   Hornsat(const HornClauses &, UnionFind &);
   ~Hornsat();
   void satisfiable();
-  std::vector<Replacement> satisfiable(UnionFind &);
+  std::vector<Replacement> satisfiable(UnionFind &, CongruenceClosure &);
   bool isConsistent();
   
   friend std::ostream & operator << (std::ostream &, const Hornsat &);

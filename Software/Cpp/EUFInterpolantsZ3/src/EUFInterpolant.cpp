@@ -12,18 +12,17 @@ EUFInterpolant::EUFInterpolant(z3::expr const & part_a) :
   subterms.resize(size);
   cc_list.resize(size);
   init(part_a, min_id, visited);
+  
   uf = UnionFind(size);
   initCCList(part_a);
   processEqs(part_a);
-  
   std::list<unsigned> pending;
   for(unsigned i = min_id; i < size; i++)
     if(subterms[i].num_args() > 0)
       pending.push_back(i);
-  std::list<std::pair<unsigned, unsigned> > combine;
   
   CongruenceClosure cc(subterms, cc_list, uf);  
-  cc.buildCongruenceClosure(pending, combine);
+  cc.buildCongruenceClosure(pending);
 
   disequalitiesToHCS();
   exposeUncommons();
@@ -54,7 +53,7 @@ EUFInterpolant::EUFInterpolant(z3::expr const & part_a) :
   UnionFind hornsat_uf(uf);
   Hornsat hsat(horn_clauses, hornsat_uf);
   // Keep working here
-  auto replacements = hsat.satisfiable(hornsat_uf);
+  auto replacements = hsat.satisfiable(hornsat_uf, cc);
     
   for(auto x : replacements)
     std::cout << "Merge " << *horn_clauses[x.clause1]

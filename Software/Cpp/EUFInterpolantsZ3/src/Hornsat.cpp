@@ -192,39 +192,40 @@ void Hornsat::satisfiable(){
   }
 }
 
-std::vector<Replacement> Hornsat::satisfiable(UnionFind & uf){
+std::vector<Replacement> Hornsat::satisfiable(UnionFind & uf, CongruenceClosure & cc){
   std::vector<Replacement> ans;
-  unsigned clause1 = 0, clause2 = 0, node = 0, nextnode = 0, u = 0, v = 0;
+  unsigned clause0 = 0, clause1 = 0, node = 0, nextnode = 0, u = 0, v = 0;
+  
   while(!facts.empty() && consistent){
-    clause1 = facts.front();
-    node = pos_lit_list[clause1];
+    clause0 = facts.front();
+    node = pos_lit_list[clause0];
     facts.pop();
 #if DEBUGGING_SATISFIABLE
     std::cout << "Literal coming from facts: " << node << std::endl;
+    std::cout << "Horn clauses such that the node appears in the antecedent:" << std::endl;
 #endif
     auto clause_list_cur_lit = list_of_literals[node].clause_list;
     auto it = clause_list_cur_lit->begin(), end = clause_list_cur_lit->end();
-#if DEBUGGING_SATISFIABLE
-    std::cout << "Horn clauses such that the node appears in the antecedent" << std::endl;
-#endif
     for(; it != end; ++it){
-      clause2 = (*it)->clause_id;
+      clause1 = (*it)->clause_id;
 #if DEBUGGING_SATISFIABLE
-      std::cout << "Clause id: " << clause2 << std::endl;
+      std::cout << "Clause id: " << clause1 << std::endl;
 #endif
-      --num_args[clause2]; // WRONG: This should decrement only if the clause involved is uncommon
-      // TODO: Capture the propagation indicated below
-      ans.push_back(Replacement(clause1, clause2));
+      --num_args[clause1]; // WRONG: This should decrement only if the clause involved is uncommon
       
-      if(num_args[clause2] == 0){
-	nextnode = pos_lit_list[clause2];
+      // TODO: Capture the propagation indicated below
+      ans.push_back(Replacement(clause0, clause1));
+      
+      if(num_args[clause1] == 0){
+	nextnode = pos_lit_list[clause1];
 	if(!list_of_literals[nextnode].val){
 	  if(nextnode > FALSELITERAL){
-	    facts.push(clause2);
+	    facts.push(clause1);
 	    list_of_literals[nextnode].val = true;
-	    u = list_of_literals[nextnode].l_id, v = list_of_literals[nextnode].r_id;
+	    u = list_of_literals[nextnode].l_id,
+	      v = list_of_literals[nextnode].r_id;
 	    if(uf.find(u) != uf.find(v))
-	      unionupdate(uf, u, v, clause2); // Here is a mistake!
+	      unionupdate(uf, u, v, clause1); // WRONG: Here is a mistake!
 	  }
 	  else
 	    consistent = false;
