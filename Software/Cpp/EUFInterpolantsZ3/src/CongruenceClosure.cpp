@@ -1,9 +1,8 @@
 #include "CongruenceClosure.h"
 
-CongruenceClosure::CongruenceClosure(const z3::expr_vector & terms, CCList & cc_list, UnionFind & uf, const unsigned & min_id) :
-  terms(terms), cc_list(cc_list),
-  uf(uf), sig_table(uf),
-  min_id(min_id), size(terms.size()){
+CongruenceClosure::CongruenceClosure(const unsigned & min_id, const z3::expr_vector & subterms, CCList & cc_list, UnionFind & uf) :
+  min_id(min_id), subterms(subterms), cc_list(cc_list),
+  uf(uf), sig_table(uf){
 }
 
 CongruenceClosure::~CongruenceClosure(){
@@ -17,7 +16,7 @@ void CongruenceClosure::buildCongruenceClosure(std::list<unsigned> & pending){
   while(!pending.empty()){
     combine.clear();
     for(auto v_id : pending){
-      z3::expr v = terms[v_id];
+      z3::expr v = subterms[v_id];
       try{
 	auto w = sig_table.query(v);
 	combine.push_back(std::make_pair(v_id, w));
@@ -36,13 +35,13 @@ void CongruenceClosure::buildCongruenceClosure(std::list<unsigned> & pending){
 	  v = w;
 	  w = aux;
 	}
-	if(HornClause::compareTerm(terms[uf.find(v)], terms[uf.find(w)])){
+	if(HornClause::compareTerm(subterms[uf.find(v)], subterms[uf.find(w)])){
 	  unsigned aux = v;
 	  v = w;
 	  w = aux;
 	}
 	for(auto u : cc_list[w]){
-	  sig_table.erase(terms[u]);
+	  sig_table.erase(subterms[u]);
 	  pending.push_back(u);
 	}
 	// CHANGES CAN HAPPEN HERE

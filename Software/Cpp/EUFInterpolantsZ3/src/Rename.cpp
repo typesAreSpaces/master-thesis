@@ -1,20 +1,20 @@
 #include "Rename.h"
 
-void rename(z3::expr & a, z3::expr & b){
+std::pair<z3::expr, z3::expr> rename(z3::expr & a, z3::expr & b){
   std::vector<bool> visited;
   std::set<std::string> a_local_names;
   std::set<std::string> common_names;
   
   traversePartA(a, visited, a_local_names);
   traversePartB(b, visited, a_local_names, common_names);
-  a = reformulate(a, a_local_names, common_names);
-  b = reformulate(b, a_local_names, common_names);
-  return;
+  
+  return std::make_pair(reformulate(a, a_local_names, common_names),
+			reformulate(b, a_local_names, common_names));
 }
 
-void rename(z3::expr & a, const std::set<std::string> & uncommon_names){
-  a = reformulate(a, uncommon_names);
-  return;
+z3::expr rename(z3::expr & a, const std::set<std::string> & uncommon_names){
+  // return reformulate(a, uncommon_names);
+  return reformulate(a, uncommon_names);
 }
 
 void traversePartA(z3::expr const & e,

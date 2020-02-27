@@ -53,14 +53,13 @@ typedef std::vector<std::list<unsigned> > CCList;
 
 class CongruenceClosure {
   friend class Hornsat;
-  const z3::expr_vector & terms;
+  const unsigned &        min_id;
+  const z3::expr_vector & subterms;
   CCList &                cc_list;
   UnionFind &             uf;
   SignatureTable          sig_table;
-  const unsigned &        min_id;
-  const unsigned &        size;
  public:
-  CongruenceClosure(const z3::expr_vector &, CCList &, UnionFind &, const unsigned &);
+  CongruenceClosure(const unsigned &, const z3::expr_vector &, CCList &, UnionFind &);
   void buildCongruenceClosure(std::list<unsigned> &);
   ~CongruenceClosure();
   friend std::ostream & operator << (std::ostream &, const CongruenceClosure &);

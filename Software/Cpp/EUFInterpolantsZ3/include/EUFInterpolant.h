@@ -20,7 +20,7 @@ class EUFInterpolant {
   HornClauses       horn_clauses;
   z3::expr          contradiction;
   z3::expr_vector   disequalities;
-  unsigned          size;
+  unsigned          original_num_terms;
   CCList            cc_list;
   
 

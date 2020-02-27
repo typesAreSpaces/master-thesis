@@ -11,7 +11,6 @@ int main(int argc, char ** argv){
   
   z3::context ctx;  
   z3::sort my_sort = ctx.uninterpreted_sort("A");
-  
   z3::expr z1 = ctx.constant("z1", my_sort);
   z3::expr z2 = ctx.constant("z2", my_sort);
   z3::expr y1 = ctx.constant("y1", my_sort);
@@ -26,11 +25,10 @@ int main(int argc, char ** argv){
   uncomms.insert("v");
   
   // z3::expr alpha = f(z1, v) == s1 && f(z2, v) == s2 && f(f(y1, v), f(y2, v)) == t && s1 != t;
-  z3::expr alpha = f(z1, v) == s1 && f(f(y1, v), f(y2, v)) == t && s1 != t && g(g(s1)) == s2 && g(g(f(y1, v))) == f(y2, v);
-  // z3::expr alpha = g(v) == z1 && g(t) == z2 && t == v;
-  rename(alpha, uncomms);
-
-  EUFInterpolant euf(alpha);
+  z3::expr alpha = f(z1, v) == s1 && f(z2, v) == s2 && f(f(y1, v), f(y2, v)) == t && s1 != t && g(g(s1)) == s2 && g(g(f(y1, v))) == f(y2, v);
+  z3::expr r_alpha = rename(alpha, uncomms);
+  
+  EUFInterpolant euf(r_alpha);
   // std::cout << euf << std::endl;
     
   // euf.buildInterpolant();

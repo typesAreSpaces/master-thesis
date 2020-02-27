@@ -12,26 +12,25 @@ typedef std::set<std::pair<unsigned, unsigned> > SetOfUnsignedPairs;
 class HornClauses {
 
   z3::context &             ctx;
-  const z3::expr_vector &   subterms;
+  unsigned &                min_id;
+  z3::expr_vector &         subterms;
   std::vector<HornClause *> horn_clauses;
   unsigned                  curr_num_horn_clauses = 0;
   // Match2                           reduced;
   // std::map<EquationTerm, unsigned> reduced_length;
 
-  // void combinationHelper(HornClause *);
   void simplifyHornClauses();                                                               // TODO: NEXT NEXT 
   
   // template<typename A>
   // static void swap(std::vector<A> &, unsigned, unsigned);
   
  public:
-  HornClauses(z3::context &, const z3::expr_vector &);
+  HornClauses(z3::context &, unsigned &, z3::expr_vector &);
   ~HornClauses();
 
   void                             add(HornClause *);
-  void                             conditionalElimination(std::vector<Replacement>); // TODO: NEXT // KEEP WORKING HERE
+  void                             conditionalElimination(std::vector<Replacement>);         // TODO: NEXT // KEEP WORKING HERE
   unsigned                         size() const;
-  unsigned                         maxID() const;
   const std::vector<HornClause*> & getHornClauses() const;
   HornClause *                     operator[] (unsigned);
   const z3::expr_vector &          getSubterms() const;

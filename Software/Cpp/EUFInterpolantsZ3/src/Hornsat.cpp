@@ -1,7 +1,7 @@
 #include "Hornsat.h"
-#define DEBUGGING_SATISFIABLE true
+#define DEBUGGING_SATISFIABLE false
 #define DEBUGGING_UNIONUPDATE false
-#define DEBUGGING_CONSTRUCTOR true
+#define DEBUGGING_CONSTRUCTOR false
 
 unsigned Literal::curr_num_literals = 0;
 
@@ -46,7 +46,7 @@ unsigned Literal::curr_num_literals = 0;
 Hornsat::Hornsat(const HornClauses & hcs, UnionFind & uf) :
   subterms(hcs.getSubterms()),
   consistent(true), num_pos(0),
-  num_hcs(hcs.size()), num_literals(hcs.maxID() + 1){
+  num_hcs(hcs.size()), num_literals(subterms.size()){
   Literal::curr_num_literals = 0;
   list_of_literals.resize(num_literals);
   class_list.resize(num_literals);
@@ -69,6 +69,8 @@ Hornsat::Hornsat(const HornClauses & hcs, UnionFind & uf) :
       for(auto antecedent : horn_clause->getAntecedent()){
 #if DEBUGGING_CONSTRUCTOR
 	std::cout << "Literals inside antedecent " << antecedent.id() << " " << antecedent << std::endl;
+	std::cout << subterms.size() << std::endl;
+	assert(antecedent.id() < subterms.size());
 #endif
 	Literal * literal = &list_of_literals[antecedent.id()];
 	literal->l_id = antecedent.arg(0).id();
@@ -209,21 +211,24 @@ void Hornsat::satisfiable(){
 std::vector<Replacement> Hornsat::satisfiable(CongruenceClosure & cc){
   std::vector<Replacement> ans;
   unsigned clause0 = 0, clause1 = 0, node = 0, nextnode = 0, u = 0, v = 0;
-  // ------------------------------------
+  unsigned num_terms = cc.subterms.size();
+
   std::list<unsigned> pending;
-  for(unsigned i = cc.min_id; i < cc.size; i++)
-    if(cc.terms[i].num_args() > 0)
+  for(unsigned i = cc.min_id; i < num_terms; i++){
+    if(cc.subterms[i].num_args() > 0)
       pending.push_back(i);
-  // ------------------------------------
+  }
+  
 #if DEBUGGING_SATISFIABLE
   std::cout << "satisfiable using a CongruenceClosure" << std::endl;
+  std::cout << "Min ID: " << cc.min_id << " Size: " << num_terms << std::endl;
 #endif
   
   while(!facts.empty() && consistent){
     clause0 = facts.front();
     node = pos_lit_list[clause0];
     facts.pop();
-#if DEBUGGING_SATISFIABLE
+#if DEBUGGING_SATISFIABLE   
     std::cout << "Literal coming from facts: " << node << std::endl;
     std::cout << "Literal coming from facts: " << node << " " << subterms[node] << std::endl;
     std::cout << "Horn clauses such that the node appears in the antecedent:" << std::endl;

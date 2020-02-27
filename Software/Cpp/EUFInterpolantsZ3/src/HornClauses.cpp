@@ -4,15 +4,11 @@
 #define DEBUG_MAKE_MATCHES       false
 #define DEBUG_CE                 false
 #define DEBUG_COMBINATION_HELPER false
-#define DEBUG_MC2CMC2A           true
-#define DEBUG_MC1CMC1A           true
-#define DEBUG_MC1CMC2A           true
-#define DEBUG_MC1CMC1A2          true
 #define DEBUG_MATCHES            false
 #define DEBUG_DESTRUCTOR_HCS     false
 
-HornClauses::HornClauses(z3::context & ctx, const z3::expr_vector & subterms) :
-  ctx(ctx), subterms(subterms){
+HornClauses::HornClauses(z3::context & ctx, unsigned & min_id, z3::expr_vector & subterms) :
+  ctx(ctx), min_id(min_id), subterms(subterms){
 }
 
 HornClauses::~HornClauses(){
@@ -22,26 +18,6 @@ HornClauses::~HornClauses(){
   std::cout << "Done ~HornClauses" << std::endl;
 #endif
 }
-
-// void HornClauses::combinationHelper(HornClause * hc){
-//   auxiliar_cc.transferEqClassAndPreds(original_cc);
-  
-//   if(hc->checkTriviality(original_cc.getEquivalenceClass())){
-// #if DEBUG_COMBINATION_HELPER
-//     std::cout << "Inside combination helper: " << *hc << " was deleted" << std::endl << std::endl;
-// #endif
-//     delete hc;
-//     return;
-//   }
-// #if DEBUG_COMBINATION_HELPER
-//   std::cout << "Inside combination helper: " << *hc << " was added!" << std::endl << std::endl;
-// #endif
-  
-//   horn_clauses.push_back(hc);
-//   // makeMatches is called for all the additions
-//   // done by combinationHelper inside
-//   // HornClauses::conditionalElimination
-// }
 
 // // This method removes unnecessary
 // // extra Horn Clauses
@@ -122,21 +98,17 @@ void HornClauses::conditionalElimination(std::vector<Replacement> replacements){
   std::cout << "ok1" << std::endl;
   
   // simplifyHornClauses();
- 
-// #if DEBUG_CE
-//   std::cout << "Horn Clauses produced - after simplify:" << std::endl;
-//   for(auto it : reduced)
-//     for(unsigned i = 0; i < reduced_length[it.first]; ++i)
-//       std::cout << *horn_clauses[it.second[i]] << std::endl;
-// #endif 
+  
+  // #if DEBUG_CE
+  //   std::cout << "Horn Clauses produced - after simplify:" << std::endl;
+  //   for(auto it : reduced)
+  //     for(unsigned i = 0; i < reduced_length[it.first]; ++i)
+  //       std::cout << *horn_clauses[it.second[i]] << std::endl;
+  // #endif 
 }
 
 unsigned HornClauses::size() const {
   return horn_clauses.size();
-}
-
-unsigned HornClauses::maxID() const {
-  return subterms.size();
 }
 
 const std::vector<HornClause*> & HornClauses::getHornClauses() const {
@@ -178,59 +150,7 @@ std::ostream & operator << (std::ostream & os, const HornClauses & hcs){
     os << i << ". " << it << " " << *it << std::endl;
     ++i;
   }
+  std::cout << "Min ID: " << hcs.min_id;
 
-#if DEBUG_MATCHES
-  os << "mc1_antecedent"   << std::endl;
-  Match::iterator it = hcs.mc1_antecedent.begin(), end = hcs.mc1_antecedent.end();
-  i = 0;
-  for(; it != end; ++it){
-    if((*it).size() > 0){
-      os << "Term : " << hcs.subterms[i] << std::endl;
-      os << "Horn Clauses:" << std::endl;
-      for(auto position : *it)
-      	os << *hcs.horn_clauses[position] << std::endl;
-    }
-    i++;
-  }
-  
-  os << "mc1_consequent"   << std::endl;
-  it = hcs.mc1_consequent.begin(), end = hcs.mc1_consequent.end();
-  i = 0;
-  for(; it != end; ++it){
-    if((*it).size() > 0){
-      os << "Term : " << hcs.subterms[i] << std::endl;
-      os << "Horn Clauses:" << std::endl;
-      for(auto position : *it)
-      	os << *hcs.horn_clauses[position] << std::endl;
-    }
-    i++;
-  }
-  
-  os << "mc2_antecedent"   << std::endl;
-  it = hcs.mc2_antecedent.begin(), end = hcs.mc2_antecedent.end();
-  i = 0;
-  for(; it != end; ++it){
-    if((*it).size() > 0){
-      os << "Term : " << hcs.subterms[i] << std::endl;
-      os << "Horn Clauses:" << std::endl;
-      for(auto position : *it)
-      	os << *hcs.horn_clauses[position] << std::endl;
-    }
-    i++;
-  }
-  
-  os << "mc2_consequent"   << std::endl;
-  it = hcs.mc2_consequent.begin(), end = hcs.mc2_consequent.end();
-  i = 0;
-  for(; it != end; ++it){
-    if((*it).size() > 0){
-      os << "Term : " << hcs.subterms[i] << std::endl;
-      os << "Horn Clauses:" << std::endl;
-      for(auto position : *it)
-      	os << *hcs.horn_clauses[position] << std::endl;
-    }
-    i++;
-  }
-#endif  
   return os;
 }

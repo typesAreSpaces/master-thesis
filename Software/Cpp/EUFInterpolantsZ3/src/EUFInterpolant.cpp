@@ -4,28 +4,37 @@
 
 EUFInterpolant::EUFInterpolant(z3::expr const & part_a) :
   ctx(part_a.ctx()), min_id(part_a.id()), subterms(ctx),
-  fsym_positions(), uf(), horn_clauses(ctx, subterms),
-  contradiction(ctx), disequalities(ctx), size(part_a.id() + 1) {
+  fsym_positions(), horn_clauses(ctx, min_id, subterms),
+  contradiction(ctx), disequalities(ctx), original_num_terms(part_a.id() + 1){
   
   contradiction = ctx.bool_val(false);
-  std::vector<bool> visited(size, false);
-  subterms.resize(size);
-  cc_list.resize(size);
+  std::vector<bool> visited(original_num_terms, false);
+  subterms.resize(original_num_terms);
+  cc_list.resize(original_num_terms);
 
   // The following defines min_id, visited,
   // subterms, disequalities, and fsym_positions
   init(part_a, min_id, visited);
-  // The following defines cc_list
+  //                       ---------
+  // The following defines |cc_list|
+  //                       ---------
   initCCList(part_a);
-  // The following defines uf
-  uf = UnionFind(size);
+  //                       ----
+  // The following defines |uf|
+  //                       ----
+  uf = UnionFind(original_num_terms);
+  //                   ----
+  // After this point, |uf| is fully defined
+  //                   ----
   processEqs(part_a);
-
+  
   // The following sets up a
-  // congruence closure data structure
-  CongruenceClosure cc(subterms, cc_list, uf, min_id);
+  // --------------------
+  // |congruence closure| data structure
+  // --------------------
+  CongruenceClosure cc(min_id, subterms, cc_list, uf);
   std::list<unsigned> pending;
-  for(unsigned i = min_id; i < size; i++)
+  for(unsigned i = min_id; i < original_num_terms; i++)
     if(subterms[i].num_args() > 0)
       pending.push_back(i);
   cc.buildCongruenceClosure(pending);
@@ -35,40 +44,46 @@ EUFInterpolant::EUFInterpolant(z3::expr const & part_a) :
   disequalitiesToHCS();
 
   // Unconditional uncommon symbol elimination step
+  //                   --------------
+  // After this point, |horn_clauses| is fully defined
+  //                   --------------
   exposeUncommons();
   
   // std::cout << horn_clauses << std::endl;
 
   // // Stress test ----------------------------------------------------------------------
   // z3::sort test_sort = ctx.uninterpreted_sort("A");
-  // z3::expr test_y2 = ctx.constant("c_y2", test_sort);
   // z3::expr test_y1 = ctx.constant("c_y1", test_sort);
+  // z3::expr test_y2 = ctx.constant("c_y2", test_sort);
   // z3::expr test_s1 = ctx.constant("c_s1", test_sort);
   // z3::expr test_s2 = ctx.constant("c_s2", test_sort);
   // z3::expr test_z2 = ctx.constant("c_z2", test_sort);
   // z3::expr test_v = ctx.constant("a_v", test_sort);
   // z3::func_decl f = ctx.function("c_f", test_sort, test_sort, test_sort);
+  // z3::func_decl g = ctx.function("c_g", test_sort, test_sort);
   
   // z3::expr_vector test_body(ctx);
   // test_body.push_back((test_s2 == f(test_y1, test_v)));
   // z3::expr test_head = (test_y1 == f(test_y1, test_v));
-  // horn_clauses.add(new HornClause(uf, ctx, subterms, test_body, test_head, cc_list));
+  // horn_clauses.add(new HornClause(uf, ctx, min_id, subterms, test_body, test_head, cc_list));
   
   // z3::expr_vector test_body2(ctx);
   // test_body2.push_back((test_s1 == f(test_y2, test_v)));
   // test_body2.push_back((test_y1 == f(test_y1, test_v)));
   // z3::expr test_head2 = (test_y2 == test_v);
-  // horn_clauses.add(new HornClause(uf, ctx, subterms, test_body2, test_head2, cc_list));
+  // horn_clauses.add(new HornClause(uf, ctx, min_id, subterms, test_body2, test_head2, cc_list));
   // // Stress test ----------------------------------------------------------------------
-
+  
   // ----------------------------------------------------------------------
   // Additional data structures for conditional uncommon symbol elimination
-  CCList hornsat_list(cc_list);
-  UnionFind hornsat_uf(uf);
-  CongruenceClosure hornsat_cc(subterms, hornsat_list, hornsat_uf, min_id);
+  CCList hornsat_list(cc_list);                                             // PROBLEM: This cc_list has the original number of subterms
+  UnionFind hornsat_uf(uf);                                                 // PROBLEM: This uf has the original number of subterms
+  CongruenceClosure hornsat_cc(min_id, subterms, hornsat_list, hornsat_uf); // PROBLEM: Subterms wont match cardinality with hornsat_uf
   Hornsat hsat(horn_clauses, hornsat_uf);
   // // -------------------------------------------------------------------
+  
   auto replacements = hsat.satisfiable(hornsat_cc);
+  
   for(auto x : replacements)
     std::cout << "Merge " << *horn_clauses[x.clause1]
 	      << " with " << *horn_clauses[x.clause2] << std::endl;
@@ -102,11 +117,6 @@ void EUFInterpolant::init(z3::expr const & e, unsigned & min_id, std::vector<boo
     unsigned num = e.num_args();
     for(unsigned i = 0; i < num; i++)
       init(e.arg(i), min_id, visited);
-
-    // FATAL: BEING PROBLEM HERE
-    std::cout << "BEGIN Debugging-------------------------" << std::endl;
-    std::cout << e.id() << " " << e << std::endl;
-    std::cout << "END   Debugging-------------------------" << std::endl;
     
     z3::func_decl f = e.decl();
     switch(f.decl_kind()){
@@ -114,7 +124,6 @@ void EUFInterpolant::init(z3::expr const & e, unsigned & min_id, std::vector<boo
       disequalities.push_back(e);
       return;
     case Z3_OP_UNINTERPRETED:
-      // if(num > 0 && !e.is_common())
       if(num > 0)
 	fsym_positions[f.name().str()].push_back(e.id());
     default:
@@ -174,7 +183,7 @@ void EUFInterpolant::disequalitiesToHCS(){
   for(unsigned i = 0; i < num_disequalities; i++){
     z3::expr_vector hc_body(ctx);
     hc_body.push_back(repr(disequalities[i].arg(0)) == repr(disequalities[i].arg(1)));
-    horn_clauses.add(new HornClause(uf, ctx, subterms, hc_body, contradiction, cc_list));
+    horn_clauses.add(new HornClause(uf, ctx, min_id, subterms, hc_body, contradiction, cc_list));
   }
 }
 
@@ -189,7 +198,7 @@ void EUFInterpolant::exposeUncommons(){
 	  if(!t1.is_common() || !t2.is_common()){
 	    z3::expr_vector hc_body = buildHCBody(t1, t2);
 	    z3::expr        hc_head = repr(t1) == repr(t2);
-	    horn_clauses.add(new HornClause(uf, ctx, subterms, hc_body, hc_head, cc_list));
+	    horn_clauses.add(new HornClause(uf, ctx, min_id, subterms, hc_body, hc_head, cc_list));
 	  }
 	}
   }
@@ -256,8 +265,8 @@ z3::expr EUFInterpolant::buildInterpolant(std::vector<Replacement> replacements)
 }
 
 std::ostream & operator << (std::ostream & os, EUFInterpolant & euf){
-  unsigned num = euf.size, num_changes = 0;
-  std::cout << "All the subterms:" << std::endl;
+  unsigned num = euf.original_num_terms, num_changes = 0;
+  std::cout << "All the original subterms:" << std::endl;
   for(unsigned i = euf.min_id; i < num; i++){
     // std::cout << "Original: " << i
     // 	      << " Representative " << euf.uf.find(i) << std::endl;
