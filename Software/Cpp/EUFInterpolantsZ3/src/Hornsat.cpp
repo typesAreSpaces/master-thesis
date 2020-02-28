@@ -47,6 +47,7 @@ Hornsat::Hornsat(const HornClauses & hcs, UnionFind & uf) :
   subterms(hcs.getSubterms()),
   consistent(true), num_pos(0),
   num_hcs(hcs.size()), num_literals(subterms.size()){
+  
   Literal::curr_num_literals = 0;
   list_of_literals.resize(num_literals);
   class_list.resize(num_literals);
@@ -104,7 +105,7 @@ Hornsat::Hornsat(const HornClauses & hcs, UnionFind & uf) :
       // This checks if the Horn Clause is a fact
       if(num_args[index_hc] == 0){
 	literal->val = true;
-	facts.push(index_hc);
+	facts.push(consequent.id());
 	++num_pos;
 	if(literal->literal_id == FALSELITERAL)
 	  consistent = false;
@@ -129,17 +130,19 @@ Hornsat::~Hornsat(){
 #endif
 }
 
-void Hornsat::unionupdate(UnionFind & uf, unsigned x, unsigned y, unsigned clause){
+void Hornsat::unionupdate(UnionFind & uf,
+			  unsigned x, unsigned y){
   if(uf.greater(y, x)){
     unsigned aux = x;
     x = y;
     y = aux;
   }
+  unsigned repr_x = uf.find(x), repr_y = uf.find(y);
 #if DEBUGGING_UNIONUPDATE
   std::cout << "Inside unionupdate: " << x << " " << y << std::endl;
 #endif
-  auto end = uf.end(y);  
-  for(auto u = uf.begin(y); u != end; ++u){
+  auto end = uf.end(repr_y);  
+  for(auto u = uf.begin(repr_y); u != end; ++u){
     for(auto p : class_list[*u]){
 #if DEBUGGING_UNIONUPDATE
       std::cout << "Before, Term: " << *u << " " << p << std::endl;
@@ -147,14 +150,14 @@ void Hornsat::unionupdate(UnionFind & uf, unsigned x, unsigned y, unsigned claus
       if(!p.lit_pointer->val){
 	switch(p.eq_side){
 	case LHS:
-	  p.lit_pointer->l_class = x;
+	  p.lit_pointer->l_class = repr_x;
 	  break;
 	case RHS:
-	  p.lit_pointer->r_class = x;
+	  p.lit_pointer->r_class = repr_x;
 	  break;
 	}
 	if(p.lit_pointer->l_class == p.lit_pointer->r_class){
-	  facts.push(clause);
+	  facts.push(p.lit_pointer->literal_id);
 	  p.lit_pointer->val= true;
 	}
       }
@@ -163,54 +166,94 @@ void Hornsat::unionupdate(UnionFind & uf, unsigned x, unsigned y, unsigned claus
 #endif
     }
   }
-  uf.combine(x, y);
+  uf.combine(repr_x, repr_y);
 }
 
-void Hornsat::update(CongruenceClosure & cc, std::list<unsigned> & pending, std::queue<unsigned> & facts, unsigned u, unsigned v, unsigned clause){
-  // TODO: Implement this
-  unionupdate(cc.uf, u, v, clause);
+void Hornsat::update(CongruenceClosure & cc, std::list<unsigned> & pending,
+		     unsigned v, unsigned w){
+  unsigned aux_var;
+  
+  // Invariant: v is always the repr
+  if(cc.cc_list[cc.uf.find(v)].size() < cc.cc_list[cc.uf.find(w)].size()){
+    aux_var = v;
+    v = w;
+    w = aux_var;
+  }
+  if(HornClause::compareTerm(subterms[cc.uf.find(v)], subterms[cc.uf.find(w)])){
+    aux_var = v;
+    v = w;
+    w = aux_var;
+  }
+  
+  for(auto u : cc.cc_list[cc.uf.find(w)]){
+    cc.sig_table.erase(subterms[u]);
+    pending.push_back(u);
+  }
+  unionupdate(cc.uf, v, w);
+  cc.cc_list[cc.uf.find(v)].splice(cc.cc_list[cc.uf.find(v)].end(), cc.cc_list[cc.uf.find(w)]);
+  
   return;
 }
 
-void Hornsat::congclosure(CongruenceClosure & cc, std::list<unsigned> & pending, std::queue<unsigned> & facts){
-  // TODO: Implement this
-  return;
-}
-
-void Hornsat::satisfiable(){
-  unsigned clause1 = 0, clause2 = 0, literal = 0, nextpos = 0, newnumclause = 0, oldnumclause = num_pos;
-  while(!facts.empty() && consistent){
-    newnumclause = 0;
-    for(unsigned i = 0; i < oldnumclause && consistent; ++i){
-      clause1 = facts.front();
-      facts.pop();
-      nextpos = pos_lit_list[clause1];
-      auto clause_list_cur_lit = list_of_literals[nextpos].clause_list;
-      auto it = clause_list_cur_lit->begin(), end = clause_list_cur_lit->end();
-      for(; it != end; ++it){
-	clause2 = (*it)->clause_id;
-	--num_args[clause2];
-	if(num_args[clause2] == 0){
-	  literal = pos_lit_list[clause2];
-	  if(!list_of_literals[literal].val){
-	    if (literal > FALSELITERAL){
-	      list_of_literals[literal].val = true;
-	      facts.push(clause2);
-	      ++newnumclause;
-	    }
-	    else
-	      consistent = false;
-	  }
-	}
+void Hornsat::congclosure(CongruenceClosure & cc, std::list<unsigned> & pending){
+  std::list<std::pair<unsigned, unsigned> > combine;
+  
+  while(!pending.empty()){
+    combine.clear();
+    for(auto v_id : pending){
+      const z3::expr & v = subterms[v_id];
+      try{
+	auto w_id = cc.sig_table.query(v);
+	combine.push_back(std::make_pair(v_id, w_id));
+      }
+      catch(...){
+	cc.sig_table.enter(v);
       }
     }
-    oldnumclause = newnumclause;
+    pending.clear();
+    for(auto v_w : combine){
+      unsigned v = v_w.first, w = v_w.second;
+      if(cc.uf.find(v) != cc.uf.find(w))
+	update(cc, pending, v, w);
+    }
   }
+  return;
 }
+
+// void Hornsat::satisfiable(){
+//   unsigned clause1 = 0, clause2 = 0, literal = 0, nextpos = 0, newnumclause = 0, oldnumclause = num_pos;
+//   while(!facts.empty() && consistent){
+//     newnumclause = 0;
+//     for(unsigned i = 0; i < oldnumclause && consistent; ++i){
+//       clause1 = facts.front();
+//       facts.pop();
+//       nextpos = pos_lit_list[clause1];
+//       auto clause_list_cur_lit = list_of_literals[nextpos].clause_list;
+//       auto it = clause_list_cur_lit->begin(), end = clause_list_cur_lit->end();
+//       for(; it != end; ++it){
+// 	clause2 = (*it)->clause_id;
+// 	--num_args[clause2];
+// 	if(num_args[clause2] == 0){
+// 	  literal = pos_lit_list[clause2];
+// 	  if(!list_of_literals[literal].val){
+// 	    if (literal > FALSELITERAL){
+// 	      list_of_literals[literal].val = true;
+// 	      facts.push(clause2);
+// 	      ++newnumclause;
+// 	    }
+// 	    else
+// 	      consistent = false;
+// 	  }
+// 	}
+//       }
+//     }
+//     oldnumclause = newnumclause;
+//   }
+// }
 
 std::vector<Replacement> Hornsat::satisfiable(CongruenceClosure & cc){
   std::vector<Replacement> ans;
-  unsigned clause0 = 0, clause1 = 0, node = 0, nextnode = 0, u = 0, v = 0;
+  unsigned clause1 = 0, node = 0, nextnode = 0, u = 0, v = 0;
   unsigned num_terms = cc.subterms.size();
 
   std::list<unsigned> pending;
@@ -225,8 +268,7 @@ std::vector<Replacement> Hornsat::satisfiable(CongruenceClosure & cc){
 #endif
   
   while(!facts.empty() && consistent){
-    clause0 = facts.front();
-    node = pos_lit_list[clause0];
+    node = facts.front();
     facts.pop();
 #if DEBUGGING_SATISFIABLE   
     std::cout << "Literal coming from facts: " << node << std::endl;
@@ -240,21 +282,25 @@ std::vector<Replacement> Hornsat::satisfiable(CongruenceClosure & cc){
 #if DEBUGGING_SATISFIABLE
       std::cout << "Clause id: " << clause1 << std::endl;
 #endif
-      --num_args[clause1]; // WRONG: This should decrement only if the clause involved is uncommon
-      
-      // TODO: Capture the propagation indicated below
-      ans.push_back(Replacement(clause0, clause1));
+      // In this implementation, num_args only decreases
+      // if the propagated literal is uncommon
+      if(!subterms[node].is_common())
+	--num_args[clause1]; 
+
+      // KEEP WORKING HERE (Highest priority)
+      // TODO: Capture the propagation
+      // ans.push_back(Replacement(clause0, clause1));
       
       if(num_args[clause1] == 0){
 	nextnode = pos_lit_list[clause1];
 	if(!list_of_literals[nextnode].val){
 	  if(nextnode > FALSELITERAL){
-	    facts.push(clause1);
+	    facts.push(nextnode);
 	    list_of_literals[nextnode].val = true;
 	    u = list_of_literals[nextnode].l_id,
 	      v = list_of_literals[nextnode].r_id;
 	    if(cc.uf.find(u) != cc.uf.find(v))
-	      update(cc, pending, facts, u, v, clause1);
+	      update(cc, pending, u, v);
 	  }
 	  else
 	    consistent = false;
@@ -262,7 +308,7 @@ std::vector<Replacement> Hornsat::satisfiable(CongruenceClosure & cc){
       }
     }
     if(facts.empty() && consistent)
-      congclosure(cc, pending, facts);
+      congclosure(cc, pending);
   }
   return ans;
 }

@@ -18,8 +18,8 @@ void CongruenceClosure::buildCongruenceClosure(std::list<unsigned> & pending){
     for(auto v_id : pending){
       z3::expr v = subterms[v_id];
       try{
-	auto w = sig_table.query(v);
-	combine.push_back(std::make_pair(v_id, w));
+	auto w_id = sig_table.query(v);
+	combine.push_back(std::make_pair(v_id, w_id));
       }
       catch(...){
 	sig_table.enter(v);
@@ -29,14 +29,15 @@ void CongruenceClosure::buildCongruenceClosure(std::list<unsigned> & pending){
     for(auto v_w : combine){
       unsigned v = v_w.first, w = v_w.second;
       if(uf.find(v) != uf.find(w)){
+	unsigned aux;
 	// Invariant: v is always the repr
 	if(cc_list[uf.find(v)].size() < cc_list[uf.find(w)].size()){
-	  unsigned aux = v;
+	  aux = v;
 	  v = w;
 	  w = aux;
 	}
 	if(HornClause::compareTerm(subterms[uf.find(v)], subterms[uf.find(w)])){
-	  unsigned aux = v;
+	  aux = v;
 	  v = w;
 	  w = aux;
 	}
@@ -44,7 +45,6 @@ void CongruenceClosure::buildCongruenceClosure(std::list<unsigned> & pending){
 	  sig_table.erase(subterms[u]);
 	  pending.push_back(u);
 	}
-	// CHANGES CAN HAPPEN HERE
 	uf.combine(uf.find(v), uf.find(w));
 	cc_list[uf.find(v)].splice(cc_list[uf.find(v)].end(), cc_list[uf.find(w)]);
       }

@@ -99,14 +99,13 @@ class Hornsat {
   std::vector<Literal>    list_of_literals;
   ClassList               class_list;
   // facts is a queue of all the (temporary)
-  // clauses that have true value
-  // in their antecedent literals
+  // literals that have value true
   std::queue<unsigned> facts;
   std::vector<unsigned> num_args, pos_lit_list;
 
-  void unionupdate(UnionFind &, unsigned, unsigned, unsigned);
-  void update(CongruenceClosure &, std::list<unsigned> &, std::queue<unsigned> &, unsigned, unsigned, unsigned);
-  void congclosure(CongruenceClosure &, std::list<unsigned> &, std::queue<unsigned> &);
+  void unionupdate(UnionFind &, unsigned, unsigned);
+  void update(CongruenceClosure &, std::list<unsigned> &, unsigned, unsigned);
+  void congclosure(CongruenceClosure &, std::list<unsigned> &);
   
  public:
   // Hornsat(std::istream &);

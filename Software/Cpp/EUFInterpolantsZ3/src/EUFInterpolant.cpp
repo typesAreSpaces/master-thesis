@@ -76,7 +76,8 @@ EUFInterpolant::EUFInterpolant(z3::expr const & part_a) :
   
   // ----------------------------------------------------------------------
   // Additional data structures for conditional uncommon symbol elimination
-  CCList hornsat_list(cc_list);                                             
+  CCList hornsat_list(cc_list);
+  assert(cc_list.size() == subterms.size());
   UnionFind hornsat_uf(uf);                                                 
   hornsat_uf.increaseSize(subterms.size());
   CongruenceClosure hornsat_cc(min_id, subterms, hornsat_list, hornsat_uf);
@@ -84,7 +85,6 @@ EUFInterpolant::EUFInterpolant(z3::expr const & part_a) :
   // // -------------------------------------------------------------------
   
   auto replacements = hsat.satisfiable(hornsat_cc);
-  
   for(auto x : replacements)
     std::cout << "Merge " << *horn_clauses[x.clause1]
 	      << " with " << *horn_clauses[x.clause2] << std::endl;

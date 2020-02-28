@@ -95,7 +95,7 @@ void HornClauses::add(HornClause * hc){
 }
 
 void HornClauses::conditionalElimination(std::vector<Replacement> replacements){
-  std::cout << "ok1" << std::endl;
+  std::cout << "HornClauses::conditionalElimination not implemented yet!" << std::endl;
   
   // simplifyHornClauses();
   

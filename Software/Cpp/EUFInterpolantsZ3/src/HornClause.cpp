@@ -37,8 +37,9 @@ HornClause::HornClause(UnionFind & uf, z3::context & ctx, const unsigned & min_i
 
   // ---------------------------------------------------------------
   // This part updates subterms (again) in case there are
-  // new terms created by a Horn Clause after
-  // normalization and orientation
+  // NEW TERMS created by a Horn Clause after
+  // normalization and orientation. For the latter, it also
+  // updates cc_list
   for(auto hyp : this->antecedent){
     is_common_antecedent = is_common_antecedent && hyp.is_common();
     if(!hyp.is_common())
