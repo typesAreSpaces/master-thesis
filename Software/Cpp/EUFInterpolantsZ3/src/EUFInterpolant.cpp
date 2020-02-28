@@ -2,6 +2,141 @@
 #define DEBUG_DESTRUCTOR_EUF false
 #define DEBUG_EUFINTERPOLANT false
 
+// // EUFInterpolant::EUFInterpolant(z3::expr const & part_a) :
+// //   ctx(part_a.ctx()), min_id(part_a.id()), subterms(ctx),
+// //   fsym_positions(), horn_clauses(ctx, min_id, subterms),
+// //   contradiction(ctx), disequalities(ctx), original_num_terms(part_a.id() + 1){
+  
+// //   contradiction = ctx.bool_val(false);
+// //   std::vector<bool> visited(original_num_terms, false);
+// //   subterms.resize(original_num_terms);
+// //   cc_list.resize(original_num_terms);
+
+// //   // The following defines min_id, visited,
+// //   // subterms, disequalities, and fsym_positions
+// //   init(part_a, min_id, visited);
+// //   //                       ---------
+// //   // The following defines |cc_list|
+// //   //                       ---------
+// //   initCCList(part_a);
+// //   //                       ----
+// //   // The following defines |uf|
+// //   //                       ----
+// //   uf = UnionFind(original_num_terms);
+// //   //                   ----
+// //   // After this point, |uf| is fully defined
+// //   //                   ----
+// //   processEqs(part_a);
+  
+// //   // The following sets up a
+// //   // --------------------
+// //   // |congruence closure| data structure
+// //   // --------------------
+// //   CongruenceClosure cc(min_id, subterms, cc_list, uf);
+// //   std::list<unsigned> pending;
+// //   for(unsigned i = min_id; i < original_num_terms; i++)
+// //     if(subterms[i].num_args() > 0)
+// //       pending.push_back(i);
+// //   cc.buildCongruenceClosure(pending);
+// //   assert(pending.empty());
+
+// //   // Converting disequalities to Horn Clauses
+// //   disequalitiesToHCS();
+
+// //   // Unconditional uncommon symbol elimination step
+// //   //                   --------------
+// //   // After this point, |horn_clauses| is fully defined
+// //   //                   --------------
+// //   exposeUncommons();
+  
+// //   // std::cout << horn_clauses << std::endl;
+
+// //   // // Stress test ----------------------------------------------------------------------
+// //   // z3::sort test_sort = ctx.uninterpreted_sort("A");
+// //   // z3::expr test_y1 = ctx.constant("c_y1", test_sort);
+// //   // z3::expr test_y2 = ctx.constant("c_y2", test_sort);
+// //   // z3::expr test_s1 = ctx.constant("c_s1", test_sort);
+// //   // z3::expr test_s2 = ctx.constant("c_s2", test_sort);
+// //   // z3::expr test_z2 = ctx.constant("c_z2", test_sort);
+// //   // z3::expr test_v = ctx.constant("a_v", test_sort);
+// //   // z3::func_decl f = ctx.function("c_f", test_sort, test_sort, test_sort);
+// //   // z3::func_decl g = ctx.function("c_g", test_sort, test_sort);
+  
+// //   // z3::expr_vector test_body(ctx);
+// //   // test_body.push_back((test_s2 == f(test_y1, test_v)));
+// //   // z3::expr test_head = (test_y1 == f(test_y1, test_v));
+// //   // horn_clauses.add(new HornClause(uf, ctx, min_id, subterms, test_body, test_head, cc_list));
+  
+// //   // z3::expr_vector test_body2(ctx);
+// //   // test_body2.push_back((test_s1 == f(test_y2, test_v)));
+// //   // test_body2.push_back((test_y1 == f(test_y1, test_v)));
+// //   // z3::expr test_head2 = (test_y2 == test_v);
+// //   // horn_clauses.add(new HornClause(uf, ctx, min_id, subterms, test_body2, test_head2, cc_list));
+// //   // // Stress test ----------------------------------------------------------------------
+  
+// //   // ----------------------------------------------------------------------
+// //   // Additional data structures for conditional uncommon symbol elimination
+// //   CCList hornsat_list(cc_list);
+// //   assert(cc_list.size() == subterms.size());
+// //   UnionFind hornsat_uf(uf);                                                 
+// //   hornsat_uf.increaseSize(subterms.size());
+// //   CongruenceClosure hornsat_cc(min_id, subterms, hornsat_list, hornsat_uf);
+// //   Hornsat hsat(horn_clauses, hornsat_uf);
+// //   // // -------------------------------------------------------------------
+  
+// //   auto replacements = hsat.satisfiable(hornsat_cc);
+// //   for(auto x : replacements)
+// //     std::cout << "Merge " << *horn_clauses[x.clause1]
+// // 	      << " with " << *horn_clauses[x.clause2] << std::endl;
+// //   // // -------------------------------------------------------------------
+// //   // std::cout << hsat << std::endl;
+// //   // ----------------------------------------------------------------------
+  
+// //   buildInterpolant(replacements);
+// //   return;
+  
+// //   // throw "Problem @ EUFInterpolant::EUFInterpolant. The z3::expr const & part_a was unsatisfiable.";
+// // }
+
+// EUFInterpolant::EUFInterpolant(z3::expr const & part_a) :
+//   ctx(part_a.ctx()), min_id(part_a.id()), subterms(ctx),
+//   fsym_positions(), horn_clauses(ctx, min_id, subterms),
+//   contradiction(ctx), disequalities(ctx), original_num_terms(part_a.id() + 1){
+  
+//   contradiction = ctx.bool_val(false);
+//   std::vector<bool> visited(original_num_terms, false);
+//   subterms.resize(original_num_terms);
+//   cc_list.resize(original_num_terms);
+
+//   // The following defines min_id, visited,
+//   // subterms, disequalities, and fsym_positions
+//   init(part_a, min_id, visited);
+//   //                       ---------
+//   // The following defines |cc_list|
+//   //                       ---------
+//   initCCList(part_a);
+//   //                       ----
+//   // The following defines |uf|
+//   //                       ----
+//   uf = UnionFind(original_num_terms);
+//   //                   ----
+//   // After this point, |uf| is fully defined
+//   //                   ----
+//   processEqs(part_a);
+  
+//   // The following sets up a
+//   // --------------------
+//   // |congruence closure| data structure
+//   // --------------------
+//   CongruenceClosure cc(min_id, subterms, cc_list, uf);
+//   std::list<unsigned> pending;
+//   for(unsigned i = min_id; i < original_num_terms; i++)
+//     if(subterms[i].num_args() > 0)
+//       pending.push_back(i);
+//   cc.buildCongruenceClosure(pending);
+//   assert(pending.empty());
+// }
+
 EUFInterpolant::EUFInterpolant(z3::expr const & part_a) :
   ctx(part_a.ctx()), min_id(part_a.id()), subterms(ctx),
   fsym_positions(), horn_clauses(ctx, min_id, subterms),
@@ -15,90 +150,32 @@ EUFInterpolant::EUFInterpolant(z3::expr const & part_a) :
   // The following defines min_id, visited,
   // subterms, disequalities, and fsym_positions
   init(part_a, min_id, visited);
-  //                       ---------
-  // The following defines |cc_list|
-  //                       ---------
-  initCCList(part_a);
-  //                       ----
-  // The following defines |uf|
-  //                       ----
-  uf = UnionFind(original_num_terms);
-  //                   ----
-  // After this point, |uf| is fully defined
-  //                   ----
-  processEqs(part_a);
-  
-  // The following sets up a
-  // --------------------
-  // |congruence closure| data structure
-  // --------------------
-  CongruenceClosure cc(min_id, subterms, cc_list, uf);
-  std::list<unsigned> pending;
+
+  // There is extra padding for non-apps-z3::expressions,
+  unsigned aux_num_terms = original_num_terms - min_id;
+  unsigned aux_class_ids[aux_num_terms];
+  z3::expr_vector aux_subterms(ctx);
   for(unsigned i = min_id; i < original_num_terms; i++)
-    if(subterms[i].num_args() > 0)
-      pending.push_back(i);
-  cc.buildCongruenceClosure(pending);
-  assert(pending.empty());
+    aux_subterms.push_back(subterms[i]);
 
-  // Converting disequalities to Horn Clauses
-  disequalitiesToHCS();
-
-  // Unconditional uncommon symbol elimination step
-  //                   --------------
-  // After this point, |horn_clauses| is fully defined
-  //                   --------------
-  exposeUncommons();
-  
-  // std::cout << horn_clauses << std::endl;
-
-  // // Stress test ----------------------------------------------------------------------
-  // z3::sort test_sort = ctx.uninterpreted_sort("A");
-  // z3::expr test_y1 = ctx.constant("c_y1", test_sort);
-  // z3::expr test_y2 = ctx.constant("c_y2", test_sort);
-  // z3::expr test_s1 = ctx.constant("c_s1", test_sort);
-  // z3::expr test_s2 = ctx.constant("c_s2", test_sort);
-  // z3::expr test_z2 = ctx.constant("c_z2", test_sort);
-  // z3::expr test_v = ctx.constant("a_v", test_sort);
-  // z3::func_decl f = ctx.function("c_f", test_sort, test_sort, test_sort);
-  // z3::func_decl g = ctx.function("c_g", test_sort, test_sort);
-  
-  // z3::expr_vector test_body(ctx);
-  // test_body.push_back((test_s2 == f(test_y1, test_v)));
-  // z3::expr test_head = (test_y1 == f(test_y1, test_v));
-  // horn_clauses.add(new HornClause(uf, ctx, min_id, subterms, test_body, test_head, cc_list));
-  
-  // z3::expr_vector test_body2(ctx);
-  // test_body2.push_back((test_s1 == f(test_y2, test_v)));
-  // test_body2.push_back((test_y1 == f(test_y1, test_v)));
-  // z3::expr test_head2 = (test_y2 == test_v);
-  // horn_clauses.add(new HornClause(uf, ctx, min_id, subterms, test_body2, test_head2, cc_list));
-  // // Stress test ----------------------------------------------------------------------
-  
-  // ----------------------------------------------------------------------
-  // Additional data structures for conditional uncommon symbol elimination
-  CCList hornsat_list(cc_list);
-  assert(cc_list.size() == subterms.size());
-  UnionFind hornsat_uf(uf);                                                 
-  hornsat_uf.increaseSize(subterms.size());
-  CongruenceClosure hornsat_cc(min_id, subterms, hornsat_list, hornsat_uf);
-  Hornsat hsat(horn_clauses, hornsat_uf);
-  // // -------------------------------------------------------------------
-  
-  auto replacements = hsat.satisfiable(hornsat_cc);
-  for(auto x : replacements)
-    std::cout << "Merge " << *horn_clauses[x.clause1]
-	      << " with " << *horn_clauses[x.clause2] << std::endl;
-  // // -------------------------------------------------------------------
-  // std::cout << hsat << std::endl;
-  // ----------------------------------------------------------------------
-  
-  buildInterpolant(replacements);
-  return;
-  
-  // throw "Problem @ EUFInterpolant::EUFInterpolant. The z3::expr const & part_a was unsatisfiable.";
+  std::cout << "Start computing Congruence Closure" << std::endl;
+  z3::solver euf_solver(ctx, "QF_UF");
+  euf_solver.add(part_a);
+  if(euf_solver.implied_equalities(aux_num_terms, aux_subterms, aux_class_ids) != z3::unsat){
+    std::cout << "Done computing Congruence Closure" << std::endl;
+    unsigned class_ids[original_num_terms];
+    for(unsigned i = 0; i < original_num_terms; i++){
+      if(i < min_id)
+	class_ids[i] = i;
+      else
+	class_ids[i] = aux_class_ids[i - min_id] + min_id;
+    }
+    uf = UnionFind(class_ids, original_num_terms);
+    return;
+  }
+  throw "Problem @ EUFInterpolant::EUFInterpolant. The z3::expr const & part_a was unsatisfiable.";
 }
-
-
+  
 EUFInterpolant::~EUFInterpolant(){
 #if DEBUG_DESTRUCTOR_EUF
   std::cout << "Bye EUFInterpolant" << std::endl;
