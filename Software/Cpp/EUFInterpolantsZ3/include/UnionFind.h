@@ -22,7 +22,6 @@ public:
   void link(unsigned, unsigned);
   unsigned find(unsigned);
   bool greater(unsigned, unsigned);
-  std::vector<unsigned> getEquivClass(unsigned);
   class iterator {
     UnionFind * m_uf;
     unsigned    m_element;

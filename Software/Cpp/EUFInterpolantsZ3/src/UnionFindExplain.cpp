@@ -1,21 +1,24 @@
 #include "UnionFindExplain.h"
 #define DEBUG_DESTRUCTOR_UFE false
 
-UnionFindExplain::UnionFindExplain() : size(0){
+UnionFindExplain::UnionFindExplain() :
+  size(0){ 
 };
 
-UnionFindExplain::UnionFindExplain(unsigned size) : representative(size, 0), rank(size, 1), size(size){
-  for(unsigned i = 0; i < size; i++)
-    representative[i] = i;
-}
+UnionFindExplain::UnionFindExplain(unsigned size) :
+  representative(size, 0), rank(size, 1),
+  forest(size, 0), size(size){
 
-UnionFindExplain::UnionFindExplain(unsigned array[], unsigned size) :
-  representative(array, array + size), rank(size, 1), size(size){
+  for(unsigned i = 0; i < size; i++){
+    representative[i] = i;
+    forest[i] = i;
+  }
 }
 
 UnionFindExplain::UnionFindExplain(const UnionFindExplain & other) :
   representative(other.representative),
-  rank(other.rank), size(other.size){
+  rank(other.rank), forest(other.forest),
+  records(other.records), size(other.size){
 }
 
 UnionFindExplain::~UnionFindExplain(){
@@ -27,14 +30,28 @@ UnionFindExplain::~UnionFindExplain(){
 // The first argument becomes the new
 // representative, always
 void UnionFindExplain::combine(unsigned x, unsigned y){
+  assert(x < size && y < size);
   representative[find(y)] = find(x);
+  
+  // Dealing with forest
+  forest[find(y)] = forest[find(x)];
+  records.emplace_back(y, x);
+  
   rank[find(x)] += rank[find(y)];
   return;
 }
 
+// The first argument becomes the new
+// representative in forest, always
 void UnionFindExplain::merge(unsigned x, unsigned y){
   assert(x < size && y < size);
+  // Dealing with representative
   link(find(x), find(y));
+
+  // Dealing with forest
+  forest[find(y)] = forest[find(x)];
+  records.emplace_back(y, x);
+  
   return;
 }
 
@@ -58,14 +75,6 @@ unsigned UnionFindExplain::find(unsigned x){
 
 bool UnionFindExplain::greater(unsigned x, unsigned y){
   return rank[x] > rank[y];
-}
-
-std::vector<unsigned> UnionFindExplain::getEquivClass(unsigned x){
-  std::vector<unsigned> ans;
-  for(unsigned i = 0; i < size; i++)
-    if(find(i) == x)
-      ans.push_back(i);
-  return ans;
 }
 
 void UnionFindExplain::increaseSize(unsigned sz){

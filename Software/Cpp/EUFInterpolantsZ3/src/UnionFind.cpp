@@ -60,14 +60,6 @@ bool UnionFind::greater(unsigned x, unsigned y){
   return rank[x] > rank[y];
 }
 
-std::vector<unsigned> UnionFind::getEquivClass(unsigned x){
-  std::vector<unsigned> ans;
-  for(unsigned i = 0; i < size; i++)
-    if(find(i) == x)
-      ans.push_back(i);
-  return ans;
-}
-
 void UnionFind::increaseSize(unsigned sz){
   representative.resize(sz);
   rank.resize(sz);

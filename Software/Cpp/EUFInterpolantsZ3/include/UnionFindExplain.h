@@ -7,8 +7,11 @@
 
  
 struct ExplainEquation {
-  unsigned source, target;
-  ExplainEquation(unsigned source, unsigned target) : source(source), target(target){}
+  unsigned source, target, local_ticket;
+  
+  ExplainEquation(unsigned source, unsigned target) :
+    source(source), target(target) {}
+  
   friend std::ostream & operator << (std::ostream & os, const ExplainEquation & eq){
     os << eq.source << " := " << eq.target;
     return os;
@@ -20,13 +23,12 @@ class UnionFindExplain {
   std::vector<unsigned> representative;
   std::vector<unsigned> rank;
   std::vector<unsigned> forest;
-  std::vector<ExplainEquation> record;
+  std::vector<ExplainEquation> records;
   unsigned size;
   
 public:
   UnionFindExplain();
   UnionFindExplain(unsigned);
-  UnionFindExplain(unsigned [], unsigned);
   UnionFindExplain(const UnionFindExplain &);
   ~UnionFindExplain();
   void combine(unsigned, unsigned);
@@ -34,7 +36,6 @@ public:
   void link(unsigned, unsigned);
   unsigned find(unsigned);
   bool greater(unsigned, unsigned);
-  std::vector<unsigned> getEquivClass(unsigned);
   class iterator {
     UnionFindExplain * m_uf;
     unsigned    m_element;
