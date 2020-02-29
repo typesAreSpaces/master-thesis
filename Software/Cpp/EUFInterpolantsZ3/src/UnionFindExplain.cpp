@@ -28,9 +28,15 @@ UnionFindExplain::~UnionFindExplain(){
 #endif
 };
 
+std::size_t UnionFindExplain::hash_combine(unsigned t1, unsigned t2){
+  std::size_t entry = hasher(t1);
+  entry = hasher(t2) + 0x9e3779b9 + (entry<<6) + (entry>>2);
+  return entry;
+}
+
 // The first argument becomes the new
 // representative, always.
-// i.e.                         target---   source---
+// i.e.                         source---   target---
 //                                      |           |
 //                                      v           v 
 void UnionFindExplain::combine(unsigned x, unsigned y){
@@ -39,11 +45,10 @@ void UnionFindExplain::combine(unsigned x, unsigned y){
   // Dealing with forest
   unsigned explain_y = forest[find(y)], explain_x = forest[find(x)];
   records.emplace_back(explain_y, explain_x);
+  inserted_equations.emplace_back(y, x);
   forest[find(y)] = forest[find(x)];
 
-  std::size_t entry = hasher(explain_y);
-  entry = hasher(explain_x) + 0x9e3779b9 + (entry<<6) + (entry>>2);
-  path[entry] = global_ticket++;
+  path[hash_combine(explain_y, explain_x)] = global_ticket++;
   
   representative[find(y)] = find(x);
   rank[find(x)] += rank[find(y)];
@@ -53,7 +58,7 @@ void UnionFindExplain::combine(unsigned x, unsigned y){
 
 // The first argument becomes the new
 // representative in forest, always.
-// i.e.                       target---   source---
+// i.e.                       source---   target---
 //                                    |           |
 //                                    v           v 
 void UnionFindExplain::merge(unsigned x, unsigned y){
@@ -62,11 +67,10 @@ void UnionFindExplain::merge(unsigned x, unsigned y){
   // Dealing with forest 
   unsigned explain_y = forest[find(y)], explain_x = forest[find(x)];
   records.emplace_back(explain_y, explain_x);
+  inserted_equations.emplace_back(y, x);
   forest[find(y)] = forest[find(x)];
   
-  std::size_t entry = hasher(explain_y);
-  entry = hasher(explain_x) + 0x9e3779b9 + (entry<<6) + (entry>>2);
-  path[entry] = global_ticket++;
+  path[hash_combine(explain_y, explain_x)] = global_ticket++;
   
   // Dealing with representative
   link(find(x), find(y));
@@ -93,51 +97,62 @@ unsigned UnionFindExplain::find(unsigned x){
 }
 
 void UnionFindExplain::explain(unsigned x, unsigned y){
-
-  std::cout << "Original " << x << " " << y << std::endl;
-
   if(x == y)
     return;
   
-  unsigned step = 0, original_x = x, original_y = y;
-  bool oriented = true;
+  unsigned oriented_step = 0, non_oriented_step = 0,
+    original_x = x, original_y = y;
+  std::size_t entry;
+  
   while(x != forest[x]){
-    std::size_t entry = hasher(x);
-    entry = hasher(forest[x]) + 0x9e3779b9 + (entry<<6) + (entry>>2);
+    
+    entry = hash_combine(x, forest[x]);
     x = forest[x];
 
-    std::cout << records[path[entry]] << std::endl;
+    if(oriented_step < path[entry])
+      oriented_step = path[entry];
 
-    if(step < path[entry])
-      step = path[entry];
-  }
-
-  std::cout << "reverse the following" << std::endl;
-  
-  while(y != forest[y]){  
-    std::size_t entry = hasher(y);
-    entry = hasher(forest[y]) + 0x9e3779b9 + (entry<<6) + (entry>>2);
-    y = forest[y];
-    
-    std::cout << records[path[entry]] << std::endl;
-    
-    if(step < path[entry]){
-      step = path[entry];
-      oriented = false;
+    if(x == original_y){
+      std::cout << "Oriented Step: " << oriented_step << " (" << inserted_equations[oriented_step] << ") " << std::endl;
+      explain(original_x, records[oriented_step].source);
+      explain(records[oriented_step].target, original_y);
+      return;
     }
   }
-  std::cout << original_x << " " << original_y << std::endl;
-  std::cout << step << " (" << records[step] << ") " << (oriented == true) << std::endl;
+  
+  while(y != forest[y]){
+    
+    entry = hash_combine(y, forest[y]);
+    y = forest[y];
+    
+    if(non_oriented_step < path[entry])
+      non_oriented_step = path[entry];
 
-  if(oriented){
-    std::cout << "It was oriented" << std::endl;
-    explain(original_x, records[step].source);
-    explain(records[step].target, original_y);
+    if(y == original_x){
+      std::cout << "Non Oriented Step: " << non_oriented_step << " (" << inserted_equations[non_oriented_step] << ") " << std::endl;
+      explain(y, records[non_oriented_step].target);
+      explain(records[non_oriented_step].source, original_y);
+      return;
+    }
+  }
+
+  if(x == y){
+    if(oriented_step > non_oriented_step){
+      std::cout << "Oriented Step: " << oriented_step << " (" << inserted_equations[oriented_step] << ") " << std::endl;
+      explain(original_x, records[oriented_step].source);
+      explain(records[oriented_step].target, original_y);
+      return;
+    }
+    std::cout << "Non Oriented Step: " << non_oriented_step << " (" << inserted_equations[non_oriented_step] << ") " << std::endl;
+    explain(original_x, records[non_oriented_step].target);
+    explain(records[non_oriented_step].source, original_y);
     return;
   }
-  std::cout << "It wasn't oriented" << std::endl;
-  explain(original_x, records[step].target);
-  explain(records[step].source, original_y);
+
+  std::cout << x << ", " << y
+	    << " arent in the same equivalence class" << std::endl;
+  
+
   return;
 }
 
