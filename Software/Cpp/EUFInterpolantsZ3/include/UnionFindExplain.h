@@ -3,6 +3,7 @@
 
 #include <iostream>
 #include <vector>
+#include <list>
 #include <cassert>
 #include <unordered_map>
  
@@ -17,6 +18,8 @@ struct ExplainEquation {
     return os;
   }
 };
+
+typedef std::list<ExplainEquation> ExplainEquations;
  
 class UnionFindExplain {
   
@@ -30,6 +33,7 @@ class UnionFindExplain {
   unsigned size, global_ticket;
 
   std::size_t hash_combine(unsigned, unsigned);
+  void explainHelper(unsigned, unsigned, ExplainEquations &);
   
 public:
   UnionFindExplain();
@@ -40,8 +44,8 @@ public:
   void merge(unsigned, unsigned);
   void link(unsigned, unsigned);
   unsigned find(unsigned);
-  void explain(unsigned, unsigned);
   bool greater(unsigned, unsigned);
+  ExplainEquations explain(unsigned, unsigned);
   class iterator {
     UnionFindExplain * m_uf;
     unsigned    m_element;

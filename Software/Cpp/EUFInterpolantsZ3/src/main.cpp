@@ -45,9 +45,21 @@ int main(int argc, char ** argv){
   a.merge(2, 6);
   a.merge(5, 2);
 
-  a.explain(6, 5);
-  std::cout << std::endl;
-  a.explain(5, 6);
+  std::cout << "Explaining 6, 5" << std::endl;
+  for(auto x : a.explain(6, 5))
+    std::cout << x << std::endl;
+
+  std::cout << "Explaining 5, 6" << std::endl;
+  for(auto x : a.explain(5, 6))
+    std::cout << x << std::endl;
+
+  std::cout << "Explaining 1, 6" << std::endl;
+  for(auto x : a.explain(1, 6))
+    std::cout << x << std::endl;
+
+  std::cout << "Explaining 6, 1" << std::endl;
+  for(auto x : a.explain(6, 1))
+    std::cout << x << std::endl;
   
   return 0;
 }
