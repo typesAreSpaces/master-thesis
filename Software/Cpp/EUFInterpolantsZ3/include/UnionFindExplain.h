@@ -4,10 +4,10 @@
 #include <iostream>
 #include <vector>
 #include <cassert>
-
+#include <unordered_map>
  
 struct ExplainEquation {
-  unsigned source, target, local_ticket;
+  unsigned source, target;
   
   ExplainEquation(unsigned source, unsigned target) :
     source(source), target(target) {}
@@ -20,11 +20,13 @@ struct ExplainEquation {
  
 class UnionFindExplain {
   
+  std::hash<unsigned> hasher;
   std::vector<unsigned> representative;
   std::vector<unsigned> rank;
   std::vector<unsigned> forest;
   std::vector<ExplainEquation> records;
-  unsigned size;
+  std::unordered_map<std::size_t, unsigned> path;
+  unsigned size, global_ticket;
   
 public:
   UnionFindExplain();
@@ -35,6 +37,7 @@ public:
   void merge(unsigned, unsigned);
   void link(unsigned, unsigned);
   unsigned find(unsigned);
+  void explain(unsigned, unsigned);
   bool greater(unsigned, unsigned);
   class iterator {
     UnionFindExplain * m_uf;

@@ -39,7 +39,7 @@ void UnionFind::merge(unsigned x, unsigned y){
 }
 
 void UnionFind::link(unsigned x, unsigned y){
-  if(rank[x] > rank[y]){
+  if(rank[x] >= rank[y]){
     representative[y] = x;
     rank[x] += rank[y];
     return;
