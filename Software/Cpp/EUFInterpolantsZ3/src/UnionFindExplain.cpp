@@ -1,5 +1,6 @@
 #include "UnionFindExplain.h"
 #define DEBUG_DESTRUCTOR_UFE false
+#define DEBUG_EXPLAIN_OP false
 
 UnionFindExplain::UnionFindExplain() :
   size(0), global_ticket(0){ 
@@ -18,7 +19,6 @@ UnionFindExplain::UnionFindExplain(unsigned size) :
 UnionFindExplain::UnionFindExplain(const UnionFindExplain & other) :
   representative(other.representative),
   rank(other.rank), forest(other.forest),
-  records(other.records), size(other.size),
   global_ticket(other.global_ticket){
 }
 
@@ -34,65 +34,117 @@ std::size_t UnionFindExplain::hash_combine(unsigned t1, unsigned t2){
   return entry;
 }
 
+unsigned UnionFindExplain::depth(unsigned x){
+  unsigned aux = x, depth = 0;
+  while(aux != forest[aux]){
+    depth++;
+    aux = forest[aux];
+  }
+  return depth;
+}
+
+unsigned UnionFindExplain::commonAncestor(unsigned x, unsigned y){
+  unsigned depth_x = depth(x), depth_y = depth(y);
+  unsigned aux_x = x, aux_y = y, diff_depth;
+  if(depth_x >= depth_y){ 
+    diff_depth = depth_x - depth_y;
+    while(diff_depth--)
+      aux_y = forest[aux_y];
+    while(depth_x--){
+      aux_x = forest[aux_x];
+      aux_y = forest[aux_y];
+      if(aux_x == aux_y)
+	return aux_x;
+    }
+  }
+  else{
+    diff_depth = depth_y - depth_x;
+    while(diff_depth--)
+      aux_x = forest[aux_x];
+    while(depth_y--){
+      aux_x = forest[aux_x];
+      aux_y = forest[aux_y];
+      if(aux_x == aux_y)
+	return aux_x;
+    }
+  }
+  throw "The nodes are not in the same equivalence class";
+}
+
 void UnionFindExplain::explainHelper(unsigned x, unsigned y,
 				     ExplainEquations & explanations){
 
+#if DEBUG_EXPLAIN_OP
   std::cout << "Original " << x << " " << y << std::endl;
+#endif  
   if(x == y)
     return;
   
-  unsigned oriented_step = 0, non_oriented_step = 0,
-    original_x = x, original_y = y;
-  std::size_t entry;
+  // F<ind lowest common ancestor
+  try{
+    unsigned common_ancestor = commonAncestor(x, y);
+
+    unsigned oriented_step = 0, non_oriented_step = 0,
+      original_x = x, original_y = y;
+    std::size_t entry;
   
-  while(x != forest[x]){  
-    entry = hash_combine(x, forest[x]);
-    x = forest[x];
+    while(x != common_ancestor){  
+      entry = hash_combine(x, forest[x]);
+      x = forest[x];
 
-    if(oriented_step < path[entry])
-      oriented_step = path[entry];
+      if(oriented_step < path[entry])
+	oriented_step = path[entry];
 
-    if(x == original_y){
-      std::cout << "Oriented Step " << oriented_step << ": " << inserted_equations[oriented_step] << std::endl;
-      explanations.push_back(inserted_equations[oriented_step]);
-      explainHelper(original_x, inserted_equations[oriented_step].source, explanations);
-      explainHelper(inserted_equations[oriented_step].target, original_y, explanations);
-      return;
+      if(x == original_y){
+#if DEBUG_EXPLAIN_OP
+  std::cout << "Oriented Step " << oriented_step << ": " << inserted_equations[oriented_step] << std::endl;
+#endif
+	explanations.push_back(inserted_equations[oriented_step]);
+	explainHelper(original_x, inserted_equations[oriented_step].source, explanations);
+	explainHelper(inserted_equations[oriented_step].target, original_y, explanations);
+	return;
+      }
     }
-  }
-  
-  while(y != forest[y]){ 
-    entry = hash_combine(y, forest[y]);
-    y = forest[y];
+    while(y != common_ancestor){ 
+      entry = hash_combine(y, forest[y]);
+      y = forest[y];
     
-    if(non_oriented_step < path[entry])
-      non_oriented_step = path[entry];
+      if(non_oriented_step < path[entry])
+	non_oriented_step = path[entry];
 
-    if(y == original_x){
-      std::cout << "Non oriented Step " << non_oriented_step << ": " << inserted_equations[non_oriented_step] << std::endl;
+      if(y == original_x){
+#if DEBUG_EXPLAIN_OP
+	std::cout << "Non oriented Step " << non_oriented_step << ": " << inserted_equations[non_oriented_step] << std::endl;
+  #endif
+	explanations.push_back(inserted_equations[non_oriented_step]);
+	explainHelper(y, inserted_equations[non_oriented_step].target, explanations);
+	explainHelper(inserted_equations[non_oriented_step].source, original_y, explanations);
+	return;
+      }
+    }
+
+    if(x == y){
+      if(oriented_step > non_oriented_step){	
+#if DEBUG_EXPLAIN_OP
+	std::cout << "Last Oriented Step " << oriented_step << ": " << inserted_equations[oriented_step] << std::endl;
+#endif
+	explanations.push_back(inserted_equations[oriented_step]);
+	explainHelper(original_x, inserted_equations[oriented_step].source, explanations);
+	explainHelper(inserted_equations[oriented_step].target, original_y, explanations);
+	return;
+      }
+#if DEBUG_EXPLAIN_OP
+      std::cout << "Last Non oriented Step " << non_oriented_step << ": " << inserted_equations[non_oriented_step] << std::endl; 
+#endif
       explanations.push_back(inserted_equations[non_oriented_step]);
-      explainHelper(y, inserted_equations[non_oriented_step].target, explanations);
+      explainHelper(original_x, inserted_equations[non_oriented_step].target, explanations);
       explainHelper(inserted_equations[non_oriented_step].source, original_y, explanations);
       return;
     }
-  }
-
-  if(x == y){
-    if(oriented_step > non_oriented_step){
-      std::cout << "Last Oriented Step " << oriented_step << ": " << inserted_equations[oriented_step] << std::endl;
-      explanations.push_back(inserted_equations[oriented_step]);
-      explainHelper(original_x, inserted_equations[oriented_step].source, explanations);
-      explainHelper(records[oriented_step].target, original_y, explanations);
-      return;
-    }
-    std::cout << "Last Non oriented Step " << non_oriented_step << ": " << inserted_equations[non_oriented_step] << std::endl;
-    explanations.push_back(inserted_equations[non_oriented_step]);
-    explainHelper(original_x, inserted_equations[non_oriented_step].target, explanations);
-    explainHelper(inserted_equations[non_oriented_step].source, original_y, explanations);
     return;
   }
-  
-  return;
+  catch(...){
+  }
 }
 
 // The first argument becomes the new
@@ -103,7 +155,6 @@ void UnionFindExplain::combine(unsigned target, unsigned source){
   // Dealing with forest
   unsigned explain_source = forest[find(source)],
 		  explain_target = forest[find(target)];
-  records.emplace_back(explain_source, explain_target);
   inserted_equations.emplace_back(source, target);
   forest[find(source)] = explain_target;
 
@@ -121,9 +172,7 @@ void UnionFindExplain::merge(unsigned target, unsigned source){
   assert(target < size && source < size);
   
   // Dealing with forest 
-  unsigned explain_source = forest[find(source)],
-		  explain_target = forest[find(target)];
-  records.emplace_back(explain_source, explain_target);
+  unsigned explain_source = forest[find(source)], explain_target = forest[find(target)];
   inserted_equations.emplace_back(source, target);
   forest[find(source)] = explain_target;
   

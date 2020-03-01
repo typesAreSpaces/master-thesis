@@ -60,6 +60,10 @@ int main(int argc, char ** argv){
   std::cout << "Explaining 6, 1" << std::endl;
   for(auto x : a.explain(6, 1))
     std::cout << x << std::endl;
+
+  std::cout << "Explaining 6, 9" << std::endl;
+  for(auto x : a.explain(6, 9))
+    std::cout << x << std::endl;
   
   return 0;
 }

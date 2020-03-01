@@ -27,12 +27,13 @@ class UnionFindExplain {
   std::vector<unsigned> representative;
   std::vector<unsigned> rank;
   std::vector<unsigned> forest;
-  std::vector<ExplainEquation> records;
   std::vector<ExplainEquation> inserted_equations;
   std::unordered_map<std::size_t, unsigned> path;
   unsigned size, global_ticket;
 
   std::size_t hash_combine(unsigned, unsigned);
+  unsigned depth(unsigned);
+  unsigned commonAncestor(unsigned, unsigned);
   void explainHelper(unsigned, unsigned, ExplainEquations &);
   
 public:
