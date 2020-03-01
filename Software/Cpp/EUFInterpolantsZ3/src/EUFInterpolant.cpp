@@ -33,7 +33,7 @@ EUFInterpolant::EUFInterpolant(z3::expr const & part_a) :
   // --------------------
   // |congruence closure| data structure
   // --------------------
-  CongruenceClosure cc(min_id, subterms, cc_list, uf);
+  CongruenceClosureDST cc(min_id, subterms, cc_list, uf);
   std::list<unsigned> pending;
   for(unsigned i = min_id; i < original_num_terms; i++)
     if(subterms[i].num_args() > 0)
@@ -59,7 +59,7 @@ EUFInterpolant::EUFInterpolant(z3::expr const & part_a) :
   assert(cc_list.size() == subterms.size());
   UnionFind hornsat_uf(uf);                                                 
   hornsat_uf.increaseSize(subterms.size());
-  CongruenceClosure hornsat_cc(min_id, subterms, hornsat_list, hornsat_uf);
+  CongruenceClosureDST hornsat_cc(min_id, subterms, hornsat_list, hornsat_uf);
   Hornsat hsat(horn_clauses, hornsat_uf);
   // // -------------------------------------------------------------------
   

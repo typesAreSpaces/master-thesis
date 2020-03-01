@@ -53,6 +53,7 @@ typedef std::vector<std::list<unsigned> > CCList;
 
 class CongruenceClosure {
   friend class Hornsat;
+protected:
   const unsigned &        min_id;
   const z3::expr_vector & subterms;
   CCList &                cc_list;
@@ -60,8 +61,8 @@ class CongruenceClosure {
   SignatureTable          sig_table;
  public:
   CongruenceClosure(const unsigned &, const z3::expr_vector &, CCList &, UnionFind &);
-  void buildCongruenceClosure(std::list<unsigned> &);
-  ~CongruenceClosure();
+  virtual void buildCongruenceClosure(std::list<unsigned> &) = 0;
+  virtual ~CongruenceClosure();
   friend std::ostream & operator << (std::ostream &, const CongruenceClosure &);
 };
 

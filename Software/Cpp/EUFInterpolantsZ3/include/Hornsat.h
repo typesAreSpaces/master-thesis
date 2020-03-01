@@ -6,7 +6,7 @@
 #include <iostream>
 #include <queue>
 #include <vector>
-#include "CongruenceClosure.h"
+#include "CongruenceClosureDST.h"
 #include "HornClauses.h"
 #include "Replacement.h"
 
