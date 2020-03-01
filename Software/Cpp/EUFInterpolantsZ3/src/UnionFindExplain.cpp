@@ -3,22 +3,17 @@
 #define DEBUG_EXPLAIN_OP false
 
 UnionFindExplain::UnionFindExplain() :
-  size(0), global_ticket(0){ 
+  UnionFind(0), global_ticket(0){ 
 };
 
 UnionFindExplain::UnionFindExplain(unsigned size) :
-  representative(size, 0), rank(size, 1),
-  forest(size, 0), size(size), global_ticket(0){
-
-  for(unsigned i = 0; i < size; i++){
-    representative[i] = i;
+  UnionFind(size), forest(size, 0), global_ticket(0){
+  for(unsigned i = 0; i < size; i++)
     forest[i] = i;
-  }
 }
 
 UnionFindExplain::UnionFindExplain(const UnionFindExplain & other) :
-  representative(other.representative),
-  rank(other.rank), forest(other.forest),
+  UnionFind(other), forest(other.forest),
   global_ticket(other.global_ticket){
 }
 
@@ -184,32 +179,10 @@ void UnionFindExplain::merge(unsigned target, unsigned source){
   return;
 }
 
-void UnionFindExplain::link(unsigned x, unsigned y){
-  if(rank[x] >= rank[y]){
-    representative[y] = x;
-    rank[x] += rank[y];
-    return;
-  }
-  representative[x] = y;
-  rank[y] += rank[x];
-  return;
-}
-
-unsigned UnionFindExplain::find(unsigned x){
-  assert(x < size);
-  if(x != representative[x])
-    representative[x] = find(representative[x]);
-  return representative[x];
-}
-
 ExplainEquations UnionFindExplain::explain(unsigned x, unsigned y){
   ExplainEquations explanations;
   explainHelper(x, y, explanations);
   return explanations;
-}
-
-bool UnionFindExplain::greater(unsigned x, unsigned y){
-  return rank[x] > rank[y];
 }
 
 void UnionFindExplain::increaseSize(unsigned sz){
@@ -218,6 +191,7 @@ void UnionFindExplain::increaseSize(unsigned sz){
   for(unsigned i = size; i < sz; i++){
     representative[i] = i;
     rank[i] = 1;
+    forest[i] = i;
   }
   size = sz;
 }
@@ -229,6 +203,8 @@ bool UnionFindExplain::operator ==(const UnionFindExplain & other){
     if(representative[i] != other.representative[i])
       return false;
     if(rank[i] != other.rank[i])
+      return false;
+    if(forest[i] != other.forest[i])
       return false;
   }
   return true;

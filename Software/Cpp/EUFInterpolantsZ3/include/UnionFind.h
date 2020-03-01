@@ -7,6 +7,7 @@
 
 class UnionFind {
   
+protected:
   std::vector<unsigned> representative;
   std::vector<unsigned> rank;
   unsigned size;
@@ -16,11 +17,11 @@ public:
   UnionFind(unsigned);
   UnionFind(unsigned [], unsigned);
   UnionFind(const UnionFind &);
-  ~UnionFind();
-  void combine(unsigned, unsigned);
-  void merge(unsigned, unsigned);
-  void link(unsigned, unsigned);
-  unsigned find(unsigned);
+  virtual ~UnionFind();
+  virtual void combine(unsigned, unsigned);
+  virtual void merge(unsigned, unsigned);
+  virtual void link(unsigned, unsigned);
+  virtual unsigned find(unsigned);
   bool greater(unsigned, unsigned);
   class iterator {
     UnionFind * m_uf;
