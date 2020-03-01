@@ -23,57 +23,68 @@ EUFInterpolant::EUFInterpolant(z3::expr const & part_a) :
   // The following defines |uf|
   //                       ----
   uf = UnionFind(original_num_terms);
-  //                   ----
-  // After this point, |uf| is fully defined
-  //                   ----
-  processEqs(part_a);
-  
+  // //                   ----
+  // // After this point, |uf| is fully defined
+  // //                   ----
+  // processEqs(part_a);
+
   // --------------------------------------------------
   // The following sets up a
   // --------------------
   // |congruence closure| data structure
   // --------------------
-  CongruenceClosureDST cc(min_id, subterms, cc_list, uf);
-  std::list<unsigned> pending;
-  for(unsigned i = min_id; i < original_num_terms; i++)
-    if(subterms[i].num_args() > 0)
-      pending.push_back(i);
-  cc.buildCongruenceClosure(pending);
-  assert(pending.empty());
+  CongruenceClosureNO cc(min_id, subterms, cc_list, uf);
+  processEqs(part_a, cc);
+  std::cout << *this << std::endl;
   // --------------------------------------------------
+  
+  // // --------------------------------------------------
+  // // The following sets up a
+  // // --------------------
+  // // |congruence closure| data structure
+  // // --------------------
+  // CongruenceClosureDST cc(min_id, subterms, cc_list, uf);
+  // std::list<unsigned> pending;
+  // for(unsigned i = min_id; i < original_num_terms; i++)
+  //   if(subterms[i].num_args() > 0)
+  //     pending.push_back(i);
+  // cc.buildCongruenceClosure(pending);
+  // assert(pending.empty());
+  // std::cout << *this << std::endl;
+  // // --------------------------------------------------
 
-  // Converting disequalities to Horn Clauses
-  disequalitiesToHCS();
+  // // Converting disequalities to Horn Clauses
+  // disequalitiesToHCS();
 
-  // Unconditional uncommon symbol elimination step
-  //                   --------------
-  // After this point, |horn_clauses| is fully defined
-  //                   --------------
-  exposeUncommons();
+  // // Unconditional uncommon symbol elimination step
+  // //                   --------------
+  // // After this point, |horn_clauses| is fully defined
+  // //                   --------------
+  // exposeUncommons();
   
-  // std::cout << horn_clauses << std::endl;
+  // // std::cout << horn_clauses << std::endl;
   
-  // ----------------------------------------------------------------------
-  // Additional data structures for conditional uncommon symbol elimination
-  CCList hornsat_list(cc_list);
-  assert(cc_list.size() == subterms.size());
-  UnionFind hornsat_uf(uf);                                                 
-  hornsat_uf.increaseSize(subterms.size());
-  CongruenceClosureDST hornsat_cc(min_id, subterms, hornsat_list, hornsat_uf);
-  Hornsat hsat(horn_clauses, hornsat_uf);
-  // // -------------------------------------------------------------------
+  // // ----------------------------------------------------------------------
+  // // Additional data structures for conditional uncommon symbol elimination
+  // CCList hornsat_list(cc_list);
+  // assert(cc_list.size() == subterms.size());
+  // UnionFind hornsat_uf(uf);                                                 
+  // hornsat_uf.increaseSize(subterms.size());
+  // CongruenceClosureDST hornsat_cc(min_id, subterms, hornsat_list, hornsat_uf);
+  // Hornsat hsat(horn_clauses, hornsat_uf);
+  // // // -------------------------------------------------------------------
   
-  auto replacements = hsat.satisfiable(hornsat_cc);
-  for(auto x : replacements)
-    std::cout << "Merge " << *horn_clauses[x.clause1]
-	      << " with " << *horn_clauses[x.clause2] << std::endl;
-  // // -------------------------------------------------------------------
-  // std::cout << hsat << std::endl;
-  // ----------------------------------------------------------------------
+  // auto replacements = hsat.satisfiable(hornsat_cc);
+  // for(auto x : replacements)
+  //   std::cout << "Merge " << *horn_clauses[x.clause1]
+  // 	      << " with " << *horn_clauses[x.clause2] << std::endl;
+  // // // -------------------------------------------------------------------
+  // // std::cout << hsat << std::endl;
+  // // ----------------------------------------------------------------------
   
-  buildInterpolant(replacements);
+  // buildInterpolant(replacements);
+  
   return;
-  
   // throw "Problem @ EUFInterpolant::EUFInterpolant. The z3::expr const & part_a was unsatisfiable.";
 }
   
@@ -142,7 +153,28 @@ void EUFInterpolant::processEqs(z3::expr const & e){
       return;
     }
   }
-  throw "Problem @ EUFInterpolant::processEqs. The expression e is not an application term.";
+  throw "Problem @ EUFInterpolant::processEqs(z3::expr const &). The expression e is not an application term.";
+}
+
+void EUFInterpolant::processEqs(z3::expr const & e, CongruenceClosureNO & cc_no){
+  if(e.is_app()){ 
+    unsigned num = e.num_args();
+    for(unsigned i = 0; i < num; i++)
+      processEqs(e.arg(i), cc_no);
+
+    z3::func_decl f = e.decl();
+    switch(f.decl_kind()){
+    case Z3_OP_EQ:
+      if(HornClause::compareTerm(e.arg(0), e.arg(1)))
+      	cc_no.combine(e.arg(1).id(), e.arg(0).id());
+      else
+      	cc_no.combine(e.arg(0).id(), e.arg(1).id());
+      return;
+    default:
+      return;
+    }
+  }
+  throw "Problem @ EUFInterpolant::processEqs(z3::expr const &, CongruenceClosureNO &). The expression e is not an application term.";
 }
 
 z3::expr EUFInterpolant::repr(const z3::expr & t){
@@ -249,8 +281,10 @@ std::ostream & operator << (std::ostream & os, EUFInterpolant & euf){
   for(unsigned i = euf.min_id; i < num; i++){
     // std::cout << "Original: " << i
     // 	      << " Representative " << euf.uf.find(i) << std::endl;
-    std::cout << "Original: " << euf.subterms[i]
-    	      << " Representative " << euf.subterms[euf.uf.find(euf.subterms[i].id())] << std::endl;
+    
+    std::cout << ((i == euf.uf.find(i)) ? "(Same)" : "(Different)")
+	      << " Original: " << euf.subterms[i]
+	      << " Representative " << euf.subterms[euf.uf.find(euf.subterms[i].id())] << std::endl;
     if(i != euf.uf.find(i))
       num_changes++;
   }

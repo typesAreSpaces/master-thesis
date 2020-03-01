@@ -5,8 +5,8 @@
 
 #include <iostream>
 #include <queue>
-#include <vector>
 #include "CongruenceClosureDST.h"
+#include "CongruenceClosureNO.h"
 #include "HornClauses.h"
 #include "Replacement.h"
 

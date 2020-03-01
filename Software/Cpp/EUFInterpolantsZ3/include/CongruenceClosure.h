@@ -1,5 +1,5 @@
 #ifndef _CONG_CLOSURE__
-#define _CONG_CLOSURE_
+#define _CONG_CLOSURE__
 #define DEBUG_DESTRUCTORS_CC false
 
 #include <iostream>
@@ -15,7 +15,14 @@ class SignatureTable {
   UnionFind & uf;
   std::hash<std::string> hash_string;
   std::hash<unsigned> hash_unsigned;
-
+  
+public:
+  SignatureTable(UnionFind & uf) : uf(uf){}
+  ~SignatureTable(){
+#if DEBUG_DESTRUCTORS_CC
+    std::cout << "Done ~SignatureTable" << std::endl;
+#endif
+  }
   std::size_t hash_z3expr(const z3::expr & e){
     unsigned num_args = e.num_args();
     std::string name = e.decl().name().str();
@@ -24,13 +31,6 @@ class SignatureTable {
     for(unsigned i = 0; i < num_args; i++)
       seed ^= hash_unsigned(uf.find(e.arg(i).id())) + 0x9e3779b9 + (seed << 6) + (seed >> 2);
     return seed;
-  }
-public:
-  SignatureTable(UnionFind & uf) : uf(uf){}
-  ~SignatureTable(){
-#if DEBUG_DESTRUCTORS_CC
-    std::cout << "Done ~SignatureTable" << std::endl;
-#endif
   }
   void enter(const z3::expr & e){
     sig_table[hash_z3expr(e)] = e.id();
@@ -62,6 +62,7 @@ protected:
  public:
   CongruenceClosure(const unsigned &, const z3::expr_vector &, CCList &, UnionFind &);
   virtual void buildCongruenceClosure(std::list<unsigned> &) = 0;
+  virtual void buildCongruenceClosure() = 0;
   virtual ~CongruenceClosure();
   friend std::ostream & operator << (std::ostream &, const CongruenceClosure &);
 };

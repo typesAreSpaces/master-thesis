@@ -3,7 +3,6 @@
 
 #include <map>
 #include <list>
-#include "HornClauses.h"
 #include "Hornsat.h"
 
 typedef std::map<std::string, std::vector<unsigned> > FSymPositions;
@@ -28,6 +27,7 @@ class EUFInterpolant {
   void            init(z3::expr const &, unsigned &, std::vector<bool> &);
   void            initCCList(z3::expr const &);
   void            processEqs(z3::expr const &);
+  void            processEqs(z3::expr const &, CongruenceClosureNO &);
   z3::expr        repr(const z3::expr &);
   z3::expr_vector buildHCBody(z3::expr const &, z3::expr const &);
   void            disequalitiesToHCS();

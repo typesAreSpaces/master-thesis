@@ -1,5 +1,5 @@
 #ifndef _CONG_CLOSUREDST__
-#define _CONG_CLOSUREDST_
+#define _CONG_CLOSUREDST__
 
 #include "CongruenceClosure.h"
 
@@ -10,6 +10,7 @@ class CongruenceClosureDST : public CongruenceClosure {
  public:
   CongruenceClosureDST(const unsigned &, const z3::expr_vector &, CCList &, UnionFind &);
   void buildCongruenceClosure(std::list<unsigned> &);
+  void buildCongruenceClosure();
   ~CongruenceClosureDST();
   friend std::ostream & operator << (std::ostream &, const CongruenceClosureDST &);
 };

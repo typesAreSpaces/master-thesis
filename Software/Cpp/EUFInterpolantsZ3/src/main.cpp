@@ -6,16 +6,15 @@
 #include <algorithm>
 #include "Rename.h"
 #include "EUFInterpolant.h"
-#include "UnionFindExplain.h"
 
 void test1();
 void test2();
-void testUFE();
+// void testUFE();
 void testEUF();
 
 int main(int argc, char ** argv){
  
-  testUFE();
+  testEUF();
   
   return 0;
 }
@@ -40,34 +39,34 @@ void test2(){
   std::cout << euf << std::endl;
 }
 
-void explainn(unsigned x, unsigned y, UnionFindExplain & a){
-  std::cout << "Explain " << x << ", " << y << std::endl;
-  for(auto x : a.explain(x, y))
-    std::cout << x << std::endl;
-}
+// void explainn(unsigned x, unsigned y, UnionFindExplain & a){
+//   std::cout << "Explain " << x << ", " << y << std::endl;
+//   for(auto x : a.explain(x, y))
+//     std::cout << x << std::endl;
+// }
 
-void testUFE(){
-  UnionFindExplain a(10);
-  a.merge(1, 0);
-  a.merge(0, 2);
-  a.merge(4, 3);
-  a.merge(4, 5);
-  a.merge(2, 6);
-  a.merge(5, 2);
+// void testUFE(){
+//   UnionFindExplain a(10);
+//   a.merge(1, 0);
+//   a.merge(0, 2);
+//   a.merge(4, 3);
+//   a.merge(4, 5);
+//   a.merge(2, 6);
+//   a.merge(5, 2);
 
-  explainn(6, 5, a);
-  explainn(1, 9, a);
-  explainn(0, 4, a);
+//   explainn(6, 5, a);
+//   explainn(1, 9, a);
+//   explainn(0, 4, a);
 
-  std::cout << (UnionFind)a << std::endl;
+//   std::cout << (UnionFind)a << std::endl;
  
-  std::cout << "Equivalence class for 8" << std::endl;
-  auto it = a.begin(8), end = a.end(8);
-  for(; it != end; ++it)
-    std::cout << *it << std::endl;
+//   std::cout << "Equivalence class for 8" << std::endl;
+//   auto it = a.begin(8), end = a.end(8);
+//   for(; it != end; ++it)
+//     std::cout << *it << std::endl;
 
-  return;
-}
+//   return;
+// }
 
 void testEUF(){
   z3::context ctx;
