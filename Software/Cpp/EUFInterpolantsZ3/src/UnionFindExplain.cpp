@@ -92,7 +92,8 @@ void UnionFindExplain::explainHelper(unsigned x, unsigned y,
 
       if(x == original_y){
 #if DEBUG_EXPLAIN_OP
-  std::cout << "Oriented Step " << oriented_step << ": " << inserted_equations[oriented_step] << std::endl;
+  std::cout << "Oriented Step " << oriented_step << ": "
+	    << inserted_equations[oriented_step] << std::endl;
 #endif
 	explanations.push_back(inserted_equations[oriented_step]);
 	explainHelper(original_x, inserted_equations[oriented_step].source, explanations);
@@ -109,7 +110,8 @@ void UnionFindExplain::explainHelper(unsigned x, unsigned y,
 
       if(y == original_x){
 #if DEBUG_EXPLAIN_OP
-	std::cout << "Non oriented Step " << non_oriented_step << ": " << inserted_equations[non_oriented_step] << std::endl;
+	std::cout << "Non oriented Step " << non_oriented_step << ": "
+		  << inserted_equations[non_oriented_step] << std::endl;
   #endif
 	explanations.push_back(inserted_equations[non_oriented_step]);
 	explainHelper(y, inserted_equations[non_oriented_step].target, explanations);
@@ -121,7 +123,8 @@ void UnionFindExplain::explainHelper(unsigned x, unsigned y,
     if(x == y){
       if(oriented_step > non_oriented_step){	
 #if DEBUG_EXPLAIN_OP
-	std::cout << "Last Oriented Step " << oriented_step << ": " << inserted_equations[oriented_step] << std::endl;
+	std::cout << "Last Oriented Step " << oriented_step << ": "
+		  << inserted_equations[oriented_step] << std::endl;
 #endif
 	explanations.push_back(inserted_equations[oriented_step]);
 	explainHelper(original_x, inserted_equations[oriented_step].source, explanations);
@@ -129,7 +132,8 @@ void UnionFindExplain::explainHelper(unsigned x, unsigned y,
 	return;
       }
 #if DEBUG_EXPLAIN_OP
-      std::cout << "Last Non oriented Step " << non_oriented_step << ": " << inserted_equations[non_oriented_step] << std::endl; 
+      std::cout << "Last Non oriented Step " << non_oriented_step << ": "
+		<< inserted_equations[non_oriented_step] << std::endl; 
 #endif
       explanations.push_back(inserted_equations[non_oriented_step]);
       explainHelper(original_x, inserted_equations[non_oriented_step].target, explanations);
@@ -152,12 +156,9 @@ void UnionFindExplain::combine(unsigned target, unsigned source){
 		  explain_target = forest[find(target)];
   inserted_equations.emplace_back(source, target);
   forest[find(source)] = explain_target;
-
   path[hash_combine(explain_source, explain_target)] = global_ticket++;
-  
-  representative[find(source)] = find(target);
-  rank[find(target)] += rank[find(source)];
-  
+
+  UnionFind::combine(target, source); 
   return;
 }
 
@@ -169,12 +170,10 @@ void UnionFindExplain::merge(unsigned target, unsigned source){
   // Dealing with forest 
   unsigned explain_source = forest[find(source)], explain_target = forest[find(target)];
   inserted_equations.emplace_back(source, target);
-  forest[find(source)] = explain_target;
-  
+  forest[find(source)] = explain_target;  
   path[hash_combine(explain_source, explain_target)] = global_ticket++;
   
-  // Dealing with representative
-  link(find(target), find(source));
+  UnionFind::merge(target, source);
   
   return;
 }
@@ -188,6 +187,8 @@ ExplainEquations UnionFindExplain::explain(unsigned x, unsigned y){
 void UnionFindExplain::increaseSize(unsigned sz){
   representative.resize(sz);
   rank.resize(sz);
+  forest.resize(sz);
+  
   for(unsigned i = size; i < sz; i++){
     representative[i] = i;
     rank[i] = 1;
@@ -214,7 +215,6 @@ std::ostream & operator << (std::ostream & os, const UnionFindExplain & uf){
   for(unsigned i = 0; i < uf.representative.size(); ++i)
     os << "ID: " << i
        << " Forest: " << uf.forest[i]
-       << " Rank:  " << uf.rank[i]
        << std::endl;
   os << "Size " << uf.size << std::endl;
   os << "(Remaider) The current representatives are not compressed.";
