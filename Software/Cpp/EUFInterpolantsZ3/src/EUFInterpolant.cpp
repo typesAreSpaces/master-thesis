@@ -4,7 +4,7 @@
 
 EUFInterpolant::EUFInterpolant(z3::expr const & part_a) :
   ctx(part_a.ctx()), min_id(part_a.id()), subterms(ctx),
-  fsym_positions(), horn_clauses(ctx, min_id, subterms),
+  fsym_positions(), uf(part_a.id() + 1), horn_clauses(ctx, min_id, subterms),
   contradiction(ctx), disequalities(ctx), original_num_terms(part_a.id() + 1){
   
   contradiction = ctx.bool_val(false);
@@ -15,17 +15,9 @@ EUFInterpolant::EUFInterpolant(z3::expr const & part_a) :
   // The following defines min_id, visited,
   // subterms, disequalities, and fsym_positions
   init(part_a, min_id, visited);
-  //                       ---------
-  // The following defines |cc_list|
-  //                       ---------
-  initCCList(part_a);
-  //                       ----
-  // The following defines |uf|
-  //                       ----
-  uf = UnionFindExplain(original_num_terms);
-  //                   ----
-  // After this point, |uf| is fully defined
-  //                   ----
+  //                       ---------                    ----
+  // The following defines |cc_list|. After this point, |uf| is fully defined
+  //                       ---------                    ----
   processEqs(part_a);
   
   // --------------------------------------------------
@@ -112,23 +104,13 @@ void EUFInterpolant::init(z3::expr const & e, unsigned & min_id, std::vector<boo
   throw "Problem @ EUFInterpolant::init. The expression e is not an application term.";
 }
 
-void EUFInterpolant::initCCList(z3::expr const & e){
-  if(e.is_app()){
-    unsigned num = e.num_args();
-    for(unsigned i = 0; i < num; i++){
-      cc_list[e.arg(i).id()].push_back(e.id());
-      initCCList(e.arg(i));
-    }
-    return;
-  }
-  throw "Problem @ EUFInterpolant::initCCList. The expression e is not an application term.";
-}
-
 void EUFInterpolant::processEqs(z3::expr const & e){
   if(e.is_app()){ 
     unsigned num = e.num_args();
-    for(unsigned i = 0; i < num; i++)
+    for(unsigned i = 0; i < num; i++){
+      cc_list[e.arg(i).id()].push_back(e.id());
       processEqs(e.arg(i));
+    }
 
     z3::func_decl f = e.decl();
     switch(f.decl_kind()){
@@ -148,8 +130,10 @@ void EUFInterpolant::processEqs(z3::expr const & e){
 void EUFInterpolant::processEqs(z3::expr const & e, CongruenceClosureNO & cc_no){
   if(e.is_app()){ 
     unsigned num = e.num_args();
-    for(unsigned i = 0; i < num; i++)
+    for(unsigned i = 0; i < num; i++){
+      cc_list[e.arg(i).id()].push_back(e.id());
       processEqs(e.arg(i), cc_no);
+    }
 
     z3::func_decl f = e.decl();
     switch(f.decl_kind()){
