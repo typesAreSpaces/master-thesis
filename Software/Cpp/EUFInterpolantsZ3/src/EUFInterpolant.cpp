@@ -22,67 +22,56 @@ EUFInterpolant::EUFInterpolant(z3::expr const & part_a) :
   //                       ----
   // The following defines |uf|
   //                       ----
-  uf = UnionFind(original_num_terms);
-  // //                   ----
-  // // After this point, |uf| is fully defined
-  // //                   ----
-  // processEqs(part_a);
-
+  uf = UnionFindExplain(original_num_terms);
+  //                   ----
+  // After this point, |uf| is fully defined
+  //                   ----
+  processEqs(part_a);
+  
   // --------------------------------------------------
   // The following sets up a
   // --------------------
   // |congruence closure| data structure
   // --------------------
-  CongruenceClosureNO cc(min_id, subterms, cc_list, uf);
-  processEqs(part_a, cc);
-  std::cout << *this << std::endl;
+  CongruenceClosureDST cc(min_id, subterms, cc_list, uf);
+  std::list<unsigned> pending;
+  for(unsigned i = min_id; i < original_num_terms; i++)
+    if(subterms[i].num_args() > 0)
+      pending.push_back(i);
+  cc.buildCongruenceClosure(pending);
+  assert(pending.empty());
   // --------------------------------------------------
-  
-  // // --------------------------------------------------
-  // // The following sets up a
-  // // --------------------
-  // // |congruence closure| data structure
-  // // --------------------
-  // CongruenceClosureDST cc(min_id, subterms, cc_list, uf);
-  // std::list<unsigned> pending;
-  // for(unsigned i = min_id; i < original_num_terms; i++)
-  //   if(subterms[i].num_args() > 0)
-  //     pending.push_back(i);
-  // cc.buildCongruenceClosure(pending);
-  // assert(pending.empty());
-  // std::cout << *this << std::endl;
-  // // --------------------------------------------------
 
-  // // Converting disequalities to Horn Clauses
-  // disequalitiesToHCS();
+  // Converting disequalities to Horn Clauses
+  disequalitiesToHCS();
 
-  // // Unconditional uncommon symbol elimination step
-  // //                   --------------
-  // // After this point, |horn_clauses| is fully defined
-  // //                   --------------
-  // exposeUncommons();
+  // Unconditional uncommon symbol elimination step
+  //                   --------------
+  // After this point, |horn_clauses| is fully defined
+  //                   --------------
+  exposeUncommons();
   
-  // // std::cout << horn_clauses << std::endl;
+  // std::cout << horn_clauses << std::endl;
   
-  // // ----------------------------------------------------------------------
-  // // Additional data structures for conditional uncommon symbol elimination
-  // CCList hornsat_list(cc_list);
-  // assert(cc_list.size() == subterms.size());
-  // UnionFind hornsat_uf(uf);                                                 
-  // hornsat_uf.increaseSize(subterms.size());
-  // CongruenceClosureDST hornsat_cc(min_id, subterms, hornsat_list, hornsat_uf);
-  // Hornsat hsat(horn_clauses, hornsat_uf);
-  // // // -------------------------------------------------------------------
+  // ----------------------------------------------------------------------
+  // Additional data structures for conditional uncommon symbol elimination
+  CCList hornsat_list(cc_list);
+  assert(cc_list.size() == subterms.size());
+  UnionFind hornsat_uf(uf);                                                 
+  hornsat_uf.increaseSize(subterms.size());
+  CongruenceClosureDST hornsat_cc(min_id, subterms, hornsat_list, hornsat_uf);
+  Hornsat hsat(horn_clauses, hornsat_uf);
+  // // -------------------------------------------------------------------
   
-  // auto replacements = hsat.satisfiable(hornsat_cc);
-  // for(auto x : replacements)
-  //   std::cout << "Merge " << *horn_clauses[x.clause1]
-  // 	      << " with " << *horn_clauses[x.clause2] << std::endl;
-  // // // -------------------------------------------------------------------
-  // // std::cout << hsat << std::endl;
-  // // ----------------------------------------------------------------------
+  auto replacements = hsat.satisfiable(hornsat_cc);
+  for(auto x : replacements)
+    std::cout << "Merge " << *horn_clauses[x.clause1]
+  	      << " with " << *horn_clauses[x.clause2] << std::endl;
+  // // -------------------------------------------------------------------
+  // std::cout << hsat << std::endl;
+  // ----------------------------------------------------------------------
   
-  // buildInterpolant(replacements);
+  buildInterpolant(replacements);
   
   return;
   // throw "Problem @ EUFInterpolant::EUFInterpolant. The z3::expr const & part_a was unsatisfiable.";
@@ -282,7 +271,8 @@ std::ostream & operator << (std::ostream & os, EUFInterpolant & euf){
     // std::cout << "Original: " << i
     // 	      << " Representative " << euf.uf.find(i) << std::endl;
     
-    std::cout << ((i == euf.uf.find(i)) ? "(Same)" : "(Different)")
+    std::cout << i << ". "
+	      << ((i == euf.uf.find(i)) ? "(Same)" : "(Different)")
 	      << " Original: " << euf.subterms[i]
 	      << " Representative " << euf.subterms[euf.uf.find(euf.subterms[i].id())] << std::endl;
     if(i != euf.uf.find(i))

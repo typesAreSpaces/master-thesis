@@ -15,7 +15,8 @@ class EUFInterpolant {
   // Note: elements below min_id are undefined
   z3::expr_vector   subterms;
   FSymPositions     fsym_positions;
-  UnionFind         uf;
+  UnionFindExplain  uf;
+  // UnionFind         uf;
   HornClauses       horn_clauses;
   z3::expr          contradiction;
   z3::expr_vector   disequalities;

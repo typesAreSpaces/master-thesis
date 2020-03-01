@@ -8,6 +8,7 @@
 #include <utility>
 #include <z3++.h>
 #include "UnionFind.h"
+#include "UnionFindExplain.h"
 #include "HornClause.h"
 
 class SignatureTable {
