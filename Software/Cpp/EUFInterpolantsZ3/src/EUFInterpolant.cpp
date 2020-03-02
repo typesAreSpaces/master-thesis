@@ -13,18 +13,26 @@ EUFInterpolant::EUFInterpolant(z3::expr const & part_a) :
   cc_list.resize(original_num_terms);
   curry_nodes.resize(original_num_terms);
 
-  for(unsigned i = 0; i < original_num_terms; i++)
-    curry_nodes[i] = new CurryNode();
-
   // The following defines min_id, visited,
-  // subterms, disequalities, and fsym_positions
+  // subterms, disequalities, fsym_positions,
+  // and curry_decl
   init(part_a, min_id, visited);
+  
+  // -----------------------------------------------------
+  // Working on this right now ---------------------------
 
+  for(auto x : curry_decl)
+    std::cout << x.first << " " << *x.second << std::endl;
+  
+  for(unsigned i = min_id; i < original_num_terms; i++)
+    curry_nodes[i] = new CurryNode(i);
+  
   curryfication(part_a, curry_nodes);
-
+  
   for(unsigned i = min_id; i < original_num_terms; i++){
-    std::cout << *(curry_nodes[i]) << std::endl;
+    // std::cout << *(curry_nodes[i]) << std::endl;
   }
+  // -----------------------------------------------------
   
   // ------------------------------------------------------------------------------------------------
   // //                       ---------
@@ -41,7 +49,7 @@ EUFInterpolant::EUFInterpolant(z3::expr const & part_a) :
   // CongruenceClosureNO cc(min_id, subterms, cc_list, uf);
   // processEqs(part_a, cc);
   // ------------------------------------------------------------------------------------------------
-  //                       ---------                    ----
+  //                       ---------  o                  ----
   // The following defines |cc_list|. After this point, |uf| is fully defined
   //                       ---------                    ----
   processEqs(part_a);
@@ -94,9 +102,32 @@ EUFInterpolant::EUFInterpolant(z3::expr const & part_a) :
 }
   
 EUFInterpolant::~EUFInterpolant(){
+
+  // for(unsigned i = min_id; i < original_num_terms; i++){
+  //   std::cout << i << " " << *curry_nodes[i] << std::endl;
+  //   delete curry_nodes[i];
+  // }
+
+
+  // unsigned i = 0;
+  for(auto x : extra_nodes){
+    delete x;
+    // std::cout << i++ << " " << *x << std::endl; // PROBLEMATIC:
+  }
+
+
+  // for(auto x : curry_decl){
+  //   std::cout << x.first << " ";
+  //   std::cout << *x.second << std::endl;
+  //   if(x.second != nullptr)
+  //     delete x.second;
+  // }
+
+  curry_decl.clear();
+
 #if DEBUG_DESTRUCTOR_EUF
   std::cout << "Bye EUFInterpolant" << std::endl;
-#endif 
+#endif
 }
 
 void EUFInterpolant::init(z3::expr const & e, unsigned & min_id, std::vector<bool> & visited){
@@ -114,6 +145,9 @@ void EUFInterpolant::init(z3::expr const & e, unsigned & min_id, std::vector<boo
       init(e.arg(i), min_id, visited);
     
     z3::func_decl f = e.decl();
+    if(curry_decl[f.id()] == nullptr)
+      curry_decl[f.id()] = new CurryNode(f.id(), f.name().str(), nullptr, nullptr);
+    
     switch(f.decl_kind()){
     case Z3_OP_DISTINCT:
       disequalities.push_back(e);
@@ -130,7 +164,6 @@ void EUFInterpolant::init(z3::expr const & e, unsigned & min_id, std::vector<boo
 
 void EUFInterpolant::curryfication(z3::expr const & e,
 				   std::vector<CurryNode*> & curry_nodes){
-  
   if(e.is_app()){
     unsigned num = e.num_args();
     
@@ -139,11 +172,32 @@ void EUFInterpolant::curryfication(z3::expr const & e,
     
     // Update curry_nodes
     std::string f_name = e.decl().name().str();
-    CurryNode * current_curry_node = curry_nodes[e.id()];
-    if(num > 0)
-      current_curry_node->update(f_name, curry_nodes[e.arg(0).id()]); // WRONG: 
-    else
-      current_curry_node->update(f_name, nullptr);
+    
+    if(num > 0){
+      unsigned last_node_pos = extra_nodes.size(),
+    	new_last_node_pos = last_node_pos + num;
+      extra_nodes.resize(new_last_node_pos);
+      
+      for(unsigned i = last_node_pos; i < new_last_node_pos; i++)
+    	extra_nodes[i] = new CurryNode(i, "apply", nullptr, nullptr);
+      
+      // Case for i = 0.
+      extra_nodes[last_node_pos]->update("apply", curry_decl[e.decl().id()], curry_nodes[e.arg(0).id()]);
+      // Rest of the cases
+      for(unsigned i = 1; i < num; i++)
+      	extra_nodes[last_node_pos + i]->update("apply", extra_nodes[last_node_pos + i - 1], curry_nodes[e.arg(i).id()]);
+
+      delete curry_nodes[e.id()];
+      curry_nodes[e.id()] = extra_nodes[new_last_node_pos - 1];
+      
+      // std::cout << *(curry_nodes[e.id()]) << std::endl;
+    }
+    else{
+      delete curry_nodes[e.id()];
+      curry_nodes[e.id()] = curry_decl[e.decl().id()];
+      
+      // std::cout << *(curry_nodes[e.id()]) << std::endl;
+    }
 
     return;
   }

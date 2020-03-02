@@ -29,44 +29,56 @@ void insert(std::list<T> & l, T element){
 
 class EUFInterpolant {
   class CurryNode {
+    unsigned id;
     std::string func_name;
-    CurryNode * rest;
+    CurryNode * left, * right;
   public:
-    CurryNode() :
-      func_name(""), rest(nullptr) {}
-    CurryNode(std::string func_name, CurryNode * rest) :
-      func_name(func_name), rest(rest) {}
-    void update(std::string new_name, CurryNode * new_rest) {
+    CurryNode(unsigned id) :
+      id(id), func_name(""),
+      left(nullptr), right(nullptr) {}
+    CurryNode(unsigned id, std::string func_name, CurryNode * left, CurryNode * right) :
+      id(id), func_name(func_name), left(left), right(right) {}
+    CurryNode(const CurryNode & cn) :
+      id(cn.id), func_name(cn.func_name), left(cn.left), right(cn.right) {}
+    void update(std::string new_name, CurryNode * new_left, CurryNode * new_right){
       func_name = new_name;
-      rest = new_rest;
+      left = new_left;
+      right = new_right;
       return;
     }
     friend std::ostream & operator << (std::ostream & os, const CurryNode & cn){
+      // TODO: Update this method
       os << cn.func_name;
-      if(cn.rest != nullptr)
-	os << " -> " << *(cn.rest);
+      if(cn.left != nullptr)
+      	os << " Left: " << *cn.left;
+      if(cn.right != nullptr)
+      	os << " Right: " << *cn.right;
       return os;
     }
   };
+
+  typedef std::map<unsigned, CurryNode*> CurryDeclarations;
+  typedef std::vector<CurryNode*>        CurryNodes;
   
-  z3::context &           ctx;
-  unsigned                min_id;
+  z3::context &     ctx;
+  unsigned          min_id;
   // Note: elements below min_id are undefined
-  z3::expr_vector         subterms;
-  FSymPositions           fsym_positions;
-  UnionFindExplain        uf;
-  // UnionFind               uf;
-  HornClauses             horn_clauses;
-  z3::expr                contradiction;
-  z3::expr_vector         disequalities;
-  unsigned                original_num_terms;
-  CCList                  cc_list;
-  std::vector<CurryNode*> curry_nodes;
-  
+  z3::expr_vector   subterms;
+  FSymPositions     fsym_positions;
+  UnionFindExplain  uf;
+  // UnionFind         uf;
+  HornClauses       horn_clauses;
+  z3::expr          contradiction;
+  z3::expr_vector   disequalities;
+  unsigned          original_num_terms;
+  CCList            cc_list;
+  CurryNodes        curry_nodes;
+  CurryNodes        extra_nodes;
+  CurryDeclarations curry_decl;
 
   // The following function defines (partially) horn_clauses, subterms, and uncommon_positions.
   void            init(z3::expr const &, unsigned &, std::vector<bool> &);
-  void            curryfication(z3::expr const &, std::vector<CurryNode*> &);
+  void            curryfication(z3::expr const &, CurryNodes &);
   void            initCCList(z3::expr const &);
   void            processEqs(z3::expr const &);
   void            processEqs(z3::expr const &, CongruenceClosureNO &);
