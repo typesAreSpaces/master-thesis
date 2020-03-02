@@ -11,16 +11,41 @@ EUFInterpolant::EUFInterpolant(z3::expr const & part_a) :
   std::vector<bool> visited(original_num_terms, false);
   subterms.resize(original_num_terms);
   cc_list.resize(original_num_terms);
+  curry_nodes.resize(original_num_terms);
+
+  for(unsigned i = 0; i < original_num_terms; i++)
+    curry_nodes[i] = new CurryNode();
 
   // The following defines min_id, visited,
   // subterms, disequalities, and fsym_positions
   init(part_a, min_id, visited);
+
+  curryfication(part_a, curry_nodes);
+
+  for(unsigned i = min_id; i < original_num_terms; i++){
+    std::cout << *(curry_nodes[i]) << std::endl;
+  }
+  
+  // ------------------------------------------------------------------------------------------------
+  // //                       ---------
+  // // The following defines |cc_list|. 
+  // //                       ---------  
+  // initCCList(part_a);
+  // // The following sets up a
+  // // --------------------
+  // // |congruence closure| data structure.
+  // // --------------------
+  // //                   ----
+  // // After this point, |uf| is fully defined
+  // //                   ----
+  // CongruenceClosureNO cc(min_id, subterms, cc_list, uf);
+  // processEqs(part_a, cc);
+  // ------------------------------------------------------------------------------------------------
   //                       ---------                    ----
   // The following defines |cc_list|. After this point, |uf| is fully defined
   //                       ---------                    ----
   processEqs(part_a);
   
-  // --------------------------------------------------
   // The following sets up a
   // --------------------
   // |congruence closure| data structure
@@ -32,38 +57,37 @@ EUFInterpolant::EUFInterpolant(z3::expr const & part_a) :
       pending.push_back(i);
   cc.buildCongruenceClosure(pending);
   assert(pending.empty());
-  // --------------------------------------------------
+  // ------------------------------------------------------------------------------------------------
 
-  // Converting disequalities to Horn Clauses
-  disequalitiesToHCS();
+  // // Converting disequalities to Horn Clauses
+  // disequalitiesToHCS();
 
-  // Unconditional uncommon symbol elimination step
-  //                   --------------
-  // After this point, |horn_clauses| is fully defined
-  //                   --------------
-  exposeUncommons();
+  // // Unconditional uncommon symbol elimination step
+  // //                   --------------
+  // // After this point, |horn_clauses| is fully defined
+  // //                   --------------
+  // exposeUncommons();
+  // // std::cout << horn_clauses << std::endl;
   
-  // std::cout << horn_clauses << std::endl;
+  // // ----------------------------------------------------------------------
+  // // Additional data structures for conditional uncommon symbol elimination
+  // CCList hornsat_list(cc_list);
+  // assert(cc_list.size() == subterms.size());
+  // UnionFind hornsat_uf(uf);
+  // hornsat_uf.increaseSize(subterms.size());
+  // CongruenceClosureDST hornsat_cc(min_id, subterms, hornsat_list, hornsat_uf);
+  // Hornsat hsat(horn_clauses, hornsat_uf);
+  // // // -------------------------------------------------------------------
   
-  // ----------------------------------------------------------------------
-  // Additional data structures for conditional uncommon symbol elimination
-  CCList hornsat_list(cc_list);
-  assert(cc_list.size() == subterms.size());
-  UnionFind hornsat_uf(uf);                                                 
-  hornsat_uf.increaseSize(subterms.size());
-  CongruenceClosureDST hornsat_cc(min_id, subterms, hornsat_list, hornsat_uf);
-  Hornsat hsat(horn_clauses, hornsat_uf);
-  // // -------------------------------------------------------------------
+  // auto replacements = hsat.satisfiable(hornsat_cc);
+  // for(auto x : replacements)
+  //   std::cout << "Merge " << *horn_clauses[x.clause1]
+  // 	      << " with " << *horn_clauses[x.clause2] << std::endl;
+  // // // -------------------------------------------------------------------
+  // // std::cout << hsat << std::endl;
+  // // ----------------------------------------------------------------------
   
-  auto replacements = hsat.satisfiable(hornsat_cc);
-  for(auto x : replacements)
-    std::cout << "Merge " << *horn_clauses[x.clause1]
-  	      << " with " << *horn_clauses[x.clause2] << std::endl;
-  // // -------------------------------------------------------------------
-  // std::cout << hsat << std::endl;
-  // ----------------------------------------------------------------------
-  
-  buildInterpolant(replacements);
+  // buildInterpolant(replacements);
   
   return;
   // throw "Problem @ EUFInterpolant::EUFInterpolant. The z3::expr const & part_a was unsatisfiable.";
@@ -104,6 +128,46 @@ void EUFInterpolant::init(z3::expr const & e, unsigned & min_id, std::vector<boo
   throw "Problem @ EUFInterpolant::init. The expression e is not an application term.";
 }
 
+void EUFInterpolant::curryfication(z3::expr const & e,
+				   std::vector<CurryNode*> & curry_nodes){
+  
+  if(e.is_app()){
+    unsigned num = e.num_args();
+    
+    for(unsigned i = 0; i < num; i++)
+      curryfication(e.arg(i), curry_nodes);
+    
+    // Update curry_nodes
+    std::string f_name = e.decl().name().str();
+    CurryNode * current_curry_node = curry_nodes[e.id()];
+    if(num > 0)
+      current_curry_node->update(f_name, curry_nodes[e.arg(0).id()]); // WRONG: 
+    else
+      current_curry_node->update(f_name, nullptr);
+
+    return;
+  }
+  
+  throw "Problem @ EUFInterpolant::CurryNode::curryfication(z3::expr const &). The z3::expr const & is not an app.";
+}
+
+// Actually, this function is used to setup up the cc_list
+// for the Nelson-Oppen Congruence Closure
+void EUFInterpolant::initCCList(z3::expr const & e){
+  if(e.is_app()){
+    unsigned num = e.num_args();
+    for(unsigned i = 0; i < num; i++){
+      // The following function is used to
+      // keep the invariant that elements in cc_list
+      // are unique and sorted
+      insert(cc_list[e.arg(i).id()], e.id());
+      initCCList(e.arg(i));
+    }
+    return;
+  }
+  throw "Problem @ EUFInterpolant::initCCList. The expression e is not an application term.";
+}
+
 void EUFInterpolant::processEqs(z3::expr const & e){
   if(e.is_app()){ 
     unsigned num = e.num_args();
@@ -130,10 +194,8 @@ void EUFInterpolant::processEqs(z3::expr const & e){
 void EUFInterpolant::processEqs(z3::expr const & e, CongruenceClosureNO & cc_no){
   if(e.is_app()){ 
     unsigned num = e.num_args();
-    for(unsigned i = 0; i < num; i++){
-      cc_list[e.arg(i).id()].push_back(e.id());
+    for(unsigned i = 0; i < num; i++)
       processEqs(e.arg(i), cc_no);
-    }
 
     z3::func_decl f = e.decl();
     switch(f.decl_kind()){

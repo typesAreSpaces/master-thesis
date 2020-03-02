@@ -24,6 +24,9 @@ void CongruenceClosureNO::combine(unsigned u, unsigned v){
     return;
   auto p_u = cc_list[u], p_v = cc_list[v];
   uf.combine(u, v);
+  // The following assumes each elemen in cc_list is sorted,
+  // and unique
+  cc_list[uf.find(u)].merge(cc_list[uf.find(v)]); 
   for(auto x : p_u)
     for(auto y : p_v)
       if(uf.find(x) != uf.find(y) && isCongruent(x,y))
