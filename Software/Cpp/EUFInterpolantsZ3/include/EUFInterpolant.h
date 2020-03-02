@@ -47,7 +47,6 @@ class EUFInterpolant {
       return;
     }
     friend std::ostream & operator << (std::ostream & os, const CurryNode & cn){
-      // TODO: Update this method
       os << cn.func_name;
       if(cn.left != nullptr)
       	os << " Left: " << *cn.left;
@@ -76,7 +75,6 @@ class EUFInterpolant {
   CurryNodes        extra_nodes;
   CurryDeclarations curry_decl;
 
-  // The following function defines (partially) horn_clauses, subterms, and uncommon_positions.
   void            init(z3::expr const &, unsigned &, std::vector<bool> &);
   void            curryfication(z3::expr const &, CurryNodes &, std::vector<bool> &);
   void            initCCList(z3::expr const &);
@@ -86,7 +84,6 @@ class EUFInterpolant {
   z3::expr_vector buildHCBody(z3::expr const &, z3::expr const &);
   void            disequalitiesToHCS();
   void            exposeUncommons();
-  // The following function adds more elements to horn_clauses. horn_clauses will be totally defined then.
   z3::expr_vector conditionalReplacement(z3::expr_vector &);                // TODO:
   z3::expr_vector substitutions(z3::expr &, z3::expr &, z3::expr_vector &); // TODO:
   

@@ -19,23 +19,22 @@ EUFInterpolant::EUFInterpolant(z3::expr const & part_a) :
   // and curry_decl
   init(part_a, min_id, visited);
   
+  // --------------------------------------------------
   // The following defines curry_nodes
   for(unsigned i = min_id; i < original_num_terms; i++)
     curry_nodes[i] = new CurryNode(i);
-
-  // -----------------------------------------------------
-  // Working on this right now ---------------------------
-#if DEBUG_CURRYFICATION
-  std::cout << "Start curryfication" << std::endl;
-#endif
   std::fill(visited.begin(), visited.end(), false);
   curryfication(part_a, curry_nodes, visited);
-#if DEBUG_CURRYFICATION
-  std::cout << "Im done with curryfication" << std::endl;
-#endif
-  // -----------------------------------------------------
+
+  for(unsigned i = min_id; i < original_num_terms; i++)
+    std::cout << i << ". " << subterms[i] << std::endl;
   
-  // ------------------------------------------------------------------------------------------------
+  for(unsigned i = min_id; i < original_num_terms; i++)
+    std::cout << i << ". " << *(curry_nodes[i]) << std::endl;
+  
+  // --------------------------------------------------
+  
+  // -------------------------------------------------------------------------
   // //                       ---------
   // // The following defines |cc_list|. 
   // //                       ---------  
@@ -49,12 +48,13 @@ EUFInterpolant::EUFInterpolant(z3::expr const & part_a) :
   // //                   ----
   // CongruenceClosureNO cc(min_id, subterms, cc_list, uf);
   // processEqs(part_a, cc);
-  // ------------------------------------------------------------------------------------------------
-  //                       ---------  o                  ----
-  // The following defines |cc_list|. After this point, |uf| is fully defined
+  // -------------------------------------------------------------------------
+  //                       ---------                    ----
+  // The following defines |cc_list|. After this point, |uf| is fully defined.
   //                       ---------                    ----
   processEqs(part_a);
-  
+
+  // ----------------------------------------------------
   // The following sets up a
   // --------------------
   // |congruence closure| data structure
@@ -66,56 +66,49 @@ EUFInterpolant::EUFInterpolant(z3::expr const & part_a) :
       pending.push_back(i);
   cc.buildCongruenceClosure(pending);
   assert(pending.empty());
-  // ------------------------------------------------------------------------------------------------
+  // ----------------------------------------------------
 
-  // // Converting disequalities to Horn Clauses
-  // disequalitiesToHCS();
+  // Converting disequalities to Horn Clauses
+  disequalitiesToHCS();
 
-  // // Unconditional uncommon symbol elimination step
-  // //                   --------------
-  // // After this point, |horn_clauses| is fully defined
-  // //                   --------------
-  // exposeUncommons();
-  // // std::cout << horn_clauses << std::endl;
+  // Unconditional uncommon symbol elimination step
+  //                   --------------
+  // After this point, |horn_clauses| is fully defined
+  //                   --------------
+  exposeUncommons();
+  // std::cout << horn_clauses << std::endl;
   
   // // ----------------------------------------------------------------------
-  // // Additional data structures for conditional uncommon symbol elimination
-  // CCList hornsat_list(cc_list);
-  // assert(cc_list.size() == subterms.size());
-  // UnionFind hornsat_uf(uf);
-  // hornsat_uf.increaseSize(subterms.size());
-  // CongruenceClosureDST hornsat_cc(min_id, subterms, hornsat_list, hornsat_uf);
-  // Hornsat hsat(horn_clauses, hornsat_uf);
-  // // // -------------------------------------------------------------------
-  
-  // auto replacements = hsat.satisfiable(hornsat_cc);
-  // for(auto x : replacements)
-  //   std::cout << "Merge " << *horn_clauses[x.clause1]
-  // 	      << " with " << *horn_clauses[x.clause2] << std::endl;
-  // // // -------------------------------------------------------------------
-  // // std::cout << hsat << std::endl;
+  // Additional data structures for conditional uncommon symbol elimination
+  CCList hornsat_list(cc_list);
+  assert(cc_list.size() == subterms.size());
+  UnionFind hornsat_uf(uf);
+  hornsat_uf.increaseSize(subterms.size());
+  CongruenceClosureDST hornsat_cc(min_id, subterms, hornsat_list, hornsat_uf);
+  Hornsat hsat(horn_clauses, hornsat_uf);
   // // ----------------------------------------------------------------------
   
-  // buildInterpolant(replacements);
+  auto replacements = hsat.satisfiable(hornsat_cc);
+  for(auto x : replacements)
+    std::cout << "Merge " << *horn_clauses[x.clause1]
+  	      << " with " << *horn_clauses[x.clause2] << std::endl;
+  
+  // // ----------------------------
+  // std::cout << hsat << std::endl;
+  // // ----------------------------
+  
+  buildInterpolant(replacements);
   
   return;
   // throw "Problem @ EUFInterpolant::EUFInterpolant. The z3::expr const & part_a was unsatisfiable.";
 }
   
-EUFInterpolant::~EUFInterpolant(){
-  // TODO: Implement this
-  
-  // for(unsigned i = min_id; i < original_num_terms; i++){
-  //   std::cout << i << " " << *curry_nodes[i] << std::endl;
-  //   delete curry_nodes[i];
-  // }
-  
+EUFInterpolant::~EUFInterpolant(){  
   for(auto x : extra_nodes)
     delete x;
 
   for(auto x : curry_decl)
     delete x.second;
-
   curry_decl.clear();
 
 #if DEBUG_DESTRUCTOR_EUF
@@ -156,7 +149,7 @@ void EUFInterpolant::init(z3::expr const & e, unsigned & min_id, std::vector<boo
 }
 
 void EUFInterpolant::curryfication(z3::expr const & e,
-				   std::vector<CurryNode*> & curry_nodes,
+				   CurryNodes & curry_nodes,
 				   std::vector<bool> & visited){
 
 #if DEBUG_CURRYFICATION
@@ -171,9 +164,8 @@ void EUFInterpolant::curryfication(z3::expr const & e,
     
     unsigned num = e.num_args();
     
-    for(unsigned i = 0; i < num; i++){
+    for(unsigned i = 0; i < num; i++)
       curryfication(e.arg(i), curry_nodes, visited);
-    }
     
     // Update curry_nodes
     
