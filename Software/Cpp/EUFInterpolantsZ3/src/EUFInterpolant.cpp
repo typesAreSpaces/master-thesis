@@ -1,6 +1,7 @@
 #include "EUFInterpolant.h"
 #define DEBUG_DESTRUCTOR_EUF false
 #define DEBUG_EUFINTERPOLANT false
+#define DEBUG_CURRYFICATION false
 
 EUFInterpolant::EUFInterpolant(z3::expr const & part_a) :
   ctx(part_a.ctx()), min_id(part_a.id()), subterms(ctx),
@@ -18,20 +19,20 @@ EUFInterpolant::EUFInterpolant(z3::expr const & part_a) :
   // and curry_decl
   init(part_a, min_id, visited);
   
-  // -----------------------------------------------------
-  // Working on this right now ---------------------------
-
-  for(auto x : curry_decl)
-    std::cout << x.first << " " << *x.second << std::endl;
-  
+  // The following defines curry_nodes
   for(unsigned i = min_id; i < original_num_terms; i++)
     curry_nodes[i] = new CurryNode(i);
-  
-  curryfication(part_a, curry_nodes);
-  
-  for(unsigned i = min_id; i < original_num_terms; i++){
-    // std::cout << *(curry_nodes[i]) << std::endl;
-  }
+
+  // -----------------------------------------------------
+  // Working on this right now ---------------------------
+#if DEBUG_CURRYFICATION
+  std::cout << "Start curryfication" << std::endl;
+#endif
+  std::fill(visited.begin(), visited.end(), false);
+  curryfication(part_a, curry_nodes, visited);
+#if DEBUG_CURRYFICATION
+  std::cout << "Im done with curryfication" << std::endl;
+#endif
   // -----------------------------------------------------
   
   // ------------------------------------------------------------------------------------------------
@@ -102,26 +103,18 @@ EUFInterpolant::EUFInterpolant(z3::expr const & part_a) :
 }
   
 EUFInterpolant::~EUFInterpolant(){
-
+  // TODO: Implement this
+  
   // for(unsigned i = min_id; i < original_num_terms; i++){
   //   std::cout << i << " " << *curry_nodes[i] << std::endl;
   //   delete curry_nodes[i];
   // }
-
-
-  // unsigned i = 0;
-  for(auto x : extra_nodes){
+  
+  for(auto x : extra_nodes)
     delete x;
-    // std::cout << i++ << " " << *x << std::endl; // PROBLEMATIC:
-  }
 
-
-  // for(auto x : curry_decl){
-  //   std::cout << x.first << " ";
-  //   std::cout << *x.second << std::endl;
-  //   if(x.second != nullptr)
-  //     delete x.second;
-  // }
+  for(auto x : curry_decl)
+    delete x.second;
 
   curry_decl.clear();
 
@@ -163,12 +156,24 @@ void EUFInterpolant::init(z3::expr const & e, unsigned & min_id, std::vector<boo
 }
 
 void EUFInterpolant::curryfication(z3::expr const & e,
-				   std::vector<CurryNode*> & curry_nodes){
+				   std::vector<CurryNode*> & curry_nodes,
+				   std::vector<bool> & visited){
+
+#if DEBUG_CURRYFICATION
+  std::cout << "curryfing this " << e << " " << e.id() << std::endl;
+#endif
+  
   if(e.is_app()){
+
+    if(visited[e.id()])
+      return;
+    visited[e.id()] = true;
+    
     unsigned num = e.num_args();
     
-    for(unsigned i = 0; i < num; i++)
-      curryfication(e.arg(i), curry_nodes);
+    for(unsigned i = 0; i < num; i++){
+      curryfication(e.arg(i), curry_nodes, visited);
+    }
     
     // Update curry_nodes
     
@@ -180,26 +185,39 @@ void EUFInterpolant::curryfication(z3::expr const & e,
       for(unsigned i = last_node_pos; i < new_last_node_pos; i++)
     	extra_nodes[i] = new CurryNode(i, "apply", nullptr, nullptr);
       
-      // Case for i = 0.
-      extra_nodes[last_node_pos]->update("apply", curry_decl[e.decl().id()], curry_nodes[e.arg(0).id()]);
-      // // Rest of the cases
-      // for(unsigned i = 1; i < num; i++)
-      // 	extra_nodes[last_node_pos + i]->update("apply", extra_nodes[last_node_pos + i - 1], curry_nodes[e.arg(i).id()]);
+      // Case for first argument
+      extra_nodes[last_node_pos]->update("apply",
+					 curry_decl[e.decl().id()],
+					 curry_nodes[e.arg(0).id()]);
+      // Case for the rest of the arguments
+      for(unsigned i = 1; i < num; i++)
+      	extra_nodes[last_node_pos + i]->update("apply",
+					       extra_nodes[last_node_pos + i - 1],
+					       curry_nodes[e.arg(i).id()]);
 
-      std::cout << "ok1" << std::endl;
-      std::cout << e << std::endl;
-      std::cout << "ok2" << std::endl;
-      std::cout << *curry_nodes[e.id()] << std::endl;
+#if DEBUG_CURRYFICATION
+      std::cout << "Before (constant) " << *(curry_nodes[e.id()]) << " "
+		<< (curry_nodes[e.id()] == extra_nodes[new_last_node_pos - 1]) << std::endl;
+#endif      
       delete curry_nodes[e.id()];
       curry_nodes[e.id()] = extra_nodes[new_last_node_pos - 1];
       
-      std::cout << *(curry_nodes[e.id()]) << std::endl;
+#if DEBUG_CURRYFICATION
+      std::cout << "After (func term) " << *(curry_nodes[e.id()]) << std::endl;
+#endif
     }
     else{
+#if DEBUG_CURRYFICATION
+      std::cout << "Before (constant) " << *(curry_nodes[e.id()]) << " "
+		<< (curry_nodes[e.id()] == curry_decl[e.decl().id()]) << std::endl;
+#endif      
       delete curry_nodes[e.id()];
       curry_nodes[e.id()] = curry_decl[e.decl().id()];
-      
-      std::cout << *(curry_nodes[e.id()]) << std::endl;
+
+#if DEBUG_CURRYFICATION
+      std::cout << "After (constant) " << *(curry_nodes[e.id()]) << std::endl;
+#endif
+
     }
 
     return;

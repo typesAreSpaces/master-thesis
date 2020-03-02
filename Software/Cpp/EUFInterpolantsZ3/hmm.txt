@@ -1,39 +1,65 @@
 g++ -g -c -o obj/EUFInterpolant.o  -I./src -I./include -std=c++11 src/EUFInterpolant.cpp -Wall
 g++ -g -o euf_interpolator obj/Match.o obj/Rename.o obj/UnionFindExplain.o obj/HornClause.o obj/CongruenceClosureNO.o obj/Hornsat.o obj/CongruenceClosureDST.o obj/EUFInterpolant.o obj/CongruenceClosure.o obj/UnionFind.o obj/main.o obj/HornClauses.o /home/jose/Documents/GithubProjects/z3__/build/libz3.so -lpthread -Wall
 ./euf_interpolator
-2147483651 and
-2147483789 =
-2147483790 distinct
-2147483791 c_z1
-2147483792 a_v
-2147483793 c_f
-2147483794 c_s1
-2147483795 c_z2
-2147483796 c_s2
-2147483797 c_y1
-2147483798 c_y2
-2147483799 c_t
-2147483800 c_g
-c_z1
-a_v
-(c_f c_z1 a_v)
-
-apply
-c_s1
-(= (c_f c_z1 a_v) c_s1)
-
-apply
-c_z2
-a_v
-(c_f c_z2 a_v)
-
-apply
-c_s2
-(= (c_f c_z2 a_v) c_s2)
-
-apply
-(and (= (c_f c_z1 a_v) c_s1) (= (c_f c_z2 a_v) c_s2))
-
-apply
-c_y1
+Start curryfication
+curryfing this (let ((a!1 (= (c_g (c_g (c_f c_y1 a_v))) (c_f c_y2 a_v))))
+  (and (= (c_f c_z1 a_v) c_s1)
+       (= (c_f c_z2 a_v) c_s2)
+       (= (c_f (c_f c_y1 a_v) (c_f c_y2 a_v)) c_t)
+       (distinct c_s1 c_t)
+       (= (c_g (c_g c_s1)) c_s2)
+       a!1)) 60
+curryfing this (and (= (c_f c_z1 a_v) c_s1)
+     (= (c_f c_z2 a_v) c_s2)
+     (= (c_f (c_f c_y1 a_v) (c_f c_y2 a_v)) c_t)
+     (distinct c_s1 c_t)
+     (= (c_g (c_g c_s1)) c_s2)) 56
+curryfing this (and (= (c_f c_z1 a_v) c_s1)
+     (= (c_f c_z2 a_v) c_s2)
+     (= (c_f (c_f c_y1 a_v) (c_f c_y2 a_v)) c_t)
+     (distinct c_s1 c_t)) 52
+curryfing this (and (= (c_f c_z1 a_v) c_s1)
+     (= (c_f c_z2 a_v) c_s2)
+     (= (c_f (c_f c_y1 a_v) (c_f c_y2 a_v)) c_t)) 50
+curryfing this (and (= (c_f c_z1 a_v) c_s1) (= (c_f c_z2 a_v) c_s2)) 42
+curryfing this (= (c_f c_z1 a_v) c_s1) 37
+curryfing this (c_f c_z1 a_v) 35
+curryfing this c_z1 33
+Before (constant)  0
+After (constant) c_z1
+curryfing this a_v 34
+Before (constant)  0
+After (constant) a_v
+Before (constant)  0
+After (func term) apply
+curryfing this c_s1 36
+Before (constant)  0
+After (constant) c_s1
+Before (constant)  0
+After (func term) apply
+curryfing this (= (c_f c_z2 a_v) c_s2) 41
+curryfing this (c_f c_z2 a_v) 39
+curryfing this c_z2 38
+Before (constant)  0
+After (constant) c_z2
+curryfing this a_v 34
+Before (constant) a_v 1
+After (constant) a_v
+Before (constant)  0
+After (func term) apply
+curryfing this c_s2 40
+Before (constant)  0
+After (constant) c_s2
+Before (constant)  0
+After (func term) apply
+Before (constant)  0
+After (func term) apply
+curryfing this (= (c_f (c_f c_y1 a_v) (c_f c_y2 a_v)) c_t) 49
+curryfing this (c_f (c_f c_y1 a_v) (c_f c_y2 a_v)) 47
+curryfing this (c_f c_y1 a_v) 44
+curryfing this c_y1 43
+Before (constant)  0
+After (constant) c_y1
+curryfing this a_v 34
+Before (constant)  1
 Makefile:41: recipe for target 'run' failed

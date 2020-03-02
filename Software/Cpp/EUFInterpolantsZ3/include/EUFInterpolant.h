@@ -78,7 +78,7 @@ class EUFInterpolant {
 
   // The following function defines (partially) horn_clauses, subterms, and uncommon_positions.
   void            init(z3::expr const &, unsigned &, std::vector<bool> &);
-  void            curryfication(z3::expr const &, CurryNodes &);
+  void            curryfication(z3::expr const &, CurryNodes &, std::vector<bool> &);
   void            initCCList(z3::expr const &);
   void            processEqs(z3::expr const &);
   void            processEqs(z3::expr const &, CongruenceClosureNO &);
