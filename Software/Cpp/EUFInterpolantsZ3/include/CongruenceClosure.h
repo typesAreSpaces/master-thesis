@@ -63,7 +63,6 @@ protected:
  public:
   CongruenceClosure(const unsigned &, const z3::expr_vector &, CCList &, UnionFind &);
   virtual void buildCongruenceClosure(std::list<unsigned> &) = 0;
-  virtual void buildCongruenceClosure() = 0;
   virtual ~CongruenceClosure();
   friend std::ostream & operator << (std::ostream &, const CongruenceClosure &);
 };

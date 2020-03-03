@@ -10,9 +10,8 @@ class CongruenceClosureNO : public CongruenceClosure {
  public:
   CongruenceClosureNO(const unsigned &, const z3::expr_vector &, CCList &, UnionFind &);
   void buildCongruenceClosure(std::list<unsigned> &);
-  void buildCongruenceClosure();
   void combine(unsigned, unsigned);
-  bool isCongruent(unsigned, unsigned);
+  bool areCongruent(unsigned, unsigned);
   ~CongruenceClosureNO();
   friend std::ostream & operator << (std::ostream &, const CongruenceClosureNO &);
 };

@@ -52,10 +52,6 @@ void CongruenceClosureDST::buildCongruenceClosure(std::list<unsigned> & pending)
   }
 }
 
-void CongruenceClosureDST::buildCongruenceClosure(){
-  throw "CongruenceClosureDST::buildCongruenceClosure(). Implementation not defined";
-}
-
 std::ostream & operator << (std::ostream & os, const CongruenceClosureDST & cc){
   return os;
 }

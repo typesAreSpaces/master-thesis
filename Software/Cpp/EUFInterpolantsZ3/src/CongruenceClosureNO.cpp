@@ -15,10 +15,6 @@ void CongruenceClosureNO::buildCongruenceClosure(std::list<unsigned> & pending){
   throw "CongruenceClosureNO::buildCongruenceClosure(std::list<unsigned> &). Implementation not defined";
 }
 
-void CongruenceClosureNO::buildCongruenceClosure(){
-  
-}
-
 void CongruenceClosureNO::combine(unsigned u, unsigned v){
   if(uf.find(u) == uf.find(v))
     return;
@@ -29,12 +25,12 @@ void CongruenceClosureNO::combine(unsigned u, unsigned v){
   cc_list[uf.find(u)].merge(cc_list[uf.find(v)]); 
   for(auto x : p_u)
     for(auto y : p_v)
-      if(uf.find(x) != uf.find(y) && isCongruent(x,y))
+      if(uf.find(x) != uf.find(y) && areCongruent(x,y))
 	combine(x, y);
   return;
 }
 
-bool CongruenceClosureNO::isCongruent(unsigned x, unsigned y){
+bool CongruenceClosureNO::areCongruent(unsigned x, unsigned y){
   auto term_x = subterms[x], term_y = subterms[y];
   if(sig_table.hash_z3expr(term_x) != sig_table.hash_z3expr(term_y))
     return false;
