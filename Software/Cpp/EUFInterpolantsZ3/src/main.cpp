@@ -14,7 +14,8 @@ void testEUF();
 
 int main(int argc, char ** argv){
  
-  testEUF();
+  // testEUF();
+  test2();
   
   return 0;
 }
@@ -35,8 +36,9 @@ void test2(){
   z3::expr d = ctx.constant("d", my_sort);
   z3::func_decl f = ctx.function("f", my_sort, my_sort);
   z3::expr input = a == b && f(a) == c && f(b) == d;
+  
   EUFInterpolant euf(input);
-  std::cout << euf << std::endl;
+  return;
 }
 
 // void explainn(unsigned x, unsigned y, UnionFindExplain & a){
