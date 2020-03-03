@@ -25,11 +25,6 @@ EUFInterpolant::EUFInterpolant(z3::expr const & part_a) :
     curry_nodes[i] = new CurryNode(i);
   std::fill(visited.begin(), visited.end(), false);
   curryfication(part_a, curry_nodes, visited);
-
-  std::cout << "Printing curryfied nodes" << std::endl;
-  for(unsigned i = min_id; i < original_num_terms; i++)
-    std::cout << *(curry_nodes[i]) << std::endl;
-  
   // --------------------------------------------------
   
   // -------------------------------------------------------------------------
@@ -63,9 +58,10 @@ EUFInterpolant::EUFInterpolant(z3::expr const & part_a) :
     if(subterms[i].num_args() > 0)
       pending.push_back(i);
   cc.buildCongruenceClosure(pending);
-  assert(pending.empty());  
+  assert(pending.empty());
   // ----------------------------------------------------
 
+  // KEEP: working here
   // // Converting disequalities to Horn Clauses
   // disequalitiesToHCS();
 

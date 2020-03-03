@@ -27,26 +27,26 @@ void CongruenceClosureDST::buildCongruenceClosure(std::list<unsigned> & pending)
     }
     pending.clear();
     for(auto v_w : combine){
-      unsigned v = v_w.first, w = v_w.second;
-      if(uf.find(v) != uf.find(w)){
+      unsigned v_repr = uf.find(v_w.first), w_repr = uf.find(v_w.second);
+      if(v_repr != w_repr){
 	unsigned aux;
-	// Invariant: v is always the repr
-	if(cc_list[uf.find(v)].size() < cc_list[uf.find(w)].size()){
-	  aux = v;
-	  v = w;
-	  w = aux;
+	// Invariant: v_repr is always the representative of the union
+	if(cc_list[v_repr].size() < cc_list[w_repr].size()){
+	  aux = v_repr;
+	  v_repr = w_repr;
+	  w_repr = aux;
 	}
-	if(HornClause::compareTerm(subterms[uf.find(v)], subterms[uf.find(w)])){
-	  aux = v;
-	  v = w;
-	  w = aux;
+	if(HornClause::compareTerm(subterms[v_repr], subterms[w_repr])){
+	  aux = v_repr;
+	  v_repr = w_repr;
+	  w_repr = aux;
 	}
-	for(auto u : cc_list[w]){
+	for(auto u : cc_list[w_repr]){
 	  sig_table.erase(subterms[u]);
 	  pending.push_back(u);
 	}
-	uf.combine(uf.find(v), uf.find(w));
-	cc_list[uf.find(v)].splice(cc_list[uf.find(v)].end(), cc_list[uf.find(w)]);
+	uf.combine(v_repr, w_repr);
+	cc_list[v_repr].splice(cc_list[v_repr].end(), cc_list[w_repr]);
       }
     }
   }

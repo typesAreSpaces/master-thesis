@@ -11,11 +11,13 @@ void test1();
 void test2();
 // void testUFE();
 void testEUF();
+void hugeTest();
 
 int main(int argc, char ** argv){
  
-  // testEUF();
-  test2();
+  testEUF();
+  // test2();
+  // hugeTest();
   
   return 0;
 }
@@ -38,37 +40,38 @@ void test2(){
   z3::expr input = a == b && f(a) == c && f(b) == d;
   
   EUFInterpolant euf(input);
+  std::cout << euf << std::endl;
   return;
 }
 
-// void explainn(unsigned x, unsigned y, UnionFindExplain & a){
-//   std::cout << "Explain " << x << ", " << y << std::endl;
-//   for(auto x : a.explain(x, y))
-//     std::cout << x << std::endl;
-// }
+void explainn(unsigned x, unsigned y, UnionFindExplain & a){
+  std::cout << "Explain " << x << ", " << y << std::endl;
+  for(auto x : a.explain(x, y))
+    std::cout << x << std::endl;
+}
 
-// void testUFE(){
-//   UnionFindExplain a(10);
-//   a.merge(1, 0);
-//   a.merge(0, 2);
-//   a.merge(4, 3);
-//   a.merge(4, 5);
-//   a.merge(2, 6);
-//   a.merge(5, 2);
+void testUFE(){
+  UnionFindExplain a(10);
+  a.merge(1, 0);
+  a.merge(0, 2);
+  a.merge(4, 3);
+  a.merge(4, 5);
+  a.merge(2, 6);
+  a.merge(5, 2);
 
-//   explainn(6, 5, a);
-//   explainn(1, 9, a);
-//   explainn(0, 4, a);
+  explainn(6, 5, a);
+  explainn(1, 9, a);
+  explainn(0, 4, a);
 
-//   std::cout << (UnionFind)a << std::endl;
+  std::cout << (UnionFind)a << std::endl;
  
-//   std::cout << "Equivalence class for 8" << std::endl;
-//   auto it = a.begin(8), end = a.end(8);
-//   for(; it != end; ++it)
-//     std::cout << *it << std::endl;
+  std::cout << "Equivalence class for 8" << std::endl;
+  auto it = a.begin(8), end = a.end(8);
+  for(; it != end; ++it)
+    std::cout << *it << std::endl;
 
-//   return;
-// }
+  return;
+}
 
 void testEUF(){
   z3::context ctx;
@@ -87,11 +90,28 @@ void testEUF(){
   uncomms.insert("v");
   
   // z3::expr alpha = f(z1, v) == s1 && f(z2, v) == s2 && f(f(y1, v), f(y2, v)) == t && s1 != t;
-  z3::expr alpha = f(z1, v) == s1 && f(z2, v) == s2 && f(f(y1, v), f(y2, v)) == t && s1 != t && g(g(s1)) == s2 && g(g(f(y1, v))) == f(y2, v);
+  z3::expr alpha = f(z1, v) == s1
+    && f(z2, v) == s2
+    && f(f(y1, v), f(y2, v)) == t
+    && s1 != t
+    && g(g(s1)) == s2
+    && g(g(f(y1, v))) == f(y2, v);
   z3::expr r_alpha = rename(alpha, uncomms);
   
   EUFInterpolant euf(r_alpha);
-  // std::cout << euf << std::endl;
+  std::cout << euf << std::endl;
     
   // euf.buildInterpolant();
+}
+
+void hugeTest(){
+
+  z3::context ctx;
+  // The following smt2 file is satisfiable
+  z3::expr input = mk_and(ctx.parse_file("/home/jose/Downloads/QF_UF/2018-Goel-hwbench/QF_UF_adding.1.prop1_ab_cti_max.smt2"));
+  
+  EUFInterpolant euf(input);
+  std::cout << euf << std::endl;
+  
+  return;
 }
