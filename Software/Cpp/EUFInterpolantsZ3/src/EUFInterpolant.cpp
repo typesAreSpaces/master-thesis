@@ -54,6 +54,7 @@ EUFInterpolant::EUFInterpolant(z3::expr const & part_a) :
   // --------------------
   CongruenceClosureDST cc(min_id, subterms, cc_list, uf);
   std::list<unsigned> pending;
+  
   for(unsigned i = min_id; i < original_num_terms; i++)
     if(subterms[i].num_args() > 0)
       pending.push_back(i);

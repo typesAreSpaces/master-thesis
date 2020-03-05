@@ -9,14 +9,23 @@
 
 void test1();
 void test2();
+void test3();
 // void testUFE();
 void testEUF();
 void hugeTest();
 
+// *******************************************************
+// *******************************************************
+// IMPORTANT: The formula declaration (also in SMT2 files)
+// should only mention the symbols that will appear in the
+// formula to be process. ********************************
+// *******************************************************
+// *******************************************************
+
 int main(int argc, char ** argv){
  
   testEUF();
-  // test2();
+  // test3();
   // hugeTest();
   
   return 0;
@@ -38,6 +47,21 @@ void test2(){
   z3::expr d = ctx.constant("d", my_sort);
   z3::func_decl f = ctx.function("f", my_sort, my_sort);
   z3::expr input = a == b && f(a) == c && f(b) == d;
+  
+  EUFInterpolant euf(input);
+  // std::cout << euf << std::endl;
+  return;
+}
+
+void test3(){
+  z3::context ctx;
+  z3::sort my_sort = ctx.uninterpreted_sort("A");
+  z3::expr a = ctx.constant("a", my_sort);
+  z3::func_decl f = ctx.function("f", my_sort, my_sort);
+  // z3::expr input = f(a) == a;
+  // This way (by reflexivity), we force the huge term to appear in the
+  // graph of terms
+  z3::expr input = f(a) == a && f(f(f(f(f(f(f(a))))))) == f(f(f(f(f(f(f(a)))))));
   
   EUFInterpolant euf(input);
   std::cout << euf << std::endl;
