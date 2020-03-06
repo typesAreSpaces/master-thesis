@@ -1,8 +1,8 @@
 #include "CongruenceClosureNO.h"
 
 CongruenceClosureNO::CongruenceClosureNO(const unsigned & min_id, const z3::expr_vector & subterms,
-					   CCList & cc_list, UnionFind & uf) :
-  CongruenceClosure(min_id, subterms, cc_list, uf){
+					   CCList & pred_list, UnionFind & uf) :
+  CongruenceClosure(min_id, subterms, pred_list, uf){
 }
 
 CongruenceClosureNO::~CongruenceClosureNO(){
@@ -18,11 +18,11 @@ void CongruenceClosureNO::buildCongruenceClosure(std::list<unsigned> & pending){
 void CongruenceClosureNO::combine(unsigned u, unsigned v){
   if(uf.find(u) == uf.find(v))
     return;
-  auto p_u = cc_list[u], p_v = cc_list[v];
+  auto p_u = pred_list[u], p_v = pred_list[v];
   uf.combine(u, v);
-  // The following assumes each elemen in cc_list is sorted,
+  // The following assumes each elemen in pred_list is sorted,
   // and unique
-  cc_list[uf.find(u)].merge(cc_list[uf.find(v)]); 
+  pred_list[uf.find(u)].merge(pred_list[uf.find(v)]); 
   for(auto x : p_u)
     for(auto y : p_v)
       if(uf.find(x) != uf.find(y) && areCongruent(x,y))

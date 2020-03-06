@@ -1,8 +1,8 @@
 #include "CongruenceClosureDST.h"
 
 CongruenceClosureDST::CongruenceClosureDST(const unsigned & min_id, const z3::expr_vector & subterms,
-					   CCList & cc_list, UnionFind & uf) :
-  CongruenceClosure(min_id, subterms, cc_list, uf){
+					   CCList & pred_list, UnionFind & uf) :
+  CongruenceClosure(min_id, subterms, pred_list, uf){
 }
 
 CongruenceClosureDST::~CongruenceClosureDST(){
@@ -31,7 +31,7 @@ void CongruenceClosureDST::buildCongruenceClosure(std::list<unsigned> & pending)
       if(v_repr != w_repr){
 	unsigned aux;
 	// Invariant: v_repr is always the representative of the union
-	if(cc_list[v_repr].size() < cc_list[w_repr].size()){
+	if(pred_list[v_repr].size() < pred_list[w_repr].size()){
 	  aux = v_repr;
 	  v_repr = w_repr;
 	  w_repr = aux;
@@ -41,12 +41,12 @@ void CongruenceClosureDST::buildCongruenceClosure(std::list<unsigned> & pending)
 	  v_repr = w_repr;
 	  w_repr = aux;
 	}
-	for(auto u : cc_list[w_repr]){
+	for(auto u : pred_list[w_repr]){
 	  sig_table.erase(subterms[u]);
 	  pending.push_back(u);
 	}
 	uf.combine(v_repr, w_repr);
-	cc_list[v_repr].splice(cc_list[v_repr].end(), cc_list[w_repr]);
+	pred_list[v_repr].splice(pred_list[v_repr].end(), pred_list[w_repr]);
       }
     }
   }

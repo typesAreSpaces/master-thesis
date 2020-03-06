@@ -1,8 +1,8 @@
 #include "CongruenceClosureExplain.h"
 
 CongruenceClosureExplain::CongruenceClosureExplain(const unsigned & min_id, const z3::expr_vector & subterms,
-						   CCList & cc_list, UnionFind & uf) :
-  CongruenceClosure(min_id, subterms, cc_list, uf){
+						   CCList & pred_list, UnionFind & uf) :
+  CongruenceClosure(min_id, subterms, pred_list, uf){
 }
 
 CongruenceClosureExplain::~CongruenceClosureExplain(){

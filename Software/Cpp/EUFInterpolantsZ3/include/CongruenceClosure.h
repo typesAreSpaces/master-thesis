@@ -57,7 +57,7 @@ class CongruenceClosure {
 protected:
   const unsigned &        min_id;
   const z3::expr_vector & subterms;
-  CCList &                cc_list;
+  CCList &                pred_list;
   UnionFind &             uf;
   SignatureTable          sig_table;
  public:

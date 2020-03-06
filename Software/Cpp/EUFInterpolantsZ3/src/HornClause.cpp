@@ -2,9 +2,9 @@
 #define DEBUG_DESTRUCTOR_HC false
 
 HornClause::HornClause(UnionFind & uf, z3::context & ctx, const unsigned & min_id, z3::expr_vector & subterms,
-		       z3::expr_vector antecedent, z3::expr consequent, CCList & cc_list) :
+		       z3::expr_vector antecedent, z3::expr consequent, CCList & pred_list) :
   uf(uf), ctx(ctx), min_id(min_id), subterms(subterms),
-  antecedent(antecedent), consequent(consequent), cc_list(cc_list){
+  antecedent(antecedent), consequent(consequent), pred_list(pred_list){
 
   // ---------------------------------------------------------------
   // This part updates subterms in case there are new terms created
@@ -39,7 +39,7 @@ HornClause::HornClause(UnionFind & uf, z3::context & ctx, const unsigned & min_i
   // This part updates subterms (again) in case there are
   // NEW TERMS created by a Horn Clause after
   // normalization and orientation. For the latter, it also
-  // updates cc_list
+  // updates pred_list
   for(auto hyp : this->antecedent){
     is_common_antecedent = is_common_antecedent && hyp.is_common();
     if(!hyp.is_common())
@@ -47,13 +47,13 @@ HornClause::HornClause(UnionFind & uf, z3::context & ctx, const unsigned & min_i
     auto lhs = hyp.arg(0), rhs = hyp.arg(1);
     if(subterms.size() <= hyp.id()){
       subterms.resize(hyp.id() + 1);
-      cc_list.resize(hyp.id() + 1);
+      pred_list.resize(hyp.id() + 1);
     }
     subterms.set(hyp.id(), hyp);
     subterms.set(lhs.id(), lhs);
     subterms.set(rhs.id(), rhs);
-    cc_list[lhs.id()].push_back(hyp.id());
-    cc_list[rhs.id()].push_back(hyp.id());
+    pred_list[lhs.id()].push_back(hyp.id());
+    pred_list[rhs.id()].push_back(hyp.id());
   }
   if(this->consequent.decl().name().str() == "false"){
     subterms.set(this->consequent.id(), this->consequent);
@@ -61,15 +61,15 @@ HornClause::HornClause(UnionFind & uf, z3::context & ctx, const unsigned & min_i
   }
   if(subterms.size() <= this->consequent.id()){
     subterms.resize(this->consequent.id() + 1);
-    cc_list.resize(this->consequent.id() + 1);
+    pred_list.resize(this->consequent.id() + 1);
   }
   
   lhs = this->consequent.arg(0), rhs = this->consequent.arg(1);
   subterms.set(this->consequent.id(), this->consequent);
   subterms.set(lhs.id(), lhs);
   subterms.set(rhs.id(), rhs);
-  cc_list[lhs.id()].push_back(this->consequent.id());
-  cc_list[rhs.id()].push_back(this->consequent.id());
+  pred_list[lhs.id()].push_back(this->consequent.id());
+  pred_list[rhs.id()].push_back(this->consequent.id());
   // ---------------------------------------------------------------
   return;
 }

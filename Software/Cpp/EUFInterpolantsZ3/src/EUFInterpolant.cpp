@@ -11,7 +11,7 @@ EUFInterpolant::EUFInterpolant(z3::expr const & part_a) :
   contradiction = ctx.bool_val(false);
   std::vector<bool> visited(original_num_terms, false);
   subterms.resize(original_num_terms);
-  cc_list.resize(original_num_terms);
+  pred_list.resize(original_num_terms);
   curry_nodes.resize(original_num_terms);
 
   // The following defines min_id, visited,
@@ -33,7 +33,7 @@ EUFInterpolant::EUFInterpolant(z3::expr const & part_a) :
   
   // -------------------------------------------------------------------------
   // //                       ---------
-  // // The following defines |cc_list|. 
+  // // The following defines |pred_list|. 
   // //                       ---------  
   // initCCList(part_a);
   // // The following sets up a
@@ -43,11 +43,11 @@ EUFInterpolant::EUFInterpolant(z3::expr const & part_a) :
   // //                   ----
   // // After this point, |uf| is fully defined
   // //                   ----
-  // CongruenceClosureNO cc(min_id, subterms, cc_list, uf);
+  // CongruenceClosureNO cc(min_id, subterms, pred_list, uf);
   // processEqs(part_a, cc);
   // -------------------------------------------------------------------------
   //                       ---------                    ----
-  // The following defines |cc_list|. After this point, |uf| is fully defined.
+  // The following defines |pred_list|. After this point, |uf| is fully defined.
   //                       ---------                    ----
   processEqs(part_a);
 
@@ -56,7 +56,7 @@ EUFInterpolant::EUFInterpolant(z3::expr const & part_a) :
   // --------------------
   // |congruence closure| data structure
   // --------------------
-  CongruenceClosureDST cc(min_id, subterms, cc_list, uf);
+  CongruenceClosureDST cc(min_id, subterms, pred_list, uf);
   std::list<unsigned> pending;
   
   for(unsigned i = min_id; i < original_num_terms; i++)
@@ -79,8 +79,8 @@ EUFInterpolant::EUFInterpolant(z3::expr const & part_a) :
   
   // // // ----------------------------------------------------------------------
   // // Additional data structures for conditional uncommon symbol elimination
-  // CCList hornsat_list(cc_list);
-  // assert(cc_list.size() == subterms.size());
+  // CCList hornsat_list(pred_list);
+  // assert(pred_list.size() == subterms.size());
   // UnionFind hornsat_uf(uf);
   // hornsat_uf.increaseSize(subterms.size());
   // CongruenceClosureDST hornsat_cc(min_id, subterms, hornsat_list, hornsat_uf);
@@ -217,16 +217,16 @@ void EUFInterpolant::curryfication(z3::expr const & e,
   throw "Problem @ EUFInterpolant::curryfication(z3::expr const &). The z3::expr const & is not an app.";
 }
 
-// Actually, this function is used to setup up the cc_list
+// Actually, this function is used to setup up the pred_list
 // for the Nelson-Oppen Congruence Closure
 void EUFInterpolant::initCCList(z3::expr const & e){
   if(e.is_app()){
     unsigned num = e.num_args();
     for(unsigned i = 0; i < num; i++){
       // The following function is used to
-      // keep the invariant that elements in cc_list
+      // keep the invariant that elements in pred_list
       // are unique and sorted
-      insert(cc_list[e.arg(i).id()], e.id());
+      insert(pred_list[e.arg(i).id()], e.id());
       initCCList(e.arg(i));
     }
     return;
@@ -238,7 +238,7 @@ void EUFInterpolant::processEqs(z3::expr const & e){
   if(e.is_app()){ 
     unsigned num = e.num_args();
     for(unsigned i = 0; i < num; i++){
-      cc_list[e.arg(i).id()].push_back(e.id());
+      pred_list[e.arg(i).id()].push_back(e.id());
       processEqs(e.arg(i));
     }
 
@@ -295,7 +295,7 @@ void EUFInterpolant::disequalitiesToHCS(){
   for(unsigned i = 0; i < num_disequalities; i++){
     z3::expr_vector hc_body(ctx);
     hc_body.push_back(repr(disequalities[i].arg(0)) == repr(disequalities[i].arg(1)));
-    horn_clauses.add(new HornClause(uf, ctx, min_id, subterms, hc_body, contradiction, cc_list));
+    horn_clauses.add(new HornClause(uf, ctx, min_id, subterms, hc_body, contradiction, pred_list));
   }
 }
 
@@ -310,7 +310,7 @@ void EUFInterpolant::exposeUncommons(){
 	  if(!t1.is_common() || !t2.is_common()){
 	    z3::expr_vector hc_body = buildHCBody(t1, t2);
 	    z3::expr        hc_head = repr(t1) == repr(t2);
-	    horn_clauses.add(new HornClause(uf, ctx, min_id, subterms, hc_body, hc_head, cc_list));
+	    horn_clauses.add(new HornClause(uf, ctx, min_id, subterms, hc_body, hc_head, pred_list));
 	  }
 	}
   }

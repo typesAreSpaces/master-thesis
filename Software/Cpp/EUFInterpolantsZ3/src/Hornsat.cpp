@@ -174,7 +174,7 @@ void Hornsat::update(CongruenceClosure & cc, std::list<unsigned> & pending,
   unsigned aux_var;
   
   // Invariant: v is always the repr
-  if(cc.cc_list[cc.uf.find(v)].size() < cc.cc_list[cc.uf.find(w)].size()){
+  if(cc.pred_list[cc.uf.find(v)].size() < cc.pred_list[cc.uf.find(w)].size()){
     aux_var = v;
     v = w;
     w = aux_var;
@@ -185,12 +185,12 @@ void Hornsat::update(CongruenceClosure & cc, std::list<unsigned> & pending,
     w = aux_var;
   }
   
-  for(auto u : cc.cc_list[cc.uf.find(w)]){
+  for(auto u : cc.pred_list[cc.uf.find(w)]){
     cc.sig_table.erase(subterms[u]);
     pending.push_back(u);
   }
   unionupdate(cc.uf, v, w);
-  cc.cc_list[cc.uf.find(v)].splice(cc.cc_list[cc.uf.find(v)].end(), cc.cc_list[cc.uf.find(w)]);
+  cc.pred_list[cc.uf.find(v)].splice(cc.pred_list[cc.uf.find(v)].end(), cc.pred_list[cc.uf.find(w)]);
   
   return;
 }

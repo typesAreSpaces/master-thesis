@@ -44,7 +44,7 @@ class EUFInterpolant {
   z3::expr          contradiction;
   z3::expr_vector   disequalities;
   unsigned          original_num_terms;
-  CCList            cc_list;
+  CCList            pred_list;
   CurryNodes        curry_nodes;
   CurryNodes        extra_nodes;
   CurryDeclarations curry_decl;
