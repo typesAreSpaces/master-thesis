@@ -24,7 +24,11 @@ EUFInterpolant::EUFInterpolant(z3::expr const & part_a) :
   for(unsigned i = min_id; i < original_num_terms; i++)
     curry_nodes[i] = new CurryNode(i);
   std::fill(visited.begin(), visited.end(), false);
-  curryfication(part_a, curry_nodes, visited);
+  curryfication(part_a, visited);
+
+  for(unsigned i = min_id; i < original_num_terms; i++)
+    std::cout << *curry_nodes[i] << std::endl;
+  
   // --------------------------------------------------
   
   // -------------------------------------------------------------------------
@@ -144,7 +148,6 @@ void EUFInterpolant::init(z3::expr const & e, unsigned & min_id, std::vector<boo
 }
 
 void EUFInterpolant::curryfication(z3::expr const & e,
-				   CurryNodes & curry_nodes,
 				   std::vector<bool> & visited){
 
 #if DEBUG_CURRYFICATION
@@ -160,7 +163,7 @@ void EUFInterpolant::curryfication(z3::expr const & e,
     unsigned num = e.num_args();
     
     for(unsigned i = 0; i < num; i++)
-      curryfication(e.arg(i), curry_nodes, visited);
+      curryfication(e.arg(i), visited);
     
     // Update curry_nodes
     
@@ -199,12 +202,11 @@ void EUFInterpolant::curryfication(z3::expr const & e,
 		<< (curry_nodes[e.id()] == curry_decl[e.decl().id()]) << std::endl;
 #endif      
       delete curry_nodes[e.id()];
-      curry_nodes[e.id()] = curry_decl[e.decl().id()];
+      curry_nodes[e.id()] = curry_decl[e.decl().id()]; // KEEP WORKING HERE
 
 #if DEBUG_CURRYFICATION
       std::cout << "After (constant) " << *(curry_nodes[e.id()]) << std::endl;
 #endif
-
     }
 
     return;

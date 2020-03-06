@@ -21,7 +21,7 @@ void CurryNode::update(std::string new_name, CurryNode * new_left, CurryNode * n
 }
 
 std::ostream & operator << (std::ostream & os, const CurryNode & cn){
-  os << cn.func_name;
+  os << cn.id << ". " << cn.func_name;
   if(cn.left != nullptr)
     os << " Left: " << *cn.left;
   if(cn.right != nullptr)

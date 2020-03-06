@@ -50,7 +50,7 @@ class EUFInterpolant {
   CurryDeclarations curry_decl;
 
   void            init(z3::expr const &, unsigned &, std::vector<bool> &);
-  void            curryfication(z3::expr const &, CurryNodes &, std::vector<bool> &);
+  void            curryfication(z3::expr const &, std::vector<bool> &);
   void            initCCList(z3::expr const &);
   void            processEqs(z3::expr const &);
   void            processEqs(z3::expr const &, CongruenceClosureNO &);
