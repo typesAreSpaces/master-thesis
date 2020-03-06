@@ -131,7 +131,7 @@ void EUFInterpolant::init(z3::expr const & e, unsigned & min_id, std::vector<boo
     
     z3::func_decl f = e.decl();
     if(curry_decl[f.id()] == nullptr)
-      curry_decl[f.id()] = new CurryNode(f.id(), f.name().str(), nullptr, nullptr);
+      curry_decl[f.id()] = new CurryNode(e.id(), f.name().str(), nullptr, nullptr);
     
     switch(f.decl_kind()){
     case Z3_OP_DISTINCT:

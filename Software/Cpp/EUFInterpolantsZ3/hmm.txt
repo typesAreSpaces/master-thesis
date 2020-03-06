@@ -1,0 +1,90 @@
+./euf_interpolator
+33. c_z1
+34. a_v
+1. apply Left: 0. apply Left: 35. c_f Right: 33. c_z1 Right: 34. a_v
+36. c_s1
+3. apply Left: 2. apply Left: 37. = Right: 1. apply Left: 0. apply Left: 35. c_f Right: 33. c_z1 Right: 34. a_v Right: 36. c_s1
+38. c_z2
+5. apply Left: 4. apply Left: 35. c_f Right: 38. c_z2 Right: 34. a_v
+40. c_s2
+7. apply Left: 6. apply Left: 37. = Right: 5. apply Left: 4. apply Left: 35. c_f Right: 38. c_z2 Right: 34. a_v Right: 40. c_s2
+9. apply Left: 8. apply Left: 42. and Right: 3. apply Left: 2. apply Left: 37. = Right: 1. apply Left: 0. apply Left: 35. c_f Right: 33. c_z1 Right: 34. a_v Right: 36. c_s1 Right: 7. apply Left: 6. apply Left: 37. = Right: 5. apply Left: 4. apply Left: 35. c_f Right: 38. c_z2 Right: 34. a_v Right: 40. c_s2
+43. c_y1
+11. apply Left: 10. apply Left: 35. c_f Right: 43. c_y1 Right: 34. a_v
+45. c_y2
+13. apply Left: 12. apply Left: 35. c_f Right: 45. c_y2 Right: 34. a_v
+15. apply Left: 14. apply Left: 35. c_f Right: 11. apply Left: 10. apply Left: 35. c_f Right: 43. c_y1 Right: 34. a_v Right: 13. apply Left: 12. apply Left: 35. c_f Right: 45. c_y2 Right: 34. a_v
+48. c_t
+17. apply Left: 16. apply Left: 37. = Right: 15. apply Left: 14. apply Left: 35. c_f Right: 11. apply Left: 10. apply Left: 35. c_f Right: 43. c_y1 Right: 34. a_v Right: 13. apply Left: 12. apply Left: 35. c_f Right: 45. c_y2 Right: 34. a_v Right: 48. c_t
+19. apply Left: 18. apply Left: 42. and Right: 9. apply Left: 8. apply Left: 42. and Right: 3. apply Left: 2. apply Left: 37. = Right: 1. apply Left: 0. apply Left: 35. c_f Right: 33. c_z1 Right: 34. a_v Right: 36. c_s1 Right: 7. apply Left: 6. apply Left: 37. = Right: 5. apply Left: 4. apply Left: 35. c_f Right: 38. c_z2 Right: 34. a_v Right: 40. c_s2 Right: 17. apply Left: 16. apply Left: 37. = Right: 15. apply Left: 14. apply Left: 35. c_f Right: 11. apply Left: 10. apply Left: 35. c_f Right: 43. c_y1 Right: 34. a_v Right: 13. apply Left: 12. apply Left: 35. c_f Right: 45. c_y2 Right: 34. a_v Right: 48. c_t
+21. apply Left: 20. apply Left: 51. distinct Right: 36. c_s1 Right: 48. c_t
+23. apply Left: 22. apply Left: 42. and Right: 19. apply Left: 18. apply Left: 42. and Right: 9. apply Left: 8. apply Left: 42. and Right: 3. apply Left: 2. apply Left: 37. = Right: 1. apply Left: 0. apply Left: 35. c_f Right: 33. c_z1 Right: 34. a_v Right: 36. c_s1 Right: 7. apply Left: 6. apply Left: 37. = Right: 5. apply Left: 4. apply Left: 35. c_f Right: 38. c_z2 Right: 34. a_v Right: 40. c_s2 Right: 17. apply Left: 16. apply Left: 37. = Right: 15. apply Left: 14. apply Left: 35. c_f Right: 11. apply Left: 10. apply Left: 35. c_f Right: 43. c_y1 Right: 34. a_v Right: 13. apply Left: 12. apply Left: 35. c_f Right: 45. c_y2 Right: 34. a_v Right: 48. c_t Right: 21. apply Left: 20. apply Left: 51. distinct Right: 36. c_s1 Right: 48. c_t
+24. apply Left: 53. c_g Right: 36. c_s1
+25. apply Left: 53. c_g Right: 24. apply Left: 53. c_g Right: 36. c_s1
+27. apply Left: 26. apply Left: 37. = Right: 25. apply Left: 53. c_g Right: 24. apply Left: 53. c_g Right: 36. c_s1 Right: 40. c_s2
+29. apply Left: 28. apply Left: 42. and Right: 23. apply Left: 22. apply Left: 42. and Right: 19. apply Left: 18. apply Left: 42. and Right: 9. apply Left: 8. apply Left: 42. and Right: 3. apply Left: 2. apply Left: 37. = Right: 1. apply Left: 0. apply Left: 35. c_f Right: 33. c_z1 Right: 34. a_v Right: 36. c_s1 Right: 7. apply Left: 6. apply Left: 37. = Right: 5. apply Left: 4. apply Left: 35. c_f Right: 38. c_z2 Right: 34. a_v Right: 40. c_s2 Right: 17. apply Left: 16. apply Left: 37. = Right: 15. apply Left: 14. apply Left: 35. c_f Right: 11. apply Left: 10. apply Left: 35. c_f Right: 43. c_y1 Right: 34. a_v Right: 13. apply Left: 12. apply Left: 35. c_f Right: 45. c_y2 Right: 34. a_v Right: 48. c_t Right: 21. apply Left: 20. apply Left: 51. distinct Right: 36. c_s1 Right: 48. c_t Right: 27. apply Left: 26. apply Left: 37. = Right: 25. apply Left: 53. c_g Right: 24. apply Left: 53. c_g Right: 36. c_s1 Right: 40. c_s2
+30. apply Left: 53. c_g Right: 11. apply Left: 10. apply Left: 35. c_f Right: 43. c_y1 Right: 34. a_v
+31. apply Left: 53. c_g Right: 30. apply Left: 53. c_g Right: 11. apply Left: 10. apply Left: 35. c_f Right: 43. c_y1 Right: 34. a_v
+33. apply Left: 32. apply Left: 37. = Right: 31. apply Left: 53. c_g Right: 30. apply Left: 53. c_g Right: 11. apply Left: 10. apply Left: 35. c_f Right: 43. c_y1 Right: 34. a_v Right: 13. apply Left: 12. apply Left: 35. c_f Right: 45. c_y2 Right: 34. a_v
+35. apply Left: 34. apply Left: 42. and Right: 29. apply Left: 28. apply Left: 42. and Right: 23. apply Left: 22. apply Left: 42. and Right: 19. apply Left: 18. apply Left: 42. and Right: 9. apply Left: 8. apply Left: 42. and Right: 3. apply Left: 2. apply Left: 37. = Right: 1. apply Left: 0. apply Left: 35. c_f Right: 33. c_z1 Right: 34. a_v Right: 36. c_s1 Right: 7. apply Left: 6. apply Left: 37. = Right: 5. apply Left: 4. apply Left: 35. c_f Right: 38. c_z2 Right: 34. a_v Right: 40. c_s2 Right: 17. apply Left: 16. apply Left: 37. = Right: 15. apply Left: 14. apply Left: 35. c_f Right: 11. apply Left: 10. apply Left: 35. c_f Right: 43. c_y1 Right: 34. a_v Right: 13. apply Left: 12. apply Left: 35. c_f Right: 45. c_y2 Right: 34. a_v Right: 48. c_t Right: 21. apply Left: 20. apply Left: 51. distinct Right: 36. c_s1 Right: 48. c_t Right: 27. apply Left: 26. apply Left: 37. = Right: 25. apply Left: 53. c_g Right: 24. apply Left: 53. c_g Right: 36. c_s1 Right: 40. c_s2 Right: 33. apply Left: 32. apply Left: 37. = Right: 31. apply Left: 53. c_g Right: 30. apply Left: 53. c_g Right: 11. apply Left: 10. apply Left: 35. c_f Right: 43. c_y1 Right: 34. a_v Right: 13. apply Left: 12. apply Left: 35. c_f Right: 45. c_y2 Right: 34. a_v
+All the original subterms:
+33. (Same) Original: c_z1 Representative c_z1
+34. (Same) Original: a_v Representative a_v
+35. (Different) Original: (c_f c_z1 a_v) Representative c_s1
+36. (Same) Original: c_s1 Representative c_s1
+37. (Same) Original: (= (c_f c_z1 a_v) c_s1) Representative (= (c_f c_z1 a_v) c_s1)
+38. (Same) Original: c_z2 Representative c_z2
+39. (Different) Original: (c_f c_z2 a_v) Representative c_s2
+40. (Same) Original: c_s2 Representative c_s2
+41. (Different) Original: (= (c_f c_z2 a_v) c_s2) Representative (= (c_g (c_g c_s1)) c_s2)
+42. (Same) Original: (and (= (c_f c_z1 a_v) c_s1) (= (c_f c_z2 a_v) c_s2)) Representative (and (= (c_f c_z1 a_v) c_s1) (= (c_f c_z2 a_v) c_s2))
+43. (Same) Original: c_y1 Representative c_y1
+44. (Same) Original: (c_f c_y1 a_v) Representative (c_f c_y1 a_v)
+45. (Same) Original: c_y2 Representative c_y2
+46. (Different) Original: (c_f c_y2 a_v) Representative (c_g (c_g (c_f c_y1 a_v)))
+47. (Different) Original: (c_f (c_f c_y1 a_v) (c_f c_y2 a_v)) Representative c_t
+48. (Same) Original: c_t Representative c_t
+49. (Same) Original: (= (c_f (c_f c_y1 a_v) (c_f c_y2 a_v)) c_t) Representative (= (c_f (c_f c_y1 a_v) (c_f c_y2 a_v)) c_t)
+50. (Same) Original: (and (= (c_f c_z1 a_v) c_s1)
+     (= (c_f c_z2 a_v) c_s2)
+     (= (c_f (c_f c_y1 a_v) (c_f c_y2 a_v)) c_t)) Representative (and (= (c_f c_z1 a_v) c_s1)
+     (= (c_f c_z2 a_v) c_s2)
+     (= (c_f (c_f c_y1 a_v) (c_f c_y2 a_v)) c_t))
+51. (Same) Original: (distinct c_s1 c_t) Representative (distinct c_s1 c_t)
+52. (Same) Original: (and (= (c_f c_z1 a_v) c_s1)
+     (= (c_f c_z2 a_v) c_s2)
+     (= (c_f (c_f c_y1 a_v) (c_f c_y2 a_v)) c_t)
+     (distinct c_s1 c_t)) Representative (and (= (c_f c_z1 a_v) c_s1)
+     (= (c_f c_z2 a_v) c_s2)
+     (= (c_f (c_f c_y1 a_v) (c_f c_y2 a_v)) c_t)
+     (distinct c_s1 c_t))
+53. (Same) Original: (c_g c_s1) Representative (c_g c_s1)
+54. (Different) Original: (c_g (c_g c_s1)) Representative c_s2
+55. (Same) Original: (= (c_g (c_g c_s1)) c_s2) Representative (= (c_g (c_g c_s1)) c_s2)
+56. (Same) Original: (and (= (c_f c_z1 a_v) c_s1)
+     (= (c_f c_z2 a_v) c_s2)
+     (= (c_f (c_f c_y1 a_v) (c_f c_y2 a_v)) c_t)
+     (distinct c_s1 c_t)
+     (= (c_g (c_g c_s1)) c_s2)) Representative (and (= (c_f c_z1 a_v) c_s1)
+     (= (c_f c_z2 a_v) c_s2)
+     (= (c_f (c_f c_y1 a_v) (c_f c_y2 a_v)) c_t)
+     (distinct c_s1 c_t)
+     (= (c_g (c_g c_s1)) c_s2))
+57. (Same) Original: (c_g (c_f c_y1 a_v)) Representative (c_g (c_f c_y1 a_v))
+58. (Same) Original: (c_g (c_g (c_f c_y1 a_v))) Representative (c_g (c_g (c_f c_y1 a_v)))
+59. (Same) Original: (= (c_g (c_g (c_f c_y1 a_v))) (c_f c_y2 a_v)) Representative (= (c_g (c_g (c_f c_y1 a_v))) (c_f c_y2 a_v))
+60. (Same) Original: (let ((a!1 (= (c_g (c_g (c_f c_y1 a_v))) (c_f c_y2 a_v))))
+  (and (= (c_f c_z1 a_v) c_s1)
+       (= (c_f c_z2 a_v) c_s2)
+       (= (c_f (c_f c_y1 a_v) (c_f c_y2 a_v)) c_t)
+       (distinct c_s1 c_t)
+       (= (c_g (c_g c_s1)) c_s2)
+       a!1)) Representative (let ((a!1 (= (c_g (c_g (c_f c_y1 a_v))) (c_f c_y2 a_v))))
+  (and (= (c_f c_z1 a_v) c_s1)
+       (= (c_f c_z2 a_v) c_s2)
+       (= (c_f (c_f c_y1 a_v) (c_f c_y2 a_v)) c_t)
+       (distinct c_s1 c_t)
+       (= (c_g (c_g c_s1)) c_s2)
+       a!1))
+Horn clauses produced:
+Number of differences between term and its representative: 6
