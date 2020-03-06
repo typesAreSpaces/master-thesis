@@ -21,20 +21,6 @@ EUFInterpolant::EUFInterpolant(z3::expr const & part_a) :
 
   // *************************************************************************
   // -------------------------------------------------------------------------
-  // //                       -----------
-  // // The following defines |pred_list|. 
-  // //                       -----------  
-  // initPredList(part_a);
-  // // The following sets up a
-  // // --------------------
-  // // |congruence closure| data structure.
-  // // --------------------
-  // //                   ----
-  // // After this point, |uf| is fully defined
-  // //                   ----
-  // CongruenceClosureNO cc(min_id, subterms, pred_list, uf);
-  // processEqs(part_a, cc);
-  // -------------------------------------------------------------------------
   //                       -----------                    ----
   // The following defines |pred_list|. After this point, |uf| is fully defined.
   //                       -----------                    ----
