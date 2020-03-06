@@ -75,9 +75,6 @@ EUFInterpolant::EUFInterpolant(z3::expr const & part_a) :
     curry_nodes[i] = new CurryNode(i);
     curryfication(subterms[i], visited);
   }
-  
-  for(unsigned i = min_id; i < curry_nodes.size(); i++)
-    std::cout << *(curry_nodes[i]) << std::endl << "-------------------" << std::endl;
   // ------------------------------------------------
   
   // // ----------------------------------------------------------------------
@@ -219,7 +216,7 @@ void EUFInterpolant::curryfication(z3::expr const & e,
     // Keep working here
     switch(f.decl_kind()){
     case Z3_OP_EQ:
-      // std::cout << e << std::endl;
+      std::cout << e << std::endl;
       // std::cout << *curry_nodes[e.id()] << std::endl;
       break;
     default:
