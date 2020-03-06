@@ -210,7 +210,7 @@ void EUFInterpolant::curryfication(z3::expr const & e,
     return;
   }
   
-  throw "Problem @ EUFInterpolant::CurryNode::curryfication(z3::expr const &). The z3::expr const & is not an app.";
+  throw "Problem @ EUFInterpolant::curryfication(z3::expr const &). The z3::expr const & is not an app.";
 }
 
 // Actually, this function is used to setup up the cc_list

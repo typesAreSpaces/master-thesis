@@ -3,6 +3,7 @@
 
 #include <map>
 #include "Hornsat.h"
+#include "CurryNode.h"
 
 typedef std::map<std::string, std::vector<unsigned> > FSymPositions;
 typedef std::vector<std::list<unsigned> > CCList;
@@ -28,33 +29,6 @@ void insert(std::list<T> & l, T element){
 }
 
 class EUFInterpolant {
-  class CurryNode {
-    unsigned id;
-    std::string func_name;
-    CurryNode * left, * right;
-  public:
-    CurryNode(unsigned id) :
-      id(id), func_name(""),
-      left(nullptr), right(nullptr) {}
-    CurryNode(unsigned id, std::string func_name, CurryNode * left, CurryNode * right) :
-      id(id), func_name(func_name), left(left), right(right) {}
-    CurryNode(const CurryNode & cn) :
-      id(cn.id), func_name(cn.func_name), left(cn.left), right(cn.right) {}
-    void update(std::string new_name, CurryNode * new_left, CurryNode * new_right){
-      func_name = new_name;
-      left = new_left;
-      right = new_right;
-      return;
-    }
-    friend std::ostream & operator << (std::ostream & os, const CurryNode & cn){
-      os << cn.func_name;
-      if(cn.left != nullptr)
-      	os << " Left: " << *cn.left;
-      if(cn.right != nullptr)
-      	os << " Right: " << *cn.right;
-      return os;
-    }
-  };
 
   typedef std::map<unsigned, CurryNode*> CurryDeclarations;
   typedef std::vector<CurryNode*>        CurryNodes;
