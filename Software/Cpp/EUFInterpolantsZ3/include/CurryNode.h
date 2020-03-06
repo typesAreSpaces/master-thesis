@@ -13,6 +13,8 @@ public:
   CurryNode(unsigned, std::string, CurryNode *, CurryNode *);
   CurryNode(const CurryNode &);
   void update(std::string, CurryNode *, CurryNode *);
+  void changeId(unsigned);
+  const unsigned getId() const;
   friend std::ostream & operator << (std::ostream &, const CurryNode &);
 };
 

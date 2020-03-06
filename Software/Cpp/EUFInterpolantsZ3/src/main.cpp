@@ -123,7 +123,7 @@ void testEUF(){
   z3::expr r_alpha = rename(alpha, uncomms);
   
   EUFInterpolant euf(r_alpha);
-  std::cout << euf << std::endl;
+  // std::cout << euf << std::endl;
     
   // euf.buildInterpolant();
 }

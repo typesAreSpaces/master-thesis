@@ -20,6 +20,15 @@ void CurryNode::update(std::string new_name, CurryNode * new_left, CurryNode * n
   return;
 }
 
+void CurryNode::changeId(unsigned new_id){
+  id = new_id;
+  return;
+}
+
+const unsigned CurryNode::getId() const {
+  return id;
+}
+
 std::ostream & operator << (std::ostream & os, const CurryNode & cn){
   os << cn.id << ". " << cn.func_name;
   if(cn.left != nullptr)

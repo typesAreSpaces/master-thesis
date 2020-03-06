@@ -185,10 +185,12 @@ void EUFInterpolant::curryfication(z3::expr const & e,
 					       extra_nodes[last_node_pos + i - 1],
 					       curry_nodes[e.arg(i).id()]);
 
+      extra_nodes[new_last_node_pos - 1]->changeId(curry_nodes[e.id()]->getId());
 #if DEBUG_CURRYFICATION
-      std::cout << "Before (constant) " << *(curry_nodes[e.id()]) << " "
+      std::cout << "Before (func term) " << *(curry_nodes[e.id()]) << " "
 		<< (curry_nodes[e.id()] == extra_nodes[new_last_node_pos - 1]) << std::endl;
-#endif      
+#endif
+
       delete curry_nodes[e.id()];
       curry_nodes[e.id()] = extra_nodes[new_last_node_pos - 1];
       
@@ -202,7 +204,7 @@ void EUFInterpolant::curryfication(z3::expr const & e,
 		<< (curry_nodes[e.id()] == curry_decl[e.decl().id()]) << std::endl;
 #endif      
       delete curry_nodes[e.id()];
-      curry_nodes[e.id()] = curry_decl[e.decl().id()]; // KEEP WORKING HERE
+      curry_nodes[e.id()] = curry_decl[e.decl().id()];
 
 #if DEBUG_CURRYFICATION
       std::cout << "After (constant) " << *(curry_nodes[e.id()]) << std::endl;
