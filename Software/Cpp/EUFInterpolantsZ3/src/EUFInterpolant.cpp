@@ -35,7 +35,7 @@ EUFInterpolant::EUFInterpolant(z3::expr const & part_a) :
   // //                       ---------
   // // The following defines |pred_list|. 
   // //                       ---------  
-  // initCCList(part_a);
+  // initPredList(part_a);
   // // The following sets up a
   // // --------------------
   // // |congruence closure| data structure.
@@ -219,7 +219,7 @@ void EUFInterpolant::curryfication(z3::expr const & e,
 
 // Actually, this function is used to setup up the pred_list
 // for the Nelson-Oppen Congruence Closure
-void EUFInterpolant::initCCList(z3::expr const & e){
+void EUFInterpolant::initPredList(z3::expr const & e){
   if(e.is_app()){
     unsigned num = e.num_args();
     for(unsigned i = 0; i < num; i++){
@@ -227,11 +227,11 @@ void EUFInterpolant::initCCList(z3::expr const & e){
       // keep the invariant that elements in pred_list
       // are unique and sorted
       insert(pred_list[e.arg(i).id()], e.id());
-      initCCList(e.arg(i));
+      initPredList(e.arg(i));
     }
     return;
   }
-  throw "Problem @ EUFInterpolant::initCCList. The expression e is not an application term.";
+  throw "Problem @ EUFInterpolant::initPredList. The expression e is not an application term.";
 }
 
 void EUFInterpolant::processEqs(z3::expr const & e){
