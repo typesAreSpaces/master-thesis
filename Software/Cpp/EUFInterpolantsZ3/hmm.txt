@@ -1,5 +1,3821 @@
 g++ -g -c -o obj/EUFInterpolant.o  -I./src -I./include -std=c++11 src/EUFInterpolant.cpp -Wall
 g++ -g -o euf_interpolator obj/Match.o obj/Rename.o obj/UnionFindExplain.o obj/HornClause.o obj/CongruenceClosureNO.o obj/Hornsat.o obj/CongruenceClosureDST.o obj/EUFInterpolant.o obj/CurryNode.o obj/CongruenceClosure.o obj/UnionFind.o obj/main.o obj/HornClauses.o obj/CongruenceClosureExplain.o /home/jose/Documents/GithubProjects/z3__/build/libz3.so -lpthread -Wall
 ./euf_interpolator
-(c_f c_z1 a_v)
-Makefile:41: recipe for target 'run' failed
+ * 33. c_z1
+
+-------------------
+ * 34. a_v
+
+-------------------
+ * 35. apply
+ Left
+  94. apply
+  Left
+   35. c_f
+  Right
+   33. c_z1
+ Right
+  34. a_v
+
+-------------------
+ * 36. c_s1
+
+-------------------
+ * 37. apply
+ Left
+  96. apply
+  Left
+   37. =
+  Right
+   35. apply
+   Left
+    94. apply
+    Left
+     35. c_f
+    Right
+     33. c_z1
+   Right
+    34. a_v
+ Right
+  36. c_s1
+
+-------------------
+ * 38. c_z2
+
+-------------------
+ * 39. apply
+ Left
+  98. apply
+  Left
+   35. c_f
+  Right
+   38. c_z2
+ Right
+  34. a_v
+
+-------------------
+ * 40. c_s2
+
+-------------------
+ * 41. apply
+ Left
+  100. apply
+  Left
+   37. =
+  Right
+   39. apply
+   Left
+    98. apply
+    Left
+     35. c_f
+    Right
+     38. c_z2
+   Right
+    34. a_v
+ Right
+  40. c_s2
+
+-------------------
+ * 42. apply
+ Left
+  102. apply
+  Left
+   42. and
+  Right
+   37. apply
+   Left
+    96. apply
+    Left
+     37. =
+    Right
+     35. apply
+     Left
+      94. apply
+      Left
+       35. c_f
+      Right
+       33. c_z1
+     Right
+      34. a_v
+   Right
+    36. c_s1
+ Right
+  41. apply
+  Left
+   100. apply
+   Left
+    37. =
+   Right
+    39. apply
+    Left
+     98. apply
+     Left
+      35. c_f
+     Right
+      38. c_z2
+    Right
+     34. a_v
+  Right
+   40. c_s2
+
+-------------------
+ * 43. c_y1
+
+-------------------
+ * 44. apply
+ Left
+  104. apply
+  Left
+   35. c_f
+  Right
+   43. c_y1
+ Right
+  34. a_v
+
+-------------------
+ * 45. c_y2
+
+-------------------
+ * 46. apply
+ Left
+  106. apply
+  Left
+   35. c_f
+  Right
+   45. c_y2
+ Right
+  34. a_v
+
+-------------------
+ * 47. apply
+ Left
+  108. apply
+  Left
+   35. c_f
+  Right
+   44. apply
+   Left
+    104. apply
+    Left
+     35. c_f
+    Right
+     43. c_y1
+   Right
+    34. a_v
+ Right
+  46. apply
+  Left
+   106. apply
+   Left
+    35. c_f
+   Right
+    45. c_y2
+  Right
+   34. a_v
+
+-------------------
+ * 48. c_t
+
+-------------------
+ * 49. apply
+ Left
+  110. apply
+  Left
+   37. =
+  Right
+   47. apply
+   Left
+    108. apply
+    Left
+     35. c_f
+    Right
+     44. apply
+     Left
+      104. apply
+      Left
+       35. c_f
+      Right
+       43. c_y1
+     Right
+      34. a_v
+   Right
+    46. apply
+    Left
+     106. apply
+     Left
+      35. c_f
+     Right
+      45. c_y2
+    Right
+     34. a_v
+ Right
+  48. c_t
+
+-------------------
+ * 50. apply
+ Left
+  112. apply
+  Left
+   42. and
+  Right
+   42. apply
+   Left
+    102. apply
+    Left
+     42. and
+    Right
+     37. apply
+     Left
+      96. apply
+      Left
+       37. =
+      Right
+       35. apply
+       Left
+        94. apply
+        Left
+         35. c_f
+        Right
+         33. c_z1
+       Right
+        34. a_v
+     Right
+      36. c_s1
+   Right
+    41. apply
+    Left
+     100. apply
+     Left
+      37. =
+     Right
+      39. apply
+      Left
+       98. apply
+       Left
+        35. c_f
+       Right
+        38. c_z2
+      Right
+       34. a_v
+    Right
+     40. c_s2
+ Right
+  49. apply
+  Left
+   110. apply
+   Left
+    37. =
+   Right
+    47. apply
+    Left
+     108. apply
+     Left
+      35. c_f
+     Right
+      44. apply
+      Left
+       104. apply
+       Left
+        35. c_f
+       Right
+        43. c_y1
+      Right
+       34. a_v
+    Right
+     46. apply
+     Left
+      106. apply
+      Left
+       35. c_f
+      Right
+       45. c_y2
+     Right
+      34. a_v
+  Right
+   48. c_t
+
+-------------------
+ * 51. apply
+ Left
+  114. apply
+  Left
+   51. distinct
+  Right
+   36. c_s1
+ Right
+  48. c_t
+
+-------------------
+ * 52. apply
+ Left
+  116. apply
+  Left
+   42. and
+  Right
+   50. apply
+   Left
+    112. apply
+    Left
+     42. and
+    Right
+     42. apply
+     Left
+      102. apply
+      Left
+       42. and
+      Right
+       37. apply
+       Left
+        96. apply
+        Left
+         37. =
+        Right
+         35. apply
+         Left
+          94. apply
+          Left
+           35. c_f
+          Right
+           33. c_z1
+         Right
+          34. a_v
+       Right
+        36. c_s1
+     Right
+      41. apply
+      Left
+       100. apply
+       Left
+        37. =
+       Right
+        39. apply
+        Left
+         98. apply
+         Left
+          35. c_f
+         Right
+          38. c_z2
+        Right
+         34. a_v
+      Right
+       40. c_s2
+   Right
+    49. apply
+    Left
+     110. apply
+     Left
+      37. =
+     Right
+      47. apply
+      Left
+       108. apply
+       Left
+        35. c_f
+       Right
+        44. apply
+        Left
+         104. apply
+         Left
+          35. c_f
+         Right
+          43. c_y1
+        Right
+         34. a_v
+      Right
+       46. apply
+       Left
+        106. apply
+        Left
+         35. c_f
+        Right
+         45. c_y2
+       Right
+        34. a_v
+    Right
+     48. c_t
+ Right
+  51. apply
+  Left
+   114. apply
+   Left
+    51. distinct
+   Right
+    36. c_s1
+  Right
+   48. c_t
+
+-------------------
+ * 53. apply
+ Left
+  53. c_g
+ Right
+  36. c_s1
+
+-------------------
+ * 54. apply
+ Left
+  53. c_g
+ Right
+  53. apply
+  Left
+   53. c_g
+  Right
+   36. c_s1
+
+-------------------
+ * 55. apply
+ Left
+  120. apply
+  Left
+   37. =
+  Right
+   54. apply
+   Left
+    53. c_g
+   Right
+    53. apply
+    Left
+     53. c_g
+    Right
+     36. c_s1
+ Right
+  40. c_s2
+
+-------------------
+ * 56. apply
+ Left
+  122. apply
+  Left
+   42. and
+  Right
+   52. apply
+   Left
+    116. apply
+    Left
+     42. and
+    Right
+     50. apply
+     Left
+      112. apply
+      Left
+       42. and
+      Right
+       42. apply
+       Left
+        102. apply
+        Left
+         42. and
+        Right
+         37. apply
+         Left
+          96. apply
+          Left
+           37. =
+          Right
+           35. apply
+           Left
+            94. apply
+            Left
+             35. c_f
+            Right
+             33. c_z1
+           Right
+            34. a_v
+         Right
+          36. c_s1
+       Right
+        41. apply
+        Left
+         100. apply
+         Left
+          37. =
+         Right
+          39. apply
+          Left
+           98. apply
+           Left
+            35. c_f
+           Right
+            38. c_z2
+          Right
+           34. a_v
+        Right
+         40. c_s2
+     Right
+      49. apply
+      Left
+       110. apply
+       Left
+        37. =
+       Right
+        47. apply
+        Left
+         108. apply
+         Left
+          35. c_f
+         Right
+          44. apply
+          Left
+           104. apply
+           Left
+            35. c_f
+           Right
+            43. c_y1
+          Right
+           34. a_v
+        Right
+         46. apply
+         Left
+          106. apply
+          Left
+           35. c_f
+          Right
+           45. c_y2
+         Right
+          34. a_v
+      Right
+       48. c_t
+   Right
+    51. apply
+    Left
+     114. apply
+     Left
+      51. distinct
+     Right
+      36. c_s1
+    Right
+     48. c_t
+ Right
+  55. apply
+  Left
+   120. apply
+   Left
+    37. =
+   Right
+    54. apply
+    Left
+     53. c_g
+    Right
+     53. apply
+     Left
+      53. c_g
+     Right
+      36. c_s1
+  Right
+   40. c_s2
+
+-------------------
+ * 57. apply
+ Left
+  53. c_g
+ Right
+  44. apply
+  Left
+   104. apply
+   Left
+    35. c_f
+   Right
+    43. c_y1
+  Right
+   34. a_v
+
+-------------------
+ * 58. apply
+ Left
+  53. c_g
+ Right
+  57. apply
+  Left
+   53. c_g
+  Right
+   44. apply
+   Left
+    104. apply
+    Left
+     35. c_f
+    Right
+     43. c_y1
+   Right
+    34. a_v
+
+-------------------
+ * 59. apply
+ Left
+  126. apply
+  Left
+   37. =
+  Right
+   58. apply
+   Left
+    53. c_g
+   Right
+    57. apply
+    Left
+     53. c_g
+    Right
+     44. apply
+     Left
+      104. apply
+      Left
+       35. c_f
+      Right
+       43. c_y1
+     Right
+      34. a_v
+ Right
+  46. apply
+  Left
+   106. apply
+   Left
+    35. c_f
+   Right
+    45. c_y2
+  Right
+   34. a_v
+
+-------------------
+ * 60. apply
+ Left
+  128. apply
+  Left
+   42. and
+  Right
+   56. apply
+   Left
+    122. apply
+    Left
+     42. and
+    Right
+     52. apply
+     Left
+      116. apply
+      Left
+       42. and
+      Right
+       50. apply
+       Left
+        112. apply
+        Left
+         42. and
+        Right
+         42. apply
+         Left
+          102. apply
+          Left
+           42. and
+          Right
+           37. apply
+           Left
+            96. apply
+            Left
+             37. =
+            Right
+             35. apply
+             Left
+              94. apply
+              Left
+               35. c_f
+              Right
+               33. c_z1
+             Right
+              34. a_v
+           Right
+            36. c_s1
+         Right
+          41. apply
+          Left
+           100. apply
+           Left
+            37. =
+           Right
+            39. apply
+            Left
+             98. apply
+             Left
+              35. c_f
+             Right
+              38. c_z2
+            Right
+             34. a_v
+          Right
+           40. c_s2
+       Right
+        49. apply
+        Left
+         110. apply
+         Left
+          37. =
+         Right
+          47. apply
+          Left
+           108. apply
+           Left
+            35. c_f
+           Right
+            44. apply
+            Left
+             104. apply
+             Left
+              35. c_f
+             Right
+              43. c_y1
+            Right
+             34. a_v
+          Right
+           46. apply
+           Left
+            106. apply
+            Left
+             35. c_f
+            Right
+             45. c_y2
+           Right
+            34. a_v
+        Right
+         48. c_t
+     Right
+      51. apply
+      Left
+       114. apply
+       Left
+        51. distinct
+       Right
+        36. c_s1
+      Right
+       48. c_t
+   Right
+    55. apply
+    Left
+     120. apply
+     Left
+      37. =
+     Right
+      54. apply
+      Left
+       53. c_g
+      Right
+       53. apply
+       Left
+        53. c_g
+       Right
+        36. c_s1
+    Right
+     40. c_s2
+ Right
+  59. apply
+  Left
+   126. apply
+   Left
+    37. =
+   Right
+    58. apply
+    Left
+     53. c_g
+    Right
+     57. apply
+     Left
+      53. c_g
+     Right
+      44. apply
+      Left
+       104. apply
+       Left
+        35. c_f
+       Right
+        43. c_y1
+      Right
+       34. a_v
+  Right
+   46. apply
+   Left
+    106. apply
+    Left
+     35. c_f
+    Right
+     45. c_y2
+   Right
+    34. a_v
+
+-------------------
+ * 61. apply
+ Left
+  130. apply
+  Left
+   37. =
+  Right
+   36. c_s1
+ Right
+  48. c_t
+
+-------------------
+ * 62. apply
+ Left
+  132. apply
+  Left
+   37. =
+  Right
+   33. c_z1
+ Right
+  38. c_z2
+
+-------------------
+ * 63. apply
+ Left
+  134. apply
+  Left
+   37. =
+  Right
+   34. a_v
+ Right
+  34. a_v
+
+-------------------
+ * 64. apply
+ Left
+  136. apply
+  Left
+   37. =
+  Right
+   36. c_s1
+ Right
+  40. c_s2
+
+-------------------
+ * 65. apply
+ Left
+  138. apply
+  Left
+   37. =
+  Right
+   33. c_z1
+ Right
+  43. c_y1
+
+-------------------
+ * 66. apply
+ Left
+  140. apply
+  Left
+   37. =
+  Right
+   36. c_s1
+ Right
+  44. apply
+  Left
+   104. apply
+   Left
+    35. c_f
+   Right
+    43. c_y1
+  Right
+   34. a_v
+
+-------------------
+ * 67. apply
+ Left
+  142. apply
+  Left
+   37. =
+  Right
+   33. c_z1
+ Right
+  45. c_y2
+
+-------------------
+ * 68. apply
+ Left
+  144. apply
+  Left
+   37. =
+  Right
+   36. c_s1
+ Right
+  58. apply
+  Left
+   53. c_g
+  Right
+   57. apply
+   Left
+    53. c_g
+   Right
+    44. apply
+    Left
+     104. apply
+     Left
+      35. c_f
+     Right
+      43. c_y1
+    Right
+     34. a_v
+
+-------------------
+ * 69. apply
+ Left
+  146. apply
+  Left
+   37. =
+  Right
+   33. c_z1
+ Right
+  44. apply
+  Left
+   104. apply
+   Left
+    35. c_f
+   Right
+    43. c_y1
+  Right
+   34. a_v
+
+-------------------
+ * 70. apply
+ Left
+  148. apply
+  Left
+   37. =
+  Right
+   34. a_v
+ Right
+  58. apply
+  Left
+   53. c_g
+  Right
+   57. apply
+   Left
+    53. c_g
+   Right
+    44. apply
+    Left
+     104. apply
+     Left
+      35. c_f
+     Right
+      43. c_y1
+    Right
+     34. a_v
+
+-------------------
+ * 71. apply
+ Left
+  150. apply
+  Left
+   37. =
+  Right
+   38. c_z2
+ Right
+  43. c_y1
+
+-------------------
+ * 72. apply
+ Left
+  152. apply
+  Left
+   37. =
+  Right
+   40. c_s2
+ Right
+  44. apply
+  Left
+   104. apply
+   Left
+    35. c_f
+   Right
+    43. c_y1
+  Right
+   34. a_v
+
+-------------------
+ * 73. apply
+ Left
+  154. apply
+  Left
+   37. =
+  Right
+   38. c_z2
+ Right
+  45. c_y2
+
+-------------------
+ * 74. apply
+ Left
+  156. apply
+  Left
+   37. =
+  Right
+   40. c_s2
+ Right
+  58. apply
+  Left
+   53. c_g
+  Right
+   57. apply
+   Left
+    53. c_g
+   Right
+    44. apply
+    Left
+     104. apply
+     Left
+      35. c_f
+     Right
+      43. c_y1
+    Right
+     34. a_v
+
+-------------------
+ * 75. apply
+ Left
+  158. apply
+  Left
+   37. =
+  Right
+   38. c_z2
+ Right
+  44. apply
+  Left
+   104. apply
+   Left
+    35. c_f
+   Right
+    43. c_y1
+  Right
+   34. a_v
+
+-------------------
+ * 76. apply
+ Left
+  160. apply
+  Left
+   37. =
+  Right
+   40. c_s2
+ Right
+  48. c_t
+
+-------------------
+ * 77. apply
+ Left
+  162. apply
+  Left
+   37. =
+  Right
+   43. c_y1
+ Right
+  45. c_y2
+
+-------------------
+ * 78. apply
+ Left
+  164. apply
+  Left
+   37. =
+  Right
+   44. apply
+   Left
+    104. apply
+    Left
+     35. c_f
+    Right
+     43. c_y1
+   Right
+    34. a_v
+ Right
+  58. apply
+  Left
+   53. c_g
+  Right
+   57. apply
+   Left
+    53. c_g
+   Right
+    44. apply
+    Left
+     104. apply
+     Left
+      35. c_f
+     Right
+      43. c_y1
+    Right
+     34. a_v
+
+-------------------
+ * 79. apply
+ Left
+  166. apply
+  Left
+   37. =
+  Right
+   58. apply
+   Left
+    53. c_g
+   Right
+    57. apply
+    Left
+     53. c_g
+    Right
+     44. apply
+     Left
+      104. apply
+      Left
+       35. c_f
+      Right
+       43. c_y1
+     Right
+      34. a_v
+ Right
+  44. apply
+  Left
+   104. apply
+   Left
+    35. c_f
+   Right
+    43. c_y1
+  Right
+   34. a_v
+
+-------------------
+ * 80. apply
+ Left
+  168. apply
+  Left
+   37. =
+  Right
+   43. c_y1
+ Right
+  44. apply
+  Left
+   104. apply
+   Left
+    35. c_f
+   Right
+    43. c_y1
+  Right
+   34. a_v
+
+-------------------
+ * 81. apply
+ Left
+  170. apply
+  Left
+   37. =
+  Right
+   44. apply
+   Left
+    104. apply
+    Left
+     35. c_f
+    Right
+     43. c_y1
+   Right
+    34. a_v
+ Right
+  48. c_t
+
+-------------------
+ * 82. apply
+ Left
+  172. apply
+  Left
+   37. =
+  Right
+   48. c_t
+ Right
+  44. apply
+  Left
+   104. apply
+   Left
+    35. c_f
+   Right
+    43. c_y1
+  Right
+   34. a_v
+
+-------------------
+ * 83. apply
+ Left
+  174. apply
+  Left
+   37. =
+  Right
+   45. c_y2
+ Right
+  44. apply
+  Left
+   104. apply
+   Left
+    35. c_f
+   Right
+    43. c_y1
+  Right
+   34. a_v
+
+-------------------
+ * 84. apply
+ Left
+  176. apply
+  Left
+   37. =
+  Right
+   58. apply
+   Left
+    53. c_g
+   Right
+    57. apply
+    Left
+     53. c_g
+    Right
+     44. apply
+     Left
+      104. apply
+      Left
+       35. c_f
+      Right
+       43. c_y1
+     Right
+      34. a_v
+ Right
+  48. c_t
+
+-------------------
+ * 85. apply
+ Left
+  178. apply
+  Left
+   37. =
+  Right
+   48. c_t
+ Right
+  58. apply
+  Left
+   53. c_g
+  Right
+   57. apply
+   Left
+    53. c_g
+   Right
+    44. apply
+    Left
+     104. apply
+     Left
+      35. c_f
+     Right
+      43. c_y1
+    Right
+     34. a_v
+
+-------------------
+ * 86. apply
+ Left
+  180. apply
+  Left
+   37. =
+  Right
+   53. apply
+   Left
+    53. c_g
+   Right
+    36. c_s1
+ Right
+  57. apply
+  Left
+   53. c_g
+  Right
+   44. apply
+   Left
+    104. apply
+    Left
+     35. c_f
+    Right
+     43. c_y1
+   Right
+    34. a_v
+
+-------------------
+ * 87. apply
+ Left
+  182. apply
+  Left
+   37. =
+  Right
+   36. c_s1
+ Right
+  57. apply
+  Left
+   53. c_g
+  Right
+   44. apply
+   Left
+    104. apply
+    Left
+     35. c_f
+    Right
+     43. c_y1
+   Right
+    34. a_v
+
+-------------------
+ * 88. apply
+ Left
+  184. apply
+  Left
+   37. =
+  Right
+   53. apply
+   Left
+    53. c_g
+   Right
+    36. c_s1
+ Right
+  58. apply
+  Left
+   53. c_g
+  Right
+   57. apply
+   Left
+    53. c_g
+   Right
+    44. apply
+    Left
+     104. apply
+     Left
+      35. c_f
+     Right
+      43. c_y1
+    Right
+     34. a_v
+
+-------------------
+ * 89. apply
+ Left
+  186. apply
+  Left
+   37. =
+  Right
+   53. apply
+   Left
+    53. c_g
+   Right
+    36. c_s1
+ Right
+  44. apply
+  Left
+   104. apply
+   Left
+    35. c_f
+   Right
+    43. c_y1
+  Right
+   34. a_v
+
+-------------------
+ * 90. apply
+ Left
+  188. apply
+  Left
+   37. =
+  Right
+   40. c_s2
+ Right
+  57. apply
+  Left
+   53. c_g
+  Right
+   44. apply
+   Left
+    104. apply
+    Left
+     35. c_f
+    Right
+     43. c_y1
+   Right
+    34. a_v
+
+-------------------
+ * 91. apply
+ Left
+  190. apply
+  Left
+   37. =
+  Right
+   44. apply
+   Left
+    104. apply
+    Left
+     35. c_f
+    Right
+     43. c_y1
+   Right
+    34. a_v
+ Right
+  57. apply
+  Left
+   53. c_g
+  Right
+   44. apply
+   Left
+    104. apply
+    Left
+     35. c_f
+    Right
+     43. c_y1
+   Right
+    34. a_v
+
+-------------------
+ * 92. apply
+ Left
+  192. apply
+  Left
+   37. =
+  Right
+   57. apply
+   Left
+    53. c_g
+   Right
+    44. apply
+    Left
+     104. apply
+     Left
+      35. c_f
+     Right
+      43. c_y1
+    Right
+     34. a_v
+ Right
+  58. apply
+  Left
+   53. c_g
+  Right
+   57. apply
+   Left
+    53. c_g
+   Right
+    44. apply
+    Left
+     104. apply
+     Left
+      35. c_f
+     Right
+      43. c_y1
+    Right
+     34. a_v
+
+-------------------
+ * 93. apply
+ Left
+  194. apply
+  Left
+   37. =
+  Right
+   57. apply
+   Left
+    53. c_g
+   Right
+    44. apply
+    Left
+     104. apply
+     Left
+      35. c_f
+     Right
+      43. c_y1
+    Right
+     34. a_v
+ Right
+  44. apply
+  Left
+   104. apply
+   Left
+    35. c_f
+   Right
+    43. c_y1
+  Right
+   34. a_v
+
+-------------------
+ * 94. apply
+ Left
+  35. c_f
+ Right
+  33. c_z1
+
+-------------------
+ * 35. apply
+ Left
+  94. apply
+  Left
+   35. c_f
+  Right
+   33. c_z1
+ Right
+  34. a_v
+
+-------------------
+ * 96. apply
+ Left
+  37. =
+ Right
+  35. apply
+  Left
+   94. apply
+   Left
+    35. c_f
+   Right
+    33. c_z1
+  Right
+   34. a_v
+
+-------------------
+ * 37. apply
+ Left
+  96. apply
+  Left
+   37. =
+  Right
+   35. apply
+   Left
+    94. apply
+    Left
+     35. c_f
+    Right
+     33. c_z1
+   Right
+    34. a_v
+ Right
+  36. c_s1
+
+-------------------
+ * 98. apply
+ Left
+  35. c_f
+ Right
+  38. c_z2
+
+-------------------
+ * 39. apply
+ Left
+  98. apply
+  Left
+   35. c_f
+  Right
+   38. c_z2
+ Right
+  34. a_v
+
+-------------------
+ * 100. apply
+ Left
+  37. =
+ Right
+  39. apply
+  Left
+   98. apply
+   Left
+    35. c_f
+   Right
+    38. c_z2
+  Right
+   34. a_v
+
+-------------------
+ * 41. apply
+ Left
+  100. apply
+  Left
+   37. =
+  Right
+   39. apply
+   Left
+    98. apply
+    Left
+     35. c_f
+    Right
+     38. c_z2
+   Right
+    34. a_v
+ Right
+  40. c_s2
+
+-------------------
+ * 102. apply
+ Left
+  42. and
+ Right
+  37. apply
+  Left
+   96. apply
+   Left
+    37. =
+   Right
+    35. apply
+    Left
+     94. apply
+     Left
+      35. c_f
+     Right
+      33. c_z1
+    Right
+     34. a_v
+  Right
+   36. c_s1
+
+-------------------
+ * 42. apply
+ Left
+  102. apply
+  Left
+   42. and
+  Right
+   37. apply
+   Left
+    96. apply
+    Left
+     37. =
+    Right
+     35. apply
+     Left
+      94. apply
+      Left
+       35. c_f
+      Right
+       33. c_z1
+     Right
+      34. a_v
+   Right
+    36. c_s1
+ Right
+  41. apply
+  Left
+   100. apply
+   Left
+    37. =
+   Right
+    39. apply
+    Left
+     98. apply
+     Left
+      35. c_f
+     Right
+      38. c_z2
+    Right
+     34. a_v
+  Right
+   40. c_s2
+
+-------------------
+ * 104. apply
+ Left
+  35. c_f
+ Right
+  43. c_y1
+
+-------------------
+ * 44. apply
+ Left
+  104. apply
+  Left
+   35. c_f
+  Right
+   43. c_y1
+ Right
+  34. a_v
+
+-------------------
+ * 106. apply
+ Left
+  35. c_f
+ Right
+  45. c_y2
+
+-------------------
+ * 46. apply
+ Left
+  106. apply
+  Left
+   35. c_f
+  Right
+   45. c_y2
+ Right
+  34. a_v
+
+-------------------
+ * 108. apply
+ Left
+  35. c_f
+ Right
+  44. apply
+  Left
+   104. apply
+   Left
+    35. c_f
+   Right
+    43. c_y1
+  Right
+   34. a_v
+
+-------------------
+ * 47. apply
+ Left
+  108. apply
+  Left
+   35. c_f
+  Right
+   44. apply
+   Left
+    104. apply
+    Left
+     35. c_f
+    Right
+     43. c_y1
+   Right
+    34. a_v
+ Right
+  46. apply
+  Left
+   106. apply
+   Left
+    35. c_f
+   Right
+    45. c_y2
+  Right
+   34. a_v
+
+-------------------
+ * 110. apply
+ Left
+  37. =
+ Right
+  47. apply
+  Left
+   108. apply
+   Left
+    35. c_f
+   Right
+    44. apply
+    Left
+     104. apply
+     Left
+      35. c_f
+     Right
+      43. c_y1
+    Right
+     34. a_v
+  Right
+   46. apply
+   Left
+    106. apply
+    Left
+     35. c_f
+    Right
+     45. c_y2
+   Right
+    34. a_v
+
+-------------------
+ * 49. apply
+ Left
+  110. apply
+  Left
+   37. =
+  Right
+   47. apply
+   Left
+    108. apply
+    Left
+     35. c_f
+    Right
+     44. apply
+     Left
+      104. apply
+      Left
+       35. c_f
+      Right
+       43. c_y1
+     Right
+      34. a_v
+   Right
+    46. apply
+    Left
+     106. apply
+     Left
+      35. c_f
+     Right
+      45. c_y2
+    Right
+     34. a_v
+ Right
+  48. c_t
+
+-------------------
+ * 112. apply
+ Left
+  42. and
+ Right
+  42. apply
+  Left
+   102. apply
+   Left
+    42. and
+   Right
+    37. apply
+    Left
+     96. apply
+     Left
+      37. =
+     Right
+      35. apply
+      Left
+       94. apply
+       Left
+        35. c_f
+       Right
+        33. c_z1
+      Right
+       34. a_v
+    Right
+     36. c_s1
+  Right
+   41. apply
+   Left
+    100. apply
+    Left
+     37. =
+    Right
+     39. apply
+     Left
+      98. apply
+      Left
+       35. c_f
+      Right
+       38. c_z2
+     Right
+      34. a_v
+   Right
+    40. c_s2
+
+-------------------
+ * 50. apply
+ Left
+  112. apply
+  Left
+   42. and
+  Right
+   42. apply
+   Left
+    102. apply
+    Left
+     42. and
+    Right
+     37. apply
+     Left
+      96. apply
+      Left
+       37. =
+      Right
+       35. apply
+       Left
+        94. apply
+        Left
+         35. c_f
+        Right
+         33. c_z1
+       Right
+        34. a_v
+     Right
+      36. c_s1
+   Right
+    41. apply
+    Left
+     100. apply
+     Left
+      37. =
+     Right
+      39. apply
+      Left
+       98. apply
+       Left
+        35. c_f
+       Right
+        38. c_z2
+      Right
+       34. a_v
+    Right
+     40. c_s2
+ Right
+  49. apply
+  Left
+   110. apply
+   Left
+    37. =
+   Right
+    47. apply
+    Left
+     108. apply
+     Left
+      35. c_f
+     Right
+      44. apply
+      Left
+       104. apply
+       Left
+        35. c_f
+       Right
+        43. c_y1
+      Right
+       34. a_v
+    Right
+     46. apply
+     Left
+      106. apply
+      Left
+       35. c_f
+      Right
+       45. c_y2
+     Right
+      34. a_v
+  Right
+   48. c_t
+
+-------------------
+ * 114. apply
+ Left
+  51. distinct
+ Right
+  36. c_s1
+
+-------------------
+ * 51. apply
+ Left
+  114. apply
+  Left
+   51. distinct
+  Right
+   36. c_s1
+ Right
+  48. c_t
+
+-------------------
+ * 116. apply
+ Left
+  42. and
+ Right
+  50. apply
+  Left
+   112. apply
+   Left
+    42. and
+   Right
+    42. apply
+    Left
+     102. apply
+     Left
+      42. and
+     Right
+      37. apply
+      Left
+       96. apply
+       Left
+        37. =
+       Right
+        35. apply
+        Left
+         94. apply
+         Left
+          35. c_f
+         Right
+          33. c_z1
+        Right
+         34. a_v
+      Right
+       36. c_s1
+    Right
+     41. apply
+     Left
+      100. apply
+      Left
+       37. =
+      Right
+       39. apply
+       Left
+        98. apply
+        Left
+         35. c_f
+        Right
+         38. c_z2
+       Right
+        34. a_v
+     Right
+      40. c_s2
+  Right
+   49. apply
+   Left
+    110. apply
+    Left
+     37. =
+    Right
+     47. apply
+     Left
+      108. apply
+      Left
+       35. c_f
+      Right
+       44. apply
+       Left
+        104. apply
+        Left
+         35. c_f
+        Right
+         43. c_y1
+       Right
+        34. a_v
+     Right
+      46. apply
+      Left
+       106. apply
+       Left
+        35. c_f
+       Right
+        45. c_y2
+      Right
+       34. a_v
+   Right
+    48. c_t
+
+-------------------
+ * 52. apply
+ Left
+  116. apply
+  Left
+   42. and
+  Right
+   50. apply
+   Left
+    112. apply
+    Left
+     42. and
+    Right
+     42. apply
+     Left
+      102. apply
+      Left
+       42. and
+      Right
+       37. apply
+       Left
+        96. apply
+        Left
+         37. =
+        Right
+         35. apply
+         Left
+          94. apply
+          Left
+           35. c_f
+          Right
+           33. c_z1
+         Right
+          34. a_v
+       Right
+        36. c_s1
+     Right
+      41. apply
+      Left
+       100. apply
+       Left
+        37. =
+       Right
+        39. apply
+        Left
+         98. apply
+         Left
+          35. c_f
+         Right
+          38. c_z2
+        Right
+         34. a_v
+      Right
+       40. c_s2
+   Right
+    49. apply
+    Left
+     110. apply
+     Left
+      37. =
+     Right
+      47. apply
+      Left
+       108. apply
+       Left
+        35. c_f
+       Right
+        44. apply
+        Left
+         104. apply
+         Left
+          35. c_f
+         Right
+          43. c_y1
+        Right
+         34. a_v
+      Right
+       46. apply
+       Left
+        106. apply
+        Left
+         35. c_f
+        Right
+         45. c_y2
+       Right
+        34. a_v
+    Right
+     48. c_t
+ Right
+  51. apply
+  Left
+   114. apply
+   Left
+    51. distinct
+   Right
+    36. c_s1
+  Right
+   48. c_t
+
+-------------------
+ * 53. apply
+ Left
+  53. c_g
+ Right
+  36. c_s1
+
+-------------------
+ * 54. apply
+ Left
+  53. c_g
+ Right
+  53. apply
+  Left
+   53. c_g
+  Right
+   36. c_s1
+
+-------------------
+ * 120. apply
+ Left
+  37. =
+ Right
+  54. apply
+  Left
+   53. c_g
+  Right
+   53. apply
+   Left
+    53. c_g
+   Right
+    36. c_s1
+
+-------------------
+ * 55. apply
+ Left
+  120. apply
+  Left
+   37. =
+  Right
+   54. apply
+   Left
+    53. c_g
+   Right
+    53. apply
+    Left
+     53. c_g
+    Right
+     36. c_s1
+ Right
+  40. c_s2
+
+-------------------
+ * 122. apply
+ Left
+  42. and
+ Right
+  52. apply
+  Left
+   116. apply
+   Left
+    42. and
+   Right
+    50. apply
+    Left
+     112. apply
+     Left
+      42. and
+     Right
+      42. apply
+      Left
+       102. apply
+       Left
+        42. and
+       Right
+        37. apply
+        Left
+         96. apply
+         Left
+          37. =
+         Right
+          35. apply
+          Left
+           94. apply
+           Left
+            35. c_f
+           Right
+            33. c_z1
+          Right
+           34. a_v
+        Right
+         36. c_s1
+      Right
+       41. apply
+       Left
+        100. apply
+        Left
+         37. =
+        Right
+         39. apply
+         Left
+          98. apply
+          Left
+           35. c_f
+          Right
+           38. c_z2
+         Right
+          34. a_v
+       Right
+        40. c_s2
+    Right
+     49. apply
+     Left
+      110. apply
+      Left
+       37. =
+      Right
+       47. apply
+       Left
+        108. apply
+        Left
+         35. c_f
+        Right
+         44. apply
+         Left
+          104. apply
+          Left
+           35. c_f
+          Right
+           43. c_y1
+         Right
+          34. a_v
+       Right
+        46. apply
+        Left
+         106. apply
+         Left
+          35. c_f
+         Right
+          45. c_y2
+        Right
+         34. a_v
+     Right
+      48. c_t
+  Right
+   51. apply
+   Left
+    114. apply
+    Left
+     51. distinct
+    Right
+     36. c_s1
+   Right
+    48. c_t
+
+-------------------
+ * 56. apply
+ Left
+  122. apply
+  Left
+   42. and
+  Right
+   52. apply
+   Left
+    116. apply
+    Left
+     42. and
+    Right
+     50. apply
+     Left
+      112. apply
+      Left
+       42. and
+      Right
+       42. apply
+       Left
+        102. apply
+        Left
+         42. and
+        Right
+         37. apply
+         Left
+          96. apply
+          Left
+           37. =
+          Right
+           35. apply
+           Left
+            94. apply
+            Left
+             35. c_f
+            Right
+             33. c_z1
+           Right
+            34. a_v
+         Right
+          36. c_s1
+       Right
+        41. apply
+        Left
+         100. apply
+         Left
+          37. =
+         Right
+          39. apply
+          Left
+           98. apply
+           Left
+            35. c_f
+           Right
+            38. c_z2
+          Right
+           34. a_v
+        Right
+         40. c_s2
+     Right
+      49. apply
+      Left
+       110. apply
+       Left
+        37. =
+       Right
+        47. apply
+        Left
+         108. apply
+         Left
+          35. c_f
+         Right
+          44. apply
+          Left
+           104. apply
+           Left
+            35. c_f
+           Right
+            43. c_y1
+          Right
+           34. a_v
+        Right
+         46. apply
+         Left
+          106. apply
+          Left
+           35. c_f
+          Right
+           45. c_y2
+         Right
+          34. a_v
+      Right
+       48. c_t
+   Right
+    51. apply
+    Left
+     114. apply
+     Left
+      51. distinct
+     Right
+      36. c_s1
+    Right
+     48. c_t
+ Right
+  55. apply
+  Left
+   120. apply
+   Left
+    37. =
+   Right
+    54. apply
+    Left
+     53. c_g
+    Right
+     53. apply
+     Left
+      53. c_g
+     Right
+      36. c_s1
+  Right
+   40. c_s2
+
+-------------------
+ * 57. apply
+ Left
+  53. c_g
+ Right
+  44. apply
+  Left
+   104. apply
+   Left
+    35. c_f
+   Right
+    43. c_y1
+  Right
+   34. a_v
+
+-------------------
+ * 58. apply
+ Left
+  53. c_g
+ Right
+  57. apply
+  Left
+   53. c_g
+  Right
+   44. apply
+   Left
+    104. apply
+    Left
+     35. c_f
+    Right
+     43. c_y1
+   Right
+    34. a_v
+
+-------------------
+ * 126. apply
+ Left
+  37. =
+ Right
+  58. apply
+  Left
+   53. c_g
+  Right
+   57. apply
+   Left
+    53. c_g
+   Right
+    44. apply
+    Left
+     104. apply
+     Left
+      35. c_f
+     Right
+      43. c_y1
+    Right
+     34. a_v
+
+-------------------
+ * 59. apply
+ Left
+  126. apply
+  Left
+   37. =
+  Right
+   58. apply
+   Left
+    53. c_g
+   Right
+    57. apply
+    Left
+     53. c_g
+    Right
+     44. apply
+     Left
+      104. apply
+      Left
+       35. c_f
+      Right
+       43. c_y1
+     Right
+      34. a_v
+ Right
+  46. apply
+  Left
+   106. apply
+   Left
+    35. c_f
+   Right
+    45. c_y2
+  Right
+   34. a_v
+
+-------------------
+ * 128. apply
+ Left
+  42. and
+ Right
+  56. apply
+  Left
+   122. apply
+   Left
+    42. and
+   Right
+    52. apply
+    Left
+     116. apply
+     Left
+      42. and
+     Right
+      50. apply
+      Left
+       112. apply
+       Left
+        42. and
+       Right
+        42. apply
+        Left
+         102. apply
+         Left
+          42. and
+         Right
+          37. apply
+          Left
+           96. apply
+           Left
+            37. =
+           Right
+            35. apply
+            Left
+             94. apply
+             Left
+              35. c_f
+             Right
+              33. c_z1
+            Right
+             34. a_v
+          Right
+           36. c_s1
+        Right
+         41. apply
+         Left
+          100. apply
+          Left
+           37. =
+          Right
+           39. apply
+           Left
+            98. apply
+            Left
+             35. c_f
+            Right
+             38. c_z2
+           Right
+            34. a_v
+         Right
+          40. c_s2
+      Right
+       49. apply
+       Left
+        110. apply
+        Left
+         37. =
+        Right
+         47. apply
+         Left
+          108. apply
+          Left
+           35. c_f
+          Right
+           44. apply
+           Left
+            104. apply
+            Left
+             35. c_f
+            Right
+             43. c_y1
+           Right
+            34. a_v
+         Right
+          46. apply
+          Left
+           106. apply
+           Left
+            35. c_f
+           Right
+            45. c_y2
+          Right
+           34. a_v
+       Right
+        48. c_t
+    Right
+     51. apply
+     Left
+      114. apply
+      Left
+       51. distinct
+      Right
+       36. c_s1
+     Right
+      48. c_t
+  Right
+   55. apply
+   Left
+    120. apply
+    Left
+     37. =
+    Right
+     54. apply
+     Left
+      53. c_g
+     Right
+      53. apply
+      Left
+       53. c_g
+      Right
+       36. c_s1
+   Right
+    40. c_s2
+
+-------------------
+ * 60. apply
+ Left
+  128. apply
+  Left
+   42. and
+  Right
+   56. apply
+   Left
+    122. apply
+    Left
+     42. and
+    Right
+     52. apply
+     Left
+      116. apply
+      Left
+       42. and
+      Right
+       50. apply
+       Left
+        112. apply
+        Left
+         42. and
+        Right
+         42. apply
+         Left
+          102. apply
+          Left
+           42. and
+          Right
+           37. apply
+           Left
+            96. apply
+            Left
+             37. =
+            Right
+             35. apply
+             Left
+              94. apply
+              Left
+               35. c_f
+              Right
+               33. c_z1
+             Right
+              34. a_v
+           Right
+            36. c_s1
+         Right
+          41. apply
+          Left
+           100. apply
+           Left
+            37. =
+           Right
+            39. apply
+            Left
+             98. apply
+             Left
+              35. c_f
+             Right
+              38. c_z2
+            Right
+             34. a_v
+          Right
+           40. c_s2
+       Right
+        49. apply
+        Left
+         110. apply
+         Left
+          37. =
+         Right
+          47. apply
+          Left
+           108. apply
+           Left
+            35. c_f
+           Right
+            44. apply
+            Left
+             104. apply
+             Left
+              35. c_f
+             Right
+              43. c_y1
+            Right
+             34. a_v
+          Right
+           46. apply
+           Left
+            106. apply
+            Left
+             35. c_f
+            Right
+             45. c_y2
+           Right
+            34. a_v
+        Right
+         48. c_t
+     Right
+      51. apply
+      Left
+       114. apply
+       Left
+        51. distinct
+       Right
+        36. c_s1
+      Right
+       48. c_t
+   Right
+    55. apply
+    Left
+     120. apply
+     Left
+      37. =
+     Right
+      54. apply
+      Left
+       53. c_g
+      Right
+       53. apply
+       Left
+        53. c_g
+       Right
+        36. c_s1
+    Right
+     40. c_s2
+ Right
+  59. apply
+  Left
+   126. apply
+   Left
+    37. =
+   Right
+    58. apply
+    Left
+     53. c_g
+    Right
+     57. apply
+     Left
+      53. c_g
+     Right
+      44. apply
+      Left
+       104. apply
+       Left
+        35. c_f
+       Right
+        43. c_y1
+      Right
+       34. a_v
+  Right
+   46. apply
+   Left
+    106. apply
+    Left
+     35. c_f
+    Right
+     45. c_y2
+   Right
+    34. a_v
+
+-------------------
+ * 130. apply
+ Left
+  37. =
+ Right
+  36. c_s1
+
+-------------------
+ * 61. apply
+ Left
+  130. apply
+  Left
+   37. =
+  Right
+   36. c_s1
+ Right
+  48. c_t
+
+-------------------
+ * 132. apply
+ Left
+  37. =
+ Right
+  33. c_z1
+
+-------------------
+ * 62. apply
+ Left
+  132. apply
+  Left
+   37. =
+  Right
+   33. c_z1
+ Right
+  38. c_z2
+
+-------------------
+ * 134. apply
+ Left
+  37. =
+ Right
+  34. a_v
+
+-------------------
+ * 63. apply
+ Left
+  134. apply
+  Left
+   37. =
+  Right
+   34. a_v
+ Right
+  34. a_v
+
+-------------------
+ * 136. apply
+ Left
+  37. =
+ Right
+  36. c_s1
+
+-------------------
+ * 64. apply
+ Left
+  136. apply
+  Left
+   37. =
+  Right
+   36. c_s1
+ Right
+  40. c_s2
+
+-------------------
+ * 138. apply
+ Left
+  37. =
+ Right
+  33. c_z1
+
+-------------------
+ * 65. apply
+ Left
+  138. apply
+  Left
+   37. =
+  Right
+   33. c_z1
+ Right
+  43. c_y1
+
+-------------------
+ * 140. apply
+ Left
+  37. =
+ Right
+  36. c_s1
+
+-------------------
+ * 66. apply
+ Left
+  140. apply
+  Left
+   37. =
+  Right
+   36. c_s1
+ Right
+  44. apply
+  Left
+   104. apply
+   Left
+    35. c_f
+   Right
+    43. c_y1
+  Right
+   34. a_v
+
+-------------------
+ * 142. apply
+ Left
+  37. =
+ Right
+  33. c_z1
+
+-------------------
+ * 67. apply
+ Left
+  142. apply
+  Left
+   37. =
+  Right
+   33. c_z1
+ Right
+  45. c_y2
+
+-------------------
+ * 144. apply
+ Left
+  37. =
+ Right
+  36. c_s1
+
+-------------------
+ * 68. apply
+ Left
+  144. apply
+  Left
+   37. =
+  Right
+   36. c_s1
+ Right
+  58. apply
+  Left
+   53. c_g
+  Right
+   57. apply
+   Left
+    53. c_g
+   Right
+    44. apply
+    Left
+     104. apply
+     Left
+      35. c_f
+     Right
+      43. c_y1
+    Right
+     34. a_v
+
+-------------------
+ * 146. apply
+ Left
+  37. =
+ Right
+  33. c_z1
+
+-------------------
+ * 69. apply
+ Left
+  146. apply
+  Left
+   37. =
+  Right
+   33. c_z1
+ Right
+  44. apply
+  Left
+   104. apply
+   Left
+    35. c_f
+   Right
+    43. c_y1
+  Right
+   34. a_v
+
+-------------------
+ * 148. apply
+ Left
+  37. =
+ Right
+  34. a_v
+
+-------------------
+ * 70. apply
+ Left
+  148. apply
+  Left
+   37. =
+  Right
+   34. a_v
+ Right
+  58. apply
+  Left
+   53. c_g
+  Right
+   57. apply
+   Left
+    53. c_g
+   Right
+    44. apply
+    Left
+     104. apply
+     Left
+      35. c_f
+     Right
+      43. c_y1
+    Right
+     34. a_v
+
+-------------------
+ * 150. apply
+ Left
+  37. =
+ Right
+  38. c_z2
+
+-------------------
+ * 71. apply
+ Left
+  150. apply
+  Left
+   37. =
+  Right
+   38. c_z2
+ Right
+  43. c_y1
+
+-------------------
+ * 152. apply
+ Left
+  37. =
+ Right
+  40. c_s2
+
+-------------------
+ * 72. apply
+ Left
+  152. apply
+  Left
+   37. =
+  Right
+   40. c_s2
+ Right
+  44. apply
+  Left
+   104. apply
+   Left
+    35. c_f
+   Right
+    43. c_y1
+  Right
+   34. a_v
+
+-------------------
+ * 154. apply
+ Left
+  37. =
+ Right
+  38. c_z2
+
+-------------------
+ * 73. apply
+ Left
+  154. apply
+  Left
+   37. =
+  Right
+   38. c_z2
+ Right
+  45. c_y2
+
+-------------------
+ * 156. apply
+ Left
+  37. =
+ Right
+  40. c_s2
+
+-------------------
+ * 74. apply
+ Left
+  156. apply
+  Left
+   37. =
+  Right
+   40. c_s2
+ Right
+  58. apply
+  Left
+   53. c_g
+  Right
+   57. apply
+   Left
+    53. c_g
+   Right
+    44. apply
+    Left
+     104. apply
+     Left
+      35. c_f
+     Right
+      43. c_y1
+    Right
+     34. a_v
+
+-------------------
+ * 158. apply
+ Left
+  37. =
+ Right
+  38. c_z2
+
+-------------------
+ * 75. apply
+ Left
+  158. apply
+  Left
+   37. =
+  Right
+   38. c_z2
+ Right
+  44. apply
+  Left
+   104. apply
+   Left
+    35. c_f
+   Right
+    43. c_y1
+  Right
+   34. a_v
+
+-------------------
+ * 160. apply
+ Left
+  37. =
+ Right
+  40. c_s2
+
+-------------------
+ * 76. apply
+ Left
+  160. apply
+  Left
+   37. =
+  Right
+   40. c_s2
+ Right
+  48. c_t
+
+-------------------
+ * 162. apply
+ Left
+  37. =
+ Right
+  43. c_y1
+
+-------------------
+ * 77. apply
+ Left
+  162. apply
+  Left
+   37. =
+  Right
+   43. c_y1
+ Right
+  45. c_y2
+
+-------------------
+ * 164. apply
+ Left
+  37. =
+ Right
+  44. apply
+  Left
+   104. apply
+   Left
+    35. c_f
+   Right
+    43. c_y1
+  Right
+   34. a_v
+
+-------------------
+ * 78. apply
+ Left
+  164. apply
+  Left
+   37. =
+  Right
+   44. apply
+   Left
+    104. apply
+    Left
+     35. c_f
+    Right
+     43. c_y1
+   Right
+    34. a_v
+ Right
+  58. apply
+  Left
+   53. c_g
+  Right
+   57. apply
+   Left
+    53. c_g
+   Right
+    44. apply
+    Left
+     104. apply
+     Left
+      35. c_f
+     Right
+      43. c_y1
+    Right
+     34. a_v
+
+-------------------
+ * 166. apply
+ Left
+  37. =
+ Right
+  58. apply
+  Left
+   53. c_g
+  Right
+   57. apply
+   Left
+    53. c_g
+   Right
+    44. apply
+    Left
+     104. apply
+     Left
+      35. c_f
+     Right
+      43. c_y1
+    Right
+     34. a_v
+
+-------------------
+ * 79. apply
+ Left
+  166. apply
+  Left
+   37. =
+  Right
+   58. apply
+   Left
+    53. c_g
+   Right
+    57. apply
+    Left
+     53. c_g
+    Right
+     44. apply
+     Left
+      104. apply
+      Left
+       35. c_f
+      Right
+       43. c_y1
+     Right
+      34. a_v
+ Right
+  44. apply
+  Left
+   104. apply
+   Left
+    35. c_f
+   Right
+    43. c_y1
+  Right
+   34. a_v
+
+-------------------
+ * 168. apply
+ Left
+  37. =
+ Right
+  43. c_y1
+
+-------------------
+ * 80. apply
+ Left
+  168. apply
+  Left
+   37. =
+  Right
+   43. c_y1
+ Right
+  44. apply
+  Left
+   104. apply
+   Left
+    35. c_f
+   Right
+    43. c_y1
+  Right
+   34. a_v
+
+-------------------
+ * 170. apply
+ Left
+  37. =
+ Right
+  44. apply
+  Left
+   104. apply
+   Left
+    35. c_f
+   Right
+    43. c_y1
+  Right
+   34. a_v
+
+-------------------
+ * 81. apply
+ Left
+  170. apply
+  Left
+   37. =
+  Right
+   44. apply
+   Left
+    104. apply
+    Left
+     35. c_f
+    Right
+     43. c_y1
+   Right
+    34. a_v
+ Right
+  48. c_t
+
+-------------------
+ * 172. apply
+ Left
+  37. =
+ Right
+  48. c_t
+
+-------------------
+ * 82. apply
+ Left
+  172. apply
+  Left
+   37. =
+  Right
+   48. c_t
+ Right
+  44. apply
+  Left
+   104. apply
+   Left
+    35. c_f
+   Right
+    43. c_y1
+  Right
+   34. a_v
+
+-------------------
+ * 174. apply
+ Left
+  37. =
+ Right
+  45. c_y2
+
+-------------------
+ * 83. apply
+ Left
+  174. apply
+  Left
+   37. =
+  Right
+   45. c_y2
+ Right
+  44. apply
+  Left
+   104. apply
+   Left
+    35. c_f
+   Right
+    43. c_y1
+  Right
+   34. a_v
+
+-------------------
+ * 176. apply
+ Left
+  37. =
+ Right
+  58. apply
+  Left
+   53. c_g
+  Right
+   57. apply
+   Left
+    53. c_g
+   Right
+    44. apply
+    Left
+     104. apply
+     Left
+      35. c_f
+     Right
+      43. c_y1
+    Right
+     34. a_v
+
+-------------------
+ * 84. apply
+ Left
+  176. apply
+  Left
+   37. =
+  Right
+   58. apply
+   Left
+    53. c_g
+   Right
+    57. apply
+    Left
+     53. c_g
+    Right
+     44. apply
+     Left
+      104. apply
+      Left
+       35. c_f
+      Right
+       43. c_y1
+     Right
+      34. a_v
+ Right
+  48. c_t
+
+-------------------
+ * 178. apply
+ Left
+  37. =
+ Right
+  48. c_t
+
+-------------------
+ * 85. apply
+ Left
+  178. apply
+  Left
+   37. =
+  Right
+   48. c_t
+ Right
+  58. apply
+  Left
+   53. c_g
+  Right
+   57. apply
+   Left
+    53. c_g
+   Right
+    44. apply
+    Left
+     104. apply
+     Left
+      35. c_f
+     Right
+      43. c_y1
+    Right
+     34. a_v
+
+-------------------
+ * 180. apply
+ Left
+  37. =
+ Right
+  53. apply
+  Left
+   53. c_g
+  Right
+   36. c_s1
+
+-------------------
+ * 86. apply
+ Left
+  180. apply
+  Left
+   37. =
+  Right
+   53. apply
+   Left
+    53. c_g
+   Right
+    36. c_s1
+ Right
+  57. apply
+  Left
+   53. c_g
+  Right
+   44. apply
+   Left
+    104. apply
+    Left
+     35. c_f
+    Right
+     43. c_y1
+   Right
+    34. a_v
+
+-------------------
+ * 182. apply
+ Left
+  37. =
+ Right
+  36. c_s1
+
+-------------------
+ * 87. apply
+ Left
+  182. apply
+  Left
+   37. =
+  Right
+   36. c_s1
+ Right
+  57. apply
+  Left
+   53. c_g
+  Right
+   44. apply
+   Left
+    104. apply
+    Left
+     35. c_f
+    Right
+     43. c_y1
+   Right
+    34. a_v
+
+-------------------
+ * 184. apply
+ Left
+  37. =
+ Right
+  53. apply
+  Left
+   53. c_g
+  Right
+   36. c_s1
+
+-------------------
+ * 88. apply
+ Left
+  184. apply
+  Left
+   37. =
+  Right
+   53. apply
+   Left
+    53. c_g
+   Right
+    36. c_s1
+ Right
+  58. apply
+  Left
+   53. c_g
+  Right
+   57. apply
+   Left
+    53. c_g
+   Right
+    44. apply
+    Left
+     104. apply
+     Left
+      35. c_f
+     Right
+      43. c_y1
+    Right
+     34. a_v
+
+-------------------
+ * 186. apply
+ Left
+  37. =
+ Right
+  53. apply
+  Left
+   53. c_g
+  Right
+   36. c_s1
+
+-------------------
+ * 89. apply
+ Left
+  186. apply
+  Left
+   37. =
+  Right
+   53. apply
+   Left
+    53. c_g
+   Right
+    36. c_s1
+ Right
+  44. apply
+  Left
+   104. apply
+   Left
+    35. c_f
+   Right
+    43. c_y1
+  Right
+   34. a_v
+
+-------------------
+ * 188. apply
+ Left
+  37. =
+ Right
+  40. c_s2
+
+-------------------
+ * 90. apply
+ Left
+  188. apply
+  Left
+   37. =
+  Right
+   40. c_s2
+ Right
+  57. apply
+  Left
+   53. c_g
+  Right
+   44. apply
+   Left
+    104. apply
+    Left
+     35. c_f
+    Right
+     43. c_y1
+   Right
+    34. a_v
+
+-------------------
+ * 190. apply
+ Left
+  37. =
+ Right
+  44. apply
+  Left
+   104. apply
+   Left
+    35. c_f
+   Right
+    43. c_y1
+  Right
+   34. a_v
+
+-------------------
+ * 91. apply
+ Left
+  190. apply
+  Left
+   37. =
+  Right
+   44. apply
+   Left
+    104. apply
+    Left
+     35. c_f
+    Right
+     43. c_y1
+   Right
+    34. a_v
+ Right
+  57. apply
+  Left
+   53. c_g
+  Right
+   44. apply
+   Left
+    104. apply
+    Left
+     35. c_f
+    Right
+     43. c_y1
+   Right
+    34. a_v
+
+-------------------
+ * 192. apply
+ Left
+  37. =
+ Right
+  57. apply
+  Left
+   53. c_g
+  Right
+   44. apply
+   Left
+    104. apply
+    Left
+     35. c_f
+    Right
+     43. c_y1
+   Right
+    34. a_v
+
+-------------------
+ * 92. apply
+ Left
+  192. apply
+  Left
+   37. =
+  Right
+   57. apply
+   Left
+    53. c_g
+   Right
+    44. apply
+    Left
+     104. apply
+     Left
+      35. c_f
+     Right
+      43. c_y1
+    Right
+     34. a_v
+ Right
+  58. apply
+  Left
+   53. c_g
+  Right
+   57. apply
+   Left
+    53. c_g
+   Right
+    44. apply
+    Left
+     104. apply
+     Left
+      35. c_f
+     Right
+      43. c_y1
+    Right
+     34. a_v
+
+-------------------
+ * 194. apply
+ Left
+  37. =
+ Right
+  57. apply
+  Left
+   53. c_g
+  Right
+   44. apply
+   Left
+    104. apply
+    Left
+     35. c_f
+    Right
+     43. c_y1
+   Right
+    34. a_v
+
+-------------------
+ * 93. apply
+ Left
+  194. apply
+  Left
+   37. =
+  Right
+   57. apply
+   Left
+    53. c_g
+   Right
+    44. apply
+    Left
+     104. apply
+     Left
+      35. c_f
+     Right
+      43. c_y1
+    Right
+     34. a_v
+ Right
+  44. apply
+  Left
+   104. apply
+   Left
+    35. c_f
+   Right
+    43. c_y1
+  Right
+   34. a_v
+
+-------------------
+HornClauses::conditionalElimination not implemented yet!

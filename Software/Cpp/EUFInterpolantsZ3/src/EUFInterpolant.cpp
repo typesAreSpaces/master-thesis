@@ -76,8 +76,8 @@ EUFInterpolant::EUFInterpolant(z3::expr const & part_a) :
     curryfication(subterms[i], visited);
   }
   
-  for(auto x : extra_nodes)
-    std::cout << *x << std::endl << "-------------------" << std::endl;
+  for(unsigned i = min_id; i < curry_nodes.size(); i++)
+    std::cout << *(curry_nodes[i]) << std::endl << "-------------------" << std::endl;
   // ------------------------------------------------
   
   // // ----------------------------------------------------------------------
@@ -107,7 +107,7 @@ EUFInterpolant::EUFInterpolant(z3::expr const & part_a) :
 }
   
 EUFInterpolant::~EUFInterpolant(){  
-  for(auto x : extra_nodes)
+  for(auto x : curry_nodes)
     delete x;
 
   for(auto x : curry_decl)
@@ -173,31 +173,31 @@ void EUFInterpolant::curryfication(z3::expr const & e,
     // Update curry_nodes
     
     if(num > 0){
-      unsigned last_node_pos = extra_nodes.size(),
+      unsigned last_node_pos = curry_nodes.size(),
     	new_last_node_pos = last_node_pos + num;
-      extra_nodes.resize(new_last_node_pos);
+      curry_nodes.resize(new_last_node_pos);
       
       for(unsigned i = last_node_pos; i < new_last_node_pos; i++)
-    	extra_nodes[i] = new CurryNode(i, "apply", nullptr, nullptr);
+    	curry_nodes[i] = new CurryNode(i, "apply", nullptr, nullptr);
       
       // Case for first argument
-      extra_nodes[last_node_pos]->update("apply",
+      curry_nodes[last_node_pos]->update("apply",
 					 curry_decl[f.id()],
 					 curry_nodes[e.arg(0).id()]);
       // Case for the rest of the arguments
       for(unsigned i = 1; i < num; i++)
-      	extra_nodes[last_node_pos + i]->update("apply",
-					       extra_nodes[last_node_pos + i - 1],
+      	curry_nodes[last_node_pos + i]->update("apply",
+					       curry_nodes[last_node_pos + i - 1],
 					       curry_nodes[e.arg(i).id()]);
 
-      extra_nodes[new_last_node_pos - 1]->changeId(curry_nodes[e.id()]->getId());
+      curry_nodes[new_last_node_pos - 1]->changeId(curry_nodes[e.id()]->getId());
 #if DEBUG_CURRYFICATION
       std::cout << "Before (func term) " << *(curry_nodes[e.id()]) << " "
-		<< (curry_nodes[e.id()] == extra_nodes[new_last_node_pos - 1]) << std::endl;
+		<< (curry_nodes[e.id()] == curry_nodes[new_last_node_pos - 1]) << std::endl;
 #endif
 
       delete curry_nodes[e.id()];
-      curry_nodes[e.id()] = extra_nodes[new_last_node_pos - 1];
+      curry_nodes[e.id()] = curry_nodes[new_last_node_pos - 1];
       
 #if DEBUG_CURRYFICATION
       std::cout << "After (func term) " << *(curry_nodes[e.id()]) << std::endl;
