@@ -12,29 +12,18 @@ EUFInterpolant::EUFInterpolant(z3::expr const & part_a) :
   std::vector<bool> visited(original_num_terms, false);
   subterms.resize(original_num_terms);
   pred_list.resize(original_num_terms);
-  curry_nodes.resize(original_num_terms);
+  // curry_nodes.resize(original_num_terms);
 
   // The following defines min_id, visited,
   // subterms, disequalities, fsym_positions,
   // and curry_decl
   init(part_a, min_id, visited);
-  
-  // --------------------------------------------------
-  // The following defines curry_nodes
-  for(unsigned i = min_id; i < original_num_terms; i++)
-    curry_nodes[i] = new CurryNode(i);
-  std::fill(visited.begin(), visited.end(), false);
-  curryfication(part_a, visited);
 
-  // for(unsigned i = min_id; i < original_num_terms; i++)
-  //   std::cout << *curry_nodes[i] << std::endl;
-  
-  // --------------------------------------------------
-  
+  // *************************************************************************
   // -------------------------------------------------------------------------
-  // //                       ---------
+  // //                       -----------
   // // The following defines |pred_list|. 
-  // //                       ---------  
+  // //                       -----------  
   // initPredList(part_a);
   // // The following sets up a
   // // --------------------
@@ -46,11 +35,10 @@ EUFInterpolant::EUFInterpolant(z3::expr const & part_a) :
   // CongruenceClosureNO cc(min_id, subterms, pred_list, uf);
   // processEqs(part_a, cc);
   // -------------------------------------------------------------------------
-  //                       ---------                    ----
+  //                       -----------                    ----
   // The following defines |pred_list|. After this point, |uf| is fully defined.
-  //                       ---------                    ----
+  //                       -----------                    ----
   processEqs(part_a);
-
   // ----------------------------------------------------
   // The following sets up a
   // --------------------
@@ -65,38 +53,54 @@ EUFInterpolant::EUFInterpolant(z3::expr const & part_a) :
   cc.buildCongruenceClosure(pending);
   assert(pending.empty());
   // ----------------------------------------------------
+  // *************************************************************************
 
   // KEEP: working here
-  // // Converting disequalities to Horn Clauses
-  // disequalitiesToHCS();
+  // Converting disequalities to Horn Clauses
+  disequalitiesToHCS();
 
-  // // Unconditional uncommon symbol elimination step
-  // //                   --------------
-  // // After this point, |horn_clauses| is fully defined
-  // //                   --------------
-  // exposeUncommons();
-  // // std::cout << horn_clauses << std::endl;
+  // Unconditional uncommon symbol elimination step
+  //                   --------------
+  // After this point, |horn_clauses| is fully defined
+  //                   --------------
+  exposeUncommons();
+  // std::cout << horn_clauses << std::endl;
+
+  // ------------------------------------------------
+  // The following defines curry_nodes
+  curry_nodes.resize(subterms.size());
+  visited.resize(subterms.size());
+  std::fill(visited.begin(), visited.end(), false);
+  for(unsigned i = min_id; i < subterms.size(); i++){
+    curry_nodes[i] = new CurryNode(i);
+    curryfication(subterms[i], visited);
+  }
   
-  // // // ----------------------------------------------------------------------
-  // // Additional data structures for conditional uncommon symbol elimination
-  // CCList hornsat_list(pred_list);
-  // assert(pred_list.size() == subterms.size());
-  // UnionFind hornsat_uf(uf);
-  // hornsat_uf.increaseSize(subterms.size());
-  // CongruenceClosureDST hornsat_cc(min_id, subterms, hornsat_list, hornsat_uf);
-  // Hornsat hsat(horn_clauses, hornsat_uf);
-  // // // ----------------------------------------------------------------------
+  for(auto x : extra_nodes)
+    std::cout << *x << std::endl << "-------------------" << std::endl;
+  // ------------------------------------------------
   
-  // auto replacements = hsat.satisfiable(hornsat_cc);
-  // for(auto x : replacements)
-  //   std::cout << "Merge " << *horn_clauses[x.clause1]
-  // 	      << " with " << *horn_clauses[x.clause2] << std::endl;
+  // // ----------------------------------------------------------------------
+  // Additional data structures for conditional uncommon symbol elimination
+  CCList hornsat_list(pred_list);
+  assert(pred_list.size() == subterms.size());
   
-  // // // ----------------------------
-  // // std::cout << hsat << std::endl;
-  // // // ----------------------------
+  UnionFind hornsat_uf(uf);
+  hornsat_uf.increaseSize(subterms.size());
+  CongruenceClosureDST hornsat_cc(min_id, subterms, hornsat_list, hornsat_uf);
+  Hornsat hsat(horn_clauses, hornsat_uf);
+  // // ----------------------------------------------------------------------
   
-  // buildInterpolant(replacements);
+  auto replacements = hsat.satisfiable(hornsat_cc);
+  for(auto x : replacements)
+    std::cout << "Merge " << *horn_clauses[x.clause1]
+  	      << " with " << *horn_clauses[x.clause2] << std::endl;
+  
+  // // ----------------------------
+  // std::cout << hsat << std::endl;
+  // // ----------------------------
+  
+  buildInterpolant(replacements);
   
   return;
   // throw "Problem @ EUFInterpolant::EUFInterpolant. The z3::expr const & part_a was unsatisfiable.";
@@ -215,8 +219,8 @@ void EUFInterpolant::curryfication(z3::expr const & e,
     // Keep working here
     switch(f.decl_kind()){
     case Z3_OP_EQ:
-      std::cout << e << std::endl;
-      std::cout << *curry_nodes[e.id()] << std::endl;
+      // std::cout << e << std::endl;
+      // std::cout << *curry_nodes[e.id()] << std::endl;
       break;
     default:
       break;

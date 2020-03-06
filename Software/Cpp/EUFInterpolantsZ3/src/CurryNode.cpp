@@ -32,6 +32,8 @@ const unsigned CurryNode::getId() const {
 std::ostream & operator << (std::ostream & os, const CurryNode & cn){
   for(unsigned i = 0; i < cn.space; i++)
      os << " ";
+  if(cn.space == 1)
+    os << "* ";
   os << cn.id << ". " << cn.func_name << std::endl;
   if(cn.left != nullptr){
     (cn.left->space)+=cn.space;
