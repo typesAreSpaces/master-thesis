@@ -6,19 +6,6 @@
 #include "CurryNode.h"
 
 template<typename T>
-class UniqueSortedList : public std::list<T> { 
-public:
-  UniqueSortedList() : std::list<T>(){}
-  template<class InputIterator>
-  UniqueSortedList(InputIterator first, InputIterator last) : std::list<T>(first, last){}
-  void insert(T element){
-    if(!std::binary_search(this->begin(), this->end(), element))
-      std::list<T>::insert(std::lower_bound(this->begin(), this->end(), element), element);
-    return;
-  }
-};
-
-template<typename T>
 void insert(std::list<T> & l, T element){
   if(!std::binary_search(l.begin(), l.end(), element))
     l.insert(std::lower_bound(l.begin(), l.end(), element), element);

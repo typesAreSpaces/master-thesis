@@ -8,6 +8,7 @@ class CurryNode {
   unsigned id;
   std::string func_name;
   CurryNode * left, * right;
+  unsigned space = 1;
 public:
   CurryNode(unsigned);
   CurryNode(unsigned, std::string, CurryNode *, CurryNode *);

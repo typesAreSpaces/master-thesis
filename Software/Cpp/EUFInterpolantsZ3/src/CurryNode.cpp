@@ -30,10 +30,24 @@ const unsigned CurryNode::getId() const {
 }
 
 std::ostream & operator << (std::ostream & os, const CurryNode & cn){
-  os << cn.id << ". " << cn.func_name;
-  if(cn.left != nullptr)
-    os << " Left: " << *cn.left;
-  if(cn.right != nullptr)
-    os << " Right: " << *cn.right;
+  for(unsigned i = 0; i < cn.space; i++)
+     os << " ";
+  os << cn.id << ". " << cn.func_name << std::endl;
+  if(cn.left != nullptr){
+    (cn.left->space)+=cn.space;
+    for(unsigned i = 0; i < cn.space; i++)
+      os << " ";
+    os << "Left" << std::endl;
+    os << *cn.left;
+    (cn.left->space)-=cn.space;
+  }
+  if(cn.right != nullptr){
+    (cn.right->space)+=cn.space;
+    for(unsigned i = 0; i < cn.space; i++)
+      os << " ";
+    os << "Right" << std::endl;
+    os << *cn.right;
+    (cn.right->space)-=cn.space;
+  }
   return os;
 }
