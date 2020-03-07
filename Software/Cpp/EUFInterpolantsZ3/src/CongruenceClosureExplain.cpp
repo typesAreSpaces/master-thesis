@@ -6,12 +6,9 @@ CongruenceClosureExplain::CongruenceClosureExplain(const unsigned & min_id, cons
   
   // --------------------------------------------------
   // The following defines curry_nodes
-  curry_nodes.resize(num_terms);
+  curry_nodes.resize(num_terms);   
   std::vector<bool> visited(num_terms, false);
-
-  for(unsigned i = min_id; i < num_terms; i++)
-    curry_nodes[i] = new CurryNode(i);
-
+  
   curryfication(subterms[num_terms - 1], visited);
   // --------------------------------------------------
 
@@ -61,6 +58,7 @@ void CongruenceClosureExplain::curryfication(z3::expr const & e,
     if(visited[e.id()])
       return;
     visited[e.id()] = true;
+    curry_nodes[e.id()] = new CurryNode(e.id());
     
     unsigned num = e.num_args();
     auto f = e.decl();
@@ -81,32 +79,18 @@ void CongruenceClosureExplain::curryfication(z3::expr const & e,
       extra_nodes[last_node_pos]->update("apply",
 					 curry_decl[f.id()],
 					 curry_nodes[e.arg(0).id()]);
+      merge(extra_nodes[last_node_pos], curry_nodes[e.arg(0).id()]);
       // Case for the rest of the arguments
-      for(unsigned i = 1; i < num; i++)
+      for(unsigned i = 1; i < num; i++){
       	extra_nodes[last_node_pos + i]->update("apply",
 					       extra_nodes[last_node_pos + i - 1],
 					       curry_nodes[e.arg(i).id()]);
-
-      // extra_nodes[new_last_node_pos - 1]->changeId(curry_nodes[e.id()]->getId());
-#if DEBUG_CURRYFICATION
-      std::cout << "Before (func term) " << *(curry_nodes[e.id()]) << " "
-		<< (curry_nodes[e.id()] == extra_nodes[new_last_node_pos - 1]) << std::endl;
-#endif
+	merge(extra_nodes[last_node_pos + i], curry_nodes[e.arg(i).id()]);
+      }
       merge(extra_nodes[new_last_node_pos - 1], curry_nodes[e.id()]);
-#if DEBUG_CURRYFICATION
-      std::cout << "After (func term) " << *(curry_nodes[e.id()]) << std::endl;
-#endif
     }
-    else{
-#if DEBUG_CURRYFICATION
-      std::cout << "Before (constant) " << *(curry_nodes[e.id()]) << " "
-		<< (curry_nodes[e.id()] == curry_decl[f.id()]) << std::endl;
-#endif
+    else
       curry_nodes[e.id()]->update(f.name().str(), nullptr, nullptr);
-#if DEBUG_CURRYFICATION
-      std::cout << "After (constant) " << *(curry_nodes[e.id()]) << std::endl;
-#endif
-    }
 
     switch(f.decl_kind()){
     case Z3_OP_EQ:
