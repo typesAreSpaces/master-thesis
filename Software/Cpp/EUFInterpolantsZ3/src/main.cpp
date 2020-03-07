@@ -12,6 +12,7 @@ void test2();
 void test3();
 // void testUFE();
 void testEUF();
+void testEUF2();
 void hugeTest();
 
 // *******************************************************
@@ -24,7 +25,7 @@ void hugeTest();
 
 int main(int argc, char ** argv){
  
-  testEUF();
+  testEUF2();
   // test3();
   // hugeTest();
   
@@ -123,6 +124,23 @@ void testEUF(){
   z3::expr r_alpha = rename(alpha, uncomms);
   
   EUFInterpolant euf(r_alpha);
+  // std::cout << euf << std::endl;
+    
+  // euf.buildInterpolant();
+}
+
+void testEUF2(){
+  z3::context ctx;
+  z3::sort my_sort = ctx.uninterpreted_sort("A");
+  z3::expr a = ctx.constant("a", my_sort);
+  z3::expr b = ctx.constant("b", my_sort);
+  z3::func_decl g = ctx.function("g", my_sort, my_sort, my_sort, my_sort);
+  z3::func_decl h = ctx.function("h", my_sort, my_sort);
+  
+  // z3::expr alpha = f(z1, v) == s1 && f(z2, v) == s2 && f(f(y1, v), f(y2, v)) == t && s1 != t;
+  z3::expr alpha = g(a, h(b), b) == b;
+  
+  EUFInterpolant euf(alpha);
   // std::cout << euf << std::endl;
     
   // euf.buildInterpolant();

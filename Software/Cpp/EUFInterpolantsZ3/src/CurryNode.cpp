@@ -1,7 +1,7 @@
 #include "CurryNode.h"
 
 CurryNode::CurryNode(unsigned id) :
-  id(id), func_name(""),
+  id(id), func_name("fresh_" + std::to_string(id)),
   left(nullptr), right(nullptr) {
 }
 
@@ -27,6 +27,10 @@ void CurryNode::changeId(unsigned new_id){
 
 const unsigned CurryNode::getId() const {
   return id;
+}
+
+const bool CurryNode::isConstant() const {
+  return (left == nullptr) && (right == nullptr);
 }
 
 std::ostream & operator << (std::ostream & os, const CurryNode & cn){

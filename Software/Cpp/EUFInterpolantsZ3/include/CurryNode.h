@@ -16,6 +16,7 @@ public:
   void update(std::string, CurryNode *, CurryNode *);
   void changeId(unsigned);
   const unsigned getId() const;
+  const bool isConstant() const;
   friend std::ostream & operator << (std::ostream &, const CurryNode &);
 };
 

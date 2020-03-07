@@ -3,6 +3,7 @@
 
 #include <map>
 #include "Hornsat.h"
+#include "CongruenceClosureExplain.h"
 #include "CurryNode.h"
 
 template<typename T>
@@ -13,9 +14,7 @@ void insert(std::list<T> & l, T element){
 }
 
 typedef std::map<std::string, std::vector<unsigned> > FSymPositions;
-typedef std::vector<std::list<unsigned> > CCList;
-typedef std::map<unsigned, CurryNode*> CurryDeclarations;
-typedef std::vector<CurryNode*>        CurryNodes;
+typedef std::vector<std::list<unsigned> >             CCList;
 
 class EUFInterpolant {
   
@@ -31,12 +30,9 @@ class EUFInterpolant {
   z3::expr_vector   disequalities;
   unsigned          original_num_terms;
   CCList            pred_list;
-  
-  CurryNodes        curry_nodes;
   CurryDeclarations curry_decl;
 
   void            init(z3::expr const &, unsigned &, std::vector<bool> &);
-  void            curryfication(z3::expr const &, std::vector<bool> &);
   void            initPredList(z3::expr const &);
   void            processEqs(z3::expr const &);
   void            processEqs(z3::expr const &, CongruenceClosureNO &);

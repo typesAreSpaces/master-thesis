@@ -12,91 +12,98 @@ EUFInterpolant::EUFInterpolant(z3::expr const & part_a) :
   std::vector<bool> visited(original_num_terms, false);
   subterms.resize(original_num_terms);
   pred_list.resize(original_num_terms);
-  // curry_nodes.resize(original_num_terms);
 
   // The following defines min_id, visited,
   // subterms, disequalities, fsym_positions,
   // and curry_decl
   init(part_a, min_id, visited);
 
-  // *************************************************************************
-  // -------------------------------------------------------------------------
-  //                       -----------                    ----
-  // The following defines |pred_list|. After this point, |uf| is fully defined.
-  //                       -----------                    ----
-  processEqs(part_a);
-  // ----------------------------------------------------
-  // The following sets up a
-  // --------------------
-  // |congruence closure| data structure
-  // --------------------
-  CongruenceClosureDST cc(min_id, subterms, pred_list, uf);
-  std::list<unsigned> pending;
-  
-  for(unsigned i = min_id; i < original_num_terms; i++)
-    if(subterms[i].num_args() > 0)
-      pending.push_back(i);
-  cc.buildCongruenceClosure(pending);
-  assert(pending.empty());
-  // ----------------------------------------------------
-  // *************************************************************************
 
-  // KEEP: working here
-  // Converting disequalities to Horn Clauses
-  disequalitiesToHCS();
+  CongruenceClosureExplain cc(min_id, subterms, pred_list, uf, curry_decl);
+  
 
-  // Unconditional uncommon symbol elimination step
-  //                   --------------
-  // After this point, |horn_clauses| is fully defined
-  //                   --------------
-  exposeUncommons();
-  // std::cout << horn_clauses << std::endl;
+  // // *************************************************************************
+  // // -------------------------------------------------------------------------
+  // //                       -----------                    ----
+  // // The following defines |pred_list|. After this point, |uf| is fully defined.
+  // //                       -----------                    ----
+  // processEqs(part_a);
+  // // ----------------------------------------------------
+  // // The following sets up a
+  // // --------------------
+  // // |congruence closure| data structure
+  // // --------------------
+  // CongruenceClosureDST cc(min_id, subterms, pred_list, uf);
+  // std::list<unsigned> pending;
+  
+  // for(unsigned i = min_id; i < original_num_terms; i++)
+  //   if(subterms[i].num_args() > 0)
+  //     pending.push_back(i);
+  // cc.buildCongruenceClosure(pending);
+  // assert(pending.empty());
+  // // ----------------------------------------------------
+  // // *************************************************************************
 
-  // ------------------------------------------------
-  // The following defines curry_nodes
-  curry_nodes.resize(subterms.size());
-  visited.resize(subterms.size());
-  std::fill(visited.begin(), visited.end(), false);
-  for(unsigned i = min_id; i < subterms.size(); i++){
-    curry_nodes[i] = new CurryNode(i);
-    curryfication(subterms[i], visited);
-  }
-  // ------------------------------------------------
+  // GOAL: Implement CongruenceClosureExplain
+  // and test it
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
   
-  // // ----------------------------------------------------------------------
-  // Additional data structures for conditional uncommon symbol elimination
-  CCList hornsat_list(pred_list);
-  assert(pred_list.size() == subterms.size());
+
+  // // Converting disequalities to Horn Clauses
+  // disequalitiesToHCS();
+
+  // // Unconditional uncommon symbol elimination step
+  // //                   --------------
+  // // After this point, |horn_clauses| is fully defined
+  // //                   --------------
+  // exposeUncommons();
+  // // std::cout << horn_clauses << std::endl;
   
-  UnionFind hornsat_uf(uf);
-  hornsat_uf.increaseSize(subterms.size());
-  CongruenceClosureDST hornsat_cc(min_id, subterms, hornsat_list, hornsat_uf);
-  Hornsat hsat(horn_clauses, hornsat_uf);
-  // // ----------------------------------------------------------------------
+  // // // ----------------------------------------------------------------------
+  // // Additional data structures for conditional uncommon symbol elimination
+  // CCList hornsat_list(pred_list);
+  // assert(pred_list.size() == subterms.size());
   
-  auto replacements = hsat.satisfiable(hornsat_cc);
-  for(auto x : replacements)
-    std::cout << "Merge " << *horn_clauses[x.clause1]
-  	      << " with " << *horn_clauses[x.clause2] << std::endl;
+  // UnionFind hornsat_uf(uf);
+  // hornsat_uf.increaseSize(subterms.size());
+  // CongruenceClosureDST hornsat_cc(min_id, subterms, hornsat_list, hornsat_uf);
+  // Hornsat hsat(horn_clauses, hornsat_uf);
+  // // // ----------------------------------------------------------------------
   
-  // // ----------------------------
-  // std::cout << hsat << std::endl;
-  // // ----------------------------
+  // auto replacements = hsat.satisfiable(hornsat_cc);
+  // for(auto x : replacements)
+  //   std::cout << "Merge " << *horn_clauses[x.clause1]
+  // 	      << " with " << *horn_clauses[x.clause2] << std::endl;
   
-  buildInterpolant(replacements);
+  // // // ----------------------------
+  // // std::cout << hsat << std::endl;
+  // // // ----------------------------
+  
+  // buildInterpolant(replacements);
   
   return;
   // throw "Problem @ EUFInterpolant::EUFInterpolant. The z3::expr const & part_a was unsatisfiable.";
 }
   
-EUFInterpolant::~EUFInterpolant(){  
-  for(auto x : curry_nodes)
-    delete x;
-
+EUFInterpolant::~EUFInterpolant(){
   for(auto x : curry_decl)
     delete x.second;
   curry_decl.clear();
-
 #if DEBUG_DESTRUCTOR_EUF
   std::cout << "Bye EUFInterpolant" << std::endl;
 #endif
@@ -132,87 +139,6 @@ void EUFInterpolant::init(z3::expr const & e, unsigned & min_id, std::vector<boo
     }
   }
   throw "Problem @ EUFInterpolant::init. The expression e is not an application term.";
-}
-
-void EUFInterpolant::curryfication(z3::expr const & e,
-				   std::vector<bool> & visited){
-
-#if DEBUG_CURRYFICATION
-  std::cout << "curryfing this " << e << " " << e.id() << std::endl;
-#endif
-  
-  if(e.is_app()){
-
-    if(visited[e.id()])
-      return;
-    visited[e.id()] = true;
-    
-    unsigned num = e.num_args();
-    auto f = e.decl();
-    
-    for(unsigned i = 0; i < num; i++)
-      curryfication(e.arg(i), visited);
-    
-    // Update curry_nodes
-    
-    if(num > 0){
-      unsigned last_node_pos = curry_nodes.size(),
-    	new_last_node_pos = last_node_pos + num;
-      curry_nodes.resize(new_last_node_pos);
-      
-      for(unsigned i = last_node_pos; i < new_last_node_pos; i++)
-    	curry_nodes[i] = new CurryNode(i, "apply", nullptr, nullptr);
-      
-      // Case for first argument
-      curry_nodes[last_node_pos]->update("apply",
-					 curry_decl[f.id()],
-					 curry_nodes[e.arg(0).id()]);
-      // Case for the rest of the arguments
-      for(unsigned i = 1; i < num; i++)
-      	curry_nodes[last_node_pos + i]->update("apply",
-					       curry_nodes[last_node_pos + i - 1],
-					       curry_nodes[e.arg(i).id()]);
-
-      curry_nodes[new_last_node_pos - 1]->changeId(curry_nodes[e.id()]->getId());
-#if DEBUG_CURRYFICATION
-      std::cout << "Before (func term) " << *(curry_nodes[e.id()]) << " "
-		<< (curry_nodes[e.id()] == curry_nodes[new_last_node_pos - 1]) << std::endl;
-#endif
-
-      delete curry_nodes[e.id()];
-      curry_nodes[e.id()] = curry_nodes[new_last_node_pos - 1];
-      
-#if DEBUG_CURRYFICATION
-      std::cout << "After (func term) " << *(curry_nodes[e.id()]) << std::endl;
-#endif
-    }
-    else{
-#if DEBUG_CURRYFICATION
-      std::cout << "Before (constant) " << *(curry_nodes[e.id()]) << " "
-		<< (curry_nodes[e.id()] == curry_decl[f.id()]) << std::endl;
-#endif      
-      delete curry_nodes[e.id()];
-      curry_nodes[e.id()] = curry_decl[f.id()];
-
-#if DEBUG_CURRYFICATION
-      std::cout << "After (constant) " << *(curry_nodes[e.id()]) << std::endl;
-#endif
-    }
-
-    // Keep working here
-    switch(f.decl_kind()){
-    case Z3_OP_EQ:
-      std::cout << e << std::endl;
-      // std::cout << *curry_nodes[e.id()] << std::endl;
-      break;
-    default:
-      break;
-    }
-
-    return;
-  }
-  
-  throw "Problem @ EUFInterpolant::curryfication(z3::expr const &). The z3::expr const & is not an app.";
 }
 
 // Actually, this function is used to setup up the pred_list
