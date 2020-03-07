@@ -9,6 +9,10 @@ struct EquationCurryNodes {
   CurryNode * lhs, * rhs;
   EquationCurryNodes(CurryNode * lhs, CurryNode * rhs) :
     lhs(lhs), rhs(rhs) {}
+  friend std::ostream & operator << (std::ostream & os, const EquationCurryNodes & ecns){
+    os << *ecns.lhs << " = " << *ecns.rhs;
+    return os;
+  }
 };
 
 typedef std::vector<std::list<unsigned> > CCList;

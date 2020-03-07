@@ -14,6 +14,17 @@ CongruenceClosureExplain::CongruenceClosureExplain(const unsigned & min_id, cons
 
   curryfication(subterms[num_terms - 1], visited);
   // --------------------------------------------------
+
+  for(unsigned i = min_id; i < num_terms; i++)
+    std::cout << *curry_nodes[i] << std::endl;
+
+  for(auto x : extra_nodes)
+    std::cout << *x << std::endl;
+
+  std::cout << "Pending list" << std::endl;
+  for(auto x : pending_explain)
+    std::cout << x << std::endl;
+  
 }
 
 CongruenceClosureExplain::~CongruenceClosureExplain(){
@@ -81,11 +92,7 @@ void CongruenceClosureExplain::curryfication(z3::expr const & e,
       std::cout << "Before (func term) " << *(curry_nodes[e.id()]) << " "
 		<< (curry_nodes[e.id()] == extra_nodes[new_last_node_pos - 1]) << std::endl;
 #endif
-
-      // delete curry_nodes[e.id()];
-      // curry_nodes[e.id()] = extra_nodes[new_last_node_pos - 1];
       merge(extra_nodes[new_last_node_pos - 1], curry_nodes[e.id()]);
-      
 #if DEBUG_CURRYFICATION
       std::cout << "After (func term) " << *(curry_nodes[e.id()]) << std::endl;
 #endif
@@ -94,12 +101,8 @@ void CongruenceClosureExplain::curryfication(z3::expr const & e,
 #if DEBUG_CURRYFICATION
       std::cout << "Before (constant) " << *(curry_nodes[e.id()]) << " "
 		<< (curry_nodes[e.id()] == curry_decl[f.id()]) << std::endl;
-#endif      
-      // delete curry_nodes[e.id()];
-      // curry_nodes[e.id()] = curry_decl[f.id()];
-      std::cout << *curry_decl[f.id()] << " = " << *curry_nodes[e.id()] << std::endl;
-      merge(curry_decl[f.id()], curry_nodes[e.id()]); // I'm not sure if this one will be problematic
-
+#endif
+      curry_nodes[e.id()]->update(f.name().str(), nullptr, nullptr);
 #if DEBUG_CURRYFICATION
       std::cout << "After (constant) " << *(curry_nodes[e.id()]) << std::endl;
 #endif
