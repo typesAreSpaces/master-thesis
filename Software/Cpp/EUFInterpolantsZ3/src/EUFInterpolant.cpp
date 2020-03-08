@@ -18,7 +18,6 @@ EUFInterpolant::EUFInterpolant(z3::expr const & part_a) :
   // and curry_decl
   init(part_a, min_id, visited);
 
-
   CongruenceClosureExplain cc(min_id, subterms, pred_list, uf, curry_decl);
   
 

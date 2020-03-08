@@ -1,18 +1,10 @@
-g++ -g -c -o obj/main.o  -I./src -I./include -std=c++11 src/main.cpp -Wall
+g++ -g -c -o obj/CurryNode.o  -I./src -I./include -std=c++11 src/CurryNode.cpp -Wall
 g++ -g -o euf_interpolator obj/Match.o obj/Rename.o obj/UnionFindExplain.o obj/HornClause.o obj/CongruenceClosureNO.o obj/Hornsat.o obj/CongruenceClosureDST.o obj/EUFInterpolant.o obj/CurryNode.o obj/CongruenceClosure.o obj/UnionFind.o obj/main.o obj/HornClauses.o obj/CongruenceClosureExplain.o /home/jose/Documents/GithubProjects/z3__/build/libz3.so -lpthread -Wall
 ./euf_interpolator
-(= (g a (h b) b) b)
- * 5. a
-
- * 6. b
-
- * 7. apply
- Left
-  7. h
- Right
-  6. b
-
- * 8. apply
+---------------------
+whhhhhat
+--------------
+ * 13. apply
  Left
   12. apply
   Left
@@ -22,7 +14,7 @@ g++ -g -o euf_interpolator obj/Match.o obj/Rename.o obj/UnionFindExplain.o obj/H
    Right
     5. a
   Right
-   7. apply
+   10. apply
    Left
     7. h
    Right
@@ -30,13 +22,45 @@ g++ -g -o euf_interpolator obj/Match.o obj/Rename.o obj/UnionFindExplain.o obj/H
  Right
   6. b
 
- * 9. apply
+ * 6. b
+
+--------------
+---------------------
+ * 5. a
+
+ * 6. b
+
+ * 10. apply
+ Left
+  7. h
+ Right
+  6. b
+
+ * 13. apply
+ Left
+  12. apply
+  Left
+   11. apply
+   Left
+    8. g
+   Right
+    5. a
+  Right
+   10. apply
+   Left
+    7. h
+   Right
+    6. b
+ Right
+  6. b
+
+ * 15. apply
  Left
   14. apply
   Left
    9. =
   Right
-   8. apply
+   13. apply
    Left
     12. apply
     Left
@@ -46,7 +70,7 @@ g++ -g -o euf_interpolator obj/Match.o obj/Rename.o obj/UnionFindExplain.o obj/H
      Right
       5. a
     Right
-     7. apply
+     10. apply
      Left
       7. h
      Right
@@ -56,8 +80,7 @@ g++ -g -o euf_interpolator obj/Match.o obj/Rename.o obj/UnionFindExplain.o obj/H
  Right
   6. b
 
--------
- * 7. apply
+ * 10. apply
  Left
   7. h
  Right
@@ -77,13 +100,13 @@ g++ -g -o euf_interpolator obj/Match.o obj/Rename.o obj/UnionFindExplain.o obj/H
   Right
    5. a
  Right
-  7. apply
+  10. apply
   Left
    7. h
   Right
    6. b
 
- * 8. apply
+ * 13. apply
  Left
   12. apply
   Left
@@ -93,7 +116,7 @@ g++ -g -o euf_interpolator obj/Match.o obj/Rename.o obj/UnionFindExplain.o obj/H
    Right
     5. a
   Right
-   7. apply
+   10. apply
    Left
     7. h
    Right
@@ -105,7 +128,7 @@ g++ -g -o euf_interpolator obj/Match.o obj/Rename.o obj/UnionFindExplain.o obj/H
  Left
   9. =
  Right
-  8. apply
+  13. apply
   Left
    12. apply
    Left
@@ -115,7 +138,7 @@ g++ -g -o euf_interpolator obj/Match.o obj/Rename.o obj/UnionFindExplain.o obj/H
     Right
      5. a
    Right
-    7. apply
+    10. apply
     Left
      7. h
     Right
@@ -123,13 +146,13 @@ g++ -g -o euf_interpolator obj/Match.o obj/Rename.o obj/UnionFindExplain.o obj/H
   Right
    6. b
 
- * 9. apply
+ * 15. apply
  Left
   14. apply
   Left
    9. =
   Right
-   8. apply
+   13. apply
    Left
     12. apply
     Left
@@ -139,7 +162,7 @@ g++ -g -o euf_interpolator obj/Match.o obj/Rename.o obj/UnionFindExplain.o obj/H
      Right
       5. a
     Right
-     7. apply
+     10. apply
      Left
       7. h
      Right

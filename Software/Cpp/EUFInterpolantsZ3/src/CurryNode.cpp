@@ -43,16 +43,18 @@ std::ostream & operator << (std::ostream & os, const CurryNode & cn){
     (cn.left->space)+=cn.space;
     for(unsigned i = 0; i < cn.space; i++)
       os << " ";
-    os << "Left" << std::endl;
-    os << *cn.left;
+    // os << "Left" << std::endl;
+    // os << *cn.left;
+    os << "Left " << cn.left->getId() << std::endl;
     (cn.left->space)-=cn.space;
   }
   if(cn.right != nullptr){
     (cn.right->space)+=cn.space;
     for(unsigned i = 0; i < cn.space; i++)
       os << " ";
-    os << "Right" << std::endl;
-    os << *cn.right;
+    // os << "Right" << std::endl;
+    // os << *cn.right;
+    os << "Right " << cn.right->getId() << std::endl;
     (cn.right->space)-=cn.space;
   }
   return os;
