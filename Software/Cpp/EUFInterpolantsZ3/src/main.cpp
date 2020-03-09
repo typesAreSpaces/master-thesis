@@ -138,7 +138,7 @@ void testEUF2(){
   z3::func_decl h = ctx.function("h", my_sort, my_sort);
   
   // z3::expr alpha = f(z1, v) == s1 && f(z2, v) == s2 && f(f(y1, v), f(y2, v)) == t && s1 != t;
-  z3::expr alpha = g(a, h(b), b) == b;
+  z3::expr alpha = g(a, h(b), b) == b && g(a, h(b), h(b)) == h(b);
   
   EUFInterpolant euf(alpha);
   // std::cout << euf << std::endl;

@@ -71,6 +71,7 @@ class CongruenceClosureExplain : public CongruenceClosure {
   PendingExplain            pending_explain;
   LookupTable               lookup_table;
   UseList                   use_list;
+  CCList                    predecessors;
   CCList                    class_list_explain;
 
   void curryfication(z3::expr const &, std::vector<bool> &);

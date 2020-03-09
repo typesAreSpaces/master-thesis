@@ -12,13 +12,14 @@ CongruenceClosureExplain::CongruenceClosureExplain(const unsigned & min_id, cons
   
   curryfication(subterms[num_terms - 1], visited);
   // --------------------------------------------------
-  
+
+  std::cout << "--Curry nodes" << std::endl;
   for(unsigned i = min_id; i < num_terms; i++)
     std::cout << *curry_nodes[i] << std::endl;
-  std::cout << "------------------------------------" << std::endl;
+  
+  std::cout << "--Extra nodes" << std::endl;
   for(auto x : extra_nodes)
     std::cout << *x << std::endl;
-
   
   // std::cout << "Pending list" << std::endl;
   // for(auto x : pending_explain)
@@ -27,10 +28,6 @@ CongruenceClosureExplain::CongruenceClosureExplain(const unsigned & min_id, cons
 }
 
 CongruenceClosureExplain::~CongruenceClosureExplain(){
-  for(unsigned i = min_id; i < num_terms; i++)
-    delete curry_nodes[i];
-  for(auto x : extra_nodes)
-    delete x;
 #if DEBUG_DESTRUCTORS_CC
   std::cout << "Done ~CongruenceClosureExplain" << std::endl;
 #endif
@@ -46,7 +43,6 @@ void CongruenceClosureExplain::curryfication(z3::expr const & e,
     if(visited[e.id()])
       return;
     visited[e.id()] = true;
-    curry_nodes[e.id()] = new CurryNode(e.id());
     
     unsigned num = e.num_args();
     auto f = e.decl();
@@ -55,46 +51,38 @@ void CongruenceClosureExplain::curryfication(z3::expr const & e,
       curryfication(e.arg(i), visited);
     
     // Update curry_nodes
-    delete curry_nodes[e.id()];
     if(num > 0){
       unsigned last_node_pos = extra_nodes.size(), new_last_node_pos = last_node_pos + num;
       extra_nodes.resize(new_last_node_pos);
       uf.increaseSize(new_last_node_pos + num_terms);
       
-      for(unsigned i = last_node_pos; i < new_last_node_pos; i++)
-	extra_nodes[i] = new CurryNode(i + num_terms, "apply", nullptr, nullptr);
-      
       // Case for first argument
-      extra_nodes[last_node_pos]->update("apply", curry_decl[f.id()], curry_nodes[e.arg(0).id()]);
-      // The following binds the fresh constant in curry_nodes and the apply term in extra_nodes
-      // uf.merge(e.arg(0).id(), extra_nodes[last_node_pos]->getId());
-      // merge(curry_nodes[e.arg(0).id()], extra_nodes[last_node_pos]); 
+      // extra_nodes[last_node_pos]->update("apply", curry_decl[f.id()], curry_nodes[e.arg(0).id()]);
+      extra_nodes[last_node_pos] = CurryNode::newCurryNode(last_node_pos + num_terms,
+							   "apply",
+							   curry_decl[f.id()],
+							   curry_nodes[e.arg(0).id()]);
       
       // Case for the rest of the arguments
       for(unsigned i = 1; i < num; i++){
-      	extra_nodes[last_node_pos + i]->update("apply",
-					       extra_nodes[last_node_pos + i - 1],
-					       curry_nodes[e.arg(i).id()]);
-	// The following binds the fresh constant in curry_nodes and the apply term in extra_nodes
-	// uf.merge(e.arg(i).id(), extra_nodes[last_node_pos + i]->getId());
-	// merge(curry_nodes[e.arg(i).id()], extra_nodes[last_node_pos + i]);
+      	// extra_nodes[last_node_pos + i]->update("apply",
+	// 				       extra_nodes[last_node_pos + i - 1],
+	// 				       curry_nodes[e.arg(i).id()]);
+	extra_nodes[last_node_pos + i] = CurryNode::newCurryNode(last_node_pos + i + num_terms,
+								 "apply",
+								 extra_nodes[last_node_pos + i - 1],
+								 curry_nodes[e.arg(i).id()]);
+
       }
-      // The following binds the fresh constant in curry_nodes and the apply term in extra_nodes
-      // uf.merge(e.id(), extra_nodes[new_last_node_pos - 1]->getId());
-      // merge(curry_nodes[e.id()], extra_nodes[new_last_node_pos - 1]);
       curry_nodes[e.id()] = extra_nodes[new_last_node_pos - 1];
     }
     else{
       curry_nodes[e.id()] = curry_decl[f.id()];
-      // curry_nodes[e.id()]->update(f.name().str(), nullptr, nullptr);
     }
 
     switch(f.decl_kind()){
     case Z3_OP_EQ:
-      std::cout << "---------------------" << std::endl;
-      std::cout << "whhhhhat" << std::endl;
-      // merge(curry_nodes[e.arg(0).id()]->getId(), curry_nodes[e.arg(1).id()]->getId()); // CHANGE: THIS using reprs
-      std::cout << "---------------------" << std::endl;
+      // merge(curry_nodes[e.arg(0).id()]->getId(), curry_nodes[e.arg(1).id()]->getId()); // CHANGE: THIS using reprs // This approach is obsolete
       return;
     default:
       return;

@@ -100,9 +100,7 @@ EUFInterpolant::EUFInterpolant(z3::expr const & part_a) :
 }
   
 EUFInterpolant::~EUFInterpolant(){
-  for(auto x : curry_decl)
-    delete x.second;
-  curry_decl.clear();
+  CurryNode::removePointers();
 #if DEBUG_DESTRUCTOR_EUF
   std::cout << "Bye EUFInterpolant" << std::endl;
 #endif
@@ -124,7 +122,7 @@ void EUFInterpolant::init(z3::expr const & e, unsigned & min_id, std::vector<boo
     
     z3::func_decl f = e.decl();
     if(curry_decl[f.id()] == nullptr)
-      curry_decl[f.id()] = new CurryNode(e.id(), f.name().str(), nullptr, nullptr);
+      curry_decl[f.id()] = CurryNode::newCurryNode(e.id(), f.name().str(), nullptr, nullptr);
     
     switch(f.decl_kind()){
     case Z3_OP_DISTINCT:
