@@ -2,6 +2,7 @@
 #define _CONG_CLOSURE_E__
 
 #include <map>
+#include <set>
 #include "CongruenceClosure.h"
 #include "CurryNode.h"
 
@@ -53,26 +54,28 @@ public:
   }
 };
 
-typedef std::vector<std::list<unsigned> > CCList;
-typedef std::map<unsigned, CurryNode*>    CurryDeclarations;
-typedef std::vector<CurryNode*>           CurryNodes;
-typedef std::list<EquationCurryNodes>     PendingExplain;
-typedef std::vector<std::list<EquationCurryNodes> > UseList;
+typedef std::vector<std::list<unsigned> >            CCList;
+typedef std::map<CurryNode*, std::list<CurryNode*> > PredExplain;
+typedef std::map<unsigned, CurryNode*>               CurryDeclarations;
+typedef std::vector<CurryNode*>                      CurryNodes;
+typedef std::list<EquationCurryNodes>                PendingExplain;
+typedef std::vector<std::list<EquationCurryNodes> >  UseList;
 
 class CongruenceClosureExplain : public CongruenceClosure {
   friend class Hornsat;
 
-  unsigned                  num_terms;
+  unsigned num_terms;
   
-  CurryNodes                curry_nodes;
-  CurryNodes                extra_nodes;
-  CurryDeclarations &       curry_decl;
+  CurryNodes            curry_nodes;
+  CurryNodes            extra_nodes;
+  CurryDeclarations &   curry_decl;
+  PredExplain           predecessors;
+  std::set<std::size_t> to_replace;
   
-  PendingExplain            pending_explain;
-  LookupTable               lookup_table;
-  UseList                   use_list;
-  CCList                    predecessors;
-  CCList                    class_list_explain;
+  PendingExplain pending_explain;
+  LookupTable lookup_table;
+  UseList     use_list;
+  CCList      class_list_explain;
 
   void curryfication(z3::expr const &, std::vector<bool> &);
   void merge(CurryNode *, CurryNode *);

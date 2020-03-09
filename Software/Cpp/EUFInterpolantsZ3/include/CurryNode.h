@@ -20,18 +20,19 @@ class CurryNode {
   static std::hash<unsigned>                         unsigned_hasher;
   static std::hash<std::string>                      string_hasher;
   static std::hash<CurryNode*>                       curry_hasher;
-  static std::unordered_map<std::size_t, CurryNode*> hash_table;
   
 public:
-  CurryNode(unsigned);
   CurryNode(unsigned, std::string, CurryNode *, CurryNode *);
-  CurryNode(const CurryNode &);
   const bool isConstant() const;
+  const bool isReplaceable() const;
+  std::size_t hash();
   friend std::ostream & operator << (std::ostream &, const CurryNode &);
 
   static void * operator new (std::size_t, unsigned, std::string, CurryNode *, CurryNode *);
   static CurryNode * newCurryNode(unsigned, std::string, CurryNode *, CurryNode *);
   static void removePointers();
+
+  static std::unordered_map<std::size_t, CurryNode*> hash_table;
 };
 
 #endif

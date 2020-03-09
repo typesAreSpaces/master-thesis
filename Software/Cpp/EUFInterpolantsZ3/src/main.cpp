@@ -7,12 +7,12 @@
 #include "Rename.h"
 #include "EUFInterpolant.h"
 
-void test1();
-void test2();
-void test3();
-// void testUFE();
+void testFilePath(std::string);
+void simpleTest();
+void testUFE();
 void testEUF();
 void testEUF2();
+void testEUF3(); 
 void hugeTest();
 
 // *******************************************************
@@ -24,22 +24,26 @@ void hugeTest();
 // *******************************************************
 
 int main(int argc, char ** argv){
- 
-  testEUF2();
-  // test3();
-  // hugeTest();
+
+  //  testFilePath(std::string);
+  //  simpleTest();
+  //  testUFE();
+  //  testEUF();
+  // testEUF2();
+  testEUF3();
+  //  hugeTest();
   
   return 0;
 }
 
-void test1(){
+void testFilePath(std::string file_path){
   z3::context ctx;
-  z3::expr input = mk_and(ctx.parse_file("/home/jose/Downloads/QF_UF/2018-Goel-hwbench/QF_UF_needham.3.prop4_ab_cti_max.smt2"));
+  z3::expr input = mk_and(ctx.parse_file(file_path.c_str()));
   EUFInterpolant euf(input);
   std::cout << euf << std::endl;
 }
 
-void test2(){
+void simpleTest(){
   z3::context ctx;
   z3::sort my_sort = ctx.uninterpreted_sort("A");
   z3::expr a = ctx.constant("a", my_sort);
@@ -51,21 +55,6 @@ void test2(){
   
   EUFInterpolant euf(input);
   // std::cout << euf << std::endl;
-  return;
-}
-
-void test3(){
-  z3::context ctx;
-  z3::sort my_sort = ctx.uninterpreted_sort("A");
-  z3::expr a = ctx.constant("a", my_sort);
-  z3::func_decl f = ctx.function("f", my_sort, my_sort);
-  // z3::expr input = f(a) == a;
-  // This way (by reflexivity), we force the huge term to appear in the
-  // graph of terms
-  z3::expr input = f(a) == a && f(f(f(f(f(f(f(a))))))) == f(f(f(f(f(f(f(a)))))));
-  
-  EUFInterpolant euf(input);
-  std::cout << euf << std::endl;
   return;
 }
 
@@ -136,24 +125,25 @@ void testEUF2(){
   z3::expr b = ctx.constant("b", my_sort);
   z3::func_decl g = ctx.function("g", my_sort, my_sort, my_sort, my_sort);
   z3::func_decl h = ctx.function("h", my_sort, my_sort);
-  
-  // z3::expr alpha = f(z1, v) == s1 && f(z2, v) == s2 && f(f(y1, v), f(y2, v)) == t && s1 != t;
-  z3::expr alpha = g(a, h(b), b) == b && g(a, h(b), h(b)) == h(b);
-  
+  z3::expr alpha = g(a, h(b), b) == b && g(a, h(b), h(b)) == h(b) && g(a, h(b), h(h(b))) == h(h(b));
   EUFInterpolant euf(alpha);
-  // std::cout << euf << std::endl;
-    
-  // euf.buildInterpolant();
+}
+
+void testEUF3(){
+  z3::context ctx;
+  z3::sort my_sort = ctx.uninterpreted_sort("A");
+  z3::expr a = ctx.constant("a", my_sort);
+  z3::expr b = ctx.constant("b", my_sort);
+  z3::func_decl g = ctx.function("g", my_sort, my_sort, my_sort, my_sort);
+  z3::func_decl h = ctx.function("h", my_sort, my_sort);
+  z3::expr alpha = g(a, h(b), b) == g(a, h(b), h(b));
+  EUFInterpolant euf(alpha);
 }
 
 void hugeTest(){
-
   z3::context ctx;
   // The following smt2 file is satisfiable
   z3::expr input = mk_and(ctx.parse_file("/home/jose/Downloads/QF_UF/2018-Goel-hwbench/QF_UF_adding.1.prop1_ab_cti_max.smt2"));
-  
   EUFInterpolant euf(input);
   std::cout << euf << std::endl;
-  
-  return;
 }

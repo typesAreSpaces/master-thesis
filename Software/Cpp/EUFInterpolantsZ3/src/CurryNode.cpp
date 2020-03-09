@@ -5,21 +5,27 @@ std::hash<std::string>                      CurryNode::string_hasher;
 std::hash<CurryNode*>                       CurryNode::curry_hasher;
 std::unordered_map<std::size_t, CurryNode*> CurryNode::hash_table;
 
-CurryNode::CurryNode(unsigned id) :
-  id(id), func_name("fresh_" + std::to_string(id)),
-  left(nullptr), right(nullptr) {
-}
-
 CurryNode::CurryNode(unsigned id, std::string func_name, CurryNode * left, CurryNode * right) :
   id(id), func_name(func_name), left(left), right(right) {
 }
 
-CurryNode::CurryNode(const CurryNode & cn) :
-  id(cn.id), func_name(cn.func_name), left(cn.left), right(cn.right) {
-}
-
 const bool CurryNode::isConstant() const {
   return (left == nullptr) && (right == nullptr);
+}
+
+const bool CurryNode::isReplaceable() const {
+  if(left == nullptr || right == nullptr)
+    return false;
+  return left->isConstant() && right->isConstant();
+}
+
+std::size_t CurryNode::hash(){
+  std::size_t key = 0;
+  // hash_combine(key, id, unsigned_hasher); // We cant distinguish if the node have different id's
+  hash_combine(key, func_name, string_hasher);
+  hash_combine(key, left, curry_hasher);
+  hash_combine(key, right, curry_hasher);
+  return key;
 }
 
 std::ostream & operator << (std::ostream & os, const CurryNode & cn){
@@ -55,8 +61,9 @@ void * CurryNode::operator new (std::size_t size, unsigned id, std::string func_
   hash_combine(key, right, curry_hasher);
 
   auto element = CurryNode::hash_table.find(key);
-  if(element != CurryNode::hash_table.end())
+  if(element != CurryNode::hash_table.end()){
     return element->second;
+  }
   else{
     auto new_element = ::new CurryNode(id, func_name, left, right);
     CurryNode::hash_table[key] = new_element;
