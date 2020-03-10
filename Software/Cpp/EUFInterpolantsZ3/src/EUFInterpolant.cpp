@@ -6,7 +6,8 @@
 EUFInterpolant::EUFInterpolant(z3::expr const & part_a) :
   ctx(part_a.ctx()), min_id(part_a.id()), subterms(ctx),
   fsym_positions(), uf(part_a.id() + 1), horn_clauses(ctx, min_id, subterms),
-  contradiction(ctx), disequalities(ctx), original_num_terms(part_a.id() + 1){
+  contradiction(ctx), disequalities(ctx), original_num_terms(part_a.id() + 1),
+  factory_curry_nodes(){
   
   contradiction = ctx.bool_val(false);
   std::vector<bool> visited(original_num_terms, false);
@@ -18,7 +19,7 @@ EUFInterpolant::EUFInterpolant(z3::expr const & part_a) :
   // and curry_decl
   init(part_a, min_id, visited);
 
-  CongruenceClosureExplain cc(min_id, subterms, pred_list, uf, curry_decl);
+  CongruenceClosureExplain cc(min_id, subterms, pred_list, uf, curry_decl, factory_curry_nodes);
 
   // // *************************************************************************
   // // -------------------------------------------------------------------------
@@ -99,7 +100,6 @@ EUFInterpolant::EUFInterpolant(z3::expr const & part_a) :
 }
   
 EUFInterpolant::~EUFInterpolant(){
-  CurryNode::removePointers();
 #if DEBUG_DESTRUCTOR_EUF
   std::cout << "Bye EUFInterpolant" << std::endl;
 #endif
@@ -121,7 +121,7 @@ void EUFInterpolant::init(z3::expr const & e, unsigned & min_id, std::vector<boo
     
     z3::func_decl f = e.decl();
     if(curry_decl[f.id()] == nullptr)
-      curry_decl[f.id()] = CurryNode::newCurryNode(e.id(), f.name().str(), nullptr, nullptr);
+      curry_decl[f.id()] = factory_curry_nodes.newCurryNode(e.id(), f.name().str(), nullptr, nullptr);
     
     switch(f.decl_kind()){
     case Z3_OP_DISTINCT:

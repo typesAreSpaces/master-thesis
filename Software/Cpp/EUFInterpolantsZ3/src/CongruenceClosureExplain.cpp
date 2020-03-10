@@ -2,9 +2,10 @@
 #define DEBUG_SANITY_CHECK false
 
 CongruenceClosureExplain::CongruenceClosureExplain(const unsigned & min_id, const z3::expr_vector & subterms,
-						   CCList & pred_list, UnionFind & uf, CurryDeclarations & curry_decl) :
+						   CCList & pred_list, UnionFind & uf, CurryDeclarations & curry_decl,
+						   FactoryCurryNodes & factory_curry_nodes) :
   CongruenceClosure(min_id, subterms, pred_list, uf), num_terms(subterms.size()), curry_decl(curry_decl),
-  lookup_table(uf){
+  factory_curry_nodes(factory_curry_nodes), lookup_table(uf){
   
   // --------------------------------------------------
   // The following defines curry_nodes
@@ -26,7 +27,7 @@ CongruenceClosureExplain::CongruenceClosureExplain(const unsigned & min_id, cons
 #endif
 
   for(auto x : to_replace){
-    std::cout << *CurryNode::hash_table[x] << std::endl;
+    std::cout << *(factory_curry_nodes.getCurryNode(x)) << std::endl;
   }
   
   // std::cout << "Pending list" << std::endl;
@@ -65,19 +66,19 @@ void CongruenceClosureExplain::curryfication(z3::expr const & e,
       uf.increaseSize(new_last_node_pos + num_terms);
       
       // Case for first argument
-      extra_nodes[last_node_pos] = CurryNode::newCurryNode(last_node_pos + num_terms,
-							   "apply",
-							   curry_decl[f.id()],
-							   curry_nodes[e.arg(0).id()]);
+      extra_nodes[last_node_pos] = factory_curry_nodes.newCurryNode(last_node_pos + num_terms,
+								    "apply",
+								    curry_decl[f.id()],
+								    curry_nodes[e.arg(0).id()]);
       if(extra_nodes[last_node_pos]->isReplaceable())
 	to_replace.insert(extra_nodes[last_node_pos]->hash());
       
       // Case for the rest of the arguments
       for(unsigned i = 1; i < num; i++){
-	extra_nodes[last_node_pos + i] = CurryNode::newCurryNode(last_node_pos + i + num_terms,
-								 "apply",
-								 extra_nodes[last_node_pos + i - 1],
-								 curry_nodes[e.arg(i).id()]);
+	extra_nodes[last_node_pos + i] = factory_curry_nodes.newCurryNode(last_node_pos + i + num_terms,
+									  "apply",
+									  extra_nodes[last_node_pos + i - 1],
+									  curry_nodes[e.arg(i).id()]);
 	// KEEP: Working here
 	predecessors[extra_nodes[last_node_pos + i - 1]].push_back(extra_nodes[last_node_pos + i]);
       }

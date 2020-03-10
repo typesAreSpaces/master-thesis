@@ -31,6 +31,7 @@ class EUFInterpolant {
   unsigned          original_num_terms;
   CCList            pred_list;
   CurryDeclarations curry_decl;
+  FactoryCurryNodes factory_curry_nodes;
 
   void            init(z3::expr const &, unsigned &, std::vector<bool> &);
   void            initPredList(z3::expr const &);

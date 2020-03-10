@@ -4,7 +4,7 @@
 #include <map>
 #include <set>
 #include "CongruenceClosure.h"
-#include "CurryNode.h"
+#include "FactoryCurryNodes.h"
 
 enum KindEquation { CONST_EQ, APPLY_EQ  };
 
@@ -71,6 +71,7 @@ class CongruenceClosureExplain : public CongruenceClosure {
   CurryDeclarations &   curry_decl;
   PredExplain           predecessors;
   std::set<std::size_t> to_replace;
+  FactoryCurryNodes &   factory_curry_nodes;
   
   PendingExplain pending_explain;
   LookupTable lookup_table;
@@ -82,7 +83,7 @@ class CongruenceClosureExplain : public CongruenceClosure {
   void propagate();
   
  public:
-  CongruenceClosureExplain(const unsigned &, const z3::expr_vector &, CCList &, UnionFind &, CurryDeclarations &);
+  CongruenceClosureExplain(const unsigned &, const z3::expr_vector &, CCList &, UnionFind &, CurryDeclarations &, FactoryCurryNodes &);
   void buildCongruenceClosure(std::list<unsigned> &);
   
   ~CongruenceClosureExplain();

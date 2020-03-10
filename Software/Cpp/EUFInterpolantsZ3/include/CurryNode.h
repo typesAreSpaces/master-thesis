@@ -16,10 +16,6 @@ class CurryNode {
   std::string func_name;
   CurryNode * left, * right;
   unsigned space = 1;
-
-  static std::hash<unsigned>                         unsigned_hasher;
-  static std::hash<std::string>                      string_hasher;
-  static std::hash<CurryNode*>                       curry_hasher;
   
 public:
   CurryNode(unsigned, std::string, CurryNode *, CurryNode *);
@@ -27,12 +23,6 @@ public:
   const bool isReplaceable() const;
   std::size_t hash();
   friend std::ostream & operator << (std::ostream &, const CurryNode &);
-
-  static void * operator new (std::size_t, unsigned, std::string, CurryNode *, CurryNode *);
-  static CurryNode * newCurryNode(unsigned, std::string, CurryNode *, CurryNode *);
-  static void removePointers();
-
-  static std::unordered_map<std::size_t, CurryNode*> hash_table;
 };
 
 #endif
