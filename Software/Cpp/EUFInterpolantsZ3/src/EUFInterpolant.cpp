@@ -4,12 +4,11 @@
 #define DEBUG_CURRYFICATION false
 
 EUFInterpolant::EUFInterpolant(z3::expr const & part_a) :
-  ctx(part_a.ctx()), min_id(part_a.id()), subterms(ctx),
-  fsym_positions(), uf(part_a.id() + 1), horn_clauses(ctx, min_id, subterms),
-  contradiction(ctx), disequalities(ctx), original_num_terms(part_a.id() + 1),
-  factory_curry_nodes(){
+  min_id(part_a.id()), original_num_terms(part_a.id() + 1),
+  ctx(part_a.ctx()), subterms(ctx), contradiction(ctx.bool_val(false)), disequalities(ctx),
+  fsym_positions(), uf(part_a.id() + 1), pred_list(), horn_clauses(ctx, min_id, subterms),
+  curry_decl(), factory_curry_nodes(){
   
-  contradiction = ctx.bool_val(false);
   std::vector<bool> visited(original_num_terms, false);
   subterms.resize(original_num_terms);
   pred_list.resize(original_num_terms);

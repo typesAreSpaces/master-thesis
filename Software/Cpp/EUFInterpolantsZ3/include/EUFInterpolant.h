@@ -18,19 +18,22 @@ typedef std::vector<std::list<unsigned> >             CCList;
 
 class EUFInterpolant {
   
-  z3::context &     ctx;
-  unsigned          min_id;
+  unsigned min_id;
+  unsigned original_num_terms;
+  
+  z3::context &   ctx;
   // Note: elements below min_id are undefined
-  z3::expr_vector   subterms;
-  FSymPositions     fsym_positions;
-  UnionFindExplain  uf;
-  // UnionFind         uf;
-  HornClauses       horn_clauses;
-  z3::expr          contradiction;
-  z3::expr_vector   disequalities;
-  unsigned          original_num_terms;
-  CCList            pred_list;
-  CurryDeclarations curry_decl;
+  z3::expr_vector subterms;
+  z3::expr        contradiction;
+  z3::expr_vector disequalities;
+  
+  FSymPositions    fsym_positions;
+  // UnionFind        uf;
+  UnionFindExplain uf;
+  CCList           pred_list;
+  HornClauses      horn_clauses;
+
+  CurryDeclarations curry_decl;  
   FactoryCurryNodes factory_curry_nodes;
 
   void            init(z3::expr const &, unsigned &, std::vector<bool> &);

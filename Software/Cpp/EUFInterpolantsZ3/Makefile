@@ -40,6 +40,9 @@ euf_interpolator: $(OBJS) $(Z3DIR)/build/libz3.$(Z3EXT)
 run: euf_interpolator
 	./euf_interpolator
 
+mem_run: euf_interpolator
+	valgrind ./euf_interpolator
+
 .PHONY: clean
 clean:
 	rm -rf $(ODIR)/* euf_interpolator

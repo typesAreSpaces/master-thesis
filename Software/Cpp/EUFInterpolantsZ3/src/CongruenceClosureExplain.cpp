@@ -4,8 +4,9 @@
 CongruenceClosureExplain::CongruenceClosureExplain(const unsigned & min_id, const z3::expr_vector & subterms,
 						   CCList & pred_list, UnionFind & uf, CurryDeclarations & curry_decl,
 						   FactoryCurryNodes & factory_curry_nodes) :
-  CongruenceClosure(min_id, subterms, pred_list, uf), num_terms(subterms.size()), curry_decl(curry_decl),
-  factory_curry_nodes(factory_curry_nodes), lookup_table(uf){
+  CongruenceClosure(min_id, subterms, pred_list, uf), num_terms(subterms.size()),
+  curry_nodes(), extra_nodes(), curry_decl(curry_decl), curry_predecessors(), to_replace(), factory_curry_nodes(factory_curry_nodes),
+  pending_explain(), lookup_table(uf), use_list(), class_list_explain(){
   
   // --------------------------------------------------
   // The following defines curry_nodes
@@ -29,6 +30,14 @@ CongruenceClosureExplain::CongruenceClosureExplain(const unsigned & min_id, cons
   for(auto x : to_replace){
     std::cout << *(factory_curry_nodes.getCurryNode(x)) << std::endl;
   }
+
+  for(auto x : curry_predecessors){
+    std::cout << *x.first << ": ";
+    for(auto y : x.second)
+      std::cout << y << " | ";
+    std::cout << std::endl;
+  }
+  
   
   // std::cout << "Pending list" << std::endl;
   // for(auto x : pending_explain)
@@ -70,6 +79,9 @@ void CongruenceClosureExplain::curryfication(z3::expr const & e,
 								    "apply",
 								    curry_decl[f.id()],
 								    curry_nodes[e.arg(0).id()]);
+      // KEEP: Working here. There is a problem with repetitions
+      curry_predecessors[curry_decl[f.id()]].push_back(PredPair(extra_nodes[last_node_pos], LHS));
+      curry_predecessors[curry_nodes[e.arg(0).id()]].push_back(PredPair(extra_nodes[last_node_pos], RHS));
       if(extra_nodes[last_node_pos]->isReplaceable())
 	to_replace.insert(extra_nodes[last_node_pos]->hash());
       
@@ -79,8 +91,9 @@ void CongruenceClosureExplain::curryfication(z3::expr const & e,
 									  "apply",
 									  extra_nodes[last_node_pos + i - 1],
 									  curry_nodes[e.arg(i).id()]);
-	// KEEP: Working here
-	predecessors[extra_nodes[last_node_pos + i - 1]].push_back(extra_nodes[last_node_pos + i]);
+	// KEEP: (and) Working here. There is a problem with repetitions
+	curry_predecessors[extra_nodes[last_node_pos + i - 1]].push_back(PredPair(extra_nodes[last_node_pos + i], LHS));
+	curry_predecessors[curry_nodes[e.arg(i).id()]].push_back(PredPair(extra_nodes[last_node_pos + i], RHS));
       }
       
       curry_nodes[e.id()] = extra_nodes[new_last_node_pos - 1];

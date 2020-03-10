@@ -1,4 +1,5 @@
 #include "CurryNode.h"
+#define OS_FULL false
 
 CurryNode::CurryNode(unsigned id, std::string func_name, CurryNode * left, CurryNode * right) :
   id(id), func_name(func_name), left(left), right(right) {
@@ -34,6 +35,7 @@ std::ostream & operator << (std::ostream & os, const CurryNode & cn){
      os << " ";
   if(cn.space == 1)
     os << "* ";
+#if OS_FULL
   os << cn.id << ". " << cn.func_name << std::endl;
   if(cn.left != nullptr){
     (cn.left->space)+=cn.space;
@@ -51,5 +53,8 @@ std::ostream & operator << (std::ostream & os, const CurryNode & cn){
     os << *cn.right;
     (cn.right->space)-=cn.space;
   }
+#else
+  os << cn.id << ". " << cn.func_name;
+#endif
   return os;
 }

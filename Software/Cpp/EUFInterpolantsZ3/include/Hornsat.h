@@ -7,6 +7,7 @@
 #include <queue>
 #include "CongruenceClosureDST.h"
 #include "CongruenceClosureNO.h"
+#include "CongruenceClosureExplain.h"
 #include "HornClauses.h"
 #include "Replacement.h"
 
@@ -72,12 +73,10 @@ struct Literal {
   }
 };
 
-enum EquationSide { LHS, RHS };
-
 struct ClassListPos {
   Literal * lit_pointer;
-  EquationSide eq_side;
-  ClassListPos(Literal * lit_pointer, EquationSide eq_side) :
+  SideOfEquation eq_side;
+  ClassListPos(Literal * lit_pointer, SideOfEquation eq_side) :
     lit_pointer(lit_pointer), eq_side(eq_side){}
   friend std::ostream & operator << (std::ostream & os, const ClassListPos & clp){
     os << *(clp.lit_pointer) << (clp.eq_side == LHS ? " LHS" : " RHS");
