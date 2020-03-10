@@ -1,0 +1,192 @@
+g++ -g -c -o obj/CongruenceClosureExplain.o  -I./src -I./include -std=c++11 src/CongruenceClosureExplain.cpp -Wall
+g++ -g -o euf_interpolator obj/Match.o obj/Rename.o obj/UnionFindExplain.o obj/HornClause.o obj/CongruenceClosureNO.o obj/Hornsat.o obj/CongruenceClosureDST.o obj/EUFInterpolant.o obj/CurryNode.o obj/CongruenceClosure.o obj/UnionFind.o obj/FactoryCurryNodes.o obj/main.o obj/HornClauses.o obj/CongruenceClosureExplain.o /home/jose/Documents/GithubProjects/z3__/build/libz3.so -lpthread -Wall
+./euf_interpolator
+ * 12. apply
+ Left
+  9. g
+ Right
+  5. a
+
+To merge:  * 12. apply
+ Left
+  9. g
+ Right
+  5. a
+ =  * 20. fresh_20
+
+ * 11. apply
+ Left
+  7. h
+ Right
+  6. b
+
+To merge:  * 11. apply
+ Left
+  7. h
+ Right
+  6. b
+ =  * 21. fresh_21
+
+ * 13. apply
+ Left
+  20. fresh_20
+ Right
+  21. fresh_21
+
+To merge:  * 13. apply
+ Left
+  20. fresh_20
+ Right
+  21. fresh_21
+ =  * 22. fresh_22
+
+ * 17. apply
+ Left
+  22. fresh_22
+ Right
+  21. fresh_21
+
+To merge:  * 17. apply
+ Left
+  22. fresh_22
+ Right
+  21. fresh_21
+ =  * 23. fresh_23
+
+ * 14. apply
+ Left
+  22. fresh_22
+ Right
+  6. b
+
+To merge:  * 14. apply
+ Left
+  22. fresh_22
+ Right
+  6. b
+ =  * 24. fresh_24
+
+ * 18. apply
+ Left
+  10. =
+ Right
+  24. fresh_24
+
+To merge:  * 18. apply
+ Left
+  10. =
+ Right
+  24. fresh_24
+ =  * 25. fresh_25
+
+ * 19. apply
+ Left
+  25. fresh_25
+ Right
+  23. fresh_23
+
+To merge:  * 19. apply
+ Left
+  25. fresh_25
+ Right
+  23. fresh_23
+ =  * 26. fresh_26
+
+--Curry nodes
+ * 5. a
+
+ * 6. b
+
+ * 11. apply
+ Left
+  7. h
+ Right
+  6. b
+
+ * 17. apply
+ Left
+  22. fresh_22
+ Right
+  21. fresh_21
+
+ * 14. apply
+ Left
+  22. fresh_22
+ Right
+  6. b
+
+ * 19. apply
+ Left
+  25. fresh_25
+ Right
+  23. fresh_23
+
+--Extra nodes
+ * 11. apply
+ Left
+  7. h
+ Right
+  6. b
+
+ * 12. apply
+ Left
+  9. g
+ Right
+  5. a
+
+ * 13. apply
+ Left
+  20. fresh_20
+ Right
+  21. fresh_21
+
+ * 14. apply
+ Left
+  22. fresh_22
+ Right
+  6. b
+
+ * 12. apply
+ Left
+  9. g
+ Right
+  5. a
+
+ * 13. apply
+ Left
+  20. fresh_20
+ Right
+  21. fresh_21
+
+ * 17. apply
+ Left
+  22. fresh_22
+ Right
+  21. fresh_21
+
+ * 18. apply
+ Left
+  10. =
+ Right
+  24. fresh_24
+
+ * 19. apply
+ Left
+  25. fresh_25
+ Right
+  23. fresh_23
+
+ * 20. fresh_20
+
+ * 21. fresh_21
+
+ * 22. fresh_22
+
+ * 23. fresh_23
+
+ * 24. fresh_24
+
+ * 25. fresh_25
+
+ * 26. fresh_26
+

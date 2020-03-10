@@ -24,10 +24,10 @@
 %% The first command in your LaTeX source must be the \documentclass command.
 
 
-\documentclass[sigconf,authordraft]{acmart}
+\documentclass[10pt, sigconf,authordraft]{acmart}
 
 \usepackage{algpseudocode}
-\usepackage{algorithm}
+\usepackage{algorithm, setspace}
 
 %%
 %% \BibTeX command to typeset BibTeX logo in the docs
@@ -113,7 +113,16 @@
 %% The abstract is a short summary of the work to be presented in the
 %% article.
 \begin{abstract}
-  TODO:
+  Interpolation algorithms for the theory of equality with uninterpreted functions (EUF)
+  are important for its applications
+  to software verification. Simple and efficient algorithms are desirable
+  due to implementation and extensibility (combination with other theories) concerns.
+  In this paper, we review an interpolation algorithm by Kapur for the
+  EUF theory and discuss some implementation details. An improvement
+  for the conditional elimination step of uncommon symbols is proposed by integrating
+  congruence closure with explanations and unsatisfiability
+  testing of grounded Horn clauses. As a byproduct, an unsatisfiability
+  testing algorithm for grounded Horn clauses with explanations is obtained.
 \end{abstract}
 
 %%
@@ -152,15 +161,24 @@
 \section{Introduction}
 
 Interpolation algorithms for the theory of equality with uninterpreted functions are relevant
-as the core part of program analysis and verification algorithms. Many useful technique in software
+as the core component of verification algorithms. Many useful techniques in software
 engineering like bounded/unbounded model checking and invariant generation benefit directly from
-this technique. TODO. (There might be no more space to write anything else here.)
+this technique. In \cite{10.1007/3-540-58179-0_44}, the authors introduced a methodology to
+debug/verify the control logic of pipelined microprocessors by encoding its specification and
+a logical formula denoting the implementation of the circuit into a EUF solver.
+
+Previous work addressing the interpolation problem for EUF has involved techniques ranging from
+interpolant-extraction from refutation proof trees \cite{10.1007/978-3-540-24730-2_2,
+  mcmillan2011interpolants, 10.1007/978-3-642-31612-8_24}, and colored congruence closure
+graphs \cite{10.1007/978-3-642-00768-2_34}. Kapur's algorithm uses a different approach by using
+quantifier-elimination, a procedure that given a formula, it produces a logically equivalent formula
+ without a variable in particular \cite{DBLP:books/daglib/0076838}.
 
 The contributions of this paper are the following:
 \begin{itemize}
 \item Performance improvement of the conditional replacement step in Kapur's algorithm
-  for the interpolation generation of the conjunction of equalities in the theory of equality with
-  uninterpreted functions.
+  for the interpolation generation of conjunction of equalities in
+  the theory of equality with uninterpreted functions.
 \item An efficient algorithm implementing the Explanation operation
   for testing satisfiability of grounded Horn clauses.
 \end{itemize}
@@ -204,7 +222,8 @@ the interpolant. The latter is justify since otherwise, many interpolation formu
 not exists in different theories (for example, lisp programs).
 
 We also see different approaches to interpolation generation for particular
-theories that exploits aspects of the underlying theory \cite{}.
+theories that exploits aspects of the underlying theory
+\cite{10.1007/978-3-540-69738-1_25, 10.1007/11814771_21}.
 
 \subsection{Equality with Uninterpreted Functions}
 
@@ -285,12 +304,12 @@ If the user is not interested in an explicit interpolant, we can present the \em
 the size of the interpolant. This representation is useful because it provides a more compact
 representation of the interpolant that the user might be able quicker to obtain.
 Additionally, the user might be just interested in a particular subformula of the interpolant, so the
-latter representation offers feature.
+latter representation offers such feature.
 
 This algorithm allows a flexible implementation which can lead several optimizations
-based on the nature and applications of the interpolants. TODO.
+based on the nature and applications of the interpolant.
 
-\subsection{Ground Horn Clauses unsatisfiability testing}
+\subsection{Unsatisfiability testing for grounded Horn Clauses}
 
 In \cite{GALLIER1987233} it was proposed an algorithm for testing the unsatisfiability
 of ground Horn clauses with equality. The main idea was to interleave two algorithms: \emph{implicational propagation}
@@ -332,7 +351,7 @@ The latter combines the traditional \emph{pending} and \emph{combine} list into 
 single list, hence removing the initial \emph{combination} loop in the algorithm in
 \cite{10.1145/322217.322228}.
 
-\section{Main contribution} \label{aha}
+\section{Our contribution} \label{aha}
 
 First, we explain a high level ideal on how we improve the \emph{conditional elimination}
 step in Kapur's algorithm. We notice that this step \emph{propagates equationally} the
@@ -379,12 +398,11 @@ equation came from to update the antecedents and obtain \emph{usable Horn clause
 
 \subsection{New optimized conditional elimination step in Kapur's algorithm}
 
-The algorithm appears below in pseudo code notation:
+The algorithm appears below in pseudo-code notation:
 
 \begin{algorithm}
   \caption{Modified Unsatisfiability Testing for Ground Horn Clauses}
   \begin{algorithmic}[1]
-
     \Procedure {satisfiable}{var H : Hornclause; var queue, combine: queuetype; var GT(H) : Graph; var consistent : boolean}
     \While {queue not empty and consistent}
     \State node := pop(queue);
@@ -424,7 +442,7 @@ The algorithm appears below in pseudo code notation:
 \end{algorithm}
 
 \begin{algorithm}
-  \caption{Modified Congruence Closure with Explanation Algorithms}
+  \caption{Modified Congruence Closure with Explanation Algorithms - Merge}
   \begin{algorithmic}[2]
     \Procedure {Merge}{R : partition, u, v : node; queue, combine : queuetype}
     \If u and v are constants a and b
@@ -438,7 +456,12 @@ The algorithm appears below in pseudo code notation:
     \EndIf
     \EndIf
     \EndProcedure
-    \Statex
+  \end{algorithmic}
+\end{algorithm}
+
+\begin{algorithm}
+  \caption{Modified Congruence Closure with Explanation Algorithms - Propagate}
+  \begin{algorithmic}[2]
     \Procedure {Propagate} {\text{ }}
     \While Pending is non-empty
     \State Remove E of the form a=b or (f(a1, a2) = a, f(b1, b2) = b) from Pending
@@ -494,7 +517,7 @@ To our knowledge, we are the first authors to contribute with such operation for
 grounded Horn clauses in particular. However, we can see that also an Explain
 operator can be encoded using the proof-producing capabilities of SMT solvers
 \cite{10.1007/978-3-540-78800-3_24, 10.5555/2032305.2032319, 10.1007/978-3-642-02959-2_12, articleProofsInSMT, inproceedingsproofsrefutationsz3}. Nonetheless, the latter
-requires a refutational proof, our method might be able to outperform these
+requires a refutation proof, our method might be able to outperform these
 approaches.
 For future work we plan to implement this algorithm to incorporate it into an
 implementation of Kapur's algorithm and compare the proof-producing feature
@@ -506,7 +529,8 @@ with state of the art SMT solvers.
 %% identification of the section in the article metadata, and the
 %% consistent spelling of the heading.
 \begin{acks}
-  To Prof. Kapur, for his patience and coping with me all these years.
+  To Prof. Kapur, for his patience, guidance, and kind help during
+  my master thesis work.
 \end{acks}
 
 %%

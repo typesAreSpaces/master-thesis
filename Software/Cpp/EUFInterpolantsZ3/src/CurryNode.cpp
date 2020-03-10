@@ -1,5 +1,5 @@
 #include "CurryNode.h"
-#define OS_FULL false
+#define OS_FULL true
 
 CurryNode::CurryNode(unsigned id, std::string func_name, CurryNode * left, CurryNode * right) :
   id(id), func_name(func_name), left(left), right(right) {
@@ -13,6 +13,16 @@ const bool CurryNode::isReplaceable() const {
   if(left == nullptr || right == nullptr)
     return false;
   return left->isConstant() && right->isConstant();
+}
+
+void CurryNode::updateLeft(CurryNode * new_left){
+  left = new_left;
+  return;
+}
+
+void CurryNode::updateRight(CurryNode * new_right){
+  right = new_right;
+  return;
 }
 
 std::size_t CurryNode::hash(){

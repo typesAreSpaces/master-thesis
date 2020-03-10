@@ -54,24 +54,7 @@ public:
   }
 };
 
-enum SideOfEquation { LHS, RHS } ;
-
-struct PredPair {
-  CurryNode * pred;
-  SideOfEquation side_of_equation;
-  PredPair(CurryNode * pred, SideOfEquation side_of_equation) :
-    pred(pred), side_of_equation(side_of_equation){
-  }
-  friend std::ostream & operator << (std::ostream & os, const PredPair & pred_pair){
-    os << *pred_pair.pred << " " << (pred_pair.side_of_equation == LHS ? "LHS" : "RHS");
-    return os;
-  }
-};
-
 typedef std::vector<std::list<unsigned> >           CCList;
-typedef std::map<CurryNode*, std::list<PredPair> >  CurryPreds;
-typedef std::map<unsigned, CurryNode*>              CurryDeclarations;
-typedef std::vector<CurryNode*>                     CurryNodes;
 typedef std::list<EquationCurryNodes>               PendingExplain;
 typedef std::vector<std::list<EquationCurryNodes> > UseList;
 
@@ -84,8 +67,7 @@ class CongruenceClosureExplain : public CongruenceClosure {
   CurryNodes            curry_nodes;
   CurryNodes            extra_nodes;
   CurryDeclarations &   curry_decl;
-  CurryPreds            curry_predecessors;
-  std::set<std::size_t> to_replace;
+
   FactoryCurryNodes &   factory_curry_nodes;
   
   PendingExplain pending_explain;
@@ -93,7 +75,9 @@ class CongruenceClosureExplain : public CongruenceClosure {
   UseList        use_list;
   CCList         class_list_explain;
 
+  unsigned addExtraNodes(unsigned);
   void curryfication(z3::expr const &, std::vector<bool> &);
+  void flattening();
   void merge(CurryNode *, CurryNode *);
   void propagate();
   
