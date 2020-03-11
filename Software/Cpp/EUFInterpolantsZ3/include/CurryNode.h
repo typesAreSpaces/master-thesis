@@ -15,7 +15,7 @@ inline void hash_combine(std::size_t & seed, const T & v, const std::hash<T> & h
 
 class CurryNode {
   
-  unsigned id;
+  unsigned id, z3_id;
   std::string func_name;
   CurryNode * left, * right;
   unsigned space = 1;
@@ -24,8 +24,11 @@ public:
   CurryNode(unsigned, std::string, CurryNode *, CurryNode *);
   const bool isConstant() const;
   const bool isReplaceable() const;
-  void  updateLeft(CurryNode *);
-  void  updateRight(CurryNode *);
+  void updateLeft(CurryNode *);
+  void updateRight(CurryNode *);
+  void updateZ3Id(unsigned);
+  const unsigned getId() const;
+  const unsigned getZ3Id() const;
   std::size_t hash();
   friend std::ostream & operator << (std::ostream &, const CurryNode &);
 };

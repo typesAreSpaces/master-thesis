@@ -8,6 +8,9 @@
 
 enum KindEquation { CONST_EQ, APPLY_EQ  };
 
+struct PendingElement {
+};
+
 struct EquationCurryNodes {
   CurryNode * lhs, * rhs;
   KindEquation kind_equation;
@@ -22,7 +25,20 @@ struct EquationCurryNodes {
   }
 };
 
+
+
+struct EquationZ3Ids {
+  unsigned lhs_id, rhs_id;
+  EquationZ3Ids(unsigned lhs_id, unsigned rhs_id) :
+    lhs_id(lhs_id), rhs_id(rhs_id) {}
+  friend std::ostream & operator << (std::ostream & os, const EquationZ3Ids & ez3ids){
+    os << ez3ids.lhs_id << " = " << ez3ids.rhs_id;
+    return os;
+  }
+};
+
 typedef std::list<EquationCurryNodes> PendingExplain;
+typedef std::list<EquationZ3Ids>      IdsToMerge;
 
 class FactoryCurryNodes {
   friend class CongruenceClosureExplain;
@@ -31,6 +47,7 @@ class FactoryCurryNodes {
   std::hash<std::string>                      string_hasher;
   std::hash<CurryNode*>                       curry_hasher;
   std::unordered_map<std::size_t, CurryNode*> hash_table;
+  CurryNodes                                  id_table;
   
   const unsigned & num_terms;
   
@@ -40,17 +57,20 @@ class FactoryCurryNodes {
   CurryPreds                curry_predecessors;
   std::list<CurryNode*>     to_replace;
   
-  unsigned              addExtraNodes(unsigned);
-  void                  updatePreds(CurryNode *, CurryNode *);
-  void                  curryficationHelper(z3::expr const &, std::vector<bool> &);
-  void                  curryfication(z3::expr const &);
-  void                  flattening(PendingExplain &);
+  unsigned   addExtraNodes(unsigned);
+  void       updatePreds(CurryNode *, CurryNode *);
+  void       curryficationHelper(z3::expr const &, std::vector<bool> &, IdsToMerge &);
+  IdsToMerge curryfication(z3::expr const &);
+  void       flattening(const unsigned &, PendingExplain &);
   
  public:
   FactoryCurryNodes(const unsigned &, const CurryDeclarations &);
   ~FactoryCurryNodes();
+  
   CurryNode * newCurryNode(unsigned, std::string, CurryNode *, CurryNode *);
   CurryNode * getCurryNode(std::size_t) const;
+
+  const unsigned size() const;
 
   friend std::ostream & operator << (std::ostream &, const FactoryCurryNodes &);
 };

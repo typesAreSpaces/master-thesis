@@ -9,18 +9,18 @@
 class LookupTable {
   std::unordered_map<std::size_t, EquationCurryNodes> sig_table;
   UnionFind & uf;
-  std::hash<unsigned> hash_unsigned;
+  std::hash<unsigned> unsigned_hasher;
   
 public:
-  LookupTable(UnionFind & uf) : uf(uf){}
+  LookupTable(UnionFind & uf) : uf(uf) {}
   ~LookupTable(){
 #if DEBUG_DESTRUCTORS_CC
     std::cout << "Done ~LookupTable" << std::endl;
 #endif
   }
   std::size_t hash_combine(unsigned a1, unsigned a2){
-    std::size_t seed = hash_unsigned(a1);
-    seed ^= hash_unsigned(a2) + 0x9e3779b9 + (seed << 6) + (seed >> 2);
+    std::size_t seed = unsigned_hasher(a1);
+    seed ^= unsigned_hasher(a2) + 0x9e3779b9 + (seed << 6) + (seed >> 2);
     return seed;
   }
   void enter(unsigned a1, unsigned a2, EquationCurryNodes ecn){
@@ -54,7 +54,6 @@ class CongruenceClosureExplain : public CongruenceClosure {
   UseList        use_list;
   CCList         class_list_explain;
 
-  void curryfication(z3::expr const &, std::vector<bool> &);
   void merge(CurryNode *, CurryNode *);
   void propagate();
   

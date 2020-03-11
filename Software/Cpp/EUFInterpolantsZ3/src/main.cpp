@@ -127,6 +127,7 @@ void testEUF2(){
   z3::func_decl h = ctx.function("h", my_sort, my_sort);
   z3::expr alpha = g(a, h(b), b) == b && g(a, h(b), h(b)) == h(b) && g(a, h(b), h(h(b))) == h(h(b));
   EUFInterpolant euf(alpha);
+  return;
 }
 
 void testEUF3(){
@@ -138,6 +139,7 @@ void testEUF3(){
   z3::func_decl h = ctx.function("h", my_sort, my_sort);
   z3::expr alpha = g(a, h(b), b) == g(a, h(b), h(b));
   EUFInterpolant euf(alpha);
+  return;
 }
 
 void hugeTest(){
