@@ -2,7 +2,6 @@
 #define _FAC_CURRY_NODES_
 
 #include <iostream>
-#include <z3++.h>
 #include <unordered_map>
 #include "CurryNode.h"
 
@@ -15,11 +14,9 @@ class FactoryCurryNodes {
   std::unordered_map<std::size_t, CurryNode*> hash_table;
 
 protected:
-  CurryNodes            extra_nodes;
   CurryPreds            curry_predecessors;
   std::list<CurryNode*> to_replace;
   void                  transferPreds(CurryNode *, CurryNode *);
-  void                  curryfication(z3::expr const &, std::vector<bool> &);
   void                  flattening(CurryNodes &, unsigned);
   
  public:

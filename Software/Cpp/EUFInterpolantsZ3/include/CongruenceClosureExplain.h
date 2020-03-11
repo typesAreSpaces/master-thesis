@@ -77,7 +77,6 @@ class CongruenceClosureExplain : public CongruenceClosure {
 
   unsigned addExtraNodes(unsigned);
   void curryfication(z3::expr const &, std::vector<bool> &);
-  void flattening();
   void merge(CurryNode *, CurryNode *);
   void propagate();
   

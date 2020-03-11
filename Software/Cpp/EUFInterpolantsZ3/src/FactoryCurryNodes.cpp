@@ -55,8 +55,7 @@ void FactoryCurryNodes::transferPreds(CurryNode * from, CurryNode * to){
     }
     if(pred_pair.pred->isReplaceable())
       to_replace.push_back(pred_pair.pred);
-  }
-  
+  }  
   return;
 }
 

@@ -42,11 +42,7 @@ unsigned CongruenceClosureExplain::addExtraNodes(unsigned num){
   return new_last_node_pos;
 }
 
-void CongruenceClosureExplain::curryfication(z3::expr const & e,
-					     std::vector<bool> & visited){
-#if DEBUG_CURRYFICATION
-  std::cout << "curryfing this " << e << " " << e.id() << std::endl;
-#endif
+void CongruenceClosureExplain::curryfication(z3::expr const & e, std::vector<bool> & visited){
   if(e.is_app()){
 
     if(visited[e.id()])
@@ -93,7 +89,7 @@ void CongruenceClosureExplain::curryfication(z3::expr const & e,
     }
   }
   
-  throw "Problem @ EUFInterpolant::curryfication(z3::expr const &). The z3::expr const & is not an app.";
+  throw "Problem @ CongruenceClosureExplain::curryfication(z3::expr const &). The z3::expr const & is not an app.";
 }
 
 void CongruenceClosureExplain::merge(CurryNode * s, CurryNode * t){

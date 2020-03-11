@@ -43,22 +43,7 @@ EUFInterpolant::EUFInterpolant(z3::expr const & part_a) :
   // // *************************************************************************
 
   // GOAL: Implement CongruenceClosureExplain
-  // and test it
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+  // and test itv
 
   
 
