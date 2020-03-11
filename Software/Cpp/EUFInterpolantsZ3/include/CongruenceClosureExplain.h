@@ -82,7 +82,9 @@ class CongruenceClosureExplain : public CongruenceClosure {
   void propagate();
   
  public:
-  CongruenceClosureExplain(const unsigned &, const z3::expr_vector &, CCList &, UnionFind &, CurryDeclarations &, FactoryCurryNodes &);
+  CongruenceClosureExplain(const unsigned &, const z3::expr_vector &,
+			   CCList &, UnionFindExplain &,
+			   CurryDeclarations &, FactoryCurryNodes &);
   void buildCongruenceClosure(std::list<unsigned> &);
   
   ~CongruenceClosureExplain();

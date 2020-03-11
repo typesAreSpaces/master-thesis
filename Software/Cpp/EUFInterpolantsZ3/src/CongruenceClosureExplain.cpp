@@ -2,8 +2,8 @@
 #define DEBUG_SANITY_CHECK false
 
 CongruenceClosureExplain::CongruenceClosureExplain(const unsigned & min_id, const z3::expr_vector & subterms,
-						   CCList & pred_list, UnionFind & uf, CurryDeclarations & curry_decl,
-						   FactoryCurryNodes & factory_curry_nodes) :
+						   CCList & pred_list, UnionFindExplain & uf,
+						   CurryDeclarations & curry_decl, FactoryCurryNodes & factory_curry_nodes) :
   CongruenceClosure(min_id, subterms, pred_list, uf), num_terms(subterms.size()),
   curry_nodes(), extra_nodes(), curry_decl(curry_decl), factory_curry_nodes(factory_curry_nodes),
   pending_explain(), lookup_table(uf), use_list(), class_list_explain(){
@@ -16,18 +16,10 @@ CongruenceClosureExplain::CongruenceClosureExplain(const unsigned & min_id, cons
   curryfication(subterms[num_terms - 1], visited);
   // --------------------------------------------------
 
-  flattening();
-  
-#if DEBUG_SANITY_CHECK
-  std::cout << "--Curry nodes" << std::endl;
-  for(unsigned i = min_id; i < num_terms; i++){
-    std::cout << *curry_nodes[i] << std::endl;
-  }
-  
-  std::cout << "--Extra nodes" << std::endl;
-  for(auto x : extra_nodes)
-    std::cout << *x << std::endl;
-#endif
+  factory_curry_nodes.flattening(extra_nodes, num_terms);
+  std::cout << factory_curry_nodes << std::endl;
+
+  std::cout << uf << std::endl;
   
   // std::cout << "Pending list" << std::endl;
   // for(auto x : pending_explain)
@@ -42,9 +34,9 @@ CongruenceClosureExplain::~CongruenceClosureExplain(){
 }
 
 unsigned CongruenceClosureExplain::addExtraNodes(unsigned num){
-  unsigned last_node_pos = extra_nodes.size(), new_last_node_pos = last_node_pos + num;
+  unsigned last_node_pos = extra_nodes.size(),
+    new_last_node_pos = last_node_pos + num;
   extra_nodes.resize(new_last_node_pos);
-  uf.increaseSize(new_last_node_pos + num_terms);
   return new_last_node_pos;
 }
 
@@ -100,25 +92,6 @@ void CongruenceClosureExplain::curryfication(z3::expr const & e,
   }
   
   throw "Problem @ EUFInterpolant::curryfication(z3::expr const &). The z3::expr const & is not an app.";
-}
-
-void CongruenceClosureExplain::flattening(){
-  while(!factory_curry_nodes.to_replace.empty()){
-
-    auto cur_curry_node = factory_curry_nodes.to_replace.back();
-    factory_curry_nodes.to_replace.pop_back();
-
-    unsigned last_node_pos = extra_nodes.size();
-    addExtraNodes(1);
-
-    extra_nodes[last_node_pos] = factory_curry_nodes.newCurryNode(last_node_pos + num_terms,
-								  "fresh_" + std::to_string(last_node_pos + num_terms),
-								  nullptr, nullptr);
-    auto new_constant = extra_nodes[last_node_pos];
-    // TODO: Include a merge of cur_curry_node and new_constant
-    std::cout << "To merge: " << *cur_curry_node << " = " << *new_constant << std::endl;
-    factory_curry_nodes.transferPreds(cur_curry_node, new_constant);
-  }
 }
 
 void CongruenceClosureExplain::merge(CurryNode * s, CurryNode * t){

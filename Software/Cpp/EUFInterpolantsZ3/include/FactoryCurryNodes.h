@@ -17,6 +17,7 @@ protected:
   CurryPreds            curry_predecessors;
   std::list<CurryNode*> to_replace;
   void                  transferPreds(CurryNode *, CurryNode *);
+  void                  flattening(CurryNodes &, unsigned);
   
  public:
   FactoryCurryNodes();

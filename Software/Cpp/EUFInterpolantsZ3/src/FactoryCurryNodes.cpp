@@ -60,18 +60,27 @@ void FactoryCurryNodes::transferPreds(CurryNode * from, CurryNode * to){
   return;
 }
 
+void FactoryCurryNodes::flattening(CurryNodes & extra_nodes, unsigned num_terms){
+  while(!to_replace.empty()){
+    auto cur_curry_node = to_replace.back();
+    to_replace.pop_back();
+
+    unsigned last_node_pos = extra_nodes.size();
+    extra_nodes.push_back(newCurryNode(last_node_pos + num_terms,
+				       "fresh_" + std::to_string(last_node_pos + num_terms),
+				       nullptr, nullptr));
+    auto new_constant = extra_nodes[last_node_pos];
+    // TODO: Include a merge of cur_curry_node and new_constant
+    std::cout << "To merge: " << *cur_curry_node << " = " << *new_constant << std::endl;
+    transferPreds(cur_curry_node, new_constant);
+  }
+}
+
 std::ostream & operator << (std::ostream & os, const FactoryCurryNodes & fcns){
 
-  os << "Nodes to replace" << std::endl;
-  for(auto x : fcns.to_replace)
-    std::cout << *x << std::endl;
+  for(auto x : fcns.hash_table)
+    std::cout << *(x.second) << std::endl;
   
-  os << "Predecessors in this factory:" << std::endl;
-  for(auto x : fcns.curry_predecessors){
-    std::cout << *x.first << ": ";
-    for(auto y : x.second)
-      std::cout << y << " | ";
-    std::cout << std::endl;
-  }
+  os << "Size of FactoryCurryNodes: " << fcns.hash_table.size() << std::endl;
   return os;
 }
