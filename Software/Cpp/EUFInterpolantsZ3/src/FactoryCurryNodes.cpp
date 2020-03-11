@@ -12,7 +12,7 @@ FactoryCurryNodes::~FactoryCurryNodes(){
 
 CurryNode * FactoryCurryNodes::newCurryNode(unsigned id, std::string func_name, CurryNode * left, CurryNode * right){
   std::size_t index = 0;
-  // hash_combine(index, id, unsigned_hasher); // We cant distinguish if the node have different id's
+  // hash_combine(index, id, unsigned_hasher); // We shouldnt distinguish if the node have different id's
   hash_combine(index, func_name, string_hasher);
   hash_combine(index, left, curry_hasher);
   hash_combine(index, right, curry_hasher);
@@ -50,7 +50,7 @@ unsigned FactoryCurryNodes::addExtraNodes(unsigned num){
   return new_last_node_pos;
 }
 
-void FactoryCurryNodes::transferPreds(CurryNode * from, CurryNode * to){
+void FactoryCurryNodes::updatePreds(CurryNode * from, CurryNode * to){
   curry_predecessors[to].splice(curry_predecessors[to].end(), curry_predecessors[from]);
 
   for(auto pred_pair : curry_predecessors[to]){
@@ -124,7 +124,7 @@ void FactoryCurryNodes::curryfication(z3::expr const & e){
   return;
 }
 
-void FactoryCurryNodes::flattening(){
+void FactoryCurryNodes::flattening(PendingExplain & pending_explain){
   while(!to_replace.empty()){
     auto cur_curry_node = to_replace.back();
     to_replace.pop_back();
@@ -133,10 +133,9 @@ void FactoryCurryNodes::flattening(){
     extra_nodes.push_back(newCurryNode(last_node_pos + num_terms,
 				       "fresh_" + std::to_string(last_node_pos + num_terms),
 				       nullptr, nullptr));
-    auto new_constant = extra_nodes[last_node_pos];
-    // TODO: Include a merge of cur_curry_node and new_constant
-    std::cout << "To merge: " << *cur_curry_node << " = " << *new_constant << std::endl;
-    transferPreds(cur_curry_node, new_constant);
+    CurryNode * new_constant = extra_nodes[last_node_pos];
+    pending_explain.push_back(EquationCurryNodes(cur_curry_node, new_constant));
+    updatePreds(cur_curry_node, new_constant);
   }
 }
 

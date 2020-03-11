@@ -6,22 +6,19 @@ CongruenceClosureExplain::CongruenceClosureExplain(const unsigned & min_id, cons
 						   CurryDeclarations & curry_decl, FactoryCurryNodes & factory_curry_nodes) :
   CongruenceClosure(min_id, subterms, pred_list, uf), num_terms(subterms.size()),
   pending_explain(), lookup_table(uf), use_list(), class_list_explain(){
+  
  
   factory_curry_nodes.curryfication(subterms[num_terms - 1]);
-  // --------------------------------------------------
+  factory_curry_nodes.flattening(pending_explain);
 
-  factory_curry_nodes.flattening();
   // std::cout << factory_curry_nodes << std::endl;
-
-  // std::cout << uf << std::endl;
-
   
+  for(auto x : pending_explain)
+    std::cout << x << std::endl;
+    
   // KEEP: WORKING here. Update uf with the size of factory_curry_nodes
   // and update it using the merge that are pending!
   
-  // std::cout << "Pending list" << std::endl;
-  // for(auto x : pending_explain)
-  //   std::cout << x << std::endl;
   
 }
 
@@ -33,7 +30,7 @@ CongruenceClosureExplain::~CongruenceClosureExplain(){
 
 void CongruenceClosureExplain::merge(CurryNode * s, CurryNode * t){
   if(s->isConstant() && t->isConstant()){
-    pending_explain.push_back(EquationCurryNodes(s, t, CONST_EQ));
+    pending_explain.push_back(EquationCurryNodes(s, t));
     propagate();
   }
   else{
@@ -46,7 +43,7 @@ void CongruenceClosureExplain::merge(CurryNode * s, CurryNode * t){
       EquationCurryNodes whatever = lookup_table.query(0, 1);  // WRONG: Incomplete implementation
       
       std::cout << whatever << std::endl;
-      pending_explain.push_back(EquationCurryNodes(s, t, APPLY_EQ));
+      pending_explain.push_back(EquationCurryNodes(s, t));
       propagate();
     }
     catch(...){

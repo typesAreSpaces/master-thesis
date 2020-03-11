@@ -6,20 +6,6 @@
 #include "CongruenceClosure.h"
 #include "FactoryCurryNodes.h"
 
-enum KindEquation { CONST_EQ, APPLY_EQ  };
-
-struct EquationCurryNodes {
-  CurryNode * lhs, * rhs;
-  KindEquation kind_equation;
-  EquationCurryNodes() : lhs(nullptr), rhs(nullptr), kind_equation(CONST_EQ) {}
-  EquationCurryNodes(CurryNode * lhs, CurryNode * rhs, KindEquation kind_equation) :
-    lhs(lhs), rhs(rhs), kind_equation(kind_equation) {}
-  friend std::ostream & operator << (std::ostream & os, const EquationCurryNodes & ecns){
-    os << *ecns.lhs << " = " << *ecns.rhs;
-    return os;
-  }
-};
-
 class LookupTable {
   std::unordered_map<std::size_t, EquationCurryNodes> sig_table;
   UnionFind & uf;
@@ -55,7 +41,6 @@ public:
 };
 
 typedef std::vector<std::list<unsigned> >           CCList;
-typedef std::list<EquationCurryNodes>               PendingExplain;
 typedef std::vector<std::list<EquationCurryNodes> > UseList;
 
 class CongruenceClosureExplain : public CongruenceClosure {
