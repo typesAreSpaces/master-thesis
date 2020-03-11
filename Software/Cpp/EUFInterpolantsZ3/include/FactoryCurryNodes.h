@@ -34,11 +34,11 @@ class FactoryCurryNodes {
   
   const unsigned & num_terms;
   
-  CurryNodes            curry_nodes;
-  CurryNodes            extra_nodes;
-  CurryDeclarations &   curry_decl;
-  CurryPreds            curry_predecessors;
-  std::list<CurryNode*> to_replace;
+  CurryNodes                curry_nodes;
+  CurryNodes                extra_nodes;
+  const CurryDeclarations & curry_decl;
+  CurryPreds                curry_predecessors;
+  std::list<CurryNode*>     to_replace;
   
   unsigned              addExtraNodes(unsigned);
   void                  updatePreds(CurryNode *, CurryNode *);
@@ -47,7 +47,7 @@ class FactoryCurryNodes {
   void                  flattening(PendingExplain &);
   
  public:
-  FactoryCurryNodes(const unsigned &, CurryDeclarations &);
+  FactoryCurryNodes(const unsigned &, const CurryDeclarations &);
   ~FactoryCurryNodes();
   CurryNode * newCurryNode(unsigned, std::string, CurryNode *, CurryNode *);
   CurryNode * getCurryNode(std::size_t) const;

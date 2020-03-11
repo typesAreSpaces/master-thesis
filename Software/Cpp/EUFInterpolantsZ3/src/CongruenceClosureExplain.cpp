@@ -3,7 +3,7 @@
 
 CongruenceClosureExplain::CongruenceClosureExplain(const unsigned & min_id, const z3::expr_vector & subterms,
 						   CCList & pred_list, UnionFindExplain & uf,
-						   CurryDeclarations & curry_decl, FactoryCurryNodes & factory_curry_nodes) :
+						   const CurryDeclarations & curry_decl, FactoryCurryNodes & factory_curry_nodes) :
   CongruenceClosure(min_id, subterms, pred_list, uf), num_terms(subterms.size()),
   pending_explain(), lookup_table(uf), use_list(), class_list_explain(){
   

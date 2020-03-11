@@ -1,6 +1,6 @@
 #include "FactoryCurryNodes.h"
 
-FactoryCurryNodes::FactoryCurryNodes(const unsigned & num_terms, CurryDeclarations & curry_decl) :
+FactoryCurryNodes::FactoryCurryNodes(const unsigned & num_terms, const CurryDeclarations & curry_decl) :
   num_terms(num_terms), curry_decl(curry_decl){
   curry_nodes.resize(num_terms);
 }
@@ -89,20 +89,20 @@ void FactoryCurryNodes::curryficationHelper(z3::expr const & e, std::vector<bool
       // Case for first argument
       extra_nodes[last_node_pos] =
 	newCurryNode(last_node_pos + num_terms,
-					 "apply",
-					 curry_decl[f.id()],
-					 curry_nodes[e.arg(0).id()]);
+		     "apply",
+		     curry_decl.at(f.id()),
+		     curry_nodes[e.arg(0).id()]);
       // Case for the rest of the arguments
       for(unsigned i = 1; i < num; i++)
 	extra_nodes[last_node_pos + i] =
 	  newCurryNode(last_node_pos + i + num_terms,
-					   "apply",
-					   extra_nodes[last_node_pos + i - 1],
-					   curry_nodes[e.arg(i).id()]);
+		       "apply",
+		       extra_nodes[last_node_pos + i - 1],
+		       curry_nodes[e.arg(i).id()]);
       curry_nodes[e.id()] = extra_nodes[new_last_node_pos - 1];
     }
     else
-      curry_nodes[e.id()] = curry_decl[f.id()];
+      curry_nodes[e.id()] = curry_decl.at(f.id());
 
     switch(f.decl_kind()){
     case Z3_OP_EQ:
