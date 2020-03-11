@@ -20,6 +20,8 @@ CongruenceClosureExplain::CongruenceClosureExplain(const unsigned & min_id, cons
   std::cout << factory_curry_nodes << std::endl;
 
   std::cout << uf << std::endl;
+  // KEEP: WORKING here. Update uf with the size of factory_curry_nodes
+  // and update it using the merge that are pending!
   
   // std::cout << "Pending list" << std::endl;
   // for(auto x : pending_explain)
