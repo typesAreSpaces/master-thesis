@@ -7,7 +7,7 @@ EUFInterpolant::EUFInterpolant(z3::expr const & part_a) :
   min_id(part_a.id()), original_num_terms(part_a.id() + 1),
   ctx(part_a.ctx()), subterms(ctx), contradiction(ctx.bool_val(false)), disequalities(ctx),
   fsym_positions(), uf(part_a.id() + 1), pred_list(), horn_clauses(ctx, min_id, subterms),
-  curry_decl(), factory_curry_nodes(){
+  curry_decl(), factory_curry_nodes(original_num_terms, curry_decl){
   
   std::vector<bool> visited(original_num_terms, false);
   subterms.resize(original_num_terms);

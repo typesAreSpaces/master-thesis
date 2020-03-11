@@ -1,6 +1,8 @@
 #include "FactoryCurryNodes.h"
 
-FactoryCurryNodes::FactoryCurryNodes(){
+FactoryCurryNodes::FactoryCurryNodes(const unsigned & num_terms, CurryDeclarations & curry_decl) :
+  num_terms(num_terms), curry_decl(curry_decl){
+  curry_nodes.resize(num_terms);
 }
 
 FactoryCurryNodes::~FactoryCurryNodes(){
@@ -41,6 +43,13 @@ CurryNode * FactoryCurryNodes::getCurryNode(std::size_t index) const {
   throw "Problem @ FactoryCurryNodes::getCurryNode(std::size_t). Element not found.";
 }
 
+unsigned FactoryCurryNodes::addExtraNodes(unsigned num){
+  unsigned last_node_pos = extra_nodes.size(),
+    new_last_node_pos = last_node_pos + num;
+  extra_nodes.resize(new_last_node_pos);
+  return new_last_node_pos;
+}
+
 void FactoryCurryNodes::transferPreds(CurryNode * from, CurryNode * to){
   curry_predecessors[to].splice(curry_predecessors[to].end(), curry_predecessors[from]);
 
@@ -59,7 +68,63 @@ void FactoryCurryNodes::transferPreds(CurryNode * from, CurryNode * to){
   return;
 }
 
-void FactoryCurryNodes::flattening(CurryNodes & extra_nodes, unsigned num_terms){
+void FactoryCurryNodes::curryficationHelper(z3::expr const & e, std::vector<bool> & visited){
+  if(e.is_app()){
+
+    if(visited[e.id()])
+      return;
+    visited[e.id()] = true;
+    
+    unsigned num = e.num_args();
+    auto f = e.decl();
+    
+    for(unsigned i = 0; i < num; i++)
+      curryficationHelper(e.arg(i), visited);
+    
+    // Update curry_nodes
+    if(num > 0){
+      unsigned last_node_pos = extra_nodes.size();
+      unsigned new_last_node_pos = addExtraNodes(num);
+      
+      // Case for first argument
+      extra_nodes[last_node_pos] =
+	newCurryNode(last_node_pos + num_terms,
+					 "apply",
+					 curry_decl[f.id()],
+					 curry_nodes[e.arg(0).id()]);
+      // Case for the rest of the arguments
+      for(unsigned i = 1; i < num; i++)
+	extra_nodes[last_node_pos + i] =
+	  newCurryNode(last_node_pos + i + num_terms,
+					   "apply",
+					   extra_nodes[last_node_pos + i - 1],
+					   curry_nodes[e.arg(i).id()]);
+      curry_nodes[e.id()] = extra_nodes[new_last_node_pos - 1];
+    }
+    else
+      curry_nodes[e.id()] = curry_decl[f.id()];
+
+    switch(f.decl_kind()){
+    case Z3_OP_EQ:
+      // This approach is obsolete
+      // CHANGE: THIS using reprs 
+      // merge(curry_nodes[e.arg(0).id()]->getId(), curry_nodes[e.arg(1).id()]->getId());
+      return;
+    default:
+      return;
+    }
+  }
+  
+  throw "Problem @ FactoryCurryNodes::curryficationHelper(z3::expr const &, std::vector<bool> &). The z3::expr const & is not an app.";
+}
+
+void FactoryCurryNodes::curryfication(z3::expr const & e){
+  std::vector<bool> visited(num_terms, false);
+  curryficationHelper(e, visited);
+  return;
+}
+
+void FactoryCurryNodes::flattening(){
   while(!to_replace.empty()){
     auto cur_curry_node = to_replace.back();
     to_replace.pop_back();

@@ -64,18 +64,11 @@ class CongruenceClosureExplain : public CongruenceClosure {
 
   unsigned num_terms;
   
-  CurryNodes            curry_nodes;
-  CurryNodes            extra_nodes;
-  CurryDeclarations &   curry_decl;
-
-  FactoryCurryNodes &   factory_curry_nodes;
-  
   PendingExplain pending_explain;
   LookupTable    lookup_table;
   UseList        use_list;
   CCList         class_list_explain;
 
-  unsigned addExtraNodes(unsigned);
   void curryfication(z3::expr const &, std::vector<bool> &);
   void merge(CurryNode *, CurryNode *);
   void propagate();
