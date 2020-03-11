@@ -140,14 +140,15 @@ void FactoryCurryNodes::flattening(const unsigned & min_id, PendingExplain & pen
 				       "fresh_" + std::to_string(last_node_pos + num_terms),
 				       nullptr, nullptr));
     CurryNode * new_constant = extra_nodes[last_node_pos];
-    pending_explain.push_back(EquationCurryNodes(cur_curry_node, new_constant));
+    pending_explain.push_back(PendingElement(EquationCurryNodes(cur_curry_node, new_constant)));
     updatePreds(cur_curry_node, new_constant);
   }
   // Update Z3 Ids
   for(unsigned i = min_id; i < curry_nodes.size(); i++)
     curry_nodes[i]->updateZ3Id(i);
-  for(auto x : pending_explain)
-    x.rhs->updateZ3Id(x.lhs->getZ3Id());
+  for(auto x : pending_explain){
+    x.eq_cn.rhs->updateZ3Id(x.eq_cn.lhs->getZ3Id());
+  }
 }
 
 std::ostream & operator << (std::ostream & os, const FactoryCurryNodes & fcns){

@@ -54,7 +54,7 @@ class CongruenceClosureExplain : public CongruenceClosure {
   UseList        use_list;
   CCList         class_list_explain;
 
-  void merge(CurryNode *, CurryNode *);
+  void merge(PendingElement &);
   void propagate();
   
  public:

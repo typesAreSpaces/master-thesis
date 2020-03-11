@@ -8,9 +8,6 @@
 
 enum KindEquation { CONST_EQ, APPLY_EQ  };
 
-struct PendingElement {
-};
-
 struct EquationCurryNodes {
   CurryNode * lhs, * rhs;
   KindEquation kind_equation;
@@ -25,7 +22,36 @@ struct EquationCurryNodes {
   }
 };
 
+struct PairEquationCurryNodes {
+  const EquationCurryNodes & first, & second;
+  PairEquationCurryNodes(const EquationCurryNodes & first, const EquationCurryNodes & second) :
+    first(first), second(second) {}
+  friend std::ostream & operator << (std::ostream & os, const PairEquationCurryNodes & pecns){
+    os << "(" << pecns.first << ", " << pecns.second << ")" << std::endl;
+    return os;
+  }
+};
 
+
+enum PendingTag { Equation, PairEquation };
+
+struct PendingElement {
+  PendingTag tag;
+  union{
+    EquationCurryNodes eq_cn;
+    PairEquationCurryNodes p_eq_cn;
+  };
+  PendingElement(EquationCurryNodes eq_cn) :
+    tag(Equation), eq_cn(eq_cn){
+    // this->tag = Equation;
+    // this->eq_cn = eq_cn;
+  }
+  PendingElement(PairEquationCurryNodes p_eq_cn) :
+    tag(PairEquation), p_eq_cn(p_eq_cn){
+    // this->tag = PairEquation;
+    // this->p_eq_cn = p_eq_cn;
+  }
+};
 
 struct EquationZ3Ids {
   unsigned lhs_id, rhs_id;
@@ -37,7 +63,8 @@ struct EquationZ3Ids {
   }
 };
 
-typedef std::list<EquationCurryNodes> PendingExplain;
+// typedef std::list<EquationCurryNodes> PendingExplain;
+typedef std::list<PendingElement> PendingExplain;
 typedef std::list<EquationZ3Ids>      IdsToMerge;
 
 class FactoryCurryNodes {

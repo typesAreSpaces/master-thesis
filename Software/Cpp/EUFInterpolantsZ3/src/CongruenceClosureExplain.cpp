@@ -26,7 +26,7 @@ CongruenceClosureExplain::CongruenceClosureExplain(const unsigned & min_id, cons
 #if 1
   std::cout << "----Pending explain" << std::endl;
   for(auto x : pending_explain)
-    merge(x.lhs, x.rhs);
+    merge(x);
 #endif
   
 #if 0
@@ -37,11 +37,6 @@ CongruenceClosureExplain::CongruenceClosureExplain(const unsigned & min_id, cons
 	      << *factory_curry_nodes.curry_nodes[x.rhs_id]
 	      << std::endl;
 #endif
-  
-  // KEEP: WORKING here. Update uf with the size of factory_curry_nodes
-  // and update it using the merge that are pending!
-  
-  
 }
 
 CongruenceClosureExplain::~CongruenceClosureExplain(){
@@ -50,31 +45,43 @@ CongruenceClosureExplain::~CongruenceClosureExplain(){
 #endif
 }
 
-void CongruenceClosureExplain::merge(CurryNode * s, CurryNode * t){
-  if(s->isConstant() && t->isConstant()){
-    std::cout << "Merging constants" << std::endl;
-    // pending_explain.push_back(EquationCurryNodes(s, t));
-    // propagate();
-  }
-  else{
-    std::cout << "Merging apply equations" << std::endl;
-    try {
-      EquationCurryNodes whatever = lookup_table.query(0, 1);  // WRONG: Incomplete implementation
-      
-      // std::cout << whatever << std::endl;
+// KEEP: working here
+void CongruenceClosureExplain::merge(PendingElement & p){
+  switch(p.tag){
+  case Equation:{
+    auto s = p.eq_cn.lhs, t = p.eq_cn.rhs;
+    switch(p.eq_cn.kind_equation){
+    case CONST_EQ:
+      std::cout << "Merging constants" << std::endl;
+      std::cout << *s << " = " << *t << std::endl;
       // pending_explain.push_back(EquationCurryNodes(s, t));
       // propagate();
+      return;
+    case APPLY_EQ:
+      std::cout << "Merging apply equations" << std::endl;
+      std::cout << *s << " = " << *t << std::endl;
+      try {
+	EquationCurryNodes whatever = lookup_table.query(0, 1);  // WRONG: Incomplete implementation
+	// std::cout << whatever << std::endl;
+	// pending_explain.push_back(EquationCurryNodes(s, t));
+	// propagate();
+      }
+      catch(...){
+	std::cout << "Haha, the element wasnt in the lookup table" << std::endl;
+	// lookup_table.enter(0, 1, EquationCurryNodes(nullptr, nullptr, APPLY_EQ)); // WRONG: Incomplete implementation
+	// Update UseLists!!!
+      }
+      return;
     }
-    catch(...){
-      std::cout << "Haha, the element wasnt in the lookup table" << std::endl;
-      // lookup_table.enter(0, 1, EquationCurryNodes(nullptr, nullptr, APPLY_EQ)); // WRONG: Incomplete implementation
-      // Update UseLists!!!
-    }
+  }
+  case PairEquation:
+    return;
   }
 }
 
 void CongruenceClosureExplain::propagate(){
   while(!pending_explain.empty()){
+#if 0
     auto eq = pending_explain.front();
     pending_explain.pop_front();
 
@@ -84,6 +91,7 @@ void CongruenceClosureExplain::propagate(){
     case APPLY_EQ:
       break;
     }
+#endif
 
     
     
