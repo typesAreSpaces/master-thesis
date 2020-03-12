@@ -98,6 +98,7 @@ class FactoryCurryNodes {
   CurryNode * getCurryNode(std::size_t) const;
 
   const unsigned size() const;
+  const unsigned uniqueSize() const;
 
   friend std::ostream & operator << (std::ostream &, const FactoryCurryNodes &);
 };

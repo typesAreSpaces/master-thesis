@@ -28,6 +28,8 @@ public:
   void updateRight(CurryNode *);
   void updateZ3Id(unsigned);
   const unsigned getId() const;
+  const unsigned getLeftId() const;
+  const unsigned getRightId() const;
   const unsigned getZ3Id() const;
   std::size_t hash();
   friend std::ostream & operator << (std::ostream &, const CurryNode &);

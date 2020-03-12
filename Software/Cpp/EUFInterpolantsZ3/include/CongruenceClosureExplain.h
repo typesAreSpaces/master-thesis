@@ -8,11 +8,11 @@
 
 class LookupTable {
   std::unordered_map<std::size_t, EquationCurryNodes> sig_table;
-  UnionFind & uf;
+  UnionFindExplain & uf;
   std::hash<unsigned> unsigned_hasher;
   
 public:
-  LookupTable(UnionFind & uf) : uf(uf) {}
+  LookupTable(UnionFindExplain & uf) : uf(uf) {}
   ~LookupTable(){
 #if DEBUG_DESTRUCTORS_CC
     std::cout << "Done ~LookupTable" << std::endl;
@@ -35,7 +35,10 @@ public:
       throw "Element not in the table";
     return r->second;
   }
-  friend std::ostream & operator << (std::ostream & os, const LookupTable & st){
+  friend std::ostream & operator << (std::ostream & os, const LookupTable & lt){
+    for(auto x : lt.sig_table)
+      os << x.second << std::endl;
+    os << "Size of lookup table: " << lt.sig_table.size();
     return os;
   }
 };

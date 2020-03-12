@@ -47,6 +47,10 @@ CurryNode * FactoryCurryNodes::getCurryNode(std::size_t index) const {
 }
 
 const unsigned FactoryCurryNodes::size() const {
+  return curry_nodes.size() + extra_nodes.size();
+}
+
+const unsigned FactoryCurryNodes::uniqueSize() const {
   return hash_table.size();
 }
 

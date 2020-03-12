@@ -34,6 +34,18 @@ const unsigned CurryNode::getId() const {
   return id;
 }
 
+const unsigned CurryNode::getLeftId() const {
+  if(left == nullptr)
+    throw "Problem @ CurryNode::getLeftId(). left is a nullptr.";
+  return left->id;
+}
+
+const unsigned CurryNode::getRightId() const {
+  if(right == nullptr)
+    throw "Problem @ CurryNode::getRightId(). right is a nullptr.";
+  return right->id;
+}
+
 const unsigned CurryNode::getZ3Id() const {
   return z3_id;
 }
