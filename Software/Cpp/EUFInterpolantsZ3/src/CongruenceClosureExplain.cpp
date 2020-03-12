@@ -56,7 +56,7 @@ CongruenceClosureExplain::~CongruenceClosureExplain(){
 #endif
 }
 
-void CongruenceClosureExplain::merge(PendingElement & p){
+void CongruenceClosureExplain::merge(const PendingElement & p){
   switch(p.tag){
   case Equation:{
 #if DEBUG_MERGE
