@@ -69,7 +69,7 @@ void CongruenceClosureExplain::merge(const PendingElement & p){
 		<< *s << " = " << *t << std::endl;
 #endif
       pending_explain.push_back(p.eq_cn);
-      // propagate(); // KEEP: working here 
+      propagate();
       return;
     case APPLY_EQ:
 #if DEBUG_MERGE
@@ -87,7 +87,7 @@ void CongruenceClosureExplain::merge(const PendingElement & p){
 #endif
 	pending_explain.\
 	  push_back(PairEquationCurryNodes(p.eq_cn, element_found));
-	// propagate();
+        propagate();
       }
       catch(...){
 	lookup_table.enter(repr_lhs, repr_rhs, p.eq_cn);
@@ -111,13 +111,16 @@ void CongruenceClosureExplain::merge(const PendingElement & p){
     }
   }
   case PairEquation:
-    return;
+    throw "Problem @ CongruenceClosureExplain::merge(const PendingElement &).\
+This method cannot take as input a PairEquation.";
   }
 }
 
+// KEEP: working here
 void CongruenceClosureExplain::propagate(){
-  while(!pending_explain.empty()){
+  std::cout << "Keep working @ CongruenceClosureExplain::propagate()." << std::endl;
 #if 0
+  while(!pending_explain.empty()){
     auto eq = pending_explain.front();
     pending_explain.pop_front();
 
@@ -127,11 +130,8 @@ void CongruenceClosureExplain::propagate(){
     case APPLY_EQ:
       break;
     }
-#endif
-
-    
-    
   }
+#endif
 }
 
 void CongruenceClosureExplain::buildCongruenceClosure(std::list<unsigned> & pending){
