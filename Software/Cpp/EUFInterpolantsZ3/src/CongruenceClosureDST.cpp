@@ -1,7 +1,7 @@
 #include "CongruenceClosureDST.h"
 
 CongruenceClosureDST::CongruenceClosureDST(const unsigned & min_id, const z3::expr_vector & subterms,
-					   CCList & pred_list, UnionFind & uf) :
+					   PredList & pred_list, UnionFindExplain & uf) :
   CongruenceClosure(min_id, subterms, pred_list, uf){
 }
 

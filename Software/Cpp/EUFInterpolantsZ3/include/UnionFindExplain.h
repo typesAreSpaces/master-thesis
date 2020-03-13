@@ -4,15 +4,24 @@
 #include <list>
 #include <unordered_map>
 #include "UnionFind.h"
+#include "CurryNode.h"
  
 struct ExplainEquation {
   unsigned source, target;
+  PendingElement * label;
   
   ExplainEquation(unsigned source, unsigned target) :
-    source(source), target(target) {}
+    source(source), target(target), label(nullptr) {}
+
+  ExplainEquation(unsigned source, unsigned target, PendingElement * label) :
+    source(source), target(target), label(label) {}
   
   friend std::ostream & operator << (std::ostream & os, const ExplainEquation & eq){
     os << eq.source << " := " << eq.target;
+    if(eq.label == nullptr)
+      os << "[no label]";
+    else
+      os << "[" << *eq.label << "]";
     return os;
   }
 };
@@ -30,7 +39,7 @@ class UnionFindExplain :  public UnionFind {
   std::size_t hash_combine(unsigned, unsigned);
   unsigned depth(unsigned);
   unsigned commonAncestor(unsigned, unsigned);
-  void explainHelper(unsigned, unsigned, ExplainEquations &);
+  void     explainHelper(unsigned, unsigned, ExplainEquations &);
   
 public:
   UnionFindExplain();
@@ -39,8 +48,10 @@ public:
   ~UnionFindExplain();
   void combine(unsigned, unsigned);
   void merge(unsigned, unsigned);
+  void combine(unsigned, unsigned, PendingElement *);
+  void merge(unsigned, unsigned, PendingElement *);
   ExplainEquations explain(unsigned, unsigned);
-  void increaseSize(unsigned);
+  void resize(unsigned);
   bool operator ==(const UnionFindExplain &);
   friend std::ostream & operator << (std::ostream &, const UnionFindExplain &);
 };

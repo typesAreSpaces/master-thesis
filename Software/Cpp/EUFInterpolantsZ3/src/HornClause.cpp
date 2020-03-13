@@ -2,7 +2,7 @@
 #define DEBUG_DESTRUCTOR_HC false
 
 HornClause::HornClause(UnionFind & uf, z3::context & ctx, const unsigned & min_id, z3::expr_vector & subterms,
-		       z3::expr_vector antecedent, z3::expr consequent, CCList & pred_list) :
+		       z3::expr_vector antecedent, z3::expr consequent, PredList & pred_list) :
   uf(uf), ctx(ctx), min_id(min_id), subterms(subterms),
   antecedent(antecedent), consequent(consequent), pred_list(pred_list){
 

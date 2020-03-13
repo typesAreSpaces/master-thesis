@@ -43,8 +43,8 @@ public:
   }
 };
 
-typedef std::vector<std::list<unsigned> >           CCList;
 typedef std::vector<std::list<EquationCurryNodes> > UseList;
+typedef std::vector<std::list<unsigned> >           ClassListExplain;
 
 class CongruenceClosureExplain : public CongruenceClosure {
   
@@ -52,17 +52,17 @@ class CongruenceClosureExplain : public CongruenceClosure {
 
   unsigned num_terms;
   
-  PendingExplain pending_explain;
-  LookupTable    lookup_table;
-  UseList        use_list;
-  CCList         class_list_explain;
+  PendingExplain   pending_explain;
+  LookupTable      lookup_table;
+  UseList          use_list;
+  ClassListExplain class_list_explain;
 
   void merge(const PendingElement &);
   void propagate();
   
  public:
   CongruenceClosureExplain(const unsigned &, const z3::expr_vector &,
-			   CCList &, UnionFindExplain &,
+			   PredList &, UnionFindExplain &,
 			   const CurryDeclarations &, FactoryCurryNodes &);
   void buildCongruenceClosure(std::list<unsigned> &);
   

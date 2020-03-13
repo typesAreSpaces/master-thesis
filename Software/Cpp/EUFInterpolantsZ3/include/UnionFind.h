@@ -1,9 +1,13 @@
+
 #ifndef UNIONFIND_H
 #define UNIONFIND_H
 
 #include <iostream>
 #include <vector>
 #include <cassert>
+#include <list>
+
+typedef std::vector<std::list<unsigned> > PredList;
 
 class UnionFind {
   
@@ -45,7 +49,7 @@ public:
     return r;
   }
   iterator end(unsigned m_element){ return iterator(this, m_element, size); }
-  virtual void increaseSize(unsigned);
+  virtual void resize(unsigned);
   virtual bool operator ==(const UnionFind &);
   const unsigned getSize() const { return size; }
   friend std::ostream & operator << (std::ostream &, const UnionFind &);

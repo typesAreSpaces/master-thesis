@@ -1,53 +1,58 @@
 #include "CongruenceClosureExplain.h"
 #define DEBUG_SANITY_CHECK false
 #define DEBUG_MERGE        false
+#define DEBUG_PROPAGATE    true
 
 CongruenceClosureExplain::CongruenceClosureExplain(const unsigned & min_id, const z3::expr_vector & subterms,
-						   CCList & pred_list, UnionFindExplain & uf,
+						   PredList & pred_list, UnionFindExplain & uf,
 						   const CurryDeclarations & curry_decl, FactoryCurryNodes & factory_curry_nodes) :
   CongruenceClosure(min_id, subterms, pred_list, uf), num_terms(subterms.size()),
   pending_explain(), lookup_table(uf), use_list(), class_list_explain(){
   
  
   auto ids_to_merge = factory_curry_nodes.curryfication(subterms[num_terms - 1]);
+  
   // NOTE: The new constants
   // introduced by flattening
   // are in extra_nodes
   factory_curry_nodes.flattening(min_id, pending_explain);
-
+  
   // There is an element in uf for each element
   // in the curry_nodes and extra_nodes. There
   // might be repeated elements in these collection
   // but they are unique pointers
-  uf.increaseSize(factory_curry_nodes.size());
-  use_list.resize(factory_curry_nodes.size());
+  uf                .resize(factory_curry_nodes.size());
+  use_list          .resize(factory_curry_nodes.size());
+  class_list_explain.resize(factory_curry_nodes.size());
 
 #if 0
   for(auto x : factory_curry_nodes.hash_table)
     std::cout << *factory_curry_nodes.id_table[x.second->getId()] << std::endl;
 #endif
 
-#if DEBUG_MERGE
-  std::cout << "----Pending explain" << std::endl;
-#endif
-  for(auto x : pending_explain){
-#if DEBUG_MERGE
-    std::cout << "------------------------------------" << std::endl;
-#endif
-    merge(x);
-  }
-  
-  // Elements from the lookup_table
-  // std::cout << lookup_table << std::endl;
+  for(auto x : pending_explain)
+    x.eq_cn.rhs->updateZ3Id(x.eq_cn.lhs->getZ3Id());
 
-#if 0
-  std::cout << "----Ids to merge" << std::endl;
-  for(auto x : ids_to_merge)
-    std::cout << *factory_curry_nodes.curry_nodes[x.lhs_id]
-	      << " = "
-	      << *factory_curry_nodes.curry_nodes[x.rhs_id]
-	      << std::endl;
-#endif
+  while(!pending_explain.empty()){
+    auto element = pending_explain.front();
+    pending_explain.pop_front();
+    merge(element);
+  }
+
+  
+  for(auto x : ids_to_merge){
+    auto const_id_lhs = factory_curry_nodes.curry_nodes[x.lhs_id]->getConstId(),
+      const_id_rhs = factory_curry_nodes.curry_nodes[x.rhs_id]->getConstId();   
+    auto const_lhs = factory_curry_nodes.newCurryNode(0, "fresh_" + std::to_string(const_id_lhs), nullptr, nullptr),
+      const_rhs = factory_curry_nodes.newCurryNode(0, "fresh_" + std::to_string(const_id_rhs), nullptr, nullptr);  
+    pending_explain.push_back(EquationCurryNodes(const_lhs, const_rhs));
+  }
+
+  while(!pending_explain.empty()){
+    auto element = pending_explain.front();
+    pending_explain.pop_front();
+    merge(element);
+  }
 }
 
 CongruenceClosureExplain::~CongruenceClosureExplain(){
@@ -58,7 +63,7 @@ CongruenceClosureExplain::~CongruenceClosureExplain(){
 
 void CongruenceClosureExplain::merge(const PendingElement & p){
   switch(p.tag){
-  case Equation:{
+  case EQ:{
 #if DEBUG_MERGE
     auto s = p.eq_cn.lhs, t = p.eq_cn.rhs;
 #endif
@@ -66,7 +71,7 @@ void CongruenceClosureExplain::merge(const PendingElement & p){
     case CONST_EQ:
 #if DEBUG_MERGE
       std::cout << "Merging constants" << std::endl
-		<< *s << " = " << *t << std::endl;
+		<< *s << " and " << *t << std::endl;
 #endif
       pending_explain.push_back(p.eq_cn);
       propagate();
@@ -74,19 +79,17 @@ void CongruenceClosureExplain::merge(const PendingElement & p){
     case APPLY_EQ:
 #if DEBUG_MERGE
       std::cout << "Merging apply equations" << std::endl
-		<< *s << " = " << *t << std::endl;
+		<< *s << " and " << *t << std::endl;
 #endif
       auto repr_lhs = uf.find(p.eq_cn.lhs->getLeftId()),
 	repr_rhs = uf.find(p.eq_cn.lhs->getRightId());
       try {	 
-	EquationCurryNodes element_found = lookup_table.\
-	  query(repr_lhs, repr_rhs);
+	EquationCurryNodes element_found = lookup_table.query(repr_lhs, repr_rhs);
 #if DEBUG_MERGE
-	std::cout << "Element found "
+	std::cout << "@merge : element found "
 		  << element_found << std::endl;
 #endif
-	pending_explain.\
-	  push_back(PairEquationCurryNodes(p.eq_cn, element_found));
+	pending_explain.push_back(PairEquationCurryNodes(p.eq_cn, element_found));
         propagate();
       }
       catch(...){
@@ -94,7 +97,7 @@ void CongruenceClosureExplain::merge(const PendingElement & p){
 	use_list[repr_lhs].push_back(p.eq_cn);
 	use_list[repr_rhs].push_back(p.eq_cn);
 #if DEBUG_MERGE
-	std::cout << "Element wasnt in the lookup table" << std::endl
+	std::cout << "@merge: the element wasnt in the lookup table" << std::endl
 		  << "------------------------------------------"
 		  << std::endl
 		  << "Index lhs " << p.eq_cn.lhs->getLeftId()
@@ -110,7 +113,7 @@ void CongruenceClosureExplain::merge(const PendingElement & p){
       return;
     }
   }
-  case PairEquation:
+  case EQ_EQ:
     throw "Problem @ CongruenceClosureExplain::merge(const PendingElement &).\
 This method cannot take as input a PairEquation.";
   }
@@ -118,20 +121,62 @@ This method cannot take as input a PairEquation.";
 
 // KEEP: working here
 void CongruenceClosureExplain::propagate(){
-  std::cout << "Keep working @ CongruenceClosureExplain::propagate()." << std::endl;
-#if 0
   while(!pending_explain.empty()){
-    auto eq = pending_explain.front();
+    auto pending_element = pending_explain.front();
     pending_explain.pop_front();
 
-    switch(eq.kind_equation){
-    case CONST_EQ:
+    CurryNode * a, * b;
+    switch(pending_element.tag){
+    case EQ:
+      a = pending_element.eq_cn.lhs, b = pending_element.eq_cn.rhs;
       break;
-    case APPLY_EQ:
+    case EQ_EQ:
+      a = pending_element.p_eq_cn.first.rhs, b = pending_element.p_eq_cn.second.rhs;
       break;
     }
-  }
+    
+    unsigned repr_a = uf.find(a->getId()), repr_b = uf.find(b->getId());
+
+    if(repr_a != repr_b){
+      // Invariant |ClassList(repr_a)| \leq |ClassList(repr_b)|
+      if(class_list_explain[repr_a].size() > class_list_explain[repr_b].size()){
+	unsigned aux_temp = repr_a;
+	repr_a = repr_b;
+	repr_b = aux_temp;
+	CurryNode * aux = a;
+	a = b;
+	b = aux;
+      }
+      unsigned old_repr_a = repr_a;
+      uf.merge(b->getId(), a->getId(), &pending_element);
+      class_list_explain[repr_b].splice(class_list_explain[repr_b].end(), class_list_explain[old_repr_a]);
+
+      while(!use_list[old_repr_a].empty()){
+	auto equation = use_list[old_repr_a].front();
+	use_list[old_repr_a].pop_front();
+	unsigned c1 = equation.lhs->getLeftId(), c2 = equation.lhs->getRightId();
+	unsigned repr_c1 = uf.find(c1), repr_c2 = uf.find(c2);
+#if DEBUG_PROPAGATE	
+	std::cout << "Processing this equation inside propage: " << equation << std::endl;
+	std::cout << "Constant arguments: " << c1 << " " << c2 << std::endl;
 #endif
+	try{
+	  EquationCurryNodes element_found = lookup_table.query(repr_c1, repr_c2);
+#if DEBUG_PROPAGATE
+	  std::cout << "@propagate : element found " << element_found << std::endl;
+#endif
+	  pending_explain.push_back(PairEquationCurryNodes(equation, element_found));
+	}
+	catch(...){
+#if DEBUG_PROPAGATE
+	  std::cout << "@propagate : the element wasnt in the lookup table" << std::endl;
+#endif
+	  lookup_table.enter(repr_c1, repr_c2, equation);
+	  use_list[repr_b].push_back(equation);
+	}
+      }
+    }
+  }
 }
 
 void CongruenceClosureExplain::buildCongruenceClosure(std::list<unsigned> & pending){

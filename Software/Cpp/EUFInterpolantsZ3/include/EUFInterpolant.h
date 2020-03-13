@@ -14,7 +14,6 @@ void insert(std::list<T> & l, T element){
 }
 
 typedef std::map<std::string, std::vector<unsigned> > FSymPositions;
-typedef std::vector<std::list<unsigned> >             CCList;
 
 class EUFInterpolant {
   
@@ -30,7 +29,7 @@ class EUFInterpolant {
   FSymPositions    fsym_positions;
   // UnionFind        uf;
   UnionFindExplain uf;
-  CCList           pred_list;
+  PredList         pred_list;
   HornClauses      horn_clauses;
 
   CurryDeclarations curry_decl;  

@@ -59,11 +59,11 @@ EUFInterpolant::EUFInterpolant(z3::expr const & part_a) :
   
   // // // ----------------------------------------------------------------------
   // // Additional data structures for conditional uncommon symbol elimination
-  // CCList hornsat_list(pred_list);
+  // PredList hornsat_list(pred_list);
   // assert(pred_list.size() == subterms.size());
   
   // UnionFind hornsat_uf(uf);
-  // hornsat_uf.increaseSize(subterms.size());
+  // hornsat_uf.resize(subterms.size());
   // CongruenceClosureDST hornsat_cc(min_id, subterms, hornsat_list, hornsat_uf);
   // Hornsat hsat(horn_clauses, hornsat_uf);
   // // // ----------------------------------------------------------------------

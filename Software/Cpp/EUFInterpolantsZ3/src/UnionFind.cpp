@@ -27,6 +27,9 @@ UnionFind::~UnionFind(){
 // The first argument becomes the new
 // representative, always
 void UnionFind::combine(unsigned x, unsigned y){
+  assert(x < size && y < size);
+  if(find(x) == find(y))
+    return;
   representative[find(y)] = find(x);
   rank[find(x)] += rank[find(y)];
   return;
@@ -34,6 +37,8 @@ void UnionFind::combine(unsigned x, unsigned y){
 
 void UnionFind::merge(unsigned x, unsigned y){
   assert(x < size && y < size);
+  if(find(x) == find(y))
+    return;
   link(find(x), find(y));
   return;
 }
@@ -60,7 +65,7 @@ bool UnionFind::greater(unsigned x, unsigned y){
   return rank[x] > rank[y];
 }
 
-void UnionFind::increaseSize(unsigned sz){
+void UnionFind::resize(unsigned sz){
   representative.resize(sz);
   rank.resize(sz);
   for(unsigned i = size; i < sz; i++){

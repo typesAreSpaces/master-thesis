@@ -50,18 +50,16 @@ public:
   }
 };
 
-typedef std::vector<std::list<unsigned> > CCList;
-
 class CongruenceClosure {
   friend class Hornsat;
 protected:
   const unsigned &        min_id;
   const z3::expr_vector & subterms;
-  CCList &                pred_list;
-  UnionFind &             uf;
+  PredList &              pred_list;
+  UnionFindExplain &      uf;
   SignatureTable          sig_table;
  public:
-  CongruenceClosure(const unsigned &, const z3::expr_vector &, CCList &, UnionFind &);
+  CongruenceClosure(const unsigned &, const z3::expr_vector &, PredList &, UnionFindExplain &);
   virtual void buildCongruenceClosure(std::list<unsigned> &) = 0;
   virtual ~CongruenceClosure();
   friend std::ostream & operator << (std::ostream &, const CongruenceClosure &);
