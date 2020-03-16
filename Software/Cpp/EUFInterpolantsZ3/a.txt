@@ -1,188 +1,74 @@
-g++ -g -c -o obj/CongruenceClosureExplain.o  -I./src -I./include -std=c++11 src/CongruenceClosureExplain.cpp -Wall
+g++ -g -c -o obj/FactoryCurryNodes.o  -I./src -I./include -std=c++11 src/FactoryCurryNodes.cpp -Wall
 g++ -g -o euf_interpolator obj/Match.o obj/Rename.o obj/UnionFindExplain.o obj/HornClause.o obj/CongruenceClosureNO.o obj/Hornsat.o obj/CongruenceClosureDST.o obj/EUFInterpolant.o obj/CurryNode.o obj/CongruenceClosure.o obj/UnionFind.o obj/FactoryCurryNodes.o obj/main.o obj/HornClauses.o obj/CongruenceClosureExplain.o /home/jose/Documents/GithubProjects/z3__/build/libz3.so -lpthread -Wall
 ./euf_interpolator
-Merging apply equations
- * 12(Z3 id: 12|Const id: 20)(Defined). apply
+ * 5(Z3 id: 5|Const id: 5)(Defined). a
+
+ * 6(Z3 id: 6|Const id: 6)(Defined). b
+
+ * 29(Z3 id: 7|Const id: 33)(Defined). apply
  Left
-  9(Z3 id: 9|Const id: 0)(Defined). g
+  32(Z3 id: 28|Const id: 32)(Defined). fresh_32
  Right
-  5(Z3 id: 5|Const id: 0)(Defined). a
- and  * 20(Z3 id: 12|Const id: 0)(Defined). fresh_20
+  6(Z3 id: 6|Const id: 6)(Defined). b
 
-Element wasnt in the lookup table
-------------------------------------------
-Index lhs 9[9] has this in UseList  * 12(Z3 id: 12|Const id: 20)(Defined). apply
+ * 15(Z3 id: 8|Const id: 35)(Defined). apply
  Left
-  9(Z3 id: 9|Const id: 0)(Defined). g
+  8(Z3 id: 8|Const id: 8)(Defined). h
  Right
-  5(Z3 id: 5|Const id: 0)(Defined). a
- =  * 20(Z3 id: 12|Const id: 0)(Defined). fresh_20
+  6(Z3 id: 6|Const id: 6)(Defined). b
 
-Index rhs 5[5] has this in UseList  * 12(Z3 id: 12|Const id: 20)(Defined). apply
+ * 25(Z3 id: 9|Const id: 37)(Defined). apply
  Left
-  9(Z3 id: 9|Const id: 0)(Defined). g
+  36(Z3 id: 24|Const id: 36)(Defined). fresh_36
  Right
-  5(Z3 id: 5|Const id: 0)(Defined). a
- =  * 20(Z3 id: 12|Const id: 0)(Defined). fresh_20
+  6(Z3 id: 6|Const id: 6)(Defined). b
 
-------------------------------------------
-Merging apply equations
- * 11(Z3 id: 7|Const id: 21)(Defined). apply
+ * 21(Z3 id: 10|Const id: 39)(Defined). apply
  Left
-  7(Z3 id: 7|Const id: 0)(Defined). h
+  38(Z3 id: 17|Const id: 38)(Defined). fresh_38
  Right
-  6(Z3 id: 6|Const id: 0)(Defined). b
- and  * 21(Z3 id: 7|Const id: 0)(Defined). fresh_21
+  35(Z3 id: 8|Const id: 35)(Defined). fresh_35
 
-Element wasnt in the lookup table
-------------------------------------------
-Index lhs 7[7] has this in UseList  * 11(Z3 id: 7|Const id: 21)(Defined). apply
+ * 18(Z3 id: 11|Const id: 40)(Defined). apply
  Left
-  7(Z3 id: 7|Const id: 0)(Defined). h
+  38(Z3 id: 17|Const id: 38)(Defined). fresh_38
  Right
-  6(Z3 id: 6|Const id: 0)(Defined). b
- =  * 21(Z3 id: 7|Const id: 0)(Defined). fresh_21
+  6(Z3 id: 6|Const id: 6)(Defined). b
 
-Index rhs 6[6] has this in UseList  * 11(Z3 id: 7|Const id: 21)(Defined). apply
+ * 23(Z3 id: 12|Const id: 42)(Defined). apply
  Left
-  7(Z3 id: 7|Const id: 0)(Defined). h
+  41(Z3 id: 22|Const id: 41)(Defined). fresh_41
  Right
-  6(Z3 id: 6|Const id: 0)(Defined). b
- =  * 21(Z3 id: 7|Const id: 0)(Defined). fresh_21
+  39(Z3 id: 10|Const id: 39)(Defined). fresh_39
 
-------------------------------------------
-Merging apply equations
- * 13(Z3 id: 13|Const id: 22)(Defined). apply
+ * 27(Z3 id: 13|Const id: 44)(Defined). apply
  Left
-  20(Z3 id: 12|Const id: 0)(Defined). fresh_20
+  43(Z3 id: 26|Const id: 43)(Defined). fresh_43
  Right
-  21(Z3 id: 7|Const id: 0)(Defined). fresh_21
- and  * 22(Z3 id: 13|Const id: 0)(Defined). fresh_22
+  37(Z3 id: 9|Const id: 37)(Defined). fresh_37
 
-Element wasnt in the lookup table
-------------------------------------------
-Index lhs 20[20] has this in UseList  * 13(Z3 id: 13|Const id: 22)(Defined). apply
+ * 31(Z3 id: 14|Const id: 46)(Defined). apply
  Left
-  20(Z3 id: 12|Const id: 0)(Defined). fresh_20
+  45(Z3 id: 30|Const id: 45)(Defined). fresh_45
  Right
-  21(Z3 id: 7|Const id: 0)(Defined). fresh_21
- =  * 22(Z3 id: 13|Const id: 0)(Defined). fresh_22
+  33(Z3 id: 7|Const id: 33)(Defined). fresh_33
 
-Index rhs 21[21] has this in UseList  * 13(Z3 id: 13|Const id: 22)(Defined). apply
- Left
-  20(Z3 id: 12|Const id: 0)(Defined). fresh_20
- Right
-  21(Z3 id: 7|Const id: 0)(Defined). fresh_21
- =  * 22(Z3 id: 13|Const id: 0)(Defined). fresh_22
+11 = 10
+ * 40(Z3 id: 11|Const id: 40)(Defined). fresh_40
 
-------------------------------------------
-Merging apply equations
- * 17(Z3 id: 8|Const id: 23)(Defined). apply
- Left
-  22(Z3 id: 13|Const id: 0)(Defined). fresh_22
- Right
-  21(Z3 id: 7|Const id: 0)(Defined). fresh_21
- and  * 23(Z3 id: 8|Const id: 0)(Defined). fresh_23
+ * 39(Z3 id: 10|Const id: 39)(Defined). fresh_39
 
-Element wasnt in the lookup table
-------------------------------------------
-Index lhs 22[22] has this in UseList  * 17(Z3 id: 8|Const id: 23)(Defined). apply
- Left
-  22(Z3 id: 13|Const id: 0)(Defined). fresh_22
- Right
-  21(Z3 id: 7|Const id: 0)(Defined). fresh_21
- =  * 23(Z3 id: 8|Const id: 0)(Defined). fresh_23
+40 39
+8 = 6
+ * 35(Z3 id: 8|Const id: 35)(Defined). fresh_35
 
-Index rhs 21[21] has this in UseList  * 17(Z3 id: 8|Const id: 23)(Defined). apply
- Left
-  22(Z3 id: 13|Const id: 0)(Defined). fresh_22
- Right
-  21(Z3 id: 7|Const id: 0)(Defined). fresh_21
- =  * 23(Z3 id: 8|Const id: 0)(Defined). fresh_23
+ * 6(Z3 id: 6|Const id: 6)(Defined). b
 
-------------------------------------------
-Merging apply equations
- * 14(Z3 id: 9|Const id: 24)(Defined). apply
- Left
-  22(Z3 id: 13|Const id: 0)(Defined). fresh_22
- Right
-  6(Z3 id: 6|Const id: 0)(Defined). b
- and  * 24(Z3 id: 9|Const id: 0)(Defined). fresh_24
+35 6
+5 = 6
+ * 5(Z3 id: 5|Const id: 5)(Defined). a
 
-Element wasnt in the lookup table
-------------------------------------------
-Index lhs 22[22] has this in UseList  * 14(Z3 id: 9|Const id: 24)(Defined). apply
- Left
-  22(Z3 id: 13|Const id: 0)(Defined). fresh_22
- Right
-  6(Z3 id: 6|Const id: 0)(Defined). b
- =  * 24(Z3 id: 9|Const id: 0)(Defined). fresh_24
+ * 6(Z3 id: 6|Const id: 6)(Defined). b
 
-Index rhs 6[6] has this in UseList  * 14(Z3 id: 9|Const id: 24)(Defined). apply
- Left
-  22(Z3 id: 13|Const id: 0)(Defined). fresh_22
- Right
-  6(Z3 id: 6|Const id: 0)(Defined). b
- =  * 24(Z3 id: 9|Const id: 0)(Defined). fresh_24
-
-------------------------------------------
-Merging apply equations
- * 18(Z3 id: 18|Const id: 25)(Defined). apply
- Left
-  10(Z3 id: 10|Const id: 0)(Defined). =
- Right
-  24(Z3 id: 9|Const id: 0)(Defined). fresh_24
- and  * 25(Z3 id: 18|Const id: 0)(Defined). fresh_25
-
-Element wasnt in the lookup table
-------------------------------------------
-Index lhs 10[10] has this in UseList  * 18(Z3 id: 18|Const id: 25)(Defined). apply
- Left
-  10(Z3 id: 10|Const id: 0)(Defined). =
- Right
-  24(Z3 id: 9|Const id: 0)(Defined). fresh_24
- =  * 25(Z3 id: 18|Const id: 0)(Defined). fresh_25
-
-Index rhs 24[24] has this in UseList  * 18(Z3 id: 18|Const id: 25)(Defined). apply
- Left
-  10(Z3 id: 10|Const id: 0)(Defined). =
- Right
-  24(Z3 id: 9|Const id: 0)(Defined). fresh_24
- =  * 25(Z3 id: 18|Const id: 0)(Defined). fresh_25
-
-------------------------------------------
-Merging apply equations
- * 19(Z3 id: 10|Const id: 26)(Defined). apply
- Left
-  25(Z3 id: 18|Const id: 0)(Defined). fresh_25
- Right
-  23(Z3 id: 8|Const id: 0)(Defined). fresh_23
- and  * 26(Z3 id: 10|Const id: 0)(Defined). fresh_26
-
-Element wasnt in the lookup table
-------------------------------------------
-Index lhs 25[25] has this in UseList  * 19(Z3 id: 10|Const id: 26)(Defined). apply
- Left
-  25(Z3 id: 18|Const id: 0)(Defined). fresh_25
- Right
-  23(Z3 id: 8|Const id: 0)(Defined). fresh_23
- =  * 26(Z3 id: 10|Const id: 0)(Defined). fresh_26
-
-Index rhs 23[23] has this in UseList  * 19(Z3 id: 10|Const id: 26)(Defined). apply
- Left
-  25(Z3 id: 18|Const id: 0)(Defined). fresh_25
- Right
-  23(Z3 id: 8|Const id: 0)(Defined). fresh_23
- =  * 26(Z3 id: 10|Const id: 0)(Defined). fresh_26
-
-------------------------------------------
-why
-Merging constants
- * 24(Z3 id: 9|Const id: 0)(Defined). fresh_24
- and  * 23(Z3 id: 8|Const id: 0)(Defined). fresh_23
-
-Keep working @ CongruenceClosureExplain::propagate().
-From propagate---------------------------------------
- * 24(Z3 id: 9|Const id: 0)(Defined). fresh_24
- =  * 23(Z3 id: 8|Const id: 0)(Defined). fresh_23
-
+5 6
+Makefile:41: recipe for target 'run' failed

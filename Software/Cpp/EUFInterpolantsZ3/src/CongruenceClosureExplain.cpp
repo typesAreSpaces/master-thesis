@@ -1,7 +1,7 @@
 #include "CongruenceClosureExplain.h"
 #define DEBUG_SANITY_CHECK false
 #define DEBUG_MERGE        false
-#define DEBUG_PROPAGATE    true
+#define DEBUG_PROPAGATE    false
 
 CongruenceClosureExplain::CongruenceClosureExplain(const unsigned & min_id, const z3::expr_vector & subterms,
 						   PredList & pred_list, UnionFindExplain & uf,
@@ -32,27 +32,31 @@ CongruenceClosureExplain::CongruenceClosureExplain(const unsigned & min_id, cons
 
   for(auto x : pending_explain)
     x.eq_cn.rhs->updateZ3Id(x.eq_cn.lhs->getZ3Id());
-
+  
   while(!pending_explain.empty()){
     auto element = pending_explain.front();
     pending_explain.pop_front();
     merge(element);
   }
-
   
   for(auto x : ids_to_merge){
     auto const_id_lhs = factory_curry_nodes.curry_nodes[x.lhs_id]->getConstId(),
-      const_id_rhs = factory_curry_nodes.curry_nodes[x.rhs_id]->getConstId();   
-    auto const_lhs = factory_curry_nodes.newCurryNode(0, "fresh_" + std::to_string(const_id_lhs), nullptr, nullptr),
-      const_rhs = factory_curry_nodes.newCurryNode(0, "fresh_" + std::to_string(const_id_rhs), nullptr, nullptr);  
+      const_id_rhs = factory_curry_nodes.curry_nodes[x.rhs_id]->getConstId();
+    auto const_lhs = factory_curry_nodes.constantCurryNode(const_id_lhs),
+      const_rhs = factory_curry_nodes.constantCurryNode(const_id_rhs);
     pending_explain.push_back(EquationCurryNodes(const_lhs, const_rhs));
   }
-
+  
   while(!pending_explain.empty()){
     auto element = pending_explain.front();
+    std::cout << "fUck " << element << std::endl;
     pending_explain.pop_front();
     merge(element);
   }
+
+  std::cout << (UnionFind)uf << std::endl;
+
+  std::cout << factory_curry_nodes << std::endl;
 }
 
 CongruenceClosureExplain::~CongruenceClosureExplain(){
@@ -125,6 +129,8 @@ void CongruenceClosureExplain::propagate(){
     auto pending_element = pending_explain.front();
     pending_explain.pop_front();
 
+    std::cout << "Inside propagate. Taking this element " << pending_element << std::endl;
+
     CurryNode * a, * b;
     switch(pending_element.tag){
     case EQ:
@@ -134,6 +140,8 @@ void CongruenceClosureExplain::propagate(){
       a = pending_element.p_eq_cn.first.rhs, b = pending_element.p_eq_cn.second.rhs;
       break;
     }
+
+    std::cout << "To merge these two inside uf: " << *b << " " << *a << std::endl;
     
     unsigned repr_a = uf.find(a->getId()), repr_b = uf.find(b->getId());
 
@@ -148,6 +156,7 @@ void CongruenceClosureExplain::propagate(){
 	b = aux;
       }
       unsigned old_repr_a = repr_a;
+      std::cout << "To merge these two inside uf: " << b->getId() << " " << a->getId() << std::endl;
       uf.merge(b->getId(), a->getId(), &pending_element);
       class_list_explain[repr_b].splice(class_list_explain[repr_b].end(), class_list_explain[old_repr_a]);
 
@@ -157,7 +166,7 @@ void CongruenceClosureExplain::propagate(){
 	unsigned c1 = equation.lhs->getLeftId(), c2 = equation.lhs->getRightId();
 	unsigned repr_c1 = uf.find(c1), repr_c2 = uf.find(c2);
 #if DEBUG_PROPAGATE	
-	std::cout << "Processing this equation inside propage: " << equation << std::endl;
+	std::cout << "Processing this equation inside propagate: " << equation << std::endl;
 	std::cout << "Constant arguments: " << c1 << " " << c2 << std::endl;
 #endif
 	try{
@@ -165,6 +174,7 @@ void CongruenceClosureExplain::propagate(){
 #if DEBUG_PROPAGATE
 	  std::cout << "@propagate : element found " << element_found << std::endl;
 #endif
+	  std::cout << "newwww" << std::endl;
 	  pending_explain.push_back(PairEquationCurryNodes(equation, element_found));
 	}
 	catch(...){

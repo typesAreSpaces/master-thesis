@@ -43,7 +43,15 @@ CurryNode * FactoryCurryNodes::getCurryNode(std::size_t index) const {
   auto element = hash_table.find(index);
   if(element != hash_table.end())
     return element->second;
-  throw "Problem @ FactoryCurryNodes::getCurryNode(std::size_t). Element not found.";
+  throw "Problem @ FactoryCurryNodes::getCurryNode(std::size_t). \
+Element not found.";
+}
+
+CurryNode * FactoryCurryNodes::constantCurryNode(unsigned index){
+  auto element = curry_nodes[index];
+  if(index > curry_nodes.size() || element->isReplaceable())
+    return newCurryNode(0, "fresh_" + std::to_string(index), nullptr, nullptr);
+  return element;
 }
 
 const unsigned FactoryCurryNodes::size() const {

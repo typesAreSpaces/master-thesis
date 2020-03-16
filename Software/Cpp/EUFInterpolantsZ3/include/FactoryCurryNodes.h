@@ -36,6 +36,7 @@ class FactoryCurryNodes {
   
   CurryNode * newCurryNode(unsigned, std::string, CurryNode *, CurryNode *);
   CurryNode * getCurryNode(std::size_t) const;
+  CurryNode * constantCurryNode(unsigned);
 
   const unsigned size() const;
   const unsigned uniqueSize() const;

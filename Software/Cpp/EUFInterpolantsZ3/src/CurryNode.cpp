@@ -2,7 +2,7 @@
 #define OS_FULL true
 
 CurryNode::CurryNode(unsigned id, std::string func_name, CurryNode * left, CurryNode * right) :
-  id(id), z3_id(0), const_id(0), func_name(func_name), left(left), right(right) {
+  id(id), z3_id(id), const_id(id), func_name(func_name), left(left), right(right) {
 }
 
 const bool CurryNode::isConstant() const {
