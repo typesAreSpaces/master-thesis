@@ -35,6 +35,12 @@ public:
       throw "Element not in the table";
     return r->second;
   }
+  EquationCurryNodes * queryPointer(unsigned a1, unsigned a2){
+    auto r = sig_table.find(hash_combine(a1, a2));
+    if(r == sig_table.end())
+      throw "Element not in the table";
+    return &r->second;
+  }
   friend std::ostream & operator << (std::ostream & os, const LookupTable & lt){
     for(auto x : lt.sig_table)
       os << x.second << std::endl;
