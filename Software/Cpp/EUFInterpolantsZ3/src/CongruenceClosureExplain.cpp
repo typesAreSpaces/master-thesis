@@ -53,7 +53,7 @@ CongruenceClosureExplain::CongruenceClosureExplain(const unsigned & min_id, cons
     merge(element);
   }
 
-#if 1
+#if 0
   std::cout << uf << std::endl;
   // std::cout << factory_curry_nodes << std::endl;
 #endif
