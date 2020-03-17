@@ -173,6 +173,9 @@ void CongruenceClosureExplain::propagate(){
 #endif
 	try{
 	  EquationCurryNodes * element_found = lookup_table.queryPointer(repr_c1, repr_c2);
+	  std::cout << "New PairEqautionCurryNodes" << std::endl; // KEEP: working here
+	  std::cout << *element_found << std::endl;
+	  std::cout << use_list[old_repr_a].front() << std::endl;
 #if DEBUG_PROPAGATE
 	  std::cout << "@propagate. element found " << element_found << std::endl;
 	  // // -----------------------------------------------------------------------
