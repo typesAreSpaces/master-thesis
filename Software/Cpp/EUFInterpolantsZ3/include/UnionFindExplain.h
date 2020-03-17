@@ -53,7 +53,7 @@ public:
   ExplainEquations explain(unsigned, unsigned);
   void resize(unsigned);
   bool operator ==(const UnionFindExplain &);
-  friend std::ostream & operator << (std::ostream &, const UnionFindExplain &);
+  friend std::ostream & operator << (std::ostream &, UnionFindExplain &);
 };
 
 #endif

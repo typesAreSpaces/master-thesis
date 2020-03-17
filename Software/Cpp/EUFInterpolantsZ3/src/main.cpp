@@ -77,7 +77,7 @@ void testUFE(){
   explainn(1, 9, a);
   explainn(0, 4, a);
 
-  std::cout << (UnionFind)a << std::endl;
+  // std::cout << (UnionFind)a << std::endl;
  
   std::cout << "Equivalence class for 8" << std::endl;
   auto it = a.begin(8), end = a.end(8);
@@ -137,7 +137,7 @@ void testEUF3(){
   z3::expr b = ctx.constant("b", my_sort);
   z3::func_decl g = ctx.function("g", my_sort, my_sort, my_sort, my_sort);
   z3::func_decl h = ctx.function("h", my_sort, my_sort);
-  z3::expr alpha = g(a, h(b), b) == g(a, h(b), h(b)) && h(b) == b && a == b;
+  z3::expr alpha = g(a, h(b), b) == g(b, h(b), h(b)) && h(b) == b && a == b;
   EUFInterpolant euf(alpha);
   return;
 }

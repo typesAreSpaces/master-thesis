@@ -87,7 +87,7 @@ bool UnionFind::operator ==(const UnionFind & other){
   return true;
 }
 
-std::ostream & operator << (std::ostream & os, const UnionFind & uf){
+std::ostream & operator << (std::ostream & os, UnionFind & uf){
   for(unsigned i = 0; i < uf.representative.size(); ++i)
     os << "ID: " << i
        << " Representative: " << uf.representative[i]

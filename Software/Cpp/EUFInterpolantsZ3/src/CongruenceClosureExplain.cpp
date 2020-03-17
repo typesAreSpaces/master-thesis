@@ -1,7 +1,7 @@
 #include "CongruenceClosureExplain.h"
-#define DEBUG_SANITY_CHECK false
-#define DEBUG_MERGE        false
-#define DEBUG_PROPAGATE    false
+#define DEBUG_SANITY_CHECK 0
+#define DEBUG_MERGE        0
+#define DEBUG_PROPAGATE    0
 
 CongruenceClosureExplain::CongruenceClosureExplain(const unsigned & min_id, const z3::expr_vector & subterms,
 						   PredList & pred_list, UnionFindExplain & uf,
@@ -49,14 +49,14 @@ CongruenceClosureExplain::CongruenceClosureExplain(const unsigned & min_id, cons
   
   while(!pending_explain.empty()){
     auto element = pending_explain.front();
-    std::cout << "fUck " << element << std::endl;
     pending_explain.pop_front();
     merge(element);
   }
 
-  std::cout << (UnionFind)uf << std::endl;
-
+#if 0
+  std::cout << uf << std::endl;
   std::cout << factory_curry_nodes << std::endl;
+#endif
 }
 
 CongruenceClosureExplain::~CongruenceClosureExplain(){
@@ -74,7 +74,7 @@ void CongruenceClosureExplain::merge(const PendingElement & p){
     switch(p.eq_cn.kind_equation){
     case CONST_EQ:
 #if DEBUG_MERGE
-      std::cout << "Merging constants" << std::endl
+      std::cout << "@merge. Merging constants" << std::endl
 		<< *s << " and " << *t << std::endl;
 #endif
       pending_explain.push_back(p.eq_cn);
@@ -82,18 +82,19 @@ void CongruenceClosureExplain::merge(const PendingElement & p){
       return;
     case APPLY_EQ:
 #if DEBUG_MERGE
-      std::cout << "Merging apply equations" << std::endl
+      std::cout << "@merge. Merging apply equations" << std::endl
 		<< *s << " and " << *t << std::endl;
 #endif
       auto repr_lhs = uf.find(p.eq_cn.lhs->getLeftId()),
 	repr_rhs = uf.find(p.eq_cn.lhs->getRightId());
-      try {	 
+      try {
+	// FIX: Problem with the 'element_found' being replaced by subsequent pointers
 	EquationCurryNodes element_found = lookup_table.query(repr_lhs, repr_rhs);
 #if DEBUG_MERGE
 	std::cout << "@merge : element found "
 		  << element_found << std::endl;
 #endif
-	pending_explain.push_back(PairEquationCurryNodes(p.eq_cn, element_found));
+	pending_explain.push_back(PairEquationCurryNodes(&(p.eq_cn), &element_found));
         propagate();
       }
       catch(...){
@@ -126,10 +127,13 @@ This method cannot take as input a PairEquation.";
 // KEEP: working here
 void CongruenceClosureExplain::propagate(){
   while(!pending_explain.empty()){
+    // FIX: Problem with the 'pending_element' being replaced by subsequent pointers
     auto pending_element = pending_explain.front();
     pending_explain.pop_front();
 
-    std::cout << "Inside propagate. Taking this element " << pending_element << std::endl;
+#if DEBUG_PROPAGATE
+    std::cout << "@propagate. Taking this element " << pending_element << std::endl;
+#endif
 
     CurryNode * a, * b;
     switch(pending_element.tag){
@@ -137,12 +141,13 @@ void CongruenceClosureExplain::propagate(){
       a = pending_element.eq_cn.lhs, b = pending_element.eq_cn.rhs;
       break;
     case EQ_EQ:
-      a = pending_element.p_eq_cn.first.rhs, b = pending_element.p_eq_cn.second.rhs;
+      a = pending_element.p_eq_cn.first->rhs, b = pending_element.p_eq_cn.second->rhs;
       break;
     }
-
-    std::cout << "To merge these two inside uf: " << *b << " " << *a << std::endl;
     
+#if DEBUG_PROPAGATE
+    std::cout << "@propagate. To merge these two inside uf: " << *b << " " << *a << std::endl;
+#endif
     unsigned repr_a = uf.find(a->getId()), repr_b = uf.find(b->getId());
 
     if(repr_a != repr_b){
@@ -156,30 +161,36 @@ void CongruenceClosureExplain::propagate(){
 	b = aux;
       }
       unsigned old_repr_a = repr_a;
-      std::cout << "To merge these two inside uf: " << b->getId() << " " << a->getId() << std::endl;
       uf.merge(b->getId(), a->getId(), &pending_element);
-      class_list_explain[repr_b].splice(class_list_explain[repr_b].end(), class_list_explain[old_repr_a]);
+      
+      // // FIX: Problem with the 'pending_element' being replaced by subsequent pointers
+      // std::cout << "what " << b->getId() << " " << a->getId() << " " << &pending_element << " " << pending_element << std::endl;
+      
+      auto last_pos_iterator = class_list_explain[repr_b].end();
+      class_list_explain[repr_b].splice(last_pos_iterator, class_list_explain[old_repr_a]);
+      // Idk why the following crashes
+      // class_list_explain[repr_b].splice(class_list_explain[repr_b].end(), class_list_explain[old_repr_a]);
 
       while(!use_list[old_repr_a].empty()){
-	auto equation = use_list[old_repr_a].front();
+	// FIX: Problem with the 'equation' being replaced by subsequent pointers
+	const EquationCurryNodes equation = use_list[old_repr_a].front();
 	use_list[old_repr_a].pop_front();
 	unsigned c1 = equation.lhs->getLeftId(), c2 = equation.lhs->getRightId();
 	unsigned repr_c1 = uf.find(c1), repr_c2 = uf.find(c2);
 #if DEBUG_PROPAGATE	
-	std::cout << "Processing this equation inside propagate: " << equation << std::endl;
-	std::cout << "Constant arguments: " << c1 << " " << c2 << std::endl;
+	std::cout << "@propagate. Processing this equation: " << equation << std::endl;
+	std::cout << "@propagate. Constant arguments: " << c1 << " " << c2 << std::endl;
 #endif
 	try{
 	  EquationCurryNodes element_found = lookup_table.query(repr_c1, repr_c2);
 #if DEBUG_PROPAGATE
-	  std::cout << "@propagate : element found " << element_found << std::endl;
+	  std::cout << "@propagate. element found " << element_found << std::endl;
 #endif
-	  std::cout << "newwww" << std::endl;
-	  pending_explain.push_back(PairEquationCurryNodes(equation, element_found));
+	  pending_explain.push_back(PairEquationCurryNodes(&equation, &element_found));
 	}
 	catch(...){
 #if DEBUG_PROPAGATE
-	  std::cout << "@propagate : the element wasnt in the lookup table" << std::endl;
+	  std::cout << "@propagate. the element wasnt in the lookup table" << std::endl;
 #endif
 	  lookup_table.enter(repr_c1, repr_c2, equation);
 	  use_list[repr_b].push_back(equation);
@@ -190,10 +201,10 @@ void CongruenceClosureExplain::propagate(){
 }
 
 void CongruenceClosureExplain::buildCongruenceClosure(std::list<unsigned> & pending){
-  throw "CongruenceClosureExplain::buildCongruenceClosure(std::list<unsigned> &). Implementation not defined";
+  throw "CongruenceClosureExplain::buildCongruenceClosure(std::list<unsigned> &). \
+Implementation not defined";
 }
 
 std::ostream & operator << (std::ostream & os, const CongruenceClosureExplain & cc){
   return os;
-
 }

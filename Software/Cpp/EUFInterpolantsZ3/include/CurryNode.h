@@ -64,24 +64,17 @@ struct EquationCurryNodes {
   EquationCurryNodes(CurryNode * lhs, CurryNode * rhs, KindEquation kind_equation) :
     lhs(lhs), rhs(rhs), kind_equation(kind_equation) {}
   friend std::ostream & operator << (std::ostream & os, const EquationCurryNodes & ecns){
-    std::cout << "---------------inside EquationCurryNodes" << std::endl;
-    std::cout << ecns.lhs << " " << ecns.rhs << std::endl;
     os << *ecns.lhs << " = " << *ecns.rhs;
     return os;
   }
 };
 
 struct PairEquationCurryNodes {
-  const EquationCurryNodes & first, & second;
-  PairEquationCurryNodes(const EquationCurryNodes & first, const EquationCurryNodes & second) :
+  const EquationCurryNodes * first, * second;
+  PairEquationCurryNodes(const EquationCurryNodes * first, const EquationCurryNodes * second) :
     first(first), second(second) {}
   friend std::ostream & operator << (std::ostream & os, const PairEquationCurryNodes & pecns){
-    std::cout << "--------------------------------------------haha1" << std::endl;
-    std::cout << pecns.first << std::endl;
-    std::cout << "--------------------------------------------haha2" << std::endl;
-    std::cout << pecns.second << std::endl;
-    std::cout << "--------------------------------------------haha3" << std::endl;
-    os << "(" << pecns.first << ", " << pecns.second << ")" << std::endl;
+    os << "(" << *pecns.first << ", " << *pecns.second << ")" << std::endl;
     return os;
   }
 };

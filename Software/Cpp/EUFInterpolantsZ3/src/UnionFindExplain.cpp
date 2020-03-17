@@ -251,12 +251,21 @@ bool UnionFindExplain::operator ==(const UnionFindExplain & other){
   return true;
 }
 
-std::ostream & operator << (std::ostream & os, const UnionFindExplain & uf){
-  for(unsigned i = 0; i < uf.representative.size(); ++i)
+std::ostream & operator << (std::ostream & os, UnionFindExplain & uf){
+  unsigned num_changes = 0;
+  for(unsigned i = 0; i < uf.representative.size(); ++i){
+    if(i != uf.find(i)) {
+      num_changes++;
+      std::cout << "(Different)";
+    }
+    else
+      std::cout << "(Same)";
     os << "ID: " << i
        << " Forest: " << uf.forest[i]
+       << " Representative " << uf.find(i)
        << std::endl;
+  }
   os << "Size " << uf.size << std::endl;
-  os << "(Remaider) The current representatives are not compressed.";
+  os << "Num changes: " << num_changes;
   return os;
 }

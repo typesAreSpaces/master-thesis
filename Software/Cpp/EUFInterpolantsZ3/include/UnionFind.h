@@ -1,4 +1,3 @@
-
 #ifndef UNIONFIND_H
 #define UNIONFIND_H
 
@@ -52,7 +51,7 @@ public:
   virtual void resize(unsigned);
   virtual bool operator ==(const UnionFind &);
   const unsigned getSize() const { return size; }
-  friend std::ostream & operator << (std::ostream &, const UnionFind &);
+  friend std::ostream & operator << (std::ostream &, UnionFind &);
 };
 
 #endif
