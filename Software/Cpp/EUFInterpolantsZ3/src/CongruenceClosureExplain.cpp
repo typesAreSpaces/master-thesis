@@ -93,6 +93,7 @@ void CongruenceClosureExplain::merge(const PendingElement & p){
 
       if(element_found == nullptr){
 	lookup_table.enter(repr_lhs, repr_rhs, &p.eq_cn);
+	std::cout << "mmm " << &p.eq_cn << std::endl;
 	use_list[repr_lhs].push_back(p.eq_cn);
 	use_list[repr_rhs].push_back(p.eq_cn);
 #if DEBUG_MERGE
@@ -196,9 +197,8 @@ void CongruenceClosureExplain::propagate(){
 	  // a.resize(1);
 	  // a[0].push_back(*equation);
 	  // a[0].pop_back();
-
 	  
-	  lookup_table.enter(repr_c1, repr_c2, equation);	  
+	  lookup_table.enter(repr_c1, repr_c2, equation);
 	}
 	else{
 	  auto new_entry = PairEquationCurryNodes(equation, element_found);
