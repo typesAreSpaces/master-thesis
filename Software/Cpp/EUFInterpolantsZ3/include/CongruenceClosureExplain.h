@@ -8,11 +8,10 @@
 
 class LookupTable {
   std::unordered_map<std::size_t, const EquationCurryNodes*> sig_table;
-  UnionFindExplain & uf;
   std::hash<unsigned> unsigned_hasher;
   
 public:
-  LookupTable(UnionFindExplain & uf) : uf(uf) {}
+  LookupTable() {}
   ~LookupTable(){
 #if DEBUG_DESTRUCTORS_CC
     std::cout << "Done ~LookupTable" << std::endl;

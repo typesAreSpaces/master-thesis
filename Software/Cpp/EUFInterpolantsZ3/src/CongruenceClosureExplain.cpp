@@ -7,7 +7,7 @@ CongruenceClosureExplain::CongruenceClosureExplain(const unsigned & min_id, cons
 						   PredList & pred_list, UnionFindExplain & uf,
 						   const CurryDeclarations & curry_decl, FactoryCurryNodes & factory_curry_nodes) :
   CongruenceClosure(min_id, subterms, pred_list, uf), num_terms(subterms.size()),
-  pending_explain(), lookup_table(uf), use_list(), class_list_explain(){
+  pending_explain(), lookup_table(), use_list(), class_list_explain(){
   
  
   auto ids_to_merge = factory_curry_nodes.curryfication(subterms[num_terms - 1]);
