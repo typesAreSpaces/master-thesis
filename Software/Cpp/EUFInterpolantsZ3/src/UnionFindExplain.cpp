@@ -184,7 +184,7 @@ void UnionFindExplain::merge(unsigned target, unsigned source){
 
 // The first argument becomes the new
 // representative, always.
-void UnionFindExplain::combine(unsigned target, unsigned source, PendingElement * pe){
+void UnionFindExplain::combine(unsigned target, unsigned source, const PendingElement * pe){
   assert(target < size && source < size);
   if(find(target) == find(source))
     return;
@@ -202,7 +202,7 @@ void UnionFindExplain::combine(unsigned target, unsigned source, PendingElement 
 
 // The first argument becomes the new
 // representative in forest, always.
-void UnionFindExplain::merge(unsigned target, unsigned source, PendingElement * pe){
+void UnionFindExplain::merge(unsigned target, unsigned source, const PendingElement * pe){
   assert(target < size && source < size);
   if(find(target) == find(source))
     return;

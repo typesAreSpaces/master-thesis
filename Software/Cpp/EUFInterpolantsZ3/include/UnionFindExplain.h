@@ -8,12 +8,12 @@
  
 struct ExplainEquation {
   unsigned source, target;
-  PendingElement * label;
+  const PendingElement * label;
   
   ExplainEquation(unsigned source, unsigned target) :
     source(source), target(target), label(nullptr) {}
 
-  ExplainEquation(unsigned source, unsigned target, PendingElement * label) :
+  ExplainEquation(unsigned source, unsigned target, const PendingElement * label) :
     source(source), target(target), label(label) {}
   
   friend std::ostream & operator << (std::ostream & os, const ExplainEquation & eq){
@@ -48,8 +48,8 @@ public:
   ~UnionFindExplain();
   void combine(unsigned, unsigned);
   void merge(unsigned, unsigned);
-  void combine(unsigned, unsigned, PendingElement *);
-  void merge(unsigned, unsigned, PendingElement *);
+  void combine(unsigned, unsigned, const PendingElement *);
+  void merge(unsigned, unsigned, const PendingElement *);
   ExplainEquations explain(unsigned, unsigned);
   void resize(unsigned);
   bool operator ==(const UnionFindExplain &);
