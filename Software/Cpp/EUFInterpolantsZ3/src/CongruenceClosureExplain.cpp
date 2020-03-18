@@ -204,9 +204,7 @@ void CongruenceClosureExplain::propagate(){
 #endif
 	  pending_propagate.push_back(new_entry);
 	}
-	
       }
-      
     }
   }
 }
