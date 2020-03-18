@@ -55,7 +55,7 @@ CongruenceClosureExplain::CongruenceClosureExplain(const unsigned & min_id, cons
 
 #if 1
   std::cout << uf << std::endl;
-  std::cout << factory_curry_nodes << std::endl;
+  // std::cout << factory_curry_nodes << std::endl;
 #endif
 }
 
@@ -154,7 +154,7 @@ void CongruenceClosureExplain::propagate(){
 #endif
     unsigned repr_a = uf.find(a->getId()), repr_b = uf.find(b->getId());
 
-    if(repr_a != repr_b){
+    if(repr_a != repr_b) {
       // Invariant |ClassList(repr_a)| \leq |ClassList(repr_b)|
       if(class_list_explain[repr_a].size() > class_list_explain[repr_b].size()){
 	std::swap(repr_a, repr_b);
@@ -179,44 +179,41 @@ void CongruenceClosureExplain::propagate(){
 
 	
 #if DEBUG_PROPAGATE	
-	std::cout << "@propagate. Processing this equation: " << equation << std::endl;
+	std::cout << "@propagate. Processing this equation: " << equation << " " << *equation << std::endl;
 	std::cout << "@propagate. Constant arguments: " << c1 << " " << c2 << std::endl;
 #endif
 
+	std::cout << "1. i dont understand this madness " << use_list[old_repr_a].size() << std::endl;
+	EquationCurryNodes * element_found = lookup_table.queryPointer(repr_c1, repr_c2);
+	std::cout << "2. i dont understand this madness " << use_list[old_repr_a].size() << std::endl;
 
-	
-	
-	try{
-	  std::cout << "1. i dont understand this madness " << use_list[old_repr_a].size() << std::endl;
-	  EquationCurryNodes * element_found = lookup_table.queryPointer(repr_c1, repr_c2);
-	  std::cout << "2. i dont understand this madness " << use_list[old_repr_a].size() << std::endl;
-#if DEBUG_PROPAGATE	
+	if(element_found == nullptr){	  	  
+#if DEBUG_PROPAGATE
+	  std::cout << "@propagate. the element wasnt in the lookup table" << std::endl;
+#endif
+	  auto aa = *equation;
+	  std::cout << aa << std::endl;
+	  use_list[repr_b].push_back(*equation);
+	  std::cout << "ahhh" << std::endl;
+	  lookup_table.enter(repr_c1, repr_c2, *equation);
+	  std::cout << "ehhh" << std::endl;
+	  
+	}
+	else{
+	  auto new_entry = PairEquationCurryNodes(equation, element_found);
+	  #if DEBUG_PROPAGATE	
 	  // --------------------------------------------------------------------------
 	  std::cout << "New PairEquationCurryNodes" << std::endl; // KEEP: working here
 	  std::cout << "1. ----------------------- " << element_found << " " << *element_found << std::endl;
 	  std::cout << "2. ----------------------- " << equation << " " << *equation << std::endl;
+	  std::cout << new_entry << std::endl;
 	  // --------------------------------------------------------------------------
 #endif
-	  pending_explain.push_back(PairEquationCurryNodes(equation, element_found));
+	  pending_explain.push_back(new_entry);
+	  std::cout << "wtf" << std::endl;
 	}
-	catch(...){
-	  
-#if DEBUG_PROPAGATE
-	  std::cout << "@propagate. the element wasnt in the lookup table" << std::endl;
-#endif
-	  lookup_table.enter(repr_c1, repr_c2, *equation);
-	  use_list[repr_b].push_back(*equation);
-	}
-	
-
 	
       }
-
-
-
-
-
-      
       
     }
   }
