@@ -59,7 +59,7 @@ class CongruenceClosureExplain : public CongruenceClosure {
   UseList          use_list;
   ClassListExplain class_list_explain;
 
-  void merge(const PendingElement &);
+  void merge();
   void propagate();
   
  public:

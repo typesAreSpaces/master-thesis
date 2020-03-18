@@ -33,11 +33,7 @@ CongruenceClosureExplain::CongruenceClosureExplain(const unsigned & min_id, cons
   for(auto x : equations_to_merge)
     x.eq_cn.rhs->updateZ3Id(x.eq_cn.lhs->getZ3Id());
 
-  while(!equations_to_merge.empty()){
-    auto element = equations_to_merge.back();
-    equations_to_merge.pop_back();
-    merge(element);
-  }
+  merge();
 
   // Process input-equation defined by user
   for(auto x : ids_to_merge){
@@ -50,7 +46,7 @@ CongruenceClosureExplain::CongruenceClosureExplain(const unsigned & min_id, cons
   
   propagate();
 
-#if 0
+#if 1
   std::cout << uf << std::endl;
   // std::cout << factory_curry_nodes << std::endl;
 #endif
@@ -62,73 +58,71 @@ CongruenceClosureExplain::~CongruenceClosureExplain(){
 #endif
 }
 
-void CongruenceClosureExplain::merge(const PendingElement & p) {
-  switch(p.tag){
-  case EQ:{
+void CongruenceClosureExplain::merge(){
+  while(!equations_to_merge.empty()) {    
+    const auto & equation_to_merge = equations_to_merge.back();
+    switch(equation_to_merge.tag) {
+    case EQ: {
 #if DEBUG_MERGE
-    auto s = p.eq_cn.lhs, t = p.eq_cn.rhs;
+      auto s = equation_to_merge.eq_cn.lhs, t = equation_to_merge.eq_cn.rhs;
 #endif
-    switch(p.eq_cn.kind_equation){
-    case CONST_EQ:
+      switch(equation_to_merge.eq_cn.kind_equation) {
+      case CONST_EQ:
 #if DEBUG_MERGE
-      std::cout << "@merge. Merging constants" << std::endl
-		<< *s << " and " << *t << std::endl;
+	std::cout << "@merge. Merging constants" << std::endl
+		  << *s << " and " << *t << std::endl;
 #endif
-      pending_propagate.push_back(p.eq_cn);
-      propagate();
+	pending_propagate.push_back(equation_to_merge.eq_cn);
+	propagate();
+	break;
+      case APPLY_EQ: {
+#if DEBUG_MERGE
+	std::cout << "@merge. Merging apply equations" << std::endl
+		  << *s << " and " << *t << std::endl;
+#endif
+	auto repr_lhs = uf.find(equation_to_merge.eq_cn.lhs->getLeftId()),
+	  repr_rhs = uf.find(equation_to_merge.eq_cn.lhs->getRightId());
+
+	const EquationCurryNodes * element_found = lookup_table.query(repr_lhs, repr_rhs);
+
+	if(element_found != nullptr){
+#if DEBUG_MERGE
+	  std::cout << "@merge : element found "
+		    << element_found << std::endl;
+	  std::cout << equation_to_merge.eq_cn << " " << &(equation_to_merge.eq_cn) << std::endl;
+#endif
+	  pending_propagate.push_back(PairEquationCurryNodes(&(equation_to_merge.eq_cn), element_found));
+	  propagate();
+	}
+	else{
+	  lookup_table.enter(repr_lhs, repr_rhs, &(equation_to_merge.eq_cn));
+	  use_list[repr_lhs].push_back(equation_to_merge.eq_cn);
+	  use_list[repr_rhs].push_back(equation_to_merge.eq_cn);
+#if DEBUG_MERGE
+	  std::cout << "@merge: the element wasnt in the lookup table" << std::endl
+		    << "------------------------------------------"
+		    << std::endl
+		    << "Index lhs " << equation_to_merge.eq_cn.lhs->getLeftId()
+		    << "[repr:" << repr_lhs << "] has this in UseList "
+		    << equation_to_merge.eq_cn << std::endl
+		    << "Index rhs " << equation_to_merge.eq_cn.lhs->getRightId()
+		    << "[repr:" << repr_rhs << "] has this in UseList "
+		    << equation_to_merge.eq_cn << std::endl
+		    << &equation_to_merge.eq_cn << std::endl
+		    << "------------------------------------------"
+		    << std::endl;
+#endif
+	}
+	break;
+      }
+      }
+      equations_to_merge.pop_back();
       break;
-    case APPLY_EQ:
-#if DEBUG_MERGE
-      std::cout << "@merge. Merging apply equations" << std::endl
-		<< *s << " and " << *t << std::endl;
-#endif
-      auto repr_lhs = uf.find(p.eq_cn.lhs->getLeftId()),
-	repr_rhs = uf.find(p.eq_cn.lhs->getRightId());
-
-      const EquationCurryNodes * element_found = lookup_table.query(repr_lhs, repr_rhs);
-
-      if(element_found == nullptr){
-	lookup_table.enter(repr_lhs, repr_rhs, p.addressEquationCurryNodes());
-	// std::cout << "mmm " << &p.eq_cn << std::endl;
-	std::cout << "mmm " << p.addressEquationCurryNodes() << std::endl;
-	use_list[repr_lhs].push_back(p.eq_cn);
-	use_list[repr_rhs].push_back(p.eq_cn);
-#if DEBUG_MERGE
-	std::cout << "@merge: the element wasnt in the lookup table" << std::endl
-		  << "------------------------------------------"
-		  << std::endl
-		  << "Index lhs " << p.eq_cn.lhs->getLeftId()
-		  << "[repr:" << repr_lhs << "] has this in UseList "
-		  << p.eq_cn << std::endl
-		  << "Index rhs " << p.eq_cn.lhs->getRightId()
-		  << "[repr:" << repr_rhs << "] has this in UseList "
-		  << p.eq_cn << std::endl
-		  << &p.eq_cn << std::endl
-		  << "------------------------------------------"
-		  << std::endl;
-#endif
-      }
-      else{
-	// FIX: Problem with the 'element_found' being replaced by subsequent pointers
-
-#if DEBUG_MERGE
-	std::cout << "@merge : element found "
-		  << element_found << std::endl;
-#endif
-	std::cout << "(this needs to be fixed, perhaps not)BEGIN------" << std::endl;
-	std::cout << p.eq_cn << " " << &(p.eq_cn) << std::endl;
-	std::cout << "END------" << std::endl;
-	
-	pending_propagate.push_back(PairEquationCurryNodes(&(p.eq_cn), element_found));
-        propagate();
-      }
-      
-      return;
     }
-  }
-  case EQ_EQ:
-    throw "Problem @ CongruenceClosureExplain::merge(const PendingElement &).\
+    case EQ_EQ:
+      throw "Problem @ CongruenceClosureExplain::merge(). \
 This method cannot take as input a PairEquation.";
+    }
   }
 }
 
