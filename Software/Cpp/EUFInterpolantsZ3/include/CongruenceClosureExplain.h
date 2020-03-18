@@ -7,7 +7,7 @@
 #include "FactoryCurryNodes.h"
 
 class LookupTable {
-  std::unordered_map<std::size_t, EquationCurryNodes> sig_table;
+  std::unordered_map<std::size_t, const EquationCurryNodes*> sig_table;
   UnionFindExplain & uf;
   std::hash<unsigned> unsigned_hasher;
   
@@ -23,27 +23,21 @@ public:
     seed ^= unsigned_hasher(a2) + 0x9e3779b9 + (seed << 6) + (seed >> 2);
     return seed;
   }
-  void enter(unsigned a1, unsigned a2, EquationCurryNodes ecn){
+  void enter(unsigned a1, unsigned a2, const EquationCurryNodes * ecn){
     sig_table[hash_combine(a1, a2)] = ecn;
   }
   void erase(unsigned a1, unsigned a2){
     sig_table.erase(hash_combine(a1, a2));
   }
-  EquationCurryNodes query(unsigned a1, unsigned a2){
-    auto r = sig_table.find(hash_combine(a1, a2));
-    if(r == sig_table.end())
-      throw "Element not in the table";
-    return r->second;
-  }
-  EquationCurryNodes * queryPointer(unsigned a1, unsigned a2){
+  const EquationCurryNodes * query(unsigned a1, unsigned a2){
     auto r = sig_table.find(hash_combine(a1, a2));
     if(r == sig_table.end())
       return nullptr;
-    return &(r->second);
+    return r->second;
   }
   friend std::ostream & operator << (std::ostream & os, const LookupTable & lt){
     for(auto x : lt.sig_table)
-      os << x.second << std::endl;
+      os << *(x.second) << std::endl;
     os << "Size of lookup table: " << lt.sig_table.size();
     return os;
   }

@@ -87,22 +87,12 @@ void CongruenceClosureExplain::merge(const PendingElement & p){
 #endif
       auto repr_lhs = uf.find(p.eq_cn.lhs->getLeftId()),
 	repr_rhs = uf.find(p.eq_cn.lhs->getRightId());
-      try {
-	// FIX: Problem with the 'element_found' being replaced by subsequent pointers
-	EquationCurryNodes element_found = lookup_table.query(repr_lhs, repr_rhs);
-#if DEBUG_MERGE
-	std::cout << "@merge : element found "
-		  << element_found << std::endl;
-#endif
-	std::cout << "(this needs to be fixed, perhaps not)BEGIN------" << std::endl;
-	std::cout << p.eq_cn << " " << &(p.eq_cn) << std::endl;
-	std::cout << "END------" << std::endl;
-	
-	pending_explain.push_back(PairEquationCurryNodes(&(p.eq_cn), &element_found));
-        propagate();
-      }
-      catch(...){
-	lookup_table.enter(repr_lhs, repr_rhs, p.eq_cn);
+
+
+      const EquationCurryNodes * element_found = lookup_table.query(repr_lhs, repr_rhs);
+
+      if(element_found == nullptr){
+	lookup_table.enter(repr_lhs, repr_rhs, &p.eq_cn);
 	use_list[repr_lhs].push_back(p.eq_cn);
 	use_list[repr_rhs].push_back(p.eq_cn);
 #if DEBUG_MERGE
@@ -119,6 +109,21 @@ void CongruenceClosureExplain::merge(const PendingElement & p){
 		  << std::endl;
 #endif
       }
+      else{
+	// FIX: Problem with the 'element_found' being replaced by subsequent pointers
+
+#if DEBUG_MERGE
+	std::cout << "@merge : element found "
+		  << element_found << std::endl;
+#endif
+	std::cout << "(this needs to be fixed, perhaps not)BEGIN------" << std::endl;
+	std::cout << p.eq_cn << " " << &(p.eq_cn) << std::endl;
+	std::cout << "END------" << std::endl;
+	
+	pending_explain.push_back(PairEquationCurryNodes(&(p.eq_cn), element_found));
+        propagate();
+      }
+      
       return;
     }
   }
@@ -171,33 +176,29 @@ void CongruenceClosureExplain::propagate(){
       while(!use_list[old_repr_a].empty()) {
 	auto equation = &use_list[old_repr_a].back();
 	use_list[old_repr_a].pop_back();
-
-	std::cout << "0. i dont understand this madness " << use_list[old_repr_a].size() << std::endl;
 	
 	unsigned c1 = equation->lhs->getLeftId(), c2 = equation->lhs->getRightId();
 	unsigned repr_c1 = uf.find(c1), repr_c2 = uf.find(c2);
-
 	
 #if DEBUG_PROPAGATE	
 	std::cout << "@propagate. Processing this equation: " << equation << " " << *equation << std::endl;
 	std::cout << "@propagate. Constant arguments: " << c1 << " " << c2 << std::endl;
 #endif
-
-	std::cout << "1. i dont understand this madness " << use_list[old_repr_a].size() << std::endl;
-	EquationCurryNodes * element_found = lookup_table.queryPointer(repr_c1, repr_c2);
-	std::cout << "2. i dont understand this madness " << use_list[old_repr_a].size() << std::endl;
+	const EquationCurryNodes * element_found = lookup_table.query(repr_c1, repr_c2);
 
 	if(element_found == nullptr){	  	  
 #if DEBUG_PROPAGATE
 	  std::cout << "@propagate. the element wasnt in the lookup table" << std::endl;
 #endif
-	  auto aa = *equation;
-	  std::cout << aa << std::endl;
 	  use_list[repr_b].push_back(*equation);
-	  std::cout << "ahhh" << std::endl;
-	  lookup_table.enter(repr_c1, repr_c2, *equation);
-	  std::cout << "ehhh" << std::endl;
 	  
+	  // UseList a;
+	  // a.resize(1);
+	  // a[0].push_back(*equation);
+	  // a[0].pop_back();
+
+	  
+	  lookup_table.enter(repr_c1, repr_c2, equation);	  
 	}
 	else{
 	  auto new_entry = PairEquationCurryNodes(equation, element_found);
@@ -210,7 +211,6 @@ void CongruenceClosureExplain::propagate(){
 	  // --------------------------------------------------------------------------
 #endif
 	  pending_explain.push_back(new_entry);
-	  std::cout << "wtf" << std::endl;
 	}
 	
       }
