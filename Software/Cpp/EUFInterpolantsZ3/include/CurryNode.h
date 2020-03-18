@@ -85,11 +85,16 @@ struct PendingElement {
     EquationCurryNodes eq_cn;
     PairEquationCurryNodes p_eq_cn;
   };
-  PendingElement(EquationCurryNodes eq_cn) :
+  PendingElement(const EquationCurryNodes eq_cn) :
     tag(EQ), eq_cn(eq_cn){
   }
-  PendingElement(PairEquationCurryNodes p_eq_cn) :
+  PendingElement(const PairEquationCurryNodes p_eq_cn) :
     tag(EQ_EQ), p_eq_cn(p_eq_cn){
+  }
+  const EquationCurryNodes * addressEquationCurryNodes() const {
+    if(tag == EQ)
+      return &eq_cn;
+    throw "This is not an equation";
   }
   friend std::ostream & operator << (std::ostream & os, const PendingElement & pe){
     switch(pe.tag){

@@ -1,0 +1,460 @@
+./euf_interpolator
+@merge. Merging apply equations
+ * 31(Z3 id: 14|Const id: 48)(Defined). apply
+ Left
+  47(Z3 id: 30|Const id: 47)(Defined). fresh_47
+ Right
+  33(Z3 id: 7|Const id: 33)(Defined). fresh_33
+ and  * 48(Z3 id: 14|Const id: 48)(Defined). fresh_48
+
+mmm 0x7fffff798da8
+@merge: the element wasnt in the lookup table
+------------------------------------------
+Index lhs 47[repr:47] has this in UseList  * 31(Z3 id: 14|Const id: 48)(Defined). apply
+ Left
+  47(Z3 id: 30|Const id: 47)(Defined). fresh_47
+ Right
+  33(Z3 id: 7|Const id: 33)(Defined). fresh_33
+ =  * 48(Z3 id: 14|Const id: 48)(Defined). fresh_48
+
+Index rhs 33[repr:33] has this in UseList  * 31(Z3 id: 14|Const id: 48)(Defined). apply
+ Left
+  47(Z3 id: 30|Const id: 47)(Defined). fresh_47
+ Right
+  33(Z3 id: 7|Const id: 33)(Defined). fresh_33
+ =  * 48(Z3 id: 14|Const id: 48)(Defined). fresh_48
+
+0x7fffff798da8
+------------------------------------------
+@merge. Merging apply equations
+ * 30(Z3 id: 30|Const id: 47)(Defined). apply
+ Left
+  13(Z3 id: 13|Const id: 13)(Defined). and
+ Right
+  46(Z3 id: 13|Const id: 46)(Defined). fresh_46
+ and  * 47(Z3 id: 30|Const id: 47)(Defined). fresh_47
+
+mmm 0x7fffff798da8
+@merge: the element wasnt in the lookup table
+------------------------------------------
+Index lhs 13[repr:13] has this in UseList  * 30(Z3 id: 30|Const id: 47)(Defined). apply
+ Left
+  13(Z3 id: 13|Const id: 13)(Defined). and
+ Right
+  46(Z3 id: 13|Const id: 46)(Defined). fresh_46
+ =  * 47(Z3 id: 30|Const id: 47)(Defined). fresh_47
+
+Index rhs 46[repr:46] has this in UseList  * 30(Z3 id: 30|Const id: 47)(Defined). apply
+ Left
+  13(Z3 id: 13|Const id: 13)(Defined). and
+ Right
+  46(Z3 id: 13|Const id: 46)(Defined). fresh_46
+ =  * 47(Z3 id: 30|Const id: 47)(Defined). fresh_47
+
+0x7fffff798da8
+------------------------------------------
+@merge. Merging apply equations
+ * 27(Z3 id: 13|Const id: 46)(Defined). apply
+ Left
+  45(Z3 id: 26|Const id: 45)(Defined). fresh_45
+ Right
+  38(Z3 id: 9|Const id: 38)(Defined). fresh_38
+ and  * 46(Z3 id: 13|Const id: 46)(Defined). fresh_46
+
+mmm 0x7fffff798da8
+@merge: the element wasnt in the lookup table
+------------------------------------------
+Index lhs 45[repr:45] has this in UseList  * 27(Z3 id: 13|Const id: 46)(Defined). apply
+ Left
+  45(Z3 id: 26|Const id: 45)(Defined). fresh_45
+ Right
+  38(Z3 id: 9|Const id: 38)(Defined). fresh_38
+ =  * 46(Z3 id: 13|Const id: 46)(Defined). fresh_46
+
+Index rhs 38[repr:38] has this in UseList  * 27(Z3 id: 13|Const id: 46)(Defined). apply
+ Left
+  45(Z3 id: 26|Const id: 45)(Defined). fresh_45
+ Right
+  38(Z3 id: 9|Const id: 38)(Defined). fresh_38
+ =  * 46(Z3 id: 13|Const id: 46)(Defined). fresh_46
+
+0x7fffff798da8
+------------------------------------------
+@merge. Merging apply equations
+ * 26(Z3 id: 26|Const id: 45)(Defined). apply
+ Left
+  13(Z3 id: 13|Const id: 13)(Defined). and
+ Right
+  44(Z3 id: 12|Const id: 44)(Defined). fresh_44
+ and  * 45(Z3 id: 26|Const id: 45)(Defined). fresh_45
+
+mmm 0x7fffff798da8
+@merge: the element wasnt in the lookup table
+------------------------------------------
+Index lhs 13[repr:13] has this in UseList  * 26(Z3 id: 26|Const id: 45)(Defined). apply
+ Left
+  13(Z3 id: 13|Const id: 13)(Defined). and
+ Right
+  44(Z3 id: 12|Const id: 44)(Defined). fresh_44
+ =  * 45(Z3 id: 26|Const id: 45)(Defined). fresh_45
+
+Index rhs 44[repr:44] has this in UseList  * 26(Z3 id: 26|Const id: 45)(Defined). apply
+ Left
+  13(Z3 id: 13|Const id: 13)(Defined). and
+ Right
+  44(Z3 id: 12|Const id: 44)(Defined). fresh_44
+ =  * 45(Z3 id: 26|Const id: 45)(Defined). fresh_45
+
+0x7fffff798da8
+------------------------------------------
+@merge. Merging apply equations
+ * 23(Z3 id: 12|Const id: 44)(Defined). apply
+ Left
+  43(Z3 id: 22|Const id: 43)(Defined). fresh_43
+ Right
+  40(Z3 id: 10|Const id: 40)(Defined). fresh_40
+ and  * 44(Z3 id: 12|Const id: 44)(Defined). fresh_44
+
+mmm 0x7fffff798da8
+@merge: the element wasnt in the lookup table
+------------------------------------------
+Index lhs 43[repr:43] has this in UseList  * 23(Z3 id: 12|Const id: 44)(Defined). apply
+ Left
+  43(Z3 id: 22|Const id: 43)(Defined). fresh_43
+ Right
+  40(Z3 id: 10|Const id: 40)(Defined). fresh_40
+ =  * 44(Z3 id: 12|Const id: 44)(Defined). fresh_44
+
+Index rhs 40[repr:40] has this in UseList  * 23(Z3 id: 12|Const id: 44)(Defined). apply
+ Left
+  43(Z3 id: 22|Const id: 43)(Defined). fresh_43
+ Right
+  40(Z3 id: 10|Const id: 40)(Defined). fresh_40
+ =  * 44(Z3 id: 12|Const id: 44)(Defined). fresh_44
+
+0x7fffff798da8
+------------------------------------------
+@merge. Merging apply equations
+ * 22(Z3 id: 22|Const id: 43)(Defined). apply
+ Left
+  12(Z3 id: 12|Const id: 12)(Defined). =
+ Right
+  42(Z3 id: 11|Const id: 42)(Defined). fresh_42
+ and  * 43(Z3 id: 22|Const id: 43)(Defined). fresh_43
+
+mmm 0x7fffff798da8
+@merge: the element wasnt in the lookup table
+------------------------------------------
+Index lhs 12[repr:12] has this in UseList  * 22(Z3 id: 22|Const id: 43)(Defined). apply
+ Left
+  12(Z3 id: 12|Const id: 12)(Defined). =
+ Right
+  42(Z3 id: 11|Const id: 42)(Defined). fresh_42
+ =  * 43(Z3 id: 22|Const id: 43)(Defined). fresh_43
+
+Index rhs 42[repr:42] has this in UseList  * 22(Z3 id: 22|Const id: 43)(Defined). apply
+ Left
+  12(Z3 id: 12|Const id: 12)(Defined). =
+ Right
+  42(Z3 id: 11|Const id: 42)(Defined). fresh_42
+ =  * 43(Z3 id: 22|Const id: 43)(Defined). fresh_43
+
+0x7fffff798da8
+------------------------------------------
+@merge. Merging apply equations
+ * 18(Z3 id: 11|Const id: 42)(Defined). apply
+ Left
+  41(Z3 id: 17|Const id: 41)(Defined). fresh_41
+ Right
+  6(Z3 id: 6|Const id: 6)(Defined). b
+ and  * 42(Z3 id: 11|Const id: 42)(Defined). fresh_42
+
+mmm 0x7fffff798da8
+@merge: the element wasnt in the lookup table
+------------------------------------------
+Index lhs 41[repr:41] has this in UseList  * 18(Z3 id: 11|Const id: 42)(Defined). apply
+ Left
+  41(Z3 id: 17|Const id: 41)(Defined). fresh_41
+ Right
+  6(Z3 id: 6|Const id: 6)(Defined). b
+ =  * 42(Z3 id: 11|Const id: 42)(Defined). fresh_42
+
+Index rhs 6[repr:6] has this in UseList  * 18(Z3 id: 11|Const id: 42)(Defined). apply
+ Left
+  41(Z3 id: 17|Const id: 41)(Defined). fresh_41
+ Right
+  6(Z3 id: 6|Const id: 6)(Defined). b
+ =  * 42(Z3 id: 11|Const id: 42)(Defined). fresh_42
+
+0x7fffff798da8
+------------------------------------------
+@merge. Merging apply equations
+ * 17(Z3 id: 17|Const id: 41)(Defined). apply
+ Left
+  35(Z3 id: 16|Const id: 35)(Defined). fresh_35
+ Right
+  36(Z3 id: 8|Const id: 36)(Defined). fresh_36
+ and  * 41(Z3 id: 17|Const id: 41)(Defined). fresh_41
+
+mmm 0x7fffff798da8
+@merge: the element wasnt in the lookup table
+------------------------------------------
+Index lhs 35[repr:35] has this in UseList  * 17(Z3 id: 17|Const id: 41)(Defined). apply
+ Left
+  35(Z3 id: 16|Const id: 35)(Defined). fresh_35
+ Right
+  36(Z3 id: 8|Const id: 36)(Defined). fresh_36
+ =  * 41(Z3 id: 17|Const id: 41)(Defined). fresh_41
+
+Index rhs 36[repr:36] has this in UseList  * 17(Z3 id: 17|Const id: 41)(Defined). apply
+ Left
+  35(Z3 id: 16|Const id: 35)(Defined). fresh_35
+ Right
+  36(Z3 id: 8|Const id: 36)(Defined). fresh_36
+ =  * 41(Z3 id: 17|Const id: 41)(Defined). fresh_41
+
+0x7fffff798da8
+------------------------------------------
+@merge. Merging apply equations
+ * 21(Z3 id: 10|Const id: 40)(Defined). apply
+ Left
+  39(Z3 id: 20|Const id: 39)(Defined). fresh_39
+ Right
+  36(Z3 id: 8|Const id: 36)(Defined). fresh_36
+ and  * 40(Z3 id: 10|Const id: 40)(Defined). fresh_40
+
+mmm 0x7fffff798da8
+@merge: the element wasnt in the lookup table
+------------------------------------------
+Index lhs 39[repr:39] has this in UseList  * 21(Z3 id: 10|Const id: 40)(Defined). apply
+ Left
+  39(Z3 id: 20|Const id: 39)(Defined). fresh_39
+ Right
+  36(Z3 id: 8|Const id: 36)(Defined). fresh_36
+ =  * 40(Z3 id: 10|Const id: 40)(Defined). fresh_40
+
+Index rhs 36[repr:36] has this in UseList  * 21(Z3 id: 10|Const id: 40)(Defined). apply
+ Left
+  39(Z3 id: 20|Const id: 39)(Defined). fresh_39
+ Right
+  36(Z3 id: 8|Const id: 36)(Defined). fresh_36
+ =  * 40(Z3 id: 10|Const id: 40)(Defined). fresh_40
+
+0x7fffff798da8
+------------------------------------------
+@merge. Merging apply equations
+ * 20(Z3 id: 20|Const id: 39)(Defined). apply
+ Left
+  34(Z3 id: 19|Const id: 34)(Defined). fresh_34
+ Right
+  36(Z3 id: 8|Const id: 36)(Defined). fresh_36
+ and  * 39(Z3 id: 20|Const id: 39)(Defined). fresh_39
+
+mmm 0x7fffff798da8
+@merge: the element wasnt in the lookup table
+------------------------------------------
+Index lhs 34[repr:34] has this in UseList  * 20(Z3 id: 20|Const id: 39)(Defined). apply
+ Left
+  34(Z3 id: 19|Const id: 34)(Defined). fresh_34
+ Right
+  36(Z3 id: 8|Const id: 36)(Defined). fresh_36
+ =  * 39(Z3 id: 20|Const id: 39)(Defined). fresh_39
+
+Index rhs 36[repr:36] has this in UseList  * 20(Z3 id: 20|Const id: 39)(Defined). apply
+ Left
+  34(Z3 id: 19|Const id: 34)(Defined). fresh_34
+ Right
+  36(Z3 id: 8|Const id: 36)(Defined). fresh_36
+ =  * 39(Z3 id: 20|Const id: 39)(Defined). fresh_39
+
+0x7fffff798da8
+------------------------------------------
+@merge. Merging apply equations
+ * 25(Z3 id: 9|Const id: 38)(Defined). apply
+ Left
+  37(Z3 id: 24|Const id: 37)(Defined). fresh_37
+ Right
+  6(Z3 id: 6|Const id: 6)(Defined). b
+ and  * 38(Z3 id: 9|Const id: 38)(Defined). fresh_38
+
+mmm 0x7fffff798da8
+@merge: the element wasnt in the lookup table
+------------------------------------------
+Index lhs 37[repr:37] has this in UseList  * 25(Z3 id: 9|Const id: 38)(Defined). apply
+ Left
+  37(Z3 id: 24|Const id: 37)(Defined). fresh_37
+ Right
+  6(Z3 id: 6|Const id: 6)(Defined). b
+ =  * 38(Z3 id: 9|Const id: 38)(Defined). fresh_38
+
+Index rhs 6[repr:6] has this in UseList  * 25(Z3 id: 9|Const id: 38)(Defined). apply
+ Left
+  37(Z3 id: 24|Const id: 37)(Defined). fresh_37
+ Right
+  6(Z3 id: 6|Const id: 6)(Defined). b
+ =  * 38(Z3 id: 9|Const id: 38)(Defined). fresh_38
+
+0x7fffff798da8
+------------------------------------------
+@merge. Merging apply equations
+ * 24(Z3 id: 24|Const id: 37)(Defined). apply
+ Left
+  12(Z3 id: 12|Const id: 12)(Defined). =
+ Right
+  36(Z3 id: 8|Const id: 36)(Defined). fresh_36
+ and  * 37(Z3 id: 24|Const id: 37)(Defined). fresh_37
+
+mmm 0x7fffff798da8
+@merge: the element wasnt in the lookup table
+------------------------------------------
+Index lhs 12[repr:12] has this in UseList  * 24(Z3 id: 24|Const id: 37)(Defined). apply
+ Left
+  12(Z3 id: 12|Const id: 12)(Defined). =
+ Right
+  36(Z3 id: 8|Const id: 36)(Defined). fresh_36
+ =  * 37(Z3 id: 24|Const id: 37)(Defined). fresh_37
+
+Index rhs 36[repr:36] has this in UseList  * 24(Z3 id: 24|Const id: 37)(Defined). apply
+ Left
+  12(Z3 id: 12|Const id: 12)(Defined). =
+ Right
+  36(Z3 id: 8|Const id: 36)(Defined). fresh_36
+ =  * 37(Z3 id: 24|Const id: 37)(Defined). fresh_37
+
+0x7fffff798da8
+------------------------------------------
+@merge. Merging apply equations
+ * 15(Z3 id: 8|Const id: 36)(Defined). apply
+ Left
+  8(Z3 id: 8|Const id: 8)(Defined). h
+ Right
+  6(Z3 id: 6|Const id: 6)(Defined). b
+ and  * 36(Z3 id: 8|Const id: 36)(Defined). fresh_36
+
+mmm 0x7fffff798da8
+@merge: the element wasnt in the lookup table
+------------------------------------------
+Index lhs 8[repr:8] has this in UseList  * 15(Z3 id: 8|Const id: 36)(Defined). apply
+ Left
+  8(Z3 id: 8|Const id: 8)(Defined). h
+ Right
+  6(Z3 id: 6|Const id: 6)(Defined). b
+ =  * 36(Z3 id: 8|Const id: 36)(Defined). fresh_36
+
+Index rhs 6[repr:6] has this in UseList  * 15(Z3 id: 8|Const id: 36)(Defined). apply
+ Left
+  8(Z3 id: 8|Const id: 8)(Defined). h
+ Right
+  6(Z3 id: 6|Const id: 6)(Defined). b
+ =  * 36(Z3 id: 8|Const id: 36)(Defined). fresh_36
+
+0x7fffff798da8
+------------------------------------------
+@merge. Merging apply equations
+ * 16(Z3 id: 16|Const id: 35)(Defined). apply
+ Left
+  11(Z3 id: 11|Const id: 11)(Defined). g
+ Right
+  5(Z3 id: 5|Const id: 5)(Defined). a
+ and  * 35(Z3 id: 16|Const id: 35)(Defined). fresh_35
+
+mmm 0x7fffff798da8
+@merge: the element wasnt in the lookup table
+------------------------------------------
+Index lhs 11[repr:11] has this in UseList  * 16(Z3 id: 16|Const id: 35)(Defined). apply
+ Left
+  11(Z3 id: 11|Const id: 11)(Defined). g
+ Right
+  5(Z3 id: 5|Const id: 5)(Defined). a
+ =  * 35(Z3 id: 16|Const id: 35)(Defined). fresh_35
+
+Index rhs 5[repr:5] has this in UseList  * 16(Z3 id: 16|Const id: 35)(Defined). apply
+ Left
+  11(Z3 id: 11|Const id: 11)(Defined). g
+ Right
+  5(Z3 id: 5|Const id: 5)(Defined). a
+ =  * 35(Z3 id: 16|Const id: 35)(Defined). fresh_35
+
+0x7fffff798da8
+------------------------------------------
+@merge. Merging apply equations
+ * 19(Z3 id: 19|Const id: 34)(Defined). apply
+ Left
+  11(Z3 id: 11|Const id: 11)(Defined). g
+ Right
+  6(Z3 id: 6|Const id: 6)(Defined). b
+ and  * 34(Z3 id: 19|Const id: 34)(Defined). fresh_34
+
+mmm 0x7fffff798da8
+@merge: the element wasnt in the lookup table
+------------------------------------------
+Index lhs 11[repr:11] has this in UseList  * 19(Z3 id: 19|Const id: 34)(Defined). apply
+ Left
+  11(Z3 id: 11|Const id: 11)(Defined). g
+ Right
+  6(Z3 id: 6|Const id: 6)(Defined). b
+ =  * 34(Z3 id: 19|Const id: 34)(Defined). fresh_34
+
+Index rhs 6[repr:6] has this in UseList  * 19(Z3 id: 19|Const id: 34)(Defined). apply
+ Left
+  11(Z3 id: 11|Const id: 11)(Defined). g
+ Right
+  6(Z3 id: 6|Const id: 6)(Defined). b
+ =  * 34(Z3 id: 19|Const id: 34)(Defined). fresh_34
+
+0x7fffff798da8
+------------------------------------------
+@merge. Merging apply equations
+ * 29(Z3 id: 7|Const id: 33)(Defined). apply
+ Left
+  32(Z3 id: 28|Const id: 32)(Defined). fresh_32
+ Right
+  6(Z3 id: 6|Const id: 6)(Defined). b
+ and  * 33(Z3 id: 7|Const id: 33)(Defined). fresh_33
+
+mmm 0x7fffff798da8
+@merge: the element wasnt in the lookup table
+------------------------------------------
+Index lhs 32[repr:32] has this in UseList  * 29(Z3 id: 7|Const id: 33)(Defined). apply
+ Left
+  32(Z3 id: 28|Const id: 32)(Defined). fresh_32
+ Right
+  6(Z3 id: 6|Const id: 6)(Defined). b
+ =  * 33(Z3 id: 7|Const id: 33)(Defined). fresh_33
+
+Index rhs 6[repr:6] has this in UseList  * 29(Z3 id: 7|Const id: 33)(Defined). apply
+ Left
+  32(Z3 id: 28|Const id: 32)(Defined). fresh_32
+ Right
+  6(Z3 id: 6|Const id: 6)(Defined). b
+ =  * 33(Z3 id: 7|Const id: 33)(Defined). fresh_33
+
+0x7fffff798da8
+------------------------------------------
+@merge. Merging apply equations
+ * 28(Z3 id: 28|Const id: 32)(Defined). apply
+ Left
+  12(Z3 id: 12|Const id: 12)(Defined). =
+ Right
+  5(Z3 id: 5|Const id: 5)(Defined). a
+ and  * 32(Z3 id: 28|Const id: 32)(Defined). fresh_32
+
+mmm 0x7fffff798da8
+@merge: the element wasnt in the lookup table
+------------------------------------------
+Index lhs 12[repr:12] has this in UseList  * 28(Z3 id: 28|Const id: 32)(Defined). apply
+ Left
+  12(Z3 id: 12|Const id: 12)(Defined). =
+ Right
+  5(Z3 id: 5|Const id: 5)(Defined). a
+ =  * 32(Z3 id: 28|Const id: 32)(Defined). fresh_32
+
+Index rhs 5[repr:5] has this in UseList  * 28(Z3 id: 28|Const id: 32)(Defined). apply
+ Left
+  12(Z3 id: 12|Const id: 12)(Defined). =
+ Right
+  5(Z3 id: 5|Const id: 5)(Defined). a
+ =  * 32(Z3 id: 28|Const id: 32)(Defined). fresh_32
+
+0x7fffff798da8
+------------------------------------------
