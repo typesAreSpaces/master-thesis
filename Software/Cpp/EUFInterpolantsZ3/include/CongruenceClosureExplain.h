@@ -60,7 +60,6 @@ class CongruenceClosureExplain : public CongruenceClosure {
   ClassListExplain class_list_explain;
 
   void merge();
-  void propagate2();
   void propagate();
   
  public:
