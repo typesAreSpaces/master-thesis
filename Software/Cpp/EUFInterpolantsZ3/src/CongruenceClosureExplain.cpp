@@ -157,9 +157,9 @@ void CongruenceClosureExplain::propagate(){
       }
       
       unsigned old_repr_a = repr_a;
-      const auto & wow = &(pending_element);
-      uf.merge(b->getId(), a->getId(), wow);
-      class_list_explain[repr_b].splice(class_list_explain[repr_b].end(), class_list_explain[old_repr_a]);
+      uf.merge(b->getId(), a->getId(), &pending_element);
+      // TODO: Refactor code to avoid using class_list at all
+      // class_list_explain[repr_b].splice(class_list_explain[repr_b].end(), class_list_explain[old_repr_a]);
 
       while(!use_list[old_repr_a].empty()) {
 	const auto & equation = use_list[old_repr_a].back();
