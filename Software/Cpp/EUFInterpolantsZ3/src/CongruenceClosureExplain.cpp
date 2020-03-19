@@ -1,7 +1,8 @@
 #include "CongruenceClosureExplain.h"
+#include <fstream>
 #define DEBUG_SANITY_CHECK 0
 #define DEBUG_MERGE        0
-#define DEBUG_PROPAGATE    1
+#define DEBUG_PROPAGATE    0
 
 CongruenceClosureExplain::CongruenceClosureExplain(const unsigned & min_id, const z3::expr_vector & subterms,
 						   PredList & pred_list, UnionFindExplain & uf,
@@ -44,8 +45,8 @@ CongruenceClosureExplain::CongruenceClosureExplain(const unsigned & min_id, cons
     pending_propagate.push_back(EquationCurryNodes(const_lhs, const_rhs));
   }
   
-  // propagate(); // This one only works if DEBUG_PROPAGATE is set to false
-  propagate2();
+  // propagate2(); // This one only works if DEBUG_PROPAGATE is set to false
+  propagate();
 
 #if 1
   std::cout << uf << std::endl;
@@ -127,8 +128,7 @@ This method cannot take as input a PairEquation.";
   }
 }
 
-// KEEP: working here
-void CongruenceClosureExplain::propagate(){
+void CongruenceClosureExplain::propagate2(){
   while(!pending_propagate.empty()) {
 
     auto pending_element = &pending_propagate.back();
@@ -206,11 +206,11 @@ void CongruenceClosureExplain::propagate(){
 }
 
 // KEEP: working here
-void CongruenceClosureExplain::propagate2(){
+void CongruenceClosureExplain::propagate(){
   while(!pending_propagate.empty()) {
     const auto & pending_element = pending_propagate.back();
     pending_propagate.pop_back();
-#if 0
+#if DEBUG_PROPAGATE
     std::cout << "@propagate. Taking this element " << pending_element << std::endl;
 #endif
     CurryNode * a, * b;
@@ -223,7 +223,7 @@ void CongruenceClosureExplain::propagate2(){
       break;
     }
     
-#if 0
+#if DEBUG_PROPAGATE
     std::cout << "@propagate. To merge these two inside uf: " << *b << " " << *a << std::endl;
 #endif
     unsigned repr_a = uf.find(a->getId()), repr_b = uf.find(b->getId());
@@ -236,22 +236,23 @@ void CongruenceClosureExplain::propagate2(){
       }
       
       unsigned old_repr_a = repr_a;
-      uf.merge(b->getId(), a->getId(), &(pending_element));
+      const auto & wow = &(pending_element);
+      uf.merge(b->getId(), a->getId(), wow);
       class_list_explain[repr_b].splice(class_list_explain[repr_b].end(), class_list_explain[old_repr_a]);
 
       while(!use_list[old_repr_a].empty()) {
 	const auto & equation = use_list[old_repr_a].back();
 	use_list[old_repr_a].pop_back();	
 	unsigned c1 = equation.lhs->getLeftId(), c2 = equation.lhs->getRightId();
-	unsigned repr_c1 = uf.find(c1), repr_c2 = uf.find(c2);	
-#if 0
+	unsigned repr_c1 = uf.find(c1), repr_c2 = uf.find(c2);
+#if DEBUG_PROPAGATE
 	std::cout << "@propagate. Processing this equation: " << equation << " " << std::endl;
 	std::cout << "@propagate. Constant arguments: " << c1 << " " << c2 << std::endl;
 #endif
 	const EquationCurryNodes * element_found = lookup_table.query(repr_c1, repr_c2);
 
 	if(element_found != nullptr){
-#if 0
+#if DEBUG_PROPAGATE
 	  // --------------------------------------------------------------------------
 	  std::cout << "New PairEquationCurryNodes" << std::endl; // KEEP: working here
 	  std::cout << "1. ----------------------- " << element_found << std::endl;
@@ -262,7 +263,7 @@ void CongruenceClosureExplain::propagate2(){
 	  pending_propagate.push_back(PairEquationCurryNodes(&equation, element_found));
 	}
 	else{
-#if 0
+#if DEBUG_PROPAGATE
 	  std::cout << "@propagate. the element wasnt in the lookup table" << std::endl;
 #endif
 	  use_list[repr_b].push_back(equation);
