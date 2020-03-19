@@ -162,14 +162,18 @@ void CongruenceClosureExplain::propagate(){
       // class_list_explain[repr_b].splice(class_list_explain[repr_b].end(), class_list_explain[old_repr_a]);
 
       while(!use_list[old_repr_a].empty()) {
+	
 	const auto & equation = use_list[old_repr_a].back();
-	use_list[old_repr_a].pop_back();	
+	use_list[old_repr_a].pop_back();
+	
 	unsigned c1 = equation.lhs->getLeftId(), c2 = equation.lhs->getRightId();
 	unsigned repr_c1 = uf.find(c1), repr_c2 = uf.find(c2);
+	
 #if DEBUG_PROPAGATE
 	std::cout << "@propagate. Processing this equation: " << equation << " " << std::endl;
 	std::cout << "@propagate. Constant arguments: " << c1 << " " << c2 << std::endl;
 #endif
+	
 	const EquationCurryNodes * element_found = lookup_table.query(repr_c1, repr_c2);
 
 	if(element_found != nullptr){
