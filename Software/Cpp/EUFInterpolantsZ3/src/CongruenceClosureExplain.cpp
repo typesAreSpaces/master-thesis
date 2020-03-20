@@ -2,7 +2,7 @@
 #include <fstream>
 #define DEBUG_SANITY_CHECK 0
 #define DEBUG_MERGE        0
-#define DEBUG_PROPAGATE    0
+#define DEBUG_PROPAGATE    1
 
 CongruenceClosureExplain::CongruenceClosureExplain(const unsigned & min_id, const z3::expr_vector & subterms,
 						   PredList & pred_list, UnionFindExplain & uf,
@@ -133,12 +133,18 @@ This method cannot take as input a PairEquation.";
 }
 
 void CongruenceClosureExplain::propagate(){
-  while(!pending_to_propagate.empty()) {
-    const auto & pending_element = pending_to_propagate.back();
-    pending_to_propagate.pop_back();
+  for(pending_to_propagate_it++;
+      pending_to_propagate_it != pending_to_propagate.end();
+      pending_to_propagate_it++) {
+    
+    const auto & pending_element = *pending_to_propagate_it;
+    
 #if DEBUG_PROPAGATE
-    std::cout << "@propagate. Taking this element " << pending_element << std::endl;
+    std::cout << "|--------------------------------------------------------" << std::endl
+	      << "@propagate. Taking this element " << pending_element << std::endl
+	      << "--------------------------------------------------------|" << std::endl;
 #endif
+    
     CurryNode * a, * b;
     switch(pending_element.tag){
     case EQ:
@@ -150,8 +156,13 @@ void CongruenceClosureExplain::propagate(){
     }
     
 #if DEBUG_PROPAGATE
-    std::cout << "@propagate. To merge these two inside uf: " << *b << " " << *a << std::endl;
+    std::cout << "|------------------------------------------" << std::endl
+	      << "@propagate. To merge these two inside uf: " << std::endl
+	      << *a << std::endl
+	      << *b << std::endl
+	      << "------------------------------------------|" << std::endl;
 #endif
+    
     unsigned repr_a = uf.find(a->getId()), repr_b = uf.find(b->getId());
 
     if(repr_a != repr_b) {
@@ -166,36 +177,11 @@ void CongruenceClosureExplain::propagate(){
       // TODO: Refactor code to avoid using class_list at all
       // class_list_explain[repr_b].splice(class_list_explain[repr_b].end(), class_list_explain[old_repr_a]);
 
-#if 0
       // ----------------------------------------------------------------------------------
       // ----------------------------------------------------------------------------------
-      while(!use_list[old_repr_a].empty()) {
-	
-      	const auto equation = use_list[old_repr_a].back();
-
-	
-      	unsigned c1 = equation.lhs->getLeftId(), c2 = equation.lhs->getRightId();
-      	unsigned repr_c1 = uf.find(c1), repr_c2 = uf.find(c2);
-      	
-      	const EquationCurryNodes * element_found = lookup_table.query(repr_c1, repr_c2);
-
-      	if(element_found != nullptr){
-      	  pending_to_propagate.push_back(PairEquationCurryNodes(&equation, element_found));
-      	}
-      	else{
-      	  use_list[repr_b].push_back(equation);
-      	  lookup_table.enter(repr_c1, repr_c2, &equation);
-      	}
-
-      	use_list[old_repr_a].pop_back();
-
-      }
-      // ----------------------------------------------------------------------------------
-      // ----------------------------------------------------------------------------------
-#else
-      // ----------------------------------------------------------------------------------
-      // ----------------------------------------------------------------------------------
-      for(auto equation = use_list[old_repr_a].begin(); equation != use_list[old_repr_a].end(); equation++) {
+      for(auto equation = use_list[old_repr_a].begin();
+	  equation != use_list[old_repr_a].end();
+	  equation++) {
 	
       	unsigned c1 = equation->lhs->getLeftId(), c2 = equation->lhs->getRightId();
       	unsigned repr_c1 = uf.find(c1), repr_c2 = uf.find(c2);
@@ -203,24 +189,36 @@ void CongruenceClosureExplain::propagate(){
       	const EquationCurryNodes * element_found = lookup_table.query(repr_c1, repr_c2);
 
       	if(element_found != nullptr){
-      	  auto wow = PairEquationCurryNodes(&*equation, element_found);
-	  pending_to_propagate.push_back(wow);
-      	  // pending_to_propagate.push_back(PairEquationCurryNodes(nullptr, nullptr));
-      	  equation = use_list[old_repr_a].erase(equation);
+#if DEBUG_PROPAGATE
+	  std::cout << "|------------------------------------------------" << std::endl
+		    << "@propagate. To add these to pending_to_propagate" << std::endl
+		    << "(" << *equation << ", " << std::endl
+		    << *element_found << ")" << std::endl
+		    << "-------------------------------------------------|" << std::endl;
+#endif
+	  pending_to_propagate.push_back(PairEquationCurryNodes(&*equation, element_found));
+      	  equation = use_list[old_repr_a].erase(equation); // POTENTIAL: Problem
       	}
       	else{
+#if DEBUG_PROPAGATE
+	  std::cout << "|-------------------------------------------------" << std::endl
+		    << "@propagate. Element not found in the lookup_table" << std::endl
+		    << "adding " << *equation << std::endl
+		    << "to the lookup_table and moving it to the use_list of " << repr_b << std::endl
+		    << "--------------------------------------------------------|" << std::endl;
+#endif
       	  use_list[repr_b].push_back(*equation);
       	  lookup_table.enter(repr_c1, repr_c2, &*equation);
-      	  equation = use_list[old_repr_a].erase(equation);
+      	  equation = use_list[old_repr_a].erase(equation); // POTENTIAL: Problem
       	}
 
       }
       // ----------------------------------------------------------------------------------
       // ----------------------------------------------------------------------------------
-#endif
       
     }
   }
+  pending_to_propagate_it--;
 }
 
 void CongruenceClosureExplain::buildCongruenceClosure(std::list<unsigned> & pending){

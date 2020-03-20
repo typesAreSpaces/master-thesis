@@ -74,7 +74,7 @@ struct PairEquationCurryNodes {
   PairEquationCurryNodes(const EquationCurryNodes * first, const EquationCurryNodes * second) :
     first(first), second(second) {}
   friend std::ostream & operator << (std::ostream & os, const PairEquationCurryNodes & pecns){
-    os << "(" << *pecns.first << ", " << *pecns.second << ")" << std::endl;
+    os << "(" << *pecns.first << ", " << *pecns.second << ")";
     return os;
   }
 };
