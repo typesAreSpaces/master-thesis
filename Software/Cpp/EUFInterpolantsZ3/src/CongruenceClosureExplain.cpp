@@ -8,8 +8,10 @@ CongruenceClosureExplain::CongruenceClosureExplain(const unsigned & min_id, cons
 						   PredList & pred_list, UnionFindExplain & uf,
 						   const CurryDeclarations & curry_decl, FactoryCurryNodes & factory_curry_nodes) :
   CongruenceClosure(min_id, subterms, pred_list, uf), num_terms(subterms.size()),
-  equations_to_merge(), pending_propagate(), lookup_table(), use_list(), class_list_explain(){
-  
+  equations_to_merge(), pending_to_propagate(), lookup_table(), use_list(), class_list_explain(){
+
+  equations_to_merge_it = --equations_to_merge.end();
+  pending_to_propagate_it = --pending_to_propagate.end();
  
   auto ids_to_merge = factory_curry_nodes.curryfication(subterms[num_terms - 1]);
   
@@ -42,7 +44,7 @@ CongruenceClosureExplain::CongruenceClosureExplain(const unsigned & min_id, cons
       const_id_rhs = factory_curry_nodes.curry_nodes[x.rhs_id]->getConstId();
     auto const_lhs = factory_curry_nodes.constantCurryNode(const_id_lhs),
       const_rhs = factory_curry_nodes.constantCurryNode(const_id_rhs);
-    pending_propagate.push_back(EquationCurryNodes(const_lhs, const_rhs));
+    pending_to_propagate.push_back(EquationCurryNodes(const_lhs, const_rhs));
   }
  
   propagate();
@@ -59,78 +61,81 @@ CongruenceClosureExplain::~CongruenceClosureExplain(){
 #endif
 }
 
-void CongruenceClosureExplain::merge(){
-  while(!equations_to_merge.empty()) {    
-    const auto & equation_to_merge = equations_to_merge.back();
-    switch(equation_to_merge.tag) {
+void CongruenceClosureExplain::merge() {
+  for(equations_to_merge_it++;
+      equations_to_merge_it != equations_to_merge.end();
+      equations_to_merge_it++) {
+    switch(equations_to_merge_it->tag) {
     case EQ: {
+      
+      const auto & equation = equations_to_merge_it->eq_cn;
+      const auto & lhs = equation.lhs;
+      
+      switch(equation.kind_equation) {
+      case CONST_EQ:{
 #if DEBUG_MERGE
-      auto s = equation_to_merge.eq_cn.lhs, t = equation_to_merge.eq_cn.rhs;
-#endif
-      switch(equation_to_merge.eq_cn.kind_equation) {
-      case CONST_EQ:
-#if DEBUG_MERGE
+	const auto & rhs = equation.rhs;
+	assert(lhs->isConstant() && rhs->isConstant());
 	std::cout << "@merge. Merging constants" << std::endl
-		  << *s << " and " << *t << std::endl;
+		  << *lhs << " and " << *rhs << std::endl;
 #endif
-	pending_propagate.push_back(equation_to_merge.eq_cn);
+
+	pending_to_propagate.push_back(equation);
 	propagate();
+      }
 	break;
       case APPLY_EQ: {
 #if DEBUG_MERGE
+	const auto & rhs = equation.rhs;
+	assert(lhs->isReplaceable() && rhs->isConstant());
 	std::cout << "@merge. Merging apply equations" << std::endl
-		  << *s << " and " << *t << std::endl;
+		  << *lhs << " and " << *rhs << std::endl;
 #endif
-	auto repr_lhs = uf.find(equation_to_merge.eq_cn.lhs->getLeftId()),
-	  repr_rhs = uf.find(equation_to_merge.eq_cn.lhs->getRightId());
-
-	const EquationCurryNodes * element_found = lookup_table.query(repr_lhs, repr_rhs);
+	auto repr_lhs_first_argument = uf.find(lhs->getLeftId()), repr_lhs_second_argument = uf.find(lhs->getRightId());
+	const EquationCurryNodes * element_found = lookup_table.query(repr_lhs_first_argument, repr_lhs_second_argument);
 
 	if(element_found != nullptr){
 #if DEBUG_MERGE
-	  std::cout << "@merge : element found "
+	  std::cout << "@merge : Element found in lookup_table"
 		    << element_found << std::endl;
-	  std::cout << equation_to_merge.eq_cn << " " << &(equation_to_merge.eq_cn) << std::endl;
 #endif
-	  pending_propagate.push_back(PairEquationCurryNodes(&(equation_to_merge.eq_cn), element_found));
+	  pending_to_propagate.push_back(PairEquationCurryNodes(&equation, element_found));
 	  propagate();
 	}
 	else{
-	  lookup_table.enter(repr_lhs, repr_rhs, &(equation_to_merge.eq_cn));
-	  use_list[repr_lhs].push_back(equation_to_merge.eq_cn);
-	  use_list[repr_rhs].push_back(equation_to_merge.eq_cn);
+	  lookup_table.enter(repr_lhs_first_argument, repr_lhs_second_argument, &equation);
+	  use_list[repr_lhs_first_argument].push_back(equation);
+	  use_list[repr_lhs_second_argument].push_back(equation);
 #if DEBUG_MERGE
 	  std::cout << "@merge: the element wasnt in the lookup table" << std::endl
-		    << "------------------------------------------"
-		    << std::endl
-		    << "Index lhs " << equation_to_merge.eq_cn.lhs->getLeftId()
-		    << "[repr:" << repr_lhs << "] has this in UseList "
-		    << equation_to_merge.eq_cn << std::endl
-		    << "Index rhs " << equation_to_merge.eq_cn.lhs->getRightId()
-		    << "[repr:" << repr_rhs << "] has this in UseList "
-		    << equation_to_merge.eq_cn << std::endl
-		    << &equation_to_merge.eq_cn << std::endl
-		    << "------------------------------------------"
-		    << std::endl;
+		    << "------------------------------------------" << std::endl
+		    << "Index lhs " << lhs->getLeftId()
+		    << "[repr:" << repr_lhs_first_argument << "] has this in UseList "
+		    << std::endl << equation << std::endl
+		    << "Index rhs " << lhs->getRightId()
+		    << "[repr:" << repr_lhs_second_argument << "] has this in UseList "
+		    << std::endl << equation << std::endl
+		    << "------------------------------------------" << std::endl;
 #endif
 	}
+      }
 	break;
       }
-      }
-      equations_to_merge.pop_back();
-      break;
     }
+      break;
     case EQ_EQ:
+      // equations_to_merge.pop_back();
       throw "Problem @ CongruenceClosureExplain::merge(). \
 This method cannot take as input a PairEquation.";
     }
   }
+  equations_to_merge_it--;
 }
 
 void CongruenceClosureExplain::propagate(){
-  while(!pending_propagate.empty()) {
-    const auto & pending_element = pending_propagate.back();
-    pending_propagate.pop_back();
+  while(!pending_to_propagate.empty()) {
+    const auto & pending_element = pending_to_propagate.back();
+    pending_to_propagate.pop_back();
 #if DEBUG_PROPAGATE
     std::cout << "@propagate. Taking this element " << pending_element << std::endl;
 #endif
@@ -161,40 +166,59 @@ void CongruenceClosureExplain::propagate(){
       // TODO: Refactor code to avoid using class_list at all
       // class_list_explain[repr_b].splice(class_list_explain[repr_b].end(), class_list_explain[old_repr_a]);
 
+#if 0
+      // ----------------------------------------------------------------------------------
+      // ----------------------------------------------------------------------------------
       while(!use_list[old_repr_a].empty()) {
 	
-	const auto & equation = use_list[old_repr_a].back();
-	use_list[old_repr_a].pop_back();
-	
-	unsigned c1 = equation.lhs->getLeftId(), c2 = equation.lhs->getRightId();
-	unsigned repr_c1 = uf.find(c1), repr_c2 = uf.find(c2);
-	
-#if DEBUG_PROPAGATE
-	std::cout << "@propagate. Processing this equation: " << equation << " " << std::endl;
-	std::cout << "@propagate. Constant arguments: " << c1 << " " << c2 << std::endl;
-#endif
-	
-	const EquationCurryNodes * element_found = lookup_table.query(repr_c1, repr_c2);
+      	const auto equation = use_list[old_repr_a].back();
 
-	if(element_found != nullptr){
-#if DEBUG_PROPAGATE
-	  // --------------------------------------------------------------------------
-	  std::cout << "New PairEquationCurryNodes" << std::endl; // KEEP: working here
-	  std::cout << "1. ----------------------- " << element_found << std::endl;
-	  std::cout << "2. ----------------------- " << equation << std::endl;
-	  // std::cout << new_entry << std::endl;
-	  // --------------------------------------------------------------------------
-#endif
-	  pending_propagate.push_back(PairEquationCurryNodes(&equation, element_found));
-	}
-	else{
-#if DEBUG_PROPAGATE
-	  std::cout << "@propagate. the element wasnt in the lookup table" << std::endl;
-#endif
-	  use_list[repr_b].push_back(equation);
-	  lookup_table.enter(repr_c1, repr_c2, &equation);
-	}
+	
+      	unsigned c1 = equation.lhs->getLeftId(), c2 = equation.lhs->getRightId();
+      	unsigned repr_c1 = uf.find(c1), repr_c2 = uf.find(c2);
+      	
+      	const EquationCurryNodes * element_found = lookup_table.query(repr_c1, repr_c2);
+
+      	if(element_found != nullptr){
+      	  pending_to_propagate.push_back(PairEquationCurryNodes(&equation, element_found));
+      	}
+      	else{
+      	  use_list[repr_b].push_back(equation);
+      	  lookup_table.enter(repr_c1, repr_c2, &equation);
+      	}
+
+      	use_list[old_repr_a].pop_back();
+
       }
+      // ----------------------------------------------------------------------------------
+      // ----------------------------------------------------------------------------------
+#else
+      // ----------------------------------------------------------------------------------
+      // ----------------------------------------------------------------------------------
+      for(auto equation = use_list[old_repr_a].begin(); equation != use_list[old_repr_a].end(); equation++) {
+	
+      	unsigned c1 = equation->lhs->getLeftId(), c2 = equation->lhs->getRightId();
+      	unsigned repr_c1 = uf.find(c1), repr_c2 = uf.find(c2);
+      	
+      	const EquationCurryNodes * element_found = lookup_table.query(repr_c1, repr_c2);
+
+      	if(element_found != nullptr){
+      	  auto wow = PairEquationCurryNodes(&*equation, element_found);
+	  pending_to_propagate.push_back(wow);
+      	  // pending_to_propagate.push_back(PairEquationCurryNodes(nullptr, nullptr));
+      	  equation = use_list[old_repr_a].erase(equation);
+      	}
+      	else{
+      	  use_list[repr_b].push_back(*equation);
+      	  lookup_table.enter(repr_c1, repr_c2, &*equation);
+      	  equation = use_list[old_repr_a].erase(equation);
+      	}
+
+      }
+      // ----------------------------------------------------------------------------------
+      // ----------------------------------------------------------------------------------
+#endif
+      
     }
   }
 }

@@ -19,7 +19,7 @@ IDIR = ./include
 ODIR = ./obj
 SDIR = ./src
 CC = g++
-FLAGS = -I$(SDIR) -I$(IDIR) -std=c++11
+FLAGS = -I$(SDIR) -I$(IDIR) -std=c++11 -Wall
 
 SRC = $(wildcard $(SDIR)/*.cpp)
 OBJS = $(patsubst $(SDIR)/%.cpp, $(ODIR)/%.o, $(SRC))
@@ -32,10 +32,10 @@ TEST_OUTPUT = $(patsubst $(TEST_DIR)/%.smt2, $(TEST_DIR)/%.txt, $(TEST_FILES))
 all: euf_interpolator
 
 $(ODIR)/%.o: $(SDIR)/%.cpp $(DEPS)
-	$(CC) -g -c -o $@  $(FLAGS) $< -Wall
+	$(CC) -g -c -o $@  $(FLAGS) $<
 
 euf_interpolator: $(OBJS) $(Z3DIR)/build/libz3.$(Z3EXT)
-	$(CC) -g -o $@ $^ -lpthread -Wall
+	$(CC) -g -o $@ $^ -lpthread
 
 run: euf_interpolator
 	./euf_interpolator

@@ -23,8 +23,9 @@ public:
     return seed;
   }
   void enter(unsigned a1, unsigned a2, const EquationCurryNodes * ecn){
-    // sig_table[hash_combine(a1, a2)] = ecn;
-    sig_table.insert(std::make_pair(hash_combine(a1, a2), ecn));
+    auto index = hash_combine(a1, a2);
+    sig_table[index] = ecn;
+    // sig_table.insert(std::make_pair(hash_combine(a1, a2), ecn));
     return;
   }
   void erase(unsigned a1, unsigned a2){
@@ -54,7 +55,11 @@ class CongruenceClosureExplain : public CongruenceClosure {
   unsigned num_terms;
   
   PendingExplain   equations_to_merge;
-  PendingExplain   pending_propagate;
+  PendingExplain   pending_to_propagate;
+  
+  PendingExplainIterator equations_to_merge_it;
+  PendingExplainIterator pending_to_propagate_it;
+  
   LookupTable      lookup_table;
   UseList          use_list;
   ClassListExplain class_list_explain;

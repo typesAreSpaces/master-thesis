@@ -125,6 +125,7 @@ typedef std::vector<CurryNode*>                    CurryNodes;
 typedef std::map<CurryNode*, std::list<PredPair> > CurryPreds;
 
 typedef std::list<PendingElement> PendingExplain;
+typedef std::list<PendingElement>::iterator PendingExplainIterator;
 typedef std::list<EquationZ3Ids>  IdsToMerge;
 
 #endif
