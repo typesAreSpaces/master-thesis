@@ -56,6 +56,10 @@ class CongruenceClosureExplain : public CongruenceClosure {
   
   PendingExplain   equations_to_merge;
   PendingExplain   pending_to_propagate;
+
+  /* PendingElements         pending_elements; */
+  /* PendingElementsPointers equations_to_merge; */
+  /* PendingElementsPointers pending_to_propagate; */
   
   PendingExplainIterator equations_to_merge_it;
   PendingExplainIterator pending_to_propagate_it;
