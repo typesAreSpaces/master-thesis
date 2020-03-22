@@ -30,9 +30,9 @@ CurryNode * FactoryCurryNodes::newCurryNode(unsigned id, std::string func_name,
     id_table[id] = new_element;
     hash_table[index] = new_element;
     if(left)
-      curry_predecessors[left].push_back(PredPair(new_element, LHS));
+      curry_predecessors[left].push_back(PredPair(*new_element, LHS));
     if(right)
-      curry_predecessors[right].push_back(PredPair(new_element, RHS));
+      curry_predecessors[right].push_back(PredPair(*new_element, RHS));
     if(new_element->isReplaceable())
       to_replace.push_back(new_element);
     return new_element;
@@ -75,14 +75,14 @@ void FactoryCurryNodes::updatePreds(CurryNode * from, CurryNode * to){
   for(auto pred_pair : curry_predecessors[to]){
     switch(pred_pair.side_of_equation){
     case LHS:
-      pred_pair.pred->updateLeft(to);
+      pred_pair.pred.updateLeft(to);
       break;
     case RHS:
-      pred_pair.pred->updateRight(to);
+      pred_pair.pred.updateRight(to);
       break;
     }
-    if(pred_pair.pred->isReplaceable())
-      to_replace.push_back(pred_pair.pred);
+    if(pred_pair.pred.isReplaceable())
+      to_replace.push_back(&pred_pair.pred);
   }  
   return;
 }
@@ -164,7 +164,7 @@ void FactoryCurryNodes::flattening(const unsigned & min_id, PendingExplain & pen
 				       nullptr, nullptr));
     CurryNode * new_constant = extra_nodes[last_node_pos];
     cur_curry_node->updateConstId(last_node_pos + num_terms);
-    pending.push_back(EquationCurryNodes(cur_curry_node, new_constant));
+    pending.push_back(EquationCurryNodes(*cur_curry_node, *new_constant));
     updatePreds(cur_curry_node, new_constant);
   }
   

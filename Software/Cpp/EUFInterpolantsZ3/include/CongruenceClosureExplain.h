@@ -66,6 +66,7 @@ class CongruenceClosureExplain : public CongruenceClosure {
 
   void merge();
   void propagate();
+  void propagateAux(const CurryNode &, const CurryNode &, unsigned, unsigned, const PendingElement &);
   
  public:
   CongruenceClosureExplain(const unsigned &, const z3::expr_vector &,

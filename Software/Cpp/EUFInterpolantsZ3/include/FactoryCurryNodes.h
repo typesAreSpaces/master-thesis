@@ -21,7 +21,7 @@ class FactoryCurryNodes {
   CurryNodes                extra_nodes;
   const CurryDeclarations & curry_decl;
   CurryPreds                curry_predecessors;
-  std::list<CurryNode*>     to_replace;
+  std::list<CurryNode *>    to_replace;
   
   unsigned   addExtraNodes(unsigned);
   void       updatePreds(CurryNode *, CurryNode *);

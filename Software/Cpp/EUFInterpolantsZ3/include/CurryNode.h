@@ -44,27 +44,27 @@ enum KindEquation { CONST_EQ, APPLY_EQ  };
 enum PendingTag { EQ, EQ_EQ };
 
 struct PredPair {
-  CurryNode * pred;
-  SideOfEquation side_of_equation;
-  PredPair(CurryNode * pred, SideOfEquation side_of_equation) :
+  CurryNode & pred;
+  const SideOfEquation side_of_equation;
+  PredPair(CurryNode & pred, const SideOfEquation side_of_equation) :
     pred(pred), side_of_equation(side_of_equation){
   }
   friend std::ostream & operator << (std::ostream & os, const PredPair & pred_pair){
-    os << *pred_pair.pred << " " << (pred_pair.side_of_equation == LHS ? "LHS" : "RHS");
+    os << pred_pair.pred << " " << (pred_pair.side_of_equation == LHS ? "LHS" : "RHS");
     return os;
   }
 };
 
 struct EquationCurryNodes {
-  CurryNode * lhs, * rhs;
+  CurryNode & lhs, & rhs;
   KindEquation kind_equation;
-  EquationCurryNodes() : lhs(nullptr), rhs(nullptr), kind_equation(CONST_EQ) {}
-  EquationCurryNodes(CurryNode * lhs, CurryNode * rhs) :
-  lhs(lhs), rhs(rhs), kind_equation(lhs->isConstant() ? CONST_EQ : APPLY_EQ) {}
-  EquationCurryNodes(CurryNode * lhs, CurryNode * rhs, KindEquation kind_equation) :
+  // EquationCurryNodes() : lhs(nullptr), rhs(nullptr), kind_equation(CONST_EQ) {}
+  EquationCurryNodes(CurryNode & lhs, CurryNode & rhs) :
+  lhs(lhs), rhs(rhs), kind_equation(lhs.isConstant() ? CONST_EQ : APPLY_EQ) {}
+  EquationCurryNodes(CurryNode & lhs, CurryNode & rhs, KindEquation kind_equation) :
     lhs(lhs), rhs(rhs), kind_equation(kind_equation) {}
   friend std::ostream & operator << (std::ostream & os, const EquationCurryNodes & ecns){
-    os << *ecns.lhs << " = " << *ecns.rhs;
+    os << ecns.lhs << " = " << ecns.rhs;
     return os;
   }
 };
@@ -120,9 +120,10 @@ struct EquationZ3Ids {
 };
 
 
-typedef std::map<unsigned, CurryNode*>             CurryDeclarations;
-typedef std::vector<CurryNode*>                    CurryNodes;
-typedef std::map<CurryNode*, std::list<PredPair> > CurryPreds;
+typedef std::map<unsigned, CurryNode*> CurryDeclarations;
+typedef std::vector<CurryNode*> CurryNodes;
+
+typedef std::map<const CurryNode *, std::list<PredPair> > CurryPreds;
 
 typedef std::list<PendingElement> PendingExplain;
 typedef std::list<PendingElement>::iterator PendingExplainIterator;
