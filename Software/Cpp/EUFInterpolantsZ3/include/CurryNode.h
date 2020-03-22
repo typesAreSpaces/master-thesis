@@ -58,7 +58,7 @@ struct PredPair {
 struct EquationCurryNodes {
   CurryNode & lhs, & rhs;
   KindEquation kind_equation;
-  // EquationCurryNodes() : lhs(nullptr), rhs(nullptr), kind_equation(CONST_EQ) {}
+  
   EquationCurryNodes(CurryNode & lhs, CurryNode & rhs) :
   lhs(lhs), rhs(rhs), kind_equation(lhs.isConstant() ? CONST_EQ : APPLY_EQ) {}
   EquationCurryNodes(CurryNode & lhs, CurryNode & rhs, KindEquation kind_equation) :
@@ -70,11 +70,12 @@ struct EquationCurryNodes {
 };
 
 struct PairEquationCurryNodes {
-  const EquationCurryNodes * first, * second;
-  PairEquationCurryNodes(const EquationCurryNodes * first, const EquationCurryNodes * second) :
+  const EquationCurryNodes & first, & second;
+  
+  PairEquationCurryNodes(const EquationCurryNodes & first, const EquationCurryNodes & second) :
     first(first), second(second) {}
   friend std::ostream & operator << (std::ostream & os, const PairEquationCurryNodes & pecns){
-    os << "(" << *pecns.first << ", " << *pecns.second << ")";
+    os << "(" << pecns.first << ", " << pecns.second << ")";
     return os;
   }
 };

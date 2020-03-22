@@ -99,7 +99,7 @@ void CongruenceClosureExplain::merge() {
 	  std::cout << "@merge : Element found in lookup_table"
 		    << element_found << std::endl;
 #endif
-	  pending_to_propagate.push_back(PairEquationCurryNodes(&equation, element_found));
+	  pending_to_propagate.push_back(PairEquationCurryNodes(equation, *element_found));
 	  propagate();
 	}
 	else{
@@ -145,8 +145,8 @@ void CongruenceClosureExplain::propagate(){
 	      << "--------------------------------------------------------|" << std::endl;
 #endif
     
-    const CurryNode & a = (pending_element.tag == EQ) ? pending_element.eq_cn.lhs : pending_element.p_eq_cn.first->rhs;
-    const CurryNode & b = (pending_element.tag == EQ) ? pending_element.eq_cn.rhs : pending_element.p_eq_cn.second->rhs;
+    const CurryNode & a = (pending_element.tag == EQ) ? pending_element.eq_cn.lhs : pending_element.p_eq_cn.first.rhs;
+    const CurryNode & b = (pending_element.tag == EQ) ? pending_element.eq_cn.rhs : pending_element.p_eq_cn.second.rhs;
     
 #if DEBUG_PROPAGATE
     std::cout << "|------------------------------------------" << std::endl
@@ -196,7 +196,7 @@ void CongruenceClosureExplain::propagateAux(const CurryNode & a, const CurryNode
 		<< *element_found << ")" << std::endl
 		<< "-------------------------------------------------|" << std::endl;
 #endif
-      pending_to_propagate.push_back(PairEquationCurryNodes(&*equation, element_found));
+      pending_to_propagate.push_back(PairEquationCurryNodes(*equation, *element_found));
       equation = use_list[old_repr_a].erase(equation); // POTENTIAL: Problem
     }
     else{
