@@ -43,13 +43,13 @@ enum SideOfEquation { LHS, RHS } ;
 enum KindEquation { CONST_EQ, APPLY_EQ  };
 enum PendingTag { EQ, EQ_EQ };
 
-struct PredPair {
+struct PredNode {
   CurryNode & pred;
   const SideOfEquation side_of_equation;
-  PredPair(CurryNode & pred, const SideOfEquation side_of_equation) :
+  PredNode(CurryNode & pred, const SideOfEquation side_of_equation) :
     pred(pred), side_of_equation(side_of_equation){
   }
-  friend std::ostream & operator << (std::ostream & os, const PredPair & pred_pair){
+  friend std::ostream & operator << (std::ostream & os, const PredNode & pred_pair){
     os << pred_pair.pred << " " << (pred_pair.side_of_equation == LHS ? "LHS" : "RHS");
     return os;
   }
@@ -92,11 +92,6 @@ struct PendingElement {
   PendingElement(const PairEquationCurryNodes p_eq_cn) :
     tag(EQ_EQ), p_eq_cn(p_eq_cn){
   }
-  const EquationCurryNodes * addressEquationCurryNodes() const {
-    if(tag == EQ)
-      return &eq_cn;
-    throw "This is not an equation";
-  }
   friend std::ostream & operator << (std::ostream & os, const PendingElement & pe){
     switch(pe.tag){
     case EQ:
@@ -120,17 +115,15 @@ struct EquationZ3Ids {
   }
 };
 
-
+// We use a map here because
+// id's for declarations are usually large
 typedef std::map<unsigned, CurryNode*> CurryDeclarations;
-typedef std::vector<CurryNode*> CurryNodes;
+typedef std::vector<CurryNode*> VectorCurryNode;
 
-typedef std::map<const CurryNode *, std::list<PredPair> > CurryPreds;
+typedef std::map<const CurryNode *, std::list<PredNode> > CurryPreds;
 
 typedef std::list<PendingElement> PendingElements;
 typedef std::list<const PendingElement *> PendingElementsPointers;
-
-typedef std::list<PendingElement> PendingExplain;
-typedef std::list<PendingElement>::iterator PendingExplainIterator;
 
 typedef std::list<EquationZ3Ids>  IdsToMerge;
 

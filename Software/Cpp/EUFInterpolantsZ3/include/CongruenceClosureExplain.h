@@ -46,7 +46,6 @@ public:
 };
 
 typedef std::vector<std::list<const EquationCurryNodes *> > UseList;
-typedef std::vector<std::list<unsigned> >           ClassListExplain;
 
 class CongruenceClosureExplain : public CongruenceClosure {
   

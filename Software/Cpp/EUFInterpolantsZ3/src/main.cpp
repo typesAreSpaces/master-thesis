@@ -26,14 +26,14 @@ void hugeTest();
 
 int main(int argc, char ** argv){
 
-  //  testFilePath(std::string);
-  //  simpleTest();
-  //  testUFE();
-  //  testEUF();
+  // testFilePath(std::string);
+  // simpleTest();
+  testUFE();
+  // testEUF();
   // testCongClosureExpl();
   // testCongClosureExpl2();
-  testCongClosureExpl3();
-  //  hugeTest();
+  // testCongClosureExpl3();
+  // hugeTest();
   
   return 0;
 }
@@ -63,7 +63,7 @@ void simpleTest(){
 void explainn(unsigned x, unsigned y, UnionFindExplain & a){
   std::cout << "Explain " << x << ", " << y << std::endl;
   for(auto x : a.explain(x, y))
-    std::cout << x << std::endl;
+    std::cout << *x << std::endl;
 }
 
 void testUFE(){
@@ -78,13 +78,6 @@ void testUFE(){
   explainn(6, 5, a);
   explainn(1, 9, a);
   explainn(0, 4, a);
-
-  // std::cout << (UnionFind)a << std::endl;
- 
-  std::cout << "Equivalence class for 8" << std::endl;
-  auto it = a.begin(8), end = a.end(8);
-  for(; it != end; ++it)
-    std::cout << *it << std::endl;
 
   return;
 }

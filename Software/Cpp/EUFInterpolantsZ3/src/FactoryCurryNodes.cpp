@@ -31,9 +31,9 @@ CurryNode * FactoryCurryNodes::newCurryNode(unsigned id, std::string func_name,
     id_table[id] = new_element;
     hash_table[index] = new_element;
     if(left)
-      curry_predecessors[left].push_back(PredPair(*new_element, LHS));
+      curry_predecessors[left].push_back(PredNode(*new_element, LHS));
     if(right)
-      curry_predecessors[right].push_back(PredPair(*new_element, RHS));
+      curry_predecessors[right].push_back(PredNode(*new_element, RHS));
     if(new_element->isReplaceable())
       to_replace.push_back(new_element);
     return new_element;

@@ -26,15 +26,17 @@ struct ExplainEquation {
   }
 };
 
-typedef std::list<ExplainEquation> ExplainEquations;
+typedef std::list<const ExplainEquation *> ExplainEquations;
  
 class UnionFindExplain :  public UnionFind {
   
-  std::hash<unsigned> hasher;
-  std::vector<unsigned> forest;
-  std::vector<ExplainEquation> inserted_equations;
+  std::hash<unsigned>                       hasher;
+  std::vector<unsigned>                     forest;
+  // The following data structure is a persistant
+  // vector with all the inserted equations
+  std::vector<ExplainEquation>              inserted_equations;
   std::unordered_map<std::size_t, unsigned> path;
-  unsigned global_ticket;
+  unsigned                                  global_ticket;
 
   std::size_t hash_combine(unsigned, unsigned);
   unsigned depth(unsigned);

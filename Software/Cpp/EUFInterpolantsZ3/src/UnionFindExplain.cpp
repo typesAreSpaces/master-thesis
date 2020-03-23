@@ -66,21 +66,17 @@ unsigned UnionFindExplain::commonAncestor(unsigned x, unsigned y){
   throw "The nodes are not in the same equivalence class";
 }
 
-void UnionFindExplain::explainHelper(unsigned x, unsigned y,
-				     ExplainEquations & explanations){
-
+void UnionFindExplain::explainHelper(unsigned x, unsigned y, ExplainEquations & explanations){
 #if DEBUG_EXPLAIN_OP
   std::cout << "Original " << x << " " << y << std::endl;
 #endif  
   if(x == y)
     return;
   
-  // F<ind lowest common ancestor
+  // Find lowest common ancestor
   try{
     unsigned common_ancestor = commonAncestor(x, y);
-
-    unsigned oriented_step = 0, non_oriented_step = 0,
-      original_x = x, original_y = y;
+    unsigned oriented_step = 0, non_oriented_step = 0, original_x = x, original_y = y;
     std::size_t entry;
   
     while(x != common_ancestor){  
@@ -91,16 +87,13 @@ void UnionFindExplain::explainHelper(unsigned x, unsigned y,
 	oriented_step = path[entry];
 
       if(x == original_y){
-#if DEBUG_EXPLAIN_OP
-  std::cout << "Oriented Step " << oriented_step << ": "
-	    << inserted_equations[oriented_step] << std::endl;
-#endif
-	explanations.push_back(inserted_equations[oriented_step]);
+	explanations.push_back(&inserted_equations[oriented_step]);
 	explainHelper(original_x, inserted_equations[oriented_step].source, explanations);
 	explainHelper(inserted_equations[oriented_step].target, original_y, explanations);
 	return;
       }
     }
+    
     while(y != common_ancestor){ 
       entry = hash_combine(y, forest[y]);
       y = forest[y];
@@ -109,40 +102,29 @@ void UnionFindExplain::explainHelper(unsigned x, unsigned y,
 	non_oriented_step = path[entry];
 
       if(y == original_x){
-#if DEBUG_EXPLAIN_OP
-	std::cout << "Non oriented Step " << non_oriented_step << ": "
-		  << inserted_equations[non_oriented_step] << std::endl;
-  #endif
-	explanations.push_back(inserted_equations[non_oriented_step]);
+	explanations.push_back(&inserted_equations[non_oriented_step]);
 	explainHelper(y, inserted_equations[non_oriented_step].target, explanations);
 	explainHelper(inserted_equations[non_oriented_step].source, original_y, explanations);
 	return;
       }
     }
-
+    
     if(x == y){
       if(oriented_step > non_oriented_step){	
-#if DEBUG_EXPLAIN_OP
-	std::cout << "Last Oriented Step " << oriented_step << ": "
-		  << inserted_equations[oriented_step] << std::endl;
-#endif
-	explanations.push_back(inserted_equations[oriented_step]);
+	explanations.push_back(&inserted_equations[oriented_step]);
 	explainHelper(original_x, inserted_equations[oriented_step].source, explanations);
 	explainHelper(inserted_equations[oriented_step].target, original_y, explanations);
 	return;
       }
-#if DEBUG_EXPLAIN_OP
-      std::cout << "Last Non oriented Step " << non_oriented_step << ": "
-		<< inserted_equations[non_oriented_step] << std::endl; 
-#endif
-      explanations.push_back(inserted_equations[non_oriented_step]);
+      explanations.push_back(&inserted_equations[non_oriented_step]);
       explainHelper(original_x, inserted_equations[non_oriented_step].target, explanations);
       explainHelper(inserted_equations[non_oriented_step].source, original_y, explanations);
       return;
     }
     return;
   }
-  catch(...){
+  catch(const char * e){
+    std::cout << e << std::endl;
   }
 }
 
@@ -154,12 +136,11 @@ void UnionFindExplain::combine(unsigned target, unsigned source){
     return;
 
   // Dealing with forest
-  unsigned explain_source = forest[find(source)],
-		  explain_target = forest[find(target)];
+  unsigned explain_source = forest[find(source)], explain_target = forest[find(target)];
   inserted_equations.emplace_back(source, target);
   forest[find(source)] = explain_target;
   path[hash_combine(explain_source, explain_target)] = global_ticket++;
-
+  
   UnionFind::combine(target, source); 
   return;
 }
@@ -178,7 +159,6 @@ void UnionFindExplain::merge(unsigned target, unsigned source){
   path[hash_combine(explain_source, explain_target)] = global_ticket++;
   
   UnionFind::merge(target, source);
-  
   return;
 }
 
@@ -190,8 +170,7 @@ void UnionFindExplain::combine(unsigned target, unsigned source, const PendingEl
     return;
 
   // Dealing with forest
-  unsigned explain_source = forest[find(source)],
-		  explain_target = forest[find(target)];
+  unsigned explain_source = forest[find(source)], explain_target = forest[find(target)];
   inserted_equations.emplace_back(source, target, pe);
   forest[find(source)] = explain_target;
   path[hash_combine(explain_source, explain_target)] = global_ticket++;
@@ -214,7 +193,6 @@ void UnionFindExplain::merge(unsigned target, unsigned source, const PendingElem
   path[hash_combine(explain_source, explain_target)] = global_ticket++;
   
   UnionFind::merge(target, source);
-  
   return;
 }
 

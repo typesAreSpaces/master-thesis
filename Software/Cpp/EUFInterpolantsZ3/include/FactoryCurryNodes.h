@@ -13,12 +13,12 @@ class FactoryCurryNodes {
   std::hash<std::string>                      string_hasher;
   std::hash<CurryNode*>                       curry_hasher;
   std::unordered_map<std::size_t, CurryNode*> hash_table;
-  CurryNodes                                  id_table;
+  VectorCurryNode                             id_table;
   
   const unsigned & num_terms;
   
-  CurryNodes                curry_nodes;
-  CurryNodes                extra_nodes;
+  VectorCurryNode           curry_nodes;
+  VectorCurryNode           extra_nodes;
   const CurryDeclarations & curry_decl;
   CurryPreds                curry_predecessors;
   std::list<CurryNode *>    to_replace;
