@@ -45,7 +45,7 @@ public:
   }
 };
 
-typedef std::vector<std::list<EquationCurryNodes> > UseList;
+typedef std::vector<std::list<const EquationCurryNodes *> > UseList;
 typedef std::vector<std::list<unsigned> >           ClassListExplain;
 
 class CongruenceClosureExplain : public CongruenceClosure {
@@ -54,28 +54,30 @@ class CongruenceClosureExplain : public CongruenceClosure {
 
   unsigned num_terms;
   
-  PendingExplain   equations_to_merge;
-  PendingExplain   pending_to_propagate;
+  /* PendingExplain   equations_to_merge; */
+  /* PendingExplain   pending_to_propagate; */
 
-  /* PendingElements         pending_elements; */
-  /* PendingElementsPointers equations_to_merge; */
-  /* PendingElementsPointers pending_to_propagate; */
+  PendingElements         pending_elements;
+  PendingElementsPointers equations_to_merge;
+  PendingElementsPointers pending_to_propagate;
   
-  PendingExplainIterator equations_to_merge_it;
-  PendingExplainIterator pending_to_propagate_it;
+  /* PendingExplainIterator equations_to_merge_it; */
+  /* PendingExplainIterator pending_to_propagate_it; */
   
   LookupTable      lookup_table;
   UseList          use_list;
-  ClassListExplain class_list_explain;
 
+  void pushPending(PendingElementsPointers & pending_pointers, const PendingElement & pe){
+    pending_elements.push_back(pe);
+    pending_pointers.push_back(&pending_elements.back());
+  }
   void merge();
   void propagate();
   void propagateAux(const CurryNode &, const CurryNode &, unsigned, unsigned, const PendingElement &);
   
  public:
   CongruenceClosureExplain(const unsigned &, const z3::expr_vector &,
-			   PredList &, UnionFindExplain &,
-			   const CurryDeclarations &, FactoryCurryNodes &);
+			   PredList &, UnionFindExplain &, FactoryCurryNodes &);
   void buildCongruenceClosure(std::list<unsigned> &);
   
   ~CongruenceClosureExplain();

@@ -51,6 +51,7 @@ public:
   virtual void resize(unsigned);
   virtual bool operator ==(const UnionFind &);
   const unsigned getSize() const { return size; }
+  const unsigned getRank(unsigned i) { return rank[find(i)]; }
   friend std::ostream & operator << (std::ostream &, UnionFind &);
 };
 

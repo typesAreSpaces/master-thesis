@@ -153,7 +153,9 @@ IdsToMerge FactoryCurryNodes::curryfication(z3::expr const & e){
   return ids_to_merge;
 }
 
-void FactoryCurryNodes::flattening(const unsigned & min_id, PendingExplain & pending){
+void FactoryCurryNodes::flattening(const unsigned & min_id,
+				   PendingElements & pending_elements,
+				   PendingElementsPointers & pending){
   while(!to_replace.empty()){
     auto cur_curry_node = to_replace.back();
     to_replace.pop_back();
@@ -164,7 +166,10 @@ void FactoryCurryNodes::flattening(const unsigned & min_id, PendingExplain & pen
 				       nullptr, nullptr));
     CurryNode * new_constant = extra_nodes[last_node_pos];
     cur_curry_node->updateConstId(last_node_pos + num_terms);
-    pending.push_back(EquationCurryNodes(*cur_curry_node, *new_constant));
+    // -----------------------------------------------------------------------------
+    pending_elements.push_back(EquationCurryNodes(*cur_curry_node, *new_constant));
+    pending.push_back(&pending_elements.back());
+    // -----------------------------------------------------------------------------
     updatePreds(cur_curry_node, new_constant);
   }
   
