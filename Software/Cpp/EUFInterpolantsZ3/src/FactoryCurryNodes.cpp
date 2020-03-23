@@ -1,4 +1,5 @@
 #include "FactoryCurryNodes.h"
+#define FRESH_PREFIX "fresh_"
 
 FactoryCurryNodes::FactoryCurryNodes(const unsigned & num_terms, const CurryDeclarations & curry_decl) :
   num_terms(num_terms), curry_decl(curry_decl), curry_predecessors(){
@@ -48,9 +49,11 @@ Element not found.";
 }
 
 CurryNode * FactoryCurryNodes::constantCurryNode(unsigned index){
+  if(index > curry_nodes.size())
+    return newCurryNode(0, FRESH_PREFIX + std::to_string(index), nullptr, nullptr);
   auto element = curry_nodes[index];
-  if(index > curry_nodes.size() || element->isReplaceable())
-    return newCurryNode(0, "fresh_" + std::to_string(index), nullptr, nullptr);
+  if(element->isReplaceable())
+    return newCurryNode(0, FRESH_PREFIX + std::to_string(index), nullptr, nullptr);
   return element;
 }
 
@@ -162,7 +165,7 @@ void FactoryCurryNodes::flattening(const unsigned & min_id,
 
     unsigned last_node_pos = extra_nodes.size();
     extra_nodes.push_back(newCurryNode(last_node_pos + num_terms,
-				       "fresh_" + std::to_string(last_node_pos + num_terms),
+				       FRESH_PREFIX + std::to_string(last_node_pos + num_terms),
 				       nullptr, nullptr));
     CurryNode * new_constant = extra_nodes[last_node_pos];
     cur_curry_node->updateConstId(last_node_pos + num_terms);

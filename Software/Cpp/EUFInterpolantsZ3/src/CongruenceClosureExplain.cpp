@@ -150,7 +150,7 @@ void CongruenceClosureExplain::propagate(){
     if(repr_a != repr_b) {
       // TODO: Improve invariant to prioritize common symbols as representatives
       // Invariant |ClassList(repr_a)| \leq |ClassList(repr_b)|
-      if(uf.getRank(repr_a) < uf.getRank(repr_b))
+      if(uf.getRank(repr_a) <= uf.getRank(repr_b))
 	
       	propagateAux(a, b, repr_a, repr_b, *pending_element);
       else
@@ -192,7 +192,6 @@ void CongruenceClosureExplain::propagateAux(const CurryNode & a, const CurryNode
       lookup_table.enter(repr_c1, repr_c2, *equation);
     }
     equation = use_list[old_repr_a].erase(equation);
-
   }
   assert(use_list[old_repr_a].empty());
 }
