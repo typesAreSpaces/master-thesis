@@ -11,8 +11,9 @@ void testFilePath(std::string);
 void simpleTest();
 void testUFE();
 void testEUF();
-void testEUF2();
-void testEUF3(); 
+void testCongClosureExpl();
+void testCongClosureExpl2();
+void testCongClosureExpl3(); 
 void hugeTest();
 
 // *******************************************************
@@ -29,8 +30,9 @@ int main(int argc, char ** argv){
   //  simpleTest();
   //  testUFE();
   //  testEUF();
-  // testEUF2();
-  testEUF3();
+  // testCongClosureExpl();
+  // testCongClosureExpl2();
+  testCongClosureExpl3();
   //  hugeTest();
   
   return 0;
@@ -118,7 +120,7 @@ void testEUF(){
   // euf.buildInterpolant();
 }
 
-void testEUF2(){
+void testCongClosureExpl(){
   z3::context ctx;
   z3::sort my_sort = ctx.uninterpreted_sort("A");
   z3::expr a = ctx.constant("a", my_sort);
@@ -130,7 +132,19 @@ void testEUF2(){
   return;
 }
 
-void testEUF3(){
+void testCongClosureExpl2(){
+  z3::context ctx;
+  z3::sort my_sort = ctx.uninterpreted_sort("A");
+  z3::expr a = ctx.constant("a", my_sort);
+  z3::expr b = ctx.constant("b", my_sort);
+  z3::func_decl g = ctx.function("g", my_sort, my_sort, my_sort, my_sort);
+  z3::func_decl h = ctx.function("h", my_sort, my_sort);
+  z3::expr alpha = g(a, h(b), b) == b && g(a, h(b), h(b)) == h(b) && g(a, h(b), h(h(b))) == h(h(b)) && h(b) == b;
+  EUFInterpolant euf(alpha);
+  return;
+}
+
+void testCongClosureExpl3(){
   z3::context ctx;
   z3::sort my_sort = ctx.uninterpreted_sort("A");
   z3::expr a = ctx.constant("a", my_sort);

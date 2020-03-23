@@ -1,8 +1,8 @@
 #include "CongruenceClosureExplain.h"
 #include <fstream>
 #define DEBUG_SANITY_CHECK 1
-#define DEBUG_MERGE        1
-#define DEBUG_PROPAGATE    1
+#define DEBUG_MERGE        0
+#define DEBUG_PROPAGATE    0
 
 CongruenceClosureExplain::CongruenceClosureExplain(const unsigned & min_id, const z3::expr_vector & subterms,
 						   PredList & pred_list, UnionFindExplain & uf,
