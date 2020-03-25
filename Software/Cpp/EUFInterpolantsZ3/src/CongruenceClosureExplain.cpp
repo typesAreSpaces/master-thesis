@@ -1,8 +1,8 @@
 #include "CongruenceClosureExplain.h"
 #include <fstream>
-#define DEBUG_SANITY_CHECK 0
+#define DEBUG_SANITY_CHECK 1
 #define DEBUG_MERGE        0
-#define DEBUG_PROPAGATE    1
+#define DEBUG_PROPAGATE    0
 
 CongruenceClosureExplain::CongruenceClosureExplain(const unsigned & min_id, const z3::expr_vector & subterms,
 						   PredList & pred_list, UnionFindExplain & uf,
@@ -13,9 +13,8 @@ CongruenceClosureExplain::CongruenceClosureExplain(const unsigned & min_id, cons
  
   auto ids_to_merge = factory_curry_nodes.curryfication(subterms[num_terms - 1]);
   
-  // NOTE: The new constants
-  // introduced by flattening
-  // are in extra_nodes
+  // NOTE: The new constants introduced by flattening are in extra_nodes
+  // NOTE2: flattening also fully defines const_id and z3_id for each curry node.
   factory_curry_nodes.flattening(min_id, pending_elements, equations_to_merge);
 
   // Process input-equations defined by user
@@ -30,8 +29,8 @@ CongruenceClosureExplain::CongruenceClosureExplain(const unsigned & min_id, cons
   // in the curry_nodes and extra_nodes. There
   // might be repeated elements in these collection
   // but they are unique pointers
-  uf                .resize(factory_curry_nodes.size());
-  use_list          .resize(factory_curry_nodes.size());
+  uf      .resize(factory_curry_nodes.size());
+  use_list.resize(factory_curry_nodes.size());
 
 #if 0
   // This code exemplifies how to retrieve back an original id
@@ -40,7 +39,6 @@ CongruenceClosureExplain::CongruenceClosureExplain(const unsigned & min_id, cons
 #endif
 
   merge();
-
   propagate();
 
 #if DEBUG_SANITY_CHECK
@@ -55,67 +53,68 @@ CongruenceClosureExplain::~CongruenceClosureExplain(){
 #endif
 }
 
+void CongruenceClosureExplain::merge(const EquationCurryNodes & equation) {
+  const auto & lhs = equation.lhs;
+      
+  switch(equation.kind_equation) {
+  case CONST_EQ:{
+#if DEBUG_MERGE
+    const auto & rhs = equation.rhs;
+    assert(lhs.isConstant() && rhs.isConstant());
+    std::cout << "@merge. Merging constants" << std::endl
+	      << lhs << " and " << rhs << std::endl;
+#endif
+    pushPending(pending_to_propagate, equation);
+    propagate();
+  }
+    break;
+  case APPLY_EQ: {
+#if DEBUG_MERGE
+    const auto & rhs = equation.rhs;
+    assert(lhs.isReplaceable() && rhs.isConstant());
+    std::cout << "@merge. Merging apply equations" << std::endl
+	      << lhs << " and " << rhs << std::endl;
+#endif
+    auto repr_lhs_first_argument = uf.find(lhs.getLeftId()), repr_lhs_second_argument = uf.find(lhs.getRightId());
+    const EquationCurryNodes * element_found = lookup_table.query(repr_lhs_first_argument, repr_lhs_second_argument);
+
+    if(element_found != nullptr){
+#if DEBUG_MERGE
+      std::cout << "@merge : Element found in lookup_table"
+		<< element_found << std::endl;
+#endif
+      pushPending(pending_to_propagate, PairEquationCurryNodes(equation, *element_found));
+      propagate();
+    }
+    else{
+      lookup_table.enter(repr_lhs_first_argument, repr_lhs_second_argument, &equation);
+      use_list[repr_lhs_first_argument].push_back(&equation);
+      use_list[repr_lhs_second_argument].push_back(&equation);
+#if DEBUG_MERGE
+      std::cout << "@merge: the element wasnt in the lookup table" << std::endl
+		<< "------------------------------------------" << std::endl
+		<< "Index lhs " << lhs.getLeftId()
+		<< "[repr:" << repr_lhs_first_argument << "] has this in UseList "
+		<< std::endl << equation << std::endl
+		<< "Index rhs " << lhs.getRightId()
+		<< "[repr:" << repr_lhs_second_argument << "] has this in UseList "
+		<< std::endl << equation << std::endl
+		<< "------------------------------------------" << std::endl;
+#endif
+    }
+  }
+    break;
+  }
+}
+
 void CongruenceClosureExplain::merge() {
   while(!equations_to_merge.empty()){
     const auto equations_to_merge_it = equations_to_merge.back();
     equations_to_merge.pop_back();
     
     switch(equations_to_merge_it->tag) {
-    case EQ: {
-      
-      const auto & equation = equations_to_merge_it->eq_cn;
-      const auto & lhs = equation.lhs;
-      
-      switch(equation.kind_equation) {
-      case CONST_EQ:{
-#if DEBUG_MERGE
-	const auto & rhs = equation.rhs;
-	assert(lhs.isConstant() && rhs.isConstant());
-	std::cout << "@merge. Merging constants" << std::endl
-		  << lhs << " and " << rhs << std::endl;
-#endif
-	pushPending(pending_to_propagate, equation);
-	propagate();
-      }
-	break;
-      case APPLY_EQ: {
-#if DEBUG_MERGE
-	const auto & rhs = equation.rhs;
-	assert(lhs.isReplaceable() && rhs.isConstant());
-	std::cout << "@merge. Merging apply equations" << std::endl
-		  << lhs << " and " << rhs << std::endl;
-#endif
-	auto repr_lhs_first_argument = uf.find(lhs.getLeftId()), repr_lhs_second_argument = uf.find(lhs.getRightId());
-	const EquationCurryNodes * element_found = lookup_table.query(repr_lhs_first_argument, repr_lhs_second_argument);
-
-	if(element_found != nullptr){
-#if DEBUG_MERGE
-	  std::cout << "@merge : Element found in lookup_table"
-		    << element_found << std::endl;
-#endif
-	  pushPending(pending_to_propagate, PairEquationCurryNodes(equation, *element_found));
-	  propagate();
-	}
-	else{
-	  lookup_table.enter(repr_lhs_first_argument, repr_lhs_second_argument, &equation);
-	  use_list[repr_lhs_first_argument].push_back(&equation);
-	  use_list[repr_lhs_second_argument].push_back(&equation);
-#if DEBUG_MERGE
-	  std::cout << "@merge: the element wasnt in the lookup table" << std::endl
-		    << "------------------------------------------" << std::endl
-		    << "Index lhs " << lhs.getLeftId()
-		    << "[repr:" << repr_lhs_first_argument << "] has this in UseList "
-		    << std::endl << equation << std::endl
-		    << "Index rhs " << lhs.getRightId()
-		    << "[repr:" << repr_lhs_second_argument << "] has this in UseList "
-		    << std::endl << equation << std::endl
-		    << "------------------------------------------" << std::endl;
-#endif
-	}
-      }
-	break;
-      }
-    }
+    case EQ: 
+      merge(equations_to_merge_it->eq_cn);
       break;
     case EQ_EQ:
       throw "Problem @ CongruenceClosureExplain::merge(). \

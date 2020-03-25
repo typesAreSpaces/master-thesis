@@ -65,6 +65,7 @@ class CongruenceClosureExplain : public CongruenceClosure {
     pending_pointers.push_back(&pending_elements.back());
   }
   void merge();
+  void merge(const EquationCurryNodes &);
   void propagate();
   void propagateAux(const CurryNode &, const CurryNode &, unsigned, unsigned, const PendingElement &);
   
