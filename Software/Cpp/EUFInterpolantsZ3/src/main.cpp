@@ -60,12 +60,6 @@ void simpleTest(){
   return;
 }
 
-void explainn(unsigned x, unsigned y, UnionFindExplain & a){
-  std::cout << "Explain " << x << ", " << y << std::endl;
-  for(auto x : a.explain(x, y))
-    std::cout << *x << std::endl;
-}
-
 void testUFE(){
   UnionFindExplain a(10);
   a.merge(1, 0);
@@ -75,9 +69,10 @@ void testUFE(){
   a.merge(2, 6);
   a.merge(5, 2);
 
-  explainn(6, 5, a);
-  explainn(1, 9, a);
-  explainn(0, 4, a);
+  a.giveExplanation(std::cout, 6, 5);
+  a.giveExplanation(std::cout, 1, 9);
+  a.giveExplanation(std::cout, 0, 4);
+  a.giveExplanation(std::cout, 8, 9);
 
   return;
 }

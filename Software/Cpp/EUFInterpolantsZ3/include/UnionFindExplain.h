@@ -5,7 +5,9 @@
 #include <unordered_map>
 #include "UnionFind.h"
 #include "CurryNode.h"
- 
+
+enum Direction { ORIENTED, REVERSED };
+
 struct ExplainEquation {
   unsigned source, target;
   const PendingElement * label;
@@ -41,7 +43,8 @@ class UnionFindExplain :  public UnionFind {
   std::size_t hash_combine(unsigned, unsigned);
   unsigned depth(unsigned);
   unsigned commonAncestor(unsigned, unsigned);
-  void     explainHelper(unsigned, unsigned, ExplainEquations &);
+  void     explainHelper(Direction, unsigned, unsigned, unsigned, ExplainEquations &);
+  void     traverseExplain(unsigned, unsigned, ExplainEquations &);
   
 public:
   UnionFindExplain();
@@ -53,6 +56,7 @@ public:
   void combine(unsigned, unsigned, const PendingElement *);
   void merge(unsigned, unsigned, const PendingElement *);
   ExplainEquations explain(unsigned, unsigned);
+  std::ostream & giveExplanation(std::ostream &, unsigned, unsigned);
   void resize(unsigned);
   bool operator ==(const UnionFindExplain &);
   friend std::ostream & operator << (std::ostream &, UnionFindExplain &);

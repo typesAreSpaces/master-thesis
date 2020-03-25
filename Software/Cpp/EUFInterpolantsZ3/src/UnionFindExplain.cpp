@@ -66,30 +66,39 @@ unsigned UnionFindExplain::commonAncestor(unsigned x, unsigned y){
   throw "The nodes are not in the same equivalence class";
 }
 
-void UnionFindExplain::explainHelper(unsigned x, unsigned y, ExplainEquations & explanations){
+void UnionFindExplain::explainHelper(Direction direction, unsigned last_step, unsigned original_x, unsigned original_y, ExplainEquations & explanations){
+  explanations.push_back(&inserted_equations[last_step]);
+  switch(direction){
+  case ORIENTED:
+    traverseExplain(original_x, inserted_equations[last_step].source, explanations);
+    traverseExplain(inserted_equations[last_step].target, original_y, explanations);
+    return;
+  case REVERSED:
+    traverseExplain(original_x, inserted_equations[last_step].target, explanations);
+    traverseExplain(inserted_equations[last_step].source, original_y, explanations);
+    return;
+  }
+}
+
+void UnionFindExplain::traverseExplain(unsigned x, unsigned y, ExplainEquations & explanations){
 #if DEBUG_EXPLAIN_OP
   std::cout << "Original " << x << " " << y << std::endl;
 #endif  
   if(x == y)
     return;
   
-  // Find lowest common ancestor
   try{
     unsigned common_ancestor = commonAncestor(x, y);
-    unsigned oriented_step = 0, non_oriented_step = 0, original_x = x, original_y = y;
-    std::size_t entry;
+    unsigned oriented_step = 0, reversed_step = 0, original_x = x, original_y = y;
+    std::size_t entry = 0;
   
     while(x != common_ancestor){  
       entry = hash_combine(x, forest[x]);
       x = forest[x];
-
       if(oriented_step < path[entry])
 	oriented_step = path[entry];
-
       if(x == original_y){
-	explanations.push_back(&inserted_equations[oriented_step]);
-	explainHelper(original_x, inserted_equations[oriented_step].source, explanations);
-	explainHelper(inserted_equations[oriented_step].target, original_y, explanations);
+	explainHelper(ORIENTED, oriented_step, original_x, original_y, explanations);
 	return;
       }
     }
@@ -97,33 +106,25 @@ void UnionFindExplain::explainHelper(unsigned x, unsigned y, ExplainEquations & 
     while(y != common_ancestor){ 
       entry = hash_combine(y, forest[y]);
       y = forest[y];
-    
-      if(non_oriented_step < path[entry])
-	non_oriented_step = path[entry];
-
+      if(reversed_step < path[entry])
+	reversed_step = path[entry];
       if(y == original_x){
-	explanations.push_back(&inserted_equations[non_oriented_step]);
-	explainHelper(y, inserted_equations[non_oriented_step].target, explanations);
-	explainHelper(inserted_equations[non_oriented_step].source, original_y, explanations);
+	explainHelper(REVERSED, reversed_step, original_x, original_y, explanations);
 	return;
       }
     }
     
     if(x == y){
-      if(oriented_step > non_oriented_step){	
-	explanations.push_back(&inserted_equations[oriented_step]);
-	explainHelper(original_x, inserted_equations[oriented_step].source, explanations);
-	explainHelper(inserted_equations[oriented_step].target, original_y, explanations);
+      if(oriented_step > reversed_step){
+	explainHelper(ORIENTED, oriented_step, original_x, original_y, explanations);
 	return;
       }
-      explanations.push_back(&inserted_equations[non_oriented_step]);
-      explainHelper(original_x, inserted_equations[non_oriented_step].target, explanations);
-      explainHelper(inserted_equations[non_oriented_step].source, original_y, explanations);
+      explainHelper(REVERSED, reversed_step, original_x, original_y, explanations);
       return;
     }
-    return;
   }
   catch(const char * e){
+    explanations.clear();
     std::cout << e << std::endl;
   }
 }
@@ -198,8 +199,15 @@ void UnionFindExplain::merge(unsigned target, unsigned source, const PendingElem
 
 ExplainEquations UnionFindExplain::explain(unsigned x, unsigned y){
   ExplainEquations explanations;
-  explainHelper(x, y, explanations);
+  traverseExplain(x, y, explanations);
   return explanations;
+}
+
+std::ostream & UnionFindExplain::giveExplanation(std::ostream & os, unsigned x, unsigned y){
+  os << "Explain " << x << ", " << y << std::endl;
+  for(auto z : explain(x, y))
+    os << *z << std::endl;
+  return os;
 }
 
 void UnionFindExplain::resize(unsigned sz){
@@ -234,10 +242,10 @@ std::ostream & operator << (std::ostream & os, UnionFindExplain & uf){
   for(unsigned i = 0; i < uf.representative.size(); ++i){
     if(i != uf.find(i)) {
       num_changes++;
-      std::cout << "(Different)";
+      os << "(Different)";
     }
     else
-      std::cout << "(Same)";
+      os << "(Same)";
     os << "ID: " << i
        << " Forest: " << uf.forest[i]
        << " Representative " << uf.find(i)
