@@ -1,8 +1,8 @@
 #include "CongruenceClosureExplain.h"
 #include <fstream>
-#define DEBUG_SANITY_CHECK 1
+#define DEBUG_SANITY_CHECK 0
 #define DEBUG_MERGE        0
-#define DEBUG_PROPAGATE    0
+#define DEBUG_PROPAGATE    1
 
 CongruenceClosureExplain::CongruenceClosureExplain(const unsigned & min_id, const z3::expr_vector & subterms,
 						   PredList & pred_list, UnionFindExplain & uf,
@@ -17,7 +17,15 @@ CongruenceClosureExplain::CongruenceClosureExplain(const unsigned & min_id, cons
   // introduced by flattening
   // are in extra_nodes
   factory_curry_nodes.flattening(min_id, pending_elements, equations_to_merge);
-  
+
+  // Process input-equations defined by user
+  // using the constant ids
+  for(auto x : ids_to_merge){
+    auto const_lhs = factory_curry_nodes.constantZ3Index(x.lhs_id),
+      const_rhs = factory_curry_nodes.constantZ3Index(x.rhs_id);
+    pushPending(pending_to_propagate, EquationCurryNodes(*const_lhs, *const_rhs));
+  }
+ 
   // There is an element in uf for each element
   // in the curry_nodes and extra_nodes. There
   // might be repeated elements in these collection
@@ -26,28 +34,18 @@ CongruenceClosureExplain::CongruenceClosureExplain(const unsigned & min_id, cons
   use_list          .resize(factory_curry_nodes.size());
 
 #if 0
+  // This code exemplifies how to retrieve back an original id
   for(auto x : factory_curry_nodes.hash_table)
     std::cout << *factory_curry_nodes.id_table[x.second->getId()] << std::endl;
 #endif
 
-  for(auto x : equations_to_merge)
-    x->eq_cn.rhs.updateZ3Id(x->eq_cn.lhs.getZ3Id());
-
   merge();
 
-  // Process input-equation defined by user
-  for(auto x : ids_to_merge){
-    auto const_id_lhs = factory_curry_nodes.curry_nodes[x.lhs_id]->getConstId(),
-      const_id_rhs = factory_curry_nodes.curry_nodes[x.rhs_id]->getConstId();
-    auto const_lhs = factory_curry_nodes.constantCurryNode(const_id_lhs),
-      const_rhs = factory_curry_nodes.constantCurryNode(const_id_rhs);
-    pushPending(pending_to_propagate, EquationCurryNodes(*const_lhs, *const_rhs));
-  }
-  
   propagate();
 
 #if DEBUG_SANITY_CHECK
   std::cout << uf << std::endl;
+  // std::cout << factory_curry_nodes << std::endl;
 #endif
 }
 

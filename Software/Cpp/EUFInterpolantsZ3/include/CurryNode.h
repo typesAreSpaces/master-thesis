@@ -56,7 +56,7 @@ struct PredNode {
 };
 
 struct EquationCurryNodes {
-  CurryNode & lhs, & rhs;
+  const CurryNode & lhs, & rhs;
   KindEquation kind_equation;
   
   EquationCurryNodes(CurryNode & lhs, CurryNode & rhs) :

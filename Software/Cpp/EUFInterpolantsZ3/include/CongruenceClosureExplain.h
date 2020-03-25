@@ -53,18 +53,12 @@ class CongruenceClosureExplain : public CongruenceClosure {
 
   unsigned num_terms;
   
-  /* PendingExplain   equations_to_merge; */
-  /* PendingExplain   pending_to_propagate; */
-
   PendingElements         pending_elements;
   PendingElementsPointers equations_to_merge;
   PendingElementsPointers pending_to_propagate;
   
-  /* PendingExplainIterator equations_to_merge_it; */
-  /* PendingExplainIterator pending_to_propagate_it; */
-  
-  LookupTable      lookup_table;
-  UseList          use_list;
+  LookupTable lookup_table;
+  UseList     use_list;
 
   void pushPending(PendingElementsPointers & pending_pointers, const PendingElement & pe){
     pending_elements.push_back(pe);

@@ -25,7 +25,7 @@ class FactoryCurryNodes {
   
   unsigned   addExtraNodes(unsigned);
   void       updatePreds(CurryNode *, CurryNode *);
-  void       updateZ3IdDefined();
+  void       updateZ3IdNotDefined();
   void       curryficationHelper(z3::expr const &, std::vector<bool> &, IdsToMerge &);
   IdsToMerge curryfication(z3::expr const &);
   void       flattening(const unsigned &, PendingElements &, PendingElementsPointers &);
@@ -36,6 +36,7 @@ class FactoryCurryNodes {
   
   CurryNode * newCurryNode(unsigned, std::string, CurryNode *, CurryNode *);
   CurryNode * getCurryNode(std::size_t) const;
+  CurryNode * constantZ3Index(unsigned);
   CurryNode * constantCurryNode(unsigned);
 
   const unsigned size() const;

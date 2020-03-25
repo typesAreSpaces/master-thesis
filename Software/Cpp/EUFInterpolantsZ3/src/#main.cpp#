@@ -30,9 +30,9 @@ int main(int argc, char ** argv){
   // simpleTest();
   // testUFE();
   // testEUF();
-  // testCongClosureExpl();
+  testCongClosureExpl();
   // testCongClosureExpl2();
-  testCongClosureExpl3();
+  // testCongClosureExpl3();
   // hugeTest();
   
   return 0;

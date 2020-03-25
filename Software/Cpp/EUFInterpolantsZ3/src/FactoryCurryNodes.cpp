@@ -48,6 +48,12 @@ CurryNode * FactoryCurryNodes::getCurryNode(std::size_t index) const {
 Element not found.";
 }
 
+CurryNode * FactoryCurryNodes::constantZ3Index(unsigned id){
+  assert(id < curry_nodes.size());
+  unsigned const_id = curry_nodes[id]->getConstId();
+  return constantCurryNode(const_id);
+}
+
 CurryNode * FactoryCurryNodes::constantCurryNode(unsigned index){
   if(index > curry_nodes.size())
     return newCurryNode(0, FRESH_PREFIX + std::to_string(index), nullptr, nullptr);
@@ -90,7 +96,7 @@ void FactoryCurryNodes::updatePreds(CurryNode * from, CurryNode * to){
   return;
 }
 
-void FactoryCurryNodes::updateZ3IdDefined(){
+void FactoryCurryNodes::updateZ3IdNotDefined(){
   for(auto x : hash_table)
     switch(x.second->isDefined()){
     case false:
@@ -158,7 +164,11 @@ IdsToMerge FactoryCurryNodes::curryfication(z3::expr const & e){
 
 void FactoryCurryNodes::flattening(const unsigned & min_id,
 				   PendingElements & pending_elements,
-				   PendingElementsPointers & pending){
+				   PendingElementsPointers & equations_to_merge){
+  // Update Z3 Ids
+  for(unsigned i = min_id; i < curry_nodes.size(); i++)
+    curry_nodes[i]->updateZ3Id(i);
+
   while(!to_replace.empty()){
     auto cur_curry_node = to_replace.back();
     to_replace.pop_back();
@@ -169,20 +179,17 @@ void FactoryCurryNodes::flattening(const unsigned & min_id,
 				       nullptr, nullptr));
     CurryNode * new_constant = extra_nodes[last_node_pos];
     cur_curry_node->updateConstId(last_node_pos + num_terms);
+    new_constant->updateZ3Id(cur_curry_node->getZ3Id());
     // -----------------------------------------------------------------------------
     pending_elements.push_back(EquationCurryNodes(*cur_curry_node, *new_constant));
-    pending.push_back(&pending_elements.back());
+    equations_to_merge.push_back(&pending_elements.back());
     // -----------------------------------------------------------------------------
     updatePreds(cur_curry_node, new_constant);
   }
   
-  // Update Z3 Ids
-  for(unsigned i = min_id; i < curry_nodes.size(); i++)
-    curry_nodes[i]->updateZ3Id(i);
-
   // Any curry_node with z3_id_defined == false
   // doesn't match an original z3 id
-  updateZ3IdDefined();
+  updateZ3IdNotDefined();
 }
 
 std::ostream & operator << (std::ostream & os, const FactoryCurryNodes & fcns){
