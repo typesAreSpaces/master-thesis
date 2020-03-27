@@ -24,7 +24,7 @@ CongruenceClosureExplain::CongruenceClosureExplain(const unsigned & min_id, cons
       const_rhs = factory_curry_nodes.constantZ3Index(x.rhs_id);
     pushPending(pending_to_propagate, EquationCurryNodes(*const_lhs, *const_rhs));
   }
- 
+   
   // There is an element in uf for each element
   // in the curry_nodes and extra_nodes. There
   // might be repeated elements in these collection
