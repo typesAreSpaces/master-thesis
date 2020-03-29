@@ -147,23 +147,6 @@ void UnionFindExplain::combine(unsigned target, unsigned source){
 }
 
 // The first argument becomes the new
-// representative in forest, always.
-void UnionFindExplain::merge(unsigned target, unsigned source){
-  assert(target < size && source < size);
-  if(find(target) == find(source))
-    return;
-  
-  // Dealing with forest 
-  unsigned explain_source = forest[find(source)], explain_target = forest[find(target)];
-  inserted_equations.emplace_back(source, target);
-  forest[find(source)] = explain_target;  
-  path[hash_combine(explain_source, explain_target)] = global_ticket++;
-  
-  UnionFind::merge(target, source);
-  return;
-}
-
-// The first argument becomes the new
 // representative, always.
 void UnionFindExplain::combine(unsigned target, unsigned source, const PendingElement * pe){
   assert(target < size && source < size);
@@ -177,6 +160,23 @@ void UnionFindExplain::combine(unsigned target, unsigned source, const PendingEl
   path[hash_combine(explain_source, explain_target)] = global_ticket++;
 
   UnionFind::combine(target, source); 
+  return;
+}
+
+// The first argument becomes the new
+// representative in forest, always.
+void UnionFindExplain::merge(unsigned target, unsigned source){
+  assert(target < size && source < size);
+  if(find(target) == find(source))
+    return;
+  
+  // Dealing with forest 
+  unsigned explain_source = forest[find(source)], explain_target = forest[find(target)];
+  inserted_equations.emplace_back(source, target);
+  forest[find(source)] = explain_target;  
+  path[hash_combine(explain_source, explain_target)] = global_ticket++;
+  
+  UnionFind::merge(target, source);
   return;
 }
 

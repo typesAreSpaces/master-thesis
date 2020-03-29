@@ -52,8 +52,8 @@ public:
   UnionFindExplain(const UnionFindExplain &);
   ~UnionFindExplain();
   void combine(unsigned, unsigned);
-  void merge(unsigned, unsigned);
   void combine(unsigned, unsigned, const PendingElement *);
+  void merge(unsigned, unsigned);
   void merge(unsigned, unsigned, const PendingElement *);
   ExplainEquations explain(unsigned, unsigned);
   std::ostream & giveExplanation(std::ostream &, unsigned, unsigned);
