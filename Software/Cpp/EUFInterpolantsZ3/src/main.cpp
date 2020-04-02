@@ -92,7 +92,7 @@ void testEUF(){
   z3::func_decl g = ctx.function("g", my_sort, my_sort);
   std::set<std::string> uncomms;
   uncomms.insert("v");
-  
+
   // z3::expr alpha = f(z1, v) == s1 && f(z2, v) == s2 && f(f(y1, v), f(y2, v)) == t && s1 != t;
   z3::expr alpha = f(z1, v) == s1
     && f(z2, v) == s2
@@ -101,10 +101,10 @@ void testEUF(){
     && g(g(s1)) == s2
     && g(g(f(y1, v))) == f(y2, v);
   z3::expr r_alpha = rename(alpha, uncomms);
-  
+
   EUFInterpolant euf(r_alpha);
   // std::cout << euf << std::endl;
-    
+
   // euf.buildInterpolant();
 }
 

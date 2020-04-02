@@ -7,13 +7,13 @@ UnionFindExplain::UnionFindExplain() :
   };
 
 UnionFindExplain::UnionFindExplain(unsigned size) :
-  UnionFind(size), proof_forest(size, 0), labels(size, nullptr) {
+  UnionFind(size), proof_forest(size, 0){
     for(unsigned i = 0; i < size; i++)
       proof_forest[i] = i;
   }
 
 UnionFindExplain::UnionFindExplain(const UnionFindExplain & other) :
-  UnionFind(other), proof_forest(other.proof_forest) , labels(other.labels) {
+  UnionFind(other), proof_forest(other.proof_forest) {
   }
 
 UnionFindExplain::~UnionFindExplain(){
@@ -35,34 +35,61 @@ unsigned UnionFindExplain::getRootProofForest(unsigned x){
   return aux;
 }
 
+unsigned UnionFindExplain::depth(unsigned x){
+  unsigned aux = x, depth = 0;
+  while(aux != proof_forest[aux]){
+    depth++;
+    aux = proof_forest[aux];
+  }
+  return depth;
+}
+
 unsigned UnionFindExplain::commonAncestor(unsigned x, unsigned y) {
-  if(find(x) == find(y))
-    return getRootProofForest(x);
+  if(find(x) == find(y)){
+    unsigned depth_x = depth(x), depth_y = depth(y);
+    unsigned aux_x = x, aux_y = y, diff_depth;
+    if(depth_x >= depth_y){ 
+      diff_depth = depth_x - depth_y;
+      while(diff_depth--)
+        aux_x = proof_forest[aux_x];
+      while(aux_x != aux_y){
+        aux_x = proof_forest[aux_x];
+        aux_y = proof_forest[aux_y];
+      }
+      return aux_x;
+    }
+    else{
+      diff_depth = depth_y - depth_x;
+      while(diff_depth--)
+        aux_y = proof_forest[aux_y];
+      while(aux_x != aux_y){
+        aux_x = proof_forest[aux_x];
+        aux_y = proof_forest[aux_y];
+      }
+      return aux_x;
+    }
+  }
   throw "The nodes are not in the same equivalence class";
 }
 
-void UnionFindExplain::explainAlongPath(unsigned a, unsigned c) {
-  a = getRootProofForest(a);
-  while(a != c) {
-    unsigned b = proof_forest[a];
-    // TODO: Keep working here
+void UnionFindExplain::explainAlongPath(unsigned a, unsigned c, ExplainEquations & explanations) {
+  while(a != c){
+    explanations.push_back(ExplainEquation(a, proof_forest[a]));
+    a = proof_forest[a];
   }
-}
+} 
 
 ExplainEquations UnionFindExplain::explain(unsigned x, unsigned y){
   ExplainEquations explanations;
-  std::list<ExplainEquation> pending_proofs;
-  pending_proofs.push_back(ExplainEquation(x, y));
-
-  while(!pending_proofs.empty()){
-    const auto current_equation = pending_proofs.back();
-    pending_proofs.pop_back();
-    unsigned c = commonAncestor(current_equation.source, current_equation.target);
-    explainAlongPath(current_equation.source, c);
-    explainAlongPath(current_equation.target, c);
+  try {
+    unsigned c = commonAncestor(x, y);
+    explainAlongPath(x, c, explanations);
+    explainAlongPath(y, c, explanations);
+    return explanations;
   }
-
-  return explanations;
+  catch(...){
+    return explanations;
+  } 
 }
 
 // The first argument becomes the new
@@ -71,63 +98,56 @@ void UnionFindExplain::combine(unsigned target, unsigned source){
   assert(target < size && source < size);
   if(find(target) == find(source))
     return;
+  
+  // ---------------------------------------------------------------------
+  // Reverse the edges between the source
+  // and its representative
+  std::list<ExplainEquation> stack;
+  unsigned aux_source = source;
+  while(aux_source != proof_forest[aux_source]) {
+    stack.push_back(ExplainEquation(aux_source, proof_forest[aux_source]));
+    aux_source = proof_forest[aux_source];
+  }
+  while(!stack.empty()) {
+    const auto element = stack.back();
+    stack.pop_back();
+    proof_forest[element.target] = element.source;
+    if(stack.empty())
+      proof_forest[element.source] = element.source;
+  }
+  // ---------------------------------------------------------------------
 
-  // Dealing with proof_forest
-  unsigned explain_source = proof_forest[find(source)], explain_target = proof_forest[find(target)];
-  inserted_equations.emplace_back(source, target);
-  proof_forest[find(source)] = explain_target;
-  // path[hash_combine(explain_source, explain_target)] = global_ticket++;
-
-  UnionFind::combine(target, source); 
-  return;
-}
-
-// The first argument becomes the new
-// representative, always.
-void UnionFindExplain::combine(unsigned target, unsigned source, const PendingElement * pe){
-  assert(target < size && source < size);
-  if(find(target) == find(source))
-    return;
-
-  // Dealing with proof_forest
-  unsigned explain_source = proof_forest[find(source)], explain_target = proof_forest[find(target)];
-  inserted_equations.emplace_back(source, target, pe);
-  proof_forest[find(source)] = explain_target;
-  // path[hash_combine(explain_source, explain_target)] = global_ticket++;
+  proof_forest[source] = target;
 
   UnionFind::combine(target, source); 
   return;
 }
 
 // The first argument becomes the new
-// representative in proof_forest, always.
+// representative in the proof_forest, always.
 void UnionFindExplain::merge(unsigned target, unsigned source){
   assert(target < size && source < size);
   if(find(target) == find(source))
     return;
+  // ---------------------------------------------------------------------
+  // Reverse the edges between the source
+  // and its representative
+  std::list<ExplainEquation> stack;
+  unsigned aux_source = source;
+  while(aux_source != proof_forest[aux_source]) {
+    stack.push_back(ExplainEquation(aux_source, proof_forest[aux_source]));
+    aux_source = proof_forest[aux_source];
+  }
+  while(!stack.empty()) {
+    const auto element = stack.back();
+    stack.pop_back();
+    proof_forest[element.target] = element.source;
+    if(stack.empty())
+      proof_forest[element.source] = element.source;
+  }
+  // ---------------------------------------------------------------------
 
-  // Dealing with proof_forest 
-  unsigned explain_source = proof_forest[find(source)], explain_target = proof_forest[find(target)];
-  inserted_equations.emplace_back(source, target);
-  proof_forest[find(source)] = explain_target;  
-  // path[hash_combine(explain_source, explain_target)] = global_ticket++;
-
-  UnionFind::merge(target, source);
-  return;
-}
-
-// The first argument becomes the new
-// representative in proof_forest, always.
-void UnionFindExplain::merge(unsigned target, unsigned source, const PendingElement * pe){
-  assert(target < size && source < size);
-  if(find(target) == find(source))
-    return;
-
-  // Dealing with proof_forest 
-  unsigned explain_source = proof_forest[find(source)], explain_target = proof_forest[find(target)];
-  inserted_equations.emplace_back(source, target, pe);
-  proof_forest[find(source)] = explain_target;  
-  // path[hash_combine(explain_source, explain_target)] = global_ticket++;
+  proof_forest[source] = target;  
 
   UnionFind::merge(target, source);
   return;
@@ -136,7 +156,7 @@ void UnionFindExplain::merge(unsigned target, unsigned source, const PendingElem
 std::ostream & UnionFindExplain::giveExplanation(std::ostream & os, unsigned x, unsigned y){
   os << "Explain " << x << ", " << y << std::endl;
   for(auto z : explain(x, y))
-    os << *z << std::endl;
+    os << z << std::endl;
   return os;
 }
 
@@ -144,13 +164,11 @@ void UnionFindExplain::resize(unsigned sz){
   representative.resize(sz);
   rank.resize(sz);
   proof_forest.resize(sz);
-  labels.resize(sz);
 
   for(unsigned i = size; i < sz; i++){
     representative[i] = i;
     rank[i] = 1;
     proof_forest[i] = i;
-    labels[i] = nullptr;
   }
 
   size = sz;

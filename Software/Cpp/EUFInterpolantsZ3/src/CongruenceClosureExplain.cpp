@@ -160,7 +160,8 @@ void CongruenceClosureExplain::propagateAux(const CurryNode & a, const CurryNode
 					    unsigned repr_a, unsigned repr_b,
 					    const PendingElement & pending_element){
   unsigned old_repr_a = repr_a;
-  uf.combine(b.getId(), a.getId(), &pending_element);
+  uf.combine(b.getId(), a.getId());
+  // uf.combine(b.getId(), a.getId(), &pending_element);
 
   for(auto equation = use_list[old_repr_a].begin(); equation != use_list[old_repr_a].end(); ){
     unsigned c1 = (*equation)->lhs.getLeftId(), c2 = (*equation)->lhs.getRightId();
