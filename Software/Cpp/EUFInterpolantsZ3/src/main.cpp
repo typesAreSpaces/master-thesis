@@ -28,11 +28,11 @@ int main(int argc, char ** argv){
 
   // testFilePath(std::string);
   // simpleTest();
-  // testUFE();
+  testUFE();
   // testEUF();
   // testCongClosureExpl();
   // testCongClosureExpl2();
-  testCongClosureExpl3();
+  // testCongClosureExpl3();
   // hugeTest();
   
   return 0;

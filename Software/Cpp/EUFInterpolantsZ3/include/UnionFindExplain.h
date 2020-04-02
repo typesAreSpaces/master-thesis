@@ -32,33 +32,35 @@ typedef std::list<const ExplainEquation *> ExplainEquations;
  
 class UnionFindExplain :  public UnionFind {
   
-  std::hash<unsigned>                       hasher;
-  std::vector<unsigned>                     forest;
+  std::vector<unsigned>               proof_forest;
+  std::vector<const PendingElement *> labels;
+
+  std::hash<unsigned>   hasher;
+  std::size_t           hash_combine(unsigned, unsigned);
+
   // The following data structure is a persistant
   // vector with all the inserted equations
-  std::vector<ExplainEquation>              inserted_equations;
-  std::unordered_map<std::size_t, unsigned> path;
-  unsigned                                  global_ticket;
+  std::vector<ExplainEquation> inserted_equations;
 
-  std::size_t hash_combine(unsigned, unsigned);
-  unsigned depth(unsigned);
+  unsigned getRootProofForest(unsigned);
   unsigned commonAncestor(unsigned, unsigned);
-  void     explainHelper(Direction, unsigned, unsigned, unsigned, ExplainEquations &);
-  void     traverseExplain(unsigned, unsigned, ExplainEquations &);
+  void     explainAlongPath(unsigned, unsigned);
   
 public:
   UnionFindExplain();
   UnionFindExplain(unsigned);
   UnionFindExplain(const UnionFindExplain &);
   ~UnionFindExplain();
-  void combine(unsigned, unsigned);
-  void combine(unsigned, unsigned, const PendingElement *);
-  void merge(unsigned, unsigned);
-  void merge(unsigned, unsigned, const PendingElement *);
+
   ExplainEquations explain(unsigned, unsigned);
+  void             combine(unsigned, unsigned);
+  void             combine(unsigned, unsigned, const PendingElement *);
+  void             merge(unsigned, unsigned);
+  void             merge(unsigned, unsigned, const PendingElement *);
+
   std::ostream & giveExplanation(std::ostream &, unsigned, unsigned);
-  void resize(unsigned);
-  bool operator ==(const UnionFindExplain &);
+  void           resize(unsigned);
+
   friend std::ostream & operator << (std::ostream &, UnionFindExplain &);
 };
 
