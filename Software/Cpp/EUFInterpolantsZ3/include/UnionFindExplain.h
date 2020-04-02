@@ -28,8 +28,10 @@ class UnionFindExplain :  public UnionFind {
   std::hash<unsigned>   hasher;
   std::size_t           hash_combine(unsigned, unsigned);
 
+  void     unionHelper(unsigned, unsigned);
   unsigned getRootProofForest(unsigned);
   unsigned depth(unsigned);
+  unsigned commonAncestorHelper(unsigned, unsigned, unsigned, unsigned);
   unsigned commonAncestor(unsigned, unsigned);
   void     explainAlongPath(unsigned, unsigned, ExplainEquations &);
   

@@ -28,6 +28,30 @@ std::size_t UnionFindExplain::hash_combine(unsigned t1, unsigned t2){
   return entry;
 }
 
+void UnionFindExplain::unionHelper(unsigned target, unsigned source){
+  assert(target < size && source < size);
+  if(find(target) == find(source))
+    return;
+  // ---------------------------------------------------------------------
+  // Reverse the edges between the source
+  // and its representative
+  std::list<ExplainEquation> stack;
+  unsigned aux_source = source;
+  while(aux_source != proof_forest[aux_source]) {
+    stack.push_back(ExplainEquation(aux_source, proof_forest[aux_source]));
+    aux_source = proof_forest[aux_source];
+  }
+  while(!stack.empty()) {
+    const auto element = stack.back();
+    stack.pop_back();
+    proof_forest[element.target] = element.source;
+    if(stack.empty())
+      proof_forest[element.source] = element.source;
+  }
+  // ---------------------------------------------------------------------
+  proof_forest[source] = target;  
+}
+
 unsigned UnionFindExplain::getRootProofForest(unsigned x){
   unsigned aux = x;
   while(aux != proof_forest[aux])
@@ -44,30 +68,23 @@ unsigned UnionFindExplain::depth(unsigned x){
   return depth;
 }
 
+unsigned UnionFindExplain::commonAncestorHelper(unsigned aux_x, unsigned aux_y, unsigned depth_x, unsigned depth_y){
+  unsigned diff_depth = depth_x - depth_y;
+  while(diff_depth--)
+    aux_x = proof_forest[aux_x];
+  while(aux_x != aux_y){
+    aux_x = proof_forest[aux_x];
+    aux_y = proof_forest[aux_y];
+  }
+  return aux_x;
+}
+
 unsigned UnionFindExplain::commonAncestor(unsigned x, unsigned y) {
   if(find(x) == find(y)){
     unsigned depth_x = depth(x), depth_y = depth(y);
-    unsigned aux_x = x, aux_y = y, diff_depth;
-    if(depth_x >= depth_y){ 
-      diff_depth = depth_x - depth_y;
-      while(diff_depth--)
-        aux_x = proof_forest[aux_x];
-      while(aux_x != aux_y){
-        aux_x = proof_forest[aux_x];
-        aux_y = proof_forest[aux_y];
-      }
-      return aux_x;
-    }
-    else{
-      diff_depth = depth_y - depth_x;
-      while(diff_depth--)
-        aux_y = proof_forest[aux_y];
-      while(aux_x != aux_y){
-        aux_x = proof_forest[aux_x];
-        aux_y = proof_forest[aux_y];
-      }
-      return aux_x;
-    }
+    if(depth_x >= depth_y)
+      return commonAncestorHelper(x, y, depth_x, depth_y);
+    return commonAncestorHelper(y, x, depth_y, depth_x);
   }
   throw "The nodes are not in the same equivalence class";
 }
@@ -95,30 +112,7 @@ ExplainEquations UnionFindExplain::explain(unsigned x, unsigned y){
 // The first argument becomes the new
 // representative, always.
 void UnionFindExplain::combine(unsigned target, unsigned source){
-  assert(target < size && source < size);
-  if(find(target) == find(source))
-    return;
-  
-  // ---------------------------------------------------------------------
-  // Reverse the edges between the source
-  // and its representative
-  std::list<ExplainEquation> stack;
-  unsigned aux_source = source;
-  while(aux_source != proof_forest[aux_source]) {
-    stack.push_back(ExplainEquation(aux_source, proof_forest[aux_source]));
-    aux_source = proof_forest[aux_source];
-  }
-  while(!stack.empty()) {
-    const auto element = stack.back();
-    stack.pop_back();
-    proof_forest[element.target] = element.source;
-    if(stack.empty())
-      proof_forest[element.source] = element.source;
-  }
-  // ---------------------------------------------------------------------
-
-  proof_forest[source] = target;
-
+  unionHelper(target, source);
   UnionFind::combine(target, source); 
   return;
 }
@@ -126,29 +120,7 @@ void UnionFindExplain::combine(unsigned target, unsigned source){
 // The first argument becomes the new
 // representative in the proof_forest, always.
 void UnionFindExplain::merge(unsigned target, unsigned source){
-  assert(target < size && source < size);
-  if(find(target) == find(source))
-    return;
-  // ---------------------------------------------------------------------
-  // Reverse the edges between the source
-  // and its representative
-  std::list<ExplainEquation> stack;
-  unsigned aux_source = source;
-  while(aux_source != proof_forest[aux_source]) {
-    stack.push_back(ExplainEquation(aux_source, proof_forest[aux_source]));
-    aux_source = proof_forest[aux_source];
-  }
-  while(!stack.empty()) {
-    const auto element = stack.back();
-    stack.pop_back();
-    proof_forest[element.target] = element.source;
-    if(stack.empty())
-      proof_forest[element.source] = element.source;
-  }
-  // ---------------------------------------------------------------------
-
-  proof_forest[source] = target;  
-
+  unionHelper(target, source);
   UnionFind::merge(target, source);
   return;
 }
