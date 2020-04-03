@@ -62,6 +62,7 @@ void simpleTest(){
 
 void testUFE(){
   UnionFindExplain a(10);
+
   a.merge(1, 0);
   a.merge(0, 2);
   a.merge(4, 3);

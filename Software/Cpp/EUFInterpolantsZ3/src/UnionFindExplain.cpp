@@ -28,12 +28,12 @@ std::size_t UnionFindExplain::hash_combine(unsigned t1, unsigned t2){
   return entry;
 }
 
-void UnionFindExplain::unionHelper(unsigned target, unsigned source){
+void UnionFindExplain::unionReverseEdges(unsigned target, unsigned source){
   assert(target < size && source < size);
   if(find(target) == find(source))
     return;
   // ---------------------------------------------------------------------
-  // Reverse the edges between the source
+  // Reverse the edges between source
   // and its representative
   std::list<ExplainEquation> stack;
   unsigned aux_source = source;
@@ -52,13 +52,6 @@ void UnionFindExplain::unionHelper(unsigned target, unsigned source){
   proof_forest[source] = target;  
 }
 
-unsigned UnionFindExplain::getRootProofForest(unsigned x){
-  unsigned aux = x;
-  while(aux != proof_forest[aux])
-    aux = proof_forest[aux];
-  return aux;
-}
-
 unsigned UnionFindExplain::depth(unsigned x){
   unsigned aux = x, depth = 0;
   while(aux != proof_forest[aux]){
@@ -68,9 +61,9 @@ unsigned UnionFindExplain::depth(unsigned x){
   return depth;
 }
 
-unsigned UnionFindExplain::commonAncestorHelper(unsigned aux_x, unsigned aux_y, unsigned depth_x, unsigned depth_y){
-  unsigned diff_depth = depth_x - depth_y;
-  while(diff_depth--)
+unsigned UnionFindExplain::commonAncestorHelper(unsigned aux_x, unsigned aux_y, unsigned depth_diff){
+  assert(find(aux_x) == find(aux_y));
+  while(depth_diff--)
     aux_x = proof_forest[aux_x];
   while(aux_x != aux_y){
     aux_x = proof_forest[aux_x];
@@ -83,51 +76,61 @@ unsigned UnionFindExplain::commonAncestor(unsigned x, unsigned y) {
   if(find(x) == find(y)){
     unsigned depth_x = depth(x), depth_y = depth(y);
     if(depth_x >= depth_y)
-      return commonAncestorHelper(x, y, depth_x, depth_y);
-    return commonAncestorHelper(y, x, depth_y, depth_x);
+      return commonAncestorHelper(x, y, depth_x - depth_y);
+    return commonAncestorHelper(y, x, depth_y - depth_x);
   }
   throw "The nodes are not in the same equivalence class";
 }
 
-void UnionFindExplain::explainAlongPath(unsigned a, unsigned c, ExplainEquations & explanations) {
-  while(a != c){
-    explanations.push_back(ExplainEquation(a, proof_forest[a]));
-    a = proof_forest[a];
+void UnionFindExplain::explainAlongPath(unsigned node, unsigned representative, ExplainEquations & explanations) {
+  while(node != representative){
+    explanations.push_back(ExplainEquation(proof_forest[node], node));
+    node = proof_forest[node];
   }
+  return;
 } 
 
 ExplainEquations UnionFindExplain::explain(unsigned x, unsigned y){
   ExplainEquations explanations;
+  unsigned common_ancestor_x_y;
   try {
-    unsigned c = commonAncestor(x, y);
-    explainAlongPath(x, c, explanations);
-    explainAlongPath(y, c, explanations);
-    return explanations;
+    common_ancestor_x_y = commonAncestor(x, y);
   }
   catch(...){
     return explanations;
   } 
+  explainAlongPath(x, common_ancestor_x_y, explanations);
+  explainAlongPath(y, common_ancestor_x_y, explanations);
+  return explanations;
 }
 
 // The first argument becomes the new
 // representative, always.
 void UnionFindExplain::combine(unsigned target, unsigned source){
-  unionHelper(target, source);
+  if(find(target) == find(source))
+    return;
+  unionReverseEdges(target, source);
   UnionFind::combine(target, source); 
   return;
 }
 
-// The first argument becomes the new
-// representative in the proof_forest, always.
 void UnionFindExplain::merge(unsigned target, unsigned source){
-  unionHelper(target, source);
+  if(find(target) == find(source))
+    return;
+  if(rank[find(target)] >= rank[find(source)])
+    unionReverseEdges(target, source);
+  else
+    unionReverseEdges(source, target);
   UnionFind::merge(target, source);
   return;
 }
 
 std::ostream & UnionFindExplain::giveExplanation(std::ostream & os, unsigned x, unsigned y){
   os << "Explain " << x << ", " << y << std::endl;
-  for(auto z : explain(x, y))
+  auto explanation = explain(x, y);
+  if(explanation.size() == 0)
+    return (os << x << " and " << y << " belong to different equivalent classes" << std::endl);
+  for(auto z : explanation) 
     os << z << std::endl;
   return os;
 }
