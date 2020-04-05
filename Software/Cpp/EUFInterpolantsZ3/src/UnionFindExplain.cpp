@@ -113,15 +113,16 @@ ExplainEquations UnionFindExplain::explain(unsigned x, unsigned y){
 
 // The first argument becomes the new
 // representative, always.
-void UnionFindExplain::combine(unsigned target, unsigned source){
+void UnionFindExplain::combine(unsigned target, unsigned source, const PendingElement * pe){
   if(find(target) == find(source))
     return;
   unionReverseEdges(target, source);
   UnionFind::combine(target, source); 
+  labels[source] = pe;
   return;
 }
 
-void UnionFindExplain::merge(unsigned target, unsigned source){
+void UnionFindExplain::merge(unsigned target, unsigned source, const PendingElement * pe){
   if(find(target) == find(source))
     return;
   if(rank[find(target)] >= rank[find(source)])
@@ -129,19 +130,6 @@ void UnionFindExplain::merge(unsigned target, unsigned source){
   else
     unionReverseEdges(source, target);
   UnionFind::merge(target, source);
-  return;
-}
-
-// The first argument becomes the new
-// representative, always.
-void UnionFindExplain::combine(unsigned target, unsigned source, const PendingElement * pe){
-  combine(target, source);
-  labels[source] = pe;
-  return;
-}
-
-void UnionFindExplain::merge(unsigned target, unsigned source, const PendingElement * pe){
-  merge(target, source);
   labels[source] = pe;
   return;
 }

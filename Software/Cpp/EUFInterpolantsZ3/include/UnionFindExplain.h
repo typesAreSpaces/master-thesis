@@ -42,10 +42,8 @@ public:
 
   unsigned         parentProofForest(unsigned);
   ExplainEquations explain(unsigned, unsigned);
-  void             combine(unsigned, unsigned);
-  void             merge(unsigned, unsigned);
-  void             combine(unsigned, unsigned, const PendingElement * );
-  void             merge(unsigned, unsigned, const PendingElement *);
+  void             combine(unsigned, unsigned, const PendingElement * = nullptr);
+  void             merge(unsigned, unsigned, const PendingElement * = nullptr);
   unsigned commonAncestor(unsigned, unsigned);
 
   std::ostream & giveExplanation(std::ostream &, unsigned, unsigned);
