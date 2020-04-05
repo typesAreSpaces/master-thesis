@@ -61,16 +61,16 @@ class CongruenceClosureExplain : public CongruenceClosure {
   LookupTable lookup_table;
   UseList     use_list;
 
-  void pushPending(PendingElementsPointers &, const PendingElement &);
+  void     pushPending(PendingElementsPointers &, const PendingElement &);
   unsigned highestNode(unsigned, UnionFind &);
   unsigned nearestCommonAncestor(unsigned, unsigned, UnionFind &);
-  void merge();
-  void propagate();
-  void propagateAux(const CurryNode &, const CurryNode &, unsigned, unsigned, const PendingElement &);
+  void     merge();
+  void     propagate();
+  void     propagateAux(const CurryNode &, const CurryNode &, unsigned, unsigned, const PendingElement &);
   // Both of the unsigned inputs to explain encode the identifier in
   // some equivalence class structure
   PendingElementsPointers explain(unsigned, unsigned);
-  void explainAlongPath(unsigned, unsigned, UnionFind &, ExplainEquations &, PendingElementsPointers &);
+  void                    explainAlongPath(unsigned, unsigned, UnionFind &, ExplainEquations &, PendingElementsPointers &);
 
   public:
   CongruenceClosureExplain(const unsigned &, const z3::expr_vector &,
