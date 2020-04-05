@@ -40,7 +40,7 @@ void UnionFindExplain::unionReverseEdges(unsigned target, unsigned source){
   std::list<ExplainEquation> stack;
   unsigned aux_source = source;
   while(aux_source != proof_forest[aux_source]) {
-    stack.push_back(ExplainEquation(aux_source, proof_forest[aux_source]));
+    stack.emplace_back(aux_source, proof_forest[aux_source]);
     aux_source = proof_forest[aux_source];
   }
   while(!stack.empty()) {
@@ -86,7 +86,7 @@ unsigned UnionFindExplain::commonAncestor(unsigned x, unsigned y) {
 
 void UnionFindExplain::explainAlongPath(unsigned node, unsigned representative, ExplainEquations & explanations) {
   while(node != representative){
-    explanations.push_back(ExplainEquation(proof_forest[node], node));
+    explanations.emplace_back(proof_forest[node], node);
     node = proof_forest[node];
   }
   return;

@@ -31,9 +31,9 @@ CurryNode * FactoryCurryNodes::newCurryNode(unsigned id, std::string func_name,
     id_table[id] = new_element;
     hash_table[index] = new_element;
     if(left)
-      curry_predecessors[left].push_back(PredNode(*new_element, LHS));
+      curry_predecessors[left].emplace_back(*new_element, LHS);
     if(right)
-      curry_predecessors[right].push_back(PredNode(*new_element, RHS));
+      curry_predecessors[right].emplace_back(*new_element, RHS);
     if(new_element->isReplaceable())
       to_replace.push_back(new_element);
     return new_element;
@@ -144,7 +144,7 @@ void FactoryCurryNodes::curryficationHelper(z3::expr const & e, std::vector<bool
 
     switch(f.decl_kind()){
     case Z3_OP_EQ:
-      ids_to_merge.push_back(EquationZ3Ids(e.arg(0).id(), e.arg(1).id()));
+      ids_to_merge.emplace_back(e.arg(0).id(), e.arg(1).id());
       return;
     default:
       return;
@@ -181,7 +181,7 @@ void FactoryCurryNodes::flattening(const unsigned & min_id,
     cur_curry_node->updateConstId(last_node_pos + num_terms);
     new_constant->updateZ3Id(cur_curry_node->getZ3Id());
     // -----------------------------------------------------------------------------
-    pending_elements.push_back(EquationCurryNodes(*cur_curry_node, *new_constant));
+    pending_elements.emplace_back(*cur_curry_node, *new_constant);
     equations_to_merge.push_back(&pending_elements.back());
     // -----------------------------------------------------------------------------
     updatePreds(cur_curry_node, new_constant);

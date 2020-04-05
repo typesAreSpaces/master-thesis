@@ -136,7 +136,7 @@ void CongruenceClosureExplain::explain(unsigned x, unsigned y){
   UnionFind local_uf(ufe.getSize());
   ExplainEquations pending_proofs;
 
-  pending_proofs.push_back(ExplainEquation(x, y));
+  pending_proofs.emplace_back(x, y);
   while(!pending_proofs.empty()){
     auto current_equation = pending_proofs.back();
     pending_proofs.pop_back();
@@ -163,8 +163,8 @@ void CongruenceClosureExplain::explainAlongPath(unsigned a, unsigned c, UnionFin
           auto second_equation = current_label->p_eq_cn.second;
           unsigned a1 = first_equation.lhs.getLeftId(), a2 = first_equation.lhs.getRightId(),
                    b1 = second_equation.lhs.getLeftId(), b2 = second_equation.lhs.getRightId();
-          pending_proofs.push_back(ExplainEquation(a1, b1));
-          pending_proofs.push_back(ExplainEquation(a2, b2));
+          pending_proofs.emplace_back(a1, b1);
+          pending_proofs.emplace_back(a2, b2);
           break;
         }
     }

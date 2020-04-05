@@ -86,20 +86,20 @@ struct PendingElement {
     EquationCurryNodes eq_cn;
     PairEquationCurryNodes p_eq_cn;
   };
+  PendingElement(CurryNode & lhs, CurryNode & rhs) : 
+    tag(EQ), eq_cn(lhs, rhs) { }
   PendingElement(const EquationCurryNodes eq_cn) :
-    tag(EQ), eq_cn(eq_cn){
-  }
+    tag(EQ), eq_cn(eq_cn) { }
   PendingElement(const PairEquationCurryNodes p_eq_cn) :
-    tag(EQ_EQ), p_eq_cn(p_eq_cn){
-  }
+    tag(EQ_EQ), p_eq_cn(p_eq_cn) { }
   friend std::ostream & operator << (std::ostream & os, const PendingElement & pe){
     switch(pe.tag){
-    case EQ:
-      os << pe.eq_cn;
-      break;
-    case EQ_EQ:
-      os << pe.p_eq_cn;
-      break;
+      case EQ:
+        os << pe.eq_cn;
+        break;
+      case EQ_EQ:
+        os << pe.p_eq_cn;
+        break;
     }
     return os;
   }
