@@ -26,6 +26,7 @@ EUFInterpolant::EUFInterpolant(z3::expr const & part_a) :
 
   cc.explain(subterms[5], subterms[11]);
   cc.explain(subterms[5], subterms[6]);
+  cc.explain(subterms[6], subterms[5]);
 
   // // *************************************************************************
   // // -------------------------------------------------------------------------
