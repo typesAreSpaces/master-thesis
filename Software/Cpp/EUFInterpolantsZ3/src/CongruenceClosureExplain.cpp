@@ -125,14 +125,14 @@ void CongruenceClosureExplain::merge(const EquationCurryNodes & equation){
   }
 }
 
-void CongruenceClosureExplain::explain(const z3::expr & lhs, const z3::expr & rhs){
-  explain(factory_curry_nodes.curry_nodes[lhs.id()]->getId(), factory_curry_nodes.curry_nodes[rhs.id()]->getId());
-  return;
+PendingElementsPointers CongruenceClosureExplain::explain(const z3::expr & lhs, const z3::expr & rhs){
+  return explain(factory_curry_nodes.curry_nodes[lhs.id()]->getId(), factory_curry_nodes.curry_nodes[rhs.id()]->getId());
 }
 
-void CongruenceClosureExplain::explain(unsigned x, unsigned y){
+PendingElementsPointers CongruenceClosureExplain::explain(unsigned x, unsigned y){
+  PendingElementsPointers ans;
   if(ufe.find(x) != ufe.find(y))
-    return; 
+    return ans; 
   UnionFind local_uf(ufe.getSize());
   ExplainEquations pending_proofs;
 
@@ -142,35 +142,46 @@ void CongruenceClosureExplain::explain(unsigned x, unsigned y){
     pending_proofs.pop_back();
 
     auto common_ancestor_x_y = nearestCommonAncestor(current_equation.source, current_equation.target, local_uf);
-    explainAlongPath(current_equation.source, common_ancestor_x_y, local_uf, pending_proofs);
-    explainAlongPath(current_equation.target, common_ancestor_x_y, local_uf, pending_proofs);
+    explainAlongPath(current_equation.source, common_ancestor_x_y, local_uf, pending_proofs, ans);
+    explainAlongPath(current_equation.target, common_ancestor_x_y, local_uf, pending_proofs, ans);
   }
+  return ans;
 }
 
-void CongruenceClosureExplain::explainAlongPath(unsigned a, unsigned c, UnionFind & uf, ExplainEquations & pending_proofs){
+void CongruenceClosureExplain::explainAlongPath(unsigned a, unsigned c, 
+    UnionFind & uf, ExplainEquations & pending_proofs, PendingElementsPointers & ans){
   a = highestNode(a, uf);
   while(a != c){
     auto b = ufe.parentProofForest(a);
     auto current_label = ufe.getLabel(a);
+    ans.push_back(current_label);
+
     switch(current_label->tag){
-      case EQ:
-        std::cout << current_label->eq_cn << std::endl;
-        break;
       case EQ_EQ:
         {
-          std::cout << current_label->p_eq_cn << std::endl;
           auto first_equation = current_label->p_eq_cn.first;
           auto second_equation = current_label->p_eq_cn.second;
           unsigned a1 = first_equation.lhs.getLeftId(), a2 = first_equation.lhs.getRightId(),
                    b1 = second_equation.lhs.getLeftId(), b2 = second_equation.lhs.getRightId();
           pending_proofs.emplace_back(a1, b1);
           pending_proofs.emplace_back(a2, b2);
-          break;
         }
+      case EQ:
+        break;
     }
     uf.combine(b, a);
     a = highestNode(b, uf);
   }
+}
+
+std::ostream & CongruenceClosureExplain::giveExplanation(std::ostream & os, const z3::expr & lhs, const z3::expr & rhs){
+  os << "Explain " << lhs << ", " << rhs << std::endl;
+  auto explanation = explain(lhs, rhs);
+  if(explanation.size() == 0)
+    return (os << lhs << " and " << rhs << " belong to different equivalent classes" << std::endl);
+  for(auto z : explanation) 
+    os << *z << std::endl;
+  return os;
 }
 
 void CongruenceClosureExplain::merge(){

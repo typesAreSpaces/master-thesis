@@ -69,15 +69,16 @@ class CongruenceClosureExplain : public CongruenceClosure {
   void propagateAux(const CurryNode &, const CurryNode &, unsigned, unsigned, const PendingElement &);
   // Both of the unsigned inputs to explain encode the identifier in
   // some equivalence class structure
-  void explain(unsigned, unsigned);
-  void explainAlongPath(unsigned, unsigned, UnionFind &, ExplainEquations &);
+  PendingElementsPointers explain(unsigned, unsigned);
+  void explainAlongPath(unsigned, unsigned, UnionFind &, ExplainEquations &, PendingElementsPointers &);
 
   public:
   CongruenceClosureExplain(const unsigned &, const z3::expr_vector &,
       PredList &, UnionFindExplain &, FactoryCurryNodes &);
   void buildCongruenceClosure(std::list<unsigned> &);
   void merge(const EquationCurryNodes &);
-  void explain(const z3::expr &, const z3::expr &);
+  PendingElementsPointers explain(const z3::expr &, const z3::expr &);
+  std::ostream & giveExplanation(std::ostream &, const z3::expr &, const z3::expr &);
 
   ~CongruenceClosureExplain();
   friend std::ostream & operator << (std::ostream &, const CongruenceClosureExplain &);
