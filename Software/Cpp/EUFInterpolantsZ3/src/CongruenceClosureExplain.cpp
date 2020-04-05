@@ -1,6 +1,6 @@
 #include "CongruenceClosureExplain.h"
 
-#define DEBUG_SANITY_CHECK 1
+#define DEBUG_SANITY_CHECK 0
 #define DEBUG_MERGE        0
 #define DEBUG_PROPAGATE    0
 
@@ -30,7 +30,7 @@ CongruenceClosureExplain::CongruenceClosureExplain(const unsigned & min_id, cons
     // in the curry_nodes and extra_nodes. There
     // might be repeated elements in these collection
     // but they are unique pointers
-    uf      .resize(factory_curry_nodes.size());
+    ufe     .resize(factory_curry_nodes.size());
     use_list.resize(factory_curry_nodes.size());
 
 #if 0
@@ -58,14 +58,15 @@ void CongruenceClosureExplain::pushPending(PendingElementsPointers & pending_poi
     const PendingElement & pe){
   pending_elements.push_back(pe);
   pending_pointers.push_back(&pending_elements.back());
+  // TODO: Do something here to record the inserted equations
 }
 
 unsigned CongruenceClosureExplain::highestNode(unsigned a, UnionFind & uf){
-  throw "Not implemented yet";
+  return uf.find(a);
 }
 
 unsigned CongruenceClosureExplain::nearestCommonAncestor(unsigned a, unsigned b, UnionFind & uf){
-  throw "Not implemented yet";
+  return uf.find(ufe.commonAncestor(a, b));
 }
 
 void CongruenceClosureExplain::merge(const EquationCurryNodes & equation){
@@ -130,7 +131,8 @@ void CongruenceClosureExplain::explain(const z3::expr & lhs, const z3::expr & rh
 }
 
 void CongruenceClosureExplain::explain(unsigned x, unsigned y){
-  
+  if(ufe.find(x) != ufe.find(y))
+    return; 
   UnionFind local_uf(ufe.getSize());
   ExplainEquations pending_proofs;
 
@@ -149,15 +151,25 @@ void CongruenceClosureExplain::explainAlongPath(unsigned a, unsigned c, UnionFin
   a = highestNode(a, uf);
   while(a != c){
     auto b = ufe.parentProofForest(a);
-    if(){
-      std::cout << a << " = " << b << std::endl;
+    auto current_label = ufe.getLabel(a);
+    switch(current_label->tag){
+      case EQ:
+        std::cout << current_label->eq_cn << std::endl;
+        break;
+      case EQ_EQ:
+        {
+          std::cout << current_label->p_eq_cn << std::endl;
+          auto first_equation = current_label->p_eq_cn.first;
+          auto second_equation = current_label->p_eq_cn.second;
+          unsigned a1 = first_equation.lhs.getLeftId(), a2 = first_equation.lhs.getRightId(),
+                   b1 = second_equation.lhs.getLeftId(), b2 = second_equation.lhs.getRightId();
+          pending_proofs.push_back(ExplainEquation(a1, b1));
+          pending_proofs.push_back(ExplainEquation(a2, b2));
+          break;
+        }
     }
-    else{
-      std::cout << im_in_trouble_1 << std::endl;
-      std::cout << im_in_trouble_2 << std::endl;
-      pending_proofs.push_back(ExplainEquation(a1, a2));
-      pending_proofs.push_back(ExplainEquation(b1, b2));
-    }
+    uf.combine(b, a);
+    a = highestNode(b, uf);
   }
 }
 
@@ -213,8 +225,8 @@ void CongruenceClosureExplain::propagateAux(const CurryNode & a, const CurryNode
     unsigned repr_a, unsigned repr_b,
     const PendingElement & pending_element){
   unsigned old_repr_a = repr_a;
-  uf.combine(b.getId(), a.getId());
-  // uf.combine(b.getId(), a.getId(), &pending_element);
+  //uf.combine(b.getId(), a.getId());
+   uf.combine(b.getId(), a.getId(), &pending_element);
 
   for(auto equation = use_list[old_repr_a].begin(); equation != use_list[old_repr_a].end(); ){
     unsigned c1 = (*equation)->lhs.getLeftId(), c2 = (*equation)->lhs.getRightId();

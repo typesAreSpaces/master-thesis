@@ -7,14 +7,16 @@ UnionFindExplain::UnionFindExplain() :
   };
 
 UnionFindExplain::UnionFindExplain(unsigned size) :
-  UnionFind(size), proof_forest(size, 0){
-    for(unsigned i = 0; i < size; i++)
-      proof_forest[i] = i;
-  }
+  UnionFind(size), proof_forest(size, 0), labels(size, nullptr) 
+{
+  for(unsigned i = 0; i < size; i++)
+    proof_forest[i] = i;
+}
 
 UnionFindExplain::UnionFindExplain(const UnionFindExplain & other) :
-  UnionFind(other), proof_forest(other.proof_forest) {
-  }
+  UnionFind(other), proof_forest(other.proof_forest), labels(other.labels) 
+{
+}
 
 UnionFindExplain::~UnionFindExplain(){
 #if DEBUG_DESTRUCTOR_UFE
@@ -130,6 +132,20 @@ void UnionFindExplain::merge(unsigned target, unsigned source){
   return;
 }
 
+// The first argument becomes the new
+// representative, always.
+void UnionFindExplain::combine(unsigned target, unsigned source, const PendingElement * pe){
+  combine(target, source);
+  labels[source] = pe;
+  return;
+}
+
+void UnionFindExplain::merge(unsigned target, unsigned source, const PendingElement * pe){
+  merge(target, source);
+  labels[source] = pe;
+  return;
+}
+
 std::ostream & UnionFindExplain::giveExplanation(std::ostream & os, unsigned x, unsigned y){
   os << "Explain " << x << ", " << y << std::endl;
   auto explanation = explain(x, y);
@@ -144,14 +160,20 @@ void UnionFindExplain::resize(unsigned sz){
   representative.resize(sz);
   rank.resize(sz);
   proof_forest.resize(sz);
+  labels.resize(sz);
 
   for(unsigned i = size; i < sz; i++){
     representative[i] = i;
     rank[i] = 1;
     proof_forest[i] = i;
+    labels[i] = nullptr;
   }
 
   size = sz;
+}
+
+const PendingElement * UnionFindExplain::getLabel(unsigned x){
+  return labels[x];
 }
 
 std::ostream & operator << (std::ostream & os, UnionFindExplain & uf){

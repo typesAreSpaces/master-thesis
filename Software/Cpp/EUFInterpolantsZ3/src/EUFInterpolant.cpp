@@ -7,8 +7,9 @@ EUFInterpolant::EUFInterpolant(z3::expr const & part_a) :
   min_id(part_a.id()), original_num_terms(part_a.id() + 1),
   ctx(part_a.ctx()), subterms(ctx), contradiction(ctx.bool_val(false)), disequalities(ctx),
   fsym_positions(), uf(part_a.id() + 1), pred_list(), horn_clauses(ctx, min_id, subterms),
-  curry_decl(), factory_curry_nodes(original_num_terms, curry_decl){
-  
+  curry_decl(), factory_curry_nodes(original_num_terms, curry_decl)
+{
+
   std::vector<bool> visited(original_num_terms, false);
   subterms.resize(original_num_terms);
   pred_list.resize(original_num_terms);
@@ -18,11 +19,13 @@ EUFInterpolant::EUFInterpolant(z3::expr const & part_a) :
   // and curry_decl
   init(part_a, min_id, visited);
 
-   for(unsigned i = min_id; i < subterms.size(); i++)
-     std::cout << i << " " << subterms[i] << std::endl;  
-  
+  for(unsigned i = min_id; i < subterms.size(); i++)
+    std::cout << i << " " << subterms[i] << std::endl;  
+
   CongruenceClosureExplain cc(min_id, subterms, pred_list, uf, factory_curry_nodes);
+
   cc.explain(subterms[5], subterms[11]);
+  cc.explain(subterms[5], subterms[6]);
 
   // // *************************************************************************
   // // -------------------------------------------------------------------------
@@ -37,7 +40,7 @@ EUFInterpolant::EUFInterpolant(z3::expr const & part_a) :
   // // --------------------
   // CongruenceClosureDST cc(min_id, subterms, pred_list, uf);
   // std::list<unsigned> pending;
-  
+
   // for(unsigned i = min_id; i < original_num_terms; i++)
   //   if(subterms[i].num_args() > 0)
   //     pending.push_back(i);
@@ -49,7 +52,7 @@ EUFInterpolant::EUFInterpolant(z3::expr const & part_a) :
   // GOAL: Implement CongruenceClosureExplain
   // and test itv
 
-  
+
 
   // // Converting disequalities to Horn Clauses
   // disequalitiesToHCS();
@@ -60,33 +63,33 @@ EUFInterpolant::EUFInterpolant(z3::expr const & part_a) :
   // //                   --------------
   // exposeUncommons();
   // // std::cout << horn_clauses << std::endl;
-  
+
   // // // ----------------------------------------------------------------------
   // // Additional data structures for conditional uncommon symbol elimination
   // PredList hornsat_list(pred_list);
   // assert(pred_list.size() == subterms.size());
-  
+
   // UnionFind hornsat_uf(uf);
   // hornsat_uf.resize(subterms.size());
   // CongruenceClosureDST hornsat_cc(min_id, subterms, hornsat_list, hornsat_uf);
   // Hornsat hsat(horn_clauses, hornsat_uf);
   // // // ----------------------------------------------------------------------
-  
+
   // auto replacements = hsat.satisfiable(hornsat_cc);
   // for(auto x : replacements)
   //   std::cout << "Merge " << *horn_clauses[x.clause1]
   // 	      << " with " << *horn_clauses[x.clause2] << std::endl;
-  
+
   // // // ----------------------------
   // // std::cout << hsat << std::endl;
   // // // ----------------------------
-  
+
   // buildInterpolant(replacements);
-  
+
   return;
   // throw "Problem @ EUFInterpolant::EUFInterpolant. The z3::expr const & part_a was unsatisfiable.";
 }
-  
+
 EUFInterpolant::~EUFInterpolant(){
 #if DEBUG_DESTRUCTOR_EUF
   std::cout << "Bye EUFInterpolant" << std::endl;
@@ -99,27 +102,27 @@ void EUFInterpolant::init(z3::expr const & e, unsigned & min_id, std::vector<boo
       min_id = e.id();
     if(visited[e.id()])
       return;
-    
+
     visited[e.id()] = true;
     subterms.set(e.id(), (z3::expr&) e);
-    
+
     unsigned num = e.num_args();
     for(unsigned i = 0; i < num; i++)
       init(e.arg(i), min_id, visited);
-    
+
     z3::func_decl f = e.decl();
     if(curry_decl[f.id()] == nullptr)
       curry_decl[f.id()] = factory_curry_nodes.newCurryNode(e.id(), f.name().str(), nullptr, nullptr);
-    
+
     switch(f.decl_kind()){
-    case Z3_OP_DISTINCT:
-      disequalities.push_back(e);
-      return;
-    case Z3_OP_UNINTERPRETED:
-      if(num > 0)
-	fsym_positions[f.name().str()].push_back(e.id());
-    default:
-      return;
+      case Z3_OP_DISTINCT:
+        disequalities.push_back(e);
+        return;
+      case Z3_OP_UNINTERPRETED:
+        if(num > 0)
+          fsym_positions[f.name().str()].push_back(e.id());
+      default:
+        return;
     }
   }
   throw "Problem @ EUFInterpolant::init. The expression e is not an application term.";
@@ -152,14 +155,14 @@ void EUFInterpolant::processEqs(z3::expr const & e){
 
     z3::func_decl f = e.decl();
     switch(f.decl_kind()){
-    case Z3_OP_EQ:
-      if(HornClause::compareTerm(e.arg(0), e.arg(1)))
-      	uf.combine(e.arg(1).id(), e.arg(0).id());
-      else
-      	uf.combine(e.arg(0).id(), e.arg(1).id());
-      return;
-    default:
-      return;
+      case Z3_OP_EQ:
+        if(HornClause::compareTerm(e.arg(0), e.arg(1)))
+          uf.combine(e.arg(1).id(), e.arg(0).id());
+        else
+          uf.combine(e.arg(0).id(), e.arg(1).id());
+        return;
+      default:
+        return;
     }
   }
   throw "Problem @ EUFInterpolant::processEqs(z3::expr const &). The expression e is not an application term.";
@@ -173,14 +176,14 @@ void EUFInterpolant::processEqs(z3::expr const & e, CongruenceClosureNO & cc_no)
 
     z3::func_decl f = e.decl();
     switch(f.decl_kind()){
-    case Z3_OP_EQ:
-      if(HornClause::compareTerm(e.arg(0), e.arg(1)))
-      	cc_no.combine(e.arg(1).id(), e.arg(0).id());
-      else
-      	cc_no.combine(e.arg(0).id(), e.arg(1).id());
-      return;
-    default:
-      return;
+      case Z3_OP_EQ:
+        if(HornClause::compareTerm(e.arg(0), e.arg(1)))
+          cc_no.combine(e.arg(1).id(), e.arg(0).id());
+        else
+          cc_no.combine(e.arg(0).id(), e.arg(1).id());
+        return;
+      default:
+        return;
     }
   }
   throw "Problem @ EUFInterpolant::processEqs(z3::expr const &, CongruenceClosureNO &). The expression e is not an application term.";
@@ -212,15 +215,15 @@ void EUFInterpolant::exposeUncommons(){
     unsigned current_num = iterator.second.size();
     if(current_num >= 2)
       for(unsigned index_1 = 0; index_1 < current_num - 1; index_1++)
-	for(unsigned index_2 = index_1 + 1; index_2 < current_num; index_2++){
-	  z3::expr t1 = subterms[iterator.second[index_1]], t2 = subterms[iterator.second[index_2]];
-	  // Only expose terms if at least one term is uncommon
-	  if(!t1.is_common() || !t2.is_common()){
-	    z3::expr_vector hc_body = buildHCBody(t1, t2);
-	    z3::expr        hc_head = repr(t1) == repr(t2);
-	    horn_clauses.add(new HornClause(uf, ctx, min_id, subterms, hc_body, hc_head, pred_list));
-	  }
-	}
+        for(unsigned index_2 = index_1 + 1; index_2 < current_num; index_2++){
+          z3::expr t1 = subterms[iterator.second[index_1]], t2 = subterms[iterator.second[index_2]];
+          // Only expose terms if at least one term is uncommon
+          if(!t1.is_common() || !t2.is_common()){
+            z3::expr_vector hc_body = buildHCBody(t1, t2);
+            z3::expr        hc_head = repr(t1) == repr(t2);
+            horn_clauses.add(new HornClause(uf, ctx, min_id, subterms, hc_body, hc_head, pred_list));
+          }
+        }
   }
   return;
 }
@@ -237,12 +240,12 @@ z3::expr_vector EUFInterpolant::conditionalReplacement(z3::expr_vector & terms_t
 //   from.push_back(term_elim);
 //   unsigned hcs_length = hcs.size();
 //   std::set<unsigned> expr_ids;
-  
+
 //   for(unsigned index_hc = 0; index_hc < hcs_length; ++index_hc){
 //     auto current_consequent_lhs = hcs[index_hc].arg(1).arg(0);
 //     auto current_consequent_rhs = hcs[index_hc].arg(1).arg(1);
 //     auto antecedent = hcs[index_hc].arg(0);
-    
+
 //     if((term_elim.id() == current_consequent_rhs.id())){
 //       to.push_back(current_consequent_lhs);
 //       auto new_equation = equation.substitute(from, to);
@@ -266,7 +269,7 @@ z3::expr_vector EUFInterpolant::conditionalReplacement(z3::expr_vector & terms_t
 
 z3::expr EUFInterpolant::buildInterpolant(std::vector<Replacement> replacements){
   horn_clauses.conditionalElimination(replacements); // TODO: Implement the following
-  
+
   // auto non_reducible_hs_z3 = cvt.convert(horn_clauses.getHornClauses());
   // auto simplified_hs = cvt.extraSimplification(non_reducible_hs_z3);  
   // auto reducible_hs = horn_clauses.getReducibleHornClauses();
@@ -275,11 +278,11 @@ z3::expr EUFInterpolant::buildInterpolant(std::vector<Replacement> replacements)
 
   z3::expr_vector terms_to_replace(ctx);
   // horn_clauses.getTermsToReplace(terms_to_replace); // TODO: Implement the following
-  
+
   auto interpolant = conditionalReplacement(terms_to_replace);
-  
+
   // auto simplified_exponential_hs = cvt.extraSimplification(exponential_hs);
-  
+
   // return cvt.makeConjunction(simplified_hs) && cvt.makeConjunction(simplified_exponential_hs);
   return z3::mk_and(interpolant);
 }
@@ -290,11 +293,11 @@ std::ostream & operator << (std::ostream & os, EUFInterpolant & euf){
   for(unsigned i = euf.min_id; i < num; i++){
     // std::cout << "Original: " << i
     // 	      << " Representative " << euf.uf.find(i) << std::endl;
-    
+
     std::cout << i << ". "
-	      << ((i == euf.uf.find(i)) ? "(Same)" : "(Different)")
-	      << " Original: " << euf.subterms[i]
-	      << " Representative " << euf.subterms[euf.uf.find(euf.subterms[i].id())] << std::endl;
+      << ((i == euf.uf.find(i)) ? "(Same)" : "(Different)")
+      << " Original: " << euf.subterms[i]
+      << " Representative " << euf.subterms[euf.uf.find(euf.subterms[i].id())] << std::endl;
     if(i != euf.uf.find(i))
       num_changes++;
   }

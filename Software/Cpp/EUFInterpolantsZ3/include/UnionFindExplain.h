@@ -24,6 +24,7 @@ typedef std::list<ExplainEquation> ExplainEquations;
 class UnionFindExplain :  public UnionFind {
   
   std::vector<unsigned>               proof_forest;
+  std::vector<const PendingElement *> labels;
 
   std::hash<unsigned>   hasher;
   std::size_t           hash_combine(unsigned, unsigned);
@@ -31,7 +32,6 @@ class UnionFindExplain :  public UnionFind {
   void     unionReverseEdges(unsigned, unsigned);
   unsigned depth(unsigned);
   unsigned commonAncestorHelper(unsigned, unsigned, unsigned);
-  unsigned commonAncestor(unsigned, unsigned);
   void     explainAlongPath(unsigned, unsigned, ExplainEquations &);
   
 public:
@@ -44,9 +44,13 @@ public:
   ExplainEquations explain(unsigned, unsigned);
   void             combine(unsigned, unsigned);
   void             merge(unsigned, unsigned);
+  void             combine(unsigned, unsigned, const PendingElement * );
+  void             merge(unsigned, unsigned, const PendingElement *);
+  unsigned commonAncestor(unsigned, unsigned);
 
   std::ostream & giveExplanation(std::ostream &, unsigned, unsigned);
   void           resize(unsigned);
+  const PendingElement * getLabel(unsigned);
 
   friend std::ostream & operator << (std::ostream &, UnionFindExplain &);
 };
