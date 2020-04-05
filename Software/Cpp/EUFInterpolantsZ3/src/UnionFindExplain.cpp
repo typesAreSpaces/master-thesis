@@ -90,6 +90,11 @@ void UnionFindExplain::explainAlongPath(unsigned node, unsigned representative, 
   return;
 } 
 
+unsigned UnionFindExplain::parentProofForest(unsigned x){
+  assert(x < size);
+  return proof_forest[x];
+}
+
 ExplainEquations UnionFindExplain::explain(unsigned x, unsigned y){
   ExplainEquations explanations;
   unsigned common_ancestor_x_y;

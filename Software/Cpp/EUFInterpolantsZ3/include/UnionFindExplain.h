@@ -40,6 +40,7 @@ public:
   UnionFindExplain(const UnionFindExplain &);
   ~UnionFindExplain();
 
+  unsigned         parentProofForest(unsigned);
   ExplainEquations explain(unsigned, unsigned);
   void             combine(unsigned, unsigned);
   void             merge(unsigned, unsigned);

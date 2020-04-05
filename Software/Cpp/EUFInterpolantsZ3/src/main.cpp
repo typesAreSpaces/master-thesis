@@ -26,15 +26,15 @@ void hugeTest();
 
 int main(int argc, char ** argv){
 
-  // testFilePath(std::string);
-  // simpleTest();
-  testUFE();
-  // testEUF();
-  // testCongClosureExpl();
-  // testCongClosureExpl2();
-  // testCongClosureExpl3();
-  // hugeTest();
-  
+  //testFilePath(std::string);
+  //simpleTest();
+  //testUFE();
+  //testEUF();
+  //testCongClosureExpl();
+  //testCongClosureExpl2();
+  testCongClosureExpl3();
+  //hugeTest();
+
   return 0;
 }
 
@@ -54,7 +54,7 @@ void simpleTest(){
   z3::expr d = ctx.constant("d", my_sort);
   z3::func_decl f = ctx.function("f", my_sort, my_sort);
   z3::expr input = a == b && f(a) == c && f(b) == d;
-  
+
   EUFInterpolant euf(input);
   // std::cout << euf << std::endl;
   return;

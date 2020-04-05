@@ -18,10 +18,11 @@ EUFInterpolant::EUFInterpolant(z3::expr const & part_a) :
   // and curry_decl
   init(part_a, min_id, visited);
 
-  // for(unsigned i = min_id; i < subterms.size(); i++)
-  //   std::cout << i << " " << subterms[i] << std::endl;  
+   for(unsigned i = min_id; i < subterms.size(); i++)
+     std::cout << i << " " << subterms[i] << std::endl;  
   
   CongruenceClosureExplain cc(min_id, subterms, pred_list, uf, factory_curry_nodes);
+  cc.explain(subterms[5], subterms[11]);
 
   // // *************************************************************************
   // // -------------------------------------------------------------------------

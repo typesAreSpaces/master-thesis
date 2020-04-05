@@ -13,7 +13,7 @@ class UnionFind {
 protected:
   std::vector<unsigned> representative;
   std::vector<unsigned> rank;
-  unsigned size;
+  unsigned              size;
   
 public:
   UnionFind();
