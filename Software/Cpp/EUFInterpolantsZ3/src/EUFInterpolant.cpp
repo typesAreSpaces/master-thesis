@@ -24,6 +24,7 @@ EUFInterpolant::EUFInterpolant(z3::expr const & part_a) :
 
   CongruenceClosureExplain cc(min_id, subterms, pred_list, uf, factory_curry_nodes);
 
+  // Testing
   cc.giveExplanation(std::cout, subterms[5], subterms[11]);
   cc.giveExplanation(std::cout, subterms[5], subterms[6]);
   cc.giveExplanation(std::cout, subterms[6], subterms[5]);

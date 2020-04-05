@@ -1,6 +1,6 @@
 #include "CongruenceClosureExplain.h"
 
-#define DEBUG_SANITY_CHECK 0
+#define DEBUG_SANITY_CHECK 1
 #define DEBUG_MERGE        0
 #define DEBUG_PROPAGATE    0
 
@@ -43,8 +43,9 @@ CongruenceClosureExplain::CongruenceClosureExplain(const unsigned & min_id, cons
     propagate();
 
 #if DEBUG_SANITY_CHECK
-    std::cout << uf << std::endl;
-    // std::cout << factory_curry_nodes << std::endl;
+    //std::cout << uf << std::endl;
+    std::cout << factory_curry_nodes << std::endl;
+    giveExplanation(std::cout, 37, 32);
 #endif
   }
 
@@ -179,8 +180,24 @@ std::ostream & CongruenceClosureExplain::giveExplanation(std::ostream & os, cons
   auto explanation = explain(lhs, rhs);
   if(explanation.size() == 0)
     return (os << lhs << " and " << rhs << " belong to different equivalent classes" << std::endl);
-  for(auto z : explanation) 
+  unsigned num = 1;
+  for(auto z : explanation){
+    os << "Label " << num++ << ":" << std::endl;
     os << *z << std::endl;
+  }
+  return os;
+}
+
+std::ostream & CongruenceClosureExplain::giveExplanation(std::ostream & os, unsigned lhs, unsigned rhs){
+  os << "Explain " << lhs << ", " << rhs << std::endl;
+  auto explanation = explain(lhs, rhs);
+  if(explanation.size() == 0)
+    return (os << lhs << " and " << rhs << " belong to different equivalent classes" << std::endl);
+  unsigned num = 1;
+  for(auto z : explanation){
+    os << "Label " << num++ << ":" << std::endl;
+    os << *z << std::endl;
+  }
   return os;
 }
 

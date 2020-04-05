@@ -1,0 +1,196 @@
+./euf_interpolator
+5 a
+6 b
+7 (= a b)
+8 (h b)
+9 (= (h b) b)
+10 (g b (h b) (h b))
+11 (g a (h b) b)
+12 (= (g a (h b) b) (g b (h b) (h b)))
+13 (and (= (g a (h b) b) (g b (h b) (h b))) (= (h b) b))
+14 (and (= (g a (h b) b) (g b (h b) (h b))) (= (h b) b) (= a b))
+ * 48(Z3 id: 14|Const id: 48)(Defined). fresh_48
+
+ * 24(Z3 id: 24|Const id: 37)(Defined). apply
+ Left
+  12(Z3 id: 12|Const id: 12)(Defined). =
+ Right
+  36(Z3 id: 8|Const id: 36)(Defined). fresh_36
+
+ * 32(Z3 id: 28|Const id: 32)(Defined). fresh_32
+
+ * 22(Z3 id: 22|Const id: 43)(Defined). apply
+ Left
+  12(Z3 id: 12|Const id: 12)(Defined). =
+ Right
+  42(Z3 id: 11|Const id: 42)(Defined). fresh_42
+
+ * 44(Z3 id: 12|Const id: 44)(Defined). fresh_44
+
+ * 18(Z3 id: 11|Const id: 42)(Defined). apply
+ Left
+  41(Z3 id: 17|Const id: 41)(Defined). fresh_41
+ Right
+  6(Z3 id: 6|Const id: 6)(Defined). b
+
+ * 15(Z3 id: 8|Const id: 36)(Defined). apply
+ Left
+  8(Z3 id: 8|Const id: 8)(Defined). h
+ Right
+  6(Z3 id: 6|Const id: 6)(Defined). b
+
+ * 19(Z3 id: 19|Const id: 34)(Defined). apply
+ Left
+  11(Z3 id: 11|Const id: 11)(Defined). g
+ Right
+  6(Z3 id: 6|Const id: 6)(Defined). b
+
+ * 29(Z3 id: 7|Const id: 33)(Defined). apply
+ Left
+  32(Z3 id: 28|Const id: 32)(Defined). fresh_32
+ Right
+  6(Z3 id: 6|Const id: 6)(Defined). b
+
+ * 5(Z3 id: 5|Const id: 5)(Defined). a
+
+ * 20(Z3 id: 20|Const id: 39)(Defined). apply
+ Left
+  34(Z3 id: 19|Const id: 34)(Defined). fresh_34
+ Right
+  36(Z3 id: 8|Const id: 36)(Defined). fresh_36
+
+ * 6(Z3 id: 6|Const id: 6)(Defined). b
+
+ * 8(Z3 id: 8|Const id: 8)(Defined). h
+
+ * 34(Z3 id: 19|Const id: 34)(Defined). fresh_34
+
+ * 46(Z3 id: 13|Const id: 46)(Defined). fresh_46
+
+ * 17(Z3 id: 17|Const id: 41)(Defined). apply
+ Left
+  35(Z3 id: 16|Const id: 35)(Defined). fresh_35
+ Right
+  36(Z3 id: 8|Const id: 36)(Defined). fresh_36
+
+ * 26(Z3 id: 26|Const id: 45)(Defined). apply
+ Left
+  13(Z3 id: 13|Const id: 13)(Defined). and
+ Right
+  44(Z3 id: 12|Const id: 44)(Defined). fresh_44
+
+ * 28(Z3 id: 28|Const id: 32)(Defined). apply
+ Left
+  12(Z3 id: 12|Const id: 12)(Defined). =
+ Right
+  5(Z3 id: 5|Const id: 5)(Defined). a
+
+ * 13(Z3 id: 13|Const id: 13)(Defined). and
+
+ * 35(Z3 id: 16|Const id: 35)(Defined). fresh_35
+
+ * 11(Z3 id: 11|Const id: 11)(Defined). g
+
+ * 27(Z3 id: 13|Const id: 46)(Defined). apply
+ Left
+  45(Z3 id: 26|Const id: 45)(Defined). fresh_45
+ Right
+  38(Z3 id: 9|Const id: 38)(Defined). fresh_38
+
+ * 47(Z3 id: 30|Const id: 47)(Defined). fresh_47
+
+ * 21(Z3 id: 10|Const id: 40)(Defined). apply
+ Left
+  39(Z3 id: 20|Const id: 39)(Defined). fresh_39
+ Right
+  36(Z3 id: 8|Const id: 36)(Defined). fresh_36
+
+ * 30(Z3 id: 30|Const id: 47)(Defined). apply
+ Left
+  13(Z3 id: 13|Const id: 13)(Defined). and
+ Right
+  46(Z3 id: 13|Const id: 46)(Defined). fresh_46
+
+ * 31(Z3 id: 14|Const id: 48)(Defined). apply
+ Left
+  47(Z3 id: 30|Const id: 47)(Defined). fresh_47
+ Right
+  33(Z3 id: 7|Const id: 33)(Defined). fresh_33
+
+ * 16(Z3 id: 16|Const id: 35)(Defined). apply
+ Left
+  11(Z3 id: 11|Const id: 11)(Defined). g
+ Right
+  5(Z3 id: 5|Const id: 5)(Defined). a
+
+ * 36(Z3 id: 8|Const id: 36)(Defined). fresh_36
+
+ * 43(Z3 id: 22|Const id: 43)(Defined). fresh_43
+
+ * 33(Z3 id: 7|Const id: 33)(Defined). fresh_33
+
+ * 37(Z3 id: 24|Const id: 37)(Defined). fresh_37
+
+ * 38(Z3 id: 9|Const id: 38)(Defined). fresh_38
+
+ * 25(Z3 id: 9|Const id: 38)(Defined). apply
+ Left
+  37(Z3 id: 24|Const id: 37)(Defined). fresh_37
+ Right
+  6(Z3 id: 6|Const id: 6)(Defined). b
+
+ * 39(Z3 id: 20|Const id: 39)(Defined). fresh_39
+
+ * 23(Z3 id: 12|Const id: 44)(Defined). apply
+ Left
+  43(Z3 id: 22|Const id: 43)(Defined). fresh_43
+ Right
+  40(Z3 id: 10|Const id: 40)(Defined). fresh_40
+
+ * 40(Z3 id: 10|Const id: 40)(Defined). fresh_40
+
+ * 45(Z3 id: 26|Const id: 45)(Defined). fresh_45
+
+ * 41(Z3 id: 17|Const id: 41)(Defined). fresh_41
+
+ * 12(Z3 id: 12|Const id: 12)(Defined). =
+
+ * 42(Z3 id: 11|Const id: 42)(Defined). fresh_42
+
+Size of FactoryCurryNodes: 40
+
+Explain 37, 32
+Label 1:
+( * 24(Z3 id: 24|Const id: 37)(Defined). apply
+ Left
+  12(Z3 id: 12|Const id: 12)(Defined). =
+ Right
+  36(Z3 id: 8|Const id: 36)(Defined). fresh_36
+ =  * 37(Z3 id: 24|Const id: 37)(Defined). fresh_37
+,  * 28(Z3 id: 28|Const id: 32)(Defined). apply
+ Left
+  12(Z3 id: 12|Const id: 12)(Defined). =
+ Right
+  5(Z3 id: 5|Const id: 5)(Defined). a
+ =  * 32(Z3 id: 28|Const id: 32)(Defined). fresh_32
+)
+Label 2:
+ * 36(Z3 id: 8|Const id: 36)(Defined). fresh_36
+ =  * 6(Z3 id: 6|Const id: 6)(Defined). b
+
+Label 3:
+ * 5(Z3 id: 5|Const id: 5)(Defined). a
+ =  * 6(Z3 id: 6|Const id: 6)(Defined). b
+
+Explain a, (g a (h b) b)
+a and (g a (h b) b) belong to different equivalent classes
+Explain a, b
+Label 1:
+ * 5(Z3 id: 5|Const id: 5)(Defined). a
+ =  * 6(Z3 id: 6|Const id: 6)(Defined). b
+
+Explain b, a
+Label 1:
+ * 5(Z3 id: 5|Const id: 5)(Defined). a
+ =  * 6(Z3 id: 6|Const id: 6)(Defined). b
+

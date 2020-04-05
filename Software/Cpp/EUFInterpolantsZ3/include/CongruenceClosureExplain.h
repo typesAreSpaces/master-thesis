@@ -79,6 +79,7 @@ class CongruenceClosureExplain : public CongruenceClosure {
   void merge(const EquationCurryNodes &);
   PendingElementsPointers explain(const z3::expr &, const z3::expr &);
   std::ostream & giveExplanation(std::ostream &, const z3::expr &, const z3::expr &);
+  std::ostream & giveExplanation(std::ostream &, unsigned, unsigned);
 
   ~CongruenceClosureExplain();
   friend std::ostream & operator << (std::ostream &, const CongruenceClosureExplain &);
