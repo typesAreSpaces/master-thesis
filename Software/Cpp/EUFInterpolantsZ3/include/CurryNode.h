@@ -81,10 +81,10 @@ struct PairEquationCurryNodes {
 };
 
 struct PendingElement {
-  PendingTag tag;
+  const PendingTag tag;
   union{
-    EquationCurryNodes eq_cn;
-    PairEquationCurryNodes p_eq_cn;
+    const EquationCurryNodes eq_cn;
+    const PairEquationCurryNodes p_eq_cn;
   };
   PendingElement(CurryNode & lhs, CurryNode & rhs) : 
     tag(EQ), eq_cn(lhs, rhs) { }

@@ -9,7 +9,7 @@ UnionFind::UnionFind(unsigned size) : representative(size, 0), rank(size, 1), si
     representative[i] = i;
 }
 
-UnionFind::UnionFind(unsigned array[], unsigned size) :
+UnionFind::UnionFind(EqClass array[], unsigned size) :
   representative(array, array + size), rank(size, 1), size(size){
 }
 
@@ -26,7 +26,7 @@ UnionFind::~UnionFind(){
 
 // The first argument becomes the new
 // representative, always
-void UnionFind::combine(unsigned x, unsigned y){
+void UnionFind::combine(EqClass x, EqClass y){
   assert(x < size && y < size);
   if(find(x) == find(y))
     return;
@@ -35,7 +35,7 @@ void UnionFind::combine(unsigned x, unsigned y){
   return;
 }
 
-void UnionFind::merge(unsigned x, unsigned y){
+void UnionFind::merge(EqClass x, EqClass y){
   assert(x < size && y < size);
   if(find(x) == find(y))
     return;
@@ -43,7 +43,7 @@ void UnionFind::merge(unsigned x, unsigned y){
   return;
 }
 
-void UnionFind::link(unsigned x, unsigned y){
+void UnionFind::link(EqClass x, EqClass y){
   if(rank[x] >= rank[y]){
     representative[y] = x;
     rank[x] += rank[y];
@@ -54,14 +54,14 @@ void UnionFind::link(unsigned x, unsigned y){
   return;
 }
 
-unsigned UnionFind::find(unsigned x){
+EqClass UnionFind::find(EqClass x){
   assert(x < size);
   if(x != representative[x])
     representative[x] = find(representative[x]);
   return representative[x];
 }
 
-bool UnionFind::greater(unsigned x, unsigned y){
+bool UnionFind::greater(EqClass x, EqClass y){
   return rank[x] > rank[y];
 }
 

@@ -8,7 +8,7 @@
 
 class LookupTable {
   std::unordered_map<std::size_t, const EquationCurryNodes*> sig_table;
-  std::hash<unsigned> unsigned_hasher;
+  std::hash<EqClass> EqClass_hasher;
 
   public:
   LookupTable() {}
@@ -17,20 +17,20 @@ class LookupTable {
     std::cout << "Done ~LookupTable" << std::endl;
 #endif
   }
-  std::size_t hash_combine(unsigned a1, unsigned a2){
-    std::size_t seed = unsigned_hasher(a1);
-    seed ^= unsigned_hasher(a2) + 0x9e3779b9 + (seed << 6) + (seed >> 2);
+  std::size_t hash_combine(EqClass a1, EqClass a2){
+    std::size_t seed = EqClass_hasher(a1);
+    seed ^= EqClass_hasher(a2) + 0x9e3779b9 + (seed << 6) + (seed >> 2);
     return seed;
   }
-  void enter(unsigned a1, unsigned a2, const EquationCurryNodes * ecn){
+  void enter(EqClass a1, EqClass a2, const EquationCurryNodes * ecn){
     auto index = hash_combine(a1, a2);
     sig_table[index] = ecn;
     return;
   }
-  void erase(unsigned a1, unsigned a2){
+  void erase(EqClass a1, EqClass a2){
     sig_table.erase(hash_combine(a1, a2));
   }
-  const EquationCurryNodes * query(unsigned a1, unsigned a2){
+  const EquationCurryNodes * query(EqClass a1, EqClass a2){
     auto r = sig_table.find(hash_combine(a1, a2));
     if(r == sig_table.end())
       return nullptr;
@@ -45,6 +45,10 @@ class LookupTable {
 };
 
 typedef std::vector<std::list<const EquationCurryNodes *> > UseList;
+
+class CongruenceClosureExplain;
+template<typename T>
+std::ostream & giveExplanation(std::ostream &, const CongruenceClosureExplain &, const T &, const T &);
 
 class CongruenceClosureExplain : public CongruenceClosure {
 
@@ -61,29 +65,26 @@ class CongruenceClosureExplain : public CongruenceClosure {
   LookupTable lookup_table;
   UseList     use_list;
 
-  void     pushPending(PendingElementsPointers &, const PendingElement &);
-  unsigned highestNode(unsigned, UnionFind &);
-  unsigned nearestCommonAncestor(unsigned, unsigned, UnionFind &);
-  void     merge();
-  void     propagate();
-  void     propagateAux(const CurryNode &, const CurryNode &, unsigned, unsigned, const PendingElement &);
-  // Both of the unsigned inputs to explain encode the identifier in
-  // some equivalence class structure
-  PendingElementsPointers explain(unsigned, unsigned);
-  void                    explainAlongPath(unsigned, unsigned, UnionFind &, ExplainEquations &, PendingElementsPointers &);
+  void    pushPending(PendingElementsPointers &, const PendingElement &);
+  EqClass highestNode(EqClass, UnionFind &);
+  EqClass nearestCommonAncestor(EqClass, EqClass, UnionFind &);
+  void    merge();
+  void    propagate();
+  void    propagateAux(const CurryNode &, const CurryNode &, EqClass, EqClass, const PendingElement &);
+  void    explainAlongPath(EqClass, EqClass, UnionFind &, ExplainEquations &, PendingElementsPointers &);
 
   public:
   CongruenceClosureExplain(const unsigned &, const z3::expr_vector &,
       PredList &, UnionFindExplain &, FactoryCurryNodes &);
-  void buildCongruenceClosure(std::list<unsigned> &);
+  void buildCongruenceClosure(std::list<EqClass> &);
   void merge(const EquationCurryNodes &);
   PendingElementsPointers explain(const z3::expr &, const z3::expr &);
+  PendingElementsPointers explain(EqClass, EqClass);
   std::ostream & giveExplanation(std::ostream &, const z3::expr &, const z3::expr &);
-  std::ostream & giveExplanation(std::ostream &, unsigned, unsigned);
+  std::ostream & giveExplanation(std::ostream &, EqClass, EqClass);
 
   ~CongruenceClosureExplain();
   friend std::ostream & operator << (std::ostream &, const CongruenceClosureExplain &);
 };
-
 
 #endif

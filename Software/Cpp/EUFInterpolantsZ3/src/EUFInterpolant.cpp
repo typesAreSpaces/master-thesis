@@ -29,6 +29,17 @@ EUFInterpolant::EUFInterpolant(z3::expr const & part_a) :
   cc.giveExplanation(std::cout, subterms[5], subterms[6]);
   cc.giveExplanation(std::cout, subterms[6], subterms[5]);
 
+  auto explanation = cc.explain(subterms[6], subterms[5]);
+  if(explanation.size() != 0){
+    unsigned num = 1;
+    for(auto label : explanation){
+      assert(label->tag == EQ);
+      std::cout << "Label " << num++ << ":" << std::endl;
+      std::cout << subterms[label->eq_cn.lhs.getZ3Id()] << std::endl;
+      std::cout << subterms[label->eq_cn.lhs.getZ3Id()] << std::endl;
+    }
+  }
+
   // // *************************************************************************
   // // -------------------------------------------------------------------------
   // //                       -----------                    ----

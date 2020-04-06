@@ -62,11 +62,11 @@ void CongruenceClosureExplain::pushPending(PendingElementsPointers & pending_poi
   // TODO: Do something here to record the inserted equations
 }
 
-unsigned CongruenceClosureExplain::highestNode(unsigned a, UnionFind & uf){
+EqClass CongruenceClosureExplain::highestNode(EqClass a, UnionFind & uf){
   return uf.find(a);
 }
 
-unsigned CongruenceClosureExplain::nearestCommonAncestor(unsigned a, unsigned b, UnionFind & uf){
+EqClass CongruenceClosureExplain::nearestCommonAncestor(EqClass a, EqClass b, UnionFind & uf){
   return uf.find(ufe.commonAncestor(a, b));
 }
 
@@ -127,10 +127,12 @@ void CongruenceClosureExplain::merge(const EquationCurryNodes & equation){
 }
 
 PendingElementsPointers CongruenceClosureExplain::explain(const z3::expr & lhs, const z3::expr & rhs){
-  return explain(factory_curry_nodes.curry_nodes[lhs.id()]->getId(), factory_curry_nodes.curry_nodes[rhs.id()]->getId());
+  return explain(
+      factory_curry_nodes.curry_nodes[lhs.id()]->getId(), 
+      factory_curry_nodes.curry_nodes[rhs.id()]->getId());
 }
 
-PendingElementsPointers CongruenceClosureExplain::explain(unsigned x, unsigned y){
+PendingElementsPointers CongruenceClosureExplain::explain(EqClass x, EqClass y){
   PendingElementsPointers ans;
   if(ufe.find(x) != ufe.find(y))
     return ans; 
@@ -149,56 +151,58 @@ PendingElementsPointers CongruenceClosureExplain::explain(unsigned x, unsigned y
   return ans;
 }
 
-void CongruenceClosureExplain::explainAlongPath(unsigned a, unsigned c, 
+std::ostream & CongruenceClosureExplain::giveExplanation(std::ostream & os, const z3::expr & lhs, const z3::expr & rhs){
+  os << "Explain " << lhs << ", " << rhs << std::endl; 
+  auto explanation = explain(lhs, rhs);
+  if(explanation.size() == 0)
+    return os << lhs << " and " << rhs << " belong to different equivalent classes" << std::endl;
+  unsigned num = 1;
+  for(auto z : explanation){
+    os << "Label " << num++ << ":" << std::endl;
+    os << *z << std::endl;
+  }
+  return os;
+}
+
+std::ostream & CongruenceClosureExplain::giveExplanation(std::ostream & os, EqClass lhs, EqClass rhs){
+  os << "Explain " << lhs << ", " << rhs << std::endl; 
+  auto explanation = explain(lhs, rhs);
+  if(explanation.size() == 0)
+    return os << lhs << " and " << rhs << " belong to different equivalent classes" << std::endl;
+  unsigned num = 1;
+  for(auto z : explanation){
+    os << "Label " << num++ << ":" << std::endl;
+    os << *z << std::endl;
+  }
+  return os;
+}
+
+void CongruenceClosureExplain::explainAlongPath(EqClass a, EqClass c, 
     UnionFind & uf, ExplainEquations & pending_proofs, PendingElementsPointers & ans){
   a = highestNode(a, uf);
   while(a != c){
     auto b = ufe.parentProofForest(a);
     auto current_label = ufe.getLabel(a);
-    ans.push_back(current_label);
 
     switch(current_label->tag){
       case EQ_EQ:
         {
           auto first_equation = current_label->p_eq_cn.first;
           auto second_equation = current_label->p_eq_cn.second;
-          unsigned a1 = first_equation.lhs.getLeftId(), a2 = first_equation.lhs.getRightId(),
-                   b1 = second_equation.lhs.getLeftId(), b2 = second_equation.lhs.getRightId();
+          EqClass a1 = first_equation.lhs.getLeftId(), a2 = first_equation.lhs.getRightId(),
+                  b1 = second_equation.lhs.getLeftId(), b2 = second_equation.lhs.getRightId();
           pending_proofs.emplace_back(a1, b1);
           pending_proofs.emplace_back(a2, b2);
         }
+        //ans.push_back(current_label);
+        break;
       case EQ:
+        ans.push_back(current_label);
         break;
     }
     uf.combine(b, a);
     a = highestNode(b, uf);
   }
-}
-
-std::ostream & CongruenceClosureExplain::giveExplanation(std::ostream & os, const z3::expr & lhs, const z3::expr & rhs){
-  os << "Explain " << lhs << ", " << rhs << std::endl;
-  auto explanation = explain(lhs, rhs);
-  if(explanation.size() == 0)
-    return (os << lhs << " and " << rhs << " belong to different equivalent classes" << std::endl);
-  unsigned num = 1;
-  for(auto z : explanation){
-    os << "Label " << num++ << ":" << std::endl;
-    os << *z << std::endl;
-  }
-  return os;
-}
-
-std::ostream & CongruenceClosureExplain::giveExplanation(std::ostream & os, unsigned lhs, unsigned rhs){
-  os << "Explain " << lhs << ", " << rhs << std::endl;
-  auto explanation = explain(lhs, rhs);
-  if(explanation.size() == 0)
-    return (os << lhs << " and " << rhs << " belong to different equivalent classes" << std::endl);
-  unsigned num = 1;
-  for(auto z : explanation){
-    os << "Label " << num++ << ":" << std::endl;
-    os << *z << std::endl;
-  }
-  return os;
 }
 
 void CongruenceClosureExplain::merge(){
@@ -237,7 +241,7 @@ void CongruenceClosureExplain::propagate(){
       << "------------------------------------------|" << std::endl;
 #endif
 
-    unsigned repr_a = uf.find(a.getId()), repr_b = uf.find(b.getId());
+    EqClass repr_a = uf.find(a.getId()), repr_b = uf.find(b.getId());
     if(repr_a != repr_b) {
       // TODO: Improve invariant to prioritize common symbols as representatives
       // Invariant |ClassList(repr_a)| \leq |ClassList(repr_b)|
@@ -250,14 +254,14 @@ void CongruenceClosureExplain::propagate(){
 }
 
 void CongruenceClosureExplain::propagateAux(const CurryNode & a, const CurryNode & b,
-    unsigned repr_a, unsigned repr_b,
+    EqClass repr_a, EqClass repr_b,
     const PendingElement & pending_element){
-  unsigned old_repr_a = repr_a;
+  EqClass old_repr_a = repr_a;
   uf.combine(b.getId(), a.getId(), &pending_element);
 
   for(auto equation = use_list[old_repr_a].begin(); equation != use_list[old_repr_a].end(); ){
-    unsigned c1 = (*equation)->lhs.getLeftId(), c2 = (*equation)->lhs.getRightId();
-    unsigned repr_c1 = uf.find(c1), repr_c2 = uf.find(c2);
+    EqClass c1 = (*equation)->lhs.getLeftId(), c2 = (*equation)->lhs.getRightId();
+    EqClass repr_c1 = uf.find(c1), repr_c2 = uf.find(c2);
     const EquationCurryNodes * element_found = lookup_table.query(repr_c1, repr_c2);
 
     if(element_found != nullptr){
@@ -286,8 +290,8 @@ void CongruenceClosureExplain::propagateAux(const CurryNode & a, const CurryNode
   assert(use_list[old_repr_a].empty());
 }
 
-void CongruenceClosureExplain::buildCongruenceClosure(std::list<unsigned> & pending){
-  throw "CongruenceClosureExplain::buildCongruenceClosure(std::list<unsigned> &). \
+void CongruenceClosureExplain::buildCongruenceClosure(std::list<EqClass> & pending){
+  throw "CongruenceClosureExplain::buildCongruenceClosure(std::list<EqClass> &). \
     Implementation not defined";
 }
 

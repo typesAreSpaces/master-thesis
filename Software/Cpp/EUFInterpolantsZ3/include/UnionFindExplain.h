@@ -8,9 +8,9 @@
 #include "CurryNode.h"
 
 struct ExplainEquation {
-  unsigned source, target;
+  EqClass source, target;
   
-  ExplainEquation(unsigned source, unsigned target) :
+  ExplainEquation(EqClass source, EqClass target) :
     source(source), target(target) {}
 
   friend std::ostream & operator << (std::ostream & os, const ExplainEquation & eq){
@@ -23,16 +23,13 @@ typedef std::list<ExplainEquation> ExplainEquations;
  
 class UnionFindExplain :  public UnionFind {
   
-  std::vector<unsigned>               proof_forest;
+  std::vector<EqClass>                proof_forest;
   std::vector<const PendingElement *> labels;
 
-  std::hash<unsigned>   hasher;
-  std::size_t           hash_combine(unsigned, unsigned);
-
-  void     unionReverseEdges(unsigned, unsigned);
-  unsigned depth(unsigned);
-  unsigned commonAncestorHelper(unsigned, unsigned, unsigned);
-  void     explainAlongPath(unsigned, unsigned, ExplainEquations &);
+  void     unionReverseEdges(EqClass, EqClass);
+  unsigned depth(EqClass);
+  EqClass  commonAncestorHelper(EqClass, EqClass, unsigned);
+  void     explainAlongPath(EqClass, EqClass, ExplainEquations &);
   
 public:
   UnionFindExplain();
@@ -40,15 +37,15 @@ public:
   UnionFindExplain(const UnionFindExplain &);
   ~UnionFindExplain();
 
-  unsigned         parentProofForest(unsigned);
-  ExplainEquations explain(unsigned, unsigned);
-  void             combine(unsigned, unsigned, const PendingElement * = nullptr);
-  void             merge(unsigned, unsigned, const PendingElement * = nullptr);
-  unsigned commonAncestor(unsigned, unsigned);
+  EqClass          parentProofForest(EqClass);
+  ExplainEquations explain(EqClass, EqClass);
+  void             combine(EqClass, EqClass, const PendingElement * = nullptr);
+  void             merge(EqClass, EqClass, const PendingElement * = nullptr);
+  EqClass          commonAncestor(EqClass, EqClass);
 
-  std::ostream & giveExplanation(std::ostream &, unsigned, unsigned);
+  std::ostream & giveExplanation(std::ostream &, EqClass, EqClass);
   void           resize(unsigned);
-  const PendingElement * getLabel(unsigned);
+  const PendingElement * getLabel(EqClass);
 
   friend std::ostream & operator << (std::ostream &, UnionFindExplain &);
 };

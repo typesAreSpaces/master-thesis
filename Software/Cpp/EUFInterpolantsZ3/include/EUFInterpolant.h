@@ -27,7 +27,6 @@ class EUFInterpolant {
   z3::expr_vector disequalities;
   
   FSymPositions    fsym_positions;
-  // UnionFind        uf;
   UnionFindExplain uf;
   PredList         pred_list;
   HornClauses      horn_clauses;

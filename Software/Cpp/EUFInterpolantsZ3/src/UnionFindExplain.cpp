@@ -24,13 +24,7 @@ UnionFindExplain::~UnionFindExplain(){
 #endif
 };
 
-std::size_t UnionFindExplain::hash_combine(unsigned t1, unsigned t2){
-  std::size_t entry = hasher(t1);
-  entry = hasher(t2) + 0x9e3779b9 + (entry<<6) + (entry>>2);
-  return entry;
-}
-
-void UnionFindExplain::unionReverseEdges(unsigned target, unsigned source){
+void UnionFindExplain::unionReverseEdges(EqClass target, EqClass source){
   assert(target < size && source < size);
   if(find(target) == find(source))
     return;
@@ -38,7 +32,7 @@ void UnionFindExplain::unionReverseEdges(unsigned target, unsigned source){
   // Reverse the edges between source
   // and its representative
   std::list<ExplainEquation> stack;
-  unsigned aux_source = source;
+  EqClass aux_source = source;
   while(aux_source != proof_forest[aux_source]) {
     stack.emplace_back(aux_source, proof_forest[aux_source]);
     aux_source = proof_forest[aux_source];
@@ -54,8 +48,9 @@ void UnionFindExplain::unionReverseEdges(unsigned target, unsigned source){
   proof_forest[source] = target;  
 }
 
-unsigned UnionFindExplain::depth(unsigned x){
-  unsigned aux = x, depth = 0;
+unsigned UnionFindExplain::depth(EqClass x){
+  EqClass aux = x;
+  int depth = 0;
   while(aux != proof_forest[aux]){
     depth++;
     aux = proof_forest[aux];
@@ -63,7 +58,7 @@ unsigned UnionFindExplain::depth(unsigned x){
   return depth;
 }
 
-unsigned UnionFindExplain::commonAncestorHelper(unsigned aux_x, unsigned aux_y, unsigned depth_diff){
+EqClass UnionFindExplain::commonAncestorHelper(EqClass aux_x, EqClass aux_y, unsigned depth_diff){
   assert(find(aux_x) == find(aux_y));
   while(depth_diff--)
     aux_x = proof_forest[aux_x];
@@ -74,7 +69,7 @@ unsigned UnionFindExplain::commonAncestorHelper(unsigned aux_x, unsigned aux_y, 
   return aux_x;
 }
 
-unsigned UnionFindExplain::commonAncestor(unsigned x, unsigned y) {
+EqClass UnionFindExplain::commonAncestor(EqClass x, EqClass y) {
   if(find(x) == find(y)){
     unsigned depth_x = depth(x), depth_y = depth(y);
     if(depth_x >= depth_y)
@@ -84,7 +79,7 @@ unsigned UnionFindExplain::commonAncestor(unsigned x, unsigned y) {
   throw "The nodes are not in the same equivalence class";
 }
 
-void UnionFindExplain::explainAlongPath(unsigned node, unsigned representative, ExplainEquations & explanations) {
+void UnionFindExplain::explainAlongPath(EqClass node, EqClass representative, ExplainEquations & explanations) {
   while(node != representative){
     explanations.emplace_back(proof_forest[node], node);
     node = proof_forest[node];
@@ -92,14 +87,14 @@ void UnionFindExplain::explainAlongPath(unsigned node, unsigned representative, 
   return;
 } 
 
-unsigned UnionFindExplain::parentProofForest(unsigned x){
+EqClass UnionFindExplain::parentProofForest(EqClass x){
   assert(x < size);
   return proof_forest[x];
 }
 
-ExplainEquations UnionFindExplain::explain(unsigned x, unsigned y){
+ExplainEquations UnionFindExplain::explain(EqClass x, EqClass y){
   ExplainEquations explanations;
-  unsigned common_ancestor_x_y;
+  EqClass common_ancestor_x_y;
   try {
     common_ancestor_x_y = commonAncestor(x, y);
   }
@@ -113,7 +108,7 @@ ExplainEquations UnionFindExplain::explain(unsigned x, unsigned y){
 
 // The first argument becomes the new
 // representative, always.
-void UnionFindExplain::combine(unsigned target, unsigned source, const PendingElement * pe){
+void UnionFindExplain::combine(EqClass target, EqClass source, const PendingElement * pe){
   if(find(target) == find(source))
     return;
   unionReverseEdges(target, source);
@@ -122,7 +117,7 @@ void UnionFindExplain::combine(unsigned target, unsigned source, const PendingEl
   return;
 }
 
-void UnionFindExplain::merge(unsigned target, unsigned source, const PendingElement * pe){
+void UnionFindExplain::merge(EqClass target, EqClass source, const PendingElement * pe){
   if(find(target) == find(source))
     return;
   if(rank[find(target)] >= rank[find(source)])
@@ -134,7 +129,7 @@ void UnionFindExplain::merge(unsigned target, unsigned source, const PendingElem
   return;
 }
 
-std::ostream & UnionFindExplain::giveExplanation(std::ostream & os, unsigned x, unsigned y){
+std::ostream & UnionFindExplain::giveExplanation(std::ostream & os, EqClass x, EqClass y){
   os << "Explain " << x << ", " << y << std::endl;
   auto explanation = explain(x, y);
   if(explanation.size() == 0)
@@ -160,7 +155,7 @@ void UnionFindExplain::resize(unsigned sz){
   size = sz;
 }
 
-const PendingElement * UnionFindExplain::getLabel(unsigned x){
+const PendingElement * UnionFindExplain::getLabel(EqClass x){
   return labels[x];
 }
 
