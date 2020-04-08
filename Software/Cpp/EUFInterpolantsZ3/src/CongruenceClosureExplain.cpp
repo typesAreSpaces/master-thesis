@@ -1,8 +1,9 @@
 #include "CongruenceClosureExplain.h"
+#include <z3++.h>
 
 #define DEBUG_SANITY_CHECK  1
 #define DEBUG_MERGE         0
-#define DEBUG_PROPAGATE     1
+#define DEBUG_PROPAGATE     0
 #define DEBUG_PROPAGATE_AUX 0
 
 CongruenceClosureExplain::CongruenceClosureExplain(const unsigned & min_id, const z3::expr_vector & subterms,
@@ -44,6 +45,9 @@ CongruenceClosureExplain::CongruenceClosureExplain(const unsigned & min_id, cons
   merge();
   propagate();
 
+  giveExplanation(std::cout, subterms[5], subterms[8]); 
+  giveZ3Explanation(std::cout, subterms[5], subterms[8]); 
+
 #if DEBUG_SANITY_CHECK
   //std::cout << uf << std::endl;
   //std::cout << factory_curry_nodes << std::endl;
@@ -56,7 +60,7 @@ CongruenceClosureExplain::~CongruenceClosureExplain(){
 #endif
 }
 
-void CongruenceClosureExplain::pushPending(PendingElementsPointers & pending_pointers, 
+void CongruenceClosureExplain::pushPending(PendingPointers & pending_pointers, 
     const PendingElement & pe){
   pending_elements.push_back(pe);
   pending_pointers.push_back(&pending_elements.back());
@@ -126,14 +130,14 @@ void CongruenceClosureExplain::merge(const EquationCurryNodes & equation){
   }
 }
 
-PendingElementsPointers CongruenceClosureExplain::explain(const z3::expr & lhs, const z3::expr & rhs){
+PendingPointers CongruenceClosureExplain::explain(const z3::expr & lhs, const z3::expr & rhs){
   return explain(
       factory_curry_nodes.curry_nodes[lhs.id()]->getId(), 
       factory_curry_nodes.curry_nodes[rhs.id()]->getId());
 }
 
-PendingElementsPointers CongruenceClosureExplain::explain(EqClass x, EqClass y){
-  PendingElementsPointers ans;
+PendingPointers CongruenceClosureExplain::explain(EqClass x, EqClass y){
+  PendingPointers ans;
   if(ufe.find(x) != ufe.find(y))
     return ans; 
   UnionFind local_uf(ufe.getSize());
@@ -177,12 +181,36 @@ std::ostream & CongruenceClosureExplain::giveExplanation(std::ostream & os, EqCl
   return os;
 }
 
-Z3ElementsPointers CongruenceClosureExplain::z3Explain(const z3::expr & lhs, const z3::expr & rhs){
-  throw "Not implemented yet"; 
+Z3EquationPointers CongruenceClosureExplain::z3Explain(const z3::expr & lhs, const z3::expr & rhs){
+  Z3EquationPointers ans;
+  auto explanation = explain(lhs, rhs);
+  for(auto z : explanation){
+    switch(z->tag){
+      case EQ:
+        ans.emplace_back(z->eq_cn.lhs.getZ3Id(), z->eq_cn.rhs.getZ3Id());
+      case EQ_EQ:
+        break;
+    } 
+  }
+  return ans;
 } 
 
+std::ostream & CongruenceClosureExplain::giveZ3Explanation(std::ostream & os, const z3::expr & lhs, const z3::expr & rhs){
+  os << "Explain " << lhs << ", " << rhs << std::endl; 
+  auto explanation = z3Explain(lhs, rhs);
+  if(explanation.size() == 0)
+    return os << lhs << " and " << rhs << " belong to different equivalent classes" << std::endl;
+  unsigned num = 1;
+  for(auto z : explanation){
+    os << "Label " << num++ << ":" << std::endl;
+    os << subterms[z.lhs_id] << " = " << subterms[z.rhs_id] << std::endl;
+  }
+  return os;
+} 
+
+
 void CongruenceClosureExplain::explainAlongPath(EqClass a, EqClass c, 
-    UnionFind & uf, ExplainEquations & pending_proofs, PendingElementsPointers & ans){
+    UnionFind & uf, ExplainEquations & pending_proofs, PendingPointers & ans){
   a = highestNode(a, uf);
   while(a != c){
     auto b = ufe.parentProofForest(a);
@@ -191,14 +219,14 @@ void CongruenceClosureExplain::explainAlongPath(EqClass a, EqClass c,
     switch(current_label->tag){
       case EQ_EQ:
         {
-          auto first_equation = current_label->p_eq_cn.first;
-          auto second_equation = current_label->p_eq_cn.second;
+          auto first_equation = current_label->p_eq_cn.first,
+               second_equation = current_label->p_eq_cn.second;
           EqClass a1 = first_equation.lhs.getLeftId(), a2 = first_equation.lhs.getRightId(),
                   b1 = second_equation.lhs.getLeftId(), b2 = second_equation.lhs.getRightId();
           pending_proofs.emplace_back(a1, b1);
           pending_proofs.emplace_back(a2, b2);
         }
-        //ans.push_back(current_label);
+        ans.push_back(current_label);
         break;
       case EQ:
         ans.push_back(current_label);
@@ -251,7 +279,7 @@ void CongruenceClosureExplain::propagate(){
 #endif
 
     if(repr_a != repr_b) {
-      // Invariant: The representative is choosen as follows:
+      //// Invariant: The representative is choosen as follows:
       // If a' and b' are both common or uncommon, then break ties using their rank
       // Otherwise, pick the node who is common
       if((repr_a_is_common && repr_b_is_common) || (!repr_a_is_common && !repr_b_is_common)){
@@ -260,10 +288,12 @@ void CongruenceClosureExplain::propagate(){
         else
           propagateAux(b, a, repr_b, repr_a, *pending_element);
       }
-      if(repr_b_is_common)
+      else{
+        if(repr_b_is_common)
           propagateAux(a, b, repr_a, repr_b, *pending_element);
-      else
+        else
           propagateAux(b, a, repr_b, repr_a, *pending_element);
+      }
     }
   }
 }

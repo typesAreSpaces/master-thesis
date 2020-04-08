@@ -166,7 +166,7 @@ IdsToMerge FactoryCurryNodes::curryfication(z3::expr const & e){
 
 void FactoryCurryNodes::flattening(const unsigned & min_id,
     PendingElements & pending_elements,
-    PendingElementsPointers & equations_to_merge,
+    PendingPointers & equations_to_merge,
     const z3::expr_vector & subterms){
   // Update Z3 Ids
   unsigned max_z3_id = curry_nodes.size();

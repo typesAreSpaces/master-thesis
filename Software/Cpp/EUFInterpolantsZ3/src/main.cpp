@@ -14,6 +14,7 @@ void testEUF();
 void testCongClosureExpl();
 void testCongClosureExpl2();
 void testCongClosureExpl3(); 
+void testCongClosureExpl4(); 
 void hugeTest();
 
 // *******************************************************
@@ -32,7 +33,8 @@ int main(int argc, char ** argv){
   //testEUF();
   //testCongClosureExpl();
   //testCongClosureExpl2();
-  testCongClosureExpl3();
+  //testCongClosureExpl3();
+  testCongClosureExpl4();
   //hugeTest();
 
   return 0;
@@ -141,6 +143,22 @@ void testCongClosureExpl3(){
   z3::func_decl g = ctx.function("g", my_sort, my_sort, my_sort, my_sort);
   z3::func_decl h = ctx.function("h", my_sort, my_sort);
   z3::expr alpha = g(a, h(b), b) == g(b, h(b), h(b)) && h(b) == b && a == b;
+  EUFInterpolant euf(alpha);
+  return;
+}
+
+void testCongClosureExpl4(){
+  z3::context ctx;
+  z3::sort my_sort = ctx.uninterpreted_sort("A");
+  z3::expr a = ctx.constant("a", my_sort);
+  z3::expr b = ctx.constant("b", my_sort);
+  z3::expr c = ctx.constant("c", my_sort);
+  z3::expr d = ctx.constant("d", my_sort);
+  z3::expr e = ctx.constant("e", my_sort);
+  z3::expr g = ctx.constant("g", my_sort);
+  z3::expr h = ctx.constant("h", my_sort);
+  z3::func_decl f = ctx.function("f", my_sort, my_sort, my_sort);
+  z3::expr alpha = f(g, h) == d && c == d && f(g, d) == a && e == c && e == b && b == h;
   EUFInterpolant euf(alpha);
   return;
 }

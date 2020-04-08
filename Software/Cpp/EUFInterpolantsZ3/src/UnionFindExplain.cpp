@@ -41,6 +41,7 @@ void UnionFindExplain::unionReverseEdges(EqClass target, EqClass source){
     const auto element = stack.back();
     stack.pop_back();
     proof_forest[element.target] = element.source;
+    std::swap(labels[element.target], labels[element.source]);
     if(stack.empty())
       proof_forest[element.source] = element.source;
   }

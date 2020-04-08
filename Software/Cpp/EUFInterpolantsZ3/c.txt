@@ -1,0 +1,1313 @@
+g++ -g -c -o obj/CongruenceClosureExplain.o -I./src -I./include -std=c++11 -Wall src/CongruenceClosureExplain.cpp
+g++ -g -o euf_interpolator obj/Match.o obj/Rename.o obj/UnionFindExplain.o obj/HornClause.o obj/CongruenceClosureNO.o obj/Hornsat.o obj/CongruenceClosureDST.o obj/EUFInterpolant.o obj/CurryNode.o obj/CongruenceClosure.o obj/UnionFind.o obj/FactoryCurryNodes.o obj/main.o obj/HornClauses.o obj/CongruenceClosureExplain.o /home/jose/Documents/GithubProjects/z3__/build/libz3.so -lpthread
+./euf_interpolator
+5 a 0 5
+6 b 0 6
+7 (h b) 0 7
+8 (= (h b) b) 0 8
+9 (h (h b)) 0 9
+10 (g a (h b) (h (h b))) 0 10
+11 (= (g a (h b) (h (h b))) (h (h b))) 0 11
+12 (g a (h b) (h b)) 0 12
+13 (= (g a (h b) (h b)) (h b)) 0 13
+14 (g a (h b) b) 0 14
+15 (= (g a (h b) b) b) 0 15
+16 (and (= (g a (h b) b) b) (= (g a (h b) (h b)) (h b))) 0 16
+17 (let ((a!1 (= (g a (h b) (h (h b))) (h (h b)))))
+  (and (= (g a (h b) b) b) (= (g a (h b) (h b)) (h b)) a!1)) 0 17
+18 (let ((a!1 (= (g a (h b) (h (h b))) (h (h b)))))
+  (and (= (g a (h b) b) b) (= (g a (h b) (h b)) (h b)) a!1 (= (h b) b))) 0 18
+@merge. Merging apply equations
+ * 43(Z3 id: 18|is common: false|Const id: 64)(Defined). apply
+ Left
+  63(Z3 id: 63|is common: false|Const id: 63)(Defined). fresh_63
+ Right
+  47(Z3 id: 8|is common: false|Const id: 47)(Defined). fresh_47
+ and  * 64(Z3 id: 18|is common: false|Const id: 64)(Defined). fresh_64
+
+@merge: the element wasnt in the lookup table
+------------------------------------------
+Index lhs 63[repr:63] has this in UseList 
+ * 43(Z3 id: 18|is common: false|Const id: 64)(Defined). apply
+ Left
+  63(Z3 id: 63|is common: false|Const id: 63)(Defined). fresh_63
+ Right
+  47(Z3 id: 8|is common: false|Const id: 47)(Defined). fresh_47
+ =  * 64(Z3 id: 18|is common: false|Const id: 64)(Defined). fresh_64
+
+Index rhs 47[repr:47] has this in UseList 
+ * 43(Z3 id: 18|is common: false|Const id: 64)(Defined). apply
+ Left
+  63(Z3 id: 63|is common: false|Const id: 63)(Defined). fresh_63
+ Right
+  47(Z3 id: 8|is common: false|Const id: 47)(Defined). fresh_47
+ =  * 64(Z3 id: 18|is common: false|Const id: 64)(Defined). fresh_64
+
+------------------------------------------
+@merge. Merging apply equations
+ * 42(Z3 id: 42|is common: false|Const id: 63)(Defined). apply
+ Left
+  16(Z3 id: 16|is common: false|Const id: 16)(Defined). and
+ Right
+  62(Z3 id: 17|is common: false|Const id: 62)(Defined). fresh_62
+ and  * 63(Z3 id: 63|is common: false|Const id: 63)(Defined). fresh_63
+
+@merge: the element wasnt in the lookup table
+------------------------------------------
+Index lhs 16[repr:16] has this in UseList 
+ * 42(Z3 id: 42|is common: false|Const id: 63)(Defined). apply
+ Left
+  16(Z3 id: 16|is common: false|Const id: 16)(Defined). and
+ Right
+  62(Z3 id: 17|is common: false|Const id: 62)(Defined). fresh_62
+ =  * 63(Z3 id: 63|is common: false|Const id: 63)(Defined). fresh_63
+
+Index rhs 62[repr:62] has this in UseList 
+ * 42(Z3 id: 42|is common: false|Const id: 63)(Defined). apply
+ Left
+  16(Z3 id: 16|is common: false|Const id: 16)(Defined). and
+ Right
+  62(Z3 id: 17|is common: false|Const id: 62)(Defined). fresh_62
+ =  * 63(Z3 id: 63|is common: false|Const id: 63)(Defined). fresh_63
+
+------------------------------------------
+@merge. Merging apply equations
+ * 39(Z3 id: 17|is common: false|Const id: 62)(Defined). apply
+ Left
+  61(Z3 id: 61|is common: false|Const id: 61)(Defined). fresh_61
+ Right
+  52(Z3 id: 11|is common: false|Const id: 52)(Defined). fresh_52
+ and  * 62(Z3 id: 17|is common: false|Const id: 62)(Defined). fresh_62
+
+@merge: the element wasnt in the lookup table
+------------------------------------------
+Index lhs 61[repr:61] has this in UseList 
+ * 39(Z3 id: 17|is common: false|Const id: 62)(Defined). apply
+ Left
+  61(Z3 id: 61|is common: false|Const id: 61)(Defined). fresh_61
+ Right
+  52(Z3 id: 11|is common: false|Const id: 52)(Defined). fresh_52
+ =  * 62(Z3 id: 17|is common: false|Const id: 62)(Defined). fresh_62
+
+Index rhs 52[repr:52] has this in UseList 
+ * 39(Z3 id: 17|is common: false|Const id: 62)(Defined). apply
+ Left
+  61(Z3 id: 61|is common: false|Const id: 61)(Defined). fresh_61
+ Right
+  52(Z3 id: 11|is common: false|Const id: 52)(Defined). fresh_52
+ =  * 62(Z3 id: 17|is common: false|Const id: 62)(Defined). fresh_62
+
+------------------------------------------
+@merge. Merging apply equations
+ * 38(Z3 id: 38|is common: false|Const id: 61)(Defined). apply
+ Left
+  16(Z3 id: 16|is common: false|Const id: 16)(Defined). and
+ Right
+  60(Z3 id: 16|is common: false|Const id: 60)(Defined). fresh_60
+ and  * 61(Z3 id: 61|is common: false|Const id: 61)(Defined). fresh_61
+
+@merge: the element wasnt in the lookup table
+------------------------------------------
+Index lhs 16[repr:16] has this in UseList 
+ * 38(Z3 id: 38|is common: false|Const id: 61)(Defined). apply
+ Left
+  16(Z3 id: 16|is common: false|Const id: 16)(Defined). and
+ Right
+  60(Z3 id: 16|is common: false|Const id: 60)(Defined). fresh_60
+ =  * 61(Z3 id: 61|is common: false|Const id: 61)(Defined). fresh_61
+
+Index rhs 60[repr:60] has this in UseList 
+ * 38(Z3 id: 38|is common: false|Const id: 61)(Defined). apply
+ Left
+  16(Z3 id: 16|is common: false|Const id: 16)(Defined). and
+ Right
+  60(Z3 id: 16|is common: false|Const id: 60)(Defined). fresh_60
+ =  * 61(Z3 id: 61|is common: false|Const id: 61)(Defined). fresh_61
+
+------------------------------------------
+@merge. Merging apply equations
+ * 31(Z3 id: 16|is common: false|Const id: 60)(Defined). apply
+ Left
+  59(Z3 id: 59|is common: false|Const id: 59)(Defined). fresh_59
+ Right
+  55(Z3 id: 13|is common: false|Const id: 55)(Defined). fresh_55
+ and  * 60(Z3 id: 16|is common: false|Const id: 60)(Defined). fresh_60
+
+@merge: the element wasnt in the lookup table
+------------------------------------------
+Index lhs 59[repr:59] has this in UseList 
+ * 31(Z3 id: 16|is common: false|Const id: 60)(Defined). apply
+ Left
+  59(Z3 id: 59|is common: false|Const id: 59)(Defined). fresh_59
+ Right
+  55(Z3 id: 13|is common: false|Const id: 55)(Defined). fresh_55
+ =  * 60(Z3 id: 16|is common: false|Const id: 60)(Defined). fresh_60
+
+Index rhs 55[repr:55] has this in UseList 
+ * 31(Z3 id: 16|is common: false|Const id: 60)(Defined). apply
+ Left
+  59(Z3 id: 59|is common: false|Const id: 59)(Defined). fresh_59
+ Right
+  55(Z3 id: 13|is common: false|Const id: 55)(Defined). fresh_55
+ =  * 60(Z3 id: 16|is common: false|Const id: 60)(Defined). fresh_60
+
+------------------------------------------
+@merge. Merging apply equations
+ * 30(Z3 id: 30|is common: false|Const id: 59)(Defined). apply
+ Left
+  16(Z3 id: 16|is common: false|Const id: 16)(Defined). and
+ Right
+  58(Z3 id: 15|is common: false|Const id: 58)(Defined). fresh_58
+ and  * 59(Z3 id: 59|is common: false|Const id: 59)(Defined). fresh_59
+
+@merge: the element wasnt in the lookup table
+------------------------------------------
+Index lhs 16[repr:16] has this in UseList 
+ * 30(Z3 id: 30|is common: false|Const id: 59)(Defined). apply
+ Left
+  16(Z3 id: 16|is common: false|Const id: 16)(Defined). and
+ Right
+  58(Z3 id: 15|is common: false|Const id: 58)(Defined). fresh_58
+ =  * 59(Z3 id: 59|is common: false|Const id: 59)(Defined). fresh_59
+
+Index rhs 58[repr:58] has this in UseList 
+ * 30(Z3 id: 30|is common: false|Const id: 59)(Defined). apply
+ Left
+  16(Z3 id: 16|is common: false|Const id: 16)(Defined). and
+ Right
+  58(Z3 id: 15|is common: false|Const id: 58)(Defined). fresh_58
+ =  * 59(Z3 id: 59|is common: false|Const id: 59)(Defined). fresh_59
+
+------------------------------------------
+@merge. Merging apply equations
+ * 24(Z3 id: 15|is common: false|Const id: 58)(Defined). apply
+ Left
+  57(Z3 id: 57|is common: false|Const id: 57)(Defined). fresh_57
+ Right
+  6(Z3 id: 6|is common: false|Const id: 6)(Defined). b
+ and  * 58(Z3 id: 15|is common: false|Const id: 58)(Defined). fresh_58
+
+@merge: the element wasnt in the lookup table
+------------------------------------------
+Index lhs 57[repr:57] has this in UseList 
+ * 24(Z3 id: 15|is common: false|Const id: 58)(Defined). apply
+ Left
+  57(Z3 id: 57|is common: false|Const id: 57)(Defined). fresh_57
+ Right
+  6(Z3 id: 6|is common: false|Const id: 6)(Defined). b
+ =  * 58(Z3 id: 15|is common: false|Const id: 58)(Defined). fresh_58
+
+Index rhs 6[repr:6] has this in UseList 
+ * 24(Z3 id: 15|is common: false|Const id: 58)(Defined). apply
+ Left
+  57(Z3 id: 57|is common: false|Const id: 57)(Defined). fresh_57
+ Right
+  6(Z3 id: 6|is common: false|Const id: 6)(Defined). b
+ =  * 58(Z3 id: 15|is common: false|Const id: 58)(Defined). fresh_58
+
+------------------------------------------
+@merge. Merging apply equations
+ * 23(Z3 id: 23|is common: false|Const id: 57)(Defined). apply
+ Left
+  15(Z3 id: 15|is common: false|Const id: 15)(Defined). =
+ Right
+  56(Z3 id: 14|is common: false|Const id: 56)(Defined). fresh_56
+ and  * 57(Z3 id: 57|is common: false|Const id: 57)(Defined). fresh_57
+
+@merge: the element wasnt in the lookup table
+------------------------------------------
+Index lhs 15[repr:15] has this in UseList 
+ * 23(Z3 id: 23|is common: false|Const id: 57)(Defined). apply
+ Left
+  15(Z3 id: 15|is common: false|Const id: 15)(Defined). =
+ Right
+  56(Z3 id: 14|is common: false|Const id: 56)(Defined). fresh_56
+ =  * 57(Z3 id: 57|is common: false|Const id: 57)(Defined). fresh_57
+
+Index rhs 56[repr:56] has this in UseList 
+ * 23(Z3 id: 23|is common: false|Const id: 57)(Defined). apply
+ Left
+  15(Z3 id: 15|is common: false|Const id: 15)(Defined). =
+ Right
+  56(Z3 id: 14|is common: false|Const id: 56)(Defined). fresh_56
+ =  * 57(Z3 id: 57|is common: false|Const id: 57)(Defined). fresh_57
+
+------------------------------------------
+@merge. Merging apply equations
+ * 22(Z3 id: 14|is common: false|Const id: 56)(Defined). apply
+ Left
+  49(Z3 id: 49|is common: false|Const id: 49)(Defined). fresh_49
+ Right
+  6(Z3 id: 6|is common: false|Const id: 6)(Defined). b
+ and  * 56(Z3 id: 14|is common: false|Const id: 56)(Defined). fresh_56
+
+@merge: the element wasnt in the lookup table
+------------------------------------------
+Index lhs 49[repr:49] has this in UseList 
+ * 22(Z3 id: 14|is common: false|Const id: 56)(Defined). apply
+ Left
+  49(Z3 id: 49|is common: false|Const id: 49)(Defined). fresh_49
+ Right
+  6(Z3 id: 6|is common: false|Const id: 6)(Defined). b
+ =  * 56(Z3 id: 14|is common: false|Const id: 56)(Defined). fresh_56
+
+Index rhs 6[repr:6] has this in UseList 
+ * 22(Z3 id: 14|is common: false|Const id: 56)(Defined). apply
+ Left
+  49(Z3 id: 49|is common: false|Const id: 49)(Defined). fresh_49
+ Right
+  6(Z3 id: 6|is common: false|Const id: 6)(Defined). b
+ =  * 56(Z3 id: 14|is common: false|Const id: 56)(Defined). fresh_56
+
+------------------------------------------
+@merge. Merging apply equations
+ * 29(Z3 id: 13|is common: false|Const id: 55)(Defined). apply
+ Left
+  54(Z3 id: 54|is common: false|Const id: 54)(Defined). fresh_54
+ Right
+  45(Z3 id: 7|is common: false|Const id: 45)(Defined). fresh_45
+ and  * 55(Z3 id: 13|is common: false|Const id: 55)(Defined). fresh_55
+
+@merge: the element wasnt in the lookup table
+------------------------------------------
+Index lhs 54[repr:54] has this in UseList 
+ * 29(Z3 id: 13|is common: false|Const id: 55)(Defined). apply
+ Left
+  54(Z3 id: 54|is common: false|Const id: 54)(Defined). fresh_54
+ Right
+  45(Z3 id: 7|is common: false|Const id: 45)(Defined). fresh_45
+ =  * 55(Z3 id: 13|is common: false|Const id: 55)(Defined). fresh_55
+
+Index rhs 45[repr:45] has this in UseList 
+ * 29(Z3 id: 13|is common: false|Const id: 55)(Defined). apply
+ Left
+  54(Z3 id: 54|is common: false|Const id: 54)(Defined). fresh_54
+ Right
+  45(Z3 id: 7|is common: false|Const id: 45)(Defined). fresh_45
+ =  * 55(Z3 id: 13|is common: false|Const id: 55)(Defined). fresh_55
+
+------------------------------------------
+@merge. Merging apply equations
+ * 28(Z3 id: 28|is common: false|Const id: 54)(Defined). apply
+ Left
+  15(Z3 id: 15|is common: false|Const id: 15)(Defined). =
+ Right
+  53(Z3 id: 12|is common: false|Const id: 53)(Defined). fresh_53
+ and  * 54(Z3 id: 54|is common: false|Const id: 54)(Defined). fresh_54
+
+@merge: the element wasnt in the lookup table
+------------------------------------------
+Index lhs 15[repr:15] has this in UseList 
+ * 28(Z3 id: 28|is common: false|Const id: 54)(Defined). apply
+ Left
+  15(Z3 id: 15|is common: false|Const id: 15)(Defined). =
+ Right
+  53(Z3 id: 12|is common: false|Const id: 53)(Defined). fresh_53
+ =  * 54(Z3 id: 54|is common: false|Const id: 54)(Defined). fresh_54
+
+Index rhs 53[repr:53] has this in UseList 
+ * 28(Z3 id: 28|is common: false|Const id: 54)(Defined). apply
+ Left
+  15(Z3 id: 15|is common: false|Const id: 15)(Defined). =
+ Right
+  53(Z3 id: 12|is common: false|Const id: 53)(Defined). fresh_53
+ =  * 54(Z3 id: 54|is common: false|Const id: 54)(Defined). fresh_54
+
+------------------------------------------
+@merge. Merging apply equations
+ * 27(Z3 id: 12|is common: false|Const id: 53)(Defined). apply
+ Left
+  49(Z3 id: 49|is common: false|Const id: 49)(Defined). fresh_49
+ Right
+  45(Z3 id: 7|is common: false|Const id: 45)(Defined). fresh_45
+ and  * 53(Z3 id: 12|is common: false|Const id: 53)(Defined). fresh_53
+
+@merge: the element wasnt in the lookup table
+------------------------------------------
+Index lhs 49[repr:49] has this in UseList 
+ * 27(Z3 id: 12|is common: false|Const id: 53)(Defined). apply
+ Left
+  49(Z3 id: 49|is common: false|Const id: 49)(Defined). fresh_49
+ Right
+  45(Z3 id: 7|is common: false|Const id: 45)(Defined). fresh_45
+ =  * 53(Z3 id: 12|is common: false|Const id: 53)(Defined). fresh_53
+
+Index rhs 45[repr:45] has this in UseList 
+ * 27(Z3 id: 12|is common: false|Const id: 53)(Defined). apply
+ Left
+  49(Z3 id: 49|is common: false|Const id: 49)(Defined). fresh_49
+ Right
+  45(Z3 id: 7|is common: false|Const id: 45)(Defined). fresh_45
+ =  * 53(Z3 id: 12|is common: false|Const id: 53)(Defined). fresh_53
+
+------------------------------------------
+@merge. Merging apply equations
+ * 37(Z3 id: 11|is common: false|Const id: 52)(Defined). apply
+ Left
+  51(Z3 id: 51|is common: false|Const id: 51)(Defined). fresh_51
+ Right
+  48(Z3 id: 9|is common: false|Const id: 48)(Defined). fresh_48
+ and  * 52(Z3 id: 11|is common: false|Const id: 52)(Defined). fresh_52
+
+@merge: the element wasnt in the lookup table
+------------------------------------------
+Index lhs 51[repr:51] has this in UseList 
+ * 37(Z3 id: 11|is common: false|Const id: 52)(Defined). apply
+ Left
+  51(Z3 id: 51|is common: false|Const id: 51)(Defined). fresh_51
+ Right
+  48(Z3 id: 9|is common: false|Const id: 48)(Defined). fresh_48
+ =  * 52(Z3 id: 11|is common: false|Const id: 52)(Defined). fresh_52
+
+Index rhs 48[repr:48] has this in UseList 
+ * 37(Z3 id: 11|is common: false|Const id: 52)(Defined). apply
+ Left
+  51(Z3 id: 51|is common: false|Const id: 51)(Defined). fresh_51
+ Right
+  48(Z3 id: 9|is common: false|Const id: 48)(Defined). fresh_48
+ =  * 52(Z3 id: 11|is common: false|Const id: 52)(Defined). fresh_52
+
+------------------------------------------
+@merge. Merging apply equations
+ * 36(Z3 id: 36|is common: false|Const id: 51)(Defined). apply
+ Left
+  15(Z3 id: 15|is common: false|Const id: 15)(Defined). =
+ Right
+  50(Z3 id: 10|is common: false|Const id: 50)(Defined). fresh_50
+ and  * 51(Z3 id: 51|is common: false|Const id: 51)(Defined). fresh_51
+
+@merge: the element wasnt in the lookup table
+------------------------------------------
+Index lhs 15[repr:15] has this in UseList 
+ * 36(Z3 id: 36|is common: false|Const id: 51)(Defined). apply
+ Left
+  15(Z3 id: 15|is common: false|Const id: 15)(Defined). =
+ Right
+  50(Z3 id: 10|is common: false|Const id: 50)(Defined). fresh_50
+ =  * 51(Z3 id: 51|is common: false|Const id: 51)(Defined). fresh_51
+
+Index rhs 50[repr:50] has this in UseList 
+ * 36(Z3 id: 36|is common: false|Const id: 51)(Defined). apply
+ Left
+  15(Z3 id: 15|is common: false|Const id: 15)(Defined). =
+ Right
+  50(Z3 id: 10|is common: false|Const id: 50)(Defined). fresh_50
+ =  * 51(Z3 id: 51|is common: false|Const id: 51)(Defined). fresh_51
+
+------------------------------------------
+@merge. Merging apply equations
+ * 35(Z3 id: 10|is common: false|Const id: 50)(Defined). apply
+ Left
+  49(Z3 id: 49|is common: false|Const id: 49)(Defined). fresh_49
+ Right
+  48(Z3 id: 9|is common: false|Const id: 48)(Defined). fresh_48
+ and  * 50(Z3 id: 10|is common: false|Const id: 50)(Defined). fresh_50
+
+@merge: the element wasnt in the lookup table
+------------------------------------------
+Index lhs 49[repr:49] has this in UseList 
+ * 35(Z3 id: 10|is common: false|Const id: 50)(Defined). apply
+ Left
+  49(Z3 id: 49|is common: false|Const id: 49)(Defined). fresh_49
+ Right
+  48(Z3 id: 9|is common: false|Const id: 48)(Defined). fresh_48
+ =  * 50(Z3 id: 10|is common: false|Const id: 50)(Defined). fresh_50
+
+Index rhs 48[repr:48] has this in UseList 
+ * 35(Z3 id: 10|is common: false|Const id: 50)(Defined). apply
+ Left
+  49(Z3 id: 49|is common: false|Const id: 49)(Defined). fresh_49
+ Right
+  48(Z3 id: 9|is common: false|Const id: 48)(Defined). fresh_48
+ =  * 50(Z3 id: 10|is common: false|Const id: 50)(Defined). fresh_50
+
+------------------------------------------
+@merge. Merging apply equations
+ * 21(Z3 id: 21|is common: false|Const id: 49)(Defined). apply
+ Left
+  44(Z3 id: 44|is common: false|Const id: 44)(Defined). fresh_44
+ Right
+  45(Z3 id: 7|is common: false|Const id: 45)(Defined). fresh_45
+ and  * 49(Z3 id: 49|is common: false|Const id: 49)(Defined). fresh_49
+
+@merge: the element wasnt in the lookup table
+------------------------------------------
+Index lhs 44[repr:44] has this in UseList 
+ * 21(Z3 id: 21|is common: false|Const id: 49)(Defined). apply
+ Left
+  44(Z3 id: 44|is common: false|Const id: 44)(Defined). fresh_44
+ Right
+  45(Z3 id: 7|is common: false|Const id: 45)(Defined). fresh_45
+ =  * 49(Z3 id: 49|is common: false|Const id: 49)(Defined). fresh_49
+
+Index rhs 45[repr:45] has this in UseList 
+ * 21(Z3 id: 21|is common: false|Const id: 49)(Defined). apply
+ Left
+  44(Z3 id: 44|is common: false|Const id: 44)(Defined). fresh_44
+ Right
+  45(Z3 id: 7|is common: false|Const id: 45)(Defined). fresh_45
+ =  * 49(Z3 id: 49|is common: false|Const id: 49)(Defined). fresh_49
+
+------------------------------------------
+@merge. Merging apply equations
+ * 32(Z3 id: 9|is common: false|Const id: 48)(Defined). apply
+ Left
+  7(Z3 id: 7|is common: false|Const id: 7)(Defined). h
+ Right
+  45(Z3 id: 7|is common: false|Const id: 45)(Defined). fresh_45
+ and  * 48(Z3 id: 9|is common: false|Const id: 48)(Defined). fresh_48
+
+@merge: the element wasnt in the lookup table
+------------------------------------------
+Index lhs 7[repr:7] has this in UseList 
+ * 32(Z3 id: 9|is common: false|Const id: 48)(Defined). apply
+ Left
+  7(Z3 id: 7|is common: false|Const id: 7)(Defined). h
+ Right
+  45(Z3 id: 7|is common: false|Const id: 45)(Defined). fresh_45
+ =  * 48(Z3 id: 9|is common: false|Const id: 48)(Defined). fresh_48
+
+Index rhs 45[repr:45] has this in UseList 
+ * 32(Z3 id: 9|is common: false|Const id: 48)(Defined). apply
+ Left
+  7(Z3 id: 7|is common: false|Const id: 7)(Defined). h
+ Right
+  45(Z3 id: 7|is common: false|Const id: 45)(Defined). fresh_45
+ =  * 48(Z3 id: 9|is common: false|Const id: 48)(Defined). fresh_48
+
+------------------------------------------
+@merge. Merging apply equations
+ * 41(Z3 id: 8|is common: false|Const id: 47)(Defined). apply
+ Left
+  46(Z3 id: 46|is common: false|Const id: 46)(Defined). fresh_46
+ Right
+  6(Z3 id: 6|is common: false|Const id: 6)(Defined). b
+ and  * 47(Z3 id: 8|is common: false|Const id: 47)(Defined). fresh_47
+
+@merge: the element wasnt in the lookup table
+------------------------------------------
+Index lhs 46[repr:46] has this in UseList 
+ * 41(Z3 id: 8|is common: false|Const id: 47)(Defined). apply
+ Left
+  46(Z3 id: 46|is common: false|Const id: 46)(Defined). fresh_46
+ Right
+  6(Z3 id: 6|is common: false|Const id: 6)(Defined). b
+ =  * 47(Z3 id: 8|is common: false|Const id: 47)(Defined). fresh_47
+
+Index rhs 6[repr:6] has this in UseList 
+ * 41(Z3 id: 8|is common: false|Const id: 47)(Defined). apply
+ Left
+  46(Z3 id: 46|is common: false|Const id: 46)(Defined). fresh_46
+ Right
+  6(Z3 id: 6|is common: false|Const id: 6)(Defined). b
+ =  * 47(Z3 id: 8|is common: false|Const id: 47)(Defined). fresh_47
+
+------------------------------------------
+@merge. Merging apply equations
+ * 40(Z3 id: 40|is common: false|Const id: 46)(Defined). apply
+ Left
+  15(Z3 id: 15|is common: false|Const id: 15)(Defined). =
+ Right
+  45(Z3 id: 7|is common: false|Const id: 45)(Defined). fresh_45
+ and  * 46(Z3 id: 46|is common: false|Const id: 46)(Defined). fresh_46
+
+@merge: the element wasnt in the lookup table
+------------------------------------------
+Index lhs 15[repr:15] has this in UseList 
+ * 40(Z3 id: 40|is common: false|Const id: 46)(Defined). apply
+ Left
+  15(Z3 id: 15|is common: false|Const id: 15)(Defined). =
+ Right
+  45(Z3 id: 7|is common: false|Const id: 45)(Defined). fresh_45
+ =  * 46(Z3 id: 46|is common: false|Const id: 46)(Defined). fresh_46
+
+Index rhs 45[repr:45] has this in UseList 
+ * 40(Z3 id: 40|is common: false|Const id: 46)(Defined). apply
+ Left
+  15(Z3 id: 15|is common: false|Const id: 15)(Defined). =
+ Right
+  45(Z3 id: 7|is common: false|Const id: 45)(Defined). fresh_45
+ =  * 46(Z3 id: 46|is common: false|Const id: 46)(Defined). fresh_46
+
+------------------------------------------
+@merge. Merging apply equations
+ * 19(Z3 id: 7|is common: false|Const id: 45)(Defined). apply
+ Left
+  7(Z3 id: 7|is common: false|Const id: 7)(Defined). h
+ Right
+  6(Z3 id: 6|is common: false|Const id: 6)(Defined). b
+ and  * 45(Z3 id: 7|is common: false|Const id: 45)(Defined). fresh_45
+
+@merge: the element wasnt in the lookup table
+------------------------------------------
+Index lhs 7[repr:7] has this in UseList 
+ * 19(Z3 id: 7|is common: false|Const id: 45)(Defined). apply
+ Left
+  7(Z3 id: 7|is common: false|Const id: 7)(Defined). h
+ Right
+  6(Z3 id: 6|is common: false|Const id: 6)(Defined). b
+ =  * 45(Z3 id: 7|is common: false|Const id: 45)(Defined). fresh_45
+
+Index rhs 6[repr:6] has this in UseList 
+ * 19(Z3 id: 7|is common: false|Const id: 45)(Defined). apply
+ Left
+  7(Z3 id: 7|is common: false|Const id: 7)(Defined). h
+ Right
+  6(Z3 id: 6|is common: false|Const id: 6)(Defined). b
+ =  * 45(Z3 id: 7|is common: false|Const id: 45)(Defined). fresh_45
+
+------------------------------------------
+@merge. Merging apply equations
+ * 20(Z3 id: 20|is common: false|Const id: 44)(Defined). apply
+ Left
+  14(Z3 id: 14|is common: false|Const id: 14)(Defined). g
+ Right
+  5(Z3 id: 5|is common: false|Const id: 5)(Defined). a
+ and  * 44(Z3 id: 44|is common: false|Const id: 44)(Defined). fresh_44
+
+@merge: the element wasnt in the lookup table
+------------------------------------------
+Index lhs 14[repr:14] has this in UseList 
+ * 20(Z3 id: 20|is common: false|Const id: 44)(Defined). apply
+ Left
+  14(Z3 id: 14|is common: false|Const id: 14)(Defined). g
+ Right
+  5(Z3 id: 5|is common: false|Const id: 5)(Defined). a
+ =  * 44(Z3 id: 44|is common: false|Const id: 44)(Defined). fresh_44
+
+Index rhs 5[repr:5] has this in UseList 
+ * 20(Z3 id: 20|is common: false|Const id: 44)(Defined). apply
+ Left
+  14(Z3 id: 14|is common: false|Const id: 14)(Defined). g
+ Right
+  5(Z3 id: 5|is common: false|Const id: 5)(Defined). a
+ =  * 44(Z3 id: 44|is common: false|Const id: 44)(Defined). fresh_44
+
+------------------------------------------
+|--------------------------------------------------------
+@propagate. Taking this element  * 45(Z3 id: 7|is common: false|Const id: 45)(Defined). fresh_45
+ =  * 6(Z3 id: 6|is common: false|Const id: 6)(Defined). b
+
+--------------------------------------------------------|
+|------------------------------------------
+@propagate. To merge these two inside uf: 
+ * 45(Z3 id: 7|is common: false|Const id: 45)(Defined). fresh_45
+(45)
+ * 6(Z3 id: 6|is common: false|Const id: 6)(Defined). b
+(6)
+------------------------------------------|
+|-------------------------------------------------
+@propagate. Element not found in the lookup_table
+adding  * 29(Z3 id: 13|is common: false|Const id: 55)(Defined). apply
+ Left
+  54(Z3 id: 54|is common: false|Const id: 54)(Defined). fresh_54
+ Right
+  45(Z3 id: 7|is common: false|Const id: 45)(Defined). fresh_45
+ =  * 55(Z3 id: 13|is common: false|Const id: 55)(Defined). fresh_55
+
+to the lookup_table and moving it to the use_list of 6
+--------------------------------------------------------|
+|------------------------------------------------
+@propagate. To add these to pending_to_propagate
+( * 27(Z3 id: 12|is common: false|Const id: 53)(Defined). apply
+ Left
+  49(Z3 id: 49|is common: false|Const id: 49)(Defined). fresh_49
+ Right
+  45(Z3 id: 7|is common: false|Const id: 45)(Defined). fresh_45
+ =  * 53(Z3 id: 12|is common: false|Const id: 53)(Defined). fresh_53
+, 
+ * 22(Z3 id: 14|is common: false|Const id: 56)(Defined). apply
+ Left
+  49(Z3 id: 49|is common: false|Const id: 49)(Defined). fresh_49
+ Right
+  6(Z3 id: 6|is common: false|Const id: 6)(Defined). b
+ =  * 56(Z3 id: 14|is common: false|Const id: 56)(Defined). fresh_56
+)
+-------------------------------------------------|
+|-------------------------------------------------
+@propagate. Element not found in the lookup_table
+adding  * 21(Z3 id: 21|is common: false|Const id: 49)(Defined). apply
+ Left
+  44(Z3 id: 44|is common: false|Const id: 44)(Defined). fresh_44
+ Right
+  45(Z3 id: 7|is common: false|Const id: 45)(Defined). fresh_45
+ =  * 49(Z3 id: 49|is common: false|Const id: 49)(Defined). fresh_49
+
+to the lookup_table and moving it to the use_list of 6
+--------------------------------------------------------|
+|------------------------------------------------
+@propagate. To add these to pending_to_propagate
+( * 32(Z3 id: 9|is common: false|Const id: 48)(Defined). apply
+ Left
+  7(Z3 id: 7|is common: false|Const id: 7)(Defined). h
+ Right
+  45(Z3 id: 7|is common: false|Const id: 45)(Defined). fresh_45
+ =  * 48(Z3 id: 9|is common: false|Const id: 48)(Defined). fresh_48
+, 
+ * 19(Z3 id: 7|is common: false|Const id: 45)(Defined). apply
+ Left
+  7(Z3 id: 7|is common: false|Const id: 7)(Defined). h
+ Right
+  6(Z3 id: 6|is common: false|Const id: 6)(Defined). b
+ =  * 45(Z3 id: 7|is common: false|Const id: 45)(Defined). fresh_45
+)
+-------------------------------------------------|
+|-------------------------------------------------
+@propagate. Element not found in the lookup_table
+adding  * 40(Z3 id: 40|is common: false|Const id: 46)(Defined). apply
+ Left
+  15(Z3 id: 15|is common: false|Const id: 15)(Defined). =
+ Right
+  45(Z3 id: 7|is common: false|Const id: 45)(Defined). fresh_45
+ =  * 46(Z3 id: 46|is common: false|Const id: 46)(Defined). fresh_46
+
+to the lookup_table and moving it to the use_list of 6
+--------------------------------------------------------|
+|--------------------------------------------------------
+@propagate. Taking this element ( * 32(Z3 id: 9|is common: false|Const id: 48)(Defined). apply
+ Left
+  7(Z3 id: 7|is common: false|Const id: 7)(Defined). h
+ Right
+  45(Z3 id: 7|is common: false|Const id: 45)(Defined). fresh_45
+ =  * 48(Z3 id: 9|is common: false|Const id: 48)(Defined). fresh_48
+,  * 19(Z3 id: 7|is common: false|Const id: 45)(Defined). apply
+ Left
+  7(Z3 id: 7|is common: false|Const id: 7)(Defined). h
+ Right
+  6(Z3 id: 6|is common: false|Const id: 6)(Defined). b
+ =  * 45(Z3 id: 7|is common: false|Const id: 45)(Defined). fresh_45
+)
+--------------------------------------------------------|
+|------------------------------------------
+@propagate. To merge these two inside uf: 
+ * 48(Z3 id: 9|is common: false|Const id: 48)(Defined). fresh_48
+(48)
+ * 45(Z3 id: 7|is common: false|Const id: 45)(Defined). fresh_45
+(6)
+------------------------------------------|
+|-------------------------------------------------
+@propagate. Element not found in the lookup_table
+adding  * 37(Z3 id: 11|is common: false|Const id: 52)(Defined). apply
+ Left
+  51(Z3 id: 51|is common: false|Const id: 51)(Defined). fresh_51
+ Right
+  48(Z3 id: 9|is common: false|Const id: 48)(Defined). fresh_48
+ =  * 52(Z3 id: 11|is common: false|Const id: 52)(Defined). fresh_52
+
+to the lookup_table and moving it to the use_list of 6
+--------------------------------------------------------|
+|------------------------------------------------
+@propagate. To add these to pending_to_propagate
+( * 35(Z3 id: 10|is common: false|Const id: 50)(Defined). apply
+ Left
+  49(Z3 id: 49|is common: false|Const id: 49)(Defined). fresh_49
+ Right
+  48(Z3 id: 9|is common: false|Const id: 48)(Defined). fresh_48
+ =  * 50(Z3 id: 10|is common: false|Const id: 50)(Defined). fresh_50
+, 
+ * 22(Z3 id: 14|is common: false|Const id: 56)(Defined). apply
+ Left
+  49(Z3 id: 49|is common: false|Const id: 49)(Defined). fresh_49
+ Right
+  6(Z3 id: 6|is common: false|Const id: 6)(Defined). b
+ =  * 56(Z3 id: 14|is common: false|Const id: 56)(Defined). fresh_56
+)
+-------------------------------------------------|
+|--------------------------------------------------------
+@propagate. Taking this element ( * 35(Z3 id: 10|is common: false|Const id: 50)(Defined). apply
+ Left
+  49(Z3 id: 49|is common: false|Const id: 49)(Defined). fresh_49
+ Right
+  48(Z3 id: 9|is common: false|Const id: 48)(Defined). fresh_48
+ =  * 50(Z3 id: 10|is common: false|Const id: 50)(Defined). fresh_50
+,  * 22(Z3 id: 14|is common: false|Const id: 56)(Defined). apply
+ Left
+  49(Z3 id: 49|is common: false|Const id: 49)(Defined). fresh_49
+ Right
+  6(Z3 id: 6|is common: false|Const id: 6)(Defined). b
+ =  * 56(Z3 id: 14|is common: false|Const id: 56)(Defined). fresh_56
+)
+--------------------------------------------------------|
+|------------------------------------------
+@propagate. To merge these two inside uf: 
+ * 50(Z3 id: 10|is common: false|Const id: 50)(Defined). fresh_50
+(50)
+ * 56(Z3 id: 14|is common: false|Const id: 56)(Defined). fresh_56
+(56)
+------------------------------------------|
+|------------------------------------------------
+@propagate. To add these to pending_to_propagate
+( * 36(Z3 id: 36|is common: false|Const id: 51)(Defined). apply
+ Left
+  15(Z3 id: 15|is common: false|Const id: 15)(Defined). =
+ Right
+  50(Z3 id: 10|is common: false|Const id: 50)(Defined). fresh_50
+ =  * 51(Z3 id: 51|is common: false|Const id: 51)(Defined). fresh_51
+, 
+ * 23(Z3 id: 23|is common: false|Const id: 57)(Defined). apply
+ Left
+  15(Z3 id: 15|is common: false|Const id: 15)(Defined). =
+ Right
+  56(Z3 id: 14|is common: false|Const id: 56)(Defined). fresh_56
+ =  * 57(Z3 id: 57|is common: false|Const id: 57)(Defined). fresh_57
+)
+-------------------------------------------------|
+|--------------------------------------------------------
+@propagate. Taking this element ( * 36(Z3 id: 36|is common: false|Const id: 51)(Defined). apply
+ Left
+  15(Z3 id: 15|is common: false|Const id: 15)(Defined). =
+ Right
+  50(Z3 id: 10|is common: false|Const id: 50)(Defined). fresh_50
+ =  * 51(Z3 id: 51|is common: false|Const id: 51)(Defined). fresh_51
+,  * 23(Z3 id: 23|is common: false|Const id: 57)(Defined). apply
+ Left
+  15(Z3 id: 15|is common: false|Const id: 15)(Defined). =
+ Right
+  56(Z3 id: 14|is common: false|Const id: 56)(Defined). fresh_56
+ =  * 57(Z3 id: 57|is common: false|Const id: 57)(Defined). fresh_57
+)
+--------------------------------------------------------|
+|------------------------------------------
+@propagate. To merge these two inside uf: 
+ * 51(Z3 id: 51|is common: false|Const id: 51)(Defined). fresh_51
+(51)
+ * 57(Z3 id: 57|is common: false|Const id: 57)(Defined). fresh_57
+(57)
+------------------------------------------|
+|------------------------------------------------
+@propagate. To add these to pending_to_propagate
+( * 37(Z3 id: 11|is common: false|Const id: 52)(Defined). apply
+ Left
+  51(Z3 id: 51|is common: false|Const id: 51)(Defined). fresh_51
+ Right
+  48(Z3 id: 9|is common: false|Const id: 48)(Defined). fresh_48
+ =  * 52(Z3 id: 11|is common: false|Const id: 52)(Defined). fresh_52
+, 
+ * 24(Z3 id: 15|is common: false|Const id: 58)(Defined). apply
+ Left
+  57(Z3 id: 57|is common: false|Const id: 57)(Defined). fresh_57
+ Right
+  6(Z3 id: 6|is common: false|Const id: 6)(Defined). b
+ =  * 58(Z3 id: 15|is common: false|Const id: 58)(Defined). fresh_58
+)
+-------------------------------------------------|
+|--------------------------------------------------------
+@propagate. Taking this element ( * 37(Z3 id: 11|is common: false|Const id: 52)(Defined). apply
+ Left
+  51(Z3 id: 51|is common: false|Const id: 51)(Defined). fresh_51
+ Right
+  48(Z3 id: 9|is common: false|Const id: 48)(Defined). fresh_48
+ =  * 52(Z3 id: 11|is common: false|Const id: 52)(Defined). fresh_52
+,  * 24(Z3 id: 15|is common: false|Const id: 58)(Defined). apply
+ Left
+  57(Z3 id: 57|is common: false|Const id: 57)(Defined). fresh_57
+ Right
+  6(Z3 id: 6|is common: false|Const id: 6)(Defined). b
+ =  * 58(Z3 id: 15|is common: false|Const id: 58)(Defined). fresh_58
+)
+--------------------------------------------------------|
+|------------------------------------------
+@propagate. To merge these two inside uf: 
+ * 52(Z3 id: 11|is common: false|Const id: 52)(Defined). fresh_52
+(52)
+ * 58(Z3 id: 15|is common: false|Const id: 58)(Defined). fresh_58
+(58)
+------------------------------------------|
+|-------------------------------------------------
+@propagate. Element not found in the lookup_table
+adding  * 39(Z3 id: 17|is common: false|Const id: 62)(Defined). apply
+ Left
+  61(Z3 id: 61|is common: false|Const id: 61)(Defined). fresh_61
+ Right
+  52(Z3 id: 11|is common: false|Const id: 52)(Defined). fresh_52
+ =  * 62(Z3 id: 17|is common: false|Const id: 62)(Defined). fresh_62
+
+to the lookup_table and moving it to the use_list of 58
+--------------------------------------------------------|
+|--------------------------------------------------------
+@propagate. Taking this element ( * 27(Z3 id: 12|is common: false|Const id: 53)(Defined). apply
+ Left
+  49(Z3 id: 49|is common: false|Const id: 49)(Defined). fresh_49
+ Right
+  45(Z3 id: 7|is common: false|Const id: 45)(Defined). fresh_45
+ =  * 53(Z3 id: 12|is common: false|Const id: 53)(Defined). fresh_53
+,  * 22(Z3 id: 14|is common: false|Const id: 56)(Defined). apply
+ Left
+  49(Z3 id: 49|is common: false|Const id: 49)(Defined). fresh_49
+ Right
+  6(Z3 id: 6|is common: false|Const id: 6)(Defined). b
+ =  * 56(Z3 id: 14|is common: false|Const id: 56)(Defined). fresh_56
+)
+--------------------------------------------------------|
+|------------------------------------------
+@propagate. To merge these two inside uf: 
+ * 53(Z3 id: 12|is common: false|Const id: 53)(Defined). fresh_53
+(53)
+ * 56(Z3 id: 14|is common: false|Const id: 56)(Defined). fresh_56
+(56)
+------------------------------------------|
+|------------------------------------------------
+@propagate. To add these to pending_to_propagate
+( * 28(Z3 id: 28|is common: false|Const id: 54)(Defined). apply
+ Left
+  15(Z3 id: 15|is common: false|Const id: 15)(Defined). =
+ Right
+  53(Z3 id: 12|is common: false|Const id: 53)(Defined). fresh_53
+ =  * 54(Z3 id: 54|is common: false|Const id: 54)(Defined). fresh_54
+, 
+ * 23(Z3 id: 23|is common: false|Const id: 57)(Defined). apply
+ Left
+  15(Z3 id: 15|is common: false|Const id: 15)(Defined). =
+ Right
+  56(Z3 id: 14|is common: false|Const id: 56)(Defined). fresh_56
+ =  * 57(Z3 id: 57|is common: false|Const id: 57)(Defined). fresh_57
+)
+-------------------------------------------------|
+|--------------------------------------------------------
+@propagate. Taking this element ( * 28(Z3 id: 28|is common: false|Const id: 54)(Defined). apply
+ Left
+  15(Z3 id: 15|is common: false|Const id: 15)(Defined). =
+ Right
+  53(Z3 id: 12|is common: false|Const id: 53)(Defined). fresh_53
+ =  * 54(Z3 id: 54|is common: false|Const id: 54)(Defined). fresh_54
+,  * 23(Z3 id: 23|is common: false|Const id: 57)(Defined). apply
+ Left
+  15(Z3 id: 15|is common: false|Const id: 15)(Defined). =
+ Right
+  56(Z3 id: 14|is common: false|Const id: 56)(Defined). fresh_56
+ =  * 57(Z3 id: 57|is common: false|Const id: 57)(Defined). fresh_57
+)
+--------------------------------------------------------|
+|------------------------------------------
+@propagate. To merge these two inside uf: 
+ * 54(Z3 id: 54|is common: false|Const id: 54)(Defined). fresh_54
+(54)
+ * 57(Z3 id: 57|is common: false|Const id: 57)(Defined). fresh_57
+(57)
+------------------------------------------|
+|------------------------------------------------
+@propagate. To add these to pending_to_propagate
+( * 29(Z3 id: 13|is common: false|Const id: 55)(Defined). apply
+ Left
+  54(Z3 id: 54|is common: false|Const id: 54)(Defined). fresh_54
+ Right
+  45(Z3 id: 7|is common: false|Const id: 45)(Defined). fresh_45
+ =  * 55(Z3 id: 13|is common: false|Const id: 55)(Defined). fresh_55
+, 
+ * 24(Z3 id: 15|is common: false|Const id: 58)(Defined). apply
+ Left
+  57(Z3 id: 57|is common: false|Const id: 57)(Defined). fresh_57
+ Right
+  6(Z3 id: 6|is common: false|Const id: 6)(Defined). b
+ =  * 58(Z3 id: 15|is common: false|Const id: 58)(Defined). fresh_58
+)
+-------------------------------------------------|
+|--------------------------------------------------------
+@propagate. Taking this element ( * 29(Z3 id: 13|is common: false|Const id: 55)(Defined). apply
+ Left
+  54(Z3 id: 54|is common: false|Const id: 54)(Defined). fresh_54
+ Right
+  45(Z3 id: 7|is common: false|Const id: 45)(Defined). fresh_45
+ =  * 55(Z3 id: 13|is common: false|Const id: 55)(Defined). fresh_55
+,  * 24(Z3 id: 15|is common: false|Const id: 58)(Defined). apply
+ Left
+  57(Z3 id: 57|is common: false|Const id: 57)(Defined). fresh_57
+ Right
+  6(Z3 id: 6|is common: false|Const id: 6)(Defined). b
+ =  * 58(Z3 id: 15|is common: false|Const id: 58)(Defined). fresh_58
+)
+--------------------------------------------------------|
+|------------------------------------------
+@propagate. To merge these two inside uf: 
+ * 55(Z3 id: 13|is common: false|Const id: 55)(Defined). fresh_55
+(55)
+ * 58(Z3 id: 15|is common: false|Const id: 58)(Defined). fresh_58
+(58)
+------------------------------------------|
+|-------------------------------------------------
+@propagate. Element not found in the lookup_table
+adding  * 31(Z3 id: 16|is common: false|Const id: 60)(Defined). apply
+ Left
+  59(Z3 id: 59|is common: false|Const id: 59)(Defined). fresh_59
+ Right
+  55(Z3 id: 13|is common: false|Const id: 55)(Defined). fresh_55
+ =  * 60(Z3 id: 16|is common: false|Const id: 60)(Defined). fresh_60
+
+to the lookup_table and moving it to the use_list of 58
+--------------------------------------------------------|
+|--------------------------------------------------------
+@propagate. Taking this element  * 50(Z3 id: 10|is common: false|Const id: 50)(Defined). fresh_50
+ =  * 48(Z3 id: 9|is common: false|Const id: 48)(Defined). fresh_48
+
+--------------------------------------------------------|
+|------------------------------------------
+@propagate. To merge these two inside uf: 
+ * 50(Z3 id: 10|is common: false|Const id: 50)(Defined). fresh_50
+(56)
+ * 48(Z3 id: 9|is common: false|Const id: 48)(Defined). fresh_48
+(6)
+------------------------------------------|
+|------------------------------------------------
+@propagate. To add these to pending_to_propagate
+( * 23(Z3 id: 23|is common: false|Const id: 57)(Defined). apply
+ Left
+  15(Z3 id: 15|is common: false|Const id: 15)(Defined). =
+ Right
+  56(Z3 id: 14|is common: false|Const id: 56)(Defined). fresh_56
+ =  * 57(Z3 id: 57|is common: false|Const id: 57)(Defined). fresh_57
+, 
+ * 40(Z3 id: 40|is common: false|Const id: 46)(Defined). apply
+ Left
+  15(Z3 id: 15|is common: false|Const id: 15)(Defined). =
+ Right
+  45(Z3 id: 7|is common: false|Const id: 45)(Defined). fresh_45
+ =  * 46(Z3 id: 46|is common: false|Const id: 46)(Defined). fresh_46
+)
+-------------------------------------------------|
+|--------------------------------------------------------
+@propagate. Taking this element ( * 23(Z3 id: 23|is common: false|Const id: 57)(Defined). apply
+ Left
+  15(Z3 id: 15|is common: false|Const id: 15)(Defined). =
+ Right
+  56(Z3 id: 14|is common: false|Const id: 56)(Defined). fresh_56
+ =  * 57(Z3 id: 57|is common: false|Const id: 57)(Defined). fresh_57
+,  * 40(Z3 id: 40|is common: false|Const id: 46)(Defined). apply
+ Left
+  15(Z3 id: 15|is common: false|Const id: 15)(Defined). =
+ Right
+  45(Z3 id: 7|is common: false|Const id: 45)(Defined). fresh_45
+ =  * 46(Z3 id: 46|is common: false|Const id: 46)(Defined). fresh_46
+)
+--------------------------------------------------------|
+|------------------------------------------
+@propagate. To merge these two inside uf: 
+ * 57(Z3 id: 57|is common: false|Const id: 57)(Defined). fresh_57
+(57)
+ * 46(Z3 id: 46|is common: false|Const id: 46)(Defined). fresh_46
+(46)
+------------------------------------------|
+|------------------------------------------------
+@propagate. To add these to pending_to_propagate
+( * 41(Z3 id: 8|is common: false|Const id: 47)(Defined). apply
+ Left
+  46(Z3 id: 46|is common: false|Const id: 46)(Defined). fresh_46
+ Right
+  6(Z3 id: 6|is common: false|Const id: 6)(Defined). b
+ =  * 47(Z3 id: 8|is common: false|Const id: 47)(Defined). fresh_47
+, 
+ * 24(Z3 id: 15|is common: false|Const id: 58)(Defined). apply
+ Left
+  57(Z3 id: 57|is common: false|Const id: 57)(Defined). fresh_57
+ Right
+  6(Z3 id: 6|is common: false|Const id: 6)(Defined). b
+ =  * 58(Z3 id: 15|is common: false|Const id: 58)(Defined). fresh_58
+)
+-------------------------------------------------|
+|--------------------------------------------------------
+@propagate. Taking this element ( * 41(Z3 id: 8|is common: false|Const id: 47)(Defined). apply
+ Left
+  46(Z3 id: 46|is common: false|Const id: 46)(Defined). fresh_46
+ Right
+  6(Z3 id: 6|is common: false|Const id: 6)(Defined). b
+ =  * 47(Z3 id: 8|is common: false|Const id: 47)(Defined). fresh_47
+,  * 24(Z3 id: 15|is common: false|Const id: 58)(Defined). apply
+ Left
+  57(Z3 id: 57|is common: false|Const id: 57)(Defined). fresh_57
+ Right
+  6(Z3 id: 6|is common: false|Const id: 6)(Defined). b
+ =  * 58(Z3 id: 15|is common: false|Const id: 58)(Defined). fresh_58
+)
+--------------------------------------------------------|
+|------------------------------------------
+@propagate. To merge these two inside uf: 
+ * 47(Z3 id: 8|is common: false|Const id: 47)(Defined). fresh_47
+(47)
+ * 58(Z3 id: 15|is common: false|Const id: 58)(Defined). fresh_58
+(58)
+------------------------------------------|
+|-------------------------------------------------
+@propagate. Element not found in the lookup_table
+adding  * 43(Z3 id: 18|is common: false|Const id: 64)(Defined). apply
+ Left
+  63(Z3 id: 63|is common: false|Const id: 63)(Defined). fresh_63
+ Right
+  47(Z3 id: 8|is common: false|Const id: 47)(Defined). fresh_47
+ =  * 64(Z3 id: 18|is common: false|Const id: 64)(Defined). fresh_64
+
+to the lookup_table and moving it to the use_list of 58
+--------------------------------------------------------|
+|--------------------------------------------------------
+@propagate. Taking this element  * 53(Z3 id: 12|is common: false|Const id: 53)(Defined). fresh_53
+ =  * 45(Z3 id: 7|is common: false|Const id: 45)(Defined). fresh_45
+
+--------------------------------------------------------|
+|------------------------------------------
+@propagate. To merge these two inside uf: 
+ * 53(Z3 id: 12|is common: false|Const id: 53)(Defined). fresh_53
+(6)
+ * 45(Z3 id: 7|is common: false|Const id: 45)(Defined). fresh_45
+(6)
+------------------------------------------|
+|--------------------------------------------------------
+@propagate. Taking this element  * 56(Z3 id: 14|is common: false|Const id: 56)(Defined). fresh_56
+ =  * 6(Z3 id: 6|is common: false|Const id: 6)(Defined). b
+
+--------------------------------------------------------|
+|------------------------------------------
+@propagate. To merge these two inside uf: 
+ * 56(Z3 id: 14|is common: false|Const id: 56)(Defined). fresh_56
+(6)
+ * 6(Z3 id: 6|is common: false|Const id: 6)(Defined). b
+(6)
+------------------------------------------|
+Explain a, (= (h b) b)
+a and (= (h b) b) belong to different equivalent classes
+(Same)ID: 0 Forest: 0 Representative 0
+(Same)ID: 1 Forest: 1 Representative 1
+(Same)ID: 2 Forest: 2 Representative 2
+(Same)ID: 3 Forest: 3 Representative 3
+(Same)ID: 4 Forest: 4 Representative 4
+(Same)ID: 5 Forest: 5 Representative 5
+(Same)ID: 6 Forest: 6 Representative 6
+(Same)ID: 7 Forest: 7 Representative 7
+(Same)ID: 8 Forest: 8 Representative 8
+(Same)ID: 9 Forest: 9 Representative 9
+(Same)ID: 10 Forest: 10 Representative 10
+(Same)ID: 11 Forest: 11 Representative 11
+(Same)ID: 12 Forest: 12 Representative 12
+(Same)ID: 13 Forest: 13 Representative 13
+(Same)ID: 14 Forest: 14 Representative 14
+(Same)ID: 15 Forest: 15 Representative 15
+(Same)ID: 16 Forest: 16 Representative 16
+(Same)ID: 17 Forest: 17 Representative 17
+(Same)ID: 18 Forest: 18 Representative 18
+(Same)ID: 19 Forest: 19 Representative 19
+(Same)ID: 20 Forest: 20 Representative 20
+(Same)ID: 21 Forest: 21 Representative 21
+(Same)ID: 22 Forest: 22 Representative 22
+(Same)ID: 23 Forest: 23 Representative 23
+(Same)ID: 24 Forest: 24 Representative 24
+(Same)ID: 25 Forest: 25 Representative 25
+(Same)ID: 26 Forest: 26 Representative 26
+(Same)ID: 27 Forest: 27 Representative 27
+(Same)ID: 28 Forest: 28 Representative 28
+(Same)ID: 29 Forest: 29 Representative 29
+(Same)ID: 30 Forest: 30 Representative 30
+(Same)ID: 31 Forest: 31 Representative 31
+(Same)ID: 32 Forest: 32 Representative 32
+(Same)ID: 33 Forest: 33 Representative 33
+(Same)ID: 34 Forest: 34 Representative 34
+(Same)ID: 35 Forest: 35 Representative 35
+(Same)ID: 36 Forest: 36 Representative 36
+(Same)ID: 37 Forest: 37 Representative 37
+(Same)ID: 38 Forest: 38 Representative 38
+(Same)ID: 39 Forest: 39 Representative 39
+(Same)ID: 40 Forest: 40 Representative 40
+(Same)ID: 41 Forest: 41 Representative 41
+(Same)ID: 42 Forest: 42 Representative 42
+(Same)ID: 43 Forest: 43 Representative 43
+(Same)ID: 44 Forest: 44 Representative 44
+(Different)ID: 45 Forest: 6 Representative 6
+(Different)ID: 46 Forest: 57 Representative 57
+(Different)ID: 47 Forest: 58 Representative 58
+(Different)ID: 48 Forest: 45 Representative 6
+(Same)ID: 49 Forest: 49 Representative 49
+(Different)ID: 50 Forest: 48 Representative 6
+(Different)ID: 51 Forest: 57 Representative 57
+(Different)ID: 52 Forest: 58 Representative 58
+(Different)ID: 53 Forest: 56 Representative 6
+(Different)ID: 54 Forest: 57 Representative 57
+(Different)ID: 55 Forest: 58 Representative 58
+(Different)ID: 56 Forest: 50 Representative 6
+(Same)ID: 57 Forest: 57 Representative 57
+(Same)ID: 58 Forest: 58 Representative 58
+(Same)ID: 59 Forest: 59 Representative 59
+(Same)ID: 60 Forest: 60 Representative 60
+(Same)ID: 61 Forest: 61 Representative 61
+(Same)ID: 62 Forest: 62 Representative 62
+(Same)ID: 63 Forest: 63 Representative 63
+(Same)ID: 64 Forest: 64 Representative 64
+Size 65
+Num changes: 11
+ * 64(Z3 id: 18|is common: false|Const id: 64)(Defined). fresh_64
+
+ * 62(Z3 id: 17|is common: false|Const id: 62)(Defined). fresh_62
+
+ * 60(Z3 id: 16|is common: false|Const id: 60)(Defined). fresh_60
+
+ * 59(Z3 id: 59|is common: false|Const id: 59)(Defined). fresh_59
+
+ * 57(Z3 id: 57|is common: false|Const id: 57)(Defined). fresh_57
+
+ * 55(Z3 id: 13|is common: false|Const id: 55)(Defined). fresh_55
+
+ * 54(Z3 id: 54|is common: false|Const id: 54)(Defined). fresh_54
+
+ * 58(Z3 id: 15|is common: false|Const id: 58)(Defined). fresh_58
+
+ * 30(Z3 id: 30|is common: false|Const id: 59)(Defined). apply
+ Left
+  16(Z3 id: 16|is common: false|Const id: 16)(Defined). and
+ Right
+  58(Z3 id: 15|is common: false|Const id: 58)(Defined). fresh_58
+
+ * 56(Z3 id: 14|is common: false|Const id: 56)(Defined). fresh_56
+
+ * 49(Z3 id: 49|is common: false|Const id: 49)(Defined). fresh_49
+
+ * 28(Z3 id: 28|is common: false|Const id: 54)(Defined). apply
+ Left
+  15(Z3 id: 15|is common: false|Const id: 15)(Defined). =
+ Right
+  53(Z3 id: 12|is common: false|Const id: 53)(Defined). fresh_53
+
+ * 22(Z3 id: 14|is common: false|Const id: 56)(Defined). apply
+ Left
+  49(Z3 id: 49|is common: false|Const id: 49)(Defined). fresh_49
+ Right
+  6(Z3 id: 6|is common: false|Const id: 6)(Defined). b
+
+ * 38(Z3 id: 38|is common: false|Const id: 61)(Defined). apply
+ Left
+  16(Z3 id: 16|is common: false|Const id: 16)(Defined). and
+ Right
+  60(Z3 id: 16|is common: false|Const id: 60)(Defined). fresh_60
+
+ * 61(Z3 id: 61|is common: false|Const id: 61)(Defined). fresh_61
+
+ * 24(Z3 id: 15|is common: false|Const id: 58)(Defined). apply
+ Left
+  57(Z3 id: 57|is common: false|Const id: 57)(Defined). fresh_57
+ Right
+  6(Z3 id: 6|is common: false|Const id: 6)(Defined). b
+
+ * 51(Z3 id: 51|is common: false|Const id: 51)(Defined). fresh_51
+
+ * 29(Z3 id: 13|is common: false|Const id: 55)(Defined). apply
+ Left
+  54(Z3 id: 54|is common: false|Const id: 54)(Defined). fresh_54
+ Right
+  45(Z3 id: 7|is common: false|Const id: 45)(Defined). fresh_45
+
+ * 35(Z3 id: 10|is common: false|Const id: 50)(Defined). apply
+ Left
+  49(Z3 id: 49|is common: false|Const id: 49)(Defined). fresh_49
+ Right
+  48(Z3 id: 9|is common: false|Const id: 48)(Defined). fresh_48
+
+ * 52(Z3 id: 11|is common: false|Const id: 52)(Defined). fresh_52
+
+ * 7(Z3 id: 7|is common: false|Const id: 7)(Defined). h
+
+ * 6(Z3 id: 6|is common: false|Const id: 6)(Defined). b
+
+ * 41(Z3 id: 8|is common: false|Const id: 47)(Defined). apply
+ Left
+  46(Z3 id: 46|is common: false|Const id: 46)(Defined). fresh_46
+ Right
+  6(Z3 id: 6|is common: false|Const id: 6)(Defined). b
+
+ * 5(Z3 id: 5|is common: false|Const id: 5)(Defined). a
+
+ * 45(Z3 id: 7|is common: false|Const id: 45)(Defined). fresh_45
+
+ * 23(Z3 id: 23|is common: false|Const id: 57)(Defined). apply
+ Left
+  15(Z3 id: 15|is common: false|Const id: 15)(Defined). =
+ Right
+  56(Z3 id: 14|is common: false|Const id: 56)(Defined). fresh_56
+
+ * 14(Z3 id: 14|is common: false|Const id: 14)(Defined). g
+
+ * 20(Z3 id: 20|is common: false|Const id: 44)(Defined). apply
+ Left
+  14(Z3 id: 14|is common: false|Const id: 14)(Defined). g
+ Right
+  5(Z3 id: 5|is common: false|Const id: 5)(Defined). a
+
+ * 63(Z3 id: 63|is common: false|Const id: 63)(Defined). fresh_63
+
+ * 15(Z3 id: 15|is common: false|Const id: 15)(Defined). =
+
+ * 50(Z3 id: 10|is common: false|Const id: 50)(Defined). fresh_50
+
+ * 16(Z3 id: 16|is common: false|Const id: 16)(Defined). and
+
+ * 32(Z3 id: 9|is common: false|Const id: 48)(Defined). apply
+ Left
+  7(Z3 id: 7|is common: false|Const id: 7)(Defined). h
+ Right
+  45(Z3 id: 7|is common: false|Const id: 45)(Defined). fresh_45
+
+ * 36(Z3 id: 36|is common: false|Const id: 51)(Defined). apply
+ Left
+  15(Z3 id: 15|is common: false|Const id: 15)(Defined). =
+ Right
+  50(Z3 id: 10|is common: false|Const id: 50)(Defined). fresh_50
+
+ * 37(Z3 id: 11|is common: false|Const id: 52)(Defined). apply
+ Left
+  51(Z3 id: 51|is common: false|Const id: 51)(Defined). fresh_51
+ Right
+  48(Z3 id: 9|is common: false|Const id: 48)(Defined). fresh_48
+
+ * 47(Z3 id: 8|is common: false|Const id: 47)(Defined). fresh_47
+
+ * 19(Z3 id: 7|is common: false|Const id: 45)(Defined). apply
+ Left
+  7(Z3 id: 7|is common: false|Const id: 7)(Defined). h
+ Right
+  6(Z3 id: 6|is common: false|Const id: 6)(Defined). b
+
+ * 21(Z3 id: 21|is common: false|Const id: 49)(Defined). apply
+ Left
+  44(Z3 id: 44|is common: false|Const id: 44)(Defined). fresh_44
+ Right
+  45(Z3 id: 7|is common: false|Const id: 45)(Defined). fresh_45
+
+ * 39(Z3 id: 17|is common: false|Const id: 62)(Defined). apply
+ Left
+  61(Z3 id: 61|is common: false|Const id: 61)(Defined). fresh_61
+ Right
+  52(Z3 id: 11|is common: false|Const id: 52)(Defined). fresh_52
+
+ * 40(Z3 id: 40|is common: false|Const id: 46)(Defined). apply
+ Left
+  15(Z3 id: 15|is common: false|Const id: 15)(Defined). =
+ Right
+  45(Z3 id: 7|is common: false|Const id: 45)(Defined). fresh_45
+
+ * 46(Z3 id: 46|is common: false|Const id: 46)(Defined). fresh_46
+
+ * 43(Z3 id: 18|is common: false|Const id: 64)(Defined). apply
+ Left
+  63(Z3 id: 63|is common: false|Const id: 63)(Defined). fresh_63
+ Right
+  47(Z3 id: 8|is common: false|Const id: 47)(Defined). fresh_47
+
+ * 31(Z3 id: 16|is common: false|Const id: 60)(Defined). apply
+ Left
+  59(Z3 id: 59|is common: false|Const id: 59)(Defined). fresh_59
+ Right
+  55(Z3 id: 13|is common: false|Const id: 55)(Defined). fresh_55
+
+ * 44(Z3 id: 44|is common: false|Const id: 44)(Defined). fresh_44
+
+ * 53(Z3 id: 12|is common: false|Const id: 53)(Defined). fresh_53
+
+ * 27(Z3 id: 12|is common: false|Const id: 53)(Defined). apply
+ Left
+  49(Z3 id: 49|is common: false|Const id: 49)(Defined). fresh_49
+ Right
+  45(Z3 id: 7|is common: false|Const id: 45)(Defined). fresh_45
+
+ * 42(Z3 id: 42|is common: false|Const id: 63)(Defined). apply
+ Left
+  16(Z3 id: 16|is common: false|Const id: 16)(Defined). and
+ Right
+  62(Z3 id: 17|is common: false|Const id: 62)(Defined). fresh_62
+
+ * 48(Z3 id: 9|is common: false|Const id: 48)(Defined). fresh_48
+
+Size of FactoryCurryNodes: 48
+

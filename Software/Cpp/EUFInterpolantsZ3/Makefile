@@ -42,7 +42,7 @@ run: euf_interpolator
 valgrind_run: euf_interpolator
 	valgrind --log-file="euf_interpolator.txt" ./euf_interpolator
 
-check_notes:
+notes:
 	grep -nr "// [A-Z][A-Za-z0-9]*: "
 
 .PHONY: clean

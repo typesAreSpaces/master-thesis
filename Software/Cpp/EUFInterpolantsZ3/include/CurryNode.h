@@ -127,8 +127,8 @@ typedef std::vector<CurryNode*> VectorCurryNode;
 typedef std::map<const CurryNode *, std::list<PredNode> > CurryPreds;
 
 typedef std::list<PendingElement> PendingElements;
-typedef std::list<const PendingElement *> PendingElementsPointers;
-typedef std::list<const z3::expr *> Z3ElementsPointers;
+typedef std::list<const PendingElement *> PendingPointers;
+typedef std::list<EquationZ3Ids> Z3EquationPointers;
 
 typedef std::list<EquationZ3Ids>  IdsToMerge;
 
