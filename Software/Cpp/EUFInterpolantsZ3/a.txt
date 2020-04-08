@@ -1,0 +1,179 @@
+./euf_interpolator
+5 a 0 5
+6 b 0 6
+7 (= a b) 0 7
+8 (h b) 0 8
+9 (= (h b) b) 0 9
+10 (g b (h b) (h b)) 0 10
+11 (g a (h b) b) 0 11
+12 (= (g a (h b) b) (g b (h b) (h b))) 0 12
+13 (and (= (g a (h b) b) (g b (h b) (h b))) (= (h b) b)) 0 13
+14 (and (= (g a (h b) b) (g b (h b) (h b))) (= (h b) b) (= a b)) 0 14
+|--------------------------------------------------------
+@propagate. Taking this element  * 5(Z3 id: 5|is common: false|Const id: 5)(Defined). a
+ =  * 6(Z3 id: 6|is common: false|Const id: 6)(Defined). b
+
+--------------------------------------------------------|
+|------------------------------------------
+@propagate. To merge these two inside uf: 
+ * 5(Z3 id: 5|is common: false|Const id: 5)(Defined). a
+(5)
+ * 6(Z3 id: 6|is common: false|Const id: 6)(Defined). b
+(6)
+------------------------------------------|
+|--------------------------------------------------------
+@propagate. Taking this element ( * 16(Z3 id: 16|is common: false|Const id: 35)(Defined). apply
+ Left
+  11(Z3 id: 11|is common: false|Const id: 11)(Defined). g
+ Right
+  5(Z3 id: 5|is common: false|Const id: 5)(Defined). a
+ =  * 35(Z3 id: 35|is common: false|Const id: 35)(Defined). fresh_35
+,  * 19(Z3 id: 19|is common: false|Const id: 34)(Defined). apply
+ Left
+  11(Z3 id: 11|is common: false|Const id: 11)(Defined). g
+ Right
+  6(Z3 id: 6|is common: false|Const id: 6)(Defined). b
+ =  * 34(Z3 id: 34|is common: false|Const id: 34)(Defined). fresh_34
+)
+--------------------------------------------------------|
+|------------------------------------------
+@propagate. To merge these two inside uf: 
+ * 35(Z3 id: 35|is common: false|Const id: 35)(Defined). fresh_35
+(35)
+ * 34(Z3 id: 34|is common: false|Const id: 34)(Defined). fresh_34
+(34)
+------------------------------------------|
+|--------------------------------------------------------
+@propagate. Taking this element ( * 17(Z3 id: 17|is common: false|Const id: 41)(Defined). apply
+ Left
+  35(Z3 id: 35|is common: false|Const id: 35)(Defined). fresh_35
+ Right
+  36(Z3 id: 8|is common: false|Const id: 36)(Defined). fresh_36
+ =  * 41(Z3 id: 41|is common: false|Const id: 41)(Defined). fresh_41
+,  * 20(Z3 id: 20|is common: false|Const id: 39)(Defined). apply
+ Left
+  34(Z3 id: 34|is common: false|Const id: 34)(Defined). fresh_34
+ Right
+  36(Z3 id: 8|is common: false|Const id: 36)(Defined). fresh_36
+ =  * 39(Z3 id: 39|is common: false|Const id: 39)(Defined). fresh_39
+)
+--------------------------------------------------------|
+|------------------------------------------
+@propagate. To merge these two inside uf: 
+ * 41(Z3 id: 41|is common: false|Const id: 41)(Defined). fresh_41
+(41)
+ * 39(Z3 id: 39|is common: false|Const id: 39)(Defined). fresh_39
+(39)
+------------------------------------------|
+|--------------------------------------------------------
+@propagate. Taking this element  * 36(Z3 id: 8|is common: false|Const id: 36)(Defined). fresh_36
+ =  * 6(Z3 id: 6|is common: false|Const id: 6)(Defined). b
+
+--------------------------------------------------------|
+|------------------------------------------
+@propagate. To merge these two inside uf: 
+ * 36(Z3 id: 8|is common: false|Const id: 36)(Defined). fresh_36
+(36)
+ * 6(Z3 id: 6|is common: false|Const id: 6)(Defined). b
+(6)
+------------------------------------------|
+|--------------------------------------------------------
+@propagate. Taking this element ( * 24(Z3 id: 24|is common: false|Const id: 37)(Defined). apply
+ Left
+  12(Z3 id: 12|is common: false|Const id: 12)(Defined). =
+ Right
+  36(Z3 id: 8|is common: false|Const id: 36)(Defined). fresh_36
+ =  * 37(Z3 id: 37|is common: false|Const id: 37)(Defined). fresh_37
+,  * 28(Z3 id: 28|is common: false|Const id: 32)(Defined). apply
+ Left
+  12(Z3 id: 12|is common: false|Const id: 12)(Defined). =
+ Right
+  5(Z3 id: 5|is common: false|Const id: 5)(Defined). a
+ =  * 32(Z3 id: 32|is common: false|Const id: 32)(Defined). fresh_32
+)
+--------------------------------------------------------|
+|------------------------------------------
+@propagate. To merge these two inside uf: 
+ * 37(Z3 id: 37|is common: false|Const id: 37)(Defined). fresh_37
+(37)
+ * 32(Z3 id: 32|is common: false|Const id: 32)(Defined). fresh_32
+(32)
+------------------------------------------|
+|--------------------------------------------------------
+@propagate. Taking this element ( * 25(Z3 id: 9|is common: false|Const id: 38)(Defined). apply
+ Left
+  37(Z3 id: 37|is common: false|Const id: 37)(Defined). fresh_37
+ Right
+  6(Z3 id: 6|is common: false|Const id: 6)(Defined). b
+ =  * 38(Z3 id: 9|is common: false|Const id: 38)(Defined). fresh_38
+,  * 29(Z3 id: 7|is common: false|Const id: 33)(Defined). apply
+ Left
+  32(Z3 id: 32|is common: false|Const id: 32)(Defined). fresh_32
+ Right
+  6(Z3 id: 6|is common: false|Const id: 6)(Defined). b
+ =  * 33(Z3 id: 7|is common: false|Const id: 33)(Defined). fresh_33
+)
+--------------------------------------------------------|
+|------------------------------------------
+@propagate. To merge these two inside uf: 
+ * 38(Z3 id: 9|is common: false|Const id: 38)(Defined). fresh_38
+(38)
+ * 33(Z3 id: 7|is common: false|Const id: 33)(Defined). fresh_33
+(33)
+------------------------------------------|
+|--------------------------------------------------------
+@propagate. Taking this element ( * 20(Z3 id: 20|is common: false|Const id: 39)(Defined). apply
+ Left
+  34(Z3 id: 34|is common: false|Const id: 34)(Defined). fresh_34
+ Right
+  36(Z3 id: 8|is common: false|Const id: 36)(Defined). fresh_36
+ =  * 39(Z3 id: 39|is common: false|Const id: 39)(Defined). fresh_39
+,  * 17(Z3 id: 17|is common: false|Const id: 41)(Defined). apply
+ Left
+  35(Z3 id: 35|is common: false|Const id: 35)(Defined). fresh_35
+ Right
+  36(Z3 id: 8|is common: false|Const id: 36)(Defined). fresh_36
+ =  * 41(Z3 id: 41|is common: false|Const id: 41)(Defined). fresh_41
+)
+--------------------------------------------------------|
+|------------------------------------------
+@propagate. To merge these two inside uf: 
+ * 39(Z3 id: 39|is common: false|Const id: 39)(Defined). fresh_39
+(39)
+ * 41(Z3 id: 41|is common: false|Const id: 41)(Defined). fresh_41
+(39)
+------------------------------------------|
+|--------------------------------------------------------
+@propagate. Taking this element ( * 21(Z3 id: 10|is common: false|Const id: 40)(Defined). apply
+ Left
+  39(Z3 id: 39|is common: false|Const id: 39)(Defined). fresh_39
+ Right
+  36(Z3 id: 8|is common: false|Const id: 36)(Defined). fresh_36
+ =  * 40(Z3 id: 10|is common: false|Const id: 40)(Defined). fresh_40
+,  * 18(Z3 id: 11|is common: false|Const id: 42)(Defined). apply
+ Left
+  41(Z3 id: 41|is common: false|Const id: 41)(Defined). fresh_41
+ Right
+  6(Z3 id: 6|is common: false|Const id: 6)(Defined). b
+ =  * 42(Z3 id: 11|is common: false|Const id: 42)(Defined). fresh_42
+)
+--------------------------------------------------------|
+|------------------------------------------
+@propagate. To merge these two inside uf: 
+ * 40(Z3 id: 10|is common: false|Const id: 40)(Defined). fresh_40
+(40)
+ * 42(Z3 id: 11|is common: false|Const id: 42)(Defined). fresh_42
+(42)
+------------------------------------------|
+|--------------------------------------------------------
+@propagate. Taking this element  * 42(Z3 id: 11|is common: false|Const id: 42)(Defined). fresh_42
+ =  * 40(Z3 id: 10|is common: false|Const id: 40)(Defined). fresh_40
+
+--------------------------------------------------------|
+|------------------------------------------
+@propagate. To merge these two inside uf: 
+ * 42(Z3 id: 11|is common: false|Const id: 42)(Defined). fresh_42
+(42)
+ * 40(Z3 id: 10|is common: false|Const id: 40)(Defined). fresh_40
+(42)
+------------------------------------------|

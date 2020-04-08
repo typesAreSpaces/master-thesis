@@ -1,12 +1,12 @@
 #include "EUFInterpolant.h"
 #define DEBUG_DESTRUCTOR_EUF false
 #define DEBUG_EUFINTERPOLANT false
-#define DEBUG_CURRYFICATION false
+#define DEBUG_CURRYFICATION  false
 
-EUFInterpolant::EUFInterpolant(z3::expr const & part_a) :
-  min_id(part_a.id()), original_num_terms(part_a.id() + 1),
-  ctx(part_a.ctx()), subterms(ctx), contradiction(ctx.bool_val(false)), disequalities(ctx),
-  fsym_positions(), uf(part_a.id() + 1), pred_list(), horn_clauses(ctx, min_id, subterms),
+EUFInterpolant::EUFInterpolant(z3::expr const & input_formula) :
+  min_id(input_formula.id()), original_num_terms(input_formula.id() + 1),
+  ctx(input_formula.ctx()), subterms(ctx), contradiction(ctx.bool_val(false)), disequalities(ctx),
+  fsym_positions(), uf(input_formula.id() + 1), pred_list(), horn_clauses(ctx, min_id, subterms),
   curry_decl(), factory_curry_nodes(original_num_terms, curry_decl)
 {
 
@@ -17,26 +17,26 @@ EUFInterpolant::EUFInterpolant(z3::expr const & part_a) :
   // The following defines min_id, visited,
   // subterms, disequalities, fsym_positions,
   // and curry_decl
-  init(part_a, min_id, visited);
+  init(input_formula, min_id, visited);
 
   for(unsigned i = min_id; i < subterms.size(); i++)
-    std::cout << i << " " << subterms[i] << std::endl;  
+    std::cout << i << " " << subterms[i] << " " << subterms[i].is_common() << " " << subterms[i].id() << std::endl;  
 
   CongruenceClosureExplain cc(min_id, subterms, pred_list, uf, factory_curry_nodes);
 
   // Testing
-  cc.giveExplanation(std::cout, subterms[5], subterms[11]);
-  cc.giveExplanation(std::cout, subterms[5], subterms[6]);
-  cc.giveExplanation(std::cout, subterms[6], subterms[5]);
+  //cc.giveExplanation(std::cout, subterms[5], subterms[11]);
+  //cc.giveExplanation(std::cout, subterms[5], subterms[6]);
+  //cc.giveExplanation(std::cout, subterms[6], subterms[5]);
 
   auto explanation = cc.explain(subterms[6], subterms[5]);
   if(explanation.size() != 0){
     unsigned num = 1;
     for(auto label : explanation){
       assert(label->tag == EQ);
-      std::cout << "Label " << num++ << ":" << std::endl;
-      std::cout << subterms[label->eq_cn.lhs.getZ3Id()] << std::endl;
-      std::cout << subterms[label->eq_cn.lhs.getZ3Id()] << std::endl;
+      //std::cout << "Prototype Label " << num++ << ":" << std::endl;
+      //std::cout << subterms[label->eq_cn.lhs.getZ3Id()] << std::endl;
+      //std::cout << subterms[label->eq_cn.rhs.getZ3Id()] << std::endl;
     }
   }
 
@@ -45,7 +45,7 @@ EUFInterpolant::EUFInterpolant(z3::expr const & part_a) :
   // //                       -----------                    ----
   // // The following defines |pred_list|. After this point, |uf| is fully defined.
   // //                       -----------                    ----
-  // processEqs(part_a);
+  // processEqs(input_formula);
   // // ----------------------------------------------------
   // // The following sets up a
   // // --------------------
@@ -100,7 +100,7 @@ EUFInterpolant::EUFInterpolant(z3::expr const & part_a) :
   // buildInterpolant(replacements);
 
   return;
-  // throw "Problem @ EUFInterpolant::EUFInterpolant. The z3::expr const & part_a was unsatisfiable.";
+  // throw "Problem @ EUFInterpolant::EUFInterpolant. The z3::expr const & input_formula was unsatisfiable.";
 }
 
 EUFInterpolant::~EUFInterpolant(){

@@ -5,7 +5,6 @@ ifeq ($(UNAME), Linux)
 	Z3DIR = /nfs/student/j/jose.castellanosjoo/Documents/GitProjects/z3__
 	endif
 	ifeq ($(WHO), jose)
-# Z3DIR = /home/jose/Documents/Github\ Projects/z3__
 	Z3DIR = /home/jose/Documents/GithubProjects/z3__
 	endif
 Z3EXT = so
@@ -32,7 +31,7 @@ TEST_OUTPUT = $(patsubst $(TEST_DIR)/%.smt2, $(TEST_DIR)/%.txt, $(TEST_FILES))
 all: euf_interpolator
 
 $(ODIR)/%.o: $(SDIR)/%.cpp $(DEPS)
-	$(CC) -g -c -o $@  $(FLAGS) $<
+	$(CC) -g -c -o $@ $(FLAGS) $<
 
 euf_interpolator: $(OBJS) $(Z3DIR)/build/libz3.$(Z3EXT)
 	$(CC) -g -o $@ $^ -lpthread
@@ -40,13 +39,15 @@ euf_interpolator: $(OBJS) $(Z3DIR)/build/libz3.$(Z3EXT)
 run: euf_interpolator
 	./euf_interpolator
 
-mem_run: euf_interpolator
-	valgrind ./euf_interpolator
+valgrind_run: euf_interpolator
+	valgrind --log-file="euf_interpolator.txt" ./euf_interpolator
+
+check_notes:
+	grep -nr "// [A-Z][A-Za-z0-9]*: "
 
 .PHONY: clean
 clean:
 	rm -rf $(ODIR)/* euf_interpolator
-
 
 test: $(TEST_FILES) euf_interpolator
 	for test in $(TEST_FILES); do \

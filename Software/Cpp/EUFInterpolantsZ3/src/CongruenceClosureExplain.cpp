@@ -1,53 +1,54 @@
 #include "CongruenceClosureExplain.h"
 
-#define DEBUG_SANITY_CHECK 1
-#define DEBUG_MERGE        0
-#define DEBUG_PROPAGATE    0
+#define DEBUG_SANITY_CHECK  1
+#define DEBUG_MERGE         0
+#define DEBUG_PROPAGATE     1
+#define DEBUG_PROPAGATE_AUX 0
 
 CongruenceClosureExplain::CongruenceClosureExplain(const unsigned & min_id, const z3::expr_vector & subterms,
     PredList & pred_list, UnionFindExplain & uf,
     FactoryCurryNodes & factory_curry_nodes) :
   CongruenceClosure(min_id, subterms, pred_list, uf), 
-  num_terms(subterms.size()), factory_curry_nodes(factory_curry_nodes), ufe(uf),
+  num_terms(subterms.size()), subterms(subterms), factory_curry_nodes(factory_curry_nodes), ufe(uf),
   pending_elements(), equations_to_merge(), pending_to_propagate(),
-  lookup_table(), use_list(){
+  lookup_table(), use_list() 
+{
 
-    auto ids_to_merge = factory_curry_nodes.curryfication(subterms[num_terms - 1]);
+  auto ids_to_merge = factory_curry_nodes.curryfication(subterms[num_terms - 1]);
 
-    // NOTE: The new constants introduced by flattening are in extra_nodes
-    // NOTE2: flattening also fully defines const_id and z3_id for each curry node.
-    factory_curry_nodes.flattening(min_id, pending_elements, equations_to_merge);
+  // NOTE: The new constants introduced by flattening are in extra_nodes
+  // NOTE2: flattening also fully defines const_id and z3_id for each curry node.
+  factory_curry_nodes.flattening(min_id, pending_elements, equations_to_merge, subterms);
 
-    // Process input-equations defined by user
-    // using the constant ids
-    for(auto x : ids_to_merge){
-      auto const_lhs = factory_curry_nodes.constantZ3Index(x.lhs_id),
-           const_rhs = factory_curry_nodes.constantZ3Index(x.rhs_id);
-      pushPending(pending_to_propagate, EquationCurryNodes(*const_lhs, *const_rhs));
-    }
+  // Process input-equations defined by user
+  // using the constant ids
+  for(auto x : ids_to_merge){
+    auto const_lhs = factory_curry_nodes.constantZ3Index(x.lhs_id),
+         const_rhs = factory_curry_nodes.constantZ3Index(x.rhs_id);
+    pushPending(pending_to_propagate, EquationCurryNodes(*const_lhs, *const_rhs));
+  }
 
-    // There is an element in uf for each element
-    // in the curry_nodes and extra_nodes. There
-    // might be repeated elements in these collection
-    // but they are unique pointers
-    ufe     .resize(factory_curry_nodes.size());
-    use_list.resize(factory_curry_nodes.size());
+  // There is an element in uf for each element
+  // in the curry_nodes and extra_nodes. There
+  // might be repeated elements in these collection
+  // but they are unique pointers
+  ufe     .resize(factory_curry_nodes.size());
+  use_list.resize(factory_curry_nodes.size());
 
 #if 0
-    // This code exemplifies how to retrieve back an original id
-    for(auto x : factory_curry_nodes.hash_table)
-      std::cout << *factory_curry_nodes.id_table[x.second->getId()] << std::endl;
+  // This code exemplifies how to retrieve back an original id
+  for(auto x : factory_curry_nodes.hash_table)
+    std::cout << *factory_curry_nodes.id_table[x.second->getId()] << std::endl;
 #endif
 
-    merge();
-    propagate();
+  merge();
+  propagate();
 
 #if DEBUG_SANITY_CHECK
-    //std::cout << uf << std::endl;
-    std::cout << factory_curry_nodes << std::endl;
-    giveExplanation(std::cout, 37, 32);
+  //std::cout << uf << std::endl;
+  //std::cout << factory_curry_nodes << std::endl;
 #endif
-  }
+}
 
 CongruenceClosureExplain::~CongruenceClosureExplain(){
 #if DEBUG_DESTRUCTORS_CC
@@ -59,7 +60,6 @@ void CongruenceClosureExplain::pushPending(PendingElementsPointers & pending_poi
     const PendingElement & pe){
   pending_elements.push_back(pe);
   pending_pointers.push_back(&pending_elements.back());
-  // TODO: Do something here to record the inserted equations
 }
 
 EqClass CongruenceClosureExplain::highestNode(EqClass a, UnionFind & uf){
@@ -177,6 +177,10 @@ std::ostream & CongruenceClosureExplain::giveExplanation(std::ostream & os, EqCl
   return os;
 }
 
+Z3ElementsPointers CongruenceClosureExplain::z3Explain(const z3::expr & lhs, const z3::expr & rhs){
+  throw "Not implemented yet"; 
+} 
+
 void CongruenceClosureExplain::explainAlongPath(EqClass a, EqClass c, 
     UnionFind & uf, ExplainEquations & pending_proofs, PendingElementsPointers & ans){
   a = highestNode(a, uf);
@@ -231,24 +235,35 @@ void CongruenceClosureExplain::propagate(){
       << "@propagate. Taking this element " << *pending_element << std::endl
       << "--------------------------------------------------------|" << std::endl;
 #endif     
+
     const CurryNode & a = (pending_element->tag == EQ) ? pending_element->eq_cn.lhs : pending_element->p_eq_cn.first.rhs;
     const CurryNode & b = (pending_element->tag == EQ) ? pending_element->eq_cn.rhs : pending_element->p_eq_cn.second.rhs;
+    EqClass repr_a = uf.find(a.getId()), repr_b = uf.find(b.getId());
+    bool repr_a_is_common = (repr_a > subterms.size()) ? false : subterms[repr_a].is_common();
+    bool repr_b_is_common = (repr_b > subterms.size()) ? false : subterms[repr_b].is_common();
+
 #if DEBUG_PROPAGATE
     std::cout << "|------------------------------------------" << std::endl
       << "@propagate. To merge these two inside uf: " << std::endl
-      << a << std::endl
-      << b << std::endl
+      << a << "(" << repr_a << ")" << std::endl
+      << b << "(" << repr_b << ")" << std::endl
       << "------------------------------------------|" << std::endl;
 #endif
 
-    EqClass repr_a = uf.find(a.getId()), repr_b = uf.find(b.getId());
     if(repr_a != repr_b) {
-      // TODO: Improve invariant to prioritize common symbols as representatives
-      // Invariant |ClassList(repr_a)| \leq |ClassList(repr_b)|
-      if(uf.getRank(repr_a) <= uf.getRank(repr_b))
-        propagateAux(a, b, repr_a, repr_b, *pending_element);
+      // Invariant: The representative is choosen as follows:
+      // If a' and b' are both common or uncommon, then break ties using their rank
+      // Otherwise, pick the node who is common
+      if((repr_a_is_common && repr_b_is_common) || (!repr_a_is_common && !repr_b_is_common)){
+        if(uf.getRank(repr_a) <= uf.getRank(repr_b))
+          propagateAux(a, b, repr_a, repr_b, *pending_element);
+        else
+          propagateAux(b, a, repr_b, repr_a, *pending_element);
+      }
+      if(repr_b_is_common)
+          propagateAux(a, b, repr_a, repr_b, *pending_element);
       else
-        propagateAux(b, a, repr_b, repr_a, *pending_element);
+          propagateAux(b, a, repr_b, repr_a, *pending_element);
     }
   }
 }
@@ -265,23 +280,27 @@ void CongruenceClosureExplain::propagateAux(const CurryNode & a, const CurryNode
     const EquationCurryNodes * element_found = lookup_table.query(repr_c1, repr_c2);
 
     if(element_found != nullptr){
-#if DEBUG_PROPAGATE
+
+#if DEBUG_PROPAGATE_AUX
       std::cout << "|------------------------------------------------" << std::endl
         << "@propagate. To add these to pending_to_propagate" << std::endl
         << "(" << **equation << ", " << std::endl
         << *element_found << ")" << std::endl
         << "-------------------------------------------------|" << std::endl;
 #endif
+
       pushPending(pending_to_propagate, PairEquationCurryNodes(**equation, *element_found));
     }
     else{
-#if DEBUG_PROPAGATE
+
+#if DEBUG_PROPAGATE_AUX
       std::cout << "|-------------------------------------------------" << std::endl
         << "@propagate. Element not found in the lookup_table" << std::endl
         << "adding " << **equation << std::endl
         << "to the lookup_table and moving it to the use_list of " << repr_b << std::endl
         << "--------------------------------------------------------|" << std::endl;
 #endif
+
       use_list[repr_b].push_back(*equation);
       lookup_table.enter(repr_c1, repr_c2, *equation);
     }

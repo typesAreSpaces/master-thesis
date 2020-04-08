@@ -235,7 +235,8 @@ getRightId	src/CurryNode.cpp	/^const unsigned CurryNode::getRightId() const {$/;
 getSize	include/UnionFind.h	/^  const unsigned getSize() const { return size; }$/;"	f	class:UnionFind
 getSubterms	src/HornClauses.cpp	/^const z3::expr_vector & HornClauses::getSubterms() const {$/;"	f	class:HornClauses
 getZ3Id	src/CurryNode.cpp	/^const unsigned CurryNode::getZ3Id() const {$/;"	f	class:CurryNode
-giveExplanation	src/CongruenceClosureExplain.cpp	/^std::ostream & CongruenceClosureExplain::giveExplanation(std::ostream & os, $/;"	f	class:CongruenceClosureExplain
+giveExplanation	src/CongruenceClosureExplain.cpp	/^std::ostream & CongruenceClosureExplain::giveExplanation(std::ostream & os, EqClass lhs, EqClass rhs){$/;"	f	class:CongruenceClosureExplain
+giveExplanation	src/CongruenceClosureExplain.cpp	/^std::ostream & CongruenceClosureExplain::giveExplanation(std::ostream & os, const z3::expr & lhs, const z3::expr & rhs){$/;"	f	class:CongruenceClosureExplain
 giveExplanation	src/UnionFindExplain.cpp	/^std::ostream & UnionFindExplain::giveExplanation(std::ostream & os, EqClass x, EqClass y){$/;"	f	class:UnionFindExplain
 greater	src/UnionFind.cpp	/^bool UnionFind::greater(EqClass x, EqClass y){$/;"	f	class:UnionFind
 hash	src/CurryNode.cpp	/^std::size_t CurryNode::hash(){$/;"	f	class:CurryNode

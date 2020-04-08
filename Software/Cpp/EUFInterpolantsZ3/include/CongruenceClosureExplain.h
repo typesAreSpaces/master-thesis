@@ -54,9 +54,10 @@ class CongruenceClosureExplain : public CongruenceClosure {
 
   friend class Hornsat;
 
-  unsigned            num_terms;
-  FactoryCurryNodes & factory_curry_nodes;
-  UnionFindExplain &  ufe;
+  unsigned                num_terms;
+  const z3::expr_vector & subterms;
+  FactoryCurryNodes &     factory_curry_nodes;
+  UnionFindExplain &      ufe;
 
   PendingElements         pending_elements;
   PendingElementsPointers equations_to_merge;
@@ -82,6 +83,8 @@ class CongruenceClosureExplain : public CongruenceClosure {
   PendingElementsPointers explain(EqClass, EqClass);
   std::ostream & giveExplanation(std::ostream &, const z3::expr &, const z3::expr &);
   std::ostream & giveExplanation(std::ostream &, EqClass, EqClass);
+  Z3ElementsPointers z3Explain(const z3::expr &, const z3::expr &);
+  std::ostream & giveZ3Explanation(std::ostream &, const z3::expr &, const z3::expr &, const z3::expr_vector &);
 
   ~CongruenceClosureExplain();
   friend std::ostream & operator << (std::ostream &, const CongruenceClosureExplain &);

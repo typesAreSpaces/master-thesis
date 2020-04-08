@@ -25,10 +25,10 @@ class FactoryCurryNodes {
   
   unsigned   addExtraNodes(unsigned);
   void       updatePreds(CurryNode *, CurryNode *);
-  void       updateZ3IdNotDefined();
+  void       updateZ3IdNotDefined(const z3::expr_vector &);
   void       curryficationHelper(z3::expr const &, std::vector<bool> &, IdsToMerge &);
   IdsToMerge curryfication(z3::expr const &);
-  void       flattening(const unsigned &, PendingElements &, PendingElementsPointers &);
+  void       flattening(const unsigned &, PendingElements &, PendingElementsPointers &, const z3::expr_vector &);
   
  public:
   FactoryCurryNodes(const unsigned &, const CurryDeclarations &);

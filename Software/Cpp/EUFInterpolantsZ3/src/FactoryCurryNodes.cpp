@@ -3,8 +3,8 @@
 
 FactoryCurryNodes::FactoryCurryNodes(const unsigned & num_terms, const CurryDeclarations & curry_decl) :
   num_terms(num_terms), curry_decl(curry_decl), curry_predecessors(){
-  curry_nodes.resize(num_terms);
-}
+    curry_nodes.resize(num_terms);
+  }
 
 FactoryCurryNodes::~FactoryCurryNodes(){
   for(auto x : hash_table)
@@ -12,7 +12,7 @@ FactoryCurryNodes::~FactoryCurryNodes(){
 }
 
 CurryNode * FactoryCurryNodes::newCurryNode(unsigned id, std::string func_name,
-					    CurryNode * left, CurryNode * right){
+    CurryNode * left, CurryNode * right){
   std::size_t index = 0;
   // We shouldnt distinguish if nodes have different ids
   // hash_combine(index, id, unsigned_hasher); 
@@ -25,7 +25,8 @@ CurryNode * FactoryCurryNodes::newCurryNode(unsigned id, std::string func_name,
     return element->second;
   }
   else{
-    auto new_element = new CurryNode(id, func_name, left, right);
+    //CurryNode * new_element = new CurryNode(id, func_name, left, right, is_common);
+    CurryNode * new_element = new CurryNode(id, func_name, left, right);
     if(id_table.size() <= id)
       id_table.resize(id + 1);
     id_table[id] = new_element;
@@ -45,7 +46,7 @@ CurryNode * FactoryCurryNodes::getCurryNode(std::size_t index) const {
   if(element != hash_table.end())
     return element->second;
   throw "Problem @ FactoryCurryNodes::getCurryNode(std::size_t). \
-Element not found.";
+    Element not found.";
 }
 
 CurryNode * FactoryCurryNodes::constantZ3Index(unsigned id){
@@ -73,7 +74,7 @@ const unsigned FactoryCurryNodes::uniqueSize() const {
 
 unsigned FactoryCurryNodes::addExtraNodes(unsigned num){
   unsigned last_node_pos = extra_nodes.size(),
-    new_last_node_pos = last_node_pos + num;
+           new_last_node_pos = last_node_pos + num;
   extra_nodes.resize(new_last_node_pos);
   return new_last_node_pos;
 }
@@ -83,12 +84,12 @@ void FactoryCurryNodes::updatePreds(CurryNode * from, CurryNode * to){
 
   for(auto pred_pair : curry_predecessors[to]){
     switch(pred_pair.side_of_equation){
-    case LHS:
-      pred_pair.pred.updateLeft(to);
-      break;
-    case RHS:
-      pred_pair.pred.updateRight(to);
-      break;
+      case LHS:
+        pred_pair.pred.updateLeft(to);
+        break;
+      case RHS:
+        pred_pair.pred.updateRight(to);
+        break;
     }
     if(pred_pair.pred.isReplaceable())
       to_replace.push_back(&pred_pair.pred);
@@ -96,63 +97,64 @@ void FactoryCurryNodes::updatePreds(CurryNode * from, CurryNode * to){
   return;
 }
 
-void FactoryCurryNodes::updateZ3IdNotDefined(){
+void FactoryCurryNodes::updateZ3IdNotDefined(const z3::expr_vector & subterms){
   for(auto x : hash_table)
     switch(x.second->isDefined()){
-    case false:
-      x.second->updateZ3Id(x.second->getId());
-    case true:
-      break;
+      case false:
+        x.second->updateZ3Id(x.second->getId());
+        break;
+      case true:
+        x.second->updateCommon(subterms[x.second->getZ3Id()].is_common()); 
+        break;
     }
   return;
 }
 
 void FactoryCurryNodes::curryficationHelper(z3::expr const & e, std::vector<bool> & visited, IdsToMerge & ids_to_merge){
   if(e.is_app()){
-
     if(visited[e.id()]) return;
     
     visited[e.id()] = true;
     unsigned num = e.num_args();
     auto f = e.decl();
-    
+
     for(unsigned i = 0; i < num; i++)
       curryficationHelper(e.arg(i), visited, ids_to_merge);
-    
+
     // Update curry_nodes
     if(num > 0){
       unsigned last_node_pos = extra_nodes.size();
       unsigned new_last_node_pos = addExtraNodes(num);
-      
+
       // Case for first argument
       extra_nodes[last_node_pos] =
-	newCurryNode(last_node_pos + num_terms,
-		     "apply",
-		     curry_decl.at(f.id()),
-		     curry_nodes[e.arg(0).id()]);
+        newCurryNode(last_node_pos + num_terms,
+            "apply",
+            curry_decl.at(f.id()),
+            curry_nodes[e.arg(0).id()]);
       // Case for the rest of the arguments
       for(unsigned i = 1; i < num; i++)
-	extra_nodes[last_node_pos + i] =
-	  newCurryNode(last_node_pos + i + num_terms,
-		       "apply",
-		       extra_nodes[last_node_pos + i - 1],
-		       curry_nodes[e.arg(i).id()]);
+        extra_nodes[last_node_pos + i] =
+          newCurryNode(last_node_pos + i + num_terms,
+              "apply",
+              extra_nodes[last_node_pos + i - 1],
+              curry_nodes[e.arg(i).id()]);
       curry_nodes[e.id()] = extra_nodes[new_last_node_pos - 1];
     }
     else
       curry_nodes[e.id()] = curry_decl.at(f.id());
 
     switch(f.decl_kind()){
-    case Z3_OP_EQ:
-      ids_to_merge.emplace_back(e.arg(0).id(), e.arg(1).id());
-      return;
-    default:
-      return;
+      case Z3_OP_EQ:
+        ids_to_merge.emplace_back(e.arg(0).id(), e.arg(1).id());
+        return;
+      default:
+        return;
     }
   }
-  
+
   throw "Problem @ FactoryCurryNodes::curryficationHelper\
-(z3::expr const &, std::vector<bool> &). The z3::expr const & is not an app.";
+    (z3::expr const &, std::vector<bool> &). The z3::expr const & is not an app.";
 }
 
 IdsToMerge FactoryCurryNodes::curryfication(z3::expr const & e){
@@ -163,10 +165,12 @@ IdsToMerge FactoryCurryNodes::curryfication(z3::expr const & e){
 }
 
 void FactoryCurryNodes::flattening(const unsigned & min_id,
-				   PendingElements & pending_elements,
-				   PendingElementsPointers & equations_to_merge){
+    PendingElements & pending_elements,
+    PendingElementsPointers & equations_to_merge,
+    const z3::expr_vector & subterms){
   // Update Z3 Ids
-  for(unsigned i = min_id; i < curry_nodes.size(); i++)
+  unsigned max_z3_id = curry_nodes.size();
+  for(unsigned i = min_id; i < max_z3_id; i++)
     curry_nodes[i]->updateZ3Id(i);
 
   while(!to_replace.empty()){
@@ -175,28 +179,31 @@ void FactoryCurryNodes::flattening(const unsigned & min_id,
 
     unsigned last_node_pos = extra_nodes.size();
     extra_nodes.push_back(newCurryNode(last_node_pos + num_terms,
-				       FRESH_PREFIX + std::to_string(last_node_pos + num_terms),
-				       nullptr, nullptr));
+          FRESH_PREFIX + std::to_string(last_node_pos + num_terms),
+          nullptr, nullptr));
     CurryNode * new_constant = extra_nodes[last_node_pos];
     cur_curry_node->updateConstId(last_node_pos + num_terms);
-    new_constant->updateZ3Id(cur_curry_node->getZ3Id());
+    // Update z3 id only if the index matches an actual
+    // z3 terms (inside subterms)
+    if(cur_curry_node->getZ3Id() < max_z3_id)
+      new_constant->updateZ3Id(cur_curry_node->getZ3Id());
     // -----------------------------------------------------------------------------
     pending_elements.emplace_back(*cur_curry_node, *new_constant);
     equations_to_merge.push_back(&pending_elements.back());
     // -----------------------------------------------------------------------------
     updatePreds(cur_curry_node, new_constant);
   }
-  
+
   // Any curry_node with z3_id_defined == false
   // doesn't match an original z3 id
-  updateZ3IdNotDefined();
+  updateZ3IdNotDefined(subterms);
 }
 
 std::ostream & operator << (std::ostream & os, const FactoryCurryNodes & fcns){
 
   for(auto x : fcns.hash_table)
     std::cout << *(x.second) << std::endl;
-  
+
   os << "Size of FactoryCurryNodes: " << fcns.hash_table.size() << std::endl;
   return os;
 }

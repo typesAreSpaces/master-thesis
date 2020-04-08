@@ -2,7 +2,8 @@
 #define OS_FULL true
 
 CurryNode::CurryNode(unsigned id, std::string func_name, CurryNode * left, CurryNode * right) :
-  id(id), z3_id(id), const_id(id), func_name(func_name), left(left), right(right) {
+  id(id), z3_id(id), const_id(id), func_name(func_name), left(left), right(right)
+{
 }
 
 const bool CurryNode::isConstant() const {
@@ -40,6 +41,11 @@ void CurryNode::updateConstId(unsigned new_const_id){
   return;
 }
 
+void CurryNode::updateCommon(bool new_is_common){
+  is_common = new_is_common;
+  return;
+}
+
 const unsigned CurryNode::getId() const {
   return id;
 }
@@ -64,6 +70,10 @@ const unsigned CurryNode::getConstId() const {
   return const_id;
 }
 
+const bool CurryNode::isCommon() const {
+  return is_common;
+}
+
 std::size_t CurryNode::hash(){
   // -------------------------------------
   // Temporarily -------------------------
@@ -81,14 +91,15 @@ std::size_t CurryNode::hash(){
 
 std::ostream & operator << (std::ostream & os, const CurryNode & cn){
   for(unsigned i = 0; i < cn.space; i++)
-     os << " ";
+    os << " ";
   if(cn.space == 1)
     os << "* ";
 #if OS_FULL
   os << cn.id << "(Z3 id: " << cn.z3_id
-     << "|Const id: " << cn.const_id << ")("
-     << (cn.z3_id_defined ? "Defined" : "Not defined yet") << "). "
-     << cn.func_name << std::endl;
+    << "|is common: " << (cn.is_common ? "true" : "false")
+    << "|Const id: " << cn.const_id << ")("
+    << (cn.z3_id_defined ? "Defined" : "Not defined yet") << "). "
+    << cn.func_name << std::endl;
   if(cn.left != nullptr){
     (cn.left->space)+=cn.space;
     for(unsigned i = 0; i < cn.space; i++)

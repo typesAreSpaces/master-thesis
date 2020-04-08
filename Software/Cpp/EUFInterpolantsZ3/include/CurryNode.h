@@ -7,6 +7,7 @@
 #include <vector>
 #include <list>
 #include <unordered_map>
+#include <z3++.h>
 
 template <class T>
 inline void hash_combine(std::size_t & seed, const T & v, const std::hash<T> & hasher){
@@ -19,8 +20,9 @@ class CurryNode {
   bool z3_id_defined = false;
   std::string func_name;
   CurryNode * left, * right;
+  bool is_common = false;
   unsigned space = 1;
-  
+
 public:
   CurryNode(unsigned, std::string, CurryNode *, CurryNode *);
   const bool isConstant() const;
@@ -30,11 +32,13 @@ public:
   void updateRight(CurryNode *);
   void updateZ3Id(unsigned);
   void updateConstId(unsigned);
+  void updateCommon(bool);
   const unsigned getId() const;
   const unsigned getLeftId() const;
   const unsigned getRightId() const;
   const unsigned getZ3Id() const;
   const unsigned getConstId() const;
+  const bool     isCommon() const;
   std::size_t hash();
   friend std::ostream & operator << (std::ostream &, const CurryNode &);
 };
@@ -124,6 +128,7 @@ typedef std::map<const CurryNode *, std::list<PredNode> > CurryPreds;
 
 typedef std::list<PendingElement> PendingElements;
 typedef std::list<const PendingElement *> PendingElementsPointers;
+typedef std::list<const z3::expr *> Z3ElementsPointers;
 
 typedef std::list<EquationZ3Ids>  IdsToMerge;
 
