@@ -2,6 +2,7 @@
 #define DEBUG_DESTRUCTOR_EUF false
 #define DEBUG_EUFINTERPOLANT false
 #define DEBUG_CURRYFICATION  false
+#define DEBUG_SUBTERMS       false
 
 EUFInterpolant::EUFInterpolant(z3::expr const & input_formula) :
   min_id(input_formula.id()), original_num_terms(input_formula.id() + 1),
@@ -19,8 +20,10 @@ EUFInterpolant::EUFInterpolant(z3::expr const & input_formula) :
   // and curry_decl
   init(input_formula, min_id, visited);
 
+#if DEBUG_SUBTERMS
   for(unsigned i = min_id; i < subterms.size(); i++)
     std::cout << i << " " << subterms[i] << " " << subterms[i].is_common() << " " << subterms[i].id() << std::endl;  
+#endif
 
   CongruenceClosureExplain cc(min_id, subterms, pred_list, uf, factory_curry_nodes);
 

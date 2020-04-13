@@ -7,6 +7,13 @@
 #include "Rename.h"
 #include "EUFInterpolant.h"
 
+void test(const char * smt_file){
+  z3::context ctx;
+  z3::expr input = mk_and(ctx.parse_file(smt_file));
+  EUFInterpolant euf(input);
+  //std::cout << euf << std::endl;
+}
+
 void testFilePath(std::string);
 void simpleTest();
 void testUFE();
@@ -34,8 +41,10 @@ int main(int argc, char ** argv){
   //testCongClosureExpl();
   //testCongClosureExpl2();
   //testCongClosureExpl3();
-  testCongClosureExpl4();
+  //testCongClosureExpl4();
   //hugeTest();
+  
+  test(argv[1]);
 
   return 0;
 }

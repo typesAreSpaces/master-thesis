@@ -412,6 +412,7 @@ subterms	include/HornClauses.h	/^  z3::expr_vector &         subterms;$/;"	m	cla
 subterms	include/Hornsat.h	/^  const z3::expr_vector & subterms;$/;"	m	class:Hornsat
 tag	include/CurryNode.h	/^  const PendingTag tag;$/;"	m	struct:PendingElement
 target	include/UnionFindExplain.h	/^  EqClass source, target;$/;"	m	struct:ExplainEquation
+test	src/main.cpp	/^void test(const char * smt_file){$/;"	f
 testCongClosureExpl	src/main.cpp	/^void testCongClosureExpl(){$/;"	f
 testCongClosureExpl2	src/main.cpp	/^void testCongClosureExpl2(){$/;"	f
 testCongClosureExpl3	src/main.cpp	/^void testCongClosureExpl3(){$/;"	f

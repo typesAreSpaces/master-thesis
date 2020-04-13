@@ -1,0 +1,14 @@
+not ok smt6109211130895037835.smt2 139
+not ok QF_UF_Heap_ab_br_max.smt2 139
+not ok QF_UF_Heap_ab_cti_max.smt2 139
+not ok QF_UF_Heap_ab_fp_max.smt2 139
+not ok QF_UF_Heap_ab_reg_max.smt2 139
+not ok QF_UF_Huffman_dec_ab_reg_max.smt2 139
+not ok QF_UF_Huffman_enc_ab_reg_max.smt2 139
+not ok QF_UF_h_Vending_ab_cti_max.smt2 139
+not ok QF_UF_h_Vending_ab_reg_max.smt2 139
+not ok QF_UF_itc99_b12_ab_br_max.smt2 139
+not ok QF_UF_itc99_b12_ab_cti_max.smt2 139
+not ok QF_UF_itc99_b12_ab_fp_max.smt2 139
+not ok QF_UF_swap_two_ab_br_max.smt2 139
+Total number of processed cases:  1061

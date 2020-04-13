@@ -5,6 +5,7 @@
 #define DEBUG_MERGE         0
 #define DEBUG_PROPAGATE     0
 #define DEBUG_PROPAGATE_AUX 0
+#define DEBUG_TEST_EXPLAIN  0
 
 CongruenceClosureExplain::CongruenceClosureExplain(const unsigned & min_id, const z3::expr_vector & subterms,
     PredList & pred_list, UnionFindExplain & uf,
@@ -45,8 +46,10 @@ CongruenceClosureExplain::CongruenceClosureExplain(const unsigned & min_id, cons
   merge();
   propagate();
 
+#if DEBUG_TEST_EXPLAIN
   giveExplanation(std::cout, subterms[5], subterms[8]); 
   giveZ3Explanation(std::cout, subterms[5], subterms[8]); 
+#endif
 
 #if DEBUG_SANITY_CHECK
   //std::cout << uf << std::endl;
