@@ -18,7 +18,9 @@ typedef std::map<std::string, std::vector<unsigned> > FSymPositions;
 struct Z3Subterms {
   z3::expr_vector subterms;
   std::vector<bool> visited;
+  
   Z3Subterms(z3::context & ctx) : subterms(ctx), visited() {}
+
   class iterator {
     const Z3Subterms * m_subterms;
     unsigned m_index;
@@ -43,6 +45,7 @@ struct Z3Subterms {
       return (m_subterms->subterms)[m_index];
     }
   };
+
   iterator begin() const { return iterator(this, 0); }
   iterator end() const { return iterator(this, subterms.size()); }
 };
