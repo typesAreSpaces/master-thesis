@@ -171,7 +171,8 @@ void FactoryCurryNodes::flattening(const unsigned & min_id,
   // Update Z3 Ids
   unsigned max_z3_id = curry_nodes.size();
   for(unsigned i = min_id; i < max_z3_id; i++)
-    curry_nodes[i]->updateZ3Id(i);
+    if(curry_nodes[i] != nullptr)
+      curry_nodes[i]->updateZ3Id(i);
 
   while(!to_replace.empty()){
     auto cur_curry_node = to_replace.back();
