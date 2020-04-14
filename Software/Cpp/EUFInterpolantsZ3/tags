@@ -43,12 +43,15 @@ DEBUG_DESTRUCTOR_UFE	src/UnionFindExplain.cpp	2;"	d	file:
 DEBUG_EUFINTERPOLANT	src/EUFInterpolant.cpp	3;"	d	file:
 DEBUG_EXPLAIN_OP	src/UnionFindExplain.cpp	3;"	d	file:
 DEBUG_HORN_CLAUSES	src/HornClauses.cpp	2;"	d	file:
+DEBUG_INIT	src/EUFInterpolant.cpp	6;"	d	file:
 DEBUG_MAKE_MATCHES	src/HornClauses.cpp	4;"	d	file:
 DEBUG_MATCHES	src/HornClauses.cpp	7;"	d	file:
 DEBUG_MERGE	src/CongruenceClosureExplain.cpp	5;"	d	file:
 DEBUG_PROPAGATE	src/CongruenceClosureExplain.cpp	6;"	d	file:
 DEBUG_PROPAGATE_AUX	src/CongruenceClosureExplain.cpp	7;"	d	file:
 DEBUG_SANITY_CHECK	src/CongruenceClosureExplain.cpp	4;"	d	file:
+DEBUG_SUBTERMS	src/EUFInterpolant.cpp	5;"	d	file:
+DEBUG_TEST_EXPLAIN	src/CongruenceClosureExplain.cpp	8;"	d	file:
 DEPS	Makefile	/^DEPS = $(wildcard $(IDIR)\/*.h)$/;"	m
 EQ	include/CurryNode.h	/^enum PendingTag { EQ, EQ_EQ };$/;"	e	enum:PendingTag
 EQ_EQ	include/CurryNode.h	/^enum PendingTag { EQ, EQ_EQ };$/;"	e	enum:PendingTag
@@ -412,13 +415,12 @@ subterms	include/HornClauses.h	/^  z3::expr_vector &         subterms;$/;"	m	cla
 subterms	include/Hornsat.h	/^  const z3::expr_vector & subterms;$/;"	m	class:Hornsat
 tag	include/CurryNode.h	/^  const PendingTag tag;$/;"	m	struct:PendingElement
 target	include/UnionFindExplain.h	/^  EqClass source, target;$/;"	m	struct:ExplainEquation
-test	src/main.cpp	/^void test(const char * smt_file){$/;"	f
 testCongClosureExpl	src/main.cpp	/^void testCongClosureExpl(){$/;"	f
 testCongClosureExpl2	src/main.cpp	/^void testCongClosureExpl2(){$/;"	f
 testCongClosureExpl3	src/main.cpp	/^void testCongClosureExpl3(){$/;"	f
 testCongClosureExpl4	src/main.cpp	/^void testCongClosureExpl4(){$/;"	f
 testEUF	src/main.cpp	/^void testEUF(){$/;"	f
-testFilePath	src/main.cpp	/^void testFilePath(std::string file_path){$/;"	f
+testFilePath	src/main.cpp	/^void testFilePath(const char * smt_file){$/;"	f
 testUFE	src/main.cpp	/^void testUFE(){$/;"	f
 to_replace	include/FactoryCurryNodes.h	/^  std::list<CurryNode *>    to_replace;$/;"	m	class:FactoryCurryNodes
 traversePartA	src/Rename.cpp	/^void traversePartA(z3::expr const & e,$/;"	f

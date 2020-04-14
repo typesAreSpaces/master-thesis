@@ -1,0 +1,49 @@
+include/HornClauses.h:15:  unsigned &                min_id;
+include/HornClause.h:13:  const unsigned &  min_id;
+include/CongruenceClosure.h:56:  const unsigned &        min_id;
+include/EUFInterpolant.h:20:  unsigned min_id;
+include/EUFInterpolant.h:24:  // Note: elements below min_id are undefined
+
+src/CongruenceClosureDST.cpp:3:CongruenceClosureDST::CongruenceClosureDST(const unsigned & min_id, const z3::expr_vector & subterms,
+src/CongruenceClosureDST.cpp:5:  CongruenceClosure(min_id, subterms, pred_list, uf){
+
+src/FactoryCurryNodes.cpp:167:void FactoryCurryNodes::flattening(const unsigned & min_id,
+src/FactoryCurryNodes.cpp:173:  for(unsigned i = min_id; i < max_z3_id; i++)
+
+src/HornClauses.cpp:10:HornClauses::HornClauses(z3::context & ctx, unsigned & min_id, z3::expr_vector & subterms) :
+src/HornClauses.cpp:11:  ctx(ctx), min_id(min_id), subterms(subterms){
+src/HornClauses.cpp:153:  std::cout << "Min ID: " << hcs.min_id;
+
+src/EUFInterpolant.cpp:9:  min_id(input_formula.id()), original_num_terms(input_formula.id() + 1),
+src/EUFInterpolant.cpp:11:  fsym_positions(), uf(input_formula.id() + 1), pred_list(), horn_clauses(ctx, min_id, subterms),
+src/EUFInterpolant.cpp:19:  // The following defines min_id, visited,
+src/EUFInterpolant.cpp:22:  init(input_formula, min_id, visited);
+src/EUFInterpolant.cpp:24:  // FIX: There is a gap between the actual min_id.
+src/EUFInterpolant.cpp:26:  for(unsigned i = min_id; i < subterms.size(); i++)
+src/EUFInterpolant.cpp:35:  CongruenceClosureExplain cc(min_id, subterms, pred_list, uf, factory_curry_nodes);
+src/EUFInterpolant.cpp:66:  // CongruenceClosureDST cc(min_id, subterms, pred_list, uf);
+src/EUFInterpolant.cpp:69:  // for(unsigned i = min_id; i < original_num_terms; i++)
+src/EUFInterpolant.cpp:99:  // CongruenceClosureDST hornsat_cc(min_id, subterms, hornsat_list, hornsat_uf);
+src/EUFInterpolant.cpp:124:void EUFInterpolant::init(z3::expr const & e, unsigned & min_id, std::vector<bool> & visited){
+src/EUFInterpolant.cpp:126:    if(e.id() < min_id)
+src/EUFInterpolant.cpp:127:      min_id = e.id();
+src/EUFInterpolant.cpp:140:      init(e.arg(i), min_id, visited);
+src/EUFInterpolant.cpp:238:    horn_clauses.add(new HornClause(uf, ctx, min_id, subterms, hc_body, contradiction, pred_list));
+src/EUFInterpolant.cpp:253:            horn_clauses.add(new HornClause(uf, ctx, min_id, subterms, hc_body, hc_head, pred_list));
+src/EUFInterpolant.cpp:322:  for(unsigned i = euf.min_id; i < num; i++){
+
+src/CongruenceClosure.cpp:3:CongruenceClosure::CongruenceClosure(const unsigned & min_id, const z3::expr_vector & subterms,
+src/CongruenceClosure.cpp:5:  min_id(min_id), subterms(subterms), pred_list(pred_list),
+
+src/CongruenceClosureNO.cpp:3:CongruenceClosureNO::CongruenceClosureNO(const unsigned & min_id, const z3::expr_vector & subterms,
+src/CongruenceClosureNO.cpp:5:  CongruenceClosure(min_id, subterms, pred_list, uf){
+
+src/Hornsat.cpp:261:  for(unsigned i = cc.min_id; i < num_terms; i++){
+src/Hornsat.cpp:268:  std::cout << "Min ID: " << cc.min_id << " Size: " << num_terms << std::endl;
+
+src/CongruenceClosureExplain.cpp:10:CongruenceClosureExplain::CongruenceClosureExplain(const unsigned & min_id, const z3::expr_vector & subterms,
+src/CongruenceClosureExplain.cpp:13:  CongruenceClosure(min_id, subterms, pred_list, uf), 
+src/CongruenceClosureExplain.cpp:23:  factory_curry_nodes.flattening(min_id, pending_elements, equations_to_merge, subterms);
+
+src/HornClause.cpp:4:HornClause::HornClause(UnionFind & uf, z3::context & ctx, const unsigned & min_id, z3::expr_vector & subterms,
+src/HornClause.cpp:6:  uf(uf), ctx(ctx), min_id(min_id), subterms(subterms),

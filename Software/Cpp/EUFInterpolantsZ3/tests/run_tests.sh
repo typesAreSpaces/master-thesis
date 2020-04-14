@@ -1,5 +1,8 @@
 #!/bin/bash
 
+# This script must be executed 
+# from his current directory
+
 cd ./QF_UF
 COUNT=0
 for directory in $(ls); do 
@@ -7,12 +10,12 @@ for directory in $(ls); do
     cd $directory
     for smt_file in $(ls); do
       if [ -f $smt_file ]; then
-        # echo "Running z3 on " $smt_file
         COUNT=$(($COUNT + 1))
-        $(./../../../euf_interpolator $smt_file)
+        LOCAL_COMMAND="./../../../euf_interpolator $smt_file"
+        eval "$LOCAL_COMMAND"
         RESULT=$?
         if [ ! "$RESULT" -eq "0" ]; then
-          echo "not ok" $smt_file $RESULT
+          echo "not ok" $(pwd) $smt_file $RESULT
         fi
       fi
     done

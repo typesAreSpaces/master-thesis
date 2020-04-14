@@ -7,14 +7,7 @@
 #include "Rename.h"
 #include "EUFInterpolant.h"
 
-void test(const char * smt_file){
-  z3::context ctx;
-  z3::expr input = mk_and(ctx.parse_file(smt_file));
-  EUFInterpolant euf(input);
-  //std::cout << euf << std::endl;
-}
-
-void testFilePath(std::string);
+void testFilePath(const char *);
 void simpleTest();
 void testUFE();
 void testEUF();
@@ -34,7 +27,8 @@ void hugeTest();
 
 int main(int argc, char ** argv){
 
-  //testFilePath(std::string);
+  testFilePath(argv[1]);
+
   //simpleTest();
   //testUFE();
   //testEUF();
@@ -43,17 +37,17 @@ int main(int argc, char ** argv){
   //testCongClosureExpl3();
   //testCongClosureExpl4();
   //hugeTest();
-  
-  test(argv[1]);
-
+ 
   return 0;
 }
 
-void testFilePath(std::string file_path){
+void testFilePath(const char * smt_file){
+#if 1
   z3::context ctx;
-  z3::expr input = mk_and(ctx.parse_file(file_path.c_str()));
+  z3::expr input = mk_and(ctx.parse_file(smt_file));
   EUFInterpolant euf(input);
-  std::cout << euf << std::endl;
+  //std::cout << euf << std::endl;
+#endif
 }
 
 void simpleTest(){

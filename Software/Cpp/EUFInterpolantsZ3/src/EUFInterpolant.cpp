@@ -1,15 +1,16 @@
 #include "EUFInterpolant.h"
-#define DEBUG_DESTRUCTOR_EUF false
-#define DEBUG_EUFINTERPOLANT false
-#define DEBUG_CURRYFICATION  false
-#define DEBUG_SUBTERMS       false
+#define DEBUG_DESTRUCTOR_EUF 0
+#define DEBUG_EUFINTERPOLANT 0
+#define DEBUG_CURRYFICATION  0
+#define DEBUG_SUBTERMS       1
+#define DEBUG_INIT           1
 
 EUFInterpolant::EUFInterpolant(z3::expr const & input_formula) :
   min_id(input_formula.id()), original_num_terms(input_formula.id() + 1),
   ctx(input_formula.ctx()), subterms(ctx), contradiction(ctx.bool_val(false)), disequalities(ctx),
   fsym_positions(), uf(input_formula.id() + 1), pred_list(), horn_clauses(ctx, min_id, subterms),
   curry_decl(), factory_curry_nodes(original_num_terms, curry_decl)
-{
+{        
 
   std::vector<bool> visited(original_num_terms, false);
   subterms.resize(original_num_terms);
@@ -20,10 +21,12 @@ EUFInterpolant::EUFInterpolant(z3::expr const & input_formula) :
   // and curry_decl
   init(input_formula, min_id, visited);
 
-#if DEBUG_SUBTERMS
-  for(unsigned i = min_id; i < subterms.size(); i++)
-    std::cout << i << " " << subterms[i] << " " << subterms[i].is_common() << " " << subterms[i].id() << std::endl;  
-#endif
+  // FIX: There is a gap between the actual min_id.
+#if 1
+  for(unsigned i = min_id; i < subterms.size(); i++){
+    subterms[i];
+  }      
+#endif 
 
   CongruenceClosureExplain cc(min_id, subterms, pred_list, uf, factory_curry_nodes);
 
@@ -307,22 +310,20 @@ z3::expr EUFInterpolant::buildInterpolant(std::vector<Replacement> replacements)
 
 std::ostream & operator << (std::ostream & os, EUFInterpolant & euf){
   unsigned num = euf.original_num_terms, num_changes = 0;
-  std::cout << "All the original subterms:" << std::endl;
+  os << "All the original subterms:" << std::endl;
   for(unsigned i = euf.min_id; i < num; i++){
-    // std::cout << "Original: " << i
-    // 	      << " Representative " << euf.uf.find(i) << std::endl;
-
-    std::cout << i << ". "
+    os << i << ". "
       << ((i == euf.uf.find(i)) ? "(Same)" : "(Different)")
       << " Original: " << euf.subterms[i]
-      << " Representative " << euf.subterms[euf.uf.find(euf.subterms[i].id())] << std::endl;
+      << " Representative " << euf.subterms[euf.uf.find(euf.subterms[i].id())] 
+      << std::endl;
     if(i != euf.uf.find(i))
       num_changes++;
   }
 
-  std::cout << "Horn clauses produced:" << std::endl;
+  os << "Horn clauses produced:" << std::endl;
   for(HornClause * x : euf.horn_clauses.getHornClauses())
-    std::cout << *x << std::endl;
-  std::cout << "Number of differences between term and its representative: " << num_changes;
+    os << *x << std::endl;
+  os << "Number of differences between term and its representative: " << num_changes;
   return os;
 }

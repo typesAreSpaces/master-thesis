@@ -1,0 +1,98 @@
+include/Hornsat.h:95:  const z3::expr_vector & subterms;
+include/HornClauses.h:16:  z3::expr_vector &         subterms;
+include/HornClause.h:14:  z3::expr_vector & subterms;
+include/CongruenceClosure.h:57:  const z3::expr_vector & subterms;
+include/EUFInterpolant.h:25:  z3::expr_vector subterms;
+include/CongruenceClosureExplain.h:58:  const z3::expr_vector & subterms;
+src/CongruenceClosureDST.cpp:3:CongruenceClosureDST::CongruenceClosureDST(const unsigned & min_id, const z3::expr_vector & subterms,
+src/CongruenceClosureDST.cpp:5:  CongruenceClosure(min_id, subterms, pred_list, uf){
+src/CongruenceClosureDST.cpp:19:      z3::expr v = subterms[v_id];
+src/CongruenceClosureDST.cpp:39:	if(HornClause::compareTerm(subterms[v_repr], subterms[w_repr])){
+src/CongruenceClosureDST.cpp:45:	  sig_table.erase(subterms[u]);
+src/FactoryCurryNodes.cpp:100:void FactoryCurryNodes::updateZ3IdNotDefined(const z3::expr_vector & subterms){
+src/FactoryCurryNodes.cpp:107:        x.second->updateCommon(subterms[x.second->getZ3Id()].is_common()); 
+src/FactoryCurryNodes.cpp:170:    const z3::expr_vector & subterms){
+src/FactoryCurryNodes.cpp:188:    // z3 terms (inside subterms)
+src/FactoryCurryNodes.cpp:200:  updateZ3IdNotDefined(subterms);
+src/HornClauses.cpp:10:HornClauses::HornClauses(z3::context & ctx, unsigned & min_id, z3::expr_vector & subterms) :
+src/HornClauses.cpp:11:  ctx(ctx), min_id(min_id), subterms(subterms){
+src/HornClauses.cpp:123:  return subterms;
+src/EUFInterpolant.cpp:10:  ctx(input_formula.ctx()), subterms(ctx), contradiction(ctx.bool_val(false)), disequalities(ctx),
+src/EUFInterpolant.cpp:11:  fsym_positions(), uf(input_formula.id() + 1), pred_list(), horn_clauses(ctx, min_id, subterms),
+src/EUFInterpolant.cpp:16:  subterms.resize(original_num_terms);
+src/EUFInterpolant.cpp:20:  // subterms, disequalities, fsym_positions,
+src/EUFInterpolant.cpp:26:  for(unsigned i = min_id; i < subterms.size(); i++)
+src/EUFInterpolant.cpp:28:      std::cout << subterms[i] << std::endl;
+src/EUFInterpolant.cpp:35:  CongruenceClosureExplain cc(min_id, subterms, pred_list, uf, factory_curry_nodes);
+src/EUFInterpolant.cpp:38:  //cc.giveExplanation(std::cout, subterms[5], subterms[11]);
+src/EUFInterpolant.cpp:39:  //cc.giveExplanation(std::cout, subterms[5], subterms[6]);
+src/EUFInterpolant.cpp:40:  //cc.giveExplanation(std::cout, subterms[6], subterms[5]);
+src/EUFInterpolant.cpp:43:  auto explanation = cc.explain(subterms[6], subterms[5]);
+src/EUFInterpolant.cpp:49:      std::cout << subterms[label->eq_cn.lhs.getZ3Id()] << std::endl;
+src/EUFInterpolant.cpp:50:      std::cout << subterms[label->eq_cn.rhs.getZ3Id()] << std::endl;
+src/EUFInterpolant.cpp:66:  // CongruenceClosureDST cc(min_id, subterms, pred_list, uf);
+src/EUFInterpolant.cpp:70:  //   if(subterms[i].num_args() > 0)
+src/EUFInterpolant.cpp:95:  // assert(pred_list.size() == subterms.size());
+src/EUFInterpolant.cpp:98:  // hornsat_uf.resize(subterms.size());
+src/EUFInterpolant.cpp:99:  // CongruenceClosureDST hornsat_cc(min_id, subterms, hornsat_list, hornsat_uf);
+src/EUFInterpolant.cpp:136:    subterms.set(e.id(), (z3::expr&) e);
+src/EUFInterpolant.cpp:222:  return subterms[uf.find(t.id())];
+src/EUFInterpolant.cpp:238:    horn_clauses.add(new HornClause(uf, ctx, min_id, subterms, hc_body, contradiction, pred_list));
+src/EUFInterpolant.cpp:248:          z3::expr t1 = subterms[iterator.second[index_1]], t2 = subterms[iterator.second[index_2]];
+src/EUFInterpolant.cpp:253:            horn_clauses.add(new HornClause(uf, ctx, min_id, subterms, hc_body, hc_head, pred_list));
+src/EUFInterpolant.cpp:321:  os << "All the original subterms:" << std::endl;
+src/EUFInterpolant.cpp:325:      auto what = euf.subterms[i];
+src/EUFInterpolant.cpp:328:      //<< " Original: " << euf.subterms[i]
+src/EUFInterpolant.cpp:329:      ////<< " Representative " << euf.subterms[euf.uf.find(euf.subterms[i].id())] << std::endl;
+src/CongruenceClosure.cpp:3:CongruenceClosure::CongruenceClosure(const unsigned & min_id, const z3::expr_vector & subterms,
+src/CongruenceClosure.cpp:5:  min_id(min_id), subterms(subterms), pred_list(pred_list),
+src/CongruenceClosureNO.cpp:3:CongruenceClosureNO::CongruenceClosureNO(const unsigned & min_id, const z3::expr_vector & subterms,
+src/CongruenceClosureNO.cpp:5:  CongruenceClosure(min_id, subterms, pred_list, uf){
+src/CongruenceClosureNO.cpp:34:  auto term_x = subterms[x], term_y = subterms[y];
+src/Hornsat.cpp:47:  subterms(hcs.getSubterms()),
+src/Hornsat.cpp:49:  num_hcs(hcs.size()), num_literals(subterms.size())
+src/Hornsat.cpp:74:        std::cout << subterms.size() << std::endl;
+src/Hornsat.cpp:75:        assert(antecedent.id() < subterms.size());
+src/Hornsat.cpp:183:  if(HornClause::compareTerm(subterms[cc.uf.find(v)], subterms[cc.uf.find(w)])){
+src/Hornsat.cpp:190:    cc.sig_table.erase(subterms[u]);
+src/Hornsat.cpp:205:      const z3::expr & v = subterms[v_id];
+src/Hornsat.cpp:258:  unsigned num_terms = cc.subterms.size();
+src/Hornsat.cpp:262:    if(cc.subterms[i].num_args() > 0)
+src/Hornsat.cpp:276:    std::cout << "Literal coming from facts: " << node << " " << subterms[node] << std::endl;
+src/Hornsat.cpp:288:      if(!subterms[node].is_common())
+src/CongruenceClosureExplain.cpp:10:CongruenceClosureExplain::CongruenceClosureExplain(const unsigned & min_id, const z3::expr_vector & subterms,
+src/CongruenceClosureExplain.cpp:13:  CongruenceClosure(min_id, subterms, pred_list, uf), 
+src/CongruenceClosureExplain.cpp:14:  num_terms(subterms.size()), subterms(subterms), factory_curry_nodes(factory_curry_nodes), ufe(uf),
+src/CongruenceClosureExplain.cpp:19:  auto ids_to_merge = factory_curry_nodes.curryfication(subterms[num_terms - 1]);
+src/CongruenceClosureExplain.cpp:23:  factory_curry_nodes.flattening(min_id, pending_elements, equations_to_merge, subterms);
+src/CongruenceClosureExplain.cpp:50:  giveExplanation(std::cout, subterms[5], subterms[8]); 
+src/CongruenceClosureExplain.cpp:51:  giveZ3Explanation(std::cout, subterms[5], subterms[8]); 
+src/CongruenceClosureExplain.cpp:209:    os << subterms[z.lhs_id] << " = " << subterms[z.rhs_id] << std::endl;
+src/CongruenceClosureExplain.cpp:273:    bool repr_a_is_common = (repr_a > subterms.size()) ? false : subterms[repr_a].is_common();
+src/CongruenceClosureExplain.cpp:274:    bool repr_b_is_common = (repr_b > subterms.size()) ? false : subterms[repr_b].is_common();
+src/HornClause.cpp:4:HornClause::HornClause(UnionFind & uf, z3::context & ctx, const unsigned & min_id, z3::expr_vector & subterms,
+src/HornClause.cpp:6:  uf(uf), ctx(ctx), min_id(min_id), subterms(subterms),
+src/HornClause.cpp:10:  // This part updates subterms in case there are new terms created
+src/HornClause.cpp:14:    if(subterms.size() <= hyp.id())
+src/HornClause.cpp:15:      subterms.resize(hyp.id() + 1);
+src/HornClause.cpp:16:    subterms.set(hyp.id(), hyp);
+src/HornClause.cpp:17:    subterms.set(lhs.id(), lhs);
+src/HornClause.cpp:18:    subterms.set(rhs.id(), rhs);
+src/HornClause.cpp:21:    subterms.set(this->consequent.id(), this->consequent);
+src/HornClause.cpp:24:  if(subterms.size() <= this->consequent.id())
+src/HornClause.cpp:25:    subterms.resize(this->consequent.id() + 1);
+src/HornClause.cpp:28:  subterms.set(this->consequent.id(), this->consequent);
+src/HornClause.cpp:29:  subterms.set(lhs.id(), lhs);
+src/HornClause.cpp:30:  subterms.set(rhs.id(), rhs);
+src/HornClause.cpp:39:  // This part updates subterms (again) in case there are
+src/HornClause.cpp:48:    if(subterms.size() <= hyp.id()){
+src/HornClause.cpp:49:      subterms.resize(hyp.id() + 1);
+src/HornClause.cpp:52:    subterms.set(hyp.id(), hyp);
+src/HornClause.cpp:53:    subterms.set(lhs.id(), lhs);
+src/HornClause.cpp:54:    subterms.set(rhs.id(), rhs);
+src/HornClause.cpp:59:    subterms.set(this->consequent.id(), this->consequent);
+src/HornClause.cpp:62:  if(subterms.size() <= this->consequent.id()){
+src/HornClause.cpp:63:    subterms.resize(this->consequent.id() + 1);
+src/HornClause.cpp:68:  subterms.set(this->consequent.id(), this->consequent);
+src/HornClause.cpp:69:  subterms.set(lhs.id(), lhs);
+src/HornClause.cpp:70:  subterms.set(rhs.id(), rhs);

@@ -9,7 +9,7 @@
             "type": "cppdbg",
             "request": "launch",
             "program": "${workspaceFolder}/euf_interpolator",
-            "args": [],
+            "args": ["tests/QF_UF/20170829-Rodin/smt6109211130895037835.smt2"],
             "stopAtEntry": false,
             "cwd": "${workspaceFolder}",
             "environment": [],
