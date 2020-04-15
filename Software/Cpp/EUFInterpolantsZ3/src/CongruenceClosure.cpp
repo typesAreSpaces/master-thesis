@@ -1,9 +1,10 @@
 #include "CongruenceClosure.h"
 
-CongruenceClosure::CongruenceClosure(const unsigned & min_id, const z3::expr_vector & subterms,
+CongruenceClosure::CongruenceClosure(const Z3Subterms & subterms,
 				     PredList & pred_list, UnionFindExplain & uf) :
-  min_id(min_id), subterms(subterms), pred_list(pred_list),
-  uf(uf), sig_table(uf){
+  subterms(subterms), pred_list(pred_list),
+  uf(uf), sig_table(uf)
+{
 }
 
 CongruenceClosure::~CongruenceClosure(){

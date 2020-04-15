@@ -1,8 +1,9 @@
 #include "CongruenceClosureDST.h"
 
-CongruenceClosureDST::CongruenceClosureDST(const unsigned & min_id, const z3::expr_vector & subterms,
+CongruenceClosureDST::CongruenceClosureDST(const Z3Subterms & subterms,
 					   PredList & pred_list, UnionFindExplain & uf) :
-  CongruenceClosure(min_id, subterms, pred_list, uf){
+  CongruenceClosure(subterms, pred_list, uf)
+{
 }
 
 CongruenceClosureDST::~CongruenceClosureDST(){

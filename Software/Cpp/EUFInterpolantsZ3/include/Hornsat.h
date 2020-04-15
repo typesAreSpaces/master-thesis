@@ -92,11 +92,11 @@ struct ClassListPos {
 typedef std::vector<std::vector<ClassListPos> > ClassList;
 
 class Hornsat {
-  const z3::expr_vector & subterms;
-  bool                    consistent;
-  unsigned                num_pos, num_hcs, num_literals;
-  std::vector<Literal>    list_of_literals;
-  ClassList               class_list;
+  const Z3Subterms &   subterms;
+  bool                 consistent;
+  unsigned             num_pos, num_hcs, num_literals;
+  std::vector<Literal> list_of_literals;
+  ClassList            class_list;
   // facts is a queue of all the (temporary)
   // literals that have value true
   std::queue<unsigned> facts;

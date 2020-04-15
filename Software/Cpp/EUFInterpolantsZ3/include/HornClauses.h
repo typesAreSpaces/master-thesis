@@ -3,6 +3,7 @@
 #define notInSet(y, x) x.find(y) == x.end()
 
 #include <set>
+#include "Z3Subterms.h"
 #include "HornClause.h"
 #include "Match.h"
 #include "Replacement.h"
@@ -12,8 +13,7 @@ typedef std::set<std::pair<unsigned, unsigned> > SetOfUnsignedPairs;
 class HornClauses {
 
   z3::context &             ctx;
-  unsigned &                min_id;
-  z3::expr_vector &         subterms;
+  Z3Subterms &              subterms;
   std::vector<HornClause *> horn_clauses;
   unsigned                  curr_num_horn_clauses = 0;
   // Match2                           reduced;
@@ -25,7 +25,7 @@ class HornClauses {
   // static void swap(std::vector<A> &, unsigned, unsigned);
   
  public:
-  HornClauses(z3::context &, unsigned &, z3::expr_vector &);
+  HornClauses(z3::context &, Z3Subterms &);
   ~HornClauses();
 
   void                             add(HornClause *);
@@ -33,7 +33,7 @@ class HornClauses {
   unsigned                         size() const;
   const std::vector<HornClause*> & getHornClauses() const;
   HornClause *                     operator[] (unsigned);
-  const z3::expr_vector &          getSubterms() const;
+  const Z3Subterms &               getSubterms() const;
   // void                       getTermsToReplace(z3::expr_vector &);                       // TODO:
   // std::vector<HornClause*>   getReducibleHornClauses();
   friend std::ostream &            operator << (std::ostream &, const HornClauses &);

@@ -7,6 +7,7 @@
 #include <list>
 #include <utility>
 #include <z3++.h>
+#include "Z3Subterms.h"
 #include "UnionFind.h"
 #include "UnionFindExplain.h"
 #include "HornClause.h"
@@ -53,13 +54,12 @@ public:
 class CongruenceClosure {
   friend class Hornsat;
 protected:
-  const unsigned &        min_id;
-  const z3::expr_vector & subterms;
-  PredList &              pred_list;
-  UnionFindExplain &      uf;
-  SignatureTable          sig_table;
+  const Z3Subterms & subterms;
+  PredList &         pred_list;
+  UnionFindExplain & uf;
+  SignatureTable     sig_table;
  public:
-  CongruenceClosure(const unsigned &, const z3::expr_vector &, PredList &, UnionFindExplain &);
+  CongruenceClosure(const Z3Subterms &, PredList &, UnionFindExplain &);
   virtual void buildCongruenceClosure(std::list<unsigned> &) = 0;
   virtual ~CongruenceClosure();
   friend std::ostream & operator << (std::ostream &, const CongruenceClosure &);

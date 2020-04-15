@@ -5,13 +5,13 @@
 #include <list>
 #include <z3++.h>
 #include "UnionFind.h"
+#include "Z3Subterms.h"
 
 class HornClause {
 
   UnionFind &       uf;
   z3::context &     ctx;
-  const unsigned &  min_id;
-  z3::expr_vector & subterms;
+  Z3Subterms &      subterms;
   z3::expr_vector   antecedent;
   z3::expr          consequent;
   PredList &        pred_list;
@@ -23,7 +23,7 @@ class HornClause {
   void        orient();
   
 public:
-  HornClause(UnionFind &, z3::context &, const unsigned &, z3::expr_vector &, z3::expr_vector, z3::expr, PredList &);
+  HornClause(UnionFind &, z3::context &, Z3Subterms &, z3::expr_vector, z3::expr, PredList &);
   ~HornClause();
   
   bool                    checkTriviality();

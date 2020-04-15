@@ -4,6 +4,7 @@
 #include <iostream>
 #include <unordered_map>
 #include <z3++.h>
+#include "Z3Subterms.h"
 #include "CurryNode.h"
 
 class FactoryCurryNodes {
@@ -25,10 +26,10 @@ class FactoryCurryNodes {
   
   unsigned   addExtraNodes(unsigned);
   void       updatePreds(CurryNode *, CurryNode *);
-  void       updateZ3IdNotDefined(const z3::expr_vector &);
+  void       updateZ3IdNotDefinedAndCommon(const Z3Subterms &);
   void       curryficationHelper(z3::expr const &, std::vector<bool> &, IdsToMerge &);
   IdsToMerge curryfication(z3::expr const &);
-  void       flattening(const unsigned &, PendingElements &, PendingPointers &, const z3::expr_vector &);
+  void       flattening(PendingElements &, PendingPointers &, const Z3Subterms &);
   
  public:
   FactoryCurryNodes(const unsigned &, const CurryDeclarations &);

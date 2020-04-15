@@ -97,7 +97,7 @@ void FactoryCurryNodes::updatePreds(CurryNode * from, CurryNode * to){
   return;
 }
 
-void FactoryCurryNodes::updateZ3IdNotDefined(const z3::expr_vector & subterms){
+void FactoryCurryNodes::updateZ3IdNotDefinedAndCommon(const Z3Subterms & subterms){
   for(auto x : hash_table)
     switch(x.second->isDefined()){
       case false:
@@ -164,13 +164,12 @@ IdsToMerge FactoryCurryNodes::curryfication(z3::expr const & e){
   return ids_to_merge;
 }
 
-void FactoryCurryNodes::flattening(const unsigned & min_id,
-    PendingElements & pending_elements,
+void FactoryCurryNodes::flattening(PendingElements & pending_elements,
     PendingPointers & equations_to_merge,
-    const z3::expr_vector & subterms){
+    const Z3Subterms & subterms){
   // Update Z3 Ids
   unsigned max_z3_id = curry_nodes.size();
-  for(unsigned i = min_id; i < max_z3_id; i++)
+  for(unsigned i = 0; i < max_z3_id; i++)
     if(curry_nodes[i] != nullptr)
       curry_nodes[i]->updateZ3Id(i);
 
@@ -197,7 +196,7 @@ void FactoryCurryNodes::flattening(const unsigned & min_id,
 
   // Any curry_node with z3_id_defined == false
   // doesn't match an original z3 id
-  updateZ3IdNotDefined(subterms);
+  updateZ3IdNotDefinedAndCommon(subterms);
 }
 
 std::ostream & operator << (std::ostream & os, const FactoryCurryNodes & fcns){

@@ -1,5 +1,0 @@
-src/FactoryCurryNodes.cpp:173:  for(unsigned i = min_id; i < max_z3_id; i++)
-src/EUFInterpolant.cpp:26:  for(unsigned i = min_id; i < subterms.size(); i++){
-src/EUFInterpolant.cpp:65:  // for(unsigned i = min_id; i < original_num_terms; i++)
-src/EUFInterpolant.cpp:314:  for(unsigned i = euf.min_id; i < num; i++){
-src/Hornsat.cpp:261:  for(unsigned i = cc.min_id; i < num_terms; i++){

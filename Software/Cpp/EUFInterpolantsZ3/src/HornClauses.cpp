@@ -7,8 +7,9 @@
 #define DEBUG_MATCHES            false
 #define DEBUG_DESTRUCTOR_HCS     false
 
-HornClauses::HornClauses(z3::context & ctx, unsigned & min_id, z3::expr_vector & subterms) :
-  ctx(ctx), min_id(min_id), subterms(subterms){
+HornClauses::HornClauses(z3::context & ctx, Z3Subterms & subterms) :
+  ctx(ctx), subterms(subterms)
+{
 }
 
 HornClauses::~HornClauses(){
@@ -119,7 +120,7 @@ HornClause* HornClauses::operator[](unsigned i){
   return horn_clauses[i];
 }
 
-const z3::expr_vector & HornClauses::getSubterms() const {
+const Z3Subterms & HornClauses::getSubterms() const {
   return subterms;
 }
 
@@ -150,7 +151,6 @@ std::ostream & operator << (std::ostream & os, const HornClauses & hcs){
     os << i << ". " << it << " " << *it << std::endl;
     ++i;
   }
-  std::cout << "Min ID: " << hcs.min_id;
 
   return os;
 }

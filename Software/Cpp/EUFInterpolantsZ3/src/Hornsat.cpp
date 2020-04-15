@@ -255,13 +255,15 @@ void Hornsat::congclosure(CongruenceClosure & cc, std::list<unsigned> & pending)
 std::vector<Replacement> Hornsat::satisfiable(CongruenceClosure & cc){
   std::vector<Replacement> ans;
   unsigned clause1 = 0, node = 0, nextnode = 0, u = 0, v = 0;
-  unsigned num_terms = cc.subterms.size();
 
   std::list<unsigned> pending;
-  for(unsigned i = cc.min_id; i < num_terms; i++){
-    if(cc.subterms[i].num_args() > 0)
-      pending.push_back(i);
-  }
+  for(auto it = cc.subterms.begin(); it != cc.subterms.end(); ++it)
+    if((*it).num_args() > 0)
+      pending.push_back(it.getIndex());
+  //for(unsigned i = cc.min_id; i < num_terms; i++){
+    //if(cc.subterms[i].num_args() > 0)
+      //pending.push_back(i);
+  //}
 
 #if DEBUGGING_SATISFIABLE
   std::cout << "satisfiable using a CongruenceClosure" << std::endl;

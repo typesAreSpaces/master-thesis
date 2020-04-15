@@ -7,10 +7,10 @@
 #define DEBUG_PROPAGATE_AUX 0
 #define DEBUG_TEST_EXPLAIN  0
 
-CongruenceClosureExplain::CongruenceClosureExplain(const unsigned & min_id, const z3::expr_vector & subterms,
+CongruenceClosureExplain::CongruenceClosureExplain(const Z3Subterms & subterms,
     PredList & pred_list, UnionFindExplain & uf,
     FactoryCurryNodes & factory_curry_nodes) :
-  CongruenceClosure(min_id, subterms, pred_list, uf), 
+  CongruenceClosure(subterms, pred_list, uf), 
   num_terms(subterms.size()), subterms(subterms), factory_curry_nodes(factory_curry_nodes), ufe(uf),
   pending_elements(), equations_to_merge(), pending_to_propagate(),
   lookup_table(), use_list() 
@@ -20,7 +20,7 @@ CongruenceClosureExplain::CongruenceClosureExplain(const unsigned & min_id, cons
 
   // NOTE: The new constants introduced by flattening are in extra_nodes
   // NOTE2: flattening also fully defines const_id and z3_id for each curry node.
-  factory_curry_nodes.flattening(min_id, pending_elements, equations_to_merge, subterms);
+  factory_curry_nodes.flattening(pending_elements, equations_to_merge, subterms);
 
   // Process input-equations defined by user
   // using the constant ids

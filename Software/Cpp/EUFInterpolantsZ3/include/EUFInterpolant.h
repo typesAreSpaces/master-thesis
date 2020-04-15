@@ -15,49 +15,13 @@ void insert(std::list<T> & l, T element){
 
 typedef std::map<std::string, std::vector<unsigned> > FSymPositions;
 
-struct Z3Subterms {
-  z3::expr_vector subterms;
-  std::vector<bool> visited;
-  
-  Z3Subterms(z3::context & ctx) : subterms(ctx), visited() {}
-
-  class iterator {
-    const Z3Subterms * m_subterms;
-    unsigned m_index;
-    public:
-    iterator(const Z3Subterms * s, unsigned i): m_subterms(s), m_index(i) {}
-    iterator operator=(const iterator & other) {
-      m_subterms = other.m_subterms;
-      m_index = other.m_index;
-      return *this;
-    }
-    bool operator==(const iterator & other) const { 
-      return other.m_index == m_index;
-    }
-    bool operator!=(const iterator & other) const { 
-      return other.m_index != m_index;
-    }
-    iterator & operator++() {
-      ++m_index;
-      return *this;
-    }
-    z3::expr operator*() const {
-      return (m_subterms->subterms)[m_index];
-    }
-  };
-
-  iterator begin() const { return iterator(this, 0); }
-  iterator end() const { return iterator(this, subterms.size()); }
-};
-
 class EUFInterpolant {
   
-  unsigned min_id;
   unsigned original_num_terms;
   
   z3::context &   ctx;
   // Note: elements below min_id are undefined
-  z3::expr_vector subterms;
+  Z3Subterms subterms;
   z3::expr        contradiction;
   z3::expr_vector disequalities;
   
@@ -69,7 +33,7 @@ class EUFInterpolant {
   CurryDeclarations curry_decl;  
   FactoryCurryNodes factory_curry_nodes;
 
-  void            init(z3::expr const &, unsigned &, std::vector<bool> &);
+  void            init(z3::expr const &);
   void            initPredList(z3::expr const &);
   void            processEqs(z3::expr const &);
   void            processEqs(z3::expr const &, CongruenceClosureNO &);

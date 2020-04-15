@@ -6,29 +6,28 @@
 #define DEBUG_INIT           1
 
 EUFInterpolant::EUFInterpolant(z3::expr const & input_formula) :
-  min_id(input_formula.id()), original_num_terms(input_formula.id() + 1),
+  original_num_terms(input_formula.id() + 1),
   ctx(input_formula.ctx()), subterms(ctx), contradiction(ctx.bool_val(false)), disequalities(ctx),
-  fsym_positions(), uf(input_formula.id() + 1), pred_list(), horn_clauses(ctx, min_id, subterms),
+  fsym_positions(), uf(input_formula.id() + 1), pred_list(), horn_clauses(ctx, subterms),
   curry_decl(), factory_curry_nodes(original_num_terms, curry_decl)
 {        
 
-  std::vector<bool> visited(original_num_terms, false);
-  subterms.resize(original_num_terms);
+  subterms .resize(original_num_terms);
   pred_list.resize(original_num_terms);
 
-  // The following defines min_id, visited,
+  // The following defines: 
   // subterms, disequalities, fsym_positions,
   // and curry_decl
-  init(input_formula, min_id, visited);
+  init(input_formula);
 
   // FIX: There is a gap between the actual min_id.
-#if 1
-  for(unsigned i = min_id; i < subterms.size(); i++){
-    subterms[i];
+#if 0 
+  for(auto it = subterms.begin(); it != subterms.end(); ++it){
+    std::cout << *it << std::endl;
   }      
 #endif 
 
-  CongruenceClosureExplain cc(min_id, subterms, pred_list, uf, factory_curry_nodes);
+  CongruenceClosureExplain cc(subterms, pred_list, uf, factory_curry_nodes);
 
   // Testing
   //cc.giveExplanation(std::cout, subterms[5], subterms[11]);
@@ -117,19 +116,17 @@ EUFInterpolant::~EUFInterpolant(){
 #endif
 }
 
-void EUFInterpolant::init(z3::expr const & e, unsigned & min_id, std::vector<bool> & visited){
+void EUFInterpolant::init(z3::expr const & e){
   if(e.is_app()){
-    if(e.id() < min_id)
-      min_id = e.id();
-    if(visited[e.id()])
+    if(subterms.visited[e.id()])
       return;
 
-    visited[e.id()] = true;
-    subterms.set(e.id(), (z3::expr&) e);
+    subterms.visited[e.id()] = true;
+    subterms.set(e.id(), e);
 
     unsigned num = e.num_args();
     for(unsigned i = 0; i < num; i++)
-      init(e.arg(i), min_id, visited);
+      init(e.arg(i));
 
     z3::func_decl f = e.decl();
     if(curry_decl[f.id()] == nullptr)
@@ -227,7 +224,7 @@ void EUFInterpolant::disequalitiesToHCS(){
   for(unsigned i = 0; i < num_disequalities; i++){
     z3::expr_vector hc_body(ctx);
     hc_body.push_back(repr(disequalities[i].arg(0)) == repr(disequalities[i].arg(1)));
-    horn_clauses.add(new HornClause(uf, ctx, min_id, subterms, hc_body, contradiction, pred_list));
+    horn_clauses.add(new HornClause(uf, ctx, subterms, hc_body, contradiction, pred_list));
   }
 }
 
@@ -242,7 +239,7 @@ void EUFInterpolant::exposeUncommons(){
           if(!t1.is_common() || !t2.is_common()){
             z3::expr_vector hc_body = buildHCBody(t1, t2);
             z3::expr        hc_head = repr(t1) == repr(t2);
-            horn_clauses.add(new HornClause(uf, ctx, min_id, subterms, hc_body, hc_head, pred_list));
+            horn_clauses.add(new HornClause(uf, ctx, subterms, hc_body, hc_head, pred_list));
           }
         }
   }
@@ -309,15 +306,17 @@ z3::expr EUFInterpolant::buildInterpolant(std::vector<Replacement> replacements)
 }
 
 std::ostream & operator << (std::ostream & os, EUFInterpolant & euf){
-  unsigned num = euf.original_num_terms, num_changes = 0;
+  unsigned num_changes = 0;
   os << "All the original subterms:" << std::endl;
-  for(unsigned i = euf.min_id; i < num; i++){
-    os << i << ". "
-      << ((i == euf.uf.find(i)) ? "(Same)" : "(Different)")
-      << " Original: " << euf.subterms[i]
-      << " Representative " << euf.subterms[euf.uf.find(euf.subterms[i].id())] 
+
+  for(auto it = euf.subterms.begin(); it != euf.subterms.end(); ++it){
+    unsigned index = (*it).id();
+    os << index << ". "
+      << ((index == euf.uf.find(index)) ? "(Same)" : "(Different)")
+      << " Original: " << euf.subterms[index]
+      << " Representative " << euf.subterms[euf.uf.find(euf.subterms[index].id())] 
       << std::endl;
-    if(i != euf.uf.find(i))
+    if(index != euf.uf.find(index))
       num_changes++;
   }
 

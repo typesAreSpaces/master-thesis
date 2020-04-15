@@ -3,6 +3,7 @@
 
 #include <map>
 #include <set>
+#include "Z3Subterms.h"
 #include "CongruenceClosure.h"
 #include "FactoryCurryNodes.h"
 
@@ -54,10 +55,10 @@ class CongruenceClosureExplain : public CongruenceClosure {
 
   friend class Hornsat;
 
-  unsigned                num_terms;
-  const z3::expr_vector & subterms;
-  FactoryCurryNodes &     factory_curry_nodes;
-  UnionFindExplain &      ufe;
+  unsigned            num_terms;
+  const Z3Subterms &  subterms;
+  FactoryCurryNodes & factory_curry_nodes;
+  UnionFindExplain &  ufe;
 
   PendingElements pending_elements;
   PendingPointers equations_to_merge;
@@ -75,7 +76,7 @@ class CongruenceClosureExplain : public CongruenceClosure {
   void    explainAlongPath(EqClass, EqClass, UnionFind &, ExplainEquations &, PendingPointers &);
 
   public:
-  CongruenceClosureExplain(const unsigned &, const z3::expr_vector &,
+  CongruenceClosureExplain(const Z3Subterms &,
       PredList &, UnionFindExplain &, FactoryCurryNodes &);
   void buildCongruenceClosure(std::list<EqClass> &);
   void merge(const EquationCurryNodes &);

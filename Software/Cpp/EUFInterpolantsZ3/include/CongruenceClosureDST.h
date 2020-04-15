@@ -6,7 +6,7 @@
 class CongruenceClosureDST : public CongruenceClosure {
   friend class Hornsat;
  public:
-  CongruenceClosureDST(const unsigned &, const z3::expr_vector &, PredList &, UnionFindExplain &);
+  CongruenceClosureDST(const Z3Subterms &, PredList &, UnionFindExplain &);
   void buildCongruenceClosure(std::list<unsigned> &);
   ~CongruenceClosureDST();
   friend std::ostream & operator << (std::ostream &, const CongruenceClosureDST &);
