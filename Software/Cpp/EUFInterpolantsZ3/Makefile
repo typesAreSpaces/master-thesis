@@ -34,7 +34,7 @@ $(ODIR)/%.o: $(SDIR)/%.cpp $(DEPS)
 	$(CC) -g -c -o $@ $(FLAGS) $<
 
 .PHONY: tests/qf_uf_processing_test
-tests/qf_uf_processing_test:
+tests/qf_uf_processing_test: $(OBJS)
 	$(CC) -g -c -o ./$@.o $(FLAGS) ./$@.cpp
 	$(CC) -g -o $@ $(OBJS) $(Z3DIR)/build/libz3.$(Z3EXT) ./$@.o -lpthread
 	rm -rf ./$@.o
