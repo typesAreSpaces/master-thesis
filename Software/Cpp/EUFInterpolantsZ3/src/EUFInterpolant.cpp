@@ -47,33 +47,6 @@ EUFInterpolant::EUFInterpolant(z3::expr const & input_formula) :
   }
 #endif
 
-  // // *************************************************************************
-  // // -------------------------------------------------------------------------
-  // //                       -----------                    ----
-  // // The following defines |pred_list|. After this point, |uf| is fully defined.
-  // //                       -----------                    ----
-  // processEqs(input_formula);
-  // // ----------------------------------------------------
-  // // The following sets up a
-  // // --------------------
-  // // |congruence closure| data structure
-  // // --------------------
-  // CongruenceClosureDST cc(min_id, subterms, pred_list, uf);
-  // std::list<unsigned> pending;
-
-  // for(unsigned i = min_id; i < original_num_terms; i++)
-  //   if(subterms[i].num_args() > 0)
-  //     pending.push_back(i);
-  // cc.buildCongruenceClosure(pending);
-  // assert(pending.empty());
-  // // ----------------------------------------------------
-  // // *************************************************************************
-
-  // GOAL: Implement CongruenceClosureExplain
-  // and test itv
-
-
-
   // // Converting disequalities to Horn Clauses
   // disequalitiesToHCS();
 

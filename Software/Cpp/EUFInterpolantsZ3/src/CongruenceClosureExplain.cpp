@@ -1,7 +1,7 @@
 #include "CongruenceClosureExplain.h"
 #include <z3++.h>
 
-#define DEBUG_SANITY_CHECK  1
+#define DEBUG_SANITY_CHECK  0
 #define DEBUG_MERGE         0
 #define DEBUG_PROPAGATE     0
 #define DEBUG_PROPAGATE_AUX 0
@@ -46,14 +46,9 @@ CongruenceClosureExplain::CongruenceClosureExplain(const Z3Subterms & subterms,
   merge();
   propagate();
 
-#if DEBUG_TEST_EXPLAIN
-  giveExplanation(std::cout, subterms[5], subterms[8]); 
-  giveZ3Explanation(std::cout, subterms[5], subterms[8]); 
-#endif
-
 #if DEBUG_SANITY_CHECK
-  //std::cout << uf << std::endl;
-  //std::cout << factory_curry_nodes << std::endl;
+  std::cout << uf << std::endl;
+  std::cout << factory_curry_nodes << std::endl;
 #endif
 }
 

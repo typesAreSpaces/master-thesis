@@ -29,19 +29,21 @@ all: tests/qf_uf_processing_test
 $(ODIR)/%.o: $(SDIR)/%.cpp $(DEPS)
 	$(CC) -g -c -o $@ $(FLAGS) $<
 
+.PHONY: tests/cong_closure_expl_test
+tests/cong_closure_expl_test: $(OBJS)
+	$(CC) -g -c -o tests/TestCongruenceClosureExplain.o $(FLAGS) tests/TestCongruenceClosureExplain.cpp
+	$(CC) -g -c -o ./$@.o $(FLAGS) ./$@.cpp
+	$(CC) -g -o $@ $(OBJS) tests/TestCongruenceClosureExplain.o ./$@.o -lpthread
+	./$@
+	rm -rf tests/*.o $@
+
 .PHONY: tests/qf_uf_processing_test
 tests/qf_uf_processing_test: $(OBJS)
+	$(CC) -g -c -o tests/TestCongruenceClosureExplain.o $(FLAGS) tests/TestCongruenceClosureExplain.cpp
 	$(CC) -g -c -o ./$@.o $(FLAGS) ./$@.cpp
-	$(CC) -g -o $@ $(OBJS) ./$@.o -lpthread
-	rm -rf ./$@.o
+	$(CC) -g -o $@ $(OBJS) tests/TestCongruenceClosureExplain.o ./$@.o -lpthread
 	./$@.sh
-	rm -rf $@
-
-.PHONY: tests/old_general_test
-tests/old_general_test:
-	$(CC) -g -c -o ./$@.o $(FLAGS) ./$@.cpp
-	$(CC) -g -o $@ $(OBJS) ./$@.o -lpthread
-	rm -rf ./$@.o
+	rm -rf tests/*.o $@
 
 valgrind_run: euf_interpolator
 	valgrind --log-file="euf_interpolator.txt" ./euf_interpolator
