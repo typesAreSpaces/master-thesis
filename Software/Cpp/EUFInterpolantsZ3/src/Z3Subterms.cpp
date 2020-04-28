@@ -24,7 +24,7 @@ void Z3Subterms::set(unsigned index, const z3::expr & e) {
 }
 
 z3::expr Z3Subterms::operator[](unsigned i) const {
-  if(visited[i])
+  if(i < visited.size() && visited[i])
     return subterms[i];
   throw "Element not defined";
 }

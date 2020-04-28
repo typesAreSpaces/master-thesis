@@ -24,7 +24,7 @@ SRC = $(wildcard $(SDIR)/*.cpp)
 OBJS = $(patsubst $(SDIR)/%.cpp, $(ODIR)/%.o, $(SRC)) $(Z3DIR)/build/libz3.$(Z3EXT) 
 DEPS = $(wildcard $(IDIR)/*.h)
 
-all: tests/qf_uf_processing_test
+all: tests/cong_closure_expl_test
 
 $(ODIR)/%.o: $(SDIR)/%.cpp $(DEPS)
 	$(CC) -g -c -o $@ $(FLAGS) $<

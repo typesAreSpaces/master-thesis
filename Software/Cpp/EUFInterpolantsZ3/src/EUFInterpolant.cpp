@@ -279,23 +279,5 @@ z3::expr EUFInterpolant::buildInterpolant(std::vector<Replacement> replacements)
 }
 
 std::ostream & operator << (std::ostream & os, EUFInterpolant & euf){
-  unsigned num_changes = 0;
-  os << "All the original subterms:" << std::endl;
-
-  for(auto it = euf.subterms.begin(); it != euf.subterms.end(); ++it){
-    unsigned index = (*it).id();
-    os << index << ". "
-      << ((index == euf.uf.find(index)) ? "(Same)" : "(Different)")
-      << " Original: " << euf.subterms[index]
-      << " Representative " << euf.subterms[euf.uf.find(euf.subterms[index].id())] 
-      << std::endl;
-    if(index != euf.uf.find(index))
-      num_changes++;
-  }
-
-  os << "Horn clauses produced:" << std::endl;
-  for(HornClause * x : euf.horn_clauses.getHornClauses())
-    os << *x << std::endl;
-  os << "Number of differences between term and its representative: " << num_changes;
   return os;
 }

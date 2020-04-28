@@ -49,7 +49,8 @@ std::ostream & operator << (std::ostream & os, TestCongruenceClosureExplain & te
       os << index << ". "
         << ((index == test.uf.find(index)) ? "(Same)" : "(Different)")
         << " Original: " << test.subterms[index]
-        << " Representative " << test.subterms[test.uf.find(test.subterms[index].id())] // ISSUE:
+        << " Representative position: " << test.uf.find(test.subterms[index].id())
+        << " Representative " << test.subterms[test.uf.find(test.subterms[index].id())] // ISSUE: 
         << std::endl;
       if(index != test.uf.find(index))
         num_changes++;
@@ -59,8 +60,6 @@ std::ostream & operator << (std::ostream & os, TestCongruenceClosureExplain & te
       os << test.subterms[index].id() << std::endl;
       os << test.subterms.size() << std::endl;
       os << test.uf.find(test.subterms[index].id()) << std::endl;
-      //unsigned stop;
-      //std::cin >> stop;
     }
   }
 
