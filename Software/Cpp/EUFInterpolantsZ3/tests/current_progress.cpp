@@ -16,8 +16,13 @@ void currentProgress(){
   z3::expr h = ctx.constant("h", my_sort);
   z3::func_decl f = ctx.function("f", my_sort, my_sort, my_sort);
   z3::expr input = f(g, h) == d && c == d && f(g, d) == a && e == c && e == b && b == h;
-
-  EUFInterpolant test(input);
+  
+  try {
+    EUFInterpolant test(input);
+  }
+  catch(char const * e){
+    std::cout << e << std::endl;
+  }
 
   return;
 }
