@@ -68,7 +68,7 @@ CurryNode * FactoryCurryNodes::getCurryNodeById(unsigned i) const {
 }
 
 const unsigned FactoryCurryNodes::size() const {
-  return curry_nodes.size() + extra_nodes.size();
+  return curry_nodes.size();
 }
 
 const unsigned FactoryCurryNodes::uniqueSize() const {
@@ -76,9 +76,9 @@ const unsigned FactoryCurryNodes::uniqueSize() const {
 }
 
 unsigned FactoryCurryNodes::addExtraNodes(unsigned num){
-  unsigned last_node_pos = extra_nodes.size(),
+  unsigned last_node_pos = curry_nodes.size(),
            new_last_node_pos = last_node_pos + num;
-  extra_nodes.resize(new_last_node_pos);
+  curry_nodes.resize(new_last_node_pos);
   return new_last_node_pos;
 }
 
@@ -107,7 +107,10 @@ void FactoryCurryNodes::updateZ3IdNotDefinedAndCommon(const Z3Subterms & subterm
         x.second->updateZ3Id(x.second->getId());
         break;
       case true:
-        x.second->updateCommon(subterms[x.second->getZ3Id()].is_common()); 
+        // KEEP: just check this is not wrong
+        // I think it is
+        if(x.second->getZ3Id() < subterms.size())
+          x.second->updateCommon(subterms[x.second->getZ3Id()].is_common()); 
         break;
     }
   return;
@@ -126,23 +129,23 @@ void FactoryCurryNodes::curryficationHelper(z3::expr const & e, std::vector<bool
 
     // Update curry_nodes
     if(num > 0){
-      unsigned last_node_pos = extra_nodes.size();
+      unsigned last_node_pos = curry_nodes.size();
       unsigned new_last_node_pos = addExtraNodes(num);
 
       // Case for first argument
-      extra_nodes[last_node_pos] =
-        newCurryNode(last_node_pos + num_terms,
+      curry_nodes[last_node_pos] =
+        newCurryNode(last_node_pos,
             "apply",
             curry_decl.at(f.id()),
             curry_nodes[e.arg(0).id()]);
       // Case for the rest of the arguments
       for(unsigned i = 1; i < num; i++)
-        extra_nodes[last_node_pos + i] =
-          newCurryNode(last_node_pos + i + num_terms,
+        curry_nodes[last_node_pos + i] =
+          newCurryNode(last_node_pos + i,
               "apply",
-              extra_nodes[last_node_pos + i - 1],
+              curry_nodes[last_node_pos + i - 1],
               curry_nodes[e.arg(i).id()]);
-      curry_nodes[e.id()] = extra_nodes[new_last_node_pos - 1];
+      curry_nodes[e.id()] = curry_nodes[new_last_node_pos - 1];
       // TODO: Add id_table info here
     }
     else{
@@ -183,12 +186,12 @@ void FactoryCurryNodes::flattening(PendingElements & pending_elements,
     auto cur_curry_node = to_replace.back();
     to_replace.pop_back();
 
-    unsigned last_node_pos = extra_nodes.size();
-    extra_nodes.push_back(newCurryNode(last_node_pos + num_terms,
-          FRESH_PREFIX + std::to_string(last_node_pos + num_terms),
+    unsigned last_node_pos = curry_nodes.size();
+    curry_nodes.push_back(newCurryNode(last_node_pos,
+          FRESH_PREFIX + std::to_string(last_node_pos),
           nullptr, nullptr));
-    CurryNode * new_constant = extra_nodes[last_node_pos];
-    cur_curry_node->updateConstId(last_node_pos + num_terms);
+    CurryNode * new_constant = curry_nodes[last_node_pos];
+    cur_curry_node->updateConstId(last_node_pos);
     // Update z3 id only if the index matches an actual
     // z3 terms (inside subterms)
     if(cur_curry_node->getZ3Id() < max_z3_id)

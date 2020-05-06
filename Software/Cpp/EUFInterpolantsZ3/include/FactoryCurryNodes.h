@@ -18,7 +18,6 @@ class FactoryCurryNodes {
   const unsigned & num_terms;
   
   VectorCurryNode           curry_nodes;
-  VectorCurryNode           extra_nodes;
   const CurryDeclarations & curry_decl;
   CurryPreds                curry_predecessors;
   std::list<CurryNode *>    to_replace;

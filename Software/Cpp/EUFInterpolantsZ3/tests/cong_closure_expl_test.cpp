@@ -88,10 +88,9 @@ int main(int argc, char ** argv){
   
   //testCongClosureExpl();
   //testCongClosureExpl2();
-  //testCongClosureExpl3();
+  testCongClosureExpl3();
   //testCongClosureExpl4();
-  
-  testCongClosureExpl5();
+  //testCongClosureExpl5();
 
   return 0;
 }

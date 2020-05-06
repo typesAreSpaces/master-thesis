@@ -99,5 +99,7 @@ std::ostream & operator << (std::ostream & os, TestCongruenceClosureExplain & te
     }
   }
 
+  std::cout << "Number of changes: " << num_changes << std::endl;
+
   return os;
 }

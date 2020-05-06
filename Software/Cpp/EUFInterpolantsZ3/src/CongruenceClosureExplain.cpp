@@ -18,8 +18,7 @@ CongruenceClosureExplain::CongruenceClosureExplain(const Z3Subterms & subterms,
 
   auto ids_to_merge = factory_curry_nodes.curryfication(subterms[num_terms - 1]);
 
-  // NOTE: The new constants introduced by flattening are in extra_nodes
-  // NOTE2: flattening also fully defines const_id and z3_id for each curry node.
+  // NOTE: flattening also fully defines const_id and z3_id for each curry node.
   factory_curry_nodes.flattening(pending_elements, equations_to_merge, subterms);
 
   // Process input-equations defined by user
@@ -31,7 +30,7 @@ CongruenceClosureExplain::CongruenceClosureExplain(const Z3Subterms & subterms,
   }
 
   // There is an element in uf for each element
-  // in the curry_nodes and extra_nodes. There
+  // in the curry_nodes. There
   // might be repeated elements in these collection
   // but they are unique pointers
   ufe     .resize(factory_curry_nodes.size());
