@@ -14,7 +14,6 @@ class FactoryCurryNodes {
   std::hash<std::string>                      string_hasher;
   std::hash<CurryNode*>                       curry_hasher;
   std::unordered_map<std::size_t, CurryNode*> hash_table;
-  VectorCurryNode                             id_table;
   
   const unsigned & num_terms;
   

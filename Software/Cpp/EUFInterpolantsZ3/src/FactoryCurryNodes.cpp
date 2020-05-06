@@ -27,9 +27,6 @@ CurryNode * FactoryCurryNodes::newCurryNode(unsigned id, std::string func_name,
   else{
     //CurryNode * new_element = new CurryNode(id, func_name, left, right, is_common);
     CurryNode * new_element = new CurryNode(id, func_name, left, right);
-    if(id_table.size() <= id)
-      id_table.resize(id + 1);
-    id_table[id] = new_element;
     hash_table[index] = new_element;
     if(left)
       curry_predecessors[left].emplace_back(*new_element, LHS);
@@ -66,7 +63,7 @@ CurryNode * FactoryCurryNodes::constantCurryNode(unsigned index){
 
 CurryNode * FactoryCurryNodes::getCurryNodeById(unsigned i) const {
   if(i < size())
-    return id_table[i];
+    return curry_nodes[i];
   throw "Error: out of bounds in FactoryCurryNodes::getCurryNodeById";
 }
 
