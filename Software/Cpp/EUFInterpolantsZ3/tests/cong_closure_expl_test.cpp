@@ -24,6 +24,7 @@ void testCongClosureExpl2(){
   z3::func_decl g = ctx.function("g", my_sort, my_sort, my_sort, my_sort);
   z3::func_decl h = ctx.function("h", my_sort, my_sort);
   z3::expr input = g(a, h(b), b) == b && g(a, h(b), h(b)) == h(b) && g(a, h(b), h(h(b))) == h(h(b));
+
   TestCongruenceClosureExplain test(input);
   std::cout << test << std::endl;
   return;
@@ -37,6 +38,7 @@ void testCongClosureExpl3(){
   z3::func_decl g = ctx.function("g", my_sort, my_sort, my_sort, my_sort);
   z3::func_decl h = ctx.function("h", my_sort, my_sort);
   z3::expr input = g(a, h(b), b) == b && g(a, h(b), h(b)) == h(b) && g(a, h(b), h(h(b))) == h(h(b)) && h(b) == b;
+
   TestCongruenceClosureExplain test(input);
   std::cout << test << std::endl;
   return;
@@ -50,6 +52,7 @@ void testCongClosureExpl4(){
   z3::func_decl g = ctx.function("g", my_sort, my_sort, my_sort, my_sort);
   z3::func_decl h = ctx.function("h", my_sort, my_sort);
   z3::expr input = g(a, h(b), b) == g(b, h(b), h(b)) && h(b) == b && a == b;
+
   TestCongruenceClosureExplain test(input);
   std::cout << test << std::endl;
   return;
@@ -67,16 +70,27 @@ void testCongClosureExpl5(){
   z3::expr h = ctx.constant("h", my_sort);
   z3::func_decl f = ctx.function("f", my_sort, my_sort, my_sort);
   z3::expr input = f(g, h) == d && c == d && f(g, d) == a && e == c && e == b && b == h;
+
   TestCongruenceClosureExplain test(input);
+  std::cout << test << std::endl;
+  //std::cout << test.consistencyCheck(input) << std::endl;
+  //test.testExplanation(5);
+
   return;
 }
 
 int main(int argc, char ** argv){
 
-  testCongClosureExpl();
-  testCongClosureExpl2();
-  testCongClosureExpl3();
-  testCongClosureExpl4();
+  // Current observation: Since the init method
+  // doesn't process inequalities, we cannot 
+  // reach unsat in QF_UF. Hence, we cannot 
+  // check that a formula has false as representative.
+  
+  //testCongClosureExpl();
+  //testCongClosureExpl2();
+  //testCongClosureExpl3();
+  //testCongClosureExpl4();
+  
   testCongClosureExpl5();
 
   return 0;

@@ -64,6 +64,12 @@ CurryNode * FactoryCurryNodes::constantCurryNode(unsigned index){
   return element;
 }
 
+CurryNode * FactoryCurryNodes::getCurryNodeById(unsigned i) const {
+  if(i < size())
+    return id_table[i];
+  throw "Error: out of bounds in FactoryCurryNodes::getCurryNodeById";
+}
+
 const unsigned FactoryCurryNodes::size() const {
   return curry_nodes.size() + extra_nodes.size();
 }
@@ -140,9 +146,12 @@ void FactoryCurryNodes::curryficationHelper(z3::expr const & e, std::vector<bool
               extra_nodes[last_node_pos + i - 1],
               curry_nodes[e.arg(i).id()]);
       curry_nodes[e.id()] = extra_nodes[new_last_node_pos - 1];
+      // TODO: Add id_table info here
     }
-    else
+    else{
       curry_nodes[e.id()] = curry_decl.at(f.id());
+      // TODO: Add id_table info here
+    } 
 
     switch(f.decl_kind()){
       case Z3_OP_EQ:

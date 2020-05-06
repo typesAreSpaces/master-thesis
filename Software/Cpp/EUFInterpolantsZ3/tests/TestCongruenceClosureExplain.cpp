@@ -39,18 +39,54 @@ void TestCongruenceClosureExplain::init(z3::expr const & e){
   throw "Problem @ EUFInterpolant::init. The expression e is not an application term.";
 }
 
+bool TestCongruenceClosureExplain::consistencyCheck(z3::expr const & e){
+
+  z3::solver s(ctx);
+  s.add(e);
+
+  switch(s.check()){
+    case z3::sat:
+      std::cout << "This problem is sat" << std::endl;
+      break;
+    case z3::unsat:
+      std::cout << "This problem is unsat" << std::endl;
+      break;
+    case z3::unknown:
+      std::cout << "This problem is unknown" << std::endl;
+      break;
+  }
+
+  return true;
+}
+
+void TestCongruenceClosureExplain::testExplanation(unsigned n){
+  for(auto it = subterms.begin(); it != subterms.end(); ++it){
+    unsigned index = (*it).id();
+    if(index != uf.find(index)){
+      n--;
+      // TODO: Test explanation of nodes at index, uf.find(index)
+      subterms[index];
+      if(n == 0)
+        return;
+    }
+  }
+}
+
 std::ostream & operator << (std::ostream & os, TestCongruenceClosureExplain & test) {
   unsigned num_changes = 0;
   os << "All the original subterms:" << std::endl;
+  os << test.subterms.size() << std::endl;
 
   for(auto it = test.subterms.begin(); it != test.subterms.end(); ++it){
     unsigned index = (*it).id();
     try {
+      unsigned repr_index = test.uf.find(test.subterms[index].id());
       os << index << ". "
         << ((index == test.uf.find(index)) ? "(Same)" : "(Different)")
         << " Original: " << test.subterms[index]
-        << " Representative position: " << test.uf.find(test.subterms[index].id())
-        << " Representative " << test.subterms[test.uf.find(test.subterms[index].id())] // ISSUE: 
+        << " Representative position: " << repr_index
+        << " Representative " << test.subterms[repr_index] // ISSUE
+        << " Representative " << test.factory_curry_nodes.getCurryNodeById(repr_index) // ISSUE
         << std::endl;
       if(index != test.uf.find(index))
         num_changes++;

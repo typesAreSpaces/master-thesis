@@ -1,0 +1,219 @@
+g++ -g -c -o ./tests/current_progress.o -I./src -I./include -std=c++11 -Wall ./tests/current_progress.cpp
+g++ -g -o tests/current_progress  ./obj/Match.o  ./obj/Rename.o  ./obj/Z3Subterms.o  ./obj/UnionFindExplain.o  ./obj/HornClause.o  ./obj/CongruenceClosureNO.o  ./obj/Hornsat.o  ./obj/CongruenceClosureDST.o  ./obj/EUFInterpolant.o  ./obj/CurryNode.o  ./obj/CongruenceClosure.o  ./obj/UnionFind.o  ./obj/FactoryCurryNodes.o  ./obj/HornClauses.o  ./obj/CongruenceClosureExplain.o /home/jose/Documents/GithubProjects/z3__/build/libz3.so  ./tests/current_progress.o -lpthread
+./tests/current_progress
+Print factory_curry_nodes
+ * 74(Z3 id: 24|is common: false|Const id: 74)(Defined). fresh_74
+
+ * 73(Z3 id: 73|is common: false|Const id: 73)(Defined). fresh_73
+
+ * 72(Z3 id: 23|is common: false|Const id: 72)(Defined). fresh_72
+
+ * 71(Z3 id: 71|is common: false|Const id: 71)(Defined). fresh_71
+
+ * 70(Z3 id: 22|is common: false|Const id: 70)(Defined). fresh_70
+
+ * 61(Z3 id: 16|is common: false|Const id: 61)(Defined). fresh_61
+
+ * 58(Z3 id: 58|is common: false|Const id: 58)(Defined). fresh_58
+
+ * 57(Z3 id: 17|is common: false|Const id: 57)(Defined). fresh_57
+
+ * 56(Z3 id: 56|is common: false|Const id: 56)(Defined). fresh_56
+
+ * 55(Z3 id: 14|is common: false|Const id: 55)(Defined). fresh_55
+
+ * 62(Z3 id: 18|is common: false|Const id: 62)(Defined). fresh_62
+
+ * 25(Z3 id: 25|is common: false|Const id: 58)(Defined). apply
+ Left
+  18(Z3 id: 18|is common: false|Const id: 18)(Defined). f
+ Right
+  10(Z3 id: 10|is common: false|Const id: 10)(Defined). g
+
+ * 63(Z3 id: 63|is common: false|Const id: 63)(Defined). fresh_63
+
+ * 19(Z3 id: 19|is common: false|Const id: 19)(Defined). =
+
+ * 35(Z3 id: 35|is common: false|Const id: 60)(Defined). apply
+ Left
+  19(Z3 id: 19|is common: false|Const id: 19)(Defined). =
+ Right
+  59(Z3 id: 15|is common: false|Const id: 59)(Defined). fresh_59
+
+ * 5(Z3 id: 5|is common: false|Const id: 5)(Defined). a
+
+ * 68(Z3 id: 21|is common: false|Const id: 68)(Defined). fresh_68
+
+ * 64(Z3 id: 19|is common: false|Const id: 64)(Defined). fresh_64
+
+ * 39(Z3 id: 39|is common: false|Const id: 53)(Defined). apply
+ Left
+  19(Z3 id: 19|is common: false|Const id: 19)(Defined). =
+ Right
+  9(Z3 id: 9|is common: false|Const id: 9)(Defined). e
+
+ * 6(Z3 id: 6|is common: false|Const id: 6)(Defined). b
+
+ * 11(Z3 id: 11|is common: false|Const id: 11)(Defined). h
+
+ * 20(Z3 id: 20|is common: false|Const id: 20)(Defined). and
+
+ * 18(Z3 id: 18|is common: false|Const id: 18)(Defined). f
+
+ * 30(Z3 id: 17|is common: false|Const id: 57)(Defined). apply
+ Left
+  56(Z3 id: 56|is common: false|Const id: 56)(Defined). fresh_56
+ Right
+  8(Z3 id: 8|is common: false|Const id: 8)(Defined). d
+
+ * 67(Z3 id: 67|is common: false|Const id: 67)(Defined). fresh_67
+
+ * 27(Z3 id: 27|is common: false|Const id: 63)(Defined). apply
+ Left
+  19(Z3 id: 19|is common: false|Const id: 19)(Defined). =
+ Right
+  62(Z3 id: 18|is common: false|Const id: 62)(Defined). fresh_62
+
+ * 8(Z3 id: 8|is common: false|Const id: 8)(Defined). d
+
+ * 7(Z3 id: 7|is common: false|Const id: 7)(Defined). c
+
+ * 42(Z3 id: 22|is common: false|Const id: 70)(Defined). apply
+ Left
+  69(Z3 id: 69|is common: false|Const id: 69)(Defined). fresh_69
+ Right
+  55(Z3 id: 14|is common: false|Const id: 55)(Defined). fresh_55
+
+ * 26(Z3 id: 18|is common: false|Const id: 62)(Defined). apply
+ Left
+  58(Z3 id: 58|is common: false|Const id: 58)(Defined). fresh_58
+ Right
+  11(Z3 id: 11|is common: false|Const id: 11)(Defined). h
+
+ * 9(Z3 id: 9|is common: false|Const id: 9)(Defined). e
+
+ * 41(Z3 id: 41|is common: false|Const id: 69)(Defined). apply
+ Left
+  20(Z3 id: 20|is common: false|Const id: 20)(Defined). and
+ Right
+  68(Z3 id: 21|is common: false|Const id: 68)(Defined). fresh_68
+
+ * 31(Z3 id: 31|is common: false|Const id: 65)(Defined). apply
+ Left
+  20(Z3 id: 20|is common: false|Const id: 20)(Defined). and
+ Right
+  64(Z3 id: 19|is common: false|Const id: 64)(Defined). fresh_64
+
+ * 53(Z3 id: 53|is common: false|Const id: 53)(Defined). fresh_53
+
+ * 34(Z3 id: 15|is common: false|Const id: 59)(Defined). apply
+ Left
+  58(Z3 id: 58|is common: false|Const id: 58)(Defined). fresh_58
+ Right
+  8(Z3 id: 8|is common: false|Const id: 8)(Defined). d
+
+ * 36(Z3 id: 16|is common: false|Const id: 61)(Defined). apply
+ Left
+  60(Z3 id: 60|is common: false|Const id: 60)(Defined). fresh_60
+ Right
+  5(Z3 id: 5|is common: false|Const id: 5)(Defined). a
+
+ * 54(Z3 id: 13|is common: false|Const id: 54)(Defined). fresh_54
+
+ * 37(Z3 id: 37|is common: false|Const id: 67)(Defined). apply
+ Left
+  20(Z3 id: 20|is common: false|Const id: 20)(Defined). and
+ Right
+  66(Z3 id: 20|is common: false|Const id: 66)(Defined). fresh_66
+
+ * 38(Z3 id: 21|is common: false|Const id: 68)(Defined). apply
+ Left
+  67(Z3 id: 67|is common: false|Const id: 67)(Defined). fresh_67
+ Right
+  61(Z3 id: 16|is common: false|Const id: 61)(Defined). fresh_61
+
+ * 66(Z3 id: 20|is common: false|Const id: 66)(Defined). fresh_66
+
+ * 60(Z3 id: 60|is common: false|Const id: 60)(Defined). fresh_60
+
+ * 29(Z3 id: 29|is common: false|Const id: 56)(Defined). apply
+ Left
+  19(Z3 id: 19|is common: false|Const id: 19)(Defined). =
+ Right
+  7(Z3 id: 7|is common: false|Const id: 7)(Defined). c
+
+ * 32(Z3 id: 20|is common: false|Const id: 66)(Defined). apply
+ Left
+  65(Z3 id: 65|is common: false|Const id: 65)(Defined). fresh_65
+ Right
+  57(Z3 id: 17|is common: false|Const id: 57)(Defined). fresh_57
+
+ * 40(Z3 id: 14|is common: false|Const id: 55)(Defined). apply
+ Left
+  53(Z3 id: 53|is common: false|Const id: 53)(Defined). fresh_53
+ Right
+  7(Z3 id: 7|is common: false|Const id: 7)(Defined). c
+
+ * 47(Z3 id: 47|is common: false|Const id: 51)(Defined). apply
+ Left
+  19(Z3 id: 19|is common: false|Const id: 19)(Defined). =
+ Right
+  6(Z3 id: 6|is common: false|Const id: 6)(Defined). b
+
+ * 69(Z3 id: 69|is common: false|Const id: 69)(Defined). fresh_69
+
+ * 44(Z3 id: 13|is common: false|Const id: 54)(Defined). apply
+ Left
+  53(Z3 id: 53|is common: false|Const id: 53)(Defined). fresh_53
+ Right
+  6(Z3 id: 6|is common: false|Const id: 6)(Defined). b
+
+ * 49(Z3 id: 49|is common: false|Const id: 73)(Defined). apply
+ Left
+  20(Z3 id: 20|is common: false|Const id: 20)(Defined). and
+ Right
+  72(Z3 id: 23|is common: false|Const id: 72)(Defined). fresh_72
+
+ * 50(Z3 id: 24|is common: false|Const id: 74)(Defined). apply
+ Left
+  73(Z3 id: 73|is common: false|Const id: 73)(Defined). fresh_73
+ Right
+  52(Z3 id: 12|is common: false|Const id: 52)(Defined). fresh_52
+
+ * 45(Z3 id: 45|is common: false|Const id: 71)(Defined). apply
+ Left
+  20(Z3 id: 20|is common: false|Const id: 20)(Defined). and
+ Right
+  70(Z3 id: 22|is common: false|Const id: 70)(Defined). fresh_70
+
+ * 59(Z3 id: 15|is common: false|Const id: 59)(Defined). fresh_59
+
+ * 46(Z3 id: 23|is common: false|Const id: 72)(Defined). apply
+ Left
+  71(Z3 id: 71|is common: false|Const id: 71)(Defined). fresh_71
+ Right
+  54(Z3 id: 13|is common: false|Const id: 54)(Defined). fresh_54
+
+ * 10(Z3 id: 10|is common: false|Const id: 10)(Defined). g
+
+ * 48(Z3 id: 12|is common: false|Const id: 52)(Defined). apply
+ Left
+  51(Z3 id: 51|is common: false|Const id: 51)(Defined). fresh_51
+ Right
+  11(Z3 id: 11|is common: false|Const id: 11)(Defined). h
+
+ * 28(Z3 id: 19|is common: false|Const id: 64)(Defined). apply
+ Left
+  63(Z3 id: 63|is common: false|Const id: 63)(Defined). fresh_63
+ Right
+  8(Z3 id: 8|is common: false|Const id: 8)(Defined). d
+
+ * 51(Z3 id: 51|is common: false|Const id: 51)(Defined). fresh_51
+
+ * 65(Z3 id: 65|is common: false|Const id: 65)(Defined). fresh_65
+
+ * 52(Z3 id: 12|is common: false|Const id: 52)(Defined). fresh_52
+
+Size of FactoryCurryNodes: 58
+
+rm -rf tests/*.o tests/current_progress

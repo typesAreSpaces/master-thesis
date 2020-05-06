@@ -39,6 +39,7 @@ class FactoryCurryNodes {
   CurryNode * getCurryNode(std::size_t) const;
   CurryNode * constantZ3Index(unsigned);
   CurryNode * constantCurryNode(unsigned);
+  CurryNode * getCurryNodeById(unsigned) const;
 
   const unsigned size() const;
   const unsigned uniqueSize() const;

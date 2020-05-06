@@ -12,7 +12,7 @@ for directory in $(ls); do
     for smt_file in $(ls); do
       if [ -f $smt_file ]; then
         COUNT=$(($COUNT + 1))
-        LOCAL_CMD="./../../qf_uf_processing_test $smt_file"
+        LOCAL_CMD="./../../qf_uf_test $smt_file"
         eval "$LOCAL_CMD" 
         echo "Processing file: " $smt_file
         RESULT=$?

@@ -24,10 +24,18 @@ SRC = $(wildcard $(SDIR)/*.cpp)
 OBJS = $(patsubst $(SDIR)/%.cpp, $(ODIR)/%.o, $(SRC)) $(Z3DIR)/build/libz3.$(Z3EXT) 
 DEPS = $(wildcard $(IDIR)/*.h)
 
-all: tests/cong_closure_expl_test
+#all: tests/cong_closure_expl_test
+all: tests/current_progress
 
 $(ODIR)/%.o: $(SDIR)/%.cpp $(DEPS)
 	$(CC) -g -c -o $@ $(FLAGS) $<
+
+.PHONY: tests/current_progress
+tests/current_progress: $(OBJS)
+	$(CC) -g -c -o ./$@.o $(FLAGS) ./$@.cpp
+	$(CC) -g -o $@ $(OBJS) ./$@.o -lpthread
+	./$@
+	rm -rf tests/*.o $@
 
 .PHONY: tests/cong_closure_expl_test
 tests/cong_closure_expl_test: $(OBJS)
@@ -38,7 +46,7 @@ tests/cong_closure_expl_test: $(OBJS)
 	rm -rf tests/*.o $@
 
 .PHONY: tests/qf_uf_processing_test
-tests/qf_uf_processing_test: $(OBJS)
+tests/qf_uf_test: $(OBJS)
 	$(CC) -g -c -o tests/TestCongruenceClosureExplain.o $(FLAGS) tests/TestCongruenceClosureExplain.cpp
 	$(CC) -g -c -o ./$@.o $(FLAGS) ./$@.cpp
 	$(CC) -g -o $@ $(OBJS) tests/TestCongruenceClosureExplain.o ./$@.o -lpthread

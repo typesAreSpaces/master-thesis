@@ -39,8 +39,10 @@ CongruenceClosureExplain::CongruenceClosureExplain(const Z3Subterms & subterms,
 
 #if 0
   // This code exemplifies how to retrieve back an original id
-  for(auto x : factory_curry_nodes.hash_table)
+  for(auto x : factory_curry_nodes.hash_table){
+    std::cout << x.second->getId() << std::endl;
     std::cout << *factory_curry_nodes.id_table[x.second->getId()] << std::endl;
+  }
 #endif
 
   merge();
