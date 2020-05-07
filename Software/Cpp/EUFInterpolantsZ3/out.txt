@@ -2,453 +2,102 @@ g++ -g -c -o tests/TestCongruenceClosureExplain.o -I./src -I./include -std=c++11
 g++ -g -c -o ./tests/cong_closure_expl_test.o -I./src -I./include -std=c++11 -Wall ./tests/cong_closure_expl_test.cpp
 g++ -g -o tests/cong_closure_expl_test  ./obj/Match.o  ./obj/Rename.o  ./obj/Z3Subterms.o  ./obj/UnionFindExplain.o  ./obj/HornClause.o  ./obj/CongruenceClosureNO.o  ./obj/Hornsat.o  ./obj/CongruenceClosureDST.o  ./obj/EUFInterpolant.o  ./obj/CurryNode.o  ./obj/CongruenceClosure.o  ./obj/UnionFind.o  ./obj/FactoryCurryNodes.o  ./obj/HornClauses.o  ./obj/CongruenceClosureExplain.o /home/jose/Documents/GithubProjects/z3__/build/libz3.so  tests/TestCongruenceClosureExplain.o ./tests/cong_closure_expl_test.o -lpthread
 ./tests/cong_closure_expl_test
-Printing UF Explanation
-(Same)ID: 0 Forest: 0 Representative 0
-(Same)ID: 1 Forest: 1 Representative 1
-(Same)ID: 2 Forest: 2 Representative 2
-(Same)ID: 3 Forest: 3 Representative 3
-(Same)ID: 4 Forest: 4 Representative 4
-(Different)ID: 5 Forest: 6 Representative 6
-(Same)ID: 6 Forest: 6 Representative 6
-(Same)ID: 7 Forest: 7 Representative 7
-(Same)ID: 8 Forest: 8 Representative 8
-(Same)ID: 9 Forest: 9 Representative 9
-(Same)ID: 10 Forest: 10 Representative 10
-(Same)ID: 11 Forest: 11 Representative 11
-(Same)ID: 12 Forest: 12 Representative 12
-(Same)ID: 13 Forest: 13 Representative 13
-(Same)ID: 14 Forest: 14 Representative 14
-(Same)ID: 15 Forest: 15 Representative 15
-(Same)ID: 16 Forest: 16 Representative 16
-(Same)ID: 17 Forest: 17 Representative 17
-(Same)ID: 18 Forest: 18 Representative 18
-(Same)ID: 19 Forest: 19 Representative 19
-(Same)ID: 20 Forest: 20 Representative 20
-(Same)ID: 21 Forest: 21 Representative 21
-(Same)ID: 22 Forest: 22 Representative 22
-(Same)ID: 23 Forest: 23 Representative 23
-(Same)ID: 24 Forest: 24 Representative 24
-(Same)ID: 25 Forest: 25 Representative 25
-(Same)ID: 26 Forest: 26 Representative 26
-(Same)ID: 27 Forest: 27 Representative 27
-(Same)ID: 28 Forest: 28 Representative 28
-(Same)ID: 29 Forest: 29 Representative 29
-(Same)ID: 30 Forest: 30 Representative 30
-(Same)ID: 31 Forest: 31 Representative 31
-(Same)ID: 32 Forest: 32 Representative 32
-(Same)ID: 33 Forest: 33 Representative 33
-(Same)ID: 34 Forest: 34 Representative 34
-(Different)ID: 35 Forest: 34 Representative 34
-(Different)ID: 36 Forest: 6 Representative 6
-(Different)ID: 37 Forest: 32 Representative 32
-(Different)ID: 38 Forest: 33 Representative 33
-(Same)ID: 39 Forest: 39 Representative 39
-(Different)ID: 40 Forest: 42 Representative 42
-(Different)ID: 41 Forest: 39 Representative 39
-(Same)ID: 42 Forest: 42 Representative 42
-(Same)ID: 43 Forest: 43 Representative 43
-(Same)ID: 44 Forest: 44 Representative 44
-(Same)ID: 45 Forest: 45 Representative 45
-(Same)ID: 46 Forest: 46 Representative 46
-(Same)ID: 47 Forest: 47 Representative 47
-(Same)ID: 48 Forest: 48 Representative 48
-Size 49
-Num changes: 7
-Printing node factory
-Number of original terms: 15
-Id: 5
-The node:
- * 5(Z3 id: 5|is common: false|Const id: 5)(Defined). a
-
-Id: 6
-The node:
- * 6(Z3 id: 6|is common: false|Const id: 6)(Defined). b
-
-Id: 7
-The node:
- * 29(Z3 id: 7|is common: false|Const id: 33)(Defined). apply
- Left
-  32(Z3 id: 32|is common: false|Const id: 32)(Defined). fresh_32
- Right
-  6(Z3 id: 6|is common: false|Const id: 6)(Defined). b
-
-Id: 8
-The node:
- * 15(Z3 id: 8|is common: false|Const id: 36)(Defined). apply
- Left
-  8(Z3 id: 8|is common: false|Const id: 8)(Defined). h
- Right
-  6(Z3 id: 6|is common: false|Const id: 6)(Defined). b
-
-Id: 9
-The node:
- * 25(Z3 id: 9|is common: false|Const id: 38)(Defined). apply
- Left
-  37(Z3 id: 37|is common: false|Const id: 37)(Defined). fresh_37
- Right
-  6(Z3 id: 6|is common: false|Const id: 6)(Defined). b
-
-Id: 10
-The node:
- * 21(Z3 id: 10|is common: false|Const id: 40)(Defined). apply
- Left
-  39(Z3 id: 39|is common: false|Const id: 39)(Defined). fresh_39
- Right
-  36(Z3 id: 8|is common: false|Const id: 36)(Defined). fresh_36
-
-Id: 11
-The node:
- * 18(Z3 id: 11|is common: false|Const id: 42)(Defined). apply
- Left
-  41(Z3 id: 41|is common: false|Const id: 41)(Defined). fresh_41
- Right
-  6(Z3 id: 6|is common: false|Const id: 6)(Defined). b
-
-Id: 12
-The node:
- * 23(Z3 id: 12|is common: false|Const id: 44)(Defined). apply
- Left
-  43(Z3 id: 43|is common: false|Const id: 43)(Defined). fresh_43
- Right
-  40(Z3 id: 10|is common: false|Const id: 40)(Defined). fresh_40
-
-Id: 13
-The node:
- * 27(Z3 id: 13|is common: false|Const id: 46)(Defined). apply
- Left
-  45(Z3 id: 45|is common: false|Const id: 45)(Defined). fresh_45
- Right
-  38(Z3 id: 9|is common: false|Const id: 38)(Defined). fresh_38
-
-Id: 14
-The node:
- * 31(Z3 id: 14|is common: false|Const id: 48)(Defined). apply
- Left
-  47(Z3 id: 47|is common: false|Const id: 47)(Defined). fresh_47
- Right
-  33(Z3 id: 7|is common: false|Const id: 33)(Defined). fresh_33
-
-Id: 15
-The node:
- * 15(Z3 id: 8|is common: false|Const id: 36)(Defined). apply
- Left
-  8(Z3 id: 8|is common: false|Const id: 8)(Defined). h
- Right
-  6(Z3 id: 6|is common: false|Const id: 6)(Defined). b
-
-Id: 16
-The node:
- * 16(Z3 id: 16|is common: false|Const id: 35)(Defined). apply
- Left
-  11(Z3 id: 11|is common: false|Const id: 11)(Defined). g
- Right
-  5(Z3 id: 5|is common: false|Const id: 5)(Defined). a
-
-Id: 17
-The node:
- * 17(Z3 id: 17|is common: false|Const id: 41)(Defined). apply
- Left
-  35(Z3 id: 35|is common: false|Const id: 35)(Defined). fresh_35
- Right
-  36(Z3 id: 8|is common: false|Const id: 36)(Defined). fresh_36
-
-Id: 18
-The node:
- * 18(Z3 id: 11|is common: false|Const id: 42)(Defined). apply
- Left
-  41(Z3 id: 41|is common: false|Const id: 41)(Defined). fresh_41
- Right
-  6(Z3 id: 6|is common: false|Const id: 6)(Defined). b
-
-Id: 19
-The node:
- * 19(Z3 id: 19|is common: false|Const id: 34)(Defined). apply
- Left
-  11(Z3 id: 11|is common: false|Const id: 11)(Defined). g
- Right
-  6(Z3 id: 6|is common: false|Const id: 6)(Defined). b
-
-Id: 20
-The node:
- * 20(Z3 id: 20|is common: false|Const id: 39)(Defined). apply
- Left
-  34(Z3 id: 34|is common: false|Const id: 34)(Defined). fresh_34
- Right
-  36(Z3 id: 8|is common: false|Const id: 36)(Defined). fresh_36
-
-Id: 21
-The node:
- * 21(Z3 id: 10|is common: false|Const id: 40)(Defined). apply
- Left
-  39(Z3 id: 39|is common: false|Const id: 39)(Defined). fresh_39
- Right
-  36(Z3 id: 8|is common: false|Const id: 36)(Defined). fresh_36
-
-Id: 22
-The node:
- * 22(Z3 id: 22|is common: false|Const id: 43)(Defined). apply
- Left
-  12(Z3 id: 12|is common: false|Const id: 12)(Defined). =
- Right
-  42(Z3 id: 11|is common: false|Const id: 42)(Defined). fresh_42
-
-Id: 23
-The node:
- * 23(Z3 id: 12|is common: false|Const id: 44)(Defined). apply
- Left
-  43(Z3 id: 43|is common: false|Const id: 43)(Defined). fresh_43
- Right
-  40(Z3 id: 10|is common: false|Const id: 40)(Defined). fresh_40
-
-Id: 24
-The node:
- * 24(Z3 id: 24|is common: false|Const id: 37)(Defined). apply
- Left
-  12(Z3 id: 12|is common: false|Const id: 12)(Defined). =
- Right
-  36(Z3 id: 8|is common: false|Const id: 36)(Defined). fresh_36
-
-Id: 25
-The node:
- * 25(Z3 id: 9|is common: false|Const id: 38)(Defined). apply
- Left
-  37(Z3 id: 37|is common: false|Const id: 37)(Defined). fresh_37
- Right
-  6(Z3 id: 6|is common: false|Const id: 6)(Defined). b
-
-Id: 26
-The node:
- * 26(Z3 id: 26|is common: false|Const id: 45)(Defined). apply
- Left
-  13(Z3 id: 13|is common: false|Const id: 13)(Defined). and
- Right
-  44(Z3 id: 12|is common: false|Const id: 44)(Defined). fresh_44
-
-Id: 27
-The node:
- * 27(Z3 id: 13|is common: false|Const id: 46)(Defined). apply
- Left
-  45(Z3 id: 45|is common: false|Const id: 45)(Defined). fresh_45
- Right
-  38(Z3 id: 9|is common: false|Const id: 38)(Defined). fresh_38
-
-Id: 28
-The node:
- * 28(Z3 id: 28|is common: false|Const id: 32)(Defined). apply
- Left
-  12(Z3 id: 12|is common: false|Const id: 12)(Defined). =
- Right
-  5(Z3 id: 5|is common: false|Const id: 5)(Defined). a
-
-Id: 29
-The node:
- * 29(Z3 id: 7|is common: false|Const id: 33)(Defined). apply
- Left
-  32(Z3 id: 32|is common: false|Const id: 32)(Defined). fresh_32
- Right
-  6(Z3 id: 6|is common: false|Const id: 6)(Defined). b
-
-Id: 30
-The node:
- * 30(Z3 id: 30|is common: false|Const id: 47)(Defined). apply
- Left
-  13(Z3 id: 13|is common: false|Const id: 13)(Defined). and
- Right
-  46(Z3 id: 13|is common: false|Const id: 46)(Defined). fresh_46
-
-Id: 31
-The node:
- * 31(Z3 id: 14|is common: false|Const id: 48)(Defined). apply
- Left
-  47(Z3 id: 47|is common: false|Const id: 47)(Defined). fresh_47
- Right
-  33(Z3 id: 7|is common: false|Const id: 33)(Defined). fresh_33
-
-Id: 32
-The node:
- * 32(Z3 id: 32|is common: false|Const id: 32)(Defined). fresh_32
-
-Id: 33
-The node:
- * 33(Z3 id: 7|is common: false|Const id: 33)(Defined). fresh_33
-
-Id: 34
-The node:
- * 34(Z3 id: 34|is common: false|Const id: 34)(Defined). fresh_34
-
-Id: 35
-The node:
- * 35(Z3 id: 35|is common: false|Const id: 35)(Defined). fresh_35
-
-Id: 36
-The node:
- * 36(Z3 id: 8|is common: false|Const id: 36)(Defined). fresh_36
-
-Id: 37
-The node:
- * 37(Z3 id: 37|is common: false|Const id: 37)(Defined). fresh_37
-
-Id: 38
-The node:
- * 38(Z3 id: 9|is common: false|Const id: 38)(Defined). fresh_38
-
-Id: 39
-The node:
- * 39(Z3 id: 39|is common: false|Const id: 39)(Defined). fresh_39
-
-Id: 40
-The node:
- * 40(Z3 id: 10|is common: false|Const id: 40)(Defined). fresh_40
-
-Id: 41
-The node:
- * 41(Z3 id: 41|is common: false|Const id: 41)(Defined). fresh_41
-
-Id: 42
-The node:
- * 42(Z3 id: 11|is common: false|Const id: 42)(Defined). fresh_42
-
-Id: 43
-The node:
- * 43(Z3 id: 43|is common: false|Const id: 43)(Defined). fresh_43
-
-Id: 44
-The node:
- * 44(Z3 id: 12|is common: false|Const id: 44)(Defined). fresh_44
-
-Id: 45
-The node:
- * 45(Z3 id: 45|is common: false|Const id: 45)(Defined). fresh_45
-
-Id: 46
-The node:
- * 46(Z3 id: 13|is common: false|Const id: 46)(Defined). fresh_46
-
-Id: 47
-The node:
- * 47(Z3 id: 47|is common: false|Const id: 47)(Defined). fresh_47
-
-Id: 48
-The node:
- * 48(Z3 id: 14|is common: false|Const id: 48)(Defined). fresh_48
-
-Size of FactoryCurryNodes: 40
 Printing all the original subterms:
-15
-5. (Different) Original: a Representative position: 6
+19
+5. (Same) Original: a Representative position: 5 Representative a
  * 5(Z3 id: 5|is common: false|Const id: 5)(Defined). a
 
+6. (Same) Original: b Representative position: 6 Representative b
  * 6(Z3 id: 6|is common: false|Const id: 6)(Defined). b
 
-6. (Same) Original: b Representative position: 6
- * 6(Z3 id: 6|is common: false|Const id: 6)(Defined). b
-
- * 6(Z3 id: 6|is common: false|Const id: 6)(Defined). b
-
-7. (Same) Original: (= a b) Representative position: 7
- * 29(Z3 id: 7|is common: false|Const id: 33)(Defined). apply
+7. (Different) Original: (h b) Representative position: 6 Representative b
+ * 19(Z3 id: 7|is common: false|Const id: 45)(Defined). apply
  Left
-  32(Z3 id: 32|is common: false|Const id: 32)(Defined). fresh_32
+  7(Z3 id: 7|is common: false|Const id: 7)(Defined). h
  Right
   6(Z3 id: 6|is common: false|Const id: 6)(Defined). b
 
- * 29(Z3 id: 7|is common: false|Const id: 33)(Defined). apply
+8. (Different) Original: (= (h b) b) Representative position: 15 Representative (= (g a (h b) b) b)
+ * 41(Z3 id: 8|is common: false|Const id: 47)(Defined). apply
  Left
-  32(Z3 id: 32|is common: false|Const id: 32)(Defined). fresh_32
+  46(Z3 id: 46|is common: false|Const id: 46)(Defined). fresh_46
  Right
   6(Z3 id: 6|is common: false|Const id: 6)(Defined). b
 
-8. (Same) Original: (h b) Representative position: 8
- * 15(Z3 id: 8|is common: false|Const id: 36)(Defined). apply
+9. (Different) Original: (h (h b)) Representative position: 6 Representative b
+ * 32(Z3 id: 9|is common: false|Const id: 48)(Defined). apply
  Left
-  8(Z3 id: 8|is common: false|Const id: 8)(Defined). h
+  7(Z3 id: 7|is common: false|Const id: 7)(Defined). h
+ Right
+  45(Z3 id: 7|is common: false|Const id: 45)(Defined). fresh_45
+
+10. (Different) Original: (g a (h b) (h (h b))) Representative position: 6 Representative b
+ * 35(Z3 id: 10|is common: false|Const id: 50)(Defined). apply
+ Left
+  49(Z3 id: 49|is common: false|Const id: 49)(Defined). fresh_49
+ Right
+  48(Z3 id: 9|is common: false|Const id: 48)(Defined). fresh_48
+
+11. (Different) Original: (= (g a (h b) (h (h b))) (h (h b))) Representative position: 15 Representative (= (g a (h b) b) b)
+ * 37(Z3 id: 11|is common: false|Const id: 52)(Defined). apply
+ Left
+  51(Z3 id: 51|is common: false|Const id: 51)(Defined). fresh_51
+ Right
+  48(Z3 id: 9|is common: false|Const id: 48)(Defined). fresh_48
+
+12. (Different) Original: (g a (h b) (h b)) Representative position: 6 Representative b
+ * 27(Z3 id: 12|is common: false|Const id: 53)(Defined). apply
+ Left
+  49(Z3 id: 49|is common: false|Const id: 49)(Defined). fresh_49
+ Right
+  45(Z3 id: 7|is common: false|Const id: 45)(Defined). fresh_45
+
+13. (Different) Original: (= (g a (h b) (h b)) (h b)) Representative position: 15 Representative (= (g a (h b) b) b)
+ * 29(Z3 id: 13|is common: false|Const id: 55)(Defined). apply
+ Left
+  54(Z3 id: 54|is common: false|Const id: 54)(Defined). fresh_54
+ Right
+  45(Z3 id: 7|is common: false|Const id: 45)(Defined). fresh_45
+
+14. (Different) Original: (g a (h b) b) Representative position: 6 Representative b
+ * 22(Z3 id: 14|is common: false|Const id: 56)(Defined). apply
+ Left
+  49(Z3 id: 49|is common: false|Const id: 49)(Defined). fresh_49
  Right
   6(Z3 id: 6|is common: false|Const id: 6)(Defined). b
 
- * 15(Z3 id: 8|is common: false|Const id: 36)(Defined). apply
+15. (Same) Original: (= (g a (h b) b) b) Representative position: 15 Representative (= (g a (h b) b) b)
+ * 24(Z3 id: 15|is common: false|Const id: 58)(Defined). apply
  Left
-  8(Z3 id: 8|is common: false|Const id: 8)(Defined). h
+  57(Z3 id: 57|is common: false|Const id: 57)(Defined). fresh_57
  Right
   6(Z3 id: 6|is common: false|Const id: 6)(Defined). b
 
-9. (Same) Original: (= (h b) b) Representative position: 9
- * 25(Z3 id: 9|is common: false|Const id: 38)(Defined). apply
+16. (Same) Original: (and (= (g a (h b) b) b) (= (g a (h b) (h b)) (h b))) Representative position: 16 Representative (and (= (g a (h b) b) b) (= (g a (h b) (h b)) (h b)))
+ * 31(Z3 id: 16|is common: false|Const id: 60)(Defined). apply
  Left
-  37(Z3 id: 37|is common: false|Const id: 37)(Defined). fresh_37
+  59(Z3 id: 59|is common: false|Const id: 59)(Defined). fresh_59
  Right
-  6(Z3 id: 6|is common: false|Const id: 6)(Defined). b
+  55(Z3 id: 13|is common: false|Const id: 55)(Defined). fresh_55
 
- * 25(Z3 id: 9|is common: false|Const id: 38)(Defined). apply
+17. (Same) Original: (let ((a!1 (= (g a (h b) (h (h b))) (h (h b)))))
+  (and (= (g a (h b) b) b) (= (g a (h b) (h b)) (h b)) a!1)) Representative position: 17 Representative (let ((a!1 (= (g a (h b) (h (h b))) (h (h b)))))
+  (and (= (g a (h b) b) b) (= (g a (h b) (h b)) (h b)) a!1))
+ * 39(Z3 id: 17|is common: false|Const id: 62)(Defined). apply
  Left
-  37(Z3 id: 37|is common: false|Const id: 37)(Defined). fresh_37
+  61(Z3 id: 61|is common: false|Const id: 61)(Defined). fresh_61
  Right
-  6(Z3 id: 6|is common: false|Const id: 6)(Defined). b
+  52(Z3 id: 11|is common: false|Const id: 52)(Defined). fresh_52
 
-10. (Same) Original: (g b (h b) (h b)) Representative position: 10
- * 21(Z3 id: 10|is common: false|Const id: 40)(Defined). apply
+18. (Same) Original: (let ((a!1 (= (g a (h b) (h (h b))) (h (h b)))))
+  (and (= (g a (h b) b) b) (= (g a (h b) (h b)) (h b)) a!1 (= (h b) b))) Representative position: 18 Representative (let ((a!1 (= (g a (h b) (h (h b))) (h (h b)))))
+  (and (= (g a (h b) b) b) (= (g a (h b) (h b)) (h b)) a!1 (= (h b) b)))
+ * 43(Z3 id: 18|is common: false|Const id: 64)(Defined). apply
  Left
-  39(Z3 id: 39|is common: false|Const id: 39)(Defined). fresh_39
+  63(Z3 id: 63|is common: false|Const id: 63)(Defined). fresh_63
  Right
-  36(Z3 id: 8|is common: false|Const id: 36)(Defined). fresh_36
+  47(Z3 id: 8|is common: false|Const id: 47)(Defined). fresh_47
 
- * 21(Z3 id: 10|is common: false|Const id: 40)(Defined). apply
- Left
-  39(Z3 id: 39|is common: false|Const id: 39)(Defined). fresh_39
- Right
-  36(Z3 id: 8|is common: false|Const id: 36)(Defined). fresh_36
-
-11. (Same) Original: (g a (h b) b) Representative position: 11
- * 18(Z3 id: 11|is common: false|Const id: 42)(Defined). apply
- Left
-  41(Z3 id: 41|is common: false|Const id: 41)(Defined). fresh_41
- Right
-  6(Z3 id: 6|is common: false|Const id: 6)(Defined). b
-
- * 18(Z3 id: 11|is common: false|Const id: 42)(Defined). apply
- Left
-  41(Z3 id: 41|is common: false|Const id: 41)(Defined). fresh_41
- Right
-  6(Z3 id: 6|is common: false|Const id: 6)(Defined). b
-
-12. (Same) Original: (= (g a (h b) b) (g b (h b) (h b))) Representative position: 12
- * 23(Z3 id: 12|is common: false|Const id: 44)(Defined). apply
- Left
-  43(Z3 id: 43|is common: false|Const id: 43)(Defined). fresh_43
- Right
-  40(Z3 id: 10|is common: false|Const id: 40)(Defined). fresh_40
-
- * 23(Z3 id: 12|is common: false|Const id: 44)(Defined). apply
- Left
-  43(Z3 id: 43|is common: false|Const id: 43)(Defined). fresh_43
- Right
-  40(Z3 id: 10|is common: false|Const id: 40)(Defined). fresh_40
-
-13. (Same) Original: (and (= (g a (h b) b) (g b (h b) (h b))) (= (h b) b)) Representative position: 13
- * 27(Z3 id: 13|is common: false|Const id: 46)(Defined). apply
- Left
-  45(Z3 id: 45|is common: false|Const id: 45)(Defined). fresh_45
- Right
-  38(Z3 id: 9|is common: false|Const id: 38)(Defined). fresh_38
-
- * 27(Z3 id: 13|is common: false|Const id: 46)(Defined). apply
- Left
-  45(Z3 id: 45|is common: false|Const id: 45)(Defined). fresh_45
- Right
-  38(Z3 id: 9|is common: false|Const id: 38)(Defined). fresh_38
-
-14. (Same) Original: (and (= (g a (h b) b) (g b (h b) (h b))) (= (h b) b) (= a b)) Representative position: 14
- * 31(Z3 id: 14|is common: false|Const id: 48)(Defined). apply
- Left
-  47(Z3 id: 47|is common: false|Const id: 47)(Defined). fresh_47
- Right
-  33(Z3 id: 7|is common: false|Const id: 33)(Defined). fresh_33
-
- * 31(Z3 id: 14|is common: false|Const id: 48)(Defined). apply
- Left
-  47(Z3 id: 47|is common: false|Const id: 47)(Defined). fresh_47
- Right
-  33(Z3 id: 7|is common: false|Const id: 33)(Defined). fresh_33
-
-Number of changes: 1
+Number of changes: 8
 
 rm -rf tests/*.o tests/cong_closure_expl_test

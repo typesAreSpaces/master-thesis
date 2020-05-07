@@ -74,13 +74,13 @@ void TestCongruenceClosureExplain::testExplanation(unsigned n){
 
 std::ostream & operator << (std::ostream & os, TestCongruenceClosureExplain & test) {
 
-  os << "Printing UF Explanation" << std::endl;
-  // Currently this is the *only* way to see actual partitions 
-  // produced by the Congruence Closure algorithm 
-  os << test.uf << std::endl;
+  //os << "Printing UF Explanation" << std::endl;
+  //// Currently this is the *only* way to see actual partitions 
+  //// produced by the Congruence Closure algorithm 
+  //os << test.uf << std::endl;
 
-  os << "Printing node factory" << std::endl;
-  os << test.factory_curry_nodes;
+  //os << "Printing node factory" << std::endl;
+  //os << test.factory_curry_nodes;
 
   unsigned num_changes = 0;
   os << "Printing all the original subterms:" << std::endl;
@@ -90,26 +90,28 @@ std::ostream & operator << (std::ostream & os, TestCongruenceClosureExplain & te
     unsigned index = (*it).id();
     try {
       assert(test.subterms[index].id() == index);
-      unsigned repr_index = test.uf.find(index);
+
       // KEEP: working here
       // Find a scheme to show the representative 
       // element for each subterm using id, z3_id, const_id, etc
-      CurryNode * term = test.factory_curry_nodes.getCurryNodeById(index);
-      CurryNode * repr_term = test.factory_curry_nodes.getCurryNodeById(repr_index);
       
+      CurryNode * term = test.factory_curry_nodes.getCurryNodeById(index);
+      unsigned const_id = term->getConstId(); 
+      unsigned repr_const_id = test.uf.find(const_id);
+      CurryNode * repr_term = test.factory_curry_nodes.getCurryNodeById(repr_const_id);
+      unsigned repr_index = repr_term->getZ3Id();
 
       os << index << ". "
-        << ((index == test.uf.find(index)) ? "(Same)" : "(Different)")
+        << ((index == repr_index) ? "(Same)" : "(Different)")
         << " Original: " << test.subterms[index]
         << " Representative position: " << repr_index
-        //<< " Representative " << test.subterms[repr_index] // ISSUE
-        //<< " Representative " << test.factory_curry_nodes.getCurryNodeById(repr_index) // ISSUE
+        << " Representative " << test.subterms[repr_index] // ISSUE
         << std::endl;
 
       os << *term << std::endl;
-      os << *repr_term << std::endl;
+      //os << *repr_term << std::endl;
 
-      if(term->getConstId() != repr_term->getConstId())
+      if(index != repr_index)
         num_changes++;
     }
     catch(char const * e){
