@@ -89,22 +89,32 @@ std::ostream & operator << (std::ostream & os, TestCongruenceClosureExplain & te
   for(auto it = test.subterms.begin(); it != test.subterms.end(); ++it){
     unsigned index = (*it).id();
     try {
-      unsigned repr_index = test.uf.find(test.subterms[index].id());
+      assert(test.subterms[index].id() == index);
+      unsigned repr_index = test.uf.find(index);
+      // KEEP: working here
+      // Find a scheme to show the representative 
+      // element for each subterm using id, z3_id, const_id, etc
+      CurryNode * term = test.factory_curry_nodes.getCurryNodeById(index);
+      CurryNode * repr_term = test.factory_curry_nodes.getCurryNodeById(repr_index);
+      
+
       os << index << ". "
         << ((index == test.uf.find(index)) ? "(Same)" : "(Different)")
         << " Original: " << test.subterms[index]
         << " Representative position: " << repr_index
-        << " Representative " << test.subterms[repr_index] // ISSUE
-        << " Representative " << test.factory_curry_nodes.getCurryNodeById(repr_index) // ISSUE
+        //<< " Representative " << test.subterms[repr_index] // ISSUE
+        //<< " Representative " << test.factory_curry_nodes.getCurryNodeById(repr_index) // ISSUE
         << std::endl;
-      if(index != test.uf.find(index))
+
+      os << *term << std::endl;
+      os << *repr_term << std::endl;
+
+      if(term->getConstId() != repr_term->getConstId())
         num_changes++;
     }
     catch(char const * e){
       os << e << std::endl;
-      os << test.subterms[index].id() << std::endl;
-      os << test.subterms.size() << std::endl;
-      os << test.uf.find(test.subterms[index].id()) << std::endl;
+      os << index << std::endl;
     }
   }
 

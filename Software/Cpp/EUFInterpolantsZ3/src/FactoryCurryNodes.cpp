@@ -62,9 +62,11 @@ CurryNode * FactoryCurryNodes::constantCurryNode(unsigned index){
 }
 
 CurryNode * FactoryCurryNodes::getCurryNodeById(unsigned i) const {
-  if(i < size())
-    return curry_nodes[i];
-  throw "Error: out of bounds in FactoryCurryNodes::getCurryNodeById";
+  if(i >= size())
+    throw "Error: out of bounds in FactoryCurryNodes::getCurryNodeById";
+  if(curry_nodes[i] == nullptr)
+    throw "Error: this node is a nullptr";
+  return curry_nodes[i];
 }
 
 const unsigned FactoryCurryNodes::size() const {
@@ -101,18 +103,19 @@ void FactoryCurryNodes::updatePreds(CurryNode * from, CurryNode * to){
 }
 
 void FactoryCurryNodes::updateZ3IdNotDefinedAndCommon(const Z3Subterms & subterms){
-  for(auto x : hash_table)
-    switch(x.second->isDefined()){
-      case false:
-        x.second->updateZ3Id(x.second->getId());
-        break;
-      case true:
-        // KEEP: just check this is not wrong
-        // I think it is
-        if(x.second->getZ3Id() < subterms.size())
-          x.second->updateCommon(subterms[x.second->getZ3Id()].is_common()); 
-        break;
+  for(auto x : hash_table){
+    if(x.second->isDefined()){
+      // We only update terms coming from the 
+      // z3 ast
+      if(x.second->getZ3Id() < subterms.size())
+        x.second->updateCommon(subterms[x.second->getZ3Id()].is_common()); 
     }
+    else
+      // This lines effectively just sets
+      // z3_id_defined to true since x.second->getId()
+      // and x.second->z3_id are equal
+      x.second->updateZ3Id(x.second->getId());
+  }
   return;
 }
 
@@ -146,12 +149,9 @@ void FactoryCurryNodes::curryficationHelper(z3::expr const & e, std::vector<bool
               curry_nodes[last_node_pos + i - 1],
               curry_nodes[e.arg(i).id()]);
       curry_nodes[e.id()] = curry_nodes[new_last_node_pos - 1];
-      // TODO: Add id_table info here
     }
-    else{
+    else
       curry_nodes[e.id()] = curry_decl.at(f.id());
-      // TODO: Add id_table info here
-    } 
 
     switch(f.decl_kind()){
       case Z3_OP_EQ:
@@ -176,8 +176,9 @@ IdsToMerge FactoryCurryNodes::curryfication(z3::expr const & e){
 void FactoryCurryNodes::flattening(PendingElements & pending_elements,
     PendingPointers & equations_to_merge,
     const Z3Subterms & subterms){
+
   // Update Z3 Ids
-  unsigned max_z3_id = curry_nodes.size();
+  unsigned const max_z3_id = num_terms;
   for(unsigned i = 0; i < max_z3_id; i++)
     if(curry_nodes[i] != nullptr)
       curry_nodes[i]->updateZ3Id(i);
@@ -210,8 +211,11 @@ void FactoryCurryNodes::flattening(PendingElements & pending_elements,
 
 std::ostream & operator << (std::ostream & os, const FactoryCurryNodes & fcns){
 
-  for(auto x : fcns.hash_table)
-    std::cout << *(x.second) << std::endl;
+  std::cout << "Number of original terms: " << fcns.num_terms << std::endl;
+
+  for(unsigned i = 0; i < fcns.curry_nodes.size(); i++)
+    if(fcns.curry_nodes[i] != nullptr)
+      std::cout << "Id: " << i << "\nThe node:\n" << *fcns.curry_nodes[i] << std::endl;
 
   os << "Size of FactoryCurryNodes: " << fcns.hash_table.size() << std::endl;
   return os;

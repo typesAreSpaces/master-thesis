@@ -30,6 +30,14 @@ void CurryNode::updateRight(CurryNode * new_right){
   return;
 }
 
+void CurryNode::updateAllIds(unsigned new_id){
+  id = new_id;
+  z3_id = new_id;
+  z3_id_defined = true;
+  const_id = new_id;
+  return;
+}
+
 void CurryNode::updateZ3Id(unsigned new_z3_id){
   z3_id = new_z3_id;
   z3_id_defined = true;

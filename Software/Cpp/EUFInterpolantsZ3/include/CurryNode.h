@@ -30,6 +30,7 @@ public:
   const bool isDefined() const;
   void updateLeft(CurryNode *);
   void updateRight(CurryNode *);
+  void updateAllIds(unsigned);
   void updateZ3Id(unsigned);
   void updateConstId(unsigned);
   void updateCommon(bool);
