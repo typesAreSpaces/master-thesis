@@ -86,6 +86,8 @@ class CongruenceClosureExplain : public CongruenceClosure {
   std::ostream & giveExplanation(std::ostream &, EqClass, EqClass);
   Z3EquationPointers z3Explain(const z3::expr &, const z3::expr &);
   std::ostream & giveZ3Explanation(std::ostream &, const z3::expr &, const z3::expr &);
+  z3::expr z3_repr(unsigned);
+  z3::expr z3_repr(z3::expr const &);
 
   ~CongruenceClosureExplain();
   friend std::ostream & operator << (std::ostream &, const CongruenceClosureExplain &);

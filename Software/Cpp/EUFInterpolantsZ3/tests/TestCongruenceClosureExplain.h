@@ -20,12 +20,13 @@ class TestCongruenceClosureExplain {
 
   CurryDeclarations curry_decl;  
   FactoryCurryNodes factory_curry_nodes;
+  CongruenceClosureExplain cc;
 
   void init(z3::expr const &);
 
   public:
   TestCongruenceClosureExplain(z3::expr const &);
-  bool consistencyCheck(z3::expr const &);
+  bool testConsistency(z3::expr const &);
   void testExplanation(unsigned);
   friend std::ostream & operator << (std::ostream &, TestCongruenceClosureExplain &);
 

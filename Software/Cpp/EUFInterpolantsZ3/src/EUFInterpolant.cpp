@@ -9,25 +9,25 @@ EUFInterpolant::EUFInterpolant(z3::expr const & input_formula) :
   original_num_terms(input_formula.id() + 1),
   ctx(input_formula.ctx()), subterms(ctx), contradiction(ctx.bool_val(false)), disequalities(ctx),
   fsym_positions(), uf(input_formula.id() + 1), pred_list(), horn_clauses(ctx, subterms),
-  curry_decl(), factory_curry_nodes(original_num_terms, curry_decl)
+  curry_decl(), factory_curry_nodes(original_num_terms, curry_decl),
+  cc(
+      (
+       // The following defines: 
+       // subterms, disequalities, fsym_positions,
+       // and curry_decl
+       subterms.resize(original_num_terms), 
+       pred_list.resize(original_num_terms), 
+       init(input_formula), 
+       subterms), pred_list, uf, factory_curry_nodes
+      )
 {        
 
-  subterms .resize(original_num_terms);
-  pred_list.resize(original_num_terms);
-
-  // The following defines: 
-  // subterms, disequalities, fsym_positions,
-  // and curry_decl
-  init(input_formula);
-
-  // FIX: There is a gap between the actual min_id.
-#if 0 
+#if 0
   for(auto it = subterms.begin(); it != subterms.end(); ++it){
     std::cout << *it << std::endl;
   }      
 #endif 
 
-  CongruenceClosureExplain cc(subterms, pred_list, uf, factory_curry_nodes);
 
   // Testing
   //cc.giveExplanation(std::cout, subterms[5], subterms[11]);

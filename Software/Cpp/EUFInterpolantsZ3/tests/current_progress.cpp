@@ -15,7 +15,6 @@ void currentProgress(){
   
   try {
     EUFInterpolant test(input);
-    std::cout << test << std::endl;
   }
   catch(char const * e){
     std::cout << e << std::endl;

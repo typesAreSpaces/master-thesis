@@ -20,8 +20,7 @@ class EUFInterpolant {
   unsigned original_num_terms;
   
   z3::context &   ctx;
-  // Note: elements below min_id are undefined
-  Z3Subterms subterms;
+  Z3Subterms      subterms;
   z3::expr        contradiction;
   z3::expr_vector disequalities;
   
@@ -30,8 +29,9 @@ class EUFInterpolant {
   PredList         pred_list;
   HornClauses      horn_clauses;
 
-  CurryDeclarations curry_decl;  
-  FactoryCurryNodes factory_curry_nodes;
+  CurryDeclarations        curry_decl;  
+  FactoryCurryNodes        factory_curry_nodes;
+  CongruenceClosureExplain cc;
 
   void            init(z3::expr const &);
   void            initPredList(z3::expr const &);

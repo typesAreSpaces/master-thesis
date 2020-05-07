@@ -4,12 +4,13 @@ TestCongruenceClosureExplain::TestCongruenceClosureExplain(z3::expr const & inpu
   original_num_terms(input_formula.id() + 1),
   ctx(input_formula.ctx()), subterms(ctx), contradiction(ctx.bool_val(false)),
   fsym_positions(), uf(input_formula.id() + 1), pred_list(), 
-  curry_decl(), factory_curry_nodes(original_num_terms, curry_decl)
+  curry_decl(), factory_curry_nodes(original_num_terms, curry_decl),
+  cc((subterms.resize(original_num_terms), pred_list.resize(original_num_terms), init(input_formula), subterms), pred_list, uf, factory_curry_nodes)
 { 
-  subterms .resize(original_num_terms);
-  pred_list.resize(original_num_terms);
-  init(input_formula);
-  CongruenceClosureExplain cc(subterms, pred_list, uf, factory_curry_nodes);
+  //subterms .resize(original_num_terms);
+  //pred_list.resize(original_num_terms);
+  //init(input_formula);
+  //CongruenceClosureExplain cc(subterms, pred_list, uf, factory_curry_nodes);
 }
 
 void TestCongruenceClosureExplain::init(z3::expr const & e){
@@ -39,7 +40,7 @@ void TestCongruenceClosureExplain::init(z3::expr const & e){
   throw "Problem @ EUFInterpolant::init. The expression e is not an application term.";
 }
 
-bool TestCongruenceClosureExplain::consistencyCheck(z3::expr const & e){
+bool TestCongruenceClosureExplain::testConsistency(z3::expr const & e){
 
   z3::solver s(ctx);
   s.add(e);
@@ -91,17 +92,13 @@ std::ostream & operator << (std::ostream & os, TestCongruenceClosureExplain & te
     try {
       assert(test.subterms[index].id() == index);
       
-      CurryNode * term = test.factory_curry_nodes.getCurryNodeById(index);
-      unsigned const_id = term->getConstId(); 
-      unsigned repr_const_id = test.uf.find(const_id);
-      CurryNode * repr_term = test.factory_curry_nodes.getCurryNodeById(repr_const_id);
-      unsigned repr_index = repr_term->getZ3Id();
+      auto repr = test.cc.z3_repr(index);
+      unsigned repr_index = repr.id();
 
       os << index << ". "
         << ((index == repr_index) ? "(Same)" : "(Different)")
         << " Original: " << test.subterms[index]
-        << " Representative position: " << repr_index
-        << " Representative " << test.subterms[repr_index] // ISSUE
+        << " Representative " << repr
         << std::endl;
 
       if(index != repr_index)

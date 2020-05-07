@@ -207,6 +207,19 @@ std::ostream & CongruenceClosureExplain::giveZ3Explanation(std::ostream & os, co
   return os;
 } 
 
+z3::expr CongruenceClosureExplain::z3_repr(unsigned i){
+  CurryNode * term = factory_curry_nodes.getCurryNodeById(i);
+  unsigned const_id = term->getConstId(); 
+  unsigned repr_const_id = uf.find(const_id);
+  CurryNode * repr_term = factory_curry_nodes.getCurryNodeById(repr_const_id);
+  unsigned repr_index = repr_term->getZ3Id();
+  return subterms[repr_index];
+}
+
+z3::expr CongruenceClosureExplain::z3_repr(z3::expr const & e){
+  return z3_repr(e.id());
+}
+
 
 void CongruenceClosureExplain::explainAlongPath(EqClass a, EqClass c, 
     UnionFind & uf, ExplainEquations & pending_proofs, PendingPointers & ans){
