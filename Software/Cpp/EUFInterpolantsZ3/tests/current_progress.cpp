@@ -9,16 +9,13 @@ void currentProgress(){
   z3::sort my_sort = ctx.uninterpreted_sort("A");
   z3::expr a = ctx.constant("a", my_sort);
   z3::expr b = ctx.constant("b", my_sort);
-  z3::expr c = ctx.constant("c", my_sort);
-  z3::expr d = ctx.constant("d", my_sort);
-  z3::expr e = ctx.constant("e", my_sort);
-  z3::expr g = ctx.constant("g", my_sort);
-  z3::expr h = ctx.constant("h", my_sort);
-  z3::func_decl f = ctx.function("f", my_sort, my_sort, my_sort);
-  z3::expr input = f(g, h) == d && c == d && f(g, d) == a && e == c && e == b && b == h;
+  z3::func_decl g = ctx.function("g", my_sort, my_sort, my_sort, my_sort);
+  z3::func_decl h = ctx.function("h", my_sort, my_sort);
+  z3::expr input = g(a, h(b), b) == b && g(a, h(b), h(b)) == h(b) && g(a, h(b), h(h(b))) == h(h(b)) && h(b) == b;
   
   try {
     EUFInterpolant test(input);
+    std::cout << test << std::endl;
   }
   catch(char const * e){
     std::cout << e << std::endl;

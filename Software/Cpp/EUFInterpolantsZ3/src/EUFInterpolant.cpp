@@ -29,9 +29,6 @@ EUFInterpolant::EUFInterpolant(z3::expr const & input_formula) :
 
   CongruenceClosureExplain cc(subterms, pred_list, uf, factory_curry_nodes);
 
-  std::cout << "Print factory_curry_nodes" << std::endl;
-  std::cout << factory_curry_nodes << std::endl;
-
   // Testing
   //cc.giveExplanation(std::cout, subterms[5], subterms[11]);
   //cc.giveExplanation(std::cout, subterms[5], subterms[6]);

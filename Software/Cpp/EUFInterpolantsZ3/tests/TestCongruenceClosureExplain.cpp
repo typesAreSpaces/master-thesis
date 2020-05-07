@@ -73,8 +73,17 @@ void TestCongruenceClosureExplain::testExplanation(unsigned n){
 }
 
 std::ostream & operator << (std::ostream & os, TestCongruenceClosureExplain & test) {
+
+  os << "Printing UF Explanation" << std::endl;
+  // Currently this is the *only* way to see actual partitions 
+  // produced by the Congruence Closure algorithm 
+  os << test.uf << std::endl;
+
+  os << "Printing node factory" << std::endl;
+  os << test.factory_curry_nodes;
+
   unsigned num_changes = 0;
-  os << "All the original subterms:" << std::endl;
+  os << "Printing all the original subterms:" << std::endl;
   os << test.subterms.size() << std::endl;
 
   for(auto it = test.subterms.begin(); it != test.subterms.end(); ++it){

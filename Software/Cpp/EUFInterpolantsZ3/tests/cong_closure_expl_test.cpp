@@ -86,11 +86,11 @@ int main(int argc, char ** argv){
   // reach unsat in QF_UF. Hence, we cannot 
   // check that a formula has false as representative.
   
-  //testCongClosureExpl();
-  //testCongClosureExpl2();
+  testCongClosureExpl();
+  testCongClosureExpl2();
   testCongClosureExpl3();
-  //testCongClosureExpl4();
-  //testCongClosureExpl5();
+  testCongClosureExpl4();
+  testCongClosureExpl5();
 
   return 0;
 }
