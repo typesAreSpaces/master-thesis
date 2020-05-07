@@ -90,10 +90,6 @@ std::ostream & operator << (std::ostream & os, TestCongruenceClosureExplain & te
     unsigned index = (*it).id();
     try {
       assert(test.subterms[index].id() == index);
-
-      // KEEP: working here
-      // Find a scheme to show the representative 
-      // element for each subterm using id, z3_id, const_id, etc
       
       CurryNode * term = test.factory_curry_nodes.getCurryNodeById(index);
       unsigned const_id = term->getConstId(); 
@@ -107,9 +103,6 @@ std::ostream & operator << (std::ostream & os, TestCongruenceClosureExplain & te
         << " Representative position: " << repr_index
         << " Representative " << test.subterms[repr_index] // ISSUE
         << std::endl;
-
-      os << *term << std::endl;
-      //os << *repr_term << std::endl;
 
       if(index != repr_index)
         num_changes++;
