@@ -45,6 +45,7 @@ bool TestCongruenceClosureExplain::testConsistency(z3::expr const & e,
     unsigned index = (*it).id();
     auto repr = cc.z3_repr(index);
     unsigned repr_index = repr.id();
+    // Checking the non-trivial equalities
     if(index != repr_index){
       s.push();
       std::cout << "To check that " 
@@ -69,10 +70,11 @@ bool TestCongruenceClosureExplain::testConsistency(z3::expr const & e,
 }
 
 void TestCongruenceClosureExplain::testExplanation(unsigned max_iter){
-  for(auto it = subterms.begin();  it != subterms.end(); ++it){
+  for(auto it = subterms.begin(); it != subterms.end(); ++it){
     unsigned index = (*it).id();
     auto repr = cc.z3_repr(index);
     unsigned repr_index = repr.id();
+    // Checking the non-trivial equalities
     if(index != repr_index){
       cc.giveZ3Explanation(std::cout, *it, repr);
       if(--max_iter == 0)
