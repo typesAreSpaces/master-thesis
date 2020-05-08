@@ -131,8 +131,8 @@ void CongruenceClosureExplain::merge(const EquationCurryNodes & equation){
 
 PendingPointers CongruenceClosureExplain::explain(const z3::expr & lhs, const z3::expr & rhs){
   return explain(
-      factory_curry_nodes.curry_nodes[lhs.id()]->getId(), 
-      factory_curry_nodes.curry_nodes[rhs.id()]->getId());
+      factory_curry_nodes.curry_nodes[lhs.id()]->getConstId(), 
+      factory_curry_nodes.curry_nodes[rhs.id()]->getConstId());
 }
 
 PendingPointers CongruenceClosureExplain::explain(EqClass x, EqClass y){
@@ -198,7 +198,7 @@ std::ostream & CongruenceClosureExplain::giveZ3Explanation(std::ostream & os, co
   os << "Explain " << lhs << ", " << rhs << std::endl; 
   auto explanation = z3Explain(lhs, rhs);
   if(explanation.size() == 0)
-    return os << lhs << " and " << rhs << " belong to different equivalent classes" << std::endl;
+    return os << lhs << ", " << rhs << " belong to different equivalent classes" << std::endl;
   unsigned num = 1;
   for(auto z : explanation){
     os << "Label " << num++ << ":" << std::endl;

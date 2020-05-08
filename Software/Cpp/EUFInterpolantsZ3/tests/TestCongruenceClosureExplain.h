@@ -26,7 +26,7 @@ class TestCongruenceClosureExplain {
 
   public:
   TestCongruenceClosureExplain(z3::expr const &);
-  bool testConsistency(z3::expr const &);
+  bool testConsistency(z3::expr const &, unsigned);
   void testExplanation(unsigned);
   friend std::ostream & operator << (std::ostream &, TestCongruenceClosureExplain &);
 

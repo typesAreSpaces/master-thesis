@@ -7,10 +7,6 @@ TestCongruenceClosureExplain::TestCongruenceClosureExplain(z3::expr const & inpu
   curry_decl(), factory_curry_nodes(original_num_terms, curry_decl),
   cc((subterms.resize(original_num_terms), pred_list.resize(original_num_terms), init(input_formula), subterms), pred_list, uf, factory_curry_nodes)
 { 
-  //subterms .resize(original_num_terms);
-  //pred_list.resize(original_num_terms);
-  //init(input_formula);
-  //CongruenceClosureExplain cc(subterms, pred_list, uf, factory_curry_nodes);
 }
 
 void TestCongruenceClosureExplain::init(z3::expr const & e){
@@ -40,49 +36,53 @@ void TestCongruenceClosureExplain::init(z3::expr const & e){
   throw "Problem @ EUFInterpolant::init. The expression e is not an application term.";
 }
 
-bool TestCongruenceClosureExplain::testConsistency(z3::expr const & e){
-
+bool TestCongruenceClosureExplain::testConsistency(z3::expr const & e, 
+    unsigned max_iter){
   z3::solver s(ctx);
   s.add(e);
 
-  switch(s.check()){
-    case z3::sat:
-      std::cout << "This problem is sat" << std::endl;
-      break;
-    case z3::unsat:
-      std::cout << "This problem is unsat" << std::endl;
-      break;
-    case z3::unknown:
-      std::cout << "This problem is unknown" << std::endl;
-      break;
+  for(auto it = subterms.begin();  it != subterms.end(); ++it){
+    unsigned index = (*it).id();
+    auto repr = cc.z3_repr(index);
+    unsigned repr_index = repr.id();
+    if(index != repr_index){
+      s.push();
+      std::cout << "To check that " 
+        << *it << " and " << repr 
+        << " are equivalent: ";
+      s.add((*it) != repr);
+      switch(s.check()){
+        case z3::unsat:
+          std::cout << "They are." << std::endl;
+          break;
+        default:
+          throw "There is a problem \
+            with the congruence \
+            closure algorithm";
+      }
+      s.pop();
+      if(--max_iter == 0)
+        return true;
+    }
   }
-
   return true;
 }
 
-void TestCongruenceClosureExplain::testExplanation(unsigned n){
-  for(auto it = subterms.begin(); it != subterms.end(); ++it){
+void TestCongruenceClosureExplain::testExplanation(unsigned max_iter){
+  for(auto it = subterms.begin();  it != subterms.end(); ++it){
     unsigned index = (*it).id();
-    if(index != uf.find(index)){
-      n--;
-      // TODO: Test explanation of nodes at index, uf.find(index)
-      subterms[index];
-      if(n == 0)
+    auto repr = cc.z3_repr(index);
+    unsigned repr_index = repr.id();
+    if(index != repr_index){
+      cc.giveZ3Explanation(std::cout, *it, repr);
+      if(--max_iter == 0)
         return;
     }
   }
+  return;
 }
 
 std::ostream & operator << (std::ostream & os, TestCongruenceClosureExplain & test) {
-
-  //os << "Printing UF Explanation" << std::endl;
-  //// Currently this is the *only* way to see actual partitions 
-  //// produced by the Congruence Closure algorithm 
-  //os << test.uf << std::endl;
-
-  //os << "Printing node factory" << std::endl;
-  //os << test.factory_curry_nodes;
-
   unsigned num_changes = 0;
   os << "Printing all the original subterms:" << std::endl;
   os << test.subterms.size() << std::endl;
@@ -95,14 +95,10 @@ std::ostream & operator << (std::ostream & os, TestCongruenceClosureExplain & te
       auto repr = test.cc.z3_repr(index);
       unsigned repr_index = repr.id();
 
-      os << index << ". "
-        << ((index == repr_index) ? "(Same)" : "(Different)")
-        << " Original: " << test.subterms[index]
-        << " Representative " << repr
-        << std::endl;
+      os << index << ". " << (index == repr_index ? "(Same)" : (num_changes++, "(Different)")) << std::endl;
+      os << "Original:       " << test.subterms[index] << std::endl;
+      os << "Representative: " << repr << std::endl;
 
-      if(index != repr_index)
-        num_changes++;
     }
     catch(char const * e){
       os << e << std::endl;
@@ -110,7 +106,7 @@ std::ostream & operator << (std::ostream & os, TestCongruenceClosureExplain & te
     }
   }
 
-  std::cout << "Number of changes: " << num_changes << std::endl;
+  os << "Number of changes: " << num_changes;
 
   return os;
 }

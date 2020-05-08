@@ -169,6 +169,8 @@ buildCongruenceClosure	src/CongruenceClosureExplain.cpp	/^void CongruenceClosure
 buildCongruenceClosure	src/CongruenceClosureNO.cpp	/^void CongruenceClosureNO::buildCongruenceClosure(std::list<unsigned> & pending){$/;"	f	class:CongruenceClosureNO
 buildHCBody	src/EUFInterpolant.cpp	/^z3::expr_vector EUFInterpolant::buildHCBody(z3::expr const & t1, z3::expr const & t2){$/;"	f	class:EUFInterpolant
 buildInterpolant	src/EUFInterpolant.cpp	/^z3::expr EUFInterpolant::buildInterpolant(std::vector<Replacement> replacements){$/;"	f	class:EUFInterpolant
+cc	include/EUFInterpolant.h	/^  CongruenceClosureExplain cc;$/;"	m	class:EUFInterpolant
+cc	tests/TestCongruenceClosureExplain.h	/^  CongruenceClosureExplain cc;$/;"	m	class:TestCongruenceClosureExplain
 checkTriviality	src/HornClause.cpp	/^bool HornClause::checkTriviality(){$/;"	f	class:HornClause
 class_list	include/Hornsat.h	/^  ClassList            class_list;$/;"	m	class:Hornsat
 clause1	include/Replacement.h	/^  unsigned clause1, clause2;$/;"	m	struct:Replacement
@@ -186,7 +188,6 @@ conditionalElimination	src/HornClauses.cpp	/^void HornClauses::conditionalElimin
 conditionalReplacement	src/EUFInterpolant.cpp	/^z3::expr_vector EUFInterpolant::conditionalReplacement(z3::expr_vector & terms_to_replace){ \/\/ TODO:$/;"	f	class:EUFInterpolant
 congclosure	src/Hornsat.cpp	/^void Hornsat::congclosure(CongruenceClosure & cc, std::list<unsigned> & pending){$/;"	f	class:Hornsat
 consequent	include/HornClause.h	/^  z3::expr          consequent;$/;"	m	class:HornClause
-consistencyCheck	tests/TestCongruenceClosureExplain.cpp	/^bool TestCongruenceClosureExplain::consistencyCheck(z3::expr const & e){$/;"	f	class:TestCongruenceClosureExplain
 consistent	include/Hornsat.h	/^  bool                 consistent;$/;"	m	class:Hornsat
 const_id	include/CurryNode.h	/^  unsigned id, z3_id, const_id;$/;"	m	class:CurryNode
 constantCurryNode	src/FactoryCurryNodes.cpp	/^CurryNode * FactoryCurryNodes::constantCurryNode(unsigned index){$/;"	f	class:FactoryCurryNodes
@@ -201,7 +202,7 @@ curr_num_horn_clauses	include/HornClauses.h	/^  unsigned                  curr_n
 curr_num_literals	include/Hornsat.h	/^  static unsigned curr_num_literals;$/;"	m	struct:Literal
 curr_num_literals	src/Hornsat.cpp	/^unsigned Literal::curr_num_literals = 0;$/;"	m	class:Literal	file:
 currentProgress	tests/current_progress.cpp	/^void currentProgress(){$/;"	f
-curry_decl	include/EUFInterpolant.h	/^  CurryDeclarations curry_decl;  $/;"	m	class:EUFInterpolant
+curry_decl	include/EUFInterpolant.h	/^  CurryDeclarations        curry_decl;  $/;"	m	class:EUFInterpolant
 curry_decl	include/FactoryCurryNodes.h	/^  const CurryDeclarations & curry_decl;$/;"	m	class:FactoryCurryNodes
 curry_decl	tests/TestCongruenceClosureExplain.h	/^  CurryDeclarations curry_decl;  $/;"	m	class:TestCongruenceClosureExplain
 curry_hasher	include/FactoryCurryNodes.h	/^  std::hash<CurryNode*>                       curry_hasher;$/;"	m	class:FactoryCurryNodes
@@ -230,7 +231,7 @@ explainAlongPath	src/CongruenceClosureExplain.cpp	/^void CongruenceClosureExplai
 explainAlongPath	src/UnionFindExplain.cpp	/^void UnionFindExplain::explainAlongPath(EqClass node, EqClass representative, ExplainEquations & explanations) {$/;"	f	class:UnionFindExplain
 exposeUncommons	src/EUFInterpolant.cpp	/^void EUFInterpolant::exposeUncommons(){$/;"	f	class:EUFInterpolant
 factory_curry_nodes	include/CongruenceClosureExplain.h	/^  FactoryCurryNodes & factory_curry_nodes;$/;"	m	class:CongruenceClosureExplain
-factory_curry_nodes	include/EUFInterpolant.h	/^  FactoryCurryNodes factory_curry_nodes;$/;"	m	class:EUFInterpolant
+factory_curry_nodes	include/EUFInterpolant.h	/^  FactoryCurryNodes        factory_curry_nodes;$/;"	m	class:EUFInterpolant
 factory_curry_nodes	tests/TestCongruenceClosureExplain.h	/^  FactoryCurryNodes factory_curry_nodes;$/;"	m	class:TestCongruenceClosureExplain
 facts	include/Hornsat.h	/^  std::queue<unsigned> facts;$/;"	m	class:Hornsat
 find	src/UnionFind.cpp	/^EqClass UnionFind::find(EqClass x){$/;"	f	class:UnionFind
@@ -435,7 +436,7 @@ space	include/CurryNode.h	/^  unsigned space = 1;$/;"	m	class:CurryNode
 string_hasher	include/FactoryCurryNodes.h	/^  std::hash<std::string>                      string_hasher;$/;"	m	class:FactoryCurryNodes
 subterms	include/CongruenceClosure.h	/^  const Z3Subterms & subterms;$/;"	m	class:CongruenceClosure
 subterms	include/CongruenceClosureExplain.h	/^  const Z3Subterms &  subterms;$/;"	m	class:CongruenceClosureExplain
-subterms	include/EUFInterpolant.h	/^  Z3Subterms subterms;$/;"	m	class:EUFInterpolant
+subterms	include/EUFInterpolant.h	/^  Z3Subterms      subterms;$/;"	m	class:EUFInterpolant
 subterms	include/HornClause.h	/^  Z3Subterms &      subterms;$/;"	m	class:HornClause
 subterms	include/HornClauses.h	/^  Z3Subterms &              subterms;$/;"	m	class:HornClauses
 subterms	include/Hornsat.h	/^  const Z3Subterms &   subterms;$/;"	m	class:Hornsat
@@ -448,6 +449,7 @@ testCongClosureExpl2	tests/cong_closure_expl_test.cpp	/^void testCongClosureExpl
 testCongClosureExpl3	tests/cong_closure_expl_test.cpp	/^void testCongClosureExpl3(){$/;"	f
 testCongClosureExpl4	tests/cong_closure_expl_test.cpp	/^void testCongClosureExpl4(){$/;"	f
 testCongClosureExpl5	tests/cong_closure_expl_test.cpp	/^void testCongClosureExpl5(){$/;"	f
+testConsistency	tests/TestCongruenceClosureExplain.cpp	/^bool TestCongruenceClosureExplain::testConsistency(z3::expr const & e, unsigned max_iter){$/;"	f	class:TestCongruenceClosureExplain
 testExplanation	tests/TestCongruenceClosureExplain.cpp	/^void TestCongruenceClosureExplain::testExplanation(unsigned n){$/;"	f	class:TestCongruenceClosureExplain
 to_replace	include/FactoryCurryNodes.h	/^  std::list<CurryNode *>    to_replace;$/;"	m	class:FactoryCurryNodes
 traversePartA	src/Rename.cpp	/^void traversePartA(z3::expr const & e,$/;"	f
@@ -463,6 +465,7 @@ unionupdate	src/Hornsat.cpp	/^void Hornsat::unionupdate(UnionFind & uf,$/;"	f	cl
 uniqueSize	src/FactoryCurryNodes.cpp	/^const unsigned FactoryCurryNodes::uniqueSize() const {$/;"	f	class:FactoryCurryNodes
 unsigned_hasher	include/FactoryCurryNodes.h	/^  std::hash<unsigned>                         unsigned_hasher;$/;"	m	class:FactoryCurryNodes
 update	src/Hornsat.cpp	/^void Hornsat::update(CongruenceClosure & cc, std::list<unsigned> & pending,$/;"	f	class:Hornsat
+updateAllIds	src/CurryNode.cpp	/^void CurryNode::updateAllIds(unsigned new_id){$/;"	f	class:CurryNode
 updateCommon	src/CurryNode.cpp	/^void CurryNode::updateCommon(bool new_is_common){$/;"	f	class:CurryNode
 updateConstId	src/CurryNode.cpp	/^void CurryNode::updateConstId(unsigned new_const_id){$/;"	f	class:CurryNode
 updateLeft	src/CurryNode.cpp	/^void CurryNode::updateLeft(CurryNode * new_left){$/;"	f	class:CurryNode
@@ -476,6 +479,8 @@ visited	include/Z3Subterms.h	/^  std::vector<bool> visited;$/;"	m	struct:Z3Subte
 z3Explain	src/CongruenceClosureExplain.cpp	/^Z3EquationPointers CongruenceClosureExplain::z3Explain(const z3::expr & lhs, const z3::expr & rhs){$/;"	f	class:CongruenceClosureExplain
 z3_id	include/CurryNode.h	/^  unsigned id, z3_id, const_id;$/;"	m	class:CurryNode
 z3_id_defined	include/CurryNode.h	/^  bool z3_id_defined = false;$/;"	m	class:CurryNode
+z3_repr	src/CongruenceClosureExplain.cpp	/^z3::expr CongruenceClosureExplain::z3_repr(unsigned i){$/;"	f	class:CongruenceClosureExplain
+z3_repr	src/CongruenceClosureExplain.cpp	/^z3::expr CongruenceClosureExplain::z3_repr(z3::expr const & e){$/;"	f	class:CongruenceClosureExplain
 ~ClassListPos	include/Hornsat.h	/^  ~ClassListPos(){$/;"	f	struct:ClassListPos
 ~Clause	include/Hornsat.h	/^  ~Clause(){$/;"	f	struct:Clause
 ~CongruenceClosure	src/CongruenceClosure.cpp	/^CongruenceClosure::~CongruenceClosure(){$/;"	f	class:CongruenceClosure

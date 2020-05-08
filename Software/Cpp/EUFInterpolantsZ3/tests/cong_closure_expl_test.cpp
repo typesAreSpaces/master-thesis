@@ -13,6 +13,7 @@ void testCongClosureExpl(){
 
   TestCongruenceClosureExplain test(input);
   std::cout << test << std::endl;
+  std::cout << test.testConsistency(input, 20) << std::endl;
   return;
 }
 
@@ -27,6 +28,7 @@ void testCongClosureExpl2(){
 
   TestCongruenceClosureExplain test(input);
   std::cout << test << std::endl;
+  std::cout << test.testConsistency(input, 20) << std::endl;
   return;
 }
 
@@ -41,6 +43,8 @@ void testCongClosureExpl3(){
 
   TestCongruenceClosureExplain test(input);
   std::cout << test << std::endl;
+  std::cout << test.testConsistency(input, 20) << std::endl;
+  test.testExplanation(20);
   return;
 }
 
@@ -55,6 +59,7 @@ void testCongClosureExpl4(){
 
   TestCongruenceClosureExplain test(input);
   std::cout << test << std::endl;
+  std::cout << test.testConsistency(input, 20) << std::endl;
   return;
 }
 
@@ -73,9 +78,7 @@ void testCongClosureExpl5(){
 
   TestCongruenceClosureExplain test(input);
   std::cout << test << std::endl;
-  //std::cout << test.consistencyCheck(input) << std::endl;
-  //test.testExplanation(5);
-
+  std::cout << test.testConsistency(input, 20) << std::endl;
   return;
 }
 
@@ -86,11 +89,11 @@ int main(int argc, char ** argv){
   // reach unsat in QF_UF. Hence, we cannot 
   // check that a formula has false as representative.
   
-  testCongClosureExpl();
-  testCongClosureExpl2();
+  //testCongClosureExpl();
+  //testCongClosureExpl2();
   testCongClosureExpl3();
-  testCongClosureExpl4();
-  testCongClosureExpl5();
+  //testCongClosureExpl4();
+  //testCongClosureExpl5();
 
   return 0;
 }
