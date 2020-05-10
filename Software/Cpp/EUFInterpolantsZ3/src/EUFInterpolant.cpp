@@ -12,11 +12,11 @@ EUFInterpolant::EUFInterpolant(z3::expr const & input_formula) :
   curry_decl(), factory_curry_nodes(original_num_terms, curry_decl),
   cc(
       (
+       subterms.resize(original_num_terms), 
+       pred_list.resize(original_num_terms), 
        // The following defines: 
        // subterms, disequalities, fsym_positions,
        // and curry_decl
-       subterms.resize(original_num_terms), 
-       pred_list.resize(original_num_terms), 
        init(input_formula), 
        subterms), pred_list, uf, factory_curry_nodes
       )

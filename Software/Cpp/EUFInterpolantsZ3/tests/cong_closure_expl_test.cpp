@@ -1,6 +1,21 @@
 #include <iostream>
 #include "TestCongruenceClosureExplain.h"
 
+void inputFile(char const * file_name){
+  z3::context ctx;
+  auto input = mk_and(ctx.parse_file(file_name));
+  std::string input_file = file_name;
+  TestCongruenceClosureExplain test(input);
+  try{
+    std::cout << test.testConsistency(input, 20) << std::endl;
+  }
+  catch(char const * e){
+    std::cout << e << std::endl;
+    test.testExplanation(20);
+  }
+  return;
+}
+
 void testCongClosureExpl(){
   z3::context ctx;
   z3::sort my_sort = ctx.uninterpreted_sort("A");
@@ -93,11 +108,13 @@ int main(int argc, char ** argv){
   // reach unsat in QF_UF. Hence, we cannot 
   // check that a formula has false as representative.
   
-  testCongClosureExpl();
-  testCongClosureExpl2();
-  testCongClosureExpl3();
-  testCongClosureExpl4();
-  testCongClosureExpl5();
+  //testCongClosureExpl();
+  //testCongClosureExpl2();
+  //testCongClosureExpl3();
+  //testCongClosureExpl4();
+  //testCongClosureExpl5();
+ 
+  inputFile("/home/jose/Documents/GithubProjects/master-thesis/Software/Cpp/EUFInterpolantsZ3/tests/QF_UF/2018-Goel-hwbench/QF_UF_v_Unidec_ab_cti_max.smt2");
 
   return 0;
 }

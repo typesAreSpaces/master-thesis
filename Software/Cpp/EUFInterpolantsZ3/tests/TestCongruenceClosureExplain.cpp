@@ -41,12 +41,16 @@ bool TestCongruenceClosureExplain::testConsistency(z3::expr const & e,
   z3::solver s(ctx);
   s.add(e);
 
+  std::cout << "Starting consistency test" << std::endl;
+
   for(auto it = subterms.begin();  it != subterms.end(); ++it){
     unsigned index = (*it).id();
     auto repr = cc.z3_repr(index);
     unsigned repr_index = repr.id();
     // Checking the non-trivial equalities
-    if(index != repr_index){
+    // of the same sort
+    if(index != repr_index 
+        && (*it).get_sort().id() == repr.get_sort().id()){
       s.push();
       std::cout << "To check that " 
         << *it << " and " << repr 
@@ -57,9 +61,7 @@ bool TestCongruenceClosureExplain::testConsistency(z3::expr const & e,
           std::cout << "They are." << std::endl;
           break;
         default:
-          throw "There is a problem \
-            with the congruence \
-            closure algorithm";
+          throw "There is a problem with the congruence closure algorithm";
       }
       s.pop();
       if(--max_iter == 0)
