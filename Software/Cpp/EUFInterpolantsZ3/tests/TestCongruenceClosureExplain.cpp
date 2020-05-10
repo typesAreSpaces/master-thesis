@@ -3,9 +3,12 @@
 TestCongruenceClosureExplain::TestCongruenceClosureExplain(z3::expr const & input_formula) :
   original_num_terms(input_formula.id() + 1),
   ctx(input_formula.ctx()), subterms(ctx), contradiction(ctx.bool_val(false)),
-  fsym_positions(), uf(input_formula.id() + 1), pred_list(), 
+  fsym_positions(), uf(original_num_terms), pred_list(), 
   curry_decl(), factory_curry_nodes(original_num_terms, curry_decl),
-  cc((subterms.resize(original_num_terms), pred_list.resize(original_num_terms), init(input_formula), subterms), pred_list, uf, factory_curry_nodes)
+  cc(
+      (subterms.resize(original_num_terms), pred_list.resize(original_num_terms), init(input_formula), 
+       subterms), pred_list, uf, factory_curry_nodes
+      )
 { 
 }
 

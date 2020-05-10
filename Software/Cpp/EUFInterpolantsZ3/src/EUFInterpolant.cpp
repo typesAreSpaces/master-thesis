@@ -8,7 +8,7 @@
 EUFInterpolant::EUFInterpolant(z3::expr const & input_formula) :
   original_num_terms(input_formula.id() + 1),
   ctx(input_formula.ctx()), subterms(ctx), contradiction(ctx.bool_val(false)), disequalities(ctx),
-  fsym_positions(), uf(input_formula.id() + 1), pred_list(), horn_clauses(ctx, subterms),
+  fsym_positions(), uf(original_num_terms), pred_list(), horn_clauses(ctx, subterms),
   curry_decl(), factory_curry_nodes(original_num_terms, curry_decl),
   cc(
       (
