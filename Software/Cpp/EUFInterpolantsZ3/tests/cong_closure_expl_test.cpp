@@ -108,13 +108,13 @@ int main(int argc, char ** argv){
   // reach unsat in QF_UF. Hence, we cannot 
   // check that a formula has false as representative.
   
-  //testCongClosureExpl();
-  //testCongClosureExpl2();
-  //testCongClosureExpl3();
-  //testCongClosureExpl4();
-  //testCongClosureExpl5();
+  testCongClosureExpl();
+  testCongClosureExpl2();
+  testCongClosureExpl3();
+  testCongClosureExpl4();
+  testCongClosureExpl5();
  
-  inputFile("/home/jose/Documents/GithubProjects/master-thesis/Software/Cpp/EUFInterpolantsZ3/tests/QF_UF/2018-Goel-hwbench/QF_UF_v_Unidec_ab_cti_max.smt2");
+  //inputFile("/home/jose/Documents/GithubProjects/master-thesis/Software/Cpp/EUFInterpolantsZ3/tests/QF_UF/2018-Goel-hwbench/QF_UF_v_Unidec_ab_cti_max.smt2");
 
   return 0;
 }
