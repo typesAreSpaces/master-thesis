@@ -7,7 +7,6 @@
 #define DEBUG_INIT           1
 
 EUFInterpolant::EUFInterpolant(z3::expr_vector const & assertions) :
-
   original_num_terms(maxIdFromAssertions(assertions) + 1),
   ctx(assertions.ctx()), subterms(ctx), contradiction(ctx.bool_val(false)), disequalities(ctx),
   fsym_positions(), uf(original_num_terms), pred_list(), horn_clauses(ctx, subterms),
