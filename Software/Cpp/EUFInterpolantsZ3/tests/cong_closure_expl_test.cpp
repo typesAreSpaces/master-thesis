@@ -3,11 +3,11 @@
 
 void inputFile(char const * file_name){
   z3::context ctx;
-  auto input = mk_and(ctx.parse_file(file_name));
+  auto assertions = ctx.parse_file(file_name);
   std::string input_file = file_name;
-  TestCongruenceClosureExplain test(input);
+  TestCongruenceClosureExplain test(assertions);
   try{
-    std::cout << test.testConsistency(input, 20) << std::endl;
+    std::cout << test.testConsistency(assertions, 20) << std::endl;
   }
   catch(char const * e){
     std::cout << e << std::endl;
@@ -24,7 +24,11 @@ void testCongClosureExpl(){
   z3::expr c = ctx.constant("c", my_sort);
   z3::expr d = ctx.constant("d", my_sort);
   z3::func_decl f = ctx.function("f", my_sort, my_sort);
-  z3::expr input = a == b && f(a) == c && f(b) == d;
+
+  z3::expr_vector input(ctx);
+  input.push_back(a == b);
+  input.push_back(f(a) == c);
+  input.push_back(f(b) == d);
 
   TestCongruenceClosureExplain test(input);
   std::cout << test << std::endl;
@@ -40,7 +44,11 @@ void testCongClosureExpl2(){
   z3::expr b = ctx.constant("b", my_sort);
   z3::func_decl g = ctx.function("g", my_sort, my_sort, my_sort, my_sort);
   z3::func_decl h = ctx.function("h", my_sort, my_sort);
-  z3::expr input = g(a, h(b), b) == b && g(a, h(b), h(b)) == h(b) && g(a, h(b), h(h(b))) == h(h(b));
+
+  z3::expr_vector input(ctx);
+  input.push_back(g(a, h(b), b) == b );
+  input.push_back(g(a, h(b), h(b)) == h(b) );
+  input.push_back(g(a, h(b), h(h(b))) == h(h(b)));
 
   TestCongruenceClosureExplain test(input);
   std::cout << test << std::endl;
@@ -56,7 +64,12 @@ void testCongClosureExpl3(){
   z3::expr b = ctx.constant("b", my_sort);
   z3::func_decl g = ctx.function("g", my_sort, my_sort, my_sort, my_sort);
   z3::func_decl h = ctx.function("h", my_sort, my_sort);
-  z3::expr input = g(a, h(b), b) == b && g(a, h(b), h(b)) == h(b) && g(a, h(b), h(h(b))) == h(h(b)) && h(b) == b;
+
+  z3::expr_vector input(ctx);
+  input.push_back(g(a, h(b), b) == b );
+  input.push_back(g(a, h(b), h(b)) == h(b) );
+  input.push_back(g(a, h(b), h(h(b))) == h(h(b)) );
+  input.push_back(h(b) == b);
 
   TestCongruenceClosureExplain test(input);
   std::cout << test << std::endl;
@@ -72,7 +85,11 @@ void testCongClosureExpl4(){
   z3::expr b = ctx.constant("b", my_sort);
   z3::func_decl g = ctx.function("g", my_sort, my_sort, my_sort, my_sort);
   z3::func_decl h = ctx.function("h", my_sort, my_sort);
-  z3::expr input = g(a, h(b), b) == g(b, h(b), h(b)) && h(b) == b && a == b;
+
+  z3::expr_vector input(ctx);
+  input.push_back(g(a, h(b), b) == g(b, h(b), h(b)) );
+  input.push_back(h(b) == b );
+  input.push_back(a == b);
 
   TestCongruenceClosureExplain test(input);
   std::cout << test << std::endl;
@@ -92,8 +109,15 @@ void testCongClosureExpl5(){
   z3::expr g = ctx.constant("g", my_sort);
   z3::expr h = ctx.constant("h", my_sort);
   z3::func_decl f = ctx.function("f", my_sort, my_sort, my_sort);
-  z3::expr input = f(g, h) == d && c == d && f(g, d) == a && e == c && e == b && b == h;
 
+  z3::expr_vector input(ctx);
+  input.push_back(f(g, h) == d );
+  input.push_back(c == d );
+  input.push_back(f(g, d) == a );
+  input.push_back(e == c );
+  input.push_back(e == b );
+  input.push_back(b == h);
+ 
   TestCongruenceClosureExplain test(input);
   std::cout << test << std::endl;
   std::cout << test.testConsistency(input, 20) << std::endl;
@@ -114,7 +138,7 @@ int main(int argc, char ** argv){
   testCongClosureExpl4();
   testCongClosureExpl5();
  
-  //inputFile("/home/jose/Documents/GithubProjects/master-thesis/Software/Cpp/EUFInterpolantsZ3/tests/QF_UF/2018-Goel-hwbench/QF_UF_v_Unidec_ab_cti_max.smt2");
+  inputFile("/home/jose/Documents/GithubProjects/master-thesis/Software/Cpp/EUFInterpolantsZ3/tests/QF_UF/2018-Goel-hwbench/QF_UF_v_Unidec_ab_cti_max.smt2");
 
   return 0;
 }

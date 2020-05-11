@@ -22,12 +22,12 @@ class FactoryCurryNodes {
   CurryPreds                curry_predecessors;
   std::list<CurryNode *>    to_replace;
   
-  unsigned   addExtraNodes(unsigned);
-  void       updatePreds(CurryNode *, CurryNode *);
-  void       updateZ3IdNotDefinedAndCommon(const Z3Subterms &);
-  void       curryficationHelper(z3::expr const &, std::vector<bool> &, IdsToMerge &);
-  IdsToMerge curryfication(z3::expr const &);
-  void       flattening(PendingElements &, PendingPointers &, const Z3Subterms &);
+  unsigned addExtraNodes(unsigned);
+  void     updatePreds(CurryNode *, CurryNode *);
+  void     updateZ3IdNotDefinedAndCommon(const Z3Subterms &);
+  void     curryficationHelper(z3::expr const &, std::vector<bool> &);
+  void     curryfication(Z3Subterms const &);
+  void     flattening(PendingElements &, PendingPointers &, const Z3Subterms &);
   
  public:
   FactoryCurryNodes(const unsigned &, const CurryDeclarations &);

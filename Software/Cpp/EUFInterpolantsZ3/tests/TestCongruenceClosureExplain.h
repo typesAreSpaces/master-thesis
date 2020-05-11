@@ -3,6 +3,7 @@
 
 #include <iostream>
 #include <algorithm>
+#include <z3++.h>
 #include "Rename.h"
 #include "EUFInterpolant.h"
 
@@ -17,16 +18,20 @@ class TestCongruenceClosureExplain {
   FSymPositions    fsym_positions;
   UnionFindExplain uf;
   PredList         pred_list;
+  
+  IdsToMerge ids_to_merge;
 
   CurryDeclarations curry_decl;  
   FactoryCurryNodes factory_curry_nodes;
   CongruenceClosureExplain cc;
 
-  void init(z3::expr const &);
+  unsigned maxIdFromAssertions(z3::expr_vector const &);
+  void init(z3::expr_vector const &);
+  void initFormula(z3::expr const &);
 
   public:
-  TestCongruenceClosureExplain(z3::expr const &);
-  bool testConsistency(z3::expr const &, unsigned);
+  TestCongruenceClosureExplain(z3::expr_vector const &);
+  bool testConsistency(z3::expr_vector const &, unsigned);
   void testExplanation(unsigned);
   friend std::ostream & operator << (std::ostream &, TestCongruenceClosureExplain &);
 

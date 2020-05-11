@@ -119,7 +119,7 @@ void FactoryCurryNodes::updateZ3IdNotDefinedAndCommon(const Z3Subterms & subterm
   return;
 }
 
-void FactoryCurryNodes::curryficationHelper(z3::expr const & e, std::vector<bool> & visited, IdsToMerge & ids_to_merge){
+void FactoryCurryNodes::curryficationHelper(z3::expr const & e, std::vector<bool> & visited){
   if(e.is_app()){
     if(visited[e.id()]) return;
     
@@ -128,7 +128,7 @@ void FactoryCurryNodes::curryficationHelper(z3::expr const & e, std::vector<bool
     auto f = e.decl();
 
     for(unsigned i = 0; i < num; i++)
-      curryficationHelper(e.arg(i), visited, ids_to_merge);
+      curryficationHelper(e.arg(i), visited);
 
     // Update curry_nodes
     if(num > 0){
@@ -153,24 +153,18 @@ void FactoryCurryNodes::curryficationHelper(z3::expr const & e, std::vector<bool
     else
       curry_nodes[e.id()] = curry_decl.at(f.id());
 
-    switch(f.decl_kind()){
-      case Z3_OP_EQ:
-        ids_to_merge.emplace_back(e.arg(0).id(), e.arg(1).id());
-        return;
-      default:
-        return;
-    }
+    return;
   }
 
   throw "Problem @ FactoryCurryNodes::curryficationHelper\
     (z3::expr const &, std::vector<bool> &). The z3::expr const & is not an app.";
 }
 
-IdsToMerge FactoryCurryNodes::curryfication(z3::expr const & e){
+void FactoryCurryNodes::curryfication(Z3Subterms const & e){
   std::vector<bool> visited(num_terms, false);
-  std::list<EquationZ3Ids> ids_to_merge;
-  curryficationHelper(e, visited, ids_to_merge);
-  return ids_to_merge;
+  for(auto it = e.begin(); it != e.end(); ++it)
+    curryficationHelper(*it, visited);
+  return;
 }
 
 void FactoryCurryNodes::flattening(PendingElements & pending_elements,

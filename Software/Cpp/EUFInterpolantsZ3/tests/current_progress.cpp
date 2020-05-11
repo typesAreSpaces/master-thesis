@@ -11,8 +11,13 @@ void currentProgress(){
   z3::expr b = ctx.constant("b", my_sort);
   z3::func_decl g = ctx.function("g", my_sort, my_sort, my_sort, my_sort);
   z3::func_decl h = ctx.function("h", my_sort, my_sort);
-  z3::expr input = g(a, h(b), b) == b && g(a, h(b), h(b)) == h(b) && g(a, h(b), h(h(b))) == h(h(b)) && h(b) == b;
-  
+
+  z3::expr_vector input(ctx); 
+  input.push_back(g(a, h(b), b) == b );
+  input.push_back(g(a, h(b), h(b)) == h(b) );
+  input.push_back(g(a, h(b), h(h(b))) == h(h(b)) );
+  input.push_back(h(b) == b);
+
   try {
     EUFInterpolant test(input);
   }

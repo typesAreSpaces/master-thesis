@@ -1,13 +1,15 @@
 #include "EUFInterpolant.h"
+#include <z3++.h>
 #define DEBUG_DESTRUCTOR_EUF 0
 #define DEBUG_EUFINTERPOLANT 0
 #define DEBUG_CURRYFICATION  0
 #define DEBUG_SUBTERMS       1
 #define DEBUG_INIT           1
 
-EUFInterpolant::EUFInterpolant(z3::expr const & input_formula) :
-  original_num_terms(input_formula.id() + 1),
-  ctx(input_formula.ctx()), subterms(ctx), contradiction(ctx.bool_val(false)), disequalities(ctx),
+EUFInterpolant::EUFInterpolant(z3::expr_vector const & assertions) :
+
+  original_num_terms(maxIdFromAssertions(assertions) + 1),
+  ctx(assertions.ctx()), subterms(ctx), contradiction(ctx.bool_val(false)), disequalities(ctx),
   fsym_positions(), uf(original_num_terms), pred_list(), horn_clauses(ctx, subterms),
   curry_decl(), factory_curry_nodes(original_num_terms, curry_decl),
   cc(
@@ -17,8 +19,8 @@ EUFInterpolant::EUFInterpolant(z3::expr const & input_formula) :
        // The following defines: 
        // subterms, disequalities, fsym_positions,
        // and curry_decl
-       init(input_formula), 
-       subterms), pred_list, uf, factory_curry_nodes
+       init(assertions), 
+       subterms), pred_list, uf, factory_curry_nodes, ids_to_merge
       )
 {        
 
@@ -27,7 +29,6 @@ EUFInterpolant::EUFInterpolant(z3::expr const & input_formula) :
     std::cout << *it << std::endl;
   }      
 #endif 
-
 
   // Testing
   //cc.giveExplanation(std::cout, subterms[5], subterms[11]);
@@ -80,7 +81,7 @@ EUFInterpolant::EUFInterpolant(z3::expr const & input_formula) :
   // buildInterpolant(replacements);
 
   return;
-  // throw "Problem @ EUFInterpolant::EUFInterpolant. The z3::expr const & input_formula was unsatisfiable.";
+  // throw "Problem @ EUFInterpolant::EUFInterpolant. The z3::expr const & assertions was unsatisfiable.";
 }
 
 EUFInterpolant::~EUFInterpolant(){
@@ -89,7 +90,32 @@ EUFInterpolant::~EUFInterpolant(){
 #endif
 }
 
-void EUFInterpolant::init(z3::expr const & e){
+unsigned EUFInterpolant::maxIdFromAssertions(z3::expr_vector const & assertions){
+  unsigned max_id_from_assertions = 0;
+  for(auto const & assertion : assertions){
+    if(assertion.id() > max_id_from_assertions)
+      max_id_from_assertions = assertion.id();
+  }
+  return max_id_from_assertions;
+}
+
+void EUFInterpolant::init(z3::expr_vector const & assertions){
+  for(auto const & assertion : assertions){
+    initFormula(assertion);
+    switch(assertion.decl().decl_kind()){
+      case Z3_OP_EQ:
+        ids_to_merge.emplace_back(assertion.arg(0).id(), assertion.arg(1).id());
+        break;
+      case Z3_OP_DISTINCT:
+        disequalities.push_back(assertion);
+        break;
+      default:
+        break;
+    }
+  }
+}
+
+void EUFInterpolant::initFormula(z3::expr const & e){
   if(e.is_app()){
     if(subterms.visited[e.id()])
       return;
@@ -99,22 +125,20 @@ void EUFInterpolant::init(z3::expr const & e){
 
     unsigned num = e.num_args();
     for(unsigned i = 0; i < num; i++)
-      init(e.arg(i));
+      initFormula(e.arg(i));
 
     z3::func_decl f = e.decl();
     if(curry_decl[f.id()] == nullptr)
       curry_decl[f.id()] = factory_curry_nodes.newCurryNode(e.id(), f.name().str(), nullptr, nullptr);
 
     switch(f.decl_kind()){
-      case Z3_OP_DISTINCT:
-        disequalities.push_back(e);
-        return;
       case Z3_OP_UNINTERPRETED:
         if(num > 0)
           fsym_positions[f.name().str()].push_back(e.id());
       default:
-        return;
+        break;
     }
+    return;
   }
   throw "Problem @ EUFInterpolant::init. The expression e is not an application term.";
 }

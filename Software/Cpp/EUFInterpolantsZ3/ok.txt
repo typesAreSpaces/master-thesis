@@ -1,0 +1,108 @@
+g++ -g -c -o obj/CongruenceClosureExplain.o -I./src -I./include -std=c++11 -Wall src/CongruenceClosureExplain.cpp
+g++ -g -c -o tests/TestCongruenceClosureExplain.o -I./src -I./include -std=c++11 -Wall tests/TestCongruenceClosureExplain.cpp
+g++ -g -c -o ./tests/cong_closure_expl_test.o -I./src -I./include -std=c++11 -Wall ./tests/cong_closure_expl_test.cpp
+g++ -g -o tests/cong_closure_expl_test  ./obj/Match.o  ./obj/Rename.o  ./obj/Z3Subterms.o  ./obj/UnionFindExplain.o  ./obj/HornClause.o  ./obj/CongruenceClosureNO.o  ./obj/Hornsat.o  ./obj/CongruenceClosureDST.o  ./obj/EUFInterpolant.o  ./obj/CurryNode.o  ./obj/CongruenceClosure.o  ./obj/UnionFind.o  ./obj/FactoryCurryNodes.o  ./obj/HornClauses.o  ./obj/CongruenceClosureExplain.o /home/jose/Documents/GithubProjects/z3__/build/libz3.so  tests/TestCongruenceClosureExplain.o ./tests/cong_closure_expl_test.o -lpthread
+./tests/cong_closure_expl_test
+Number of original terms: 20
+Id: 6
+The node:
+ * 6(Z3 id: 6|is common: false|Const id: 6)(Not defined yet). b
+
+Id: 11
+The node:
+ * 11(Z3 id: 11|is common: false|Const id: 11)(Not defined yet). h
+
+Id: 19
+The node:
+ * 21(Z3 id: 21|is common: false|Const id: 21)(Not defined yet). apply
+ Left
+  20(Z3 id: 20|is common: false|Const id: 20)(Not defined yet). apply
+  Left
+   13(Z3 id: 13|is common: false|Const id: 13)(Not defined yet). =
+  Right
+   6(Z3 id: 6|is common: false|Const id: 6)(Not defined yet). b
+ Right
+  11(Z3 id: 11|is common: false|Const id: 11)(Not defined yet). h
+
+Id: 20
+The node:
+ * 20(Z3 id: 20|is common: false|Const id: 20)(Not defined yet). apply
+ Left
+  13(Z3 id: 13|is common: false|Const id: 13)(Not defined yet). =
+ Right
+  6(Z3 id: 6|is common: false|Const id: 6)(Not defined yet). b
+
+Id: 21
+The node:
+ * 21(Z3 id: 21|is common: false|Const id: 21)(Not defined yet). apply
+ Left
+  20(Z3 id: 20|is common: false|Const id: 20)(Not defined yet). apply
+  Left
+   13(Z3 id: 13|is common: false|Const id: 13)(Not defined yet). =
+  Right
+   6(Z3 id: 6|is common: false|Const id: 6)(Not defined yet). b
+ Right
+  11(Z3 id: 11|is common: false|Const id: 11)(Not defined yet). h
+
+Size of FactoryCurryNodes: 11
+
+a
+b
+c
+d
+e
+g
+h
+(f g h)
+(= (f g h) d)
+(= c d)
+(f g d)
+(= (f g d) a)
+(= e c)
+(= e b)
+(= b h)
+Number of original terms: 20
+Id: 6
+The node:
+ * 6(Z3 id: 6|is common: false|Const id: 6)(Defined). b
+
+Id: 11
+The node:
+ * 11(Z3 id: 11|is common: false|Const id: 11)(Defined). h
+
+Id: 19
+The node:
+ * 21(Z3 id: 19|is common: false|Const id: 23)(Defined). apply
+ Left
+  22(Z3 id: 22|is common: false|Const id: 22)(Defined). fresh_22
+ Right
+  11(Z3 id: 11|is common: false|Const id: 11)(Defined). h
+
+Id: 20
+The node:
+ * 20(Z3 id: 20|is common: false|Const id: 22)(Defined). apply
+ Left
+  13(Z3 id: 13|is common: false|Const id: 13)(Defined). =
+ Right
+  6(Z3 id: 6|is common: false|Const id: 6)(Defined). b
+
+Id: 21
+The node:
+ * 21(Z3 id: 19|is common: false|Const id: 23)(Defined). apply
+ Left
+  22(Z3 id: 22|is common: false|Const id: 22)(Defined). fresh_22
+ Right
+  11(Z3 id: 11|is common: false|Const id: 11)(Defined). h
+
+Id: 22
+The node:
+ * 22(Z3 id: 22|is common: false|Const id: 22)(Defined). fresh_22
+
+Id: 23
+The node:
+ * 23(Z3 id: 19|is common: false|Const id: 23)(Defined). fresh_23
+
+Size of FactoryCurryNodes: 13
+
+12 = 8
+Makefile:42: recipe for target 'tests/cong_closure_expl_test' failed

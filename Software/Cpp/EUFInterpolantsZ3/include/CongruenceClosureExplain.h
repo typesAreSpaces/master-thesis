@@ -55,7 +55,6 @@ class CongruenceClosureExplain : public CongruenceClosure {
 
   friend class Hornsat;
 
-  unsigned            num_terms;
   const Z3Subterms &  subterms;
   FactoryCurryNodes & factory_curry_nodes;
   UnionFindExplain &  ufe;
@@ -77,7 +76,7 @@ class CongruenceClosureExplain : public CongruenceClosure {
 
   public:
   CongruenceClosureExplain(const Z3Subterms &,
-      PredList &, UnionFindExplain &, FactoryCurryNodes &);
+      PredList &, UnionFindExplain &, FactoryCurryNodes &, IdsToMerge const &);
   void buildCongruenceClosure(std::list<EqClass> &);
   void merge(const EquationCurryNodes &);
   PendingPointers explain(const z3::expr &, const z3::expr &);

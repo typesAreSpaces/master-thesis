@@ -9,14 +9,14 @@
 
 CongruenceClosureExplain::CongruenceClosureExplain(const Z3Subterms & subterms,
     PredList & pred_list, UnionFindExplain & uf,
-    FactoryCurryNodes & factory_curry_nodes) :
+    FactoryCurryNodes & factory_curry_nodes, IdsToMerge const & ids_to_merge) :
   CongruenceClosure(subterms, pred_list, uf), 
-  num_terms(subterms.size()), subterms(subterms), factory_curry_nodes(factory_curry_nodes), ufe(uf),
+  subterms(subterms), factory_curry_nodes(factory_curry_nodes), ufe(uf),
   pending_elements(), equations_to_merge(), pending_to_propagate(),
   lookup_table(), use_list() 
 {
 
-  auto ids_to_merge = factory_curry_nodes.curryfication(subterms[num_terms - 1]);
+  factory_curry_nodes.curryfication(subterms);
 
   // NOTE: flattening also fully defines const_id and z3_id for each curry node.
   factory_curry_nodes.flattening(pending_elements, equations_to_merge, subterms);

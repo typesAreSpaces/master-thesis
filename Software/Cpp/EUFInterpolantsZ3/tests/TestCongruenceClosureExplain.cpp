@@ -1,18 +1,46 @@
 #include "TestCongruenceClosureExplain.h"
+#include <z3++.h>
 
-TestCongruenceClosureExplain::TestCongruenceClosureExplain(z3::expr const & input_formula) :
-  original_num_terms(input_formula.id() + 1),
-  ctx(input_formula.ctx()), subterms(ctx), contradiction(ctx.bool_val(false)),
+TestCongruenceClosureExplain::TestCongruenceClosureExplain(z3::expr_vector const & assertions) :
+
+  original_num_terms(maxIdFromAssertions(assertions) + 1),
+  ctx(assertions.ctx()), subterms(ctx), contradiction(ctx.bool_val(false)),
   fsym_positions(), uf(original_num_terms), pred_list(), 
   curry_decl(), factory_curry_nodes(original_num_terms, curry_decl),
   cc(
-      (subterms.resize(original_num_terms), pred_list.resize(original_num_terms), init(input_formula), 
-       subterms), pred_list, uf, factory_curry_nodes
+      (
+       subterms.resize(original_num_terms), 
+       pred_list.resize(original_num_terms), 
+       init(assertions), 
+       subterms), pred_list, uf, factory_curry_nodes, ids_to_merge
       )
 { 
 }
 
-void TestCongruenceClosureExplain::init(z3::expr const & e){
+unsigned TestCongruenceClosureExplain::maxIdFromAssertions(z3::expr_vector const & assertions){
+  unsigned max_id_from_assertions = 0;
+  for(auto const & assertion : assertions){
+    if(assertion.id() > max_id_from_assertions)
+      max_id_from_assertions = assertion.id();
+  }
+  return max_id_from_assertions;
+}
+
+void TestCongruenceClosureExplain::init(z3::expr_vector const & assertions){
+  for(auto const & assertion : assertions){
+    initFormula(assertion);
+    switch(assertion.decl().decl_kind()){
+      case Z3_OP_EQ:
+        ids_to_merge.emplace_back(assertion.arg(0).id(), assertion.arg(1).id());
+        break;
+      default:
+        break;
+    }
+  }
+  return;
+}
+
+void TestCongruenceClosureExplain::initFormula(z3::expr const & e){
   if(e.is_app()){
     if(subterms.visited[e.id()])
       return;
@@ -22,7 +50,7 @@ void TestCongruenceClosureExplain::init(z3::expr const & e){
 
     unsigned num = e.num_args();
     for(unsigned i = 0; i < num; i++)
-      init(e.arg(i));
+      initFormula(e.arg(i));
 
     z3::func_decl f = e.decl();
     if(curry_decl[f.id()] == nullptr)
@@ -36,13 +64,14 @@ void TestCongruenceClosureExplain::init(z3::expr const & e){
         return;
     }
   }
-  throw "Problem @ EUFInterpolant::init. The expression e is not an application term.";
+  throw "Problem @ EUFInterpolant::initFormula. The expression e is not an application term.";
 }
 
-bool TestCongruenceClosureExplain::testConsistency(z3::expr const & e, 
+bool TestCongruenceClosureExplain::testConsistency(z3::expr_vector const & e, 
     unsigned max_iter){
   z3::solver s(ctx);
-  s.add(e);
+  for(auto const & assertion : e)
+    s.add(assertion);
 
   std::cout << "Starting consistency test" << std::endl;
 

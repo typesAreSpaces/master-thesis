@@ -29,11 +29,15 @@ class EUFInterpolant {
   PredList         pred_list;
   HornClauses      horn_clauses;
 
+  IdsToMerge ids_to_merge;
+
   CurryDeclarations        curry_decl;  
   FactoryCurryNodes        factory_curry_nodes;
   CongruenceClosureExplain cc;
 
-  void            init(z3::expr const &);
+  unsigned        maxIdFromAssertions(z3::expr_vector const &);
+  void            init(z3::expr_vector const &);
+  void            initFormula(z3::expr const &);
   void            initPredList(z3::expr const &);
   void            processEqs(z3::expr const &);
   void            processEqs(z3::expr const &, CongruenceClosureNO &);
@@ -45,7 +49,7 @@ class EUFInterpolant {
   z3::expr_vector substitutions(z3::expr &, z3::expr &, z3::expr_vector &); // TODO:
   
  public:
-  EUFInterpolant(z3::expr const &);
+  EUFInterpolant(z3::expr_vector const &);
   ~EUFInterpolant();
   z3::expr              buildInterpolant(std::vector<Replacement>);  // TODO:
   friend std::ostream & operator << (std::ostream &, EUFInterpolant &);     // TEMP:
