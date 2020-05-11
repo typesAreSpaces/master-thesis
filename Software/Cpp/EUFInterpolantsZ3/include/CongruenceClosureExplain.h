@@ -18,10 +18,13 @@ class LookupTable {
     std::cout << "Done ~LookupTable" << std::endl;
 #endif
   }
+  //std::size_t hash_combine(EqClass a1, EqClass a2){
+    //std::size_t seed = EqClass_hasher(a1);
+    //seed ^= EqClass_hasher(a2) + 0x9e3779b9 + (seed << 6) + (seed >> 2);
+    //return seed;
+  //}
   std::size_t hash_combine(EqClass a1, EqClass a2){
-    std::size_t seed = EqClass_hasher(a1);
-    seed ^= EqClass_hasher(a2) + 0x9e3779b9 + (seed << 6) + (seed >> 2);
-    return seed;
+    return std::hash<unsigned long long>()(((unsigned long long) a1) ^ (((unsigned long long) a2) << 32));
   }
   void enter(EqClass a1, EqClass a2, const EquationCurryNodes * ecn){
     auto index = hash_combine(a1, a2);
@@ -32,6 +35,10 @@ class LookupTable {
     sig_table.erase(hash_combine(a1, a2));
   }
   const EquationCurryNodes * query(EqClass a1, EqClass a2){
+    std::cout << "First input " << a1 << " " << a2 << std::endl;
+    std::cout << "FUchKK  " << hash_combine(a1, a2) << std::endl;
+    std::cout << "Second input " << 5950 << " " << 6771 << std::endl;
+    std::cout << "FUchKK2 " << hash_combine(5950, 6771) << std::endl;
     auto r = sig_table.find(hash_combine(a1, a2));
     if(r == sig_table.end())
       return nullptr;
@@ -55,9 +62,7 @@ class CongruenceClosureExplain : public CongruenceClosure {
 
   friend class Hornsat;
 
-  const Z3Subterms &  subterms;
   FactoryCurryNodes & factory_curry_nodes;
-  UnionFindExplain &  ufe;
 
   PendingElements pending_elements;
   PendingPointers equations_to_merge;
