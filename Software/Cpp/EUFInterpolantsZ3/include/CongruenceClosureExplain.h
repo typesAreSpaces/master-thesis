@@ -35,10 +35,6 @@ class LookupTable {
     sig_table.erase(hash_combine(a1, a2));
   }
   const EquationCurryNodes * query(EqClass a1, EqClass a2){
-    std::cout << "First input " << a1 << " " << a2 << std::endl;
-    std::cout << "FUchKK  " << hash_combine(a1, a2) << std::endl;
-    std::cout << "Second input " << 5950 << " " << 6771 << std::endl;
-    std::cout << "FUchKK2 " << hash_combine(5950, 6771) << std::endl;
     auto r = sig_table.find(hash_combine(a1, a2));
     if(r == sig_table.end())
       return nullptr;

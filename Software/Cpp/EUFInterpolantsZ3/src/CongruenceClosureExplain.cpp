@@ -11,7 +11,7 @@ CongruenceClosureExplain::CongruenceClosureExplain(const Z3Subterms & subterms,
     PredList & pred_list, UnionFindExplain & uf,
     FactoryCurryNodes & factory_curry_nodes, IdsToMerge const & ids_to_merge) :
   CongruenceClosure(subterms, pred_list, uf), 
-  subterms(subterms), factory_curry_nodes(factory_curry_nodes), ufe(uf),
+  factory_curry_nodes(factory_curry_nodes), 
   pending_elements(), equations_to_merge(), pending_to_propagate(),
   lookup_table(), use_list() 
 {
@@ -33,7 +33,7 @@ CongruenceClosureExplain::CongruenceClosureExplain(const Z3Subterms & subterms,
   // in the curry_nodes. There
   // might be repeated elements in these collection
   // but they are unique pointers
-  ufe     .resize(factory_curry_nodes.size());
+  uf     .resize(factory_curry_nodes.size());
   use_list.resize(factory_curry_nodes.size());
 
 #if 0
@@ -69,8 +69,8 @@ EqClass CongruenceClosureExplain::highestNode(EqClass a, UnionFind & uf){
   return uf.find(a);
 }
 
-EqClass CongruenceClosureExplain::nearestCommonAncestor(EqClass a, EqClass b, UnionFind & uf){
-  return uf.find(ufe.commonAncestor(a, b));
+EqClass CongruenceClosureExplain::nearestCommonAncestor(EqClass a, EqClass b, UnionFind & uf_extra){
+  return uf_extra.find(uf.commonAncestor(a, b));
 }
 
 void CongruenceClosureExplain::merge(const EquationCurryNodes & equation){
@@ -102,7 +102,7 @@ void CongruenceClosureExplain::merge(const EquationCurryNodes & equation){
 
         if(element_found != nullptr){
 #if DEBUG_MERGE
-          std::cout << "@merge : Element found in lookup_table"
+          std::cout << "@merge : Element found in lookup_table "
             << element_found << std::endl;
 #endif
           pushPending(pending_to_propagate, PairEquationCurryNodes(equation, *element_found));
@@ -137,9 +137,9 @@ PendingPointers CongruenceClosureExplain::explain(const z3::expr & lhs, const z3
 
 PendingPointers CongruenceClosureExplain::explain(EqClass x, EqClass y){
   PendingPointers ans;
-  if(ufe.find(x) != ufe.find(y))
+  if(uf.find(x) != uf.find(y))
     return ans; 
-  UnionFind local_uf(ufe.getSize());
+  UnionFind local_uf(uf.getSize());
   ExplainEquations pending_proofs;
 
   pending_proofs.emplace_back(x, y);
@@ -222,11 +222,11 @@ z3::expr CongruenceClosureExplain::z3_repr(z3::expr const & e){
 
 
 void CongruenceClosureExplain::explainAlongPath(EqClass a, EqClass c, 
-    UnionFind & uf, ExplainEquations & pending_proofs, PendingPointers & ans){
-  a = highestNode(a, uf);
+    UnionFind & uf_extra, ExplainEquations & pending_proofs, PendingPointers & ans){
+  a = highestNode(a, uf_extra);
   while(a != c){
-    auto b = ufe.parentProofForest(a);
-    auto current_label = ufe.getLabel(a);
+    auto b = uf.parentProofForest(a);
+    auto current_label = uf.getLabel(a);
 
     switch(current_label->tag){
       case EQ_EQ:
@@ -244,8 +244,8 @@ void CongruenceClosureExplain::explainAlongPath(EqClass a, EqClass c,
         ans.push_back(current_label);
         break;
     }
-    uf.combine(b, a);
-    a = highestNode(b, uf);
+    uf_extra.combine(b, a);
+    a = highestNode(b, uf_extra);
   }
 }
 
