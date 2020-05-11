@@ -1,8 +1,0 @@
-QF_UF_v_Unidec_ab_cti_max.smt2
-QF_UF_v_FIFO_ab_fp_max.smt2
-QF_UF_v_DAIO_ab_fp_max.smt2
-QF_UF_v_DAIO_ab_cti_max.smt2
-QF_UF_usb_phy_ab_cti_max.smt2
-QF_UF_train-gate.4.prop1_ab_cti_max.smt2
-QF_UF_train-gate.3.prop1_ab_cti_max.smt2
-

@@ -7,7 +7,7 @@ void inputFile(char const * file_name){
   std::string input_file = file_name;
   TestCongruenceClosureExplain test(assertions);
   try{
-    std::cout << test.testConsistency(assertions, 1) << std::endl;
+    std::cout << test.testConsistency(assertions, 20) << std::endl;
     //test.testExplanation(1);
   }
   catch(char const * e){

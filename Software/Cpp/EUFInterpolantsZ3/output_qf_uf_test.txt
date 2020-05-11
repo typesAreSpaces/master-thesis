@@ -1,3 +1,18 @@
+g++ -g -c -o obj/Match.o -I./src -I./include -std=c++11 -Wall src/Match.cpp
+g++ -g -c -o obj/Rename.o -I./src -I./include -std=c++11 -Wall src/Rename.cpp
+g++ -g -c -o obj/Z3Subterms.o -I./src -I./include -std=c++11 -Wall src/Z3Subterms.cpp
+g++ -g -c -o obj/UnionFindExplain.o -I./src -I./include -std=c++11 -Wall src/UnionFindExplain.cpp
+g++ -g -c -o obj/HornClause.o -I./src -I./include -std=c++11 -Wall src/HornClause.cpp
+g++ -g -c -o obj/CongruenceClosureNO.o -I./src -I./include -std=c++11 -Wall src/CongruenceClosureNO.cpp
+g++ -g -c -o obj/Hornsat.o -I./src -I./include -std=c++11 -Wall src/Hornsat.cpp
+g++ -g -c -o obj/CongruenceClosureDST.o -I./src -I./include -std=c++11 -Wall src/CongruenceClosureDST.cpp
+g++ -g -c -o obj/EUFInterpolant.o -I./src -I./include -std=c++11 -Wall src/EUFInterpolant.cpp
+g++ -g -c -o obj/CurryNode.o -I./src -I./include -std=c++11 -Wall src/CurryNode.cpp
+g++ -g -c -o obj/CongruenceClosure.o -I./src -I./include -std=c++11 -Wall src/CongruenceClosure.cpp
+g++ -g -c -o obj/UnionFind.o -I./src -I./include -std=c++11 -Wall src/UnionFind.cpp
+g++ -g -c -o obj/FactoryCurryNodes.o -I./src -I./include -std=c++11 -Wall src/FactoryCurryNodes.cpp
+g++ -g -c -o obj/HornClauses.o -I./src -I./include -std=c++11 -Wall src/HornClauses.cpp
+g++ -g -c -o obj/CongruenceClosureExplain.o -I./src -I./include -std=c++11 -Wall src/CongruenceClosureExplain.cpp
 g++ -g -c -o tests/TestCongruenceClosureExplain.o -I./src -I./include -std=c++11 -Wall tests/TestCongruenceClosureExplain.cpp
 g++ -g -c -o ./tests/qf_uf_test.o -I./src -I./include -std=c++11 -Wall ./tests/qf_uf_test.cpp
 g++ -g -o tests/qf_uf_test  ./obj/Match.o  ./obj/Rename.o  ./obj/Z3Subterms.o  ./obj/UnionFindExplain.o  ./obj/HornClause.o  ./obj/CongruenceClosureNO.o  ./obj/Hornsat.o  ./obj/CongruenceClosureDST.o  ./obj/EUFInterpolant.o  ./obj/CurryNode.o  ./obj/CongruenceClosure.o  ./obj/UnionFind.o  ./obj/FactoryCurryNodes.o  ./obj/HornClauses.o  ./obj/CongruenceClosureExplain.o /home/jose/Documents/GithubProjects/z3__/build/libz3.so  tests/TestCongruenceClosureExplain.o ./tests/qf_uf_test.o -lpthread
@@ -291,7 +306,7 @@ Starting consistency test
 To check that y$a_free and (not y$1) are equivalent: They are.
 Processing file:  QF_UF_bridge.3.prop1_ab_reg_max.smt2
 Starting consistency test
-To check that (distinct y$n1s32 y$n4s32 y$n2s32 y$n6s32 y$n3s32 y$n0s32) and (= y$v_i$next y$v_i$next_rhs_op) are equivalent: They are.
+To check that y$dve_invalid and (not y$51) are equivalent: They are.
 Processing file:  QF_UF_brp.1.prop1_ab_cti_max.smt2
 Starting consistency test
 To check that y$a_check_Consumer and (not y$1) are equivalent: They are.
@@ -576,7 +591,7 @@ Starting consistency test
 To check that y$18 and (not (= y$n0s4 y$X)) are equivalent: They are.
 Processing file:  QF_UF_counter_ab_reg_max.smt2
 Starting consistency test
-Element not defined
+To check that y$16 and (not (= y$n15s4 y$X)) are equivalent: They are.
 Processing file:  QF_UF_counter_v_ab_cti_max.smt2
 Starting consistency test
 To check that y$s$1_op and (Add_4_4_4 y$X y$n1s4) are equivalent: They are.
@@ -1416,7 +1431,7 @@ Starting consistency test
 To check that y$a_a_move_Lift_0 and (not y$1) are equivalent: They are.
 Processing file:  QF_UF_lifts.8.prop1_ab_reg_max.smt2
 Starting consistency test
-To check that (distinct y$n0s8 y$n1s8 y$n2s8 y$n3s8 y$n4s8 y$n5s8) and (and y$1 y$3 y$5 y$7 y$10 y$12 y$14 y$16 y$18 y$20 y$22 y$24 y$prop y$630 y$648) are equivalent: They are.
+To check that y$a_done and (not y$1) are equivalent: They are.
 Processing file:  QF_UF_loyd.1.prop1_ab_br_max.smt2
 Starting consistency test
 To check that y$a_done and (not y$1) are equivalent: They are.
@@ -2406,399 +2421,515 @@ Starting consistency test
 To check that y$n6s3 and y$168 are equivalent: They are.
 Processing file:  QF_UF_v_Unidec_ab_fp_max.smt2
 Starting consistency test
-To check that (or (= (f5 c_3 c_0) c10) (not (p8 c_3)) (not (p6 c_3 c_0))) and (= (f5 c_2 c_3) c12) are equivalent: They are.
+Processing file:  eq_diamond100.smt2
+Starting consistency test
+Processing file:  eq_diamond10.smt2
+Starting consistency test
+Processing file:  eq_diamond11.smt2
+Starting consistency test
+Processing file:  eq_diamond12.smt2
+Starting consistency test
+Processing file:  eq_diamond13.smt2
+Starting consistency test
+Processing file:  eq_diamond14.smt2
+Starting consistency test
+Processing file:  eq_diamond15.smt2
+Starting consistency test
+Processing file:  eq_diamond16.smt2
+Starting consistency test
+Processing file:  eq_diamond17.smt2
+Starting consistency test
+Processing file:  eq_diamond18.smt2
+Starting consistency test
+Processing file:  eq_diamond19.smt2
+Starting consistency test
+Processing file:  eq_diamond1.smt2
+Starting consistency test
+Processing file:  eq_diamond20.smt2
+Starting consistency test
+Processing file:  eq_diamond21.smt2
+Starting consistency test
+Processing file:  eq_diamond22.smt2
+Starting consistency test
+Processing file:  eq_diamond23.smt2
+Starting consistency test
+Processing file:  eq_diamond24.smt2
+Starting consistency test
+Processing file:  eq_diamond25.smt2
+Starting consistency test
+Processing file:  eq_diamond26.smt2
+Starting consistency test
+Processing file:  eq_diamond27.smt2
+Starting consistency test
+Processing file:  eq_diamond28.smt2
+Starting consistency test
+Processing file:  eq_diamond29.smt2
+Starting consistency test
+Processing file:  eq_diamond2.smt2
+Starting consistency test
+Processing file:  eq_diamond30.smt2
+Starting consistency test
+Processing file:  eq_diamond31.smt2
+Starting consistency test
+Processing file:  eq_diamond32.smt2
+Starting consistency test
+Processing file:  eq_diamond33.smt2
+Starting consistency test
+Processing file:  eq_diamond34.smt2
+Starting consistency test
+Processing file:  eq_diamond35.smt2
+Starting consistency test
+Processing file:  eq_diamond36.smt2
+Starting consistency test
+Processing file:  eq_diamond37.smt2
+Starting consistency test
+Processing file:  eq_diamond38.smt2
+Starting consistency test
+Processing file:  eq_diamond39.smt2
+Starting consistency test
+Processing file:  eq_diamond3.smt2
+Starting consistency test
+Processing file:  eq_diamond40.smt2
+Starting consistency test
+Processing file:  eq_diamond41.smt2
+Starting consistency test
+Processing file:  eq_diamond42.smt2
+Starting consistency test
+Processing file:  eq_diamond43.smt2
+Starting consistency test
+Processing file:  eq_diamond44.smt2
+Starting consistency test
+Processing file:  eq_diamond45.smt2
+Starting consistency test
+Processing file:  eq_diamond46.smt2
+Starting consistency test
+Processing file:  eq_diamond47.smt2
+Starting consistency test
+Processing file:  eq_diamond48.smt2
+Starting consistency test
+Processing file:  eq_diamond49.smt2
+Starting consistency test
+Processing file:  eq_diamond4.smt2
+Starting consistency test
+Processing file:  eq_diamond50.smt2
+Starting consistency test
+Processing file:  eq_diamond51.smt2
+Starting consistency test
+Processing file:  eq_diamond52.smt2
+Starting consistency test
+Processing file:  eq_diamond53.smt2
+Starting consistency test
+Processing file:  eq_diamond54.smt2
+Starting consistency test
+Processing file:  eq_diamond55.smt2
+Starting consistency test
+Processing file:  eq_diamond56.smt2
+Starting consistency test
+Processing file:  eq_diamond57.smt2
+Starting consistency test
+Processing file:  eq_diamond58.smt2
+Starting consistency test
+Processing file:  eq_diamond59.smt2
+Starting consistency test
+Processing file:  eq_diamond5.smt2
+Starting consistency test
+Processing file:  eq_diamond60.smt2
+Starting consistency test
+Processing file:  eq_diamond61.smt2
+Starting consistency test
+Processing file:  eq_diamond62.smt2
+Starting consistency test
+Processing file:  eq_diamond63.smt2
+Starting consistency test
+Processing file:  eq_diamond64.smt2
+Starting consistency test
+Processing file:  eq_diamond65.smt2
+Starting consistency test
+Processing file:  eq_diamond66.smt2
+Starting consistency test
+Processing file:  eq_diamond67.smt2
+Starting consistency test
+Processing file:  eq_diamond68.smt2
+Starting consistency test
+Processing file:  eq_diamond69.smt2
+Starting consistency test
+Processing file:  eq_diamond6.smt2
+Starting consistency test
+Processing file:  eq_diamond70.smt2
+Starting consistency test
+Processing file:  eq_diamond71.smt2
+Starting consistency test
+Processing file:  eq_diamond72.smt2
+Starting consistency test
+Processing file:  eq_diamond73.smt2
+Starting consistency test
+Processing file:  eq_diamond74.smt2
+Starting consistency test
+Processing file:  eq_diamond75.smt2
+Starting consistency test
+Processing file:  eq_diamond76.smt2
+Starting consistency test
+Processing file:  eq_diamond77.smt2
+Starting consistency test
+Processing file:  eq_diamond78.smt2
+Starting consistency test
+Processing file:  eq_diamond79.smt2
+Starting consistency test
+Processing file:  eq_diamond7.smt2
+Starting consistency test
+Processing file:  eq_diamond80.smt2
+Starting consistency test
+Processing file:  eq_diamond81.smt2
+Starting consistency test
+Processing file:  eq_diamond82.smt2
+Starting consistency test
+Processing file:  eq_diamond83.smt2
+Starting consistency test
+Processing file:  eq_diamond84.smt2
+Starting consistency test
+Processing file:  eq_diamond85.smt2
+Starting consistency test
+Processing file:  eq_diamond86.smt2
+Starting consistency test
+Processing file:  eq_diamond87.smt2
+Starting consistency test
+Processing file:  eq_diamond88.smt2
+Starting consistency test
+Processing file:  eq_diamond89.smt2
+Starting consistency test
+Processing file:  eq_diamond8.smt2
+Starting consistency test
+Processing file:  eq_diamond90.smt2
+Starting consistency test
+Processing file:  eq_diamond91.smt2
+Starting consistency test
+Processing file:  eq_diamond92.smt2
+Starting consistency test
+Processing file:  eq_diamond93.smt2
+Starting consistency test
+Processing file:  eq_diamond94.smt2
+Starting consistency test
+Processing file:  eq_diamond95.smt2
+Starting consistency test
+Processing file:  eq_diamond96.smt2
+Starting consistency test
+Processing file:  eq_diamond97.smt2
+Starting consistency test
+Processing file:  eq_diamond98.smt2
+Starting consistency test
+Processing file:  eq_diamond99.smt2
+Starting consistency test
+Processing file:  eq_diamond9.smt2
+Starting consistency test
 Processing file:  NEQ004_size4.smt2
 Starting consistency test
-To check that (p4 c_4 c_2) and (or (p1 c_1 c_0) (not (= c_1 c_0))) are equivalent: They are.
 Processing file:  NEQ004_size5.smt2
 Starting consistency test
-To check that (or (not (= c_2 c_3)) (p3 c_2 c_3)) and (or (= c_2 c_1) (not (p1 c_2 c_1)) (p2 c_2 c_1)) are equivalent: They are.
 Processing file:  NEQ004_size6.smt2
 Starting consistency test
-To check that (or (= (f5 c_5 c_0) c10) (not (p8 c_5)) (not (p6 c_5 c_0))) and (= (f5 c_4 c_3) c_3) are equivalent: They are.
 Processing file:  NEQ004_size7.smt2
 Starting consistency test
-Element not defined
 Processing file:  NEQ006_size3.smt2
 Starting consistency test
-Element not defined
 Processing file:  NEQ006_size4.smt2
 Starting consistency test
-Element not defined
 Processing file:  NEQ006_size5.smt2
 Starting consistency test
-To check that (p14 c_2) and (not (p4 (f11 c_1 c_4) (f11 c_1 c_5))) are equivalent: They are.
 Processing file:  NEQ006_size6.smt2
 Starting consistency test
-To check that (p2 (f7 c_2 c_1) (f32 c_2 c_0)) and (let ((a!1 (not (p2 (f7 (f7 c_1 c_2) c_2) (f20 c_2)))))
-  (or (p2 (f7 (f7 c_2 c_1) c_2) c_2) a!1)) are equivalent: They are.
 Processing file:  NEQ015_size3.smt2
 Starting consistency test
-To check that (p2 (f7 c_3 c_0) (f8 c_3 c_0)) and (let ((a!1 (not (p2 (f7 (f7 c_3 c_0) c_1) (f19 c_1)))))
-  (or a!1 (p2 (f7 (f7 c_0 c_1) c_3) c_1))) are equivalent: They are.
+To check that (or (p2 c_0 c_3) (not (p2 (f7 c_0 c_3) (f8 c_3 c_1)))) and (not (p2 c_1 (f8 c_0 c_0))) are equivalent: They are.
 Processing file:  NEQ015_size4.smt2
 Starting consistency test
-Element not defined
+To check that (f37 c_4 (f7 c_0 c_4)) and (f37 c_0 (f7 (f37 c_4 c_3) (f37 c_4 c_4))) are equivalent: They are.
 Processing file:  NEQ015_size5.smt2
 Starting consistency test
-To check that (p2 (f7 c_0 c_0) (f8 c_0 c_2)) and (not (p2 c_3 (f5 c_5 c_1))) are equivalent: They are.
+To check that (p2 (f7 c_0 c_0) (f8 c_5 c_0)) and (not (p2 (f7 (f7 c_4 c_4) c_0) (f19 c_4))) are equivalent: They are.
 Processing file:  NEQ015_size6.smt2
 Starting consistency test
-Element not defined
 Processing file:  NEQ016_size5.smt2
 Starting consistency test
 Processing file:  NEQ016_size6.smt2
 Starting consistency test
-To check that (not (p3 c_5)) and (p2 (f1 c_6 c_5)) are equivalent: They are.
 Processing file:  NEQ016_size7.smt2
 Starting consistency test
-To check that (p4 c_3) and (p2 (f1 c_2 c_2)) are equivalent: They are.
 Processing file:  NEQ016_size8.smt2
 Starting consistency test
 Processing file:  NEQ023_size4.smt2
 Starting consistency test
-To check that (or (not (p7 c_2 c_0)) (not (p7 c_2 c_3)) (p7 c_2 (f4 c_3 c_0))) and (p7 c_1 (f4 c_0 c_2)) are equivalent: They are.
 Processing file:  NEQ023_size5.smt2
 Starting consistency test
-To check that (or (p7 c_4 c_4) (not (p8 c_2 c_4)) (not (p7 c_4 c_2))) and (p7 c_0 c_3) are equivalent: They are.
 Processing file:  NEQ023_size6.smt2
 Starting consistency test
-Element not defined
+To check that (or (p7 c_0 c_4) (not (p8 c_1 c_4)) (not (p7 c_0 c_1))) and (or (p7 c_0 c_4) (not (p8 c_4 c_4)) (not (p7 c_0 c_4))) are equivalent: They are.
 Processing file:  NEQ023_size7.smt2
 Starting consistency test
-Element not defined
 Processing file:  NEQ027_size10.smt2
 Starting consistency test
-Element not defined
+To check that (= c_5 (f14 c_0)) and (= c_1 (f14 c_5)) are equivalent: They are.
 Processing file:  NEQ027_size11.smt2
 Starting consistency test
-To check that (= (f5 c_2 c_4) c_2) and (or (not (= (f5 c_7 c_2) c_0)) (p6 c_2 c_7) (= (f1 c_0 c_2) c_7)) are equivalent: They are.
 Processing file:  NEQ027_size8.smt2
 Starting consistency test
 To check that (= (f1 c_4 c_1) c_1) and (= (f1 c_2 c_1) c_4) are equivalent: They are.
 Processing file:  NEQ027_size9.smt2
 Starting consistency test
-To check that (p21 c_8) and (p13 c_1) are equivalent: They are.
+To check that (p19 c_5 c_0) and (not (p6 c_5 c_8)) are equivalent: They are.
 Processing file:  NEQ031_size10.smt2
 Starting consistency test
-To check that (p19 c_0 (f1 c_2 c2)) and (or (p13 c_0)
-    (p18 c_4 c_0 c_0)
-    (not (p20 c_0))
-    (not (p21 c_0))
-    (= c_4 (f14 c_0))
-    (not (p18 c_4 c_0 (f1 c_0 c2)))) are equivalent: They are.
+To check that (= (f1 c_3 c_0) c_0) and (= (f1 c_1 c_0) c_3) are equivalent: They are.
 Processing file:  NEQ031_size7.smt2
 Starting consistency test
-Element not defined
+To check that (p22 c_0 c_2) and (p16 c_1) are equivalent: They are.
 Processing file:  NEQ031_size8.smt2
 Starting consistency test
-To check that (p21 c_8) and (p13 c_1) are equivalent: They are.
+To check that (p18 c_7 c_3 (f1 c_5 c2)) and (p18 c_7 c_1 (f1 c_8 c2)) are equivalent: They are.
 Processing file:  NEQ031_size9.smt2
 Starting consistency test
-To check that (p12 c_1 (f9 c_1 c_1)) and (or (not (p12 c_2 c_0)) (p12 c_2 (f9 c_0 c_0))) are equivalent: They are.
 Processing file:  NEQ032_size3.smt2
 Starting consistency test
-To check that (or (= (f4 c_1) c_0) (= (f4 c_1) c_1) (= (f4 c_1) c_2) (= (f4 c_1) c_3)) and (= (f6 c_1) c_3) are equivalent: They are.
 Processing file:  NEQ032_size4.smt2
 Starting consistency test
-To check that (or (not (p12 c_0 c_1)) (p12 c_0 (f9 c_1 c_1))) and (not (p12 c_0 (f1 c_3 c_3))) are equivalent: They are.
 Processing file:  NEQ032_size5.smt2
 Starting consistency test
-To check that (p12 c_4 (f9 c_2 c_2)) and (or (not (p12 c_5 c_0)) (p12 c_5 (f9 c_2 c_0))) are equivalent: They are.
 Processing file:  NEQ032_size6.smt2
 Starting consistency test
-To check that (not (p22 c15 c_0)) and (p12 (f35 c_1 c_2)) are equivalent: They are.
 Processing file:  NEQ033_size3.smt2
 Starting consistency test
-To check that (not (p12 (f39 c_0 c_1))) and (p12 (f14 c_0)) are equivalent: They are.
 Processing file:  NEQ033_size4.smt2
 Starting consistency test
-To check that (not (p12 (f20 (f3 c_0 c6)))) and (p12 (f43 c_4 c_2)) are equivalent: They are.
 Processing file:  NEQ033_size5.smt2
 Starting consistency test
-To check that (not (p22 c15 c_2)) and (p12 (f35 c_5 c_5)) are equivalent: They are.
+To check that (f2 c_4) and (f33 c_0) are equivalent: They are.
 Processing file:  NEQ033_size6.smt2
 Starting consistency test
-To check that (p5 c_0 (f2 c_0 c_3)) and (not (p5 c_3 (f2 c_5 c_2))) are equivalent: They are.
 Processing file:  NEQ041_size6.smt2
 Starting consistency test
-Element not defined
 Processing file:  NEQ041_size7.smt2
 Starting consistency test
-Element not defined
 Processing file:  NEQ041_size8.smt2
 Starting consistency test
 To check that (p5 c_1 (f1 c_2)) and (p5 c_4 (f2 c_5 c_7)) are equivalent: They are.
 Processing file:  NEQ041_size9.smt2
 Starting consistency test
-To check that (p1 (f22 c_1) c_1) and (= (f22 c_0) c_2) are equivalent: They are.
 Processing file:  NEQ046_size3.smt2
 Starting consistency test
-To check that (= (f32 c_0 c_3) c_2) and (= (f37 c_1 (f7 (f37 c_2 c_1) (f37 c_2 c_1))) (f37 c_2 (f37 c_1 (f7 c_1 c_1)))) are equivalent: They are.
+To check that (= (f32 c_3 c_2) c_3) and (= (f32 c_3 c_3) c_0) are equivalent: They are.
 Processing file:  NEQ046_size4.smt2
 Starting consistency test
-To check that (p45 c_0 c_1 c_4) and (not (p2 (f7 c_1 c_3) (f32 c_0 c_3))) are equivalent: They are.
+To check that (p2 c_1 (f25 c_4 (f25 c_2 (f6 c_1)))) and (p2 c_0 (f8 c_4 c_2)) are equivalent: They are.
 Processing file:  NEQ046_size5.smt2
 Starting consistency test
-Element not defined
+To check that (p2 (f7 c_4 c_0) (f48 c_4)) and (p2 (f7 c_4 c_1) (f32 c_4 c_4)) are equivalent: They are.
 Processing file:  NEQ046_size6.smt2
 Starting consistency test
-To check that (= (f1 c_2 c_4) c_0) and (= (f1 (f1 c_3 c_0) c_1) (f1 c_3 (f1 c_0 c_1))) are equivalent: They are.
 Processing file:  NEQ048_size6.smt2
 Starting consistency test
-To check that (= (f1 (f1 c_3 c_4) c_0) (f1 c_3 (f1 c_4 c_0))) and (= (f1 c_3 c_0) c_1) are equivalent: They are.
 Processing file:  NEQ048_size7.smt2
 Starting consistency test
-To check that (= (f1 c_5 c_3) c_1) and (= (f1 (f1 c_6 c_0) c_4) (f1 c_6 (f1 c_0 c_4))) are equivalent: They are.
 Processing file:  NEQ048_size8.smt2
 Starting consistency test
-To check that (= (f1 c_8 c_3) c_4) and (or (not (p4 c_0)) (not (p4 c_6)) (p4 c_2) (not (= (f1 c_6 c_0) c_2))) are equivalent: They are.
+To check that (= (f1 c_6 c_2) c_3) and (= (f1 c_7 c_2) c_0) are equivalent: They are.
 Processing file:  NEQ048_size9.smt2
 Starting consistency test
-To check that (= (f2 (f1 c_3 c_0) c_3) (f1 (f2 c_3 c_3) (f2 c_0 c_3))) and (= (f1 (f1 c_3 c_0) c_1) (f1 c_3 (f1 c_0 c_1))) are equivalent: They are.
 Processing file:  PEQ002_size5.smt2
 Starting consistency test
-To check that (= (f1 (f1 c_0 c_2) c_1) (f1 c_0 (f1 c_2 c_1))) and (or (not (= (f1 c_0 c_2) (f1 c_0 c_5))) (= c_2 c_5)) are equivalent: They are.
 Processing file:  PEQ002_size6.smt2
 Starting consistency test
-To check that (= (f1 c_1 c_6) (f1 c_1 c_6)) and (or (not (= (f1 c_3 c_5) (f1 c_1 c_5))) (= c_3 c_1)) are equivalent: They are.
 Processing file:  PEQ002_size7.smt2
 Starting consistency test
-To check that (= (f2 (f1 c_1 c_0) c_4) (f1 (f2 c_1 c_4) (f2 c_0 c_4))) and (= (f1 (f1 c_1 c_0) c_3) (f1 c_1 (f1 c_0 c_3))) are equivalent: They are.
 Processing file:  PEQ002_size8.smt2
 Starting consistency test
-To check that (f1 (f1 c_3 (f2 c_0)) (f1 c_6 c_0)) and (f1 (f1 (f1 c3 c_8) c_8) c_4) are equivalent: They are.
 Processing file:  PEQ003_size10.smt2
 Starting consistency test
-To check that (f1 c_2 c_4) and (f1 c_3 (f2 c_3)) are equivalent: They are.
 Processing file:  PEQ003_size7.smt2
 Starting consistency test
-To check that (f1 (f1 c_0 (f2 c_0)) (f1 c_1 c_0)) and (f1 (f1 c3 c_6) c_0) are equivalent: They are.
 Processing file:  PEQ003_size8.smt2
 Starting consistency test
-To check that (f1 (f1 c_2 (f2 c_0)) (f1 c_6 c_0)) and (f1 (f1 (f1 c3 c_7) c_8) c_4) are equivalent: They are.
 Processing file:  PEQ003_size9.smt2
 Starting consistency test
-To check that (f1 c_5 (f1 c_3 c_1)) and (f1 (f1 (f3 c_4) (f3 c_0)) (f1 c_0 c_4)) are equivalent: They are.
+To check that (= (f1 c_0 (f1 c_2 c_1)) (f1 c_2 (f1 c_0 c_1))) and (= (f1 c_0 (f1 c_3 c_3)) (f1 c_3 (f1 c_0 c_3))) are equivalent: They are.
 Processing file:  PEQ004_size6.smt2
 Starting consistency test
-To check that (f1 c_1 (f1 c_2 c_0)) and (f1 (f1 c_2 c_0) (f1 (f1 c_0 c_0) (f1 c_2 c_0))) are equivalent: They are.
+To check that (f1 (f1 c_3 c_2) (f1 c_1 c_2)) and (f1 (f1 c_3 c_4) (f1 c_4 c_4)) are equivalent: They are.
 Processing file:  PEQ004_size7.smt2
 Starting consistency test
-To check that (f1 c_7 (f1 c_4 c_3)) and (f1 (f1 (f3 c_1) (f3 c_1)) (f1 c_1 c_1)) are equivalent: They are.
+To check that (f1 (f1 c_3 c_4) (f1 (f1 c_0 c_3) (f1 c_0 c_4))) and (f1 (f1 c_6 c_5) (f1 c_6 c_2)) are equivalent: They are.
 Processing file:  PEQ004_size8.smt2
 Starting consistency test
-To check that (f1 c_5 (f1 c_7 c_0)) and (f1 (f1 c_6 c_1) (f1 (f1 c_1 c_6) (f1 c_1 c_1))) are equivalent: They are.
+To check that (= (f1 c_7 c_1) (f1 c_1 c_5)) and (= (f1 c_7 c_5) c_8) are equivalent: They are.
 Processing file:  PEQ004_size9.smt2
 Starting consistency test
-To check that (f1 c3 (f4 c_2 c_2)) and (f1 c5 (f4 c_0 c_2)) are equivalent: They are.
 Processing file:  PEQ010_size5.smt2
 Starting consistency test
-To check that (f1 (f1 c_0 (f2 c_5)) (f1 c_1 c_5)) and (f1 (f1 c_3 (f2 c_4)) (f1 c_3 c_4)) are equivalent: They are.
 Processing file:  PEQ010_size6.smt2
 Starting consistency test
-To check that (f1 c_2 c_5) and (f4 (f1 c_6 c_2) (f1 c_1 c_2)) are equivalent: They are.
 Processing file:  PEQ010_size7.smt2
 Starting consistency test
-To check that (f1 c7 (f4 c_1 c_1)) and (f1 (f4 c_0 c_3) c_5) are equivalent: They are.
+To check that (= (f8 c_6 c_2) c_0) and (or (= (f8 c_7 c_3) c_0)
+    (= (f8 c_7 c_3) c_1)
+    (= (f8 c_7 c_3) c_2)
+    (= (f8 c_7 c_3) c_3)
+    (= (f8 c_7 c_3) c_4)
+    (= (f8 c_7 c_3) c_5)
+    (= (f8 c_7 c_3) c_6)
+    (= (f8 c_7 c_3) c_7)) are equivalent: They are.
 Processing file:  PEQ010_size8.smt2
 Starting consistency test
-Element not defined
 Processing file:  PEQ011_size5.smt2
 Starting consistency test
-Element not defined
 Processing file:  PEQ011_size6.smt2
 Starting consistency test
-Element not defined
 Processing file:  PEQ011_size7.smt2
 Starting consistency test
-Element not defined
+To check that (= (f1 c_6 c_0) (f1 c_4 c_0)) and (= (f1 c_5 c_3) (f1 c_5 c_7)) are equivalent: They are.
 Processing file:  PEQ011_size8.smt2
 Starting consistency test
-Element not defined
 Processing file:  PEQ012_size3.smt2
 Starting consistency test
-Element not defined
 Processing file:  PEQ012_size4.smt2
 Starting consistency test
-Element not defined
 Processing file:  PEQ012_size5.smt2
 Starting consistency test
-Element not defined
 Processing file:  PEQ012_size6.smt2
 Starting consistency test
-Element not defined
 Processing file:  PEQ013_size5.smt2
 Starting consistency test
-Element not defined
 Processing file:  PEQ013_size6.smt2
 Starting consistency test
-Element not defined
 Processing file:  PEQ013_size7.smt2
 Starting consistency test
-Element not defined
+To check that (= (f1 c_2 c_0) (f1 c_2 c_2)) and (= (f1 c_2 c_4) c_2) are equivalent: They are.
 Processing file:  PEQ013_size8.smt2
 Starting consistency test
-To check that (f1 (f1 c6 c_7) c_4) and (f1 c3 (f4 c_3 c_5)) are equivalent: They are.
+To check that (f4 (f1 c_7 c_5) (f1 c_7 c_5)) and (f4 (f1 c_7 c_1) (f1 c_9 c_1)) are equivalent: They are.
 Processing file:  PEQ014_size10.smt2
 Starting consistency test
-To check that (f1 c_6 (f7 c_6 c_8)) and (f4 (f1 c_5 c_4) (f1 c_7 c_4)) are equivalent: They are.
 Processing file:  PEQ014_size11.smt2
 Starting consistency test
-To check that (f1 c_2 c_5) and (f4 (f1 c_3 c_5) (f1 c_2 c_5)) are equivalent: They are.
+To check that (f1 (f4 c_6 c_0) c_5) and (f4 (f1 c_6 c_0) (f1 c_3 c_0)) are equivalent: They are.
 Processing file:  PEQ014_size8.smt2
 Starting consistency test
-To check that (f1 c_5 c_7) and (f1 (f1 c_6 (f1 c2 c_4)) (f1 c_1 c_4)) are equivalent: They are.
 Processing file:  PEQ014_size9.smt2
 Starting consistency test
-Element not defined
 Processing file:  PEQ016_size4.smt2
 Starting consistency test
-To check that (f3 c_0 c_4) and (f1 (f3 c_1 c_2) (f3 c_0 c_2)) are equivalent: They are.
+To check that (f3 c_3 (f3 c_3 (f3 c_4 c_3))) and (f3 c_2 (f1 c_2 c_0)) are equivalent: They are.
 Processing file:  PEQ016_size5.smt2
 Starting consistency test
-To check that (f3 (f3 c_3 c_2) c_3) and (f1 (f3 c_4 c_1) (f3 c_0 c_1)) are equivalent: They are.
+To check that (= c_4 c_1) and (= (f1 c_5 c_2) (f1 c_2 c_2)) are equivalent: They are.
 Processing file:  PEQ016_size6.smt2
 Starting consistency test
-To check that (f3 (f3 c_5 c_4) c_2) and (f3 c_6 (f3 c_1 (f3 c_4 c_1))) are equivalent: They are.
+To check that (f3 c_1 (f3 c_6 c_1)) and (f3 c_3 (f3 c_6 (f3 c_0 c_6))) are equivalent: They are.
 Processing file:  PEQ016_size7.smt2
 Starting consistency test
-Element not defined
 Processing file:  PEQ018_size4.smt2
 Starting consistency test
 Processing file:  PEQ018_size5.smt2
 Starting consistency test
-To check that (f1 (f1 c_1 c_5) (f2 (f1 c_5 c_5))) and (f1 c_1 (f1 (f1 c_1 c_1) (f2 (f1 c_1 c_1)))) are equivalent: They are.
 Processing file:  PEQ018_size6.smt2
 Starting consistency test
-To check that (f1 c_5 c_5) and (f1 (f1 c_6 c_5) (f2 (f1 c_2 c_5))) are equivalent: They are.
 Processing file:  PEQ018_size7.smt2
 Starting consistency test
-Element not defined
 Processing file:  PEQ019_size4.smt2
 Starting consistency test
-Element not defined
 Processing file:  PEQ019_size5.smt2
 Starting consistency test
-Element not defined
 Processing file:  PEQ019_size6.smt2
 Starting consistency test
-Element not defined
 Processing file:  PEQ019_size7.smt2
 Starting consistency test
-To check that (f1 (f1 c_0 c_3) c_1) and (f1 c_0 (f1 c_0 c_3)) are equivalent: They are.
 Processing file:  PEQ020_size5.smt2
 Starting consistency test
-To check that (= (f2 c_0 (f1 c_3 c_4)) (f1 (f2 c_0 c_3) (f2 c_0 c_4))) and (= (f2 c_0 (f1 c_4 c_0)) (f1 (f2 c_0 c_4) (f2 c_0 c_0))) are equivalent: They are.
+To check that (= (f2 c_0 c_1) c_3) and (= (f2 c_0 c_5) c_0) are equivalent: They are.
 Processing file:  PEQ020_size6.smt2
 Starting consistency test
-To check that (f2 c_0 (f1 c_3 c_5)) and (f2 (f2 c_0 c_3) c_2) are equivalent: They are.
+To check that (= (f2 c_1 c_4) c_4) and (= (f2 c_2 c_1) c_1) are equivalent: They are.
 Processing file:  PEQ020_size7.smt2
 Starting consistency test
-Element not defined
 Processing file:  SEQ004_size5.smt2
 Starting consistency test
-To check that (p2 c_0 c_5 c_1) and (or (p2 c_0 c_1 c_5) (not (p2 c_1 c_0 c_5))) are equivalent: They are.
 Processing file:  SEQ004_size6.smt2
 Starting consistency test
-Element not defined
 Processing file:  SEQ004_size7.smt2
 Starting consistency test
-To check that (f2 (f2 c_3 c_2) c_2) and (f2 c_3 (f2 c_2 c_3)) are equivalent: They are.
+To check that (= (f2 c_3 c_4) c_4) and (= (f2 c_4 c_2) c_1) are equivalent: They are.
 Processing file:  SEQ005_size6.smt2
 Starting consistency test
-To check that (f1 c_1 (f2 c_1 c_4)) and (f1 c_2 (f1 c_3 c_6)) are equivalent: They are.
 Processing file:  SEQ005_size7.smt2
 Starting consistency test
-To check that (f1 c_7 c_0) and (f1 c_6 (f1 c_0 c_6)) are equivalent: They are.
+To check that (f2 c_3 (f2 c_7 c_4)) and (f2 c_7 (f1 c_7 (f2 c_7 c_6))) are equivalent: They are.
 Processing file:  SEQ005_size8.smt2
 Starting consistency test
-To check that (f2 c_6 (f2 c_1 c_2)) and (f2 c_7 (f2 c_8 c_3)) are equivalent: They are.
+To check that (= (f2 c_5 c_6) c_3) and (= (f2 c_6 c_1) c_0) are equivalent: They are.
 Processing file:  SEQ005_size9.smt2
 Starting consistency test
-To check that (= (f1 c_5 c_8) (f1 c_8 c_5)) and (= (f1 c_5 c_3) c_5) are equivalent: They are.
 Processing file:  SEQ009_size10.smt2
 Starting consistency test
-To check that (or (not (= (f2 c_5) (f2 c_2))) (= c_5 c_2)) and (= (f1 (f2 c_2) c_4) (f2 (f1 c_2 c_4))) are equivalent: They are.
 Processing file:  SEQ009_size7.smt2
 Starting consistency test
-To check that (= (f1 c_5 c_6) (f1 c_6 c_5)) and (= (f1 c_5 c_2) c_0) are equivalent: They are.
 Processing file:  SEQ009_size8.smt2
 Starting consistency test
-To check that (= (f1 c_3 c_5) (f1 c_5 c_3)) and (= (f1 c_3 c_0) c_6) are equivalent: They are.
+To check that (= (f1 c_7 c_1) c_4) and (= (f1 c_7 c_5) c_1) are equivalent: They are.
 Processing file:  SEQ009_size9.smt2
 Starting consistency test
-To check that (= (f1 (f1 c_1 c_5) c_3) (f1 c_1 (f1 c_5 c_3))) and (= (f1 c_1 c_2) c_2) are equivalent: They are.
+To check that (= (f1 c_5 c_0) c_5) and (= (f1 c_5 c_2) c_2) are equivalent: They are.
 Processing file:  SEQ010_size6.smt2
 Starting consistency test
-To check that (f2 c_2 (f2 c_6 c_4)) and (f2 (f2 c_2 c_3) c_4) are equivalent: They are.
+To check that (= (f2 c_3 c_4) c_4) and (= (f2 c_4 c_1) c_1) are equivalent: They are.
 Processing file:  SEQ010_size7.smt2
 Starting consistency test
-To check that (= (f2 (f2 c_1 c_4) c_2) (f2 c_1 (f2 c_4 c_2))) and (= (f2 c_1 c_3) (f2 c_3 c_1)) are equivalent: They are.
+To check that (= (f2 c_6 c_7) c_4) and (= (f2 c_7 c_3) c_1) are equivalent: They are.
 Processing file:  SEQ010_size8.smt2
 Starting consistency test
-To check that (f1 c_6 c_5) and (f1 c_7 (f1 c_4 c_6)) are equivalent: They are.
+To check that (= (f2 c_4 c_5) c_4) and (= (f2 c_5 c_0) c_1) are equivalent: They are.
 Processing file:  SEQ010_size9.smt2
 Starting consistency test
-Element not defined
 Processing file:  SEQ011_size2.smt2
 Starting consistency test
-Element not defined
 Processing file:  SEQ011_size3.smt2
 Starting consistency test
-Element not defined
 Processing file:  SEQ011_size4.smt2
 Starting consistency test
-Element not defined
 Processing file:  SEQ013_size4.smt2
 Starting consistency test
-To check that (f1 c_2 (f1 c_3 c_0)) and (f1 (f1 c_2 c_3) c_4) are equivalent: They are.
 Processing file:  SEQ013_size5.smt2
 Starting consistency test
-To check that (f1 (f1 c_5 c_2) c_2) and (f1 c_5 (f1 c_2 c_0)) are equivalent: There is a problem with the congruence closure algorithm
 Processing file:  SEQ013_size6.smt2
 Starting consistency test
 Processing file:  SEQ015_size2.smt2
 Starting consistency test
 Processing file:  SEQ015_size3.smt2
 Starting consistency test
-Element not defined
 Processing file:  SEQ015_size4.smt2
 Starting consistency test
-To check that (f2 (f2 c_0 c_1) c_0) and (f1 (f1 c_1 c_2) c_0) are equivalent: They are.
 Processing file:  SEQ017_size4.smt2
 Starting consistency test
-To check that (f1 (f2 c_1 c_0) (f2 c_1 c_3)) and (f2 c_0 (f2 c_3 c_1)) are equivalent: They are.
+To check that (= (f1 c_3 c_1) c_2) and (= (f1 c_4 c_0) c_0) are equivalent: They are.
 Processing file:  SEQ017_size5.smt2
 Starting consistency test
-To check that (f2 c_4 c_0) and (f2 c_5 (f1 c_5 c_5)) are equivalent: There is a problem with the congruence closure algorithm
 Processing file:  SEQ017_size6.smt2
 Starting consistency test
-To check that (f2 (f2 c_3 c_2) c_3) and (f2 c_3 (f2 c_0 c_1)) are equivalent: They are.
+To check that (= (f2 c_1 c_3) c_4) and (= (f2 c_2 c_1) c_1) are equivalent: They are.
 Processing file:  SEQ018_size6.smt2
 Starting consistency test
-To check that (= (f3 (f2 c_0 c_6)) (f1 (f3 c_0) (f3 c_6))) and (= (f2 c_0 c_1) c_1) are equivalent: They are.
+To check that (= (f1 c_4 c_5) c_4) and (= (f1 c_5 c_2) c_1) are equivalent: They are.
 Processing file:  SEQ018_size7.smt2
 Starting consistency test
-To check that (f2 c_5 c_2) and (f2 c_6 (f1 c_6 c_4)) are equivalent: There is a problem with the congruence closure algorithm
 Processing file:  SEQ018_size8.smt2
 Starting consistency test
-To check that (= (f1 c_2 c_2) (f1 c_2 c_2)) and (= (f1 (f1 c_2 c_2) c_0) (f1 c_2 (f1 c_2 c_0))) are equivalent: They are.
 Processing file:  SEQ019_size4.smt2
 Starting consistency test
-To check that (f1 (f3 c_0) (f3 c_2)) and (f2 (f3 c_0) (f1 c_2 c_0)) are equivalent: They are.
 Processing file:  SEQ019_size5.smt2
 Starting consistency test
-To check that (= (f2 (f2 c_0 c_5) c_2) (f2 c_0 (f2 c_5 c_2))) and (= (f2 c_0 c_1) c_3) are equivalent: There is a problem with the congruence closure algorithm
+To check that (= (f1 c_5 c_5) c_5) and (= (f2 c_3 c_3) c_2) are equivalent: There is a problem with the congruence closure algorithm
 Processing file:  SEQ019_size6.smt2
 Starting consistency test
-Element not defined
 Processing file:  SEQ020_size2.smt2
 Starting consistency test
-To check that (p10 c_1 (f13 c_0 c_1 c_1)) and (= (f17 c_2 c_0 c_1) c_2) are equivalent: They are.
 Processing file:  SEQ020_size3.smt2
 Starting consistency test
-Element not defined
 Processing file:  SEQ020_size4.smt2
 Starting consistency test
 To check that (f3 c_2 (f2 c_3)) and (f1 c_1 c4) are equivalent: They are.
@@ -2807,10 +2938,10 @@ Starting consistency test
 To check that (f5 c_0 c_0 c_0) and (f5 c_0 c_1 c_1) are equivalent: They are.
 Processing file:  SEQ026_size5.smt2
 Starting consistency test
-To check that (f3 c_0 (f3 c_2 c_3)) and (f1 (f3 c_1 c_1) (f2 c_4)) are equivalent: They are.
+To check that (= (f5 c_0 c_5 c_4) c_0) and (= (f5 c_0 c_5 c_5) c_1) are equivalent: They are.
 Processing file:  SEQ026_size6.smt2
 Starting consistency test
-To check that (= (f1 c_2 (f2 c_2)) (f2 (f1 c_2 c_2))) and (= (f1 (f3 c_4 (f2 c_1)) c_2) (f3 (f1 c_4 c_2) (f2 (f1 c_1 c_2)))) are equivalent: They are.
+To check that (= (f3 c_3 c_3) c_3) and (= (f3 c_4 c_0) c_0) are equivalent: They are.
 Processing file:  SEQ026_size7.smt2
 Starting consistency test
 Processing file:  SEQ032_size2.smt2
@@ -2821,37 +2952,29 @@ Processing file:  SEQ032_size4.smt2
 Starting consistency test
 Processing file:  SEQ035_size4.smt2
 Starting consistency test
-To check that (f1 (f1 c_4 (f1 c_4 (f1 c_3 c_3))) (f1 c_3 (f1 c_4 c_0))) and (f1 c_2 c_1) are equivalent: They are.
 Processing file:  SEQ035_size5.smt2
 Starting consistency test
 Processing file:  SEQ035_size6.smt2
 Starting consistency test
-To check that (f1 (f3 c_4) (f3 c_2)) and (f1 (f3 c_5) (f2 c_5 c_0)) are equivalent: They are.
 Processing file:  SEQ038_size6.smt2
 Starting consistency test
-To check that (= (f1 c_4 (f2 c_4 c_3)) c_4) and (= (f2 (f2 c_6 c_2) c_1) (f2 c_6 (f2 c_2 c_1))) are equivalent: They are.
 Processing file:  SEQ038_size7.smt2
 Starting consistency test
-Element not defined
 Processing file:  SEQ038_size8.smt2
 Starting consistency test
-To check that (f1 c_3 c_0) and (f1 c_1 c_4) are equivalent: They are.
+To check that (f1 c_1 (f1 c_1 c_0)) and (f1 c_3 (f1 c_8 c_2)) are equivalent: They are.
 Processing file:  SEQ038_size9.smt2
 Starting consistency test
 Processing file:  SEQ042_size2.smt2
 Starting consistency test
-Element not defined
 Processing file:  SEQ042_size3.smt2
 Starting consistency test
-To check that (= (f2 (f3 c_2 c_0)) (f2 c_2)) and (= (f1 (f3 c_2 c_0)) (f1 c_0)) are equivalent: There is a problem with the congruence closure algorithm
 Processing file:  SEQ042_size4.smt2
 Starting consistency test
 Processing file:  SEQ050_size2.smt2
 Starting consistency test
-Element not defined
 Processing file:  SEQ050_size3.smt2
 Starting consistency test
-Element not defined
 Processing file:  SEQ050_size4.smt2
 Starting consistency test
 To check that (f3 f4 f5 f6 f7 (f8 f9)) and f1 are equivalent: They are.
@@ -2862,6 +2985,6 @@ Processing file:  z3.1184147.smt2
 Starting consistency test
 To check that f1 and (f3 f4 f5 f6 f7 (f8 f9)) are equivalent: They are.
 Processing file:  z3.1184163.smt2
-Number of processed cases:  961
+Number of processed cases:  1061
 There are  0  problems
 rm -rf tests/*.o tests/qf_uf_test
