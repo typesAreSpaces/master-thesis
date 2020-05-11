@@ -83,7 +83,8 @@ bool TestCongruenceClosureExplain::testConsistency(z3::expr_vector const & e,
     // of the same sort
     if(index != repr_index 
         && (*it).get_sort().id() == repr.get_sort().id()){
-      s.push();
+      if(max_iter > 1)
+        s.push();
       std::cout << "To check that " 
         << *it << " and " << repr 
         << " are equivalent: ";
@@ -95,7 +96,8 @@ bool TestCongruenceClosureExplain::testConsistency(z3::expr_vector const & e,
         default:
           throw "There is a problem with the congruence closure algorithm";
       }
-      s.pop();
+      if(max_iter > 1)
+        s.pop();
       if(--max_iter == 0)
         return true;
     }
