@@ -3,30 +3,11 @@
 
 #include <iostream>
 #include <algorithm>
-#include <z3++.h>
-#include "Rename.h"
-#include "EUFInterpolant.h"
+#include "Input.h"
 
 class TestCongruenceClosureExplain {
 
-  unsigned original_num_terms;
-
-  z3::context &   ctx;
-  Z3Subterms      subterms;
-  z3::expr        contradiction;
-
-  FSymPositions    fsym_positions;
-  UnionFindExplain uf;
-  
-  IdsToMerge ids_to_merge;
-
-  CurryDeclarations curry_decl;  
-  FactoryCurryNodes factory_curry_nodes;
-  CongruenceClosureExplain cc;
-
-  unsigned maxIdFromAssertions(z3::expr_vector const &);
-  void init(z3::expr_vector const &);
-  void initFormula(z3::expr const &);
+  Input input;
 
   public:
   TestCongruenceClosureExplain(z3::expr_vector const &);

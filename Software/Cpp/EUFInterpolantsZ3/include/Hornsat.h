@@ -107,7 +107,6 @@ class Hornsat {
   void congclosure(CongruenceClosure &, std::list<unsigned> &);
   
  public:
-  // Hornsat(std::istream &);
   Hornsat(Z3Subterms const & subterms, UnionFindExplain &, HornClauses const &);
   ~Hornsat();
   void satisfiable();

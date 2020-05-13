@@ -2,80 +2,21 @@
 #include <z3++.h>
 
 TestCongruenceClosureExplain::TestCongruenceClosureExplain(z3::expr_vector const & assertions) :
-
-  original_num_terms(maxIdFromAssertions(assertions) + 1),
-  ctx(assertions.ctx()), subterms(ctx), contradiction(ctx.bool_val(false)),
-  fsym_positions(), uf(original_num_terms), 
-  curry_decl(), factory_curry_nodes(original_num_terms, curry_decl),
-  cc(
-      (
-       subterms.resize(original_num_terms), 
-       init(assertions), 
-       subterms), uf, factory_curry_nodes, ids_to_merge
-      )
+  input(assertions)
 { 
-}
-
-unsigned TestCongruenceClosureExplain::maxIdFromAssertions(z3::expr_vector const & assertions){
-  unsigned max_id_from_assertions = 0;
-  for(auto const & assertion : assertions){
-    if(assertion.id() > max_id_from_assertions)
-      max_id_from_assertions = assertion.id();
-  }
-  return max_id_from_assertions;
-}
-
-void TestCongruenceClosureExplain::init(z3::expr_vector const & assertions){
-  for(auto const & assertion : assertions){
-    initFormula(assertion);
-    switch(assertion.decl().decl_kind()){
-      case Z3_OP_EQ:
-        ids_to_merge.emplace_back(assertion.arg(0).id(), assertion.arg(1).id());
-        break;
-      default:
-        break;
-    }
-  }
-  return;
-}
-
-void TestCongruenceClosureExplain::initFormula(z3::expr const & e){
-  if(e.is_app()){
-    if(subterms.visited[e.id()])
-      return;
-
-    subterms.set(e.id(), e);
-
-    unsigned num = e.num_args();
-    for(unsigned i = 0; i < num; i++)
-      initFormula(e.arg(i));
-
-    z3::func_decl f = e.decl();
-    if(curry_decl[f.id()] == nullptr)
-      curry_decl[f.id()] = factory_curry_nodes.getCurryNode(e.id(), f.name().str(), nullptr, nullptr);
-
-    switch(f.decl_kind()){
-      case Z3_OP_UNINTERPRETED:
-        if(num > 0)
-          fsym_positions[f.name().str()].push_back(e.id());
-      default:
-        return;
-    }
-  }
-  throw "Problem @ EUFInterpolant::initFormula. The expression e is not an application term.";
 }
 
 bool TestCongruenceClosureExplain::testConsistency(z3::expr_vector const & e, 
     unsigned max_iter){
-  z3::solver s(ctx);
+  z3::solver s(input.ctx);
   for(auto const & assertion : e)
     s.add(assertion);
 
   std::cout << "Starting consistency test" << std::endl;
 
-  for(auto it = subterms.begin();  it != subterms.end(); ++it){
+  for(auto it = input.subterms.begin();  it != input.subterms.end(); ++it){
     unsigned index = (*it).id();
-    auto repr = cc.z3_repr(index);
+    auto repr = input.cc.z3_repr(index);
     unsigned repr_index = repr.id();
     // Checking the non-trivial equalities
     // of the same sort
@@ -104,13 +45,13 @@ bool TestCongruenceClosureExplain::testConsistency(z3::expr_vector const & e,
 }
 
 void TestCongruenceClosureExplain::testExplanation(unsigned max_iter){
-  for(auto it = subterms.begin(); it != subterms.end(); ++it){
+  for(auto it = input.subterms.begin(); it != input.subterms.end(); ++it){
     unsigned index = (*it).id();
-    auto repr = cc.z3_repr(index);
+    auto repr = input.cc.z3_repr(index);
     unsigned repr_index = repr.id();
     // Checking the non-trivial equalities
     if(index != repr_index){
-      cc.giveZ3Explanation(std::cout, *it, repr);
+      input.cc.giveZ3Explanation(std::cout, *it, repr);
       if(--max_iter == 0)
         return;
     }
@@ -119,25 +60,25 @@ void TestCongruenceClosureExplain::testExplanation(unsigned max_iter){
 }
 
 void TestCongruenceClosureExplain::merge(z3::expr const & e1, z3::expr const & e2){
-  cc.merge(e1, e2);
+  input.cc.merge(e1, e2);
   return;
 }
 
 std::ostream & operator << (std::ostream & os, TestCongruenceClosureExplain & test) {
   unsigned num_changes = 0;
   os << "Printing all the original subterms:" << std::endl;
-  os << test.subterms.size() << std::endl;
+  os << test.input.subterms.size() << std::endl;
 
-  for(auto it = test.subterms.begin(); it != test.subterms.end(); ++it){
+  for(auto it = test.input.subterms.begin(); it != test.input.subterms.end(); ++it){
     unsigned index = (*it).id();
     try {
-      assert(test.subterms[index].id() == index);
+      assert(test.input.subterms[index].id() == index);
       
-      auto repr = test.cc.z3_repr(index);
+      auto repr = test.input.cc.z3_repr(index);
       unsigned repr_index = repr.id();
 
       os << index << ". " << (index == repr_index ? "(Same)" : (num_changes++, "(Different)")) << std::endl;
-      os << "Original:       " << test.subterms[index] << std::endl;
+      os << "Original:       " << test.input.subterms[index] << std::endl;
       os << "Representative: " << repr << std::endl;
 
     }
