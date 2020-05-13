@@ -2,7 +2,8 @@
 
 CongruenceClosureNO::CongruenceClosureNO(const Z3Subterms & subterms,
 					 PredList & pred_list, UnionFindExplain & uf) :
-  CongruenceClosure(subterms, pred_list, uf)
+  CongruenceClosure(subterms, uf),
+  pred_list(pred_list)
 {
 }
 

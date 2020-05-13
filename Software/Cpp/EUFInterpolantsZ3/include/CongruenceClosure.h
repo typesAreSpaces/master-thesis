@@ -14,12 +14,12 @@
 
 class SignatureTable {
   std::unordered_map<std::size_t, unsigned> sig_table;
-  UnionFind & uf;
-  std::hash<std::string> hash_string;
-  std::hash<unsigned> hash_unsigned;
+  UnionFindExplain &                        uf;
+  std::hash<std::string>                    hash_string;
+  std::hash<unsigned>                       hash_unsigned;
   
 public:
-  SignatureTable(UnionFind & uf) : uf(uf){}
+  SignatureTable(UnionFindExplain & uf) : uf(uf){}
   ~SignatureTable(){
 #if DEBUG_DESTRUCTORS_CC
     std::cout << "Done ~SignatureTable" << std::endl;
@@ -55,15 +55,14 @@ class CongruenceClosure {
   friend class Hornsat;
 protected:
   const Z3Subterms & subterms;
-  PredList &         pred_list;
   UnionFindExplain & uf;
   SignatureTable     sig_table;
  public:
-  CongruenceClosure(const Z3Subterms &, PredList &, UnionFindExplain &);
+  CongruenceClosure(const Z3Subterms &, UnionFindExplain &);
   virtual void buildCongruenceClosure(std::list<unsigned> &) = 0;
   virtual ~CongruenceClosure();
+  UnionFindExplain & getUnionFindExplain() const;
   friend std::ostream & operator << (std::ostream &, const CongruenceClosure &);
 };
-
 
 #endif

@@ -72,19 +72,26 @@ class CongruenceClosureExplain : public CongruenceClosure {
   void    explainAlongPath(EqClass, EqClass, UnionFind &, ExplainEquations &, PendingPointers &);
 
   public:
-  CongruenceClosureExplain(const Z3Subterms &, PredList &, UnionFindExplain &, FactoryCurryNodes &, IdsToMerge const &);
+  CongruenceClosureExplain(const Z3Subterms &, UnionFindExplain &, FactoryCurryNodes &, IdsToMerge const &);
+  ~CongruenceClosureExplain();
+
   void buildCongruenceClosure(std::list<EqClass> &);
-  void merge(const EquationCurryNodes &);
+
+  void merge(EquationCurryNodes const &);
+  void merge(z3::expr const &, z3::expr const &);
+
   PendingPointers explain(const z3::expr &, const z3::expr &);
   PendingPointers explain(EqClass, EqClass);
+
   std::ostream & giveExplanation(std::ostream &, const z3::expr &, const z3::expr &);
   std::ostream & giveExplanation(std::ostream &, EqClass, EqClass);
+
   Z3EquationPointers z3Explain(const z3::expr &, const z3::expr &);
   std::ostream & giveZ3Explanation(std::ostream &, const z3::expr &, const z3::expr &);
+  
   z3::expr z3_repr(unsigned);
   z3::expr z3_repr(z3::expr const &);
 
-  ~CongruenceClosureExplain();
   friend std::ostream & operator << (std::ostream &, const CongruenceClosureExplain &);
 };
 

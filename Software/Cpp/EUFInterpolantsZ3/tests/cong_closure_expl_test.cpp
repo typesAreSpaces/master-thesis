@@ -16,6 +16,29 @@ void inputFile(char const * file_name){
   return;
 }
 
+void testAdditionalMerge(){
+  z3::context ctx;
+  z3::sort my_sort = ctx.uninterpreted_sort("A");
+  z3::expr a = ctx.constant("a", my_sort);
+  z3::expr b = ctx.constant("b", my_sort);
+  z3::expr c = ctx.constant("c", my_sort);
+  z3::expr d = ctx.constant("d", my_sort);
+  z3::func_decl f = ctx.function("f", my_sort, my_sort);
+
+  z3::expr_vector input(ctx);
+  //input.push_back(a == b);
+  input.push_back(f(a) == c);
+  input.push_back(f(b) == d);
+
+  TestCongruenceClosureExplain test(input);
+  std::cout << "Before" << std::endl;
+  std::cout << test << std::endl;
+  test.merge(a, b);
+  std::cout << "After" << std::endl;
+  std::cout << test << std::endl;
+  return;
+}
+
 void testCongClosureExpl(){
   z3::context ctx;
   z3::sort my_sort = ctx.uninterpreted_sort("A");
@@ -126,25 +149,24 @@ void testCongClosureExpl5(){
 }
 
 int main(int argc, char ** argv){
-
-  // Current observation: Since the init method
-  // doesn't process inequalities, we cannot 
-  // reach unsat in QF_UF. Hence, we cannot 
-  // check that a formula has false as representative.
   
-  testCongClosureExpl();
-  testCongClosureExpl2();
-  testCongClosureExpl3();
-  testCongClosureExpl4();
-  testCongClosureExpl5();
+  testAdditionalMerge();
   
-  try {
-    inputFile("/home/jose/Documents/GithubProjects/master-thesis/Software/Cpp/EUFInterpolantsZ3/tests/QF_UF/SEQ/SEQ013_size6.smt2");
-    inputFile("/home/jose/Documents/GithubProjects/master-thesis/Software/Cpp/EUFInterpolantsZ3/tests/QF_UF/2018-Goel-hwbench/QF_UF_v_Unidec_ab_cti_max.smt2");
-  }
-  catch(char const * e){
-    std::cout << e << std::endl;
-  }
+  //testCongClosureExpl();
+  //testCongClosureExpl2();
+  //testCongClosureExpl3();
+  //testCongClosureExpl4();
+  //testCongClosureExpl5();
+  
+  //try {
+    //inputFile("/home/jose/Documents/GithubProjects/master-thesis/Software/Cpp/EUFInterpolantsZ3/tests/QF_UF/SEQ/SEQ013_size6.smt2");
+    //inputFile("/home/jose/Documents/GithubProjects/master-thesis/Software/Cpp/EUFInterpolantsZ3/tests/QF_UF/2018-Goel-hwbench/QF_UF_v_Unidec_ab_cti_max.smt2");
+    //inputFile("/home/jose/Documents/GithubProjects/master-thesis/Software/Cpp/EUFInterpolantsZ3/tests/QF_UF/SEQ/SEQ018_size7.smt2");
+    //inputFile("/home/jose/Documents/GithubProjects/master-thesis/Software/Cpp/EUFInterpolantsZ3/tests/QF_UF/PEQ/PEQ004_size9.smt2");
+  //}
+  //catch(char const * e){
+    //std::cout << e << std::endl;
+  //}
 
   
  

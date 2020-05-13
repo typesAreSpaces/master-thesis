@@ -7,10 +7,7 @@
 #define DEBUG_MATCHES            false
 #define DEBUG_DESTRUCTOR_HCS     false
 
-HornClauses::HornClauses(z3::context & ctx, Z3Subterms & subterms) :
-  ctx(ctx), subterms(subterms)
-{
-}
+HornClauses::HornClauses(UnionFindExplain & ufe) : ufe(ufe) {}
 
 HornClauses::~HornClauses(){
   for(auto it : horn_clauses)
@@ -81,7 +78,7 @@ void HornClauses::add(HornClause * hc){
   const z3::expr & consequent = hc->getConsequent();
   switch(consequent.decl().decl_kind()){
   case Z3_OP_EQ:
-    if(hc->checkTriviality()){
+    if(hc->checkTriviality(ufe)){
       delete hc;
       return;
     }
@@ -118,10 +115,6 @@ const std::vector<HornClause*> & HornClauses::getHornClauses() const {
 
 HornClause* HornClauses::operator[](unsigned i){
   return horn_clauses[i];
-}
-
-const Z3Subterms & HornClauses::getSubterms() const {
-  return subterms;
 }
 
 // std::vector<HornClause*> HornClauses::getHornClauses(){

@@ -25,8 +25,7 @@ class EUFInterpolant {
   z3::expr_vector disequalities;
   
   FSymPositions    fsym_positions;
-  UnionFindExplain uf;
-  PredList         pred_list;
+  UnionFindExplain ufe;
   HornClauses      horn_clauses;
 
   IdsToMerge ids_to_merge;
@@ -38,12 +37,12 @@ class EUFInterpolant {
   unsigned        maxIdFromAssertions(z3::expr_vector const &);
   void            init(z3::expr_vector const &);
   void            initFormula(z3::expr const &);
-  void            initPredList(z3::expr const &);
-  void            processEqs(z3::expr const &);
-  void            processEqs(z3::expr const &, CongruenceClosureNO &);
+
   z3::expr        repr(const z3::expr &);
+
   z3::expr_vector buildHCBody(z3::expr const &, z3::expr const &);
   void            disequalitiesToHCS();
+
   void            exposeUncommons();
   z3::expr_vector conditionalReplacement(z3::expr_vector &);                // TODO:
   z3::expr_vector substitutions(z3::expr &, z3::expr &, z3::expr_vector &); // TODO:

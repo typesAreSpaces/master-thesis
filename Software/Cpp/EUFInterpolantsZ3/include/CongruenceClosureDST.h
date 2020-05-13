@@ -5,6 +5,7 @@
 
 class CongruenceClosureDST : public CongruenceClosure {
   friend class Hornsat;
+  PredList pred_list;
  public:
   CongruenceClosureDST(const Z3Subterms &, PredList &, UnionFindExplain &);
   void buildCongruenceClosure(std::list<unsigned> &);

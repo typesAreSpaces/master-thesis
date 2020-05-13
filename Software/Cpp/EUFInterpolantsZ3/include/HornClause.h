@@ -4,28 +4,25 @@
 #include <algorithm>
 #include <list>
 #include <z3++.h>
-#include "UnionFind.h"
+#include "UnionFindExplain.h"
 #include "Z3Subterms.h"
 
 class HornClause {
 
-  UnionFind &       uf;
-  z3::context &     ctx;
-  Z3Subterms &      subterms;
-  z3::expr_vector   antecedent;
-  z3::expr          consequent;
-  PredList &        pred_list;
-  bool              is_common_antecedent = true;
-  unsigned          num_uncomm_antecedent = 0;
+  z3::context &   ctx;
+  z3::expr_vector antecedent;
+  z3::expr        consequent;
+  bool            is_common_antecedent = true;
+  unsigned        num_uncomm_antecedent = 0;
 
-  void        normalize();
-  void        orient();
+  void normalize(UnionFindExplain &);
+  void orient();
   
 public:
-  HornClause(UnionFind &, z3::context &, Z3Subterms &, z3::expr_vector, z3::expr, PredList &);
+  HornClause(UnionFindExplain &, z3::context &, z3::expr_vector, z3::expr);
   ~HornClause();
   
-  bool                    checkTriviality();
+  bool                    checkTriviality(UnionFindExplain &);
   const z3::expr_vector & getAntecedent() const;
   const z3::expr &        getConsequent() const;
   bool                    isCommonAntecedent();

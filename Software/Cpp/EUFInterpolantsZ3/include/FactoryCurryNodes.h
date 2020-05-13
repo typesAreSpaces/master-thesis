@@ -33,7 +33,7 @@ class FactoryCurryNodes {
   FactoryCurryNodes(const unsigned &, const CurryDeclarations &);
   ~FactoryCurryNodes();
   
-  CurryNode * newCurryNode(unsigned, std::string, CurryNode *, CurryNode *);
+  CurryNode * getCurryNode(unsigned, std::string, CurryNode *, CurryNode *);
   CurryNode * getCurryNode(std::size_t) const;
   CurryNode * constantZ3Index(unsigned);
   CurryNode * constantCurryNode(unsigned);

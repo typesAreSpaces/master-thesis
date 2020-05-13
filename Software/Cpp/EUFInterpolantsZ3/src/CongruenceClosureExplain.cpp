@@ -7,10 +7,9 @@
 #define DEBUG_PROPAGATE_AUX 0
 #define DEBUG_TEST_EXPLAIN  0
 
-CongruenceClosureExplain::CongruenceClosureExplain(const Z3Subterms & subterms,
-    PredList & pred_list, UnionFindExplain & uf,
-    FactoryCurryNodes & factory_curry_nodes, IdsToMerge const & ids_to_merge) :
-  CongruenceClosure(subterms, pred_list, uf), 
+CongruenceClosureExplain::CongruenceClosureExplain(Z3Subterms const & subterms,
+    UnionFindExplain & uf, FactoryCurryNodes & factory_curry_nodes, IdsToMerge const & ids_to_merge) :
+  CongruenceClosure(subterms, uf), 
   factory_curry_nodes(factory_curry_nodes), 
   pending_elements(), equations_to_merge(), pending_to_propagate(),
   lookup_table(), use_list() 
@@ -127,6 +126,13 @@ void CongruenceClosureExplain::merge(const EquationCurryNodes & equation){
       }
       break;
   }
+}
+
+void CongruenceClosureExplain::merge(z3::expr const & e1, z3::expr const & e2){
+  merge(EquationCurryNodes(
+        *factory_curry_nodes.curry_nodes[e1.id()],
+        *factory_curry_nodes.curry_nodes[e2.id()]
+        ));
 }
 
 PendingPointers CongruenceClosureExplain::explain(const z3::expr & lhs, const z3::expr & rhs){

@@ -92,7 +92,7 @@ struct ClassListPos {
 typedef std::vector<std::vector<ClassListPos> > ClassList;
 
 class Hornsat {
-  const Z3Subterms &   subterms;
+  Z3Subterms const &   subterms;
   bool                 consistent;
   unsigned             num_pos, num_hcs, num_literals;
   std::vector<Literal> list_of_literals;
@@ -102,13 +102,13 @@ class Hornsat {
   std::queue<unsigned> facts;
   std::vector<unsigned> num_args, pos_lit_list;
 
-  void unionupdate(UnionFind &, unsigned, unsigned);
+  void unionupdate(UnionFindExplain &, unsigned, unsigned);
   void update(CongruenceClosure &, std::list<unsigned> &, unsigned, unsigned);
   void congclosure(CongruenceClosure &, std::list<unsigned> &);
   
  public:
   // Hornsat(std::istream &);
-  Hornsat(const HornClauses &, UnionFind &);
+  Hornsat(Z3Subterms const & subterms, UnionFindExplain &, HornClauses const &);
   ~Hornsat();
   void satisfiable();
   std::vector<Replacement> satisfiable(CongruenceClosure &);

@@ -2,16 +2,17 @@
 #define FRESH_PREFIX "fresh_"
 
 FactoryCurryNodes::FactoryCurryNodes(const unsigned & num_terms, const CurryDeclarations & curry_decl) :
-  num_terms(num_terms), curry_decl(curry_decl), curry_predecessors(){
-    curry_nodes.resize(num_terms);
-  }
+  num_terms(num_terms), curry_decl(curry_decl), curry_predecessors()
+{
+  curry_nodes.resize(num_terms);
+}
 
 FactoryCurryNodes::~FactoryCurryNodes(){
   for(auto x : hash_table)
     delete x.second;
 }
 
-CurryNode * FactoryCurryNodes::newCurryNode(unsigned id, std::string func_name,
+CurryNode * FactoryCurryNodes::getCurryNode(unsigned id, std::string func_name,
     CurryNode * left, CurryNode * right){
   std::size_t index = 0;
   // We shouldnt distinguish if nodes have different ids
@@ -54,10 +55,10 @@ CurryNode * FactoryCurryNodes::constantZ3Index(unsigned id){
 
 CurryNode * FactoryCurryNodes::constantCurryNode(unsigned index){
   if(index > curry_nodes.size())
-    return newCurryNode(0, FRESH_PREFIX + std::to_string(index), nullptr, nullptr);
+    return getCurryNode(0, FRESH_PREFIX + std::to_string(index), nullptr, nullptr);
   auto element = curry_nodes[index];
   if(element->isReplaceable())
-    return newCurryNode(0, FRESH_PREFIX + std::to_string(index), nullptr, nullptr);
+    return getCurryNode(0, FRESH_PREFIX + std::to_string(index), nullptr, nullptr);
   return element;
 }
 
@@ -137,14 +138,14 @@ void FactoryCurryNodes::curryficationHelper(z3::expr const & e, std::vector<bool
 
       // Case for first argument
       curry_nodes[last_node_pos] =
-        newCurryNode(last_node_pos,
+        getCurryNode(last_node_pos,
             "apply",
             curry_decl.at(f.id()),
             curry_nodes[e.arg(0).id()]);
       // Case for the rest of the arguments
       for(unsigned i = 1; i < num; i++)
         curry_nodes[last_node_pos + i] =
-          newCurryNode(last_node_pos + i,
+          getCurryNode(last_node_pos + i,
               "apply",
               curry_nodes[last_node_pos + i - 1],
               curry_nodes[e.arg(i).id()]);
@@ -182,7 +183,7 @@ void FactoryCurryNodes::flattening(PendingElements & pending_elements,
     to_replace.pop_back();
 
     unsigned last_node_pos = curry_nodes.size();
-    curry_nodes.push_back(newCurryNode(last_node_pos,
+    curry_nodes.push_back(getCurryNode(last_node_pos,
           FRESH_PREFIX + std::to_string(last_node_pos),
           nullptr, nullptr));
     CurryNode * new_constant = curry_nodes[last_node_pos];

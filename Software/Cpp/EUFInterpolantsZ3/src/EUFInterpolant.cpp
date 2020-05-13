@@ -9,17 +9,17 @@
 EUFInterpolant::EUFInterpolant(z3::expr_vector const & assertions) :
   original_num_terms(maxIdFromAssertions(assertions) + 1),
   ctx(assertions.ctx()), subterms(ctx), contradiction(ctx.bool_val(false)), disequalities(ctx),
-  fsym_positions(), uf(original_num_terms), pred_list(), horn_clauses(ctx, subterms),
+  fsym_positions(), ufe(original_num_terms), horn_clauses(ufe),
+  ids_to_merge(),
   curry_decl(), factory_curry_nodes(original_num_terms, curry_decl),
   cc(
       (
        subterms.resize(original_num_terms), 
-       pred_list.resize(original_num_terms), 
        // The following defines: 
        // subterms, disequalities, fsym_positions,
        // and curry_decl
        init(assertions), 
-       subterms), pred_list, uf, factory_curry_nodes, ids_to_merge
+       subterms), ufe, factory_curry_nodes, ids_to_merge
       )
 {        
 
@@ -95,7 +95,6 @@ void EUFInterpolant::initFormula(z3::expr const & e){
     if(subterms.visited[e.id()])
       return;
 
-    subterms.visited[e.id()] = true;
     subterms.set(e.id(), e);
 
     unsigned num = e.num_args();
@@ -104,7 +103,7 @@ void EUFInterpolant::initFormula(z3::expr const & e){
 
     z3::func_decl f = e.decl();
     if(curry_decl[f.id()] == nullptr)
-      curry_decl[f.id()] = factory_curry_nodes.newCurryNode(e.id(), f.name().str(), nullptr, nullptr);
+      curry_decl[f.id()] = factory_curry_nodes.getCurryNode(e.id(), f.name().str(), nullptr, nullptr);
 
     switch(f.decl_kind()){
       case Z3_OP_UNINTERPRETED:
@@ -118,69 +117,8 @@ void EUFInterpolant::initFormula(z3::expr const & e){
   throw "Problem @ EUFInterpolant::init. The expression e is not an application term.";
 }
 
-// Actually, this function is used to setup up the pred_list
-// for the Nelson-Oppen Congruence Closure
-void EUFInterpolant::initPredList(z3::expr const & e){
-  if(e.is_app()){
-    unsigned num = e.num_args();
-    for(unsigned i = 0; i < num; i++){
-      // The following function is used to
-      // keep the invariant that elements in pred_list
-      // are unique and sorted
-      insert(pred_list[e.arg(i).id()], e.id());
-      initPredList(e.arg(i));
-    }
-    return;
-  }
-  throw "Problem @ EUFInterpolant::initPredList. The expression e is not an application term.";
-}
-
-void EUFInterpolant::processEqs(z3::expr const & e){
-  if(e.is_app()){ 
-    unsigned num = e.num_args();
-    for(unsigned i = 0; i < num; i++){
-      pred_list[e.arg(i).id()].push_back(e.id());
-      processEqs(e.arg(i));
-    }
-
-    z3::func_decl f = e.decl();
-    switch(f.decl_kind()){
-      case Z3_OP_EQ:
-        if(HornClause::compareTerm(e.arg(0), e.arg(1)))
-          uf.combine(e.arg(1).id(), e.arg(0).id());
-        else
-          uf.combine(e.arg(0).id(), e.arg(1).id());
-        return;
-      default:
-        return;
-    }
-  }
-  throw "Problem @ EUFInterpolant::processEqs(z3::expr const &). The expression e is not an application term.";
-}
-
-void EUFInterpolant::processEqs(z3::expr const & e, CongruenceClosureNO & cc_no){
-  if(e.is_app()){ 
-    unsigned num = e.num_args();
-    for(unsigned i = 0; i < num; i++)
-      processEqs(e.arg(i), cc_no);
-
-    z3::func_decl f = e.decl();
-    switch(f.decl_kind()){
-      case Z3_OP_EQ:
-        if(HornClause::compareTerm(e.arg(0), e.arg(1)))
-          cc_no.combine(e.arg(1).id(), e.arg(0).id());
-        else
-          cc_no.combine(e.arg(0).id(), e.arg(1).id());
-        return;
-      default:
-        return;
-    }
-  }
-  throw "Problem @ EUFInterpolant::processEqs(z3::expr const &, CongruenceClosureNO &). The expression e is not an application term.";
-}
-
 z3::expr EUFInterpolant::repr(const z3::expr & t){
-  return subterms[uf.find(t.id())];
+  return subterms[ufe.find(t.id())];
 }
 
 z3::expr_vector EUFInterpolant::buildHCBody(z3::expr const & t1, z3::expr const & t2){
@@ -196,7 +134,7 @@ void EUFInterpolant::disequalitiesToHCS(){
   for(unsigned i = 0; i < num_disequalities; i++){
     z3::expr_vector hc_body(ctx);
     hc_body.push_back(repr(disequalities[i].arg(0)) == repr(disequalities[i].arg(1)));
-    horn_clauses.add(new HornClause(uf, ctx, subterms, hc_body, contradiction, pred_list));
+    horn_clauses.add(new HornClause(ufe, ctx, hc_body, contradiction));
   }
 }
 
@@ -211,7 +149,7 @@ void EUFInterpolant::exposeUncommons(){
           if(!t1.is_common() || !t2.is_common()){
             z3::expr_vector hc_body = buildHCBody(t1, t2);
             z3::expr        hc_head = repr(t1) == repr(t2);
-            horn_clauses.add(new HornClause(uf, ctx, subterms, hc_body, hc_head, pred_list));
+            horn_clauses.add(new HornClause(ufe, ctx, hc_body, hc_head));
           }
         }
   }

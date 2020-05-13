@@ -1,75 +1,24 @@
 #include "HornClause.h"
 #define DEBUG_DESTRUCTOR_HC false
 
-HornClause::HornClause(UnionFind & uf, z3::context & ctx, Z3Subterms & subterms,
-		       z3::expr_vector antecedent, z3::expr consequent, PredList & pred_list) :
-  uf(uf), ctx(ctx), subterms(subterms),
-  antecedent(antecedent), consequent(consequent), pred_list(pred_list){
+HornClause::HornClause(UnionFindExplain & ufe, z3::context & ctx, z3::expr_vector antecedent, z3::expr consequent) :
+  ctx(ctx),
+  antecedent(antecedent), consequent(consequent){
+
+  // ----------------
+  normalize(ufe);  //
+  orient();        //
+  // ----------------
 
   // ---------------------------------------------------------------
-  // This part updates subterms in case there are new terms created
-  // by a Horn Clause
-  for(auto hyp : this->antecedent){
-    auto lhs = hyp.arg(0), rhs = hyp.arg(1);
-    if(subterms.size() <= hyp.id())
-      subterms.resize(hyp.id() + 1);
-    subterms.set(hyp.id(), hyp);
-    subterms.set(lhs.id(), lhs);
-    subterms.set(rhs.id(), rhs);
-  }
-  if(this->consequent.decl().name().str() == "false"){
-    subterms.set(this->consequent.id(), this->consequent);
-    return;
-  }
-  if(subterms.size() <= this->consequent.id())
-    subterms.resize(this->consequent.id() + 1);
-  
-  auto lhs = this->consequent.arg(0), rhs = this->consequent.arg(1);
-  subterms.set(this->consequent.id(), this->consequent);
-  subterms.set(lhs.id(), lhs);
-  subterms.set(rhs.id(), rhs);
-  // ---------------------------------------------------------------
-
-  // -------------
-  normalize();  //
-  orient();     //
-  // -------------
-
-  // ---------------------------------------------------------------
-  // This part updates subterms (again) in case there are
-  // NEW TERMS created by a Horn Clause after
-  // normalization and orientation. For the latter, it also
-  // updates pred_list
+  // This part updates:
+  // 1) is_common_antecedent
+  // 2) num_uncomm_antecedent
   for(auto hyp : this->antecedent){
     is_common_antecedent = is_common_antecedent && hyp.is_common();
     if(!hyp.is_common())
       num_uncomm_antecedent++;
-    auto lhs = hyp.arg(0), rhs = hyp.arg(1);
-    if(subterms.size() <= hyp.id()){
-      subterms.resize(hyp.id() + 1);
-      pred_list.resize(hyp.id() + 1);
-    }
-    subterms.set(hyp.id(), hyp);
-    subterms.set(lhs.id(), lhs);
-    subterms.set(rhs.id(), rhs);
-    pred_list[lhs.id()].push_back(hyp.id());
-    pred_list[rhs.id()].push_back(hyp.id());
   }
-  if(this->consequent.decl().name().str() == "false"){
-    subterms.set(this->consequent.id(), this->consequent);
-    return;
-  }
-  if(subterms.size() <= this->consequent.id()){
-    subterms.resize(this->consequent.id() + 1);
-    pred_list.resize(this->consequent.id() + 1);
-  }
-  
-  lhs = this->consequent.arg(0), rhs = this->consequent.arg(1);
-  subterms.set(this->consequent.id(), this->consequent);
-  subterms.set(lhs.id(), lhs);
-  subterms.set(rhs.id(), rhs);
-  pred_list[lhs.id()].push_back(this->consequent.id());
-  pred_list[rhs.id()].push_back(this->consequent.id());
   // ---------------------------------------------------------------
   return;
 }
@@ -115,7 +64,7 @@ bool HornClause::compareTerm(const z3::expr & t1, const z3::expr & t2){
 // Removes trivial equalities in the antecedent
 // sorting these elements using the following heuristic:
 // HornClause::compareEquation
-void HornClause::normalize(){
+void HornClause::normalize(UnionFindExplain & ufe){
   z3::expr_vector aux_z3_vec(ctx);
   std::vector<z3::expr> aux_vec{};
   unsigned num_terms = antecedent.size();
@@ -125,7 +74,7 @@ void HornClause::normalize(){
   antecedent.resize(0);
   for(unsigned i = 0; i < num_terms; i++){
     z3::expr temp_expr = aux_vec[i];
-    if(uf.find(temp_expr.arg(0).id()) != uf.find(temp_expr.arg(1).id()))
+    if(ufe.find(temp_expr.arg(0).id()) != ufe.find(temp_expr.arg(1).id()))
       antecedent.push_back(temp_expr);
   }
   return;
@@ -156,8 +105,8 @@ void HornClause::orient(){
   return;
 }
 
-bool HornClause::checkTriviality(){
-  return uf.find(consequent.arg(0).id()) == uf.find(consequent.arg(1).id());
+bool HornClause::checkTriviality(UnionFindExplain & ufe){
+  return ufe.find(consequent.arg(0).id()) == ufe.find(consequent.arg(1).id());
 }
 
 const z3::expr_vector & HornClause::getAntecedent() const {

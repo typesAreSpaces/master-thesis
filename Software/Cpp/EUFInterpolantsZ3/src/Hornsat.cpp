@@ -43,8 +43,8 @@ unsigned Literal::curr_num_literals = 0;
 //   }
 // }
 
-Hornsat::Hornsat(const HornClauses & hcs, UnionFind & uf) :
-  subterms(hcs.getSubterms()),
+Hornsat::Hornsat(Z3Subterms const & subterms, UnionFindExplain & uf, HornClauses const & hcs) :
+  subterms(subterms),
   consistent(true), num_pos(0),
   num_hcs(hcs.size()), num_literals(subterms.size())
 { 
@@ -131,7 +131,7 @@ Hornsat::~Hornsat(){
 #endif
 }
 
-void Hornsat::unionupdate(UnionFind & uf,
+void Hornsat::unionupdate(UnionFindExplain & uf,
     unsigned x, unsigned y){
   if(uf.greater(y, x)){
     unsigned aux = x;
@@ -172,26 +172,27 @@ void Hornsat::unionupdate(UnionFind & uf,
 
 void Hornsat::update(CongruenceClosure & cc, std::list<unsigned> & pending,
     unsigned v, unsigned w){
-  unsigned aux_var;
+  // TODO: Implement this
+  //unsigned aux_var;
 
-  // Invariant: v is always the repr
-  if(cc.pred_list[cc.uf.find(v)].size() < cc.pred_list[cc.uf.find(w)].size()){
-    aux_var = v;
-    v = w;
-    w = aux_var;
-  }
-  if(HornClause::compareTerm(subterms[cc.uf.find(v)], subterms[cc.uf.find(w)])){
-    aux_var = v;
-    v = w;
-    w = aux_var;
-  }
+  //// Invariant: v is always the repr
+  //if(cc.pred_list[cc.uf.find(v)].size() < cc.pred_list[cc.uf.find(w)].size()){
+    //aux_var = v;
+    //v = w;
+    //w = aux_var;
+  //}
+  //if(HornClause::compareTerm(subterms[cc.uf.find(v)], subterms[cc.uf.find(w)])){
+    //aux_var = v;
+    //v = w;
+    //w = aux_var;
+  //}
 
-  for(auto u : cc.pred_list[cc.uf.find(w)]){
-    cc.sig_table.erase(subterms[u]);
-    pending.push_back(u);
-  }
-  unionupdate(cc.uf, v, w);
-  cc.pred_list[cc.uf.find(v)].splice(cc.pred_list[cc.uf.find(v)].end(), cc.pred_list[cc.uf.find(w)]);
+  //for(auto u : cc.pred_list[cc.uf.find(w)]){
+    //cc.sig_table.erase(subterms[u]);
+    //pending.push_back(u);
+  //}
+  //unionupdate(cc.uf, v, w);
+  //cc.pred_list[cc.uf.find(v)].splice(cc.pred_list[cc.uf.find(v)].end(), cc.pred_list[cc.uf.find(w)]);
 
   return;
 }

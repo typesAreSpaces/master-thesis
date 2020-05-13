@@ -5,14 +5,13 @@ TestCongruenceClosureExplain::TestCongruenceClosureExplain(z3::expr_vector const
 
   original_num_terms(maxIdFromAssertions(assertions) + 1),
   ctx(assertions.ctx()), subterms(ctx), contradiction(ctx.bool_val(false)),
-  fsym_positions(), uf(original_num_terms), pred_list(), 
+  fsym_positions(), uf(original_num_terms), 
   curry_decl(), factory_curry_nodes(original_num_terms, curry_decl),
   cc(
       (
        subterms.resize(original_num_terms), 
-       pred_list.resize(original_num_terms), 
        init(assertions), 
-       subterms), pred_list, uf, factory_curry_nodes, ids_to_merge
+       subterms), uf, factory_curry_nodes, ids_to_merge
       )
 { 
 }
@@ -45,7 +44,6 @@ void TestCongruenceClosureExplain::initFormula(z3::expr const & e){
     if(subterms.visited[e.id()])
       return;
 
-    subterms.visited[e.id()] = true;
     subterms.set(e.id(), e);
 
     unsigned num = e.num_args();
@@ -54,7 +52,7 @@ void TestCongruenceClosureExplain::initFormula(z3::expr const & e){
 
     z3::func_decl f = e.decl();
     if(curry_decl[f.id()] == nullptr)
-      curry_decl[f.id()] = factory_curry_nodes.newCurryNode(e.id(), f.name().str(), nullptr, nullptr);
+      curry_decl[f.id()] = factory_curry_nodes.getCurryNode(e.id(), f.name().str(), nullptr, nullptr);
 
     switch(f.decl_kind()){
       case Z3_OP_UNINTERPRETED:
@@ -117,6 +115,11 @@ void TestCongruenceClosureExplain::testExplanation(unsigned max_iter){
         return;
     }
   }
+  return;
+}
+
+void TestCongruenceClosureExplain::merge(z3::expr const & e1, z3::expr const & e2){
+  cc.merge(e1, e2);
   return;
 }
 
