@@ -17,6 +17,8 @@ void currentProgress(){
   input.push_back(g(a, h(b), h(b)) == h(b) );
   input.push_back(g(a, h(b), h(h(b))) == h(h(b)) );
   input.push_back(h(b) == b);
+  input.push_back(a != b);
+  input.push_back(h(h(b)) != b);
 
   try {
     EUFInterpolant eufI(input);

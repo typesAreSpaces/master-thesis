@@ -51,7 +51,7 @@ class EUFInterpolant {
   EUFInterpolant(z3::expr_vector const &);
   ~EUFInterpolant();
   z3::expr              buildInterpolant(std::vector<Replacement>);  // TODO:
-  friend std::ostream & operator << (std::ostream &, EUFInterpolant &);     // TEMP:
+  friend std::ostream & operator << (std::ostream &, EUFInterpolant &);
 };
 
 #endif

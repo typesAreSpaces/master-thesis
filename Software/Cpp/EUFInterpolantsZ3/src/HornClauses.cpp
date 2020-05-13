@@ -139,11 +139,12 @@ HornClause* HornClauses::operator[](unsigned i){
 
 std::ostream & operator << (std::ostream & os, const HornClauses & hcs){
   unsigned i = 0;
-  std::cout << "Horn clauses produced" << std::endl;
+  os << "Horn clauses produced" << std::endl;
   for(auto it : hcs.horn_clauses){
     os << i << ". " << it << " " << *it << std::endl;
     ++i;
   }
+  os << "Number of horn clauses: " << i;
 
   return os;
 }

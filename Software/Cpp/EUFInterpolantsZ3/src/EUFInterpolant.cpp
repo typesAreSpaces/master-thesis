@@ -2,9 +2,6 @@
 #include <z3++.h>
 #define DEBUG_DESTRUCTOR_EUF 0
 #define DEBUG_EUFINTERPOLANT 0
-#define DEBUG_CURRYFICATION  0
-#define DEBUG_SUBTERMS       1
-#define DEBUG_INIT           1
 
 EUFInterpolant::EUFInterpolant(z3::expr_vector const & assertions) :
   original_num_terms(maxIdFromAssertions(assertions) + 1),
@@ -24,7 +21,11 @@ EUFInterpolant::EUFInterpolant(z3::expr_vector const & assertions) :
 {        
 
   // // Converting disequalities to Horn Clauses
-  // disequalitiesToHCS();
+  disequalitiesToHCS();
+
+  std::cout << horn_clauses << std::endl;
+
+  // KEEP: working here
 
   // // Unconditional uncommon symbol elimination step
   // //                   --------------
