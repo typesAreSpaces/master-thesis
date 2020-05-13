@@ -15,7 +15,6 @@ class HornClause {
   z3::expr_vector   antecedent;
   z3::expr          consequent;
   PredList &        pred_list;
-  std::vector<bool> matched;
   bool              is_common_antecedent = true;
   unsigned          num_uncomm_antecedent = 0;
 

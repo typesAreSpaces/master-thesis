@@ -23,30 +23,6 @@ EUFInterpolant::EUFInterpolant(z3::expr_vector const & assertions) :
       )
 {        
 
-#if 0
-  for(auto it = subterms.begin(); it != subterms.end(); ++it){
-    std::cout << *it << std::endl;
-  }      
-#endif 
-
-  // Testing
-  //cc.giveExplanation(std::cout, subterms[5], subterms[11]);
-  //cc.giveExplanation(std::cout, subterms[5], subterms[6]);
-  //cc.giveExplanation(std::cout, subterms[6], subterms[5]);
-
-#if 0
-  auto explanation = cc.explain(subterms[6], subterms[5]);
-  if(explanation.size() != 0){
-    unsigned num = 1;
-    for(auto label : explanation){
-      assert(label->tag == EQ);
-      std::cout << "Prototype Label " << num++ << ":" << std::endl;
-      std::cout << subterms[label->eq_cn.lhs.getZ3Id()] << std::endl;
-      std::cout << subterms[label->eq_cn.rhs.getZ3Id()] << std::endl;
-    }
-  }
-#endif
-
   // // Converting disequalities to Horn Clauses
   // disequalitiesToHCS();
 

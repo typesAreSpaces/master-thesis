@@ -50,10 +50,6 @@ class LookupTable {
 
 typedef std::vector<std::list<const EquationCurryNodes *> > UseList;
 
-class CongruenceClosureExplain;
-template<typename T>
-std::ostream & giveExplanation(std::ostream &, const CongruenceClosureExplain &, const T &, const T &);
-
 class CongruenceClosureExplain : public CongruenceClosure {
 
   friend class Hornsat;
@@ -76,8 +72,7 @@ class CongruenceClosureExplain : public CongruenceClosure {
   void    explainAlongPath(EqClass, EqClass, UnionFind &, ExplainEquations &, PendingPointers &);
 
   public:
-  CongruenceClosureExplain(const Z3Subterms &,
-      PredList &, UnionFindExplain &, FactoryCurryNodes &, IdsToMerge const &);
+  CongruenceClosureExplain(const Z3Subterms &, PredList &, UnionFindExplain &, FactoryCurryNodes &, IdsToMerge const &);
   void buildCongruenceClosure(std::list<EqClass> &);
   void merge(const EquationCurryNodes &);
   PendingPointers explain(const z3::expr &, const z3::expr &);

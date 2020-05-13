@@ -140,24 +140,14 @@ int main(int argc, char ** argv){
   
   try {
     inputFile("/home/jose/Documents/GithubProjects/master-thesis/Software/Cpp/EUFInterpolantsZ3/tests/QF_UF/SEQ/SEQ013_size6.smt2");
-  }
-  catch(char const * e){
-    std::cout << e << std::endl;
-  }
- 
-  try {
     inputFile("/home/jose/Documents/GithubProjects/master-thesis/Software/Cpp/EUFInterpolantsZ3/tests/QF_UF/2018-Goel-hwbench/QF_UF_v_Unidec_ab_cti_max.smt2");
   }
   catch(char const * e){
     std::cout << e << std::endl;
   }
-  try {
-    inputFile("/home/jose/QF_UF/eq_diamond/eq_diamond100.smt2");
-  }
-  catch(char const * e){
-    std::cout << e << std::endl;
-  }
 
+  
+ 
   return 0;
 }
 
