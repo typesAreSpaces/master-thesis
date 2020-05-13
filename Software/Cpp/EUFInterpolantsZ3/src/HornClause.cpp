@@ -1,7 +1,7 @@
 #include "HornClause.h"
 #define DEBUG_DESTRUCTOR_HC false
 
-HornClause::HornClause(UnionFindExplain & ufe, z3::context & ctx, z3::expr_vector antecedent, z3::expr consequent) :
+HornClause::HornClause(z3::context & ctx, z3::expr_vector antecedent, z3::expr consequent, UnionFindExplain & ufe) :
   ctx(ctx),
   antecedent(antecedent), consequent(consequent){
 

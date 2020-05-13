@@ -2,20 +2,19 @@
 #define DEBUG_DESTRUCTOR_EUF 0
 #define DEBUG_EUFINTERPOLANT 0
 
-EUFInterpolant::EUFInterpolant(z3::expr_vector const & assertions) :
-  Input(assertions)
+EUFInterpolant::EUFInterpolant(z3::expr_vector const & assertions) : Input(assertions)
 {        
 
+  std::cout << "Before expose uncommons" << std::endl;
   std::cout << horn_clauses << std::endl;
 
-  // KEEP: working here
-
-  // // Unconditional uncommon symbol elimination step
-  // //                   --------------
-  // // After this point, |horn_clauses| is fully defined
-  // //                   --------------
-  // exposeUncommons();
-  // // std::cout << horn_clauses << std::endl;
+   // Unconditional uncommon symbol elimination step
+   //                   --------------
+   // After this point, |horn_clauses| is fully defined
+   //                   --------------
+   exposeUncommons();
+   std::cout << "After expose uncommons" << std::endl;
+   std::cout << horn_clauses << std::endl;
 
   // // // ----------------------------------------------------------------------
   // // Additional data structures for conditional uncommon symbol elimination
@@ -68,7 +67,7 @@ void EUFInterpolant::exposeUncommons(){
           if(!t1.is_common() || !t2.is_common()){
             z3::expr_vector hc_body = buildHCBody(t1, t2);
             z3::expr        hc_head = repr(t1) == repr(t2);
-            horn_clauses.add(new HornClause(ufe, ctx, hc_body, hc_head));
+            horn_clauses.add(new HornClause(ctx, hc_body, hc_head, ufe));
           }
         }
   }

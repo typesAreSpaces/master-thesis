@@ -21,7 +21,7 @@ void currentProgress(){
   input.push_back(h(h(b)) != b);
 
   try {
-    EUFInterpolant eufI(input);
+    EUFInterpolant eufi(input);
   }
   catch(char const * e){
     std::cout << e << std::endl;

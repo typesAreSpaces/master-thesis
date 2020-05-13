@@ -82,7 +82,7 @@ void Input::disequalitiesToHCS(){
   for(unsigned i = 0; i < num_disequalities; i++){
     z3::expr_vector hc_body(ctx);
     hc_body.push_back(repr(disequalities[i].arg(0)) == repr(disequalities[i].arg(1)));
-    horn_clauses.add(new HornClause(ufe, ctx, hc_body, contradiction));
+    horn_clauses.add(new HornClause(ctx, hc_body, contradiction, ufe));
   }
 }
 

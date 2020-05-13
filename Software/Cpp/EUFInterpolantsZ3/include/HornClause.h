@@ -19,7 +19,7 @@ class HornClause {
   void orient();
   
 public:
-  HornClause(UnionFindExplain &, z3::context &, z3::expr_vector, z3::expr);
+  HornClause(z3::context &, z3::expr_vector, z3::expr, UnionFindExplain &);
   ~HornClause();
   
   bool                    checkTriviality(UnionFindExplain &);
