@@ -20,14 +20,6 @@ CongruenceClosureExplain::CongruenceClosureExplain(Z3Subterms const & subterms,
   // NOTE: flattening also fully defines const_id and z3_id for each curry node.
   factory_curry_nodes.flattening(pending_elements, equations_to_merge, subterms);
 
-  // Process input-equations defined by user
-  // using the constant ids
-  for(auto x : ids_to_merge){
-    auto const_lhs = factory_curry_nodes.constantZ3Index(x.lhs_id),
-         const_rhs = factory_curry_nodes.constantZ3Index(x.rhs_id);
-    pushPending(pending_to_propagate, EquationCurryNodes(*const_lhs, *const_rhs));
-  }
-
   // There is an element in uf for each element
   // in the curry_nodes. There
   // might be repeated elements in these collection
@@ -35,13 +27,18 @@ CongruenceClosureExplain::CongruenceClosureExplain(Z3Subterms const & subterms,
   uf     .resize(factory_curry_nodes.size());
   use_list.resize(factory_curry_nodes.size());
 
-#if 0
-  // This code exemplifies how to retrieve back an original id
-  for(auto x : factory_curry_nodes.hash_table){
-    std::cout << x.second->getId() << std::endl;
-    std::cout << *factory_curry_nodes.id_table[x.second->getId()] << std::endl;
+  // Process input-equations defined by user
+  // using the constant ids
+  for(auto x : ids_to_merge){
+    auto const_lhs = factory_curry_nodes.constantZ3Index(x.lhs_id),
+         const_rhs = factory_curry_nodes.constantZ3Index(x.rhs_id);
+
+    pushPending(pending_to_propagate, 
+        EquationCurryNodes(*const_lhs, *const_rhs));
+
+    //uf.combine(const_lhs->getConstId(), const_lhs->getZ3Id(), nullptr);
+    //uf.combine(const_rhs->getConstId(), const_rhs->getZ3Id(), nullptr);
   }
-#endif
 
   merge();
   propagate();
@@ -130,8 +127,8 @@ void CongruenceClosureExplain::merge(const EquationCurryNodes & equation){
 
 void CongruenceClosureExplain::merge(z3::expr const & e1, z3::expr const & e2){
   merge(EquationCurryNodes(
-        *factory_curry_nodes.curry_nodes[e1.id()],
-        *factory_curry_nodes.curry_nodes[e2.id()]
+        *factory_curry_nodes.curry_nodes[this->find(e1.id())],
+        *factory_curry_nodes.curry_nodes[this->find(e2.id())]
         ));
 }
 
@@ -213,17 +210,16 @@ std::ostream & CongruenceClosureExplain::giveZ3Explanation(std::ostream & os, co
   return os;
 } 
 
-z3::expr CongruenceClosureExplain::z3_repr(unsigned i){
-  CurryNode * term = factory_curry_nodes.getCurryNodeById(i);
-  unsigned const_id = term->getConstId(); 
-  unsigned repr_const_id = uf.find(const_id);
-  CurryNode * repr_term = factory_curry_nodes.getCurryNodeById(repr_const_id);
-  unsigned repr_index = repr_term->getZ3Id();
-  return subterms[repr_index];
+z3::expr CongruenceClosureExplain::z3_repr(z3::expr const & e){
+  CurryNode * repr_term = factory_curry_nodes.getCurryNodeById(this->find(e.id()));
+  return subterms[repr_term->getZ3Id()];
 }
 
-z3::expr CongruenceClosureExplain::z3_repr(z3::expr const & e){
-  return z3_repr(e.id());
+EqClass CongruenceClosureExplain::find(unsigned i){
+  CurryNode * term = factory_curry_nodes.getCurryNodeById(i);
+  unsigned const_id = term->getConstId(); 
+
+  return uf.find(const_id);
 }
 
 
@@ -244,8 +240,6 @@ void CongruenceClosureExplain::explainAlongPath(EqClass a, EqClass c,
           pending_proofs.emplace_back(a1, b1);
           pending_proofs.emplace_back(a2, b2);
         }
-        ans.push_back(current_label);
-        break;
       case EQ:
         ans.push_back(current_label);
         break;

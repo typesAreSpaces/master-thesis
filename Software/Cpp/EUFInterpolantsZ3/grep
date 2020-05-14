@@ -1,0 +1,52 @@
+g++ -g -c -o tests/TestCongruenceClosureExplain.o -I./src -I./include -std=c++11 -Wall tests/TestCongruenceClosureExplain.cpp
+g++ -g -c -o ./tests/cong_closure_expl_test.o -I./src -I./include -std=c++11 -Wall ./tests/cong_closure_expl_test.cpp
+g++ -g -o tests/cong_closure_expl_test  ./obj/Util.o  ./obj/Match.o  ./obj/Input.o  ./obj/Rename.o  ./obj/Z3Subterms.o  ./obj/UnionFindExplain.o  ./obj/HornClause.o  ./obj/CongruenceClosureNO.o  ./obj/Hornsat.o  ./obj/CongruenceClosureDST.o  ./obj/EUFInterpolant.o  ./obj/CurryNode.o  ./obj/CongruenceClosure.o  ./obj/UnionFind.o  ./obj/FactoryCurryNodes.o  ./obj/HornClauses.o  ./obj/CongruenceClosureExplain.o /home/jose/Documents/GithubProjects/z3__/build/libz3.so  tests/TestCongruenceClosureExplain.o ./tests/cong_closure_expl_test.o -lpthread
+./tests/cong_closure_expl_test
+Printing all the original subterms:
+15
+5. (Same)
+Original:       a
+Representative: a
+6. (Same)
+Original:       b
+Representative: b
+7. (Same)
+Original:       (h b)
+Representative: (h b)
+8. (Different)
+Original:       (g a (h b) b)
+Representative: b
+9. (Same)
+Original:       (= (g a (h b) b) b)
+Representative: (= (g a (h b) b) b)
+10. (Different)
+Original:       (g a (h b) (h b))
+Representative: (h b)
+11. (Same)
+Original:       (= (g a (h b) (h b)) (h b))
+Representative: (= (g a (h b) (h b)) (h b))
+12. (Same)
+Original:       (h (h b))
+Representative: (h (h b))
+13. (Different)
+Original:       (g a (h b) (h (h b)))
+Representative: (h (h b))
+14. (Same)
+Original:       (= (g a (h b) (h (h b))) (h (h b)))
+Representative: (= (g a (h b) (h (h b))) (h (h b)))
+Number of changes: 3
+Starting consistency test
+To check that (g a (h b) b) and b are equivalent: They are.
+To check that (g a (h b) (h b)) and (h b) are equivalent: They are.
+To check that (g a (h b) (h (h b))) and (h (h b)) are equivalent: They are.
+1
+Explain (g a (h b) b), b
+Label 1:
+(g a (h b) b) = b
+Explain (g a (h b) (h b)), (h b)
+Label 1:
+(g a (h b) (h b)) = (h b)
+Explain (g a (h b) (h (h b))), (h (h b))
+Label 1:
+(g a (h b) (h (h b))) = (h (h b))
+rm -rf tests/*.o tests/cong_closure_expl_test

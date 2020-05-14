@@ -35,7 +35,8 @@ struct Input {
 
   Input(z3::expr_vector const &);
   ~Input();
-  z3::expr              repr(const z3::expr &);
+
+  z3::expr z3_repr(z3::expr const &);
   friend std::ostream & operator << (std::ostream &, Input const &);
 };
 

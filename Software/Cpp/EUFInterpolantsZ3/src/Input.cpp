@@ -81,13 +81,16 @@ void Input::disequalitiesToHCS(){
   unsigned num_disequalities = disequalities.size();
   for(unsigned i = 0; i < num_disequalities; i++){
     z3::expr_vector hc_body(ctx);
-    hc_body.push_back(repr(disequalities[i].arg(0)) == repr(disequalities[i].arg(1)));
+    // It is really important to use the representative
+    // which favors being a common term
+    hc_body.push_back(z3_repr(disequalities[i].arg(0)) == z3_repr(disequalities[i].arg(1)));
     horn_clauses.add(new HornClause(ctx, hc_body, contradiction, ufe));
   }
 }
 
-z3::expr Input::repr(const z3::expr & t){
-  return subterms[ufe.find(t.id())];
+z3::expr Input::z3_repr(z3::expr const & e){
+  return cc.z3_repr(e);
+  //return e;
 }
 
 std::ostream & operator << (std::ostream & os, Input const & input){

@@ -16,7 +16,7 @@ bool TestCongruenceClosureExplain::testConsistency(z3::expr_vector const & e,
 
   for(auto it = input.subterms.begin();  it != input.subterms.end(); ++it){
     unsigned index = (*it).id();
-    auto repr = input.cc.z3_repr(index);
+    auto repr = input.cc.z3_repr(*it);
     unsigned repr_index = repr.id();
     // Checking the non-trivial equalities
     // of the same sort
@@ -47,7 +47,7 @@ bool TestCongruenceClosureExplain::testConsistency(z3::expr_vector const & e,
 void TestCongruenceClosureExplain::testExplanation(unsigned max_iter){
   for(auto it = input.subterms.begin(); it != input.subterms.end(); ++it){
     unsigned index = (*it).id();
-    auto repr = input.cc.z3_repr(index);
+    auto repr = input.cc.z3_repr(*it);
     unsigned repr_index = repr.id();
     // Checking the non-trivial equalities
     if(index != repr_index){
@@ -74,7 +74,7 @@ std::ostream & operator << (std::ostream & os, TestCongruenceClosureExplain & te
     try {
       assert(test.input.subterms[index].id() == index);
       
-      auto repr = test.input.cc.z3_repr(index);
+      auto repr = test.input.cc.z3_repr(*it);
       unsigned repr_index = repr.id();
 
       os << index << ". " << (index == repr_index ? "(Same)" : (num_changes++, "(Different)")) << std::endl;
