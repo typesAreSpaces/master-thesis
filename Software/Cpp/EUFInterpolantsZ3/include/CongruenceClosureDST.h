@@ -2,6 +2,7 @@
 #define _CONG_CLOSUREDST__
 
 #include "CongruenceClosure.h"
+#include "Util.h"
 
 class CongruenceClosureDST : public CongruenceClosure {
   friend class Hornsat;

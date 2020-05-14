@@ -6,14 +6,15 @@
 #include <z3++.h>
 #include "UnionFindExplain.h"
 #include "Z3Subterms.h"
+#include "Util.h"
 
 class HornClause {
 
   z3::context &   ctx;
   z3::expr_vector antecedent;
   z3::expr        consequent;
-  bool            is_common_antecedent = true;
-  unsigned        num_uncomm_antecedent = 0;
+  bool            is_common_antecedent;
+  unsigned        num_uncomm_antecedent;
 
   void normalize(UnionFindExplain &);
   void orient();
@@ -23,15 +24,12 @@ public:
   ~HornClause();
   
   bool                    checkTriviality(UnionFindExplain &);
-  const z3::expr_vector & getAntecedent() const;
-  const z3::expr &        getConsequent() const;
-  bool                    isCommonAntecedent();
-  bool                    isCommonConsequent();
-  unsigned                numUncommAntecedent();
+  const z3::expr_vector & getAntecedent()       const;
+  const z3::expr &        getConsequent()       const;
+  bool                    isCommonAntecedent()  const;
+  bool                    isCommonConsequent()  const;
+  unsigned                numUncommAntecedent() const;
 
-  static bool compareEquation(const z3::expr &, const z3::expr &);
-  static bool compareTerm(const z3::expr &, const z3::expr &);
-  
   friend bool operator <(const HornClause &, const HornClause &);
   friend bool operator >(const HornClause &, const HornClause &);
   

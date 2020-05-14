@@ -38,7 +38,7 @@ void CongruenceClosureDST::buildCongruenceClosure(std::list<unsigned> & pending)
 	  v_repr = w_repr;
 	  w_repr = aux;
 	}
-	if(HornClause::compareTerm(subterms[v_repr], subterms[w_repr])){
+	if(compareTerm(subterms[v_repr], subterms[w_repr])){
 	  aux = v_repr;
 	  v_repr = w_repr;
 	  w_repr = aux;

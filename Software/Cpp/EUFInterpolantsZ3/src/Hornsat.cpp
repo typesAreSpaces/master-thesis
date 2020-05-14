@@ -181,7 +181,7 @@ void Hornsat::update(CongruenceClosure & cc, std::list<unsigned> & pending,
     //v = w;
     //w = aux_var;
   //}
-  //if(HornClause::compareTerm(subterms[cc.uf.find(v)], subterms[cc.uf.find(w)])){
+  //if(compareTerm(subterms[cc.uf.find(v)], subterms[cc.uf.find(w)])){
     //aux_var = v;
     //v = w;
     //w = aux_var;

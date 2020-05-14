@@ -9,6 +9,7 @@
 #include "CongruenceClosureNO.h"
 #include "CongruenceClosureExplain.h"
 #include "HornClauses.h"
+#include "Util.h"
 #include "Replacement.h"
 
 struct Clause {

@@ -17,30 +17,33 @@ inline void hash_combine(std::size_t & seed, const T & v, const std::hash<T> & h
 class CurryNode {
   
   unsigned id, z3_id, const_id;
-  bool z3_id_defined = false;
+  bool z3_id_defined;
   std::string func_name;
   CurryNode * left, * right;
-  bool is_common = false;
-  unsigned space = 1;
+  bool is_common;
+  unsigned space;
 
 public:
   CurryNode(unsigned, std::string, CurryNode *, CurryNode *);
-  const bool isConstant() const;
+  const bool isConstant()    const;
   const bool isReplaceable() const;
-  const bool isDefined() const;
+  const bool isDefined()     const;
+
   void updateLeft(CurryNode *);
   void updateRight(CurryNode *);
   void updateAllIds(unsigned);
   void updateZ3Id(unsigned);
   void updateConstId(unsigned);
   void updateCommon(bool);
-  const unsigned getId() const;
-  const unsigned getLeftId() const;
+
+  const unsigned getId()      const;
+  const unsigned getLeftId()  const;
   const unsigned getRightId() const;
-  const unsigned getZ3Id() const;
+  const unsigned getZ3Id()    const;
   const unsigned getConstId() const;
-  const bool     isCommon() const;
+  const bool     isCommon()   const;
   std::size_t hash();
+
   friend std::ostream & operator << (std::ostream &, const CurryNode &);
 };
 
@@ -123,14 +126,14 @@ struct EquationZ3Ids {
 // We use a map here because
 // id's for declarations are usually large
 typedef std::map<unsigned, CurryNode*> CurryDeclarations;
-typedef std::vector<CurryNode*> VectorCurryNode;
+typedef std::vector<CurryNode*>        VectorCurryNode;
 
 typedef std::map<const CurryNode *, std::list<PredNode> > CurryPreds;
 
-typedef std::list<PendingElement> PendingElements;
+typedef std::list<PendingElement>         PendingElements;
 typedef std::list<const PendingElement *> PendingPointers;
-typedef std::list<EquationZ3Ids> Z3EquationPointers;
+typedef std::list<EquationZ3Ids>          Z3EquationPointers;
 
-typedef std::list<EquationZ3Ids>  IdsToMerge;
+typedef std::list<EquationZ3Ids> IdsToMerge;
 
 #endif
