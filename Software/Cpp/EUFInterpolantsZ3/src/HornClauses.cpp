@@ -85,7 +85,7 @@ void HornClauses::add(HornClause * hc){
     horn_clauses.push_back(hc);
     curr_num_horn_clauses++;
     return;
-  default: // The contradiction/false-value
+  default: // The contradiction/false-value // TODO: Change this to explicitly work with the false constant
     horn_clauses.push_back(hc);
     curr_num_horn_clauses++;
     return;

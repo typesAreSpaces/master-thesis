@@ -27,7 +27,7 @@ class HornClauses {
   unsigned                         size() const;
   const std::vector<HornClause*> & getHornClauses() const;
   HornClause *                     operator[] (unsigned);
-  // void                       getTermsToReplace(z3::expr_vector &);                       // TODO:
+  // void                       getTermsToReplace(z3::expr_vector &); // TODO:
   // std::vector<HornClause*>   getReducibleHornClauses();
   friend std::ostream &            operator << (std::ostream &, const HornClauses &);
 };

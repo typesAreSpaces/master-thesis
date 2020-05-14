@@ -62,7 +62,7 @@ void EUFInterpolant::exposeUncommons(){
     if(current_num >= 2)
       for(unsigned index_1 = 0; index_1 < current_num - 1; index_1++)
         for(unsigned index_2 = index_1 + 1; index_2 < current_num; index_2++){
-          z3::expr t1 = subterms[iterator.second[index_1]], t2 = subterms[iterator.second[index_2]];
+          z3::expr const & t1 = subterms[iterator.second[index_1]], & t2 = subterms[iterator.second[index_2]];
           // Only expose terms if at least one term is uncommon
           if(!t1.is_common() || !t2.is_common()){
             z3::expr_vector hc_body = buildHCBody(t1, t2);

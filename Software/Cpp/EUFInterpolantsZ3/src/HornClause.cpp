@@ -12,13 +12,13 @@ HornClause::HornClause(z3::context & ctx, z3::expr_vector antecedent, z3::expr c
 
   // ---------------------------------------------------------------
   // This part updates:
-  // 1) is_common_antecedent
-  // 2) num_uncomm_antecedent
-  for(auto hyp : this->antecedent){
-    is_common_antecedent = is_common_antecedent && hyp.is_common();
-    if(!hyp.is_common())
+  // 1) num_uncomm_antecedent
+  // 2) is_common_antecedent
+  for(auto hyp : this->antecedent)
+    if(!hyp.is_common()){
       num_uncomm_antecedent++;
-  }
+      is_common_antecedent = false;
+    }
   // ---------------------------------------------------------------
   return;
 }
@@ -65,17 +65,17 @@ bool HornClause::compareTerm(const z3::expr & t1, const z3::expr & t2){
 // sorting these elements using the following heuristic:
 // HornClause::compareEquation
 void HornClause::normalize(UnionFindExplain & ufe){
-  z3::expr_vector aux_z3_vec(ctx);
-  std::vector<z3::expr> aux_vec{};
-  unsigned num_terms = antecedent.size();
-  for(unsigned i = 0; i < num_terms; i++)
-    aux_vec.push_back(antecedent[i]);
-  std::sort(aux_vec.begin(), aux_vec.end(), compareEquation);
+  std::vector<z3::expr> aux_antecedent ({});
+
+  for(auto expr : antecedent)
+    aux_antecedent.push_back(expr);
+
+  std::sort(aux_antecedent.begin(), aux_antecedent.end(), compareEquation);
   antecedent.resize(0);
-  for(unsigned i = 0; i < num_terms; i++){
-    z3::expr temp_expr = aux_vec[i];
-    if(ufe.find(temp_expr.arg(0).id()) != ufe.find(temp_expr.arg(1).id()))
-      antecedent.push_back(temp_expr);
+
+  for(auto expr : aux_antecedent){
+    if(ufe.find(expr.arg(0).id()) != ufe.find(expr.arg(1).id()))
+      antecedent.push_back(expr);
   }
   return;
 }
@@ -84,21 +84,23 @@ void HornClause::normalize(UnionFindExplain & ufe){
 // (/\_i u_i = v_i) => a = b, where u_i >= v_i and a >= b
 // The < relation on (Term, Term) is HornClause::compareTerm
 void HornClause::orient(){
-  z3::expr_vector aux_antecedent(ctx);
+
   z3::expr current_lhs(ctx), current_rhs(ctx);
-  unsigned num = antecedent.size();
-  for(unsigned i = 0; i < num; i++){
-    current_lhs = antecedent[i].arg(0), current_rhs = antecedent[i].arg(1);
+
+  z3::expr_vector aux_antecedent(ctx);
+  for(auto expr : antecedent){
+    current_lhs = expr.arg(0), current_rhs = expr.arg(1);
     if(compareTerm(current_lhs, current_rhs))
       aux_antecedent.push_back(current_rhs == current_lhs);
     else
-      aux_antecedent.push_back(antecedent[i]);
+      aux_antecedent.push_back(expr);
   }
   antecedent = aux_antecedent;
   
   std::string consequent_name = consequent.decl().name().str();
   if(consequent_name == "false")
     return;
+
   current_lhs = consequent.arg(0), current_rhs = consequent.arg(1);
   if(compareTerm(current_lhs, current_rhs))
     consequent = (current_rhs == current_lhs);
