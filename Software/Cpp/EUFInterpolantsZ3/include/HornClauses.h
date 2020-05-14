@@ -16,19 +16,17 @@ class HornClauses {
   std::vector<HornClause *> horn_clauses;
   unsigned                  curr_num_horn_clauses = 0;
 
-  void simplifyHornClauses(); // TODO: NEXT NEXT 
+  void simplifyHornClauses(); // TODO: Implement this
   
  public:
   HornClauses(UnionFindExplain &);
   ~HornClauses();
-
+  void                             swapHornClauses(unsigned, unsigned);
   void                             add(HornClause *);
-  void                             conditionalElimination(std::vector<Replacement>);         // TODO: NEXT // KEEP WORKING HERE
+  void                             conditionalElimination(std::vector<Replacement>); // TODO: Implement this
   unsigned                         size() const;
   const std::vector<HornClause*> & getHornClauses() const;
-  HornClause *                     operator[] (unsigned);
-  // void                       getTermsToReplace(z3::expr_vector &); // TODO:
-  // std::vector<HornClause*>   getReducibleHornClauses();
+  HornClause *                     operator[] (unsigned) const;
   friend std::ostream &            operator << (std::ostream &, const HornClauses &);
 };
 
