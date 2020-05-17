@@ -128,6 +128,11 @@ bool operator > (const HornClause & hc1, const HornClause & hc2){
   return false;
 }
 
+
+z3::expr HornClause::ToZ3Exprc() const{
+  return z3::implies(mk_and(antecedent), consequent);
+}
+
 bool operator < (const HornClause & hc1, const HornClause & hc2){
   return hc2 > hc1;
 }

@@ -29,6 +29,7 @@ public:
   bool                    isCommonAntecedent()  const;
   bool                    isCommonConsequent()  const;
   unsigned                numUncommAntecedent() const;
+  z3::expr                ToZ3Exprc() const;
 
   friend bool operator <(const HornClause &, const HornClause &);
   friend bool operator >(const HornClause &, const HornClause &);

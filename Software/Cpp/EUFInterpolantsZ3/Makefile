@@ -26,6 +26,7 @@ DEPS = $(wildcard $(IDIR)/*.h)
 
 #all: tests/cong_closure_expl_test
 all: tests/current_progress
+#all: valgrind_run
 
 $(ODIR)/%.o: $(SDIR)/%.cpp $(DEPS)
 	$(CC) -g -c -o $@ $(FLAGS) $<
@@ -36,6 +37,13 @@ tests/current_progress: $(OBJS)
 	$(CC) -g -o $@ $(OBJS) ./$@.o -lpthread
 	./$@
 	rm -rf tests/*.o $@
+
+.PHONY: valgrind_run
+valgrind_run: $(OBJS)
+	$(CC) -g -c -o ./tests/current_progress.o $(FLAGS) ./tests/current_progress.cpp
+	$(CC) -g -o tests/current_progress $(OBJS) ./tests/current_progress.o -lpthread
+	valgrind --log-file="output.txt" ./tests/current_progress
+	rm -rf tests/*.o tests/current_progress
 
 .PHONY: tests/cong_closure_expl_test
 tests/cong_closure_expl_test: $(OBJS)
@@ -52,9 +60,6 @@ tests/qf_uf_test: $(OBJS)
 	$(CC) -g -o $@ $(OBJS) tests/TestCongruenceClosureExplain.o ./$@.o -lpthread
 	./$@.sh
 	rm -rf tests/*.o $@
-
-valgrind_run: euf_interpolator
-	valgrind --log-file="euf_interpolator.txt" ./euf_interpolator
 
 notes:
 	grep -nr "// [A-Z][A-Za-z0-9]*: "

@@ -11,7 +11,7 @@ HornClauses::HornClauses(UnionFindExplain & ufe) : ufe(ufe) {}
 
 HornClauses::~HornClauses(){
   for(auto it : horn_clauses)
-    delete it;
+    delete it.second;
 #if DEBUG_DESTRUCTOR_HCS
   std::cout << "Done ~HornClauses" << std::endl;
 #endif
@@ -76,6 +76,15 @@ void HornClauses::swapHornClauses(unsigned i, unsigned j){
 }
 
 void HornClauses::add(HornClause * hc){
+
+  z3::expr z3_expr_hc = hc->ToZ3Exprc();
+  unsigned id = z3_expr_hc.id();
+  auto it = horn_clauses.find(id);
+
+  if(it != horn_clauses.end()){
+    delete hc;
+    return;
+  }
   const z3::expr & consequent = hc->getConsequent();
   switch(consequent.decl().decl_kind()){
     case Z3_OP_EQ:
@@ -83,11 +92,11 @@ void HornClauses::add(HornClause * hc){
         delete hc;
         return;
       }
-      horn_clauses.push_back(hc);
+      horn_clauses.insert({id, hc});
       curr_num_horn_clauses++;
       return;
     case Z3_OP_FALSE:
-      horn_clauses.push_back(hc);
+      horn_clauses.insert({id, hc});
       curr_num_horn_clauses++;
       return;
     default: 
@@ -104,15 +113,25 @@ void HornClauses::conditionalElimination(std::vector<Replacement> replacements){
 
 unsigned HornClauses::size() const { return horn_clauses.size(); }
 
-const std::vector<HornClause*> & HornClauses::getHornClauses() const { return horn_clauses; }
+HornClause* HornClauses::operator[](unsigned i) const { 
+  auto it = horn_clauses.find(i);
+  if(it != horn_clauses.end())
+    return it->second;
+  throw "Problem @ HornClauses::operator[]. Element not found.";
+}
 
-HornClause* HornClauses::operator[](unsigned i) const { return horn_clauses[i]; }
+std::vector<HornClause *> const HornClauses::getHornClauses() const {
+  std::vector<HornClause*> ans;
+  for(auto key_value : horn_clauses)
+    ans.push_back(key_value.second);
+  return ans;
+}
 
 std::ostream & operator << (std::ostream & os, const HornClauses & hcs){
   unsigned i = 0;
   os << "Horn clauses produced" << std::endl;
   for(auto it : hcs.horn_clauses){
-    os << i << ". " << it << " " << *it << std::endl;
+    os << i << ". " << it.second << " " << *(it.second) << std::endl;
     ++i;
   }
   os << "Number of horn clauses: " << i;

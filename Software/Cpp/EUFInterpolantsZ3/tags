@@ -4,7 +4,7 @@
 !_TAG_PROGRAM_NAME	Exuberant Ctags	//
 !_TAG_PROGRAM_URL	http://ctags.sourceforge.net	/official site/
 !_TAG_PROGRAM_VERSION	5.9~svn20110310	//
--log-file	Makefile	/^	valgrind --log-file="euf_interpolator.txt" .\/euf_interpolator$/;"	m
+-log-file	Makefile	/^	valgrind --log-file="output.txt" .\/tests\/current_progress$/;"	m
 APPLY_EQ	include/CurryNode.h	/^enum KindEquation { CONST_EQ, APPLY_EQ  };$/;"	e	enum:KindEquation
 CC	Makefile	/^CC = g++$/;"	m
 CONST_EQ	include/CurryNode.h	/^enum KindEquation { CONST_EQ, APPLY_EQ  };$/;"	e	enum:KindEquation
@@ -110,12 +110,12 @@ Replacement	include/Replacement.h	/^  Replacement(unsigned clause1, unsigned cla
 Replacement	include/Replacement.h	/^struct Replacement {$/;"	s
 SDIR	Makefile	/^SDIR = .\/src$/;"	m
 SRC	Makefile	/^SRC = $(wildcard $(SDIR)\/*.cpp)$/;"	m
-SetOfUnsignedPairs	include/HornClauses.h	/^typedef std::set<std::pair<unsigned, unsigned> > SetOfUnsignedPairs;$/;"	t
 SideOfEquation	include/CurryNode.h	/^enum SideOfEquation { LHS, RHS } ;$/;"	g
 SignatureTable	include/CongruenceClosure.h	/^  SignatureTable(UnionFindExplain & uf) : uf(uf){}$/;"	f	class:SignatureTable
 SignatureTable	include/CongruenceClosure.h	/^class SignatureTable {$/;"	c
 TestCongruenceClosureExplain	tests/TestCongruenceClosureExplain.cpp	/^TestCongruenceClosureExplain::TestCongruenceClosureExplain(z3::expr_vector const & assertions) :$/;"	f	class:TestCongruenceClosureExplain
 TestCongruenceClosureExplain	tests/TestCongruenceClosureExplain.h	/^class TestCongruenceClosureExplain {$/;"	c
+ToZ3Exprc	src/HornClause.cpp	/^z3::expr HornClause::ToZ3Exprc() const{$/;"	f	class:HornClause
 UNAME	Makefile	/^UNAME = $(shell uname)$/;"	m
 UNIONFINDEXPLAIN_H	include/UnionFindExplain.h	2;"	d
 UNIONFIND_H	include/UnionFind.h	2;"	d
@@ -195,7 +195,7 @@ constantZ3Index	src/FactoryCurryNodes.cpp	/^CurryNode * FactoryCurryNodes::const
 contradiction	include/Input.h	/^  z3::expr        contradiction;$/;"	m	struct:Input
 ctx	include/HornClause.h	/^  z3::context &   ctx;$/;"	m	class:HornClause
 ctx	include/Input.h	/^  z3::context &   ctx;$/;"	m	struct:Input
-curr_num_horn_clauses	include/HornClauses.h	/^  unsigned                  curr_num_horn_clauses = 0;$/;"	m	class:HornClauses
+curr_num_horn_clauses	include/HornClauses.h	/^  unsigned                                   curr_num_horn_clauses = 0;$/;"	m	class:HornClauses
 curr_num_literals	include/Hornsat.h	/^  static unsigned curr_num_literals;$/;"	m	struct:Literal
 curr_num_literals	src/Hornsat.cpp	/^unsigned Literal::curr_num_literals = 0;$/;"	m	class:Literal	file:
 currentProgress	tests/current_progress.cpp	/^void currentProgress(){$/;"	f
@@ -229,6 +229,7 @@ exposeUncommons	src/EUFInterpolant.cpp	/^void EUFInterpolant::exposeUncommons(){
 factory_curry_nodes	include/CongruenceClosureExplain.h	/^  FactoryCurryNodes & factory_curry_nodes;$/;"	m	class:CongruenceClosureExplain
 factory_curry_nodes	include/Input.h	/^  FactoryCurryNodes        factory_curry_nodes;$/;"	m	struct:Input
 facts	include/Hornsat.h	/^  std::queue<unsigned> facts;$/;"	m	class:Hornsat
+find	src/CongruenceClosureExplain.cpp	/^EqClass CongruenceClosureExplain::find(unsigned i){$/;"	f	class:CongruenceClosureExplain
 find	src/UnionFind.cpp	/^EqClass UnionFind::find(EqClass x){$/;"	f	class:UnionFind
 first	include/CurryNode.h	/^  const EquationCurryNodes & first, & second;$/;"	m	struct:PairEquationCurryNodes
 flattening	src/FactoryCurryNodes.cpp	/^void FactoryCurryNodes::flattening(PendingElements & pending_elements,$/;"	f	class:FactoryCurryNodes
@@ -240,7 +241,7 @@ getConstId	src/CurryNode.cpp	/^const unsigned CurryNode::getConstId() const {$/;
 getCurryNode	src/FactoryCurryNodes.cpp	/^CurryNode * FactoryCurryNodes::getCurryNode(std::size_t index) const {$/;"	f	class:FactoryCurryNodes
 getCurryNode	src/FactoryCurryNodes.cpp	/^CurryNode * FactoryCurryNodes::getCurryNode(unsigned id, std::string func_name,$/;"	f	class:FactoryCurryNodes
 getCurryNodeById	src/FactoryCurryNodes.cpp	/^CurryNode * FactoryCurryNodes::getCurryNodeById(unsigned i) const {$/;"	f	class:FactoryCurryNodes
-getHornClauses	src/HornClauses.cpp	/^const std::vector<HornClause*> & HornClauses::getHornClauses() const { return horn_clauses; }$/;"	f	class:HornClauses
+getHornClauses	src/HornClauses.cpp	/^std::vector<HornClause *> const HornClauses::getHornClauses() const {$/;"	f	class:std::HornClauses
 getId	src/CurryNode.cpp	/^const unsigned CurryNode::getId() const {$/;"	f	class:CurryNode
 getIndex	include/Z3Subterms.h	/^    unsigned getIndex() const {$/;"	f	class:Z3Subterms::iterator
 getLabel	src/UnionFindExplain.cpp	/^const PendingElement * UnionFindExplain::getLabel(EqClass x){$/;"	f	class:UnionFindExplain
@@ -263,7 +264,7 @@ hash_table	include/FactoryCurryNodes.h	/^  std::unordered_map<std::size_t, Curry
 hash_unsigned	include/CongruenceClosure.h	/^  std::hash<unsigned>                       hash_unsigned;$/;"	m	class:SignatureTable
 hash_z3expr	include/CongruenceClosure.h	/^  std::size_t hash_z3expr(const z3::expr & e){$/;"	f	class:SignatureTable
 highestNode	src/CongruenceClosureExplain.cpp	/^EqClass CongruenceClosureExplain::highestNode(EqClass a, UnionFind & uf){$/;"	f	class:CongruenceClosureExplain
-horn_clauses	include/HornClauses.h	/^  std::vector<HornClause *> horn_clauses;$/;"	m	class:HornClauses
+horn_clauses	include/HornClauses.h	/^  std::unordered_map<unsigned, HornClause *> horn_clauses;$/;"	m	class:HornClauses
 horn_clauses	include/Input.h	/^  HornClauses      horn_clauses;$/;"	m	struct:Input
 id	include/CurryNode.h	/^  unsigned id, z3_id, const_id;$/;"	m	class:CurryNode
 ids_to_merge	include/Input.h	/^  IdsToMerge ids_to_merge;$/;"	m	struct:Input
@@ -323,7 +324,7 @@ merge	tests/TestCongruenceClosureExplain.cpp	/^void TestCongruenceClosureExplain
 nearestCommonAncestor	src/CongruenceClosureExplain.cpp	/^EqClass CongruenceClosureExplain::nearestCommonAncestor(EqClass a, EqClass b, UnionFind & uf_extra){$/;"	f	class:CongruenceClosureExplain
 next	include/Hornsat.h	/^  struct Clause * next;$/;"	m	struct:Clause	typeref:struct:Clause::Clause
 normalize	src/HornClause.cpp	/^void HornClause::normalize(UnionFindExplain & ufe){$/;"	f	class:HornClause
-notInSet	include/HornClauses.h	3;"	d
+notInSet	include/HornClauses.h	4;"	d
 numUncommAntecedent	src/HornClause.cpp	/^unsigned HornClause::numUncommAntecedent() const {$/;"	f	class:HornClause
 num_args	include/Hornsat.h	/^  std::vector<unsigned> num_args, pos_lit_list;$/;"	m	class:Hornsat
 num_hcs	include/Hornsat.h	/^  unsigned             num_pos, num_hcs, num_literals;$/;"	m	class:Hornsat
@@ -377,12 +378,13 @@ operator ==	include/Z3Subterms.h	/^    bool operator==(const iterator & other) c
 operator ==	src/Match.cpp	/^bool Match::iterator::operator ==(iterator const & other) const {$/;"	f	class:Match::iterator
 operator ==	src/UnionFind.cpp	/^bool UnionFind::operator ==(const UnionFind & other){$/;"	f	class:UnionFind
 operator >	src/HornClause.cpp	/^bool operator > (const HornClause & hc1, const HornClause & hc2){$/;"	f
-operator []	src/HornClauses.cpp	/^HornClause* HornClauses::operator[](unsigned i) const { return horn_clauses[i]; }$/;"	f	class:HornClauses
+operator []	src/HornClauses.cpp	/^HornClause* HornClauses::operator[](unsigned i) const { $/;"	f	class:HornClauses
 operator []	src/Match.cpp	/^std::vector<unsigned> Match::operator [](unsigned i){$/;"	f	class:Match
 operator []	src/Z3Subterms.cpp	/^z3::expr Z3Subterms::operator[](unsigned i) const {$/;"	f	class:Z3Subterms
 orient	src/HornClause.cpp	/^void HornClause::orient(){$/;"	f	class:HornClause
 original_num_terms	include/Input.h	/^  unsigned original_num_terms;$/;"	m	struct:Input
 p_eq_cn	include/CurryNode.h	/^    const PairEquationCurryNodes p_eq_cn;$/;"	m	union:PendingElement::__anon1
+paperExample	tests/current_progress.cpp	/^void paperExample(){$/;"	f
 parentProofForest	src/UnionFindExplain.cpp	/^EqClass UnionFindExplain::parentProofForest(EqClass x){$/;"	f	class:UnionFindExplain
 pending_elements	include/CongruenceClosureExplain.h	/^  PendingElements pending_elements;$/;"	m	class:CongruenceClosureExplain
 pending_to_propagate	include/CongruenceClosureExplain.h	/^  PendingPointers pending_to_propagate;$/;"	m	class:CongruenceClosureExplain
@@ -403,7 +405,6 @@ rank	include/UnionFind.h	/^  std::vector<unsigned> rank;$/;"	m	class:UnionFind
 reformulate	src/Rename.cpp	/^z3::expr reformulate(z3::expr const & e,$/;"	f
 rename	src/Rename.cpp	/^std::pair<z3::expr, z3::expr> rename(z3::expr & a, z3::expr & b){$/;"	f
 rename	src/Rename.cpp	/^z3::expr rename(z3::expr & a, const std::set<std::string> & uncommon_names){$/;"	f
-repr	src/Input.cpp	/^z3::expr Input::repr(const z3::expr & t){$/;"	f	class:Input
 representative	include/UnionFind.h	/^  std::vector<EqClass> representative;$/;"	m	class:UnionFind
 resize	src/UnionFind.cpp	/^void UnionFind::resize(unsigned sz){$/;"	f	class:UnionFind
 resize	src/UnionFindExplain.cpp	/^void UnionFindExplain::resize(unsigned sz){$/;"	f	class:UnionFindExplain
@@ -447,7 +448,7 @@ traversePartA	src/Rename.cpp	/^void traversePartA(z3::expr const & e,$/;"	f
 traversePartB	src/Rename.cpp	/^void traversePartB(z3::expr const & e,$/;"	f
 uf	include/CongruenceClosure.h	/^  UnionFindExplain &                        uf;$/;"	m	class:SignatureTable
 uf	include/CongruenceClosure.h	/^  UnionFindExplain & uf;$/;"	m	class:CongruenceClosure
-ufe	include/HornClauses.h	/^  UnionFindExplain &        ufe;$/;"	m	class:HornClauses
+ufe	include/HornClauses.h	/^  UnionFindExplain &                         ufe;$/;"	m	class:HornClauses
 ufe	include/Input.h	/^  UnionFindExplain ufe;$/;"	m	struct:Input
 unionReverseEdges	src/UnionFindExplain.cpp	/^void UnionFindExplain::unionReverseEdges(EqClass target, EqClass source){$/;"	f	class:UnionFindExplain
 unionupdate	src/Hornsat.cpp	/^void Hornsat::unionupdate(UnionFindExplain & uf,$/;"	f	class:Hornsat
@@ -468,8 +469,8 @@ visited	include/Z3Subterms.h	/^  std::vector<bool> visited;$/;"	m	struct:Z3Subte
 z3Explain	src/CongruenceClosureExplain.cpp	/^Z3EquationPointers CongruenceClosureExplain::z3Explain(const z3::expr & lhs, const z3::expr & rhs){$/;"	f	class:CongruenceClosureExplain
 z3_id	include/CurryNode.h	/^  unsigned id, z3_id, const_id;$/;"	m	class:CurryNode
 z3_id_defined	include/CurryNode.h	/^  bool z3_id_defined;$/;"	m	class:CurryNode
-z3_repr	src/CongruenceClosureExplain.cpp	/^z3::expr CongruenceClosureExplain::z3_repr(unsigned i){$/;"	f	class:CongruenceClosureExplain
 z3_repr	src/CongruenceClosureExplain.cpp	/^z3::expr CongruenceClosureExplain::z3_repr(z3::expr const & e){$/;"	f	class:CongruenceClosureExplain
+z3_repr	src/Input.cpp	/^z3::expr Input::z3_repr(z3::expr const & e){$/;"	f	class:Input
 ~ClassListPos	include/Hornsat.h	/^  ~ClassListPos(){$/;"	f	struct:ClassListPos
 ~Clause	include/Hornsat.h	/^  ~Clause(){$/;"	f	struct:Clause
 ~CongruenceClosure	src/CongruenceClosure.cpp	/^CongruenceClosure::~CongruenceClosure(){$/;"	f	class:CongruenceClosure
