@@ -76,7 +76,6 @@ void HornClauses::swapHornClauses(unsigned i, unsigned j){
 }
 
 void HornClauses::add(HornClause * hc){
-
   z3::expr z3_expr_hc = hc->ToZ3Exprc();
   unsigned id = z3_expr_hc.id();
   auto it = horn_clauses.find(id);
@@ -122,6 +121,7 @@ HornClause* HornClauses::operator[](unsigned i) const {
 
 std::vector<HornClause *> const HornClauses::getHornClauses() const {
   std::vector<HornClause*> ans;
+  ans.reserve(horn_clauses.size());
   for(auto key_value : horn_clauses)
     ans.push_back(key_value.second);
   return ans;

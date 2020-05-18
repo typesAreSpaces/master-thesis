@@ -47,6 +47,14 @@ CurryNode * FactoryCurryNodes::getCurryNode(std::size_t index) const {
     Element not found.";
 }
 
+CurryNode * FactoryCurryNodes::getCurryNodeById(unsigned i) const {
+  if(i >= size())
+    throw "Error: out of bounds in FactoryCurryNodes::getCurryNodeById";
+  if(curry_nodes[i] == nullptr)
+    throw "Error: this node is a nullptr";
+  return curry_nodes[i];
+}
+
 CurryNode * FactoryCurryNodes::constantZ3Index(unsigned id){
   assert(id < curry_nodes.size());
   unsigned const_id = curry_nodes[id]->getConstId();
@@ -62,20 +70,8 @@ CurryNode * FactoryCurryNodes::constantCurryNode(unsigned index){
   return element;
 }
 
-CurryNode * FactoryCurryNodes::getCurryNodeById(unsigned i) const {
-  if(i >= size())
-    throw "Error: out of bounds in FactoryCurryNodes::getCurryNodeById";
-  if(curry_nodes[i] == nullptr)
-    throw "Error: this node is a nullptr";
-  return curry_nodes[i];
-}
-
 const unsigned FactoryCurryNodes::size() const {
   return curry_nodes.size();
-}
-
-const unsigned FactoryCurryNodes::uniqueSize() const {
-  return hash_table.size();
 }
 
 unsigned FactoryCurryNodes::addExtraNodes(unsigned num){

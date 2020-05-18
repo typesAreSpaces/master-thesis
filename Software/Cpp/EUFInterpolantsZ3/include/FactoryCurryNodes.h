@@ -35,12 +35,11 @@ class FactoryCurryNodes {
   
   CurryNode * getCurryNode(unsigned, std::string, CurryNode *, CurryNode *);
   CurryNode * getCurryNode(std::size_t) const;
+  CurryNode * getCurryNodeById(unsigned) const;
   CurryNode * constantZ3Index(unsigned);
   CurryNode * constantCurryNode(unsigned);
-  CurryNode * getCurryNodeById(unsigned) const;
 
   const unsigned size() const;
-  const unsigned uniqueSize() const;
 
   friend std::ostream & operator << (std::ostream &, const FactoryCurryNodes &);
 };
