@@ -10,10 +10,10 @@ EUFInterpolant::EUFInterpolant(z3::expr_vector const & assertions) : Input(asser
   std::cout << "After expose uncommons" << std::endl;
   std::cout << horn_clauses << std::endl;
 
-  // // // ----------------------------------------------------------------------
-  // // Additional data structures for conditional uncommon symbol elimination
-  // PredList hornsat_list(pred_list);
-  // assert(pred_list.size() == subterms.size());
+  // Conditional uncommon symbol elimination step
+  //Hornsat hsat(subterms, ufe, horn_clauses);
+  std::cout << "Oh syhti" << std::endl;
+
 
   // UnionFind hornsat_uf(uf);
   // hornsat_uf.resize(subterms.size());

@@ -29,7 +29,7 @@ public:
   bool greater(EqClass, EqClass);
   class iterator {
     UnionFind * m_uf;
-    EqClass    m_element;
+    EqClass     m_element;
     unsigned    m_index;
   public:
     iterator(UnionFind * m_uf, EqClass m_element, unsigned m_index) :
