@@ -26,7 +26,6 @@ CurryNode * FactoryCurryNodes::getCurryNode(unsigned id, std::string func_name,
     return element->second;
   }
   else{
-    //CurryNode * new_element = new CurryNode(id, func_name, left, right, is_common);
     CurryNode * new_element = new CurryNode(id, func_name, left, right);
     hash_table[index] = new_element;
     if(left)

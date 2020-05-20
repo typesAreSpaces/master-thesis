@@ -12,7 +12,7 @@ EUFInterpolant::EUFInterpolant(z3::expr_vector const & assertions) : Input(asser
 
   // Conditional uncommon symbol elimination step
   //Hornsat hsat(subterms, ufe, horn_clauses);
-  std::cout << "Oh syhti" << std::endl;
+  //std::cout << "Oh syhti" << std::endl;
 
 
   // UnionFind hornsat_uf(uf);
