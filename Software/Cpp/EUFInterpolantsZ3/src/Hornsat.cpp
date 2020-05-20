@@ -1,7 +1,4 @@
 #include "Hornsat.h"
-#define DEBUGGING_SATISFIABLE 1
-#define DEBUGGING_UNIONUPDATE 1
-#define DEBUGGING_CONSTRUCTOR 1
 
 unsigned Literal::curr_num_literals = 0;
 
@@ -9,28 +6,33 @@ Hornsat::Hornsat(Z3Subterms const & subterms, UnionFindExplain & ufe,
     HornClauses const & hcs) :
   subterms(subterms),
   consistent(true), num_pos(0),
-  num_hcs(hcs.size()), num_literals(subterms.size())
+  num_hcs(hcs.size()), num_literals(hcs.getMaxLitId())
 { 
-
   Literal::curr_num_literals = 0;
-  list_of_literals.resize(num_literals);
-  class_list.resize(num_literals);
-  num_args.resize(num_hcs);
+
+  list_of_literals.resize(num_literals + 1);
+  class_list      .resize(num_literals + 1);
+
+  num_args    .resize(num_hcs);
   pos_lit_list.resize(num_hcs);
 
 #if DEBUGGING_CONSTRUCTOR
   std::cout << "Horn Clauses processed by Hornsat" << std::endl;
 #endif
   unsigned index_hc = 0;
+
   for(auto horn_clause : hcs.getHornClauses()){
 #if DEBUGGING_CONSTRUCTOR
     std::cout << index_hc << " " << *horn_clause << std::endl;
 #endif
+
     // We only process Horn clauses with uncommon consequent
-    if(!horn_clause->isCommonConsequent()){      
-      // Horn clause body processing
+    if(!horn_clause->isCommonConsequent()){
+
+      // Horn clause body processing --------------------------------
       // Remark: We only have equations in the antecedent
       num_args[index_hc] = horn_clause->numUncommAntecedent();
+
       for(auto antecedent : horn_clause->getAntecedent()){
 #if DEBUGGING_CONSTRUCTOR
         std::cout << "Literals inside antedecent " 
@@ -48,7 +50,7 @@ Hornsat::Hornsat(Z3Subterms const & subterms, UnionFindExplain & ufe,
         class_list[literal->r_id].emplace_back(literal, RHS);
       }
 
-      // Horn clause head processing
+      // Horn clause head processing --------------------------------
       auto consequent = horn_clause->getConsequent();
 #if DEBUGGING_CONSTRUCTOR
       std::cout << "Literals inside consequent " 
@@ -77,21 +79,24 @@ Hornsat::Hornsat(Z3Subterms const & subterms, UnionFindExplain & ufe,
           consistent = false;
       }
     }
+
     index_hc++;
   }
 #if DEBUGGING_CONSTRUCTOR
-      std::cout << "Done" << std::endl;
+      std::cout << "Done @ Hornsat constructor" << std::endl;
 #endif
 }
 
 Hornsat::~Hornsat(){
   for(auto literal : list_of_literals){
-    for(auto it = literal.clause_list->begin(), end = literal.clause_list->end();
-        it != end; ++it){
+    for(auto it = literal.clause_list->begin(); 
+        it != literal.clause_list->end(); ){
 #if DEBUG_DESTRUCTORS
       std::cout << "Deleting this clause: " << (*it)->clause_id << std::endl;
 #endif
-      delete (*it);
+      auto first_move_then_delete = it;
+      ++it;
+      delete *first_move_then_delete;
     }
   }
 #if DEBUG_DESTRUCTORS

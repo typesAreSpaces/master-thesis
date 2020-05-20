@@ -1,5 +1,4 @@
 #include "CurryNode.h"
-#define OS_FULL true
 
 CurryNode::CurryNode(unsigned id, std::string func_name, CurryNode * left, CurryNode * right) :
   id(id), z3_id(id), const_id(id), z3_id_defined(false),
@@ -105,7 +104,7 @@ std::ostream & operator << (std::ostream & os, const CurryNode & cn){
     os << " ";
   if(cn.space == 1)
     os << "* ";
-#if OS_FULL
+#if FULL_OSTREAM
   os << cn.id << "(Z3 id: " << cn.z3_id
     << "|is common: " << (cn.is_common ? "true" : "false")
     << "|Const id: " << cn.const_id << ")("

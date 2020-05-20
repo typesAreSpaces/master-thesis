@@ -1,5 +1,6 @@
 #ifndef _FAC_CURRY_NODES_
 #define _FAC_CURRY_NODES_
+#define FRESH_PREFIX "fresh_"
 
 #include <iostream>
 #include <unordered_map>

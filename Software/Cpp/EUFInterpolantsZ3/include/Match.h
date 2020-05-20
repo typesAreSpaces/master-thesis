@@ -1,5 +1,6 @@
 #ifndef _MATCH_
 #define _MATCH_
+#define DEBUG_DESTRUCTOR_MATCH 0
 
 #include <iostream>
 #include <vector>

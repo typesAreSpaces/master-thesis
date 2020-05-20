@@ -1,5 +1,4 @@
 #include "FactoryCurryNodes.h"
-#define FRESH_PREFIX "fresh_"
 
 FactoryCurryNodes::FactoryCurryNodes(const unsigned & num_terms, const CurryDeclarations & curry_decl) :
   num_terms(num_terms), curry_decl(curry_decl), curry_predecessors()

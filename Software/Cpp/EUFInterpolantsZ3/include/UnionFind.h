@@ -1,5 +1,6 @@
 #ifndef UNIONFIND_H
 #define UNIONFIND_H
+#define DEBUG_DESTRUCTOR_UF false
 
 #include <iostream>
 #include <vector>

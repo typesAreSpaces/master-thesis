@@ -1,6 +1,4 @@
 #include "EUFInterpolant.h"
-#define DEBUG_DESTRUCTOR_EUF 0
-#define DEBUG_EUFINTERPOLANT 0
 
 EUFInterpolant::EUFInterpolant(z3::expr_vector const & assertions) : Input(assertions)
 {        
@@ -11,8 +9,8 @@ EUFInterpolant::EUFInterpolant(z3::expr_vector const & assertions) : Input(asser
   std::cout << horn_clauses << std::endl;
 
   // Conditional uncommon symbol elimination step
-  //Hornsat hsat(subterms, ufe, horn_clauses);
-  //std::cout << "Oh syhti" << std::endl;
+  Hornsat hsat(subterms, ufe, horn_clauses);
+  std::cout << "yay" << std::endl;
 
 
   // UnionFind hornsat_uf(uf);

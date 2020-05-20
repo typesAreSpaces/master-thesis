@@ -42,6 +42,13 @@ tests/current_progress: $(OBJS)
 valgrind_run: $(OBJS)
 	$(CC) -g -c -o ./tests/current_progress.o $(FLAGS) ./tests/current_progress.cpp
 	$(CC) -g -o tests/current_progress $(OBJS) ./tests/current_progress.o -lpthread
+	valgrind ./tests/current_progress
+	rm -rf tests/*.o tests/current_progress
+
+.PHONY: valgrind_output
+valgrind_output: $(OBJS)
+	$(CC) -g -c -o ./tests/current_progress.o $(FLAGS) ./tests/current_progress.cpp
+	$(CC) -g -o tests/current_progress $(OBJS) ./tests/current_progress.o -lpthread
 	valgrind --log-file="output.txt" ./tests/current_progress
 	rm -rf tests/*.o tests/current_progress
 

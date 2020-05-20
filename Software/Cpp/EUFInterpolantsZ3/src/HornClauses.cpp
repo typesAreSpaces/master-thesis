@@ -1,13 +1,9 @@
 #include "HornClauses.h"
-#define DEBUG_HORN_CLAUSES       0
-#define DEBUG_ADDINGHC           0
-#define DEBUG_MAKE_MATCHES       0
-#define DEBUG_CE                 0
-#define DEBUG_COMBINATION_HELPER 0
-#define DEBUG_MATCHES            0
-#define DEBUG_DESTRUCTOR_HCS     0
 
-HornClauses::HornClauses(UnionFindExplain & ufe) : ufe(ufe) {}
+HornClauses::HornClauses(UnionFindExplain & ufe) : 
+  ufe(ufe), curr_num_horn_clauses(0), max_lit_id(0)
+{
+}
 
 HornClauses::~HornClauses(){
   for(auto it : horn_clauses)
@@ -92,10 +88,14 @@ void HornClauses::add(HornClause * hc){
         return;
       }
       horn_clauses.insert({id, hc});
+      if(max_lit_id < hc->getLocalMaxLitId())
+        max_lit_id = hc->getLocalMaxLitId();
       curr_num_horn_clauses++;
       return;
     case Z3_OP_FALSE:
       horn_clauses.insert({id, hc});
+      if(max_lit_id < hc->getLocalMaxLitId())
+        max_lit_id = hc->getLocalMaxLitId();
       curr_num_horn_clauses++;
       return;
     default: 
@@ -125,6 +125,10 @@ std::vector<HornClause *> const HornClauses::getHornClauses() const {
   for(auto key_value : horn_clauses)
     ans.push_back(key_value.second);
   return ans;
+}
+
+unsigned HornClauses::getMaxLitId() const {
+  return max_lit_id;
 }
 
 std::ostream & operator << (std::ostream & os, const HornClauses & hcs){

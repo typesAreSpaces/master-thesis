@@ -1,5 +1,4 @@
 #include "Match.h"
-#define DEBUG_DESTRUCTOR_MATCH true
 
 Match::Match() {}
 

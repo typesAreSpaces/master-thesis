@@ -1,5 +1,7 @@
 #ifndef _EUF_INTERPOLANT_
 #define _EUF_INTERPOLANT_
+#define DEBUG_DESTRUCTOR_EUF 0
+#define DEBUG_EUFINTERPOLANT 0
 
 #include "Input.h"
 

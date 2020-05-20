@@ -1,10 +1,9 @@
 #include "HornClause.h"
-#define DEBUG_DESTRUCTOR_HC false
 
 HornClause::HornClause(z3::context & ctx, z3::expr_vector antecedent, z3::expr consequent, UnionFindExplain & ufe) :
   ctx(ctx),
   antecedent(antecedent), consequent(consequent), 
-  is_common_antecedent(true), num_uncomm_antecedent(0)
+  is_common_antecedent(true), num_uncomm_antecedent(0), local_max_lit_id(0)
 {
 
   // ----------------
@@ -16,11 +15,17 @@ HornClause::HornClause(z3::context & ctx, z3::expr_vector antecedent, z3::expr c
   // This part updates:
   // 1) num_uncomm_antecedent
   // 2) is_common_antecedent
-  for(auto hyp : this->antecedent)
+  for(auto hyp : this->antecedent){
+    if(local_max_lit_id < hyp.id())
+      local_max_lit_id = hyp.id();
     if(!hyp.is_common()){
       num_uncomm_antecedent++;
       is_common_antecedent = false;
     }
+  }
+  if(local_max_lit_id < this->consequent.id()){
+    local_max_lit_id = this->consequent.id();
+  }
   // ---------------------------------------------------------------
   return;
 }
@@ -99,6 +104,10 @@ bool HornClause::isCommonConsequent() const {
 
 unsigned HornClause::numUncommAntecedent() const {
   return num_uncomm_antecedent;
+}
+
+unsigned HornClause::getLocalMaxLitId() const {
+  return local_max_lit_id;
 }
 
 // Definition: > \in HornClause \times HornClause

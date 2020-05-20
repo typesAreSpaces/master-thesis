@@ -1,5 +1,10 @@
 #ifndef _CONG_CLOSURE_E__
 #define _CONG_CLOSURE_E__
+#define DEBUG_SANITY_CHECK  0
+#define DEBUG_MERGE         0
+#define DEBUG_PROPAGATE     0
+#define DEBUG_PROPAGATE_AUX 0
+#define DEBUG_TEST_EXPLAIN  0
 
 #include <map>
 #include <set>

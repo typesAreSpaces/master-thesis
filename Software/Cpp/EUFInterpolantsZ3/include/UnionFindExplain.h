@@ -1,5 +1,7 @@
 #ifndef UNIONFINDEXPLAIN_H
 #define UNIONFINDEXPLAIN_H
+#define DEBUG_DESTRUCTOR_UFE 0
+#define DEBUG_EXPLAIN_OP     0
 
 #include <list>
 #include <unordered_map>

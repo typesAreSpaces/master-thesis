@@ -1,5 +1,6 @@
 #ifndef _CURRY_NODE_
 #define _CURRY_NODE_ 
+#define FULL_OSTREAM true
 
 #include <iostream>
 #include <string>

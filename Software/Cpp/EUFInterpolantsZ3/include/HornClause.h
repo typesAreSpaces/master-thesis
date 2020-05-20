@@ -1,5 +1,6 @@
 #ifndef _HORN_CLAUSE_
 #define _HORN_CLAUSE_
+#define DEBUG_DESTRUCTOR_HC 0
 
 #include <algorithm>
 #include <list>
@@ -15,6 +16,7 @@ class HornClause {
   z3::expr        consequent;
   bool            is_common_antecedent;
   unsigned        num_uncomm_antecedent;
+  unsigned        local_max_lit_id;
 
   void normalize(UnionFindExplain &);
   void orient();
@@ -29,6 +31,7 @@ public:
   bool                    isCommonAntecedent()  const;
   bool                    isCommonConsequent()  const;
   unsigned                numUncommAntecedent() const;
+  unsigned                getLocalMaxLitId()    const;
   z3::expr                ToZ3Exprc() const;
 
   friend bool operator <(const HornClause &, const HornClause &);

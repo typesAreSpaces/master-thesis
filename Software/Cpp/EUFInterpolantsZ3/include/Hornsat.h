@@ -1,7 +1,10 @@
 #ifndef _HORNSAT_
 #define _HORNSAT_
 #define FALSELITERAL 0
-#define DEBUG_DESTRUCTORS false
+#define DEBUG_DESTRUCTORS 0
+#define DEBUGGING_SATISFIABLE 1
+#define DEBUGGING_UNIONUPDATE 1
+#define DEBUGGING_CONSTRUCTOR 1
 
 #include <iostream>
 #include <queue>
@@ -38,7 +41,8 @@ struct Clause {
       return it != other.it;
     }
     iterator & operator ++(){
-      it = it->next;
+      if(it)
+        it = it->next;
       return *this;
     }
     struct Clause * operator *(){
@@ -63,8 +67,13 @@ struct Literal {
   struct Clause * clause_list;
 
   Literal(unsigned literal_id, bool val, struct Clause * clause_list) :
-    literal_id(literal_id), l_id(0), r_id(0), l_class(0), r_class(0),
-    val(val), clause_list(clause_list){}
+    literal_id(literal_id), 
+    l_id(0), r_id(0), 
+    l_class(0), r_class(0),
+    val(val), 
+    clause_list(clause_list)
+  {
+  }
 
   Literal() : Literal(curr_num_literals++, false, nullptr) {}
 
@@ -104,6 +113,13 @@ struct ClassListPos {
   }
 };
 
+// "For every node u \in GT(H), we create a list (possibly empty)
+// classlist(u) of pointers, such that each pointer either 
+// points to the class field lclass(L) of each node L := u = v
+// in the graph GC(H), or to the class field rclass(L) of each
+// node L := v = u in the graph GC(H)".
+// The implementation indexes the nodes and returns the list
+// as a vector with the above properties.
 typedef std::vector<std::vector<ClassListPos> > ClassList;
 
 class Hornsat {

@@ -1,12 +1,6 @@
 #include "CongruenceClosureExplain.h"
 #include <z3++.h>
 
-#define DEBUG_SANITY_CHECK  0
-#define DEBUG_MERGE         0
-#define DEBUG_PROPAGATE     0
-#define DEBUG_PROPAGATE_AUX 0
-#define DEBUG_TEST_EXPLAIN  0
-
 CongruenceClosureExplain::CongruenceClosureExplain(Z3Subterms const & subterms,
     UnionFindExplain & uf, FactoryCurryNodes & factory_curry_nodes, IdsToMerge const & ids_to_merge) :
   CongruenceClosure(subterms, uf), 

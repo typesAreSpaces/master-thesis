@@ -1,6 +1,4 @@
 #include "UnionFindExplain.h"
-#define DEBUG_DESTRUCTOR_UFE false
-#define DEBUG_EXPLAIN_OP false
 
 UnionFindExplain::UnionFindExplain() :
   UnionFind(0) { 
