@@ -140,38 +140,7 @@ void Hornsat::satisfiable(){
   }
 }
 
-// void Hornsat::satisfiable(){
-//   unsigned clause1 = 0, clause2 = 0, literal = 0, nextpos = 0, newnumclause = 0, oldnumclause = num_pos;
-//   while(!facts.empty() && consistent){
-//     newnumclause = 0;
-//     for(unsigned i = 0; i < oldnumclause && consistent; ++i){
-//       clause1 = facts.front();
-//       facts.pop();
-//       nextpos = pos_lit_list[clause1];
-//       auto clause_list_cur_lit = list_of_literals[nextpos].clause_list;
-//       auto it = clause_list_cur_lit->begin(), end = clause_list_cur_lit->end();
-//       for(; it != end; ++it){
-// 	clause2 = (*it)->clause_id;
-// 	--num_args[clause2];
-// 	if(num_args[clause2] == 0){
-// 	  literal = pos_lit_list[clause2];
-// 	  if(!list_of_literals[literal].val){
-// 	    if (literal > FALSELITERAL){
-// 	      list_of_literals[literal].val = true;
-// 	      facts.push(clause2);
-// 	      ++newnumclause;
-// 	    }
-// 	    else
-// 	      consistent = false;
-// 	  }
-// 	}
-//       }
-//     }
-//     oldnumclause = newnumclause;
-//   }
-// }
-
-//std::vector<Replacement> Hornsat::satisfiable(CongruenceClosureExplain & cc){
+//std::vector<Replacement> Hornsat::satisfiable(CongruenceClosureExplain & cc){ // TODO: Pay attention to this
 //std::vector<Replacement> ans;
 //unsigned clause1 = 0, node = 0, nextnode = 0, u = 0, v = 0;
 
