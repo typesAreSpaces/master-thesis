@@ -228,20 +228,21 @@ void Hornsat::satisfiable(){
 //
 
 
-void Hornsat::unionupdate(LiteralId x, LiteralId y){ // FIX:
-  if(ufe.greater(y, x)){
+void Hornsat::unionupdate(LiteralId x, LiteralId y){ // FIX: almost
+  if(equivalence_class.greater(y, x)){
     unsigned aux = x;
     x = y;
     y = aux;
   }
-  unsigned repr_x = ufe.find(x), repr_y = ufe.find(y);
+  unsigned repr_x = equivalence_class.find(x), 
+           repr_y = equivalence_class.find(y);
 #if DEBUGGING_UNIONUPDATE
   std::cout << "Inside unionupdate: " << x << " " << y << std::endl;
 #endif
   // The next two lines setup an iterate
   // to go over elements of the class repr_y
-  auto end = ufe.end(repr_y);  
-  for(auto u = ufe.begin(repr_y); u != end; ++u){
+  auto end = equivalence_class.end(repr_y);  
+  for(auto u = equivalence_class.begin(repr_y); u != end; ++u){
     for(auto p : class_list[*u]){
 #if DEBUGGING_UNIONUPDATE
       std::cout << "Before, Term: " << *u << " " << p << std::endl;
@@ -265,15 +266,15 @@ void Hornsat::unionupdate(LiteralId x, LiteralId y){ // FIX:
 #endif
     }
   }
-  ufe.combine(repr_x, repr_y);
+  equivalence_class.combine(repr_x, repr_y);
 }
 
-void Hornsat::closure(){
+void Hornsat::closure(){ // FIX: almost
   while(!to_combine.empty()){
     auto pair = to_combine.front();
     to_combine.pop();
     TermId u = pair.lhs, v = pair.rhs;
-    MERGE(equivalence_class, u, v, facts); // IMPLEMENT
+    equivalence_class.combine(u, v, nullptr); // FIX: the nullptr
   }
 }
 
