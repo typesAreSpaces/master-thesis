@@ -82,6 +82,19 @@ struct Literal {
 
   Literal() : Literal(curr_num_literals++, false, nullptr) {}
 
+  void update(z3::expr const & literal, UnionFindExplain & ufe){
+    this->l_id = literal.arg(0).id();
+    this->r_id = literal.arg(1).id();
+    this->l_class = ufe.find(this->l_id); // FIX: See Hornsat.h @ 69
+    this->r_class = ufe.find(this->r_id); // Same
+    this->is_common = literal.is_common();
+  }
+
+  void update(z3::expr const & literal, UnionFindExplain & ufe, ClauseId clause_id){
+    this->update(literal, ufe);
+    this->clause_list = this->clause_list->add(clause_id);
+  }
+
   ~Literal(){
 #if DEBUG_DESTRUCTORS
     std::cout << "Done ~Literal with " << literal_id  << std::endl;

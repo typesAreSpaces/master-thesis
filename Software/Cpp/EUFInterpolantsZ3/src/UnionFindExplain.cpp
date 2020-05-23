@@ -1,8 +1,9 @@
 #include "UnionFindExplain.h"
 
 UnionFindExplain::UnionFindExplain() :
-  UnionFind(0) { 
-  };
+  UnionFind(0) 
+{ 
+};
 
 UnionFindExplain::UnionFindExplain(unsigned size) :
   UnionFind(size), proof_forest(size, 0), labels(size, nullptr) 

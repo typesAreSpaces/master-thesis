@@ -23,9 +23,9 @@ public:
   UnionFind(EqClass [], unsigned);
   UnionFind(const UnionFind &);
   virtual ~UnionFind();
-  virtual void combine(EqClass, EqClass);
-  virtual void merge(EqClass, EqClass);
-  virtual void link(EqClass, EqClass);
+  void combine(EqClass, EqClass);
+  void merge(EqClass, EqClass);
+  void link(EqClass, EqClass);
   virtual EqClass find(EqClass);
   bool greater(EqClass, EqClass);
   class iterator {
