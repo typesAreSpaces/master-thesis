@@ -81,6 +81,7 @@ class CongruenceClosureExplain : public CongruenceClosure {
   std::ostream &  giveExplanation(std::ostream &, EqClass, EqClass);
 
   public:
+  CongruenceClosureExplain(CongruenceClosureExplain const &, UnionFindExplain &);
   CongruenceClosureExplain(const Z3Subterms &, UnionFindExplain &, FactoryCurryNodes &, IdsToMerge const &);
   ~CongruenceClosureExplain();
 

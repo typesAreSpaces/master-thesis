@@ -26,7 +26,7 @@ struct Input {
 
   CurryDeclarations        curry_decl;  
   FactoryCurryNodes        factory_curry_nodes;
-  CongruenceClosureExplain cc;
+  CongruenceClosureExplain cce;
 
   unsigned maxIdFromAssertions(z3::expr_vector const &);
   void     init(z3::expr_vector const &);

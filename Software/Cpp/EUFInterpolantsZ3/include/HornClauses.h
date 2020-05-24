@@ -34,6 +34,7 @@ class HornClauses {
   unsigned                       size() const;
   HornClause *                   operator[] (unsigned) const; 
   std::vector<HornClause*> const getHornClauses() const;
+  unsigned                       getUFESize()  const;
   unsigned                       getMaxLitId() const;
   friend std::ostream &          operator << (std::ostream &, const HornClauses &);
 };

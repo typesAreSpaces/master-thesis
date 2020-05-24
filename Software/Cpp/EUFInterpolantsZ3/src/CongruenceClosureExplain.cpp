@@ -1,8 +1,22 @@
 #include "CongruenceClosureExplain.h"
 #include <z3++.h>
 
+// This constructor is meant to 
+// clone the structure of the cce 
+// (i.e. subterms and factory of curry nodes)
+// with a clearn ufe (i.e. equivalence classes
+// are just singletons)
+CongruenceClosureExplain::CongruenceClosureExplain(CongruenceClosureExplain const & cce, UnionFindExplain & ufe) : 
+  CongruenceClosure(cce.subterms, ufe),
+  pending_elements(), equations_to_merge(), pending_to_propagate(),
+  factory_curry_nodes(cce.factory_curry_nodes),
+  lookup_table(), use_list()
+{
+}
+
 CongruenceClosureExplain::CongruenceClosureExplain(Z3Subterms const & subterms,
-    UnionFindExplain & ufe, FactoryCurryNodes & factory_curry_nodes_, IdsToMerge const & ids_to_merge) :
+    UnionFindExplain & ufe, FactoryCurryNodes & factory_curry_nodes_, 
+    IdsToMerge const & ids_to_merge) :
   CongruenceClosure(subterms, ufe), 
   pending_elements(), equations_to_merge(), pending_to_propagate(),
   factory_curry_nodes((
@@ -17,7 +31,7 @@ CongruenceClosureExplain::CongruenceClosureExplain(Z3Subterms const & subterms,
   // in the curry_nodes. There
   // might be repeated elements in these collection
   // but they are unique pointers
-  ufe      .resize(factory_curry_nodes.size());
+  ufe     .resize(factory_curry_nodes.size());
   use_list.resize(factory_curry_nodes.size());
 
   // Process input-equations defined by user
@@ -344,6 +358,7 @@ void CongruenceClosureExplain::buildCongruenceClosure(std::list<EqClass> & pendi
     Implementation not defined";
 }
 
-std::ostream & operator << (std::ostream & os, const CongruenceClosureExplain & cc){
+std::ostream & operator << (std::ostream & os, const CongruenceClosureExplain & cce){
+  os << cce.ufe;
   return os;
 }

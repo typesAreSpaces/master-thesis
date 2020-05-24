@@ -6,7 +6,7 @@ Input::Input(z3::expr_vector const & assertions) :
   fsym_positions(), ufe(original_num_terms), horn_clauses(ufe),
   ids_to_merge(),
   curry_decl(), factory_curry_nodes(original_num_terms, curry_decl),
-  cc(
+  cce(
       (
        subterms.resize(original_num_terms), 
        // The following defines: 
@@ -89,7 +89,7 @@ void Input::disequalitiesToHCS(){
 }
 
 z3::expr Input::z3_repr(z3::expr const & e){
-  return cc.z3_repr(e);
+  return cce.z3_repr(e);
   //return e;
 }
 

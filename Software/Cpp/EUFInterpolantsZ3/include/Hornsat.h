@@ -152,14 +152,16 @@ class Hornsat {
 
   unsigned num_hcs, num_literals;
 
-  UnionFindExplain &   equivalence_class;
+  UnionFindExplain         ufe;
+  CongruenceClosureExplain equiv_classes;
+
   std::vector<Literal> list_of_literals;
   ClassList            class_list;
 
   std::vector<unsigned>  num_args;
   std::vector<LiteralId> pos_lit_list;
 
-  // facts is a queue of all the (temporary)
+  // 'facts' is a queue of all the (temporary)
   // literals that have value true
   std::queue<LiteralId>  facts;
   std::queue<TermIdPair> to_combine;
@@ -171,7 +173,7 @@ class Hornsat {
   void closure();
   
  public:
-  Hornsat(UnionFindExplain &, HornClauses const &);
+  Hornsat(CongruenceClosureExplain &, HornClauses const &);
   ~Hornsat();
 
   bool isConsistent();

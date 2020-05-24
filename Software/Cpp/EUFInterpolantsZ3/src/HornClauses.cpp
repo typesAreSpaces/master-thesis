@@ -127,6 +127,10 @@ std::vector<HornClause *> const HornClauses::getHornClauses() const {
   return ans;
 }
 
+unsigned HornClauses::getUFESize() const {
+  return ufe.getSize();
+}
+
 unsigned HornClauses::getMaxLitId() const {
   return max_lit_id;
 }

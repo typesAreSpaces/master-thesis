@@ -2,14 +2,16 @@
 
 unsigned Literal::curr_num_literals = 0;
 
-Hornsat::Hornsat(UnionFindExplain & ufe, 
+Hornsat::Hornsat(CongruenceClosureExplain & cce, 
     HornClauses const & hcs) :
   num_hcs(hcs.size()), num_literals(hcs.getMaxLitId()),
-  equivalence_class(ufe), list_of_literals(), class_list(),
+  /*This ufe is empty*/ ufe(hcs.getUFESize()), equiv_classes(cce, ufe), 
+  list_of_literals(), class_list(),
   num_args(), pos_lit_list(), 
   facts(), to_combine(),
   consistent(true)
 { 
+
   Literal::curr_num_literals = 0;
 
   list_of_literals.resize(num_literals + 1);
@@ -126,7 +128,7 @@ void Hornsat::satisfiable(){
             list_of_literals[nextnode].val = true;
             TermId u = list_of_literals[nextnode].l_id, 
                    v = list_of_literals[nextnode].r_id;
-            //if(equivalence_class.areSameClass(u, v)) // FIX: implement areSameClass
+            //if(equi_classes.areSameClass(u, v)) // FIX: implement areSameClass
             if(true)
               to_combine.push(TermIdPair(u, v));
             
@@ -199,53 +201,53 @@ void Hornsat::satisfiable(){
 
 
 void Hornsat::unionupdate(LiteralId x, LiteralId y){ // FIX: almost
-  if(equivalence_class.greater(y, x)){
-    unsigned aux = x;
-    x = y;
-    y = aux;
-  }
-  unsigned repr_x = equivalence_class.find(x), 
-           repr_y = equivalence_class.find(y);
-#if DEBUGGING_UNIONUPDATE
-  std::cout << "Inside unionupdate: " << x << " " << y << std::endl;
-#endif
-  // The next two lines setup an iterate
-  // to go over elements of the class repr_y
-  auto end = equivalence_class.end(repr_y);  
-  for(auto u = equivalence_class.begin(repr_y); u != end; ++u){
-    for(auto p : class_list[*u]){
-#if DEBUGGING_UNIONUPDATE
-      std::cout << "Before, Term: " << *u << " " << p << std::endl;
-#endif
-      if(!p.lit_pointer->val){
-        switch(p.eq_side){
-          case LHS:
-            p.lit_pointer->l_class = repr_x;
-            break;
-          case RHS:
-            p.lit_pointer->r_class = repr_x;
-            break;
-        }
-        if(p.lit_pointer->l_class == p.lit_pointer->r_class){
-          facts.push(p.lit_pointer->literal_id);
-          p.lit_pointer->val= true;
-        }
-      }
-#if DEBUGGING_UNIONUPDATE
-      std::cout << "After,  Term: " << *u << " " << p << std::endl;
-#endif
-    }
-  }
-  equivalence_class.combine(repr_x, repr_y);
+  //if(equiv_classes.greater(y, x)){
+    //unsigned aux = x;
+    //x = y;
+    //y = aux;
+  //}
+  //unsigned repr_x = equiv_classes.find(x), 
+           //repr_y = equiv_classes.find(y);
+//#if DEBUGGING_UNIONUPDATE
+  //std::cout << "Inside unionupdate: " << x << " " << y << std::endl;
+//#endif
+  //// The next two lines setup an iterate
+  //// to go over elements of the class repr_y
+  //auto end = equiv_classes.end(repr_y);  
+  //for(auto u = equiv_classes.begin(repr_y); u != end; ++u){
+    //for(auto p : class_list[*u]){
+//#if DEBUGGING_UNIONUPDATE
+      //std::cout << "Before, Term: " << *u << " " << p << std::endl;
+//#endif
+      //if(!p.lit_pointer->val){
+        //switch(p.eq_side){
+          //case LHS:
+            //p.lit_pointer->l_class = repr_x;
+            //break;
+          //case RHS:
+            //p.lit_pointer->r_class = repr_x;
+            //break;
+        //}
+        //if(p.lit_pointer->l_class == p.lit_pointer->r_class){
+          //facts.push(p.lit_pointer->literal_id);
+          //p.lit_pointer->val= true;
+        //}
+      //}
+//#if DEBUGGING_UNIONUPDATE
+      //std::cout << "After,  Term: " << *u << " " << p << std::endl;
+//#endif
+    //}
+  //}
+  //equiv_classes.combine(repr_x, repr_y);
 }
 
 void Hornsat::closure(){ // FIX: almost
-  while(!to_combine.empty()){
-    auto pair = to_combine.front();
-    to_combine.pop();
-    TermId u = pair.lhs, v = pair.rhs;
-    equivalence_class.combine(u, v, nullptr); // FIX: the nullptr
-  }
+  //while(!to_combine.empty()){
+    //auto pair = to_combine.front();
+    //to_combine.pop();
+    //TermId u = pair.lhs, v = pair.rhs;
+    //equiv_classes.combine(u, v, nullptr); // FIX: the nullptr
+  //}
 }
 
 bool Hornsat::isConsistent(){
