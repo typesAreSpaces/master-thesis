@@ -63,7 +63,7 @@ void Input::initFormula(z3::expr const & e){
 
     z3::func_decl f = e.decl();
     if(curry_decl[f.id()] == nullptr)
-      curry_decl[f.id()] = factory_curry_nodes.getCurryNode(e.id(), f.name().str(), nullptr, nullptr);
+      curry_decl[f.id()] = factory_curry_nodes.queryCurryNode(e.id(), f.name().str(), nullptr, nullptr);
 
     switch(f.decl_kind()){
       case Z3_OP_UNINTERPRETED:

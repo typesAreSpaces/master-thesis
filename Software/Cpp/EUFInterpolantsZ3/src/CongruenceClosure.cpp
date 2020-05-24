@@ -1,8 +1,8 @@
 #include "CongruenceClosure.h"
 
 CongruenceClosure::CongruenceClosure(const Z3Subterms & subterms,
-				     UnionFindExplain & uf) :
-  subterms(subterms), uf(uf), sig_table(uf)
+				     UnionFindExplain & ufe) :
+  subterms(subterms), ufe(ufe), sig_table(ufe)
 {
 }
 
@@ -13,7 +13,7 @@ CongruenceClosure::~CongruenceClosure(){
 }
 
 UnionFindExplain & CongruenceClosure::getUnionFindExplain() const {
-  return uf;
+  return ufe;
 }
 
 std::ostream & operator << (std::ostream & os, const CongruenceClosure & cc){

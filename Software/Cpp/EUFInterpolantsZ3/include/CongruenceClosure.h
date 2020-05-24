@@ -55,7 +55,7 @@ class CongruenceClosure {
   friend class Hornsat;
 protected:
   const Z3Subterms & subterms;
-  UnionFindExplain & uf;
+  UnionFindExplain & ufe;
   SignatureTable     sig_table;
  public:
   CongruenceClosure(const Z3Subterms &, UnionFindExplain &);

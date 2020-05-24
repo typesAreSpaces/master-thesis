@@ -11,7 +11,7 @@ FactoryCurryNodes::~FactoryCurryNodes(){
     delete x.second;
 }
 
-CurryNode * FactoryCurryNodes::getCurryNode(unsigned id, std::string func_name,
+CurryNode * FactoryCurryNodes::queryCurryNode(unsigned id, std::string const & func_name,
     CurryNode * left, CurryNode * right){
   std::size_t index = 0;
   // We shouldnt distinguish if nodes have different ids
@@ -37,6 +37,15 @@ CurryNode * FactoryCurryNodes::getCurryNode(unsigned id, std::string func_name,
   }
 }
 
+CurryNode * FactoryCurryNodes::getCurryNode(std::string const &  func_name,
+    CurryNode * left, CurryNode * right) const {
+  std::size_t index = 0;
+  hash_combine(index, func_name, string_hasher);
+  hash_combine(index, left, curry_hasher);
+  hash_combine(index, right, curry_hasher);
+  return getCurryNode(index);
+}
+
 CurryNode * FactoryCurryNodes::getCurryNode(std::size_t index) const {
   auto element = hash_table.find(index);
   if(element != hash_table.end())
@@ -45,7 +54,7 @@ CurryNode * FactoryCurryNodes::getCurryNode(std::size_t index) const {
     Element not found.";
 }
 
-CurryNode * FactoryCurryNodes::getCurryNodeById(unsigned i) const {
+CurryNode * FactoryCurryNodes::getCurryNode(unsigned i) const {
   if(i >= size())
     throw "Error: out of bounds in FactoryCurryNodes::getCurryNodeById";
   if(curry_nodes[i] == nullptr)
@@ -53,18 +62,18 @@ CurryNode * FactoryCurryNodes::getCurryNodeById(unsigned i) const {
   return curry_nodes[i];
 }
 
-CurryNode * FactoryCurryNodes::constantZ3Index(unsigned id){
+CurryNode * FactoryCurryNodes::z3IndexToCurryConstant(unsigned id) const {
   assert(id < curry_nodes.size());
   unsigned const_id = curry_nodes[id]->getConstId();
   return constantCurryNode(const_id);
 }
 
-CurryNode * FactoryCurryNodes::constantCurryNode(unsigned index){
+CurryNode * FactoryCurryNodes::constantCurryNode(unsigned index) const {
   if(index > curry_nodes.size())
-    return getCurryNode(0, FRESH_PREFIX + std::to_string(index), nullptr, nullptr);
+    return getCurryNode(FRESH_PREFIX + std::to_string(index), nullptr, nullptr);
   auto element = curry_nodes[index];
   if(element->isReplaceable())
-    return getCurryNode(0, FRESH_PREFIX + std::to_string(index), nullptr, nullptr);
+    return getCurryNode(FRESH_PREFIX + std::to_string(index), nullptr, nullptr);
   return element;
 }
 
@@ -132,14 +141,14 @@ void FactoryCurryNodes::curryficationHelper(z3::expr const & e, std::vector<bool
 
       // Case for first argument
       curry_nodes[last_node_pos] =
-        getCurryNode(last_node_pos,
+        queryCurryNode(last_node_pos,
             "apply",
             curry_decl.at(f.id()),
             curry_nodes[e.arg(0).id()]);
       // Case for the rest of the arguments
       for(unsigned i = 1; i < num; i++)
         curry_nodes[last_node_pos + i] =
-          getCurryNode(last_node_pos + i,
+          queryCurryNode(last_node_pos + i,
               "apply",
               curry_nodes[last_node_pos + i - 1],
               curry_nodes[e.arg(i).id()]);
@@ -177,7 +186,7 @@ void FactoryCurryNodes::flattening(PendingElements & pending_elements,
     to_replace.pop_back();
 
     unsigned last_node_pos = curry_nodes.size();
-    curry_nodes.push_back(getCurryNode(last_node_pos,
+    curry_nodes.push_back(queryCurryNode(last_node_pos,
           FRESH_PREFIX + std::to_string(last_node_pos),
           nullptr, nullptr));
     CurryNode * new_constant = curry_nodes[last_node_pos];

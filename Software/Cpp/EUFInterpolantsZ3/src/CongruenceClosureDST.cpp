@@ -29,7 +29,7 @@ void CongruenceClosureDST::buildCongruenceClosure(std::list<unsigned> & pending)
     }
     pending.clear();
     for(auto v_w : combine){
-      unsigned v_repr = uf.find(v_w.first), w_repr = uf.find(v_w.second);
+      unsigned v_repr = ufe.find(v_w.first), w_repr = ufe.find(v_w.second);
       if(v_repr != w_repr){
 	unsigned aux;
 	// Invariant: v_repr is always the representative of the union
@@ -47,7 +47,7 @@ void CongruenceClosureDST::buildCongruenceClosure(std::list<unsigned> & pending)
 	  sig_table.erase(subterms[u]);
 	  pending.push_back(u);
 	}
-	uf.combine(v_repr, w_repr);
+	ufe.combine(v_repr, w_repr);
 	pred_list[v_repr].splice(pred_list[v_repr].end(), pred_list[w_repr]);
       }
     }

@@ -14,7 +14,7 @@
 
 class LookupTable {
   std::unordered_map<std::size_t, const EquationCurryNodes*> sig_table;
-  std::hash<EqClass> EqClass_hasher;
+  //std::hash<EqClass> EqClass_hasher;
 
   public:
   LookupTable() {}
@@ -59,11 +59,11 @@ class CongruenceClosureExplain : public CongruenceClosure {
 
   friend class Hornsat;
 
-  FactoryCurryNodes & factory_curry_nodes;
-
   PendingElements pending_elements;
   PendingPointers equations_to_merge;
   PendingPointers pending_to_propagate;
+
+  FactoryCurryNodes const & factory_curry_nodes;
 
   LookupTable lookup_table;
   UseList     use_list;

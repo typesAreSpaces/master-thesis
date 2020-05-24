@@ -21,20 +21,23 @@ Hornsat::Hornsat(UnionFindExplain & ufe,
 #if DEBUGGING_CONSTRUCTOR
   std::cout << "Horn Clauses processed by Hornsat" << std::endl;
 #endif
-  unsigned index_hc = 0;
+  ClauseId index_hc = 0;
 
   for(auto horn_clause : hcs.getHornClauses()){
 #if DEBUGGING_CONSTRUCTOR
     std::cout << index_hc << " " << *horn_clause << std::endl;
 #endif
-
     // We only process Horn clauses with uncommon consequent
     if(!horn_clause->isCommonConsequent()){
-
-      // Horn clause body processing --------------------------------
-      // Remark: We only have equations in the antecedent
+      // -----------------------------------------------------
+      // The following line defines our approach -------------
+      // towards conditional elimination
       num_args[index_hc] = horn_clause->numUncommAntecedent();
+      // -----------------------------------------------------
 
+      // ------------------------------------------------------
+      // Horn clause body processing --------------------------
+      // Remark: We only have equations in the antecedent
       for(auto antecedent : horn_clause->getAntecedent()){
 #if DEBUGGING_CONSTRUCTOR
         std::cout << "Literals inside antedecent " 
@@ -42,54 +45,51 @@ Hornsat::Hornsat(UnionFindExplain & ufe,
           << antecedent << std::endl;
 #endif
         Literal * literal = &list_of_literals[antecedent.id()];
-        literal->l_id = antecedent.arg(0).id();
-        literal->r_id = antecedent.arg(1).id();
-        literal->l_class = ufe.find(literal->l_id); // FIX: See Hornsat.h @ 69
-        literal->r_class = ufe.find(literal->r_id); // Same
-        literal->is_common = antecedent.is_common();
-        literal->clause_list = literal->clause_list->add(index_hc);
+        literal->update(antecedent, ufe, index_hc);
         class_list[literal->l_id].emplace_back(literal, LHS);
         class_list[literal->r_id].emplace_back(literal, RHS);
       }
+      // ------------------------------------------------------
 
+      // ------------------------------------------------------------
       // Horn clause head processing --------------------------------
       auto consequent = horn_clause->getConsequent();
 #if DEBUGGING_CONSTRUCTOR
       std::cout << "Literals inside consequent " 
         << consequent.id() << " " << consequent << std::endl;
 #endif
-      Literal * literal = &list_of_literals[consequent.decl().name().str() == "false" ?
-        FALSELITERAL :
-        consequent.id()];
+      Literal * literal = 
+        &list_of_literals[consequent.decl().name().str() == "false" ?
+        FALSELITERAL : consequent.id()];
 
       pos_lit_list[index_hc] = literal->literal_id;
       if(literal->literal_id > FALSELITERAL){
-        literal->l_id = consequent.arg(0).id();
-        literal->r_id = consequent.arg(1).id();
-        literal->l_class = ufe.find(literal->l_id); // FIX: See Hornsat.h @ 69
-        literal->r_class = ufe.find(literal->r_id); // Same
-        literal->is_common = consequent.is_common();
+        literal->update(consequent, ufe);
         class_list[literal->l_id].emplace_back(literal, LHS);
         class_list[literal->r_id].emplace_back(literal, RHS);
       }
 
-      // This checks if the Horn Clause is a fact
+      // In the original formulation by Gallier, 
+      // this checks if the Horn Clause is a fact,
+      // in this approach, this checks if a Horn Clause
+      // can be spreading because the its antecedent is
+      // common.
       if(num_args[index_hc] == 0){
         literal->val = true;
         facts.push(consequent.id());
-        to_combine.push(TermIdPair(consequent.arg(0).id(), consequent.arg(1).id()));
+        to_combine.push(TermIdPair(
+              consequent.arg(0).id(), 
+              consequent.arg(1).id()));
         if(literal->literal_id == FALSELITERAL)
           consistent = false;
       }
+      // ------------------------------------------------------------
     }
-
     index_hc++;
   }
-
 #if DEBUGGING_CONSTRUCTOR
   std::cout << "Done @ Hornsat constructor" << std::endl;
 #endif
-
   satisfiable();
 }
 
@@ -126,7 +126,8 @@ void Hornsat::satisfiable(){
             list_of_literals[nextnode].val = true;
             TermId u = list_of_literals[nextnode].l_id, 
                    v = list_of_literals[nextnode].r_id;
-            if(false) // FIX:
+            //if(equivalence_class.areSameClass(u, v)) // FIX: implement areSameClass
+            if(true)
               to_combine.push(TermIdPair(u, v));
             
           }

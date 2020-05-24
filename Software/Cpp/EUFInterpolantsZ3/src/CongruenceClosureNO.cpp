@@ -18,16 +18,16 @@ void CongruenceClosureNO::buildCongruenceClosure(std::list<unsigned> & pending){
 }
 
 void CongruenceClosureNO::combine(unsigned u, unsigned v){
-  if(uf.find(u) == uf.find(v))
+  if(ufe.find(u) == ufe.find(v))
     return;
   auto p_u = pred_list[u], p_v = pred_list[v];
-  uf.combine(u, v);
+  ufe.combine(u, v);
   // The following assumes each elemen in pred_list is sorted,
   // and unique
-  pred_list[uf.find(u)].merge(pred_list[uf.find(v)]); 
+  pred_list[ufe.find(u)].merge(pred_list[ufe.find(v)]); 
   for(auto x : p_u)
     for(auto y : p_v)
-      if(uf.find(x) != uf.find(y) && areCongruent(x,y))
+      if(ufe.find(x) != ufe.find(y) && areCongruent(x,y))
 	combine(x, y);
   return;
 }
@@ -39,7 +39,7 @@ bool CongruenceClosureNO::areCongruent(unsigned x, unsigned y){
   assert(term_x.num_args() == term_y.num_args());
   unsigned num_args = term_x.num_args();
   for(unsigned i = 0; i < num_args; i++)
-    if(uf.find(term_x.arg(i)) != uf.find(term_y.arg(i)))
+    if(ufe.find(term_x.arg(i)) != ufe.find(term_y.arg(i)))
       return false;
   return true;
 }

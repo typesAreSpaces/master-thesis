@@ -2,43 +2,39 @@
 #include <z3++.h>
 
 CongruenceClosureExplain::CongruenceClosureExplain(Z3Subterms const & subterms,
-    UnionFindExplain & uf, FactoryCurryNodes & factory_curry_nodes, IdsToMerge const & ids_to_merge) :
-  CongruenceClosure(subterms, uf), 
-  factory_curry_nodes(factory_curry_nodes), 
+    UnionFindExplain & ufe, FactoryCurryNodes & factory_curry_nodes_, IdsToMerge const & ids_to_merge) :
+  CongruenceClosure(subterms, ufe), 
   pending_elements(), equations_to_merge(), pending_to_propagate(),
+  factory_curry_nodes((
+        factory_curry_nodes_.curryfication(subterms), 
+        // NOTE: flattening also fully defines const_id and z3_id for each curry node.
+        factory_curry_nodes_.flattening(pending_elements, equations_to_merge, subterms),
+        factory_curry_nodes_)), 
   lookup_table(), use_list() 
 {
 
-  factory_curry_nodes.curryfication(subterms);
-
-  // NOTE: flattening also fully defines const_id and z3_id for each curry node.
-  factory_curry_nodes.flattening(pending_elements, equations_to_merge, subterms);
-
-  // There is an element in uf for each element
+  // There is an element in ufe for each element
   // in the curry_nodes. There
   // might be repeated elements in these collection
   // but they are unique pointers
-  uf     .resize(factory_curry_nodes.size());
+  ufe      .resize(factory_curry_nodes.size());
   use_list.resize(factory_curry_nodes.size());
 
   // Process input-equations defined by user
   // using the constant ids
   for(auto x : ids_to_merge){
-    auto const_lhs = factory_curry_nodes.constantZ3Index(x.lhs_id),
-         const_rhs = factory_curry_nodes.constantZ3Index(x.rhs_id);
+    auto const_lhs = factory_curry_nodes.z3IndexToCurryConstant(x.lhs_id),
+         const_rhs = factory_curry_nodes.z3IndexToCurryConstant(x.rhs_id);
 
     pushPending(pending_to_propagate, 
         EquationCurryNodes(*const_lhs, *const_rhs));
-
-    //uf.combine(const_lhs->getConstId(), const_lhs->getZ3Id(), nullptr);
-    //uf.combine(const_rhs->getConstId(), const_rhs->getZ3Id(), nullptr);
   }
 
   merge();
   propagate();
 
 #if DEBUG_SANITY_CHECK
-  std::cout << uf << std::endl;
+  std::cout << ufe << std::endl;
   std::cout << factory_curry_nodes << std::endl;
 #endif
 }
@@ -60,7 +56,7 @@ EqClass CongruenceClosureExplain::highestNode(EqClass a, UnionFind & uf){
 }
 
 EqClass CongruenceClosureExplain::nearestCommonAncestor(EqClass a, EqClass b, UnionFind & uf_extra){
-  return uf_extra.find(uf.commonAncestor(a, b));
+  return uf_extra.find(ufe.commonAncestor(a, b));
 }
 
 void CongruenceClosureExplain::merge(const EquationCurryNodes & equation){
@@ -87,7 +83,7 @@ void CongruenceClosureExplain::merge(const EquationCurryNodes & equation){
         std::cout << "@merge. Merging apply equations" << std::endl
           << lhs << " and " << rhs << std::endl;
 #endif
-        auto repr_lhs_first_argument = uf.find(lhs.getLeftId()), repr_lhs_second_argument = uf.find(lhs.getRightId());
+        auto repr_lhs_first_argument = ufe.find(lhs.getLeftId()), repr_lhs_second_argument = ufe.find(lhs.getRightId());
         const EquationCurryNodes * element_found = lookup_table.query(repr_lhs_first_argument, repr_lhs_second_argument);
 
         if(element_found != nullptr){
@@ -134,9 +130,9 @@ PendingPointers CongruenceClosureExplain::explain(const z3::expr & lhs, const z3
 
 PendingPointers CongruenceClosureExplain::explain(EqClass x, EqClass y){
   PendingPointers ans;
-  if(uf.find(x) != uf.find(y))
+  if(ufe.find(x) != ufe.find(y))
     return ans; 
-  UnionFind local_uf(uf.getSize());
+  UnionFind local_uf(ufe.getSize());
   ExplainEquations pending_proofs;
 
   pending_proofs.emplace_back(x, y);
@@ -205,24 +201,22 @@ std::ostream & CongruenceClosureExplain::giveZ3Explanation(std::ostream & os, co
 } 
 
 z3::expr CongruenceClosureExplain::z3_repr(z3::expr const & e){
-  CurryNode * repr_term = factory_curry_nodes.getCurryNodeById(this->find(e.id()));
+  CurryNode * repr_term = factory_curry_nodes.getCurryNode(this->find(e.id()));
   return subterms[repr_term->getZ3Id()];
 }
 
 EqClass CongruenceClosureExplain::find(unsigned i){
-  CurryNode * term = factory_curry_nodes.getCurryNodeById(i);
+  CurryNode * term = factory_curry_nodes.getCurryNode(i);
   unsigned const_id = term->getConstId(); 
-
-  return uf.find(const_id);
+  return ufe.find(const_id);
 }
-
 
 void CongruenceClosureExplain::explainAlongPath(EqClass a, EqClass c, 
     UnionFind & uf_extra, ExplainEquations & pending_proofs, PendingPointers & ans){
   a = highestNode(a, uf_extra);
   while(a != c){
-    auto b = uf.parentProofForest(a);
-    auto current_label = uf.getLabel(a);
+    auto b = ufe.parentProofForest(a);
+    auto current_label = ufe.getLabel(a);
 
     switch(current_label->tag){
       case EQ_EQ:
@@ -272,13 +266,13 @@ void CongruenceClosureExplain::propagate(){
 
     const CurryNode & a = (pending_element->tag == EQ) ? pending_element->eq_cn.lhs : pending_element->p_eq_cn.first.rhs;
     const CurryNode & b = (pending_element->tag == EQ) ? pending_element->eq_cn.rhs : pending_element->p_eq_cn.second.rhs;
-    EqClass repr_a = uf.find(a.getId()), repr_b = uf.find(b.getId());
+    EqClass repr_a = ufe.find(a.getId()), repr_b = ufe.find(b.getId());
     bool repr_a_is_common = (repr_a > subterms.size()) ? false : subterms[repr_a].is_common();
     bool repr_b_is_common = (repr_b > subterms.size()) ? false : subterms[repr_b].is_common();
 
 #if DEBUG_PROPAGATE
     std::cout << "|------------------------------------------" << std::endl
-      << "@propagate. To merge these two inside uf: " << std::endl
+      << "@propagate. To merge these two inside ufe: " << std::endl
       << a << "(" << repr_a << ")" << std::endl
       << b << "(" << repr_b << ")" << std::endl
       << "------------------------------------------|" << std::endl;
@@ -289,7 +283,7 @@ void CongruenceClosureExplain::propagate(){
       // If a' and b' are both common or uncommon, then break ties using their rank
       // Otherwise, pick the node who is common
       if((repr_a_is_common && repr_b_is_common) || (!repr_a_is_common && !repr_b_is_common)){
-        if(uf.getRank(repr_a) <= uf.getRank(repr_b))
+        if(ufe.getRank(repr_a) <= ufe.getRank(repr_b))
           propagateAux(a, b, repr_a, repr_b, *pending_element);
         else
           propagateAux(b, a, repr_b, repr_a, *pending_element);
@@ -308,11 +302,11 @@ void CongruenceClosureExplain::propagateAux(const CurryNode & a, const CurryNode
     EqClass repr_a, EqClass repr_b,
     const PendingElement & pending_element){
   EqClass old_repr_a = repr_a;
-  uf.combine(b.getId(), a.getId(), &pending_element);
+  ufe.combine(b.getId(), a.getId(), &pending_element);
 
   for(auto equation = use_list[old_repr_a].begin(); equation != use_list[old_repr_a].end(); ){
     EqClass c1 = (*equation)->lhs.getLeftId(), c2 = (*equation)->lhs.getRightId();
-    EqClass repr_c1 = uf.find(c1), repr_c2 = uf.find(c2);
+    EqClass repr_c1 = ufe.find(c1), repr_c2 = ufe.find(c2);
     const EquationCurryNodes * element_found = lookup_table.query(repr_c1, repr_c2);
 
     if(element_found != nullptr){
