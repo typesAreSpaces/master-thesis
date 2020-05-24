@@ -201,53 +201,53 @@ void Hornsat::satisfiable(){
 
 
 void Hornsat::unionupdate(LiteralId x, LiteralId y){ // FIX: almost
-  //if(equiv_classes.greater(y, x)){
-    //unsigned aux = x;
-    //x = y;
-    //y = aux;
-  //}
-  //unsigned repr_x = equiv_classes.find(x), 
-           //repr_y = equiv_classes.find(y);
-//#if DEBUGGING_UNIONUPDATE
-  //std::cout << "Inside unionupdate: " << x << " " << y << std::endl;
-//#endif
-  //// The next two lines setup an iterate
-  //// to go over elements of the class repr_y
-  //auto end = equiv_classes.end(repr_y);  
-  //for(auto u = equiv_classes.begin(repr_y); u != end; ++u){
-    //for(auto p : class_list[*u]){
-//#if DEBUGGING_UNIONUPDATE
-      //std::cout << "Before, Term: " << *u << " " << p << std::endl;
-//#endif
-      //if(!p.lit_pointer->val){
-        //switch(p.eq_side){
-          //case LHS:
-            //p.lit_pointer->l_class = repr_x;
-            //break;
-          //case RHS:
-            //p.lit_pointer->r_class = repr_x;
-            //break;
-        //}
-        //if(p.lit_pointer->l_class == p.lit_pointer->r_class){
-          //facts.push(p.lit_pointer->literal_id);
-          //p.lit_pointer->val= true;
-        //}
-      //}
-//#if DEBUGGING_UNIONUPDATE
-      //std::cout << "After,  Term: " << *u << " " << p << std::endl;
-//#endif
-    //}
-  //}
-  //equiv_classes.combine(repr_x, repr_y);
+  if(equiv_classes.greater(y, x)){
+    unsigned aux = x
+    x = y;
+    y = aux;
+  }
+  unsigned repr_x = equiv_classes.find(x), 
+           repr_y = equiv_classes.find(y);
+#if DEBUGGING_UNIONUPDATE
+  std::cout << "Inside unionupdate: " << x << " " << y << std::endl;
+#endif
+  // The next two lines setup an iterate
+  // to go over elements of the class repr_y
+  auto end = equiv_classes.end(repr_y);  
+  for(auto u = equiv_classes.begin(repr_y); u != end; ++u){
+    for(auto p : class_list[*u]){
+#if DEBUGGING_UNIONUPDATE
+      std::cout << "Before, Term: " << *u << " " << p << std::endl;
+#endif
+      if(!p.lit_pointer->val){
+        switch(p.eq_side){
+          case LHS:
+            p.lit_pointer->l_class = repr_x;
+            break;
+          case RHS:
+            p.lit_pointer->r_class = repr_x;
+            break;
+        }
+        if(p.lit_pointer->l_class == p.lit_pointer->r_class){
+          facts.push(p.lit_pointer->literal_id);
+          p.lit_pointer->val= true;
+        }
+      }
+#if DEBUGGING_UNIONUPDATE
+      std::cout << "After,  Term: " << *u << " " << p << std::endl;
+#endif
+    }
+  }
+  equiv_classes.merge(repr_x, repr_y); // FIX: include a function with this API in CongruenceClosureExplain.h
 }
 
 void Hornsat::closure(){ // FIX: almost
-  //while(!to_combine.empty()){
-    //auto pair = to_combine.front();
-    //to_combine.pop();
-    //TermId u = pair.lhs, v = pair.rhs;
-    //equiv_classes.combine(u, v, nullptr); // FIX: the nullptr
-  //}
+  while(!to_combine.empty()){
+    auto pair = to_combine.front();
+    to_combine.pop();
+    TermId u = pair.lhs, v = pair.rhs;
+    equiv_classes.merge(u, v); // FIX: same as the last one
+  }
 }
 
 bool Hornsat::isConsistent(){
