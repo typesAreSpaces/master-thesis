@@ -1,4 +1,5 @@
 #include "Rename.h"
+#include <z3++.h>
 
 void traversePartA(z3::expr const & e,
     std::vector<bool> & visited,
@@ -88,8 +89,8 @@ void traversePartB(z3::expr const & e,
 }
 
 z3::expr reformulate(z3::expr const & e,
-    const std::set<std::string> & a_local_names,
-    const std::set<std::string> & common_names){
+    std::set<std::string> const & a_local_names,
+    std::set<std::string> const & common_names){
   if(e.is_app()){
     unsigned num = e.num_args();
     auto f = e.decl();
@@ -119,29 +120,24 @@ z3::expr reformulate(z3::expr const & e,
       case Z3_OP_IDIV:
         return f(reformulate(e.arg(0), a_local_names, common_names),
             reformulate(e.arg(1), a_local_names, common_names));
-      default:{
-                if(common_names.find(name) != common_names.end()){
-                  // It is a common symbol
-                  auto new_f = z3::function(("c_" + name).c_str(), domain_sorts, f.range());
-                  return new_f(new_args);
-                }
-                else if(a_local_names.find(name) != a_local_names.end()){
-                  // It is an a local symbol
-                  auto new_f = z3::function(("a_" + name).c_str(), domain_sorts, f.range());
-                  return new_f(new_args);
-                }
-                else{
-                  // It is a b local symbol
-                  auto new_f = z3::function(("b_" + name).c_str(), domain_sorts, f.range());
-                  return new_f(new_args);
-                } 
-              }
+      default:
+        {
+          auto new_f = z3::function((
+                (common_names.find(name) != common_names.end() ?
+                 "c_" 
+                 : (a_local_names.find(name) != a_local_names.end() ? 
+                   "a_" 
+                   : "b_"))
+                + name).c_str(), domain_sorts, f.range());
+          return new_f(new_args);
+        }
     }
   }
   throw "Problem @ reformulate: The formula e is not an expression.";
 }
 
-z3::expr reformulate(z3::expr const & e, std::set<std::string> const & uncommon_names){
+z3::expr reformulate(z3::expr const & e,
+    std::set<std::string> const & uncommon_names){
   if(e.is_app()){
     unsigned num = e.num_args();
     auto f = e.decl();
@@ -171,24 +167,17 @@ z3::expr reformulate(z3::expr const & e, std::set<std::string> const & uncommon_
       case Z3_OP_IDIV:
         return f(reformulate(e.arg(0), uncommon_names),
             reformulate(e.arg(1), uncommon_names));
-      default:{
-                if(uncommon_names.find(name) != uncommon_names.end()){
-                  // It is a common symbol
-                  auto new_f = z3::function(("a_" + name).c_str(), domain_sorts, f.range());
-                  return new_f(new_args);
-                }
-                else{
-                  // It is a b local symbol
-                  auto new_f = z3::function(("c_" + name).c_str(), domain_sorts, f.range());
-                  return new_f(new_args);
-                } 
-              }
+      default:
+        {
+          auto new_f = z3::function(((uncommon_names.find(name) != uncommon_names.end() ? "a_" : "c_") + name).c_str(), domain_sorts, f.range());
+          return new_f(new_args);
+        }
     }
   }
   throw "Problem @ reformulate: The formula e is not an expression.";
 }
 
-std::pair<z3::expr, z3::expr> rename(z3::expr & a, z3::expr & b){
+z3::expr rename(z3::expr const & a, z3::expr const & b){
   std::vector<bool> visited;
   std::set<std::string> a_local_names;
   std::set<std::string> common_names;
@@ -196,10 +185,33 @@ std::pair<z3::expr, z3::expr> rename(z3::expr & a, z3::expr & b){
   traversePartA(a, visited, a_local_names);
   traversePartB(b, visited, a_local_names, common_names);
 
-  return std::make_pair(reformulate(a, a_local_names, common_names),
-      reformulate(b, a_local_names, common_names));
+  return reformulate(a, a_local_names, common_names);
 }
 
-z3::expr rename(z3::expr & a, const std::set<std::string> & uncommon_names){
+z3::expr rename(z3::expr const & a, const std::set<std::string> & uncommon_names){
   return reformulate(a, uncommon_names);
+}
+
+z3::expr_vector rename(z3::expr_vector const & input_a, z3::expr_vector const & input_b){
+  z3::expr_vector ans(input_a.ctx());
+  std::vector<bool> visited;
+  std::set<std::string> a_local_names;
+  std::set<std::string> common_names;
+
+  for(auto const & equation : input_a)
+    traversePartA(equation, visited, a_local_names);
+  for(auto const & equation : input_b)
+    traversePartB(equation, visited, a_local_names, common_names);
+  for(auto const & equation : input_a)
+    ans.push_back(reformulate(equation, a_local_names, common_names));
+
+  return ans;
+}
+
+z3::expr_vector rename(z3::expr_vector const & input_a, std::set<std::string> const & uncommon_names){
+  z3::expr_vector ans(input_a.ctx());
+  for(auto const & equation : input_a)
+    ans.push_back(rename(equation, uncommon_names));
+
+  return ans;
 }
