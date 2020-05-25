@@ -64,10 +64,11 @@ struct Clause {
 struct Literal {
 
   static unsigned curr_num_literals;
+  // Given a literal l in Z3Subterms::subterms
+  // literal_id matches l.id()
   LiteralId literal_id;
   TermId l_id, r_id;
-  // FIX: These should be z3::expr pointing to the representative modulo some Congruence Closure datas structure
-  unsigned l_class, r_class; 
+  EqClass l_class, r_class; 
   bool val, is_common;
   struct Clause * clause_list;
 
@@ -82,16 +83,16 @@ struct Literal {
 
   Literal() : Literal(curr_num_literals++, false, nullptr) {}
 
-  void update(z3::expr const & literal, UnionFindExplain & ufe){
+  void update(z3::expr const & literal, CongruenceClosureExplain & cce){
     this->l_id = literal.arg(0).id();
     this->r_id = literal.arg(1).id();
-    this->l_class = ufe.find(this->l_id); // FIX: See Hornsat.h @ 69
-    this->r_class = ufe.find(this->r_id); // Same
+    this->l_class = cce.find(this->l_id); 
+    this->r_class = cce.find(this->r_id);
     this->is_common = literal.is_common();
   }
 
-  void update(z3::expr const & literal, UnionFindExplain & ufe, ClauseId clause_id){
-    this->update(literal, ufe);
+  void update(z3::expr const & literal, CongruenceClosureExplain & cce, ClauseId clause_id){
+    this->update(literal, cce);
     this->clause_list = this->clause_list->add(clause_id);
   }
 
@@ -155,12 +156,10 @@ class Hornsat {
   UnionFindExplain         ufe;
   CongruenceClosureExplain equiv_classes;
 
-  std::vector<Literal> list_of_literals;
-  ClassList            class_list;
-
+  std::vector<Literal>   list_of_literals;
+  ClassList              class_list;
   std::vector<unsigned>  num_args;
   std::vector<LiteralId> pos_lit_list;
-
   // 'facts' is a queue of all the (temporary)
   // literals that have value true
   std::queue<LiteralId>  facts;
@@ -169,7 +168,6 @@ class Hornsat {
   bool consistent;
 
   void satisfiable();
-  void unionupdate(LiteralId, LiteralId);
   void closure();
   
  public:
@@ -177,6 +175,7 @@ class Hornsat {
   ~Hornsat();
 
   bool isConsistent();
+  void unionupdate(LiteralId, LiteralId);
   friend std::ostream & operator << (std::ostream &, Hornsat const &);
 };
 

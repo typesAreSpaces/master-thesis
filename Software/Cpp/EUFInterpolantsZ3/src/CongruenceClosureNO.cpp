@@ -13,10 +13,6 @@ CongruenceClosureNO::~CongruenceClosureNO(){
 #endif
 }
 
-void CongruenceClosureNO::buildCongruenceClosure(std::list<unsigned> & pending){
-  throw "CongruenceClosureNO::buildCongruenceClosure(std::list<unsigned> &). Implementation not defined";
-}
-
 void CongruenceClosureNO::combine(unsigned u, unsigned v){
   if(ufe.find(u) == ufe.find(v))
     return;

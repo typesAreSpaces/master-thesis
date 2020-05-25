@@ -59,7 +59,6 @@ protected:
   SignatureTable     sig_table;
  public:
   CongruenceClosure(const Z3Subterms &, UnionFindExplain &);
-  virtual void buildCongruenceClosure(std::list<unsigned> &) = 0;
   virtual ~CongruenceClosure();
   UnionFindExplain & getUnionFindExplain() const;
   friend std::ostream & operator << (std::ostream &, const CongruenceClosure &);

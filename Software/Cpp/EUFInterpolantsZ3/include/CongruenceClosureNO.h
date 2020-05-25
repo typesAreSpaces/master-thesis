@@ -8,7 +8,6 @@ class CongruenceClosureNO : public CongruenceClosure {
   PredList & pred_list;
  public:
   CongruenceClosureNO(const Z3Subterms &, PredList &, UnionFindExplain &);
-  void buildCongruenceClosure(std::list<unsigned> &);
   void combine(unsigned, unsigned);
   bool areCongruent(unsigned, unsigned);
   ~CongruenceClosureNO();

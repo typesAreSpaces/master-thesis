@@ -31,7 +31,7 @@ void currentProgress(){
 }
 
 void paperExample(){
- 
+
   z3::context ctx;
   z3::sort my_sort = ctx.uninterpreted_sort("A");
   z3::expr z1 = ctx.constant("z1", my_sort);
@@ -43,6 +43,11 @@ void paperExample(){
   z3::expr v = ctx.constant("v", my_sort);
   z3::expr t = ctx.constant("t", my_sort);
   z3::func_decl f = ctx.function("f", my_sort, my_sort, my_sort);
+  std::set<std::string> uncomms;
+  uncomms.insert("v");
+
+  z3::expr alpha = f(z1, v) == s1 && f(z2, v) == s2 && f(f(y1, v), f(y2, v)) == t;
+  z3::expr r_alpha = rename(alpha, uncomms);
 
   z3::expr_vector input(ctx); 
   input.push_back(f(z1, v) == s1);
@@ -50,7 +55,13 @@ void paperExample(){
   input.push_back(f(f(y1, v), f(y2, v)) == t);
 
   try {
-    EUFInterpolant eufi(input);
+    //EUFInterpolant eufi(input); // FIX:
+    auto ok = f(z1, v);
+    std::cout << ok << " " << ok.is_common() << std::endl;
+    auto ok2 = f(f(y1, v), f(y2, v));
+    std::cout << ok2 << " " << ok2.is_common() << std::endl;
+    //std::cout << alpha << std::endl;
+    std::cout << r_alpha << std::endl;
   }
   catch(char const * e){
     std::cout << e << std::endl;

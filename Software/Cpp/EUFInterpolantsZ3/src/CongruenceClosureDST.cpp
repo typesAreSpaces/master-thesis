@@ -1,19 +1,11 @@
 #include "CongruenceClosureDST.h"
 
 CongruenceClosureDST::CongruenceClosureDST(const Z3Subterms & subterms,
-					   PredList & pred_list, UnionFindExplain & uf) :
+					   PredList & pred_list, UnionFindExplain & uf,
+             std::list<unsigned> & pending) :
   CongruenceClosure(subterms, uf),
   pred_list(pred_list)
 {
-}
-
-CongruenceClosureDST::~CongruenceClosureDST(){
-#if DEBUG_DESTRUCTORS_CC
-  std::cout << "Done ~CongruenceClosureDST" << std::endl;
-#endif
-}
-
-void CongruenceClosureDST::buildCongruenceClosure(std::list<unsigned> & pending){
   std::list<std::pair<unsigned, unsigned> > combine;
   while(!pending.empty()){
     combine.clear();
@@ -52,6 +44,12 @@ void CongruenceClosureDST::buildCongruenceClosure(std::list<unsigned> & pending)
       }
     }
   }
+}
+
+CongruenceClosureDST::~CongruenceClosureDST(){
+#if DEBUG_DESTRUCTORS_CC
+  std::cout << "Done ~CongruenceClosureDST" << std::endl;
+#endif
 }
 
 std::ostream & operator << (std::ostream & os, const CongruenceClosureDST & cc){

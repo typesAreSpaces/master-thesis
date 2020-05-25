@@ -6,9 +6,6 @@
 #define DEBUG_PROPAGATE_AUX 0
 #define DEBUG_TEST_EXPLAIN  0
 
-#include <map>
-#include <set>
-#include "Z3Subterms.h"
 #include "CongruenceClosure.h"
 #include "FactoryCurryNodes.h"
 
@@ -55,9 +52,11 @@ class LookupTable {
 
 typedef std::vector<std::list<const EquationCurryNodes *> > UseList;
 
+class Hornsat;
+
 class CongruenceClosureExplain : public CongruenceClosure {
 
-  friend class Hornsat;
+  Hornsat * hsat;
 
   PendingElements pending_elements;
   PendingPointers equations_to_merge;
@@ -81,14 +80,15 @@ class CongruenceClosureExplain : public CongruenceClosure {
   std::ostream &  giveExplanation(std::ostream &, EqClass, EqClass);
 
   public:
-  CongruenceClosureExplain(CongruenceClosureExplain const &, UnionFindExplain &);
+  CongruenceClosureExplain(Hornsat *, CongruenceClosureExplain const &, UnionFindExplain &);
   CongruenceClosureExplain(const Z3Subterms &, UnionFindExplain &, FactoryCurryNodes &, IdsToMerge const &);
   ~CongruenceClosureExplain();
 
-  void buildCongruenceClosure(std::list<EqClass> &);
-
-  EqClass         find(unsigned);
+  bool            areSameClass(EqClass, EqClass);
+  bool            areSameClass(z3::expr const &, z3::expr const &);
+  EqClass         find(EqClass);
   z3::expr        z3_repr(z3::expr const &);
+  void            merge(EqClass, EqClass);
   void            merge(z3::expr const &, z3::expr const &);
   PendingPointers explain(z3::expr const &, z3::expr const &);
 
