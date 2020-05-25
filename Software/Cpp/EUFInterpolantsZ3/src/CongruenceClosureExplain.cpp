@@ -13,6 +13,36 @@ CongruenceClosureExplain::CongruenceClosureExplain(Hornsat * hsat, CongruenceClo
   factory_curry_nodes(cce.factory_curry_nodes),
   lookup_table(), use_list()
 {
+  use_list.resize(factory_curry_nodes.size());
+
+#if DEBUG_CONSTRUCT_CCE
+  std::cout << factory_curry_nodes << std::endl;
+  std::cout << factory_curry_nodes.num_terms << std::endl;
+  std::cout << "Making aliases in the cloned CongruenceClosureExplain" << std::endl;
+#endif
+
+  for(unsigned i = 0; i < factory_curry_nodes.num_terms; ++i){
+    try {
+      CurryNode * original_node = factory_curry_nodes.getCurryNode(i);
+      CurryNode * constant_node = factory_curry_nodes.z3IndexToCurryConstant(i);
+#if DEBUG_CONSTRUCT_CCE
+      std::cout << "Index: " << i << std::endl;
+      std::cout << *original_node << std::endl;
+      std::cout << *constant_node << std::endl;
+#endif
+      pending_elements.emplace_back(*original_node, *constant_node);
+      equations_to_merge.push_back(&pending_elements.back());
+    }
+    catch(char const * e){
+#if DEBUG_CONSTRUCT_CCE
+      std::cout << e << std::endl;
+#endif
+    }
+  }
+
+  merge();
+
+  return;
 }
 
 CongruenceClosureExplain::CongruenceClosureExplain(Z3Subterms const & subterms,

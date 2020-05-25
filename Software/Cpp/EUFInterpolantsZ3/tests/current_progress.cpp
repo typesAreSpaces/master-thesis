@@ -46,22 +46,24 @@ void paperExample(){
   std::set<std::string> uncomms;
   uncomms.insert("v");
 
-  z3::expr alpha = f(z1, v) == s1 && f(z2, v) == s2 && f(f(y1, v), f(y2, v)) == t;
-  z3::expr r_alpha = rename(alpha, uncomms);
-
   z3::expr_vector input(ctx); 
   input.push_back(f(z1, v) == s1);
   input.push_back(f(z2, v) == s2);
   input.push_back(f(f(y1, v), f(y2, v)) == t);
 
+  auto r_input = rename(input, uncomms);
+
+  std::cout << "Original input elements" << std::endl;
+  for(auto const & equation : input)
+    std::cout << equation << std::endl;
+
+  std::cout << "Renamed input elements" << std::endl;
+  for(auto const & equation : r_input)
+    std::cout << equation << std::endl;
+
   try {
-    //EUFInterpolant eufi(input); // FIX:
-    auto ok = f(z1, v);
-    std::cout << ok << " " << ok.is_common() << std::endl;
-    auto ok2 = f(f(y1, v), f(y2, v));
-    std::cout << ok2 << " " << ok2.is_common() << std::endl;
-    //std::cout << alpha << std::endl;
-    std::cout << r_alpha << std::endl;
+    //EUFInterpolant eufi(input);
+    EUFInterpolant eufi(r_input);
   }
   catch(char const * e){
     std::cout << e << std::endl;

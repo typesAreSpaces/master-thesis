@@ -8,7 +8,7 @@
             "name": "(gdb) Launch",
             "type": "cppdbg",
             "request": "launch",
-            "program": "${workspaceFolder}/tests/cong_closure_expl_test",
+            "program": "${workspaceFolder}/tests/current_progress",
             "args": [""],
             "stopAtEntry": false,
             "cwd": "${workspaceFolder}",

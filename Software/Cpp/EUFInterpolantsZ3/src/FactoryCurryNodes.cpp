@@ -213,7 +213,7 @@ std::ostream & operator << (std::ostream & os, const FactoryCurryNodes & fcns){
 
   for(unsigned i = 0; i < fcns.curry_nodes.size(); i++)
     if(fcns.curry_nodes[i] != nullptr)
-      std::cout << "Id: " << i << "\nThe node:\n" << *fcns.curry_nodes[i] << std::endl;
+      std::cout << "i: " << i << " Id: " << i << "\nThe node:\n" << *fcns.curry_nodes[i] << std::endl;
 
   os << "Size of FactoryCurryNodes: " << fcns.hash_table.size() << std::endl;
   return os;

@@ -16,7 +16,7 @@ Hornsat::Hornsat(CongruenceClosureExplain & cce,
   class_list      .resize(num_literals + 1);
   num_args        .resize(num_hcs);
   pos_lit_list    .resize(num_hcs);
-  
+
 #if DEBUGGING_CONSTRUCTOR
   std::cout << "Horn Clauses processed by Hornsat" << std::endl;
 #endif
