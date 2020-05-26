@@ -2,36 +2,26 @@
 
 EUFInterpolant::EUFInterpolant(z3::expr_vector const & assertions) : Input(assertions)
 {        
-
   // Unconditional uncommon symbol elimination step
   exposeUncommons();
+#if DEBUG_EXPOSE_UNCOMMS
   std::cout << "After expose uncommons" << std::endl;
   std::cout << horn_clauses << std::endl;
+#endif
 
   // Conditional uncommon symbol elimination step
   Hornsat hsat(cce, horn_clauses);
-  std::cout << "yay" << std::endl;
-
-
-  // UnionFind hornsat_uf(uf);
-  // hornsat_uf.resize(subterms.size());
-  // CongruenceClosureDST hornsat_cc(min_id, subterms, hornsat_list, hornsat_uf);
-  // Hornsat hsat(horn_clauses, hornsat_uf);
-  // // // ----------------------------------------------------------------------
+#if DEBUG_COND_ELIM
+  std::cout << hsat << std::endl;
+#endif
 
   // auto replacements = hsat.satisfiable(hornsat_cc);
   // for(auto x : replacements)
   //   std::cout << "Merge " << *horn_clauses[x.clause1]
   // 	      << " with " << *horn_clauses[x.clause2] << std::endl;
 
-  // // // ----------------------------
-  // // std::cout << hsat << std::endl;
-  // // // ----------------------------
-
   // buildInterpolant(replacements);
-
   return;
-  // throw "Problem @ EUFInterpolant::EUFInterpolant. The z3::expr const & assertions was unsatisfiable.";
 }
 
 EUFInterpolant::~EUFInterpolant(){

@@ -54,7 +54,7 @@ Hornsat::Hornsat(CongruenceClosureExplain & cce,
       // Horn clause head processing --------------------------------
       auto consequent = horn_clause->getConsequent();
 #if DEBUGGING_CONSTRUCTOR
-      std::cout << "Literals inside consequent " 
+      std::cout << "Consequent Literal " 
         << consequent.id() << " " << consequent << std::endl;
 #endif
       Literal * literal = 
@@ -67,7 +67,6 @@ Hornsat::Hornsat(CongruenceClosureExplain & cce,
         class_list[literal->l_id].emplace_back(literal, LHS);
         class_list[literal->r_id].emplace_back(literal, RHS);
       }
-
       // In the original formulation by Gallier, 
       // this checks if the Horn Clause is a fact,
       // in this approach, this checks if a Horn Clause
@@ -90,7 +89,6 @@ Hornsat::Hornsat(CongruenceClosureExplain & cce,
   std::cout << "Done @ Hornsat constructor" << std::endl;
 #endif
   satisfiable();
-  std::cout << *this << std::endl;
 }
 
 Hornsat::~Hornsat(){
@@ -146,14 +144,10 @@ void Hornsat::satisfiable(){
 
 void Hornsat::closure(){ 
   while(!to_combine.empty()){
-    auto pair = to_combine.front();
-    to_combine.pop();
+    auto const & pair = to_combine.front();
     TermId u = pair.lhs, v = pair.rhs;
     equiv_classes.merge(u, v); 
-    //auto const & pair = to_combine.front();
-    //TermId u = pair.lhs, v = pair.rhs;
-    //equiv_classes.merge(u, v); 
-    //to_combine.pop();
+    to_combine.pop();
   }
 }
 

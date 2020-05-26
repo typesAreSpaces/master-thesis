@@ -53,16 +53,7 @@ void paperExample(){
 
   auto r_input = rename(input, uncomms);
 
-  std::cout << "Original input elements" << std::endl;
-  for(auto const & equation : input)
-    std::cout << equation << std::endl;
-
-  std::cout << "Renamed input elements" << std::endl;
-  for(auto const & equation : r_input)
-    std::cout << equation << std::endl;
-
   try {
-    //EUFInterpolant eufi(input);
     EUFInterpolant eufi(r_input);
   }
   catch(char const * e){

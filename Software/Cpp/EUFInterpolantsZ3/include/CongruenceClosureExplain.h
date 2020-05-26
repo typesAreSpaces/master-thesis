@@ -5,7 +5,7 @@
 #define DEBUG_PROPAGATE     0
 #define DEBUG_PROPAGATE_AUX 0
 #define DEBUG_TEST_EXPLAIN  0
-#define DEBUG_CONSTRUCT_CCE 1
+#define DEBUG_CONSTRUCT_CCE 0
 
 #include "CongruenceClosure.h"
 #include "FactoryCurryNodes.h"

@@ -2,6 +2,8 @@
 #define _EUF_INTERPOLANT_
 #define DEBUG_DESTRUCTOR_EUF 0
 #define DEBUG_EUFINTERPOLANT 0
+#define DEBUG_EXPOSE_UNCOMMS 1
+#define DEBUG_COND_ELIM      1
 
 #include "Input.h"
 

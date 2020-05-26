@@ -2,9 +2,9 @@
 #define _HORNSAT_
 #define FALSELITERAL          0
 #define DEBUG_DESTRUCTORS     0
-#define DEBUGGING_SATISFIABLE 1
-#define DEBUGGING_UNIONUPDATE 1
-#define DEBUGGING_CONSTRUCTOR 1
+#define DEBUGGING_SATISFIABLE 0
+#define DEBUGGING_UNIONUPDATE 0
+#define DEBUGGING_CONSTRUCTOR 0
 
 #include <iostream>
 #include <queue>

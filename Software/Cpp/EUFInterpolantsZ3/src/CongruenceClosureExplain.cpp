@@ -18,7 +18,7 @@ CongruenceClosureExplain::CongruenceClosureExplain(Hornsat * hsat, CongruenceClo
 #if DEBUG_CONSTRUCT_CCE
   std::cout << factory_curry_nodes << std::endl;
   std::cout << factory_curry_nodes.num_terms << std::endl;
-  std::cout << "Making aliases in the cloned CongruenceClosureExplain" << std::endl;
+  std::cout << "(Re-)Making aliases in a cloned CongruenceClosureExplain" << std::endl;
 #endif
 
   for(unsigned i = 0; i < factory_curry_nodes.num_terms; ++i){
@@ -39,10 +39,7 @@ CongruenceClosureExplain::CongruenceClosureExplain(Hornsat * hsat, CongruenceClo
 #endif
     }
   }
-
   merge();
-
-  return;
 }
 
 CongruenceClosureExplain::CongruenceClosureExplain(Z3Subterms const & subterms,
@@ -412,6 +409,5 @@ std::ostream & CongruenceClosureExplain::giveZ3Explanation(std::ostream & os, co
 } 
 
 std::ostream & operator << (std::ostream & os, const CongruenceClosureExplain & cce){
-  os << cce.ufe;
   return os;
 }
