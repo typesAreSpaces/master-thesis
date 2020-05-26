@@ -20,48 +20,53 @@ HornClauses::~HornClauses(){
 // ---------------------
 //       C -> a
 void HornClauses::simplifyHornClauses(){
-  throw "HornClauses::simplifyHornClauses not implemented yet!";
-  //unsigned position = 0;
-  //bool       change = true;
+  // Group horn clauses by consequent
+  // Then make n^2 comparisons per group
+  // to determine contaiment relations
+  // Select the horn clauses from each 
+  // group that are 'minimal' (i.e. they
+  // are not contained by another antecedent)
 
-  //// Filter: Only Type 2 or Type 2.1 are allowed here		
-  //for(auto it : horn_clauses){	
-  //if(it->isCommonAntecedent()
-  //&& it->isCommonConsequent()){
-  //reduced[it->getConsequent()].push_back(position);
-  //}
-  //++position;
-  //}
+  unsigned position = 0;
+  bool     change = true;
 
-  //for(auto horn_clause : reduced){
-  //unsigned num_of_positions = horn_clause.second.size();
-  //for(unsigned i = 0; i + 1 < num_of_positions; ++i){
-  //unsigned j = i + 1;
-  //while(change && j < num_of_positions){
-  //change = false;
-  //unsigned i_position = horn_clause.second[i],
-  //j_position = horn_clause.second[j],
-  //last_position = horn_clause.second[num_of_positions - 1];
+  // Filter: Only Type 2 or Type 2.1 are allowed here		
+  for(auto it1 : horn_clauses){	
+    auto it = it1.second;
+    if(it->isCommonAntecedent() && it->isCommonConsequent())
+      reduced[it->getConsequent()].push_back(position); // What's reduced? Currently it is not defined
+    ++position;
+  }
 
-  //if(*horn_clauses[i_position] > *horn_clauses[j_position]){
-  //change = true;
-  //swapHornClauses(j_position, last_position);
-  //--num_of_positions;
-  //}
-  //else{
-  //if(*horn_clauses[i_position] < *horn_clauses[j_position]){
-  //change = true;
-  //swapHornClauses(i_position, j_position);
-  //swapHornClauses(j_position, last_position);
-  //--num_of_positions;
-  //}
-  //else
-  //++j; 
-  //}
-  //}
-  //}
-  //reduced_length[horn_clause.first] = num_of_positions;
-  //}
+  for(auto horn_clause : reduced){
+    unsigned num_of_positions = horn_clause.second.size();
+    for(unsigned i = 0; i + 1 < num_of_positions; ++i){
+      unsigned j = i + 1;
+      while(change && j < num_of_positions){
+        change = false;
+        unsigned i_position = horn_clause.second[i],
+        j_position = horn_clause.second[j],
+        last_position = horn_clause.second[num_of_positions - 1];
+
+        if(*horn_clauses[i_position] > *horn_clauses[j_position]){
+          change = true;
+          swapHornClauses(j_position, last_position);
+          --num_of_positions;
+        }
+        else{
+          if(*horn_clauses[i_position] < *horn_clauses[j_position]){
+            change = true;
+            swapHornClauses(i_position, j_position);
+            swapHornClauses(j_position, last_position);
+            --num_of_positions;
+          }
+          else
+            ++j; 
+        }
+      }
+    }
+    reduced_length[horn_clause.first] = num_of_positions;
+  }
 }
 
 void HornClauses::swapHornClauses(unsigned i, unsigned j){
@@ -101,13 +106,6 @@ void HornClauses::add(HornClause * hc){
     default: 
       throw "Problem @ HornClauses::add. The consequent of HornClause * hc is neither an equation nor a false constant";
   }
-}
-
-void HornClauses::conditionalElimination(std::vector<Replacement> replacements){
-  throw "HornClauses::conditionalElimination not implemented yet!";
-#if DEBUG_CE
-  std::cout << "Horn Clauses produced - after simplify:" << std::endl;
-#endif 
 }
 
 unsigned HornClauses::size() const { return horn_clauses.size(); }
