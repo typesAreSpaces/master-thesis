@@ -110,14 +110,14 @@ unsigned HornClause::getLocalMaxLitId() const {
   return local_max_lit_id;
 }
 
-// Definition: > \in HornClause \times HornClause
+// Definition: > \in HornClause \times HornClause -> Bool
 // Let hc1 be of the form (/\_{i=0}^m u_i   = v_i  ) => a_1 = a_2
 // Let hc2 be of the form (/\_{j=0}^n u_j^' = v_j^') => b_1 = b_2
 // hc1 > hc2 iff (repr(a_1) \= repr(a_2)) = (repr(b_1) \= repr(b_2))
 //               and (/\_j^n u_j^' = v_j^') => (/\_i^m u_i = v_i_)
 //               and n > m
 // -------------------------------------------------------------------
-bool operator > (const HornClause & hc1, const HornClause & hc2){
+bool operator > (HornClause const & hc1, HornClause const & hc2){
   // ------------------------------------------------
   // Precondition:
   // This comparison assumes the consequent of

@@ -29,7 +29,6 @@ class HornClauses {
   ~HornClauses();
   void swapHornClauses(unsigned, unsigned);
   void add(HornClause *);
-  void conditionalElimination(std::vector<Replacement>); // TODO: Implement this
 
   unsigned                       size() const;
   HornClause *                   operator[] (unsigned) const; 

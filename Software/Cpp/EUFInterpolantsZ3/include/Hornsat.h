@@ -169,6 +169,9 @@ class Hornsat {
 
   void satisfiable();
   void closure();
+  void conditionalElimination(); // TODO: Implement this
+  void conditionalReplacement(); // TODO: Implement this
+
   
  public:
   Hornsat(CongruenceClosureExplain &, HornClauses const &);

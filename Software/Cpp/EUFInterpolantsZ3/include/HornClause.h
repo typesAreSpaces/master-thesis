@@ -34,10 +34,10 @@ public:
   unsigned                getLocalMaxLitId()    const;
   z3::expr                ToZ3Exprc() const;
 
-  friend bool operator <(const HornClause &, const HornClause &);
-  friend bool operator >(const HornClause &, const HornClause &);
+  friend bool operator <(HornClause const &, HornClause const &);
+  friend bool operator >(HornClause const &, HornClause const &);
   
-  friend std::ostream & operator << (std::ostream &, const HornClause &);
+  friend std::ostream & operator << (std::ostream &, HornClause const &);
 };
 
 #endif
