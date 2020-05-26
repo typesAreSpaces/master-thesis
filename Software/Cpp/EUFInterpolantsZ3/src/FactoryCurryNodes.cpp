@@ -69,7 +69,7 @@ CurryNode * FactoryCurryNodes::z3IndexToCurryConstant(unsigned id) const {
 }
 
 CurryNode * FactoryCurryNodes::constantCurryNode(unsigned index) const {
-  if(index > curry_nodes.size())
+  if(index >= curry_nodes.size())
     return getCurryNode(FRESH_PREFIX + std::to_string(index), nullptr, nullptr);
   auto element = curry_nodes[index];
   if(element->isReplaceable())
