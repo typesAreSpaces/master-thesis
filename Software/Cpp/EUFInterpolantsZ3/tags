@@ -378,8 +378,8 @@ commonAncestor	src/UnionFindExplain.cpp	/^EqClass UnionFindExplain::commonAncest
 commonAncestorHelper	src/UnionFindExplain.cpp	/^EqClass UnionFindExplain::commonAncestorHelper(EqClass aux_x, EqClass aux_y, unsigned depth_diff/;"	f	class:UnionFindExplain	typeref:typename:EqClass
 compareEquation	src/Util.cpp	/^bool compareEquation(const z3::expr & eq1, const z3::expr & eq2){$/;"	f	typeref:typename:bool
 compareTerm	src/Util.cpp	/^bool compareTerm(const z3::expr & t1, const z3::expr & t2){$/;"	f	typeref:typename:bool
-conditionalElimination	src/HornClauses.cpp	/^void HornClauses::conditionalElimination(std::vector<Replacement> replacements){$/;"	f	class:HornClauses	typeref:typename:void
-conditionalReplacement	src/EUFInterpolant.cpp	/^z3::expr_vector EUFInterpolant::conditionalReplacement(z3::expr_vector & terms_to_replace){ \/\//;"	f	class:EUFInterpolant	typeref:typename:z3::expr_vector
+conditionalElimination	src/Hornsat.cpp	/^void Hornsat::conditionalElimination(){$/;"	f	class:Hornsat	typeref:typename:void
+conditionalReplacement	src/Hornsat.cpp	/^void Hornsat::conditionalReplacement(){$/;"	f	class:Hornsat	typeref:typename:void
 consequent	include/HornClause.h	/^  z3::expr        consequent;$/;"	m	class:HornClause	typeref:typename:z3::expr
 consistent	include/Hornsat.h	/^  bool consistent;$/;"	m	class:Hornsat	typeref:typename:bool
 const_id	include/CurryNode.h	/^  unsigned id, z3_id, const_id;$/;"	m	class:CurryNode	typeref:typename:unsigned
@@ -610,7 +610,7 @@ operator ==	include/UnionFind.h	/^    bool operator ==(iterator const & other) {
 operator ==	include/Z3Subterms.h	/^    bool operator==(const iterator & other) const { $/;"	f	class:Z3Subterms::iterator	typeref:typename:bool
 operator ==	src/Match.cpp	/^bool Match::iterator::operator ==(iterator const & other) const {$/;"	f	class:Match::iterator	typeref:typename:bool
 operator ==	src/UnionFind.cpp	/^bool UnionFind::operator ==(const UnionFind & other){$/;"	f	class:UnionFind	typeref:typename:bool
-operator >	src/HornClause.cpp	/^bool operator > (const HornClause & hc1, const HornClause & hc2){$/;"	f	typeref:typename:bool
+operator >	src/HornClause.cpp	/^bool operator > (HornClause const & hc1, HornClause const & hc2){$/;"	f	typeref:typename:bool
 operator []	src/HornClauses.cpp	/^HornClause* HornClauses::operator[](unsigned i) const { $/;"	f	class:HornClauses	typeref:typename:HornClause *
 operator []	src/Match.cpp	/^std::vector<unsigned> Match::operator [](unsigned i){$/;"	f	class:Match	typeref:typename:std::vector<unsigned>
 operator []	src/Z3Subterms.cpp	/^z3::expr Z3Subterms::operator[](unsigned i) const {$/;"	f	class:Z3Subterms	typeref:typename:z3::expr

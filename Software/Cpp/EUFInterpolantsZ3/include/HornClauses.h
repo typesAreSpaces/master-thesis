@@ -30,6 +30,7 @@ class HornClauses {
   void swapHornClauses(unsigned, unsigned);
   void add(HornClause *);
 
+
   unsigned                       size() const;
   HornClause *                   operator[] (unsigned) const; 
   std::vector<HornClause*> const getHornClauses() const;

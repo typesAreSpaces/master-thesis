@@ -11,6 +11,7 @@ class EUFInterpolant : public Input {
 
   z3::expr_vector buildHCBody(z3::expr const &, z3::expr const &);
   void            exposeUncommons();
+  void            conditionalElimination(); // TODO: Implement this
   
  public:
   EUFInterpolant(z3::expr_vector const &);

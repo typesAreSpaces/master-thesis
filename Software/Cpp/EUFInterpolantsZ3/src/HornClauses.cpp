@@ -27,46 +27,47 @@ void HornClauses::simplifyHornClauses(){
   // group that are 'minimal' (i.e. they
   // are not contained by another antecedent)
 
-  unsigned position = 0;
-  bool     change = true;
+  //unsigned position = 0;
+  //bool     change = true;
 
-  // Filter: Only Type 2 or Type 2.1 are allowed here		
-  for(auto it1 : horn_clauses){	
-    auto it = it1.second;
-    if(it->isCommonAntecedent() && it->isCommonConsequent())
-      reduced[it->getConsequent()].push_back(position); // What's reduced? Currently it is not defined
-    ++position;
-  }
+  //// Filter: Only Type 2 or Type 2.1 are allowed here		
+  //for(auto it1 : horn_clauses){	
+    //auto it = it1.second;
+    //if(it->isCommonAntecedent() && it->isCommonConsequent())
+      //// What's reduced? Currently it is not defined
+      //reduced[it->getConsequent()].push_back(position); 
+    //++position;
+  //}
 
-  for(auto horn_clause : reduced){
-    unsigned num_of_positions = horn_clause.second.size();
-    for(unsigned i = 0; i + 1 < num_of_positions; ++i){
-      unsigned j = i + 1;
-      while(change && j < num_of_positions){
-        change = false;
-        unsigned i_position = horn_clause.second[i],
-        j_position = horn_clause.second[j],
-        last_position = horn_clause.second[num_of_positions - 1];
+  //for(auto horn_clause : reduced){
+    //unsigned num_of_positions = horn_clause.second.size();
+    //for(unsigned i = 0; i + 1 < num_of_positions; ++i){
+      //unsigned j = i + 1;
+      //while(change && j < num_of_positions){
+        //change = false;
+        //unsigned i_position = horn_clause.second[i],
+        //j_position = horn_clause.second[j],
+        //last_position = horn_clause.second[num_of_positions - 1];
 
-        if(*horn_clauses[i_position] > *horn_clauses[j_position]){
-          change = true;
-          swapHornClauses(j_position, last_position);
-          --num_of_positions;
-        }
-        else{
-          if(*horn_clauses[i_position] < *horn_clauses[j_position]){
-            change = true;
-            swapHornClauses(i_position, j_position);
-            swapHornClauses(j_position, last_position);
-            --num_of_positions;
-          }
-          else
-            ++j; 
-        }
-      }
-    }
-    reduced_length[horn_clause.first] = num_of_positions;
-  }
+        //if(*horn_clauses[i_position] > *horn_clauses[j_position]){
+          //change = true;
+          //swapHornClauses(j_position, last_position);
+          //--num_of_positions;
+        //}
+        //else{
+          //if(*horn_clauses[i_position] < *horn_clauses[j_position]){
+            //change = true;
+            //swapHornClauses(i_position, j_position);
+            //swapHornClauses(j_position, last_position);
+            //--num_of_positions;
+          //}
+          //else
+            //++j; 
+        //}
+      //}
+    //}
+    //reduced_length[horn_clause.first] = num_of_positions;
+  //}
 }
 
 void HornClauses::swapHornClauses(unsigned i, unsigned j){

@@ -15,6 +15,7 @@ EUFInterpolant::EUFInterpolant(z3::expr_vector const & assertions) : Input(asser
   std::cout << hsat << std::endl;
 #endif
 
+  conditionalElimination();
   // buildInterpolant(replacements);
   return;
 }
@@ -50,6 +51,50 @@ void EUFInterpolant::exposeUncommons(){
   }
   return;
 }
+
+void EUFInterpolant::conditionalElimination(){
+  // Approach: add stuff to the Horn Clauses
+  // in the input using add by eliminating
+  // uncommon term using the explanation 
+  // operator
+  
+  throw "Not implemeted yet!";
+}
+
+// z3::expr_vector EUFInterpolant::substitutions(z3::expr & equation,
+// 					      z3::expr & term_elim,
+// 					      z3::expr_vector & hcs){
+//   z3::expr_vector answer(equation.ctx()), from(equation.ctx()), to(equation.ctx());
+//   from.push_back(term_elim);
+//   unsigned hcs_length = hcs.size();
+//   std::set<unsigned> expr_ids;
+
+//   for(unsigned index_hc = 0; index_hc < hcs_length; ++index_hc){
+//     auto current_consequent_lhs = hcs[index_hc].arg(1).arg(0);
+//     auto current_consequent_rhs = hcs[index_hc].arg(1).arg(1);
+//     auto antecedent = hcs[index_hc].arg(0);
+
+//     if((term_elim.id() == current_consequent_rhs.id())){
+//       to.push_back(current_consequent_lhs);
+//       auto new_equation = equation.substitute(from, to);
+//       // If these formulas are different commit to do the substitution
+//       if(new_equation.id() != equation.id()){
+// 	if(new_equation.is_implies())
+// 	  answer.push_back(implies(antecedent && new_equation.arg(0), new_equation.arg(1)));
+// 	else
+// 	  answer.push_back(implies(antecedent, new_equation));
+//       }
+//       else
+// 	if(notInSet(new_equation.id(), expr_ids)){
+// 	  answer.push_back(new_equation);
+// 	  expr_ids.insert(new_equation.id());
+// 	}
+//       to.pop_back();
+//     }
+//   }
+//   return answer;
+// }
+
 
 z3::expr EUFInterpolant::buildInterpolant(std::vector<Replacement> replacements){
   throw "Not implemented yet!";

@@ -169,15 +169,12 @@ class Hornsat {
 
   void satisfiable();
   void closure();
-  void conditionalElimination(); // TODO: Implement this
-  void conditionalReplacement(); // TODO: Implement this
-
   
  public:
   Hornsat(CongruenceClosureExplain &, HornClauses const &);
   ~Hornsat();
 
-  bool isConsistent();
+  bool isConsistent() const ;
   void unionupdate(LiteralId, LiteralId);
   friend std::ostream & operator << (std::ostream &, Hornsat const &);
 };
