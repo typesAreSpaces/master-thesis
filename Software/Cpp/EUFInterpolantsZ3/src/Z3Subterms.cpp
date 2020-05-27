@@ -6,7 +6,7 @@ Z3Subterms::Z3Subterms(z3::context & ctx):
 
 Z3Subterms::iterator Z3Subterms::begin() const { 
   auto it = iterator(this, 0);
-  if(!it.isValid())
+  if(it.notValidPosition())
     ++it;
   return it; 
 }

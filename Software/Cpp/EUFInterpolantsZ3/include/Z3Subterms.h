@@ -29,7 +29,7 @@ struct Z3Subterms {
     }
     iterator & operator++() {
       ++m_index;
-      while(!this->isValid())
+      while(this->notValidPosition())
         ++m_index;
       return *this;
     }
@@ -39,8 +39,8 @@ struct Z3Subterms {
     unsigned getIndex() const {
       return m_index;
     }
-    bool isValid() const {
-      return m_index == m_subterms->size() || m_subterms->visited[m_index];
+    bool notValidPosition() const {
+      return m_index < m_subterms->size() && !(m_subterms->visited[m_index]);
     }
   };
 
