@@ -221,9 +221,10 @@ void CongruenceClosureExplain::propagateAux(const CurryNode & a, const CurryNode
   // Hornsat
   if(hsat){
     unsigned num_original_terms = subterms.size();
+    auto it = ufe.begin(repr_a);
     auto end = ufe.end(repr_a);
-    for(auto it = ufe.begin(repr_a); it != end; ++it){ 
-      EqClass u = *it;
+    for(; it != end; ++it){ 
+      EqClass u = factory_curry_nodes.getCurryNode(*it)->getZ3Id();
       if(u < num_original_terms){
         hsat->unionupdate(u, repr_b); 
       }
