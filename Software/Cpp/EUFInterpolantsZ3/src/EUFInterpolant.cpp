@@ -1,20 +1,46 @@
 #include "EUFInterpolant.h"
 
 EUFInterpolant::EUFInterpolant(z3::expr_vector const & assertions) : 
-  Input(assertions), assertions(assertions)
+  // Congruence Closure step
+  Input(assertions), 
+  assertions((
+        // Unconditional uncommon symbol elimination step
+        exposeUncommons()
+        , assertions)), 
+  // Conditional uncommon symbol elimination step
+  hsat(cce, horn_clauses)
 {        
-  // Unconditional uncommon symbol elimination step
-  exposeUncommons();
 #if DEBUG_EXPOSE_UNCOMMS
   std::cout << "After expose uncommons" << std::endl;
   std::cout << horn_clauses << std::endl;
 #endif
 
-  // Conditional uncommon symbol elimination step
-  Hornsat hsat(cce, horn_clauses);
 #if DEBUG_COND_ELIM
+  std::cout << "After conditional elimination" << std::endl;
   std::cout << hsat << std::endl;
 #endif
+
+  //std::cout << hsat.ufe << std::endl;
+  //std::cout << factory_curry_nodes << std::endl;
+  //unsigned i = 0;
+  //for(auto elem : subterms)
+    //std::cout 
+      //<< ++i << ". Id: " << elem.id() << " " 
+      //<< elem << std::endl;
+
+  //unsigned test_index;
+  //test_index = 31;
+  //std::cout << "Replacements for " << subterms[test_index] << std::endl;
+  //std::cout << commonReplacements(subterms[test_index]) << std::endl << std::endl;
+  //test_index = 33;
+  //std::cout << "Replacements for " << subterms[test_index] << std::endl;
+  //std::cout << commonReplacements(subterms[test_index]) << std::endl << std::endl;
+  //test_index = 24;
+  //std::cout << "Replacements for " << subterms[test_index] << std::endl;
+  //std::cout << commonReplacements(subterms[test_index]) << std::endl << std::endl;
+  //test_index = 28;
+  //std::cout << "Replacements for " << subterms[test_index] << std::endl;
+  //std::cout << commonReplacements(subterms[test_index]) << std::endl << std::endl;
 
   conditionalElimination();
   // buildInterpolant();
@@ -59,15 +85,122 @@ void EUFInterpolant::conditionalElimination(){
   // uncommon term using the explanation 
   // operator
 
-  std::cout << assertions << std::endl;
+  // Process original equations
+  for(auto const & equation : assertions){
+    std::cout << equation << std::endl;
+    auto const & lhs = equation.arg(0), & rhs = equation.arg(1);
 
-  // Processing original equations
-  
+    if(lhs.is_const()){
+      if(rhs.is_const()){
+        if(lhs.is_common()){
+          if(rhs.is_common()){
 
-  // Processing produced Horn clauses
+          }
+          else{
+
+          }
+        }
+        else{
+          if(rhs.is_common()){
+
+          }
+          else{
+
+          }
+        }
+      }
+      else{
+        if(lhs.is_common()){
+          if(rhs.is_common()){
+
+          }
+          else{
+
+          }
+        }
+        else{
+          if(rhs.is_common()){
+
+          }
+          else{
+
+          }
+        }
+      }
+    }
+
+    else{
+      if(rhs.is_const()){
+        if(lhs.is_common()){
+          if(rhs.is_common()){
+
+          }
+          else{
+
+          }
+        }
+        else{
+          if(rhs.is_common()){
+
+          }
+          else{
+
+          }
+        }
+      }
+      else{
+        if(lhs.is_common()){
+          if(rhs.is_common()){
+
+          }
+          else{
+
+          }
+        }
+        else{
+          if(rhs.is_common()){
+
+          }
+          else{
+
+          }
+        }
+      }
+    }
+  }
+
+
+
+
+
+  // Process produced Horn clauses
+
 
 
   return;
+}
+
+z3::expr_vector EUFInterpolant::commonReplacements(z3::expr const & e){
+  z3::expr_vector ans(e.ctx());
+
+  if(e.is_common()){
+    ans.push_back(e);
+    return ans;
+  }
+
+  std::set<EqClass> ids({});
+  EqClass repr_index = hsat.equiv_classes.find(e.id());
+  auto it = hsat.ufe.begin(repr_index);
+  auto end = hsat.ufe.end(repr_index);
+  for(; it != end; ++it){
+    Z3Index index = factory_curry_nodes.getCurryNode(*it)->getZ3Id();
+    if(subterms[index].is_common() && ids.find(index) == ids.end()){
+      ids.insert(index);
+      ans.push_back(subterms[index]);
+    }
+  }
+
+  return ans;
 }
 
 z3::expr EUFInterpolant::buildInterpolant(){

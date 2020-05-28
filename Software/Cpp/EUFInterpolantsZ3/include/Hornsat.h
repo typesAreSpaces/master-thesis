@@ -151,6 +151,8 @@ struct TermIdPair {
 
 class Hornsat {
 
+  friend class EUFInterpolant;
+
   unsigned num_hcs, num_literals;
 
   UnionFindExplain         ufe;

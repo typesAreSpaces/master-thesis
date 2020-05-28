@@ -226,7 +226,7 @@ DEPS	Makefile	/^DEPS = $(wildcard $(IDIR)\/*.h)$/;"	m
 EQ	include/CurryNode.h	/^enum PendingTag { EQ, EQ_EQ };$/;"	e	enum:PendingTag
 EQ_EQ	include/CurryNode.h	/^enum PendingTag { EQ, EQ_EQ };$/;"	e	enum:PendingTag
 EUFInterpolant	include/EUFInterpolant.h	/^class EUFInterpolant : public Input {$/;"	c
-EUFInterpolant	src/EUFInterpolant.cpp	/^EUFInterpolant::EUFInterpolant(z3::expr_vector const & assertions) : Input(assertions)$/;"	f	class:EUFInterpolant
+EUFInterpolant	src/EUFInterpolant.cpp	/^EUFInterpolant::EUFInterpolant(z3::expr_vector const & assertions) : $/;"	f	class:EUFInterpolant
 EqClass	include/UnionFind.h	/^typedef unsigned EqClass;$/;"	t	typeref:typename:unsigned
 EquationCurryNodes	include/CurryNode.h	/^  EquationCurryNodes(CurryNode & lhs, CurryNode & rhs) :$/;"	f	struct:EquationCurryNodes
 EquationCurryNodes	include/CurryNode.h	/^  EquationCurryNodes(CurryNode & lhs, CurryNode & rhs, KindEquation kind_equation) :$/;"	f	struct:EquationCurryNodes
@@ -313,6 +313,7 @@ Z3DIR	Makefile	/^Z3DIR = \/Users\/joseabelcastellanosjoo\/Documents\/Application
 Z3EXT	Makefile	/^Z3EXT = dylib$/;"	m
 Z3EXT	Makefile	/^Z3EXT = so$/;"	m
 Z3EquationPointers	include/CurryNode.h	/^typedef std::list<EquationZ3Ids>          Z3EquationPointers;$/;"	t	typeref:typename:std::list<EquationZ3Ids>
+Z3Index	include/EUFInterpolant.h	/^typedef unsigned Z3Index ;$/;"	t	typeref:typename:unsigned
 Z3Subterms	include/Z3Subterms.h	/^struct Z3Subterms {$/;"	s
 Z3Subterms	src/Z3Subterms.cpp	/^Z3Subterms::Z3Subterms(z3::context & ctx): $/;"	f	class:Z3Subterms
 _CONG_CLOSUREDST__	include/CongruenceClosureDST.h	/^#define _CONG_CLOSUREDST__$/;"	d
@@ -356,12 +357,13 @@ arguments	compile_commands.json	/^  "arguments": [$/;"	a	object:6
 arguments	compile_commands.json	/^  "arguments": [$/;"	a	object:7
 arguments	compile_commands.json	/^  "arguments": [$/;"	a	object:8
 arguments	compile_commands.json	/^  "arguments": [$/;"	a	object:9
+assertions	include/EUFInterpolant.h	/^  z3::expr_vector const & assertions;$/;"	m	class:EUFInterpolant	typeref:typename:z3::expr_vector const &
 begin	include/Hornsat.h	/^  iterator begin(){$/;"	f	struct:Clause	typeref:typename:iterator
 begin	include/UnionFind.h	/^  iterator begin(EqClass m_element){$/;"	f	class:UnionFind	typeref:typename:iterator
 begin	src/Match.cpp	/^Match::iterator Match::begin() const { return iterator((Match*)this, 0); }$/;"	f	class:Match	typeref:typename:Match::iterator
 begin	src/Z3Subterms.cpp	/^Z3Subterms::iterator Z3Subterms::begin() const { $/;"	f	class:Z3Subterms	typeref:typename:Z3Subterms::iterator
 buildHCBody	src/EUFInterpolant.cpp	/^z3::expr_vector EUFInterpolant::buildHCBody(z3::expr const & t1, z3::expr const & t2){$/;"	f	class:EUFInterpolant	typeref:typename:z3::expr_vector
-buildInterpolant	src/EUFInterpolant.cpp	/^z3::expr EUFInterpolant::buildInterpolant(std::vector<Replacement> replacements){$/;"	f	class:EUFInterpolant	typeref:typename:z3::expr
+buildInterpolant	src/EUFInterpolant.cpp	/^z3::expr EUFInterpolant::buildInterpolant(){$/;"	f	class:EUFInterpolant	typeref:typename:z3::expr
 cce	include/Input.h	/^  CongruenceClosureExplain cce;$/;"	m	struct:Input	typeref:typename:CongruenceClosureExplain
 checkTriviality	src/HornClause.cpp	/^bool HornClause::checkTriviality(UnionFindExplain & ufe){$/;"	f	class:HornClause	typeref:typename:bool
 class_list	include/Hornsat.h	/^  ClassList              class_list;$/;"	m	class:Hornsat	typeref:typename:ClassList
@@ -376,10 +378,10 @@ combine	src/UnionFind.cpp	/^void UnionFind::combine(EqClass x, EqClass y){$/;"	f
 combine	src/UnionFindExplain.cpp	/^void UnionFindExplain::combine(EqClass target, EqClass source, const PendingElement * pe){$/;"	f	class:UnionFindExplain	typeref:typename:void
 commonAncestor	src/UnionFindExplain.cpp	/^EqClass UnionFindExplain::commonAncestor(EqClass x, EqClass y) {$/;"	f	class:UnionFindExplain	typeref:typename:EqClass
 commonAncestorHelper	src/UnionFindExplain.cpp	/^EqClass UnionFindExplain::commonAncestorHelper(EqClass aux_x, EqClass aux_y, unsigned depth_diff/;"	f	class:UnionFindExplain	typeref:typename:EqClass
+commonReplacements	src/EUFInterpolant.cpp	/^z3::expr_vector EUFInterpolant::commonReplacements(z3::expr const & e){$/;"	f	class:EUFInterpolant	typeref:typename:z3::expr_vector
 compareEquation	src/Util.cpp	/^bool compareEquation(const z3::expr & eq1, const z3::expr & eq2){$/;"	f	typeref:typename:bool
 compareTerm	src/Util.cpp	/^bool compareTerm(const z3::expr & t1, const z3::expr & t2){$/;"	f	typeref:typename:bool
-conditionalElimination	src/Hornsat.cpp	/^void Hornsat::conditionalElimination(){$/;"	f	class:Hornsat	typeref:typename:void
-conditionalReplacement	src/Hornsat.cpp	/^void Hornsat::conditionalReplacement(){$/;"	f	class:Hornsat	typeref:typename:void
+conditionalElimination	src/EUFInterpolant.cpp	/^void EUFInterpolant::conditionalElimination(){$/;"	f	class:EUFInterpolant	typeref:typename:void
 consequent	include/HornClause.h	/^  z3::expr        consequent;$/;"	m	class:HornClause	typeref:typename:z3::expr
 consistent	include/Hornsat.h	/^  bool consistent;$/;"	m	class:Hornsat	typeref:typename:bool
 const_id	include/CurryNode.h	/^  unsigned id, z3_id, const_id;$/;"	m	class:CurryNode	typeref:typename:unsigned
@@ -493,6 +495,7 @@ highestNode	src/CongruenceClosureExplain.cpp	/^EqClass CongruenceClosureExplain:
 horn_clauses	include/HornClauses.h	/^  std::unordered_map<unsigned, HornClause *> horn_clauses;$/;"	m	class:HornClauses	typeref:typename:std::unordered_map<unsigned,HornClause * >
 horn_clauses	include/Input.h	/^  HornClauses      horn_clauses;$/;"	m	struct:Input	typeref:typename:HornClauses
 hsat	include/CongruenceClosureExplain.h	/^  Hornsat * hsat;$/;"	m	class:CongruenceClosureExplain	typeref:typename:Hornsat *
+hsat	include/EUFInterpolant.h	/^  Hornsat                 hsat;$/;"	m	class:EUFInterpolant	typeref:typename:Hornsat
 id	include/CurryNode.h	/^  unsigned id, z3_id, const_id;$/;"	m	class:CurryNode	typeref:typename:unsigned
 ids_to_merge	include/Input.h	/^  IdsToMerge ids_to_merge;$/;"	m	struct:Input	typeref:typename:IdsToMerge
 init	src/Input.cpp	/^void Input::init(z3::expr_vector const & assertions){$/;"	f	class:Input	typeref:typename:void
@@ -502,11 +505,10 @@ inputFile	tests/cong_closure_expl_test.cpp	/^void inputFile(char const * file_na
 isCommon	src/CurryNode.cpp	/^const bool CurryNode::isCommon() const {$/;"	f	class:CurryNode	typeref:typename:const bool
 isCommonAntecedent	src/HornClause.cpp	/^bool HornClause::isCommonAntecedent() const {$/;"	f	class:HornClause	typeref:typename:bool
 isCommonConsequent	src/HornClause.cpp	/^bool HornClause::isCommonConsequent() const {$/;"	f	class:HornClause	typeref:typename:bool
-isConsistent	src/Hornsat.cpp	/^bool Hornsat::isConsistent(){$/;"	f	class:Hornsat	typeref:typename:bool
+isConsistent	src/Hornsat.cpp	/^bool Hornsat::isConsistent() const {$/;"	f	class:Hornsat	typeref:typename:bool
 isConstant	src/CurryNode.cpp	/^const bool CurryNode::isConstant() const {$/;"	f	class:CurryNode	typeref:typename:const bool
 isDefined	src/CurryNode.cpp	/^const bool CurryNode::isDefined() const {$/;"	f	class:CurryNode	typeref:typename:const bool
 isReplaceable	src/CurryNode.cpp	/^const bool CurryNode::isReplaceable() const {$/;"	f	class:CurryNode	typeref:typename:const bool
-isValid	include/Z3Subterms.h	/^    bool isValid() const {$/;"	f	class:Z3Subterms::iterator	typeref:typename:bool
 is_common	include/CurryNode.h	/^  bool is_common;$/;"	m	class:CurryNode	typeref:typename:bool
 is_common	include/Hornsat.h	/^  bool val, is_common;$/;"	m	struct:Literal	typeref:typename:bool
 is_common_antecedent	include/HornClause.h	/^  bool            is_common_antecedent;$/;"	m	class:HornClause	typeref:typename:bool
@@ -557,6 +559,7 @@ nearestCommonAncestor	src/CongruenceClosureExplain.cpp	/^EqClass CongruenceClosu
 next	include/Hornsat.h	/^  struct Clause * next;$/;"	m	struct:Clause	typeref:struct:Clause *
 normalize	src/HornClause.cpp	/^void HornClause::normalize(UnionFindExplain & ufe){$/;"	f	class:HornClause	typeref:typename:void
 notInSet	include/HornClauses.h	/^#define notInSet(/;"	d
+notValidPosition	include/Z3Subterms.h	/^    bool notValidPosition() const {$/;"	f	class:Z3Subterms::iterator	typeref:typename:bool
 notes	Makefile	/^notes:$/;"	t
 numUncommAntecedent	src/HornClause.cpp	/^unsigned HornClause::numUncommAntecedent() const {$/;"	f	class:HornClause	typeref:typename:unsigned
 num_args	include/Hornsat.h	/^  std::vector<unsigned>  num_args;$/;"	m	class:Hornsat	typeref:typename:std::vector<unsigned>

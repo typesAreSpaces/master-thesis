@@ -225,9 +225,8 @@ void CongruenceClosureExplain::propagateAux(const CurryNode & a, const CurryNode
     auto end = ufe.end(repr_a);
     for(; it != end; ++it){ 
       EqClass u = factory_curry_nodes.getCurryNode(*it)->getZ3Id();
-      if(u < num_original_terms){
+      if(u < num_original_terms)
         hsat->unionupdate(u, repr_b); 
-      }
     }
   }
   // -------------------------------------------------------------
