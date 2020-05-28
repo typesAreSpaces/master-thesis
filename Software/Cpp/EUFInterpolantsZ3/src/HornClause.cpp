@@ -38,7 +38,7 @@ HornClause::~HornClause(){
 
 // Removes trivial equalities in the antecedent
 // sorting these elements using the following heuristic:
-// HornClause::compareEquation
+// compareEquation from Util
 void HornClause::normalize(UnionFindExplain & ufe){
   std::vector<z3::expr> aux_antecedent ({});
 

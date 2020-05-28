@@ -43,6 +43,11 @@ EUFInterpolant::EUFInterpolant(z3::expr_vector const & assertions) :
   //std::cout << commonReplacements(subterms[test_index]) << std::endl << std::endl;
 
   conditionalElimination();
+
+  std::vector<std::vector<int>> a({{1, 2, 3}, {4}, {5, 6}});
+  printGeneralizedCartesianProduct(GeneralizedCartesianProduct(a));
+
+
   // buildInterpolant();
   return;
 }
