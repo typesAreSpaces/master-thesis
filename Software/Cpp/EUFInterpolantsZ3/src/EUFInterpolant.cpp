@@ -44,9 +44,14 @@ EUFInterpolant::EUFInterpolant(z3::expr_vector const & assertions) :
 
   conditionalElimination();
 
-  std::vector<std::vector<int>> a({{1, 2, 3}, {4}, {5, 6}});
-  printGeneralizedCartesianProduct(GeneralizedCartesianProduct(a));
+  //std::vector<std::vector<int>> a({{1, 2, 3}, {4}, {5, 6}});
+  //printGeneralizedCartesianProduct(GeneralizedCartesianProduct(a));
 
+  //std::vector<std::vector<int>> b({{1, 2, 3, 4, 5}, {6, 7}, {8, 9, 0}});
+  //printGeneralizedCartesianProduct(GeneralizedCartesianProduct(b));
+
+  //std::vector<std::vector<int>> c({{1, 2, 3}, {4, 5, 6}, {7, 8, 9}});
+  //printGeneralizedCartesianProduct(GeneralizedCartesianProduct(c));
 
   // buildInterpolant();
   return;

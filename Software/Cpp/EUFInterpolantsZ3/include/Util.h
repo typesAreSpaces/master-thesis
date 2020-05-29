@@ -14,16 +14,18 @@ std::vector<std::vector<T> > GeneralizedCartesianProduct(std::vector<std::vector
     ans_size *= entry.size();
 
   std::vector<std::vector<T> > ans(ans_size, std::vector<T>(0));
-  if(ans_size)
+  if(ans_size){
+    unsigned curr_repetition = 1;
     for(auto const & entry : x){
-      auto block_size = ans_size/entry.size();
-      unsigned i = 1, j = 0;
-      for(auto const & value : entry){
-        while(j < i*block_size)
-          ans[j++].push_back(value);
-        ++i;
-      }
+      for(unsigned index = 0; index < ans_size; )
+        for(auto const & value : entry){
+          unsigned curr_index = 0;
+          while(curr_index++ < curr_repetition)
+            ans[index++].push_back(value);
+        }
+      curr_repetition *= entry.size();
     }
+  }
 
   return ans;
 }
