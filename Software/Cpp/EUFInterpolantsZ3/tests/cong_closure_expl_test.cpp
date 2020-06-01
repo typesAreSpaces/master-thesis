@@ -1,5 +1,7 @@
 #include <iostream>
 #include "TestCongruenceClosureExplain.h"
+#include <set>
+#include "Rename.h"
 
 void inputFile(char const * file_name){
   std::cout << "Processing file: " << file_name << std::endl;
@@ -150,28 +152,64 @@ void testCongClosureExpl5(){
   return;
 }
 
-int main(int argc, char ** argv){
-  
-  testAdditionalMerge();
-  
-  testCongClosureExpl();
-  testCongClosureExpl2();
-  testCongClosureExpl3();
-  testCongClosureExpl4();
-  testCongClosureExpl5();
-  
+void paperExample(){
+
+  z3::context ctx;
+  z3::sort my_sort = ctx.uninterpreted_sort("A");
+  z3::expr z1 = ctx.constant("z1", my_sort);
+  z3::expr z2 = ctx.constant("z2", my_sort);
+  z3::expr s1 = ctx.constant("s1", my_sort);
+  z3::expr s2 = ctx.constant("s2", my_sort);
+  z3::expr y1 = ctx.constant("y1", my_sort);
+  z3::expr y2 = ctx.constant("y2", my_sort);
+  z3::expr v = ctx.constant("v", my_sort);
+  z3::expr t = ctx.constant("t", my_sort);
+  z3::func_decl f = ctx.function("f", my_sort, my_sort, my_sort);
+  std::set<std::string> uncomms;
+  uncomms.insert("v");
+
+  z3::expr_vector input(ctx); 
+  input.push_back(f(z1, v) == s1);
+  input.push_back(f(z2, v) == s2);
+  input.push_back(f(f(y1, v), f(y2, v)) == t);
+
+  auto r_input = rename(input, uncomms);
+
   try {
-    inputFile("/home/jose/Documents/GithubProjects/master-thesis/Software/Cpp/EUFInterpolantsZ3/tests/QF_UF/SEQ/SEQ013_size6.smt2");
-    inputFile("/home/jose/Documents/GithubProjects/master-thesis/Software/Cpp/EUFInterpolantsZ3/tests/QF_UF/2018-Goel-hwbench/QF_UF_v_Unidec_ab_cti_max.smt2");
-    inputFile("/home/jose/Documents/GithubProjects/master-thesis/Software/Cpp/EUFInterpolantsZ3/tests/QF_UF/SEQ/SEQ018_size7.smt2");
-    inputFile("/home/jose/Documents/GithubProjects/master-thesis/Software/Cpp/EUFInterpolantsZ3/tests/QF_UF/SEQ/SEQ017_size6.smt2");
-    inputFile("/home/jose/Documents/GithubProjects/master-thesis/Software/Cpp/EUFInterpolantsZ3/tests/QF_UF/SEQ/SEQ018_size8.smt2");
-    inputFile("/home/jose/Documents/GithubProjects/master-thesis/Software/Cpp/EUFInterpolantsZ3/tests/QF_UF/SEQ/SEQ019_size6.smt2");
-    inputFile("/home/jose/Documents/GithubProjects/master-thesis/Software/Cpp/EUFInterpolantsZ3/tests/QF_UF/PEQ/PEQ004_size9.smt2");
+    TestCongruenceClosureExplain eufi(r_input);
   }
   catch(char const * e){
     std::cout << e << std::endl;
   }
+
+  return;
+}
+
+
+int main(int argc, char ** argv){
+
+  paperExample();
+  
+  //testAdditionalMerge();
+  
+  //testCongClosureExpl();
+  //testCongClosureExpl2();
+  //testCongClosureExpl3();
+  //testCongClosureExpl4();
+  //testCongClosureExpl5();
+  
+  //try {
+    //inputFile("/home/jose/Documents/GithubProjects/master-thesis/Software/Cpp/EUFInterpolantsZ3/tests/QF_UF/SEQ/SEQ013_size6.smt2");
+    //inputFile("/home/jose/Documents/GithubProjects/master-thesis/Software/Cpp/EUFInterpolantsZ3/tests/QF_UF/2018-Goel-hwbench/QF_UF_v_Unidec_ab_cti_max.smt2");
+    //inputFile("/home/jose/Documents/GithubProjects/master-thesis/Software/Cpp/EUFInterpolantsZ3/tests/QF_UF/SEQ/SEQ018_size7.smt2");
+    //inputFile("/home/jose/Documents/GithubProjects/master-thesis/Software/Cpp/EUFInterpolantsZ3/tests/QF_UF/SEQ/SEQ017_size6.smt2");
+    //inputFile("/home/jose/Documents/GithubProjects/master-thesis/Software/Cpp/EUFInterpolantsZ3/tests/QF_UF/SEQ/SEQ018_size8.smt2");
+    //inputFile("/home/jose/Documents/GithubProjects/master-thesis/Software/Cpp/EUFInterpolantsZ3/tests/QF_UF/SEQ/SEQ019_size6.smt2");
+    //inputFile("/home/jose/Documents/GithubProjects/master-thesis/Software/Cpp/EUFInterpolantsZ3/tests/QF_UF/PEQ/PEQ004_size9.smt2");
+  //}
+  //catch(char const * e){
+    //std::cout << e << std::endl;
+  //}
  
   return 0;
 }

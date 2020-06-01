@@ -16,15 +16,20 @@ class EUFInterpolant : public Input {
   Hornsat                 hsat;
 
   z3::expr_vector buildHCBody(z3::expr const &, z3::expr const &);
-  void            exposeUncommons();
-  void            conditionalElimination(); // TODO: Implement this
-  z3::expr_vector commonReplacements(z3::expr const &);
+
+  void exposeUncommons();
+  void conditionalEliminationEqs(); // TODO: Implement this
+  void conditionalEliminationHcs(); // TODO: Implement this
+  void conditionalElimination();    // TODO: Implement this
+  
+  z3::expr_vector candidates(z3::expr const &);
+  z3::expr_vector explainUncommons(z3::expr const &, z3::expr const &); 
   
  public:
   EUFInterpolant(z3::expr_vector const &);
   ~EUFInterpolant();
 
-  z3::expr buildInterpolant();  // TODO: Implement this
+  z3::expr buildInterpolant();      // TODO: Implement this
 
   friend std::ostream & operator << (std::ostream &, EUFInterpolant &);
 };

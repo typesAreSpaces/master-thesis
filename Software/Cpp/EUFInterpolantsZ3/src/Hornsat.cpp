@@ -1,15 +1,17 @@
 #include "Hornsat.h"
+#include <z3++.h>
 
 unsigned Literal::curr_num_literals = 0;
 
 Hornsat::Hornsat(CongruenceClosureExplain & cce, 
     HornClauses const & hcs) :
-  num_hcs(hcs.size()), num_literals(hcs.getMaxLitId()),
-  /*This ufe is empty*/ ufe(hcs.getUFESize()), equiv_classes(this, cce, ufe),
+  num_hcs(hcs.size()), num_literals(hcs.getMaxLitId()), head_term_indexer(),
+  /*This ufe is empty*/ 
+  ufe(hcs.getUFESize()), equiv_classes(this, cce, ufe),
   list_of_literals(), class_list(), num_args(), pos_lit_list(), 
   facts(), to_combine(),
   consistent(true)
-{ 
+{
   Literal::curr_num_literals = 0;
 
   list_of_literals.resize(num_literals + 1);
@@ -17,6 +19,10 @@ Hornsat::Hornsat(CongruenceClosureExplain & cce,
   num_args        .resize(num_hcs);
   pos_lit_list    .resize(num_hcs);
 
+  build(equiv_classes, hcs);
+}
+
+void Hornsat::build(CongruenceClosureExplain & cce, HornClauses const & hcs){
 #if DEBUGGING_CONSTRUCTOR
   std::cout << "Horn Clauses processed by Hornsat" << std::endl;
 #endif
@@ -53,6 +59,7 @@ Hornsat::Hornsat(CongruenceClosureExplain & cce,
       // ------------------------------------------------------------
       // Horn clause head processing --------------------------------
       auto consequent = horn_clause->getConsequent();
+      head_term_indexer[consequent.id()] = index_hc;
 #if DEBUGGING_CONSTRUCTOR
       std::cout << "Consequent Literal " 
         << consequent.id() << " " << consequent << std::endl;
@@ -112,6 +119,7 @@ void Hornsat::satisfiable(){
   LiteralId node;
   while(!facts.empty() && consistent){
     node = facts.front();
+
     facts.pop();
     for(auto it : *(list_of_literals[node].clause_list)){
       ClauseId clause1 = it->clause_id;

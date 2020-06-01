@@ -72,7 +72,7 @@ class CongruenceClosureExplain : public CongruenceClosure {
   void merge();
   void merge(EquationCurryNodes const &);
   void propagate();
-  void propagateAux(const CurryNode &, const CurryNode &, EqClass, EqClass, const PendingElement &);
+  void propagateAux(CurryNode const &, CurryNode const &, EqClass, EqClass, PendingElement const &);
 
   EqClass         highestNode(EqClass, UnionFind &);
   EqClass         nearestCommonAncestor(EqClass, EqClass, UnionFind &);
@@ -82,20 +82,24 @@ class CongruenceClosureExplain : public CongruenceClosure {
 
   public:
   CongruenceClosureExplain(Hornsat *, CongruenceClosureExplain const &, UnionFindExplain &);
-  CongruenceClosureExplain(const Z3Subterms &, UnionFindExplain &, FactoryCurryNodes &, IdsToMerge const &);
+  CongruenceClosureExplain(Z3Subterms const &, UnionFindExplain &, FactoryCurryNodes &, IdsToMerge const &);
   ~CongruenceClosureExplain();
 
-  bool            areSameClass(EqClass, EqClass);
-  bool            areSameClass(z3::expr const &, z3::expr const &);
-  EqClass         find(EqClass);
-  z3::expr        z3_repr(z3::expr const &);
-  void            merge(EqClass, EqClass);
-  void            merge(z3::expr const &, z3::expr const &);
-  PendingPointers explain(z3::expr const &, z3::expr const &);
+  bool areSameClass(EqClass, EqClass);
+  bool areSameClass(z3::expr const &, z3::expr const &);
+  
+  EqClass  constantId(EqClass);
+  EqClass  find(EqClass);
+  z3::expr z3Repr(z3::expr const &);
 
-  std::ostream &     giveExplanation(std::ostream &, const z3::expr &, const z3::expr &);
-  Z3EquationPointers z3Explain(const z3::expr &, const z3::expr &);
-  std::ostream &     giveZ3Explanation(std::ostream &, const z3::expr &, const z3::expr &);
+  void merge(EqClass, EqClass);
+  void merge(z3::expr const &, z3::expr const &);
+
+  PendingPointers explain(z3::expr const &, z3::expr const &);
+  std::ostream &  giveExplanation(std::ostream &, z3::expr const &, z3::expr const &);
+
+  z3::expr_vector z3Explain(z3::expr const &, z3::expr const &);
+  std::ostream &  z3Explanation(std::ostream &, const z3::expr &, const z3::expr &);
 
   friend std::ostream & operator << (std::ostream &, const CongruenceClosureExplain &);
 };

@@ -6,7 +6,10 @@
 // (i.e. subterms and factory of curry nodes)
 // with a clearn ufe (i.e. equivalence classes
 // are just singletons)
-CongruenceClosureExplain::CongruenceClosureExplain(Hornsat * hsat, CongruenceClosureExplain const & cce, UnionFindExplain & ufe) : 
+CongruenceClosureExplain::CongruenceClosureExplain(
+    Hornsat * hsat, CongruenceClosureExplain const & cce, 
+    UnionFindExplain & ufe
+    ) : 
   CongruenceClosure(cce.subterms, ufe),
   hsat(hsat),
   pending_elements(), equations_to_merge(), pending_to_propagate(),
@@ -40,6 +43,9 @@ CongruenceClosureExplain::CongruenceClosureExplain(Hornsat * hsat, CongruenceClo
     }
   }
   merge();
+#if DEBUG_CONSTRUCT_CCE
+  std::cout << "Done CongruenceClosureExplain(clone) constructor" << std::endl;
+#endif
 }
 
 CongruenceClosureExplain::CongruenceClosureExplain(Z3Subterms const & subterms,
@@ -78,6 +84,9 @@ CongruenceClosureExplain::CongruenceClosureExplain(Z3Subterms const & subterms,
 #if DEBUG_SANITY_CHECK
   std::cout << ufe << std::endl;
   std::cout << factory_curry_nodes << std::endl;
+#endif
+#if DEBUG_CONSTRUCT_CCE
+  std::cout << "Done CongruenceClosureExplain(original) constructor" << std::endl;
 #endif
 }
 
@@ -220,7 +229,8 @@ void CongruenceClosureExplain::propagateAux(const CurryNode & a, const CurryNode
   // then perform a unionupdate to update the queue structure in 
   // Hornsat
   if(hsat){
-    unsigned num_original_terms = subterms.size();
+    // The following is the original number of terms
+    unsigned num_original_terms = factory_curry_nodes.num_terms;
     auto it = ufe.begin(repr_a);
     auto end = ufe.end(repr_a);
     for(; it != end; ++it){ 
@@ -287,9 +297,14 @@ PendingPointers CongruenceClosureExplain::explain(EqClass x, EqClass y){
     auto current_equation = pending_proofs.back();
     pending_proofs.pop_back();
 
-    auto common_ancestor_x_y = nearestCommonAncestor(current_equation.source, current_equation.target, local_uf);
-    explainAlongPath(current_equation.source, common_ancestor_x_y, local_uf, pending_proofs, ans);
-    explainAlongPath(current_equation.target, common_ancestor_x_y, local_uf, pending_proofs, ans);
+    auto common_ancestor_x_y = nearestCommonAncestor(
+        current_equation.source, current_equation.target, 
+        local_uf);
+    
+    explainAlongPath(current_equation.source, 
+        common_ancestor_x_y, local_uf, pending_proofs, ans);
+    explainAlongPath(current_equation.target, 
+        common_ancestor_x_y, local_uf, pending_proofs, ans);
   }
   return ans;
 }
@@ -320,7 +335,9 @@ void CongruenceClosureExplain::explainAlongPath(EqClass a, EqClass c,
   }
 }
 
-std::ostream & CongruenceClosureExplain::giveExplanation(std::ostream & os, EqClass lhs, EqClass rhs){
+std::ostream & CongruenceClosureExplain::giveExplanation(
+    std::ostream & os, EqClass lhs, EqClass rhs){
+
   os << "Explain " << lhs << ", " << rhs << std::endl; 
   auto explanation = explain(lhs, rhs);
   if(explanation.size() == 0)
@@ -341,21 +358,31 @@ bool CongruenceClosureExplain::areSameClass(z3::expr const & x, z3::expr const &
   return areSameClass(x.id(), y.id());
 }
 
-EqClass CongruenceClosureExplain::find(EqClass i){
-  CurryNode * term = factory_curry_nodes.getCurryNode(i);
-  unsigned const_id = term->getConstId(); 
-  return ufe.find(const_id);
+EqClass CongruenceClosureExplain::constantId(EqClass i){
+  return factory_curry_nodes.getCurryNode(i)->getConstId();
 }
 
-z3::expr CongruenceClosureExplain::z3_repr(z3::expr const & e){
-  CurryNode * repr_term = factory_curry_nodes.getCurryNode(this->find(e.id()));
-  return subterms[repr_term->getZ3Id()];
+EqClass CongruenceClosureExplain::find(EqClass i){
+  return ufe.find(constantId(i));
+}
+
+z3::expr CongruenceClosureExplain::z3Repr(z3::expr const & e){
+  auto node = factory_curry_nodes
+    .getCurryNode(this->find(e.id()))->getZ3Id();
+  assert(node < factory_curry_nodes.num_terms);
+  return subterms[node];
 }
 
 void CongruenceClosureExplain::merge(EqClass x, EqClass y){
-  merge(EquationCurryNodes(
-        *factory_curry_nodes.curry_nodes[this->find(x)],
-        *factory_curry_nodes.curry_nodes[this->find(y)]));
+  // For the record: I was merging the representatives
+  // of x and y. This is not a good idea since we
+  // want to trace the original equations, the latter
+  // makes as the original equation the equation between
+  // representatives. This was fixed by merging the original
+  // constant nodes.
+  merge(std::move(EquationCurryNodes(
+        *factory_curry_nodes.curry_nodes[constantId(x)],
+        *factory_curry_nodes.curry_nodes[constantId(y)])));
 }
 
 void CongruenceClosureExplain::merge(z3::expr const & e1, z3::expr const & e2){
@@ -363,16 +390,16 @@ void CongruenceClosureExplain::merge(z3::expr const & e1, z3::expr const & e2){
 }
 
 PendingPointers CongruenceClosureExplain::explain(const z3::expr & lhs, const z3::expr & rhs){
-  return explain(
-      factory_curry_nodes.curry_nodes[lhs.id()]->getConstId(), 
-      factory_curry_nodes.curry_nodes[rhs.id()]->getConstId());
+  return explain(constantId(lhs.id()), constantId(rhs.id()));
 }
 
-std::ostream & CongruenceClosureExplain::giveExplanation(std::ostream & os, const z3::expr & lhs, const z3::expr & rhs){
+std::ostream & CongruenceClosureExplain::giveExplanation(std::ostream & os, z3::expr const & lhs, z3::expr const & rhs){
   os << "Explain " << lhs << ", " << rhs << std::endl; 
   auto explanation = explain(lhs, rhs);
   if(explanation.size() == 0)
-    return os << lhs << " and " << rhs << " belong to different equivalent classes" << std::endl;
+    return os 
+      << lhs << " and " << rhs 
+      << " belong to different equivalent classes" << std::endl;
   unsigned num = 1;
   for(auto z : explanation){
     os << "Label " << num++ << ":" << std::endl;
@@ -381,13 +408,15 @@ std::ostream & CongruenceClosureExplain::giveExplanation(std::ostream & os, cons
   return os;
 }
 
-Z3EquationPointers CongruenceClosureExplain::z3Explain(const z3::expr & lhs, const z3::expr & rhs){
-  Z3EquationPointers ans;
+z3::expr_vector CongruenceClosureExplain::z3Explain(
+    const z3::expr & lhs, const z3::expr & rhs){
+  z3::expr_vector ans(lhs.ctx());
   auto explanation = explain(lhs, rhs);
-  for(auto z : explanation){
+  for(auto const & z : explanation){
     switch(z->tag){
       case EQ:
-        ans.emplace_back(z->eq_cn.lhs.getZ3Id(), z->eq_cn.rhs.getZ3Id());
+        ans.push_back(subterms[z->eq_cn.lhs.getZ3Id()] 
+            == subterms[z->eq_cn.rhs.getZ3Id()]);
       case EQ_EQ:
         break;
     } 
@@ -395,15 +424,16 @@ Z3EquationPointers CongruenceClosureExplain::z3Explain(const z3::expr & lhs, con
   return ans;
 } 
 
-std::ostream & CongruenceClosureExplain::giveZ3Explanation(std::ostream & os, const z3::expr & lhs, const z3::expr & rhs){
+std::ostream & CongruenceClosureExplain::z3Explanation(std::ostream & os, const z3::expr & lhs, const z3::expr & rhs){
   os << "Explain " << lhs << ", " << rhs << std::endl; 
   auto explanation = z3Explain(lhs, rhs);
   if(explanation.size() == 0)
     return os << lhs << ", " << rhs << " belong to different equivalent classes" << std::endl;
   unsigned num = 1;
-  for(auto z : explanation){
+  for(auto const & z : explanation){
     os << "Label " << num++ << ":" << std::endl;
-    os << subterms[z.lhs_id] << " = " << subterms[z.rhs_id] << std::endl;
+    os << z << std::endl;
+    //os << subterms[z.lhs_id] << " = " << subterms[z.rhs_id] << std::endl;
   }
   return os;
 } 

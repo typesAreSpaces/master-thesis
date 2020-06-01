@@ -1,5 +1,6 @@
 #ifndef _HORNSAT_
 #define _HORNSAT_
+#include <unordered_map>
 #define FALSELITERAL          0
 #define DEBUG_DESTRUCTORS     0
 #define DEBUGGING_SATISFIABLE 0
@@ -154,6 +155,7 @@ class Hornsat {
   friend class EUFInterpolant;
 
   unsigned num_hcs, num_literals;
+  std::unordered_map<unsigned, unsigned> head_term_indexer;
 
   UnionFindExplain         ufe;
   CongruenceClosureExplain equiv_classes;
@@ -176,6 +178,7 @@ class Hornsat {
   Hornsat(CongruenceClosureExplain &, HornClauses const &);
   ~Hornsat();
 
+  void build(CongruenceClosureExplain &, HornClauses const &);
   bool isConsistent() const ;
   void unionupdate(LiteralId, LiteralId);
   friend std::ostream & operator << (std::ostream &, Hornsat const &);

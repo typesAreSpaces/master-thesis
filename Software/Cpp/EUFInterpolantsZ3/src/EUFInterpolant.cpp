@@ -10,6 +10,11 @@ EUFInterpolant::EUFInterpolant(z3::expr_vector const & assertions) :
   // Conditional uncommon symbol elimination step
   hsat(cce, horn_clauses)
 {        
+  
+  for(auto const & equation : assertions){
+    hsat.equiv_classes.merge(equation.arg(0), equation.arg(1));
+  }
+  
 #if DEBUG_EXPOSE_UNCOMMS
   std::cout << "After expose uncommons" << std::endl;
   std::cout << horn_clauses << std::endl;
@@ -20,36 +25,26 @@ EUFInterpolant::EUFInterpolant(z3::expr_vector const & assertions) :
   std::cout << hsat << std::endl;
 #endif
 
-  //std::cout << hsat.ufe << std::endl;
-  //std::cout << factory_curry_nodes << std::endl;
-  //unsigned i = 0;
-  //for(auto elem : subterms)
-    //std::cout 
-      //<< ++i << ". Id: " << elem.id() << " " 
-      //<< elem << std::endl;
-
   //unsigned test_index;
   //test_index = 31;
   //std::cout << "Replacements for " << subterms[test_index] << std::endl;
-  //std::cout << commonReplacements(subterms[test_index]) << std::endl << std::endl;
+  //std::cout << candidates(subterms[test_index]) << std::endl << std::endl;
   //test_index = 33;
   //std::cout << "Replacements for " << subterms[test_index] << std::endl;
-  //std::cout << commonReplacements(subterms[test_index]) << std::endl << std::endl;
+  //std::cout << candidates(subterms[test_index]) << std::endl << std::endl;
   //test_index = 24;
   //std::cout << "Replacements for " << subterms[test_index] << std::endl;
-  //std::cout << commonReplacements(subterms[test_index]) << std::endl << std::endl;
+  //std::cout << candidates(subterms[test_index]) << std::endl << std::endl;
   //test_index = 28;
   //std::cout << "Replacements for " << subterms[test_index] << std::endl;
-  //std::cout << commonReplacements(subterms[test_index]) << std::endl << std::endl;
+  //std::cout << candidates(subterms[test_index]) << std::endl << std::endl;
 
   conditionalElimination();
 
   //std::vector<std::vector<int>> a({{1, 2, 3}, {4}, {5, 6}});
   //printGeneralizedCartesianProduct(GeneralizedCartesianProduct(a));
-
   //std::vector<std::vector<int>> b({{1, 2, 3, 4, 5}, {6, 7}, {8, 9, 0}});
   //printGeneralizedCartesianProduct(GeneralizedCartesianProduct(b));
-
   //std::vector<std::vector<int>> c({{1, 2, 3}, {4, 5, 6}, {7, 8, 9}});
   //printGeneralizedCartesianProduct(GeneralizedCartesianProduct(c));
 
@@ -89,15 +84,8 @@ void EUFInterpolant::exposeUncommons(){
   return;
 }
 
-void EUFInterpolant::conditionalElimination(){
-  // Approach: add stuff to the Horn Clauses
-  // in the input using add by eliminating
-  // uncommon term using the explanation 
-  // operator
-
-  // Process original equations
+void EUFInterpolant::conditionalEliminationEqs(){
   for(auto const & equation : assertions){
-    std::cout << equation << std::endl;
     auto const & lhs = equation.arg(0), & rhs = equation.arg(1);
 
     if(lhs.is_const()){
@@ -178,19 +166,28 @@ void EUFInterpolant::conditionalElimination(){
       }
     }
   }
+}
 
+void EUFInterpolant::conditionalEliminationHcs(){
+  throw "Not implemented yet!";
+}
 
+void EUFInterpolant::conditionalElimination(){
+  // Approach: add stuff to the Horn Clauses
+  // in the input using add by eliminating
+  // uncommon term using the explanation 
+  // operator
 
-
+  // Process original equations
+  conditionalEliminationEqs();
 
   // Process produced Horn clauses
-
-
+  conditionalEliminationHcs();
 
   return;
 }
 
-z3::expr_vector EUFInterpolant::commonReplacements(z3::expr const & e){
+z3::expr_vector EUFInterpolant::candidates(z3::expr const & e){
   z3::expr_vector ans(e.ctx());
 
   if(e.is_common()){
@@ -204,12 +201,37 @@ z3::expr_vector EUFInterpolant::commonReplacements(z3::expr const & e){
   auto end = hsat.ufe.end(repr_index);
   for(; it != end; ++it){
     Z3Index index = factory_curry_nodes.getCurryNode(*it)->getZ3Id();
-    if(subterms[index].is_common() && ids.find(index) == ids.end()){
+    z3::expr const & term = subterms[index];
+    if(term.is_common() && ids.find(index) == ids.end()){
       ids.insert(index);
-      ans.push_back(subterms[index]);
+      ans.push_back(term);
     }
   }
 
+  return ans;
+}
+
+z3::expr_vector EUFInterpolant::explainUncommons(z3::expr const & t1, z3::expr const & t2){
+  z3::expr_vector ans(t1.ctx());
+  if(t1.id() == t2.id())
+    return ans;
+  auto partial_explain = hsat.equiv_classes.z3Explain(t1, t2);
+  for(auto const & equation : partial_explain){
+    if(equation.is_common())
+      ans.push_back(equation);
+    else{
+      // Look at the horn_clauses in hsat
+      // Identify the proper head term
+      // append its antecedent
+      //
+      // TODO: Implement the above paragraph
+      // CAUTION: If head_term_indexer gives back 0
+      // it might be that the map didn't find the element.
+      // However, that shouldn't happen..
+      std::cout << hsat.head_term_indexer[equation.id()] << std::endl;
+      // KEEP: working here
+    }
+  }
   return ans;
 }
 

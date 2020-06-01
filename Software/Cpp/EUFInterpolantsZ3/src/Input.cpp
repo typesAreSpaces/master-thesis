@@ -89,7 +89,7 @@ void Input::disequalitiesToHCS(){
 }
 
 z3::expr Input::z3_repr(z3::expr const & e){
-  return cce.z3_repr(e);
+  return cce.z3Repr(e);
   //return e;
 }
 
