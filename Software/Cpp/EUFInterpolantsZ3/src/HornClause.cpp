@@ -86,7 +86,7 @@ bool HornClause::checkTriviality(UnionFindExplain & ufe){
   return ufe.find(consequent.arg(0).id()) == ufe.find(consequent.arg(1).id());
 }
 
-const z3::expr_vector & HornClause::getAntecedent() const {
+z3::expr_vector const & HornClause::getAntecedent() const {
   return antecedent;
 }
 

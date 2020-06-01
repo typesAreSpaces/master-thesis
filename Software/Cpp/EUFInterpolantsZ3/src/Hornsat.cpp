@@ -59,7 +59,9 @@ void Hornsat::build(CongruenceClosureExplain & cce, HornClauses const & hcs){
       // ------------------------------------------------------------
       // Horn clause head processing --------------------------------
       auto consequent = horn_clause->getConsequent();
-      head_term_indexer[consequent.id()] = index_hc;
+      // This structure is only used in our approach
+      // for conditional-elimination
+      head_term_indexer[consequent.id()] = horn_clause;
 #if DEBUGGING_CONSTRUCTOR
       std::cout << "Consequent Literal " 
         << consequent.id() << " " << consequent << std::endl;

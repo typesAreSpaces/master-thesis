@@ -25,6 +25,9 @@ EUFInterpolant::EUFInterpolant(z3::expr_vector const & assertions) :
   std::cout << hsat << std::endl;
 #endif
 
+  std::cout << subterms << std::endl;
+
+  //// Testing candidates
   //unsigned test_index;
   //test_index = 31;
   //std::cout << "Replacements for " << subterms[test_index] << std::endl;
@@ -38,8 +41,11 @@ EUFInterpolant::EUFInterpolant(z3::expr_vector const & assertions) :
   //test_index = 28;
   //std::cout << "Replacements for " << subterms[test_index] << std::endl;
   //std::cout << candidates(subterms[test_index]) << std::endl << std::endl;
+  
+  //// Testing explainUncommons
+  std::cout << explainUncommons(subterms[31], subterms[24]) << std::endl;
 
-  conditionalElimination();
+  //conditionalElimination();
 
   //std::vector<std::vector<int>> a({{1, 2, 3}, {4}, {5, 6}});
   //printGeneralizedCartesianProduct(GeneralizedCartesianProduct(a));
@@ -220,16 +226,13 @@ z3::expr_vector EUFInterpolant::explainUncommons(z3::expr const & t1, z3::expr c
     if(equation.is_common())
       ans.push_back(equation);
     else{
+      // --------------------------------
       // Look at the horn_clauses in hsat
       // Identify the proper head term
       // append its antecedent
-      //
-      // TODO: Implement the above paragraph
-      // CAUTION: If head_term_indexer gives back 0
-      // it might be that the map didn't find the element.
-      // However, that shouldn't happen..
-      std::cout << hsat.head_term_indexer[equation.id()] << std::endl;
-      // KEEP: working here
+      // --------------------------------
+      for(auto const & hsat_equation : hsat.head_term_indexer[equation.id()]->getAntecedent())
+        ans.push_back(hsat_equation);
     }
   }
   return ans;

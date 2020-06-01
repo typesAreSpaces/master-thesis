@@ -30,3 +30,9 @@ z3::expr Z3Subterms::operator[](unsigned i) const {
   throw "Element not defined";
 }
 
+std::ostream & operator << (std::ostream & os, Z3Subterms const & z3subterms){
+  for(auto it = z3subterms.begin(); it != z3subterms.end(); ++it){
+    os << it.getIndex() << ". " << *it << std::endl;
+  }
+  return os;
+}

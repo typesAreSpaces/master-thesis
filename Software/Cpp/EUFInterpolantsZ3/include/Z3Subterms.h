@@ -51,6 +51,7 @@ struct Z3Subterms {
   unsigned size() const;
   void set(unsigned, const z3::expr &);
   z3::expr operator[](unsigned) const;
+  friend std::ostream & operator << (std::ostream &, Z3Subterms const &);
 };
 
 #endif

@@ -36,9 +36,9 @@ struct Clause {
   }
 
   class iterator {
-    struct Clause * it;
+    struct Clause const * it;
   public:
-    iterator(struct Clause * n) : it(n){}
+    iterator(struct Clause const * n) : it(n){}
     bool operator ==(iterator const & other){
       return it == other.it;
     }
@@ -50,15 +50,20 @@ struct Clause {
         it = it->next;
       return *this;
     }
-    struct Clause * operator *(){
+    struct Clause const * operator *() const {
       return it;
     }
   };
-  iterator begin(){
+  iterator begin() const {
     return iterator(this);
   }
-  iterator end(){
+  iterator end() const {
     return iterator(nullptr);
+  }
+  friend std::ostream & operator << (std::ostream & os, struct Clause const & clause){
+    for(auto const & it : clause)
+      os << it << " ";
+    return os;
   }
 };
 
@@ -155,7 +160,9 @@ class Hornsat {
   friend class EUFInterpolant;
 
   unsigned num_hcs, num_literals;
-  std::unordered_map<unsigned, unsigned> head_term_indexer;
+  // This structure is only used in our approach
+  // for conditional-elimination
+  std::unordered_map<unsigned, HornClause *> head_term_indexer;
 
   UnionFindExplain         ufe;
   CongruenceClosureExplain equiv_classes;
