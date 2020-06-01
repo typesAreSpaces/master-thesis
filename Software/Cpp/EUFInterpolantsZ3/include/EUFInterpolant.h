@@ -4,6 +4,7 @@
 #define DEBUG_EUFINTERPOLANT 0
 #define DEBUG_EXPOSE_UNCOMMS 0
 #define DEBUG_COND_ELIM      0
+#define DEBUG_TEMP           0
 
 #include "Input.h"
 #include <set>
@@ -22,8 +23,10 @@ class EUFInterpolant : public Input {
   void conditionalEliminationHcs(); // TODO: Implement this
   void conditionalElimination();    // TODO: Implement this
   
-  z3::expr_vector candidates(z3::expr const &);
-  z3::expr_vector explainUncommons(z3::expr const &, z3::expr const &); 
+  std::list<z3::expr>             candidates(z3::expr const &);
+  z3::expr_vector                 explainUncommons(z3::expr const &, z3::expr const &); 
+  std::list<std::list<z3::expr> > allCandidates(z3::expr const &);
+  std::vector<z3::expr_vector>    cartesianProd(std::list<std::list<z3::expr> >);
   
  public:
   EUFInterpolant(z3::expr_vector const &);

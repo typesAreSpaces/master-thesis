@@ -142,11 +142,11 @@ z3::expr HornClause::ToZ3Exprc() const{
   return z3::implies(mk_and(antecedent), consequent);
 }
 
-bool operator < (const HornClause & hc1, const HornClause & hc2){
+bool operator < (HornClause const & hc1, HornClause const & hc2){
   return hc2 > hc1;
 }
 
-std::ostream & operator << (std::ostream & os, const HornClause & hc){
+std::ostream & operator << (std::ostream & os, HornClause const & hc){
   bool first_flag = true;
   unsigned num_antecedent = hc.antecedent.size();
   for(unsigned i = 0; i < num_antecedent; i++){
