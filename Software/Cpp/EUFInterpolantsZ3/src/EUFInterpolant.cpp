@@ -31,26 +31,31 @@ EUFInterpolant::EUFInterpolant(z3::expr_vector const & assertions) :
 #endif
 
 #if DEBUG_TEMP
+  auto t1 = subterms[31]; //31. (c_f c_y1 a_v)
+  auto t2 = subterms[21]; //21. c_z1
+  auto t3 = subterms[24]; //24. c_s1
+  auto t4 = subterms[32]; //32. c_y2
+  auto t5 = subterms[34]; //34. (c_f (c_f c_y1 a_v) (c_f c_y2 a_v)) 
+  auto t6 = subterms[33]; //33. (c_f c_y2 a_v)
+  auto t7 = subterms[28]; //28. c_s2
+  
   // Testing candidates
-  unsigned test_index;
-  test_index = 31;
-  std::cout << "Replacements for " << subterms[test_index] << std::endl;
-  for(auto elem : candidates(subterms[test_index]))
+  std::cout << "Testing candidates" << std::endl;
+  std::cout << "Replacements for " << t1 << std::endl;
+  for(auto elem : candidates(t1))
     std::cout << elem << std::endl;
-  test_index = 33;
-  std::cout << "Replacements for " << subterms[test_index] << std::endl;
-  for(auto elem : candidates(subterms[test_index]))
+  std::cout << "Replacements for " << t6 << std::endl;
+  for(auto elem : candidates(t6))
     std::cout << elem << std::endl;
-  test_index = 24;
-  std::cout << "Replacements for " << subterms[test_index] << std::endl;
-  for(auto elem : candidates(subterms[test_index]))
+  std::cout << "Replacements for " << t3 << std::endl;
+  for(auto elem : candidates(t3))
     std::cout << elem << std::endl;
-  test_index = 28;
-  std::cout << "Replacements for " << subterms[test_index] << std::endl;
-  for(auto elem : candidates(subterms[test_index]))
+  std::cout << "Replacements for " << t7 << std::endl;
+  for(auto elem : candidates(t7))
     std::cout << elem << std::endl;
 
   // Testing allCandidates
+  std::cout << "Testing allCandidates" << std::endl;
   auto test_allCandidates = allCandidates(subterms[34]);
   for(auto const & temp_list : test_allCandidates){
     for(auto const & elem : temp_list)
@@ -59,19 +64,16 @@ EUFInterpolant::EUFInterpolant(z3::expr_vector const & assertions) :
   }
 
   // Testing explainUncommons
-  std::cout << subterms[31] << " = " << subterms[24] << std::endl;
-  std::cout << explainUncommons(subterms[31], subterms[24]) << std::endl;
-  std::cout << subterms[24] << " = " << subterms[31] << std::endl;
-  std::cout << explainUncommons(subterms[24], subterms[31]) << std::endl;
-  std::cout << subterms[24] << " = " << subterms[24] << std::endl;
-  std::cout << explainUncommons(subterms[24], subterms[24]) << std::endl;
+  std::cout << "Testing explainUncommons" << std::endl;
+  std::cout << t1 << " = " << t3 << std::endl;
+  std::cout << explainUncommons(t1, t3) << std::endl;
+  std::cout << t3 << " = " << t1 << std::endl;
+  std::cout << explainUncommons(t3, t1) << std::endl;
+  std::cout << t3 << " = " << t3 << std::endl;
+  std::cout << explainUncommons(t3, t3) << std::endl;
 
   // Testing cartesianProd
-  auto t1 = subterms[31]; //31. (c_f c_y1 a_v)
-  auto t2 = subterms[21]; //21. c_z1
-  auto t3 = subterms[24]; //24. c_s1
-  auto t4 = subterms[32]; //32. c_y2
-  auto t5 = subterms[34]; //34. (c_f (c_f c_y1 a_v) (c_f c_y2 a_v)) 
+  std::cout << "Testing cartesianProd" << std::endl;
 
   std::cout << "Testing allCandidates" << std::endl;
   std::list<std::list<z3::expr> > abc({{t1, t2}, {t3, t1}, {t4, t1, t2}});
