@@ -26,11 +26,13 @@ EUFInterpolant::EUFInterpolant(z3::expr_vector const & assertions) :
 #endif
 
 #if DEBUG_TEMP
-  // DEBUG
+  std::cout << "All the subterms" << std::endl;
   std::cout << subterms << std::endl;
 #endif
 
 #if DEBUG_TEMP
+  std::cout << "BEGIN temporal testing" << std::endl;
+
   auto t1 = subterms[31]; //31. (c_f c_y1 a_v)
   auto t2 = subterms[21]; //21. c_z1
   auto t3 = subterms[24]; //24. c_s1
@@ -38,30 +40,38 @@ EUFInterpolant::EUFInterpolant(z3::expr_vector const & assertions) :
   auto t5 = subterms[34]; //34. (c_f (c_f c_y1 a_v) (c_f c_y2 a_v)) 
   auto t6 = subterms[33]; //33. (c_f c_y2 a_v)
   auto t7 = subterms[28]; //28. c_s2
+  auto t8 = subterms[22]; //22. a_v
   
   // Testing candidates
   std::cout << "Testing candidates" << std::endl;
-  std::cout << "Replacements for " << t1 << std::endl;
+  std::cout << "Candidates for " << t1 << std::endl;
   for(auto elem : candidates(t1))
     std::cout << elem << std::endl;
-  std::cout << "Replacements for " << t6 << std::endl;
+  std::cout << "Candidates for " << t6 << std::endl;
   for(auto elem : candidates(t6))
     std::cout << elem << std::endl;
-  std::cout << "Replacements for " << t3 << std::endl;
+  std::cout << "Candidates for " << t3 << std::endl;
   for(auto elem : candidates(t3))
     std::cout << elem << std::endl;
-  std::cout << "Replacements for " << t7 << std::endl;
+  std::cout << "Candidates for " << t7 << std::endl;
   for(auto elem : candidates(t7))
     std::cout << elem << std::endl;
 
   // Testing allCandidates
   std::cout << "Testing allCandidates" << std::endl;
-  auto test_allCandidates = allCandidates(subterms[34]);
-  for(auto const & temp_list : test_allCandidates){
+  std::cout << "for " << t5 << std::endl;
+  for(auto const & temp_list : allCandidates(t5)){
     for(auto const & elem : temp_list)
       std::cout << elem << " ";
     std::cout << std::endl;
   }
+  //std::cout << "Testing allCandidates" << std::endl;
+  //std::cout << "for " << t8 << std::endl;
+  //for(auto const & temp_list : allCandidates(t8)){
+    //for(auto const & elem : temp_list)
+      //std::cout << elem << " ";
+    //std::cout << std::endl;
+  //}
 
   // Testing explainUncommons
   std::cout << "Testing explainUncommons" << std::endl;
@@ -74,14 +84,32 @@ EUFInterpolant::EUFInterpolant(z3::expr_vector const & assertions) :
 
   // Testing cartesianProd
   std::cout << "Testing cartesianProd" << std::endl;
-
-  std::cout << "Testing allCandidates" << std::endl;
   std::list<std::list<z3::expr> > abc({{t1, t2}, {t3, t1}, {t4, t1, t2}});
   unsigned temp_index = 1;
   for(auto const & temp : cartesianProd(abc)){
     std::cout << "candidate " << temp_index++ << std::endl;
     std::cout << temp << std::endl;
   }
+  std::list<std::list<z3::expr> > def({{}});
+  temp_index = 1;
+  for(auto const & temp : cartesianProd(def)){
+    std::cout << "candidate " << temp_index++ << std::endl;
+    std::cout << temp << std::endl;
+  }
+
+  // Testing composition of cartesianProd and allCandidates
+  std::cout << "Testing composition of cartesianProd and allCandidates" << std::endl;
+
+  std::cout << "for " << t5 << std::endl;
+  for(auto const & w : cartesianProd(allCandidates(t5)))
+    std::cout << w << std::endl;
+  
+  //std::cout << "for " << t8 << std::endl;
+  //for(auto const & w : cartesianProd(allCandidates(t8)))
+    //std::cout << w << std::endl;
+  
+  std::cout << "END temporal testing" << std::endl;
+
 #endif
 
   conditionalElimination();
@@ -274,11 +302,17 @@ z3::expr_vector EUFInterpolant::explainUncommons(z3::expr const & t1, z3::expr c
 }
 
 std::list<std::list<z3::expr> > EUFInterpolant::allCandidates(z3::expr const & t){
-  assert(t.is_app());
-  if(t.is_const())
-    throw "EUFInterpolant::allCandidates only takes function applications.";
+  assert(t.is_app() && !t.is_const());
 
   std::list<std::list<z3::expr> > ans({});
+  // The following test if the function symbol
+  // is not common
+  auto f = t.decl().name().str();
+  if(f[0] != 'c'){
+    ans.push_back(std::list<z3::expr>({}));
+    return ans;
+  }
+
   unsigned num_args = t.num_args();
   for(unsigned index = 0; index < num_args; index++)
     ans.push_back(candidates(t.arg(index)));

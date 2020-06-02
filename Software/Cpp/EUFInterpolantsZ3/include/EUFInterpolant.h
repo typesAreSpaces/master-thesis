@@ -4,7 +4,7 @@
 #define DEBUG_EUFINTERPOLANT 0
 #define DEBUG_EXPOSE_UNCOMMS 0
 #define DEBUG_COND_ELIM      0
-#define DEBUG_TEMP           1
+#define DEBUG_TEMP           0
 
 #include "Input.h"
 #include <set>
