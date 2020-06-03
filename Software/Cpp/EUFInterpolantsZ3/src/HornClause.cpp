@@ -30,6 +30,37 @@ HornClause::HornClause(z3::context & ctx, z3::expr_vector antecedent, z3::expr c
   return;
 }
 
+HornClause::HornClause(z3::context & ctx, z3::expr_vector antecedent, z3::expr consequent, CongruenceClosureExplain & cce) :
+  ctx(ctx),
+  antecedent(antecedent), consequent(consequent), 
+  is_common_antecedent(true), num_uncomm_antecedent(0), local_max_lit_id(0)
+{
+
+  // ----------------
+  normalize(cce);  //
+  orient();        //
+  // ----------------
+
+  // ---------------------------------------------------------------
+  // This part updates:
+  // 1) num_uncomm_antecedent
+  // 2) is_common_antecedent
+  for(auto hyp : this->antecedent){
+    if(local_max_lit_id < hyp.id())
+      local_max_lit_id = hyp.id();
+    if(!hyp.is_common()){
+      num_uncomm_antecedent++;
+      is_common_antecedent = false;
+    }
+  }
+  if(local_max_lit_id < this->consequent.id()){
+    local_max_lit_id = this->consequent.id();
+  }
+  // ---------------------------------------------------------------
+  return;
+}
+
+
 HornClause::~HornClause(){
 #if DEBUG_DESTRUCTOR_HC
   std::cout << "Done ~HornClause" << std::endl;
@@ -54,6 +85,26 @@ void HornClause::normalize(UnionFindExplain & ufe){
   }
   return;
 }
+
+// Removes trivial equalities in the antecedent
+// sorting these elements using the following heuristic:
+// compareEquation from Util
+void HornClause::normalize(CongruenceClosureExplain & cce){
+  std::vector<z3::expr> aux_antecedent ({});
+
+  for(auto expr : antecedent)
+    aux_antecedent.push_back(expr);
+
+  std::sort(aux_antecedent.begin(), aux_antecedent.end(), compareEquation);
+  antecedent.resize(0);
+
+  for(auto expr : aux_antecedent){
+    if(cce.areSameClass(expr.arg(0), expr.arg(1)))
+      antecedent.push_back(expr);
+  }
+  return;
+}
+
 
 // Rearranges a Horn Clauses to the form
 // (/\_i u_i = v_i) => a = b, where u_i >= v_i and a >= b

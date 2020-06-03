@@ -166,32 +166,31 @@ void EUFInterpolant::conditionalEliminationEqs(){
     // FIX: the equivalent class shouldn't be ufe
     // Remember that the z3 terms are not congruent,
     // their constants are!
+    // UPDATE: The latter is already addressed.
+    // Needs testing however.
     
     if(lhs.is_const()){
       if(rhs.is_const())
         for(auto const & e_x : candidates(lhs))
           for(auto const & e_y : candidates(rhs)){
             // TODO: define hc_body appropriately!
-            // TODO: fix ufe, check @ 166
             z3::expr_vector hc_body(ctx);
-            horn_clauses.add(new HornClause(ctx, hc_body, e_x == e_y, ufe));
+            horn_clauses.add(new HornClause(ctx, hc_body, e_x == e_y, hsat.equiv_classes));
             std::cout << e_x << ", " << e_y << std::endl;
           }
       else
         for(auto const & e_x : candidates(lhs)){
           for(auto const & e_f_y : candidates(rhs)){
             // TODO: define hc_body appropriately!
-            // TODO: fix ufe, check @ 166
             z3::expr_vector hc_body(ctx);
-            horn_clauses.add(new HornClause(ctx, hc_body, e_x == e_f_y, ufe));
+            horn_clauses.add(new HornClause(ctx, hc_body, e_x == e_f_y, hsat.equiv_classes));
             std::cout << e_x << ", " << e_f_y << std::endl;
           }
           z3::func_decl f_y = rhs.decl();
           for(auto const & arguments_f_y : cartesianProd(allCandidates(rhs))){
             // TODO: define hc_body appropriately!
-            // TODO: fix ufe, check @ 166
             z3::expr_vector hc_body(ctx);
-            horn_clauses.add(new HornClause(ctx, hc_body, e_x == f_y(arguments_f_y), ufe));
+            horn_clauses.add(new HornClause(ctx, hc_body, e_x == f_y(arguments_f_y), hsat.equiv_classes));
             std::cout << e_x << ", " << f_y(arguments_f_y) << std::endl;
           }
         }
@@ -201,17 +200,15 @@ void EUFInterpolant::conditionalEliminationEqs(){
         for(auto const & e_y : candidates(rhs)){
           for(auto const & e_f_x : candidates(lhs)){
             // TODO: define hc_body appropriately!
-            // TODO: fix ufe, check @ 166
             z3::expr_vector hc_body(ctx);
-            horn_clauses.add(new HornClause(ctx, hc_body, e_f_x == e_y, ufe));
+            horn_clauses.add(new HornClause(ctx, hc_body, e_f_x == e_y, hsat.equiv_classes));
             std::cout << e_f_x << ", " << e_y << std::endl;
           }
           z3::func_decl f_x = lhs.decl();
           for(auto const & arguments_f_x : cartesianProd(allCandidates(lhs))){
             // TODO: define hc_body appropriately!
-            // TODO: fix ufe, check @ 166
             z3::expr_vector hc_body(ctx);
-            horn_clauses.add(new HornClause(ctx, hc_body, f_x(arguments_f_x) == e_y, ufe));
+            horn_clauses.add(new HornClause(ctx, hc_body, f_x(arguments_f_x) == e_y, hsat.equiv_classes));
             std::cout << f_x(arguments_f_x) << ", " << e_y << std::endl;
           }
         }
@@ -219,17 +216,15 @@ void EUFInterpolant::conditionalEliminationEqs(){
         for(auto const & e_x : candidates(lhs)){
           for(auto const & e_y : candidates(rhs)){
             // TODO: define hc_body appropriately!
-            // TODO: fix ufe, check @ 166
             z3::expr_vector hc_body(ctx);
-            horn_clauses.add(new HornClause(ctx, hc_body, e_x == e_y, ufe));
+            horn_clauses.add(new HornClause(ctx, hc_body, e_x == e_y, hsat.equiv_classes));
             std::cout << e_x << ", " << e_y << std::endl;
           }
           z3::func_decl f_y = rhs.decl();
           for(auto const & arguments_f_y : cartesianProd(allCandidates(rhs))){
             // TODO: define hc_body appropriately!
-            // TODO: fix ufe, check @ 166
             z3::expr_vector hc_body(ctx);
-            horn_clauses.add(new HornClause(ctx, hc_body, e_x == f_y(arguments_f_y), ufe));
+            horn_clauses.add(new HornClause(ctx, hc_body, e_x == f_y(arguments_f_y), hsat.equiv_classes));
             std::cout << e_x << ", " << f_y(arguments_f_y) << std::endl;
           }
         }
@@ -237,17 +232,15 @@ void EUFInterpolant::conditionalEliminationEqs(){
         for(auto const & arguments_f_x : cartesianProd(allCandidates(lhs))){
           for(auto const & e_y : candidates(rhs)){
             // TODO: define hc_body appropriately!
-            // TODO: fix ufe, check @ 166
             z3::expr_vector hc_body(ctx);
-            horn_clauses.add(new HornClause(ctx, hc_body, f_x(arguments_f_x) == e_y, ufe));
+            horn_clauses.add(new HornClause(ctx, hc_body, f_x(arguments_f_x) == e_y, hsat.equiv_classes));
             std::cout << f_x(arguments_f_x) << ", " << e_y << std::endl;
           }
           z3::func_decl f_y = rhs.decl();
           for(auto const & arguments_f_y : cartesianProd(allCandidates(rhs))){
             // TODO: define hc_body appropriately!
-            // TODO: fix ufe, check @ 166
             z3::expr_vector hc_body(ctx);
-            horn_clauses.add(new HornClause(ctx, hc_body, f_x(arguments_f_x) == f_y(arguments_f_y), ufe));
+            horn_clauses.add(new HornClause(ctx, hc_body, f_x(arguments_f_x) == f_y(arguments_f_y), hsat.equiv_classes));
             std::cout << f_x(arguments_f_x) << ", " << f_y(arguments_f_y) << std::endl;
           }
         }

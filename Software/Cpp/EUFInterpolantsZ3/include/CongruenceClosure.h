@@ -8,9 +8,7 @@
 #include <utility>
 #include <z3++.h>
 #include "Z3Subterms.h"
-#include "UnionFind.h"
 #include "UnionFindExplain.h"
-#include "HornClause.h"
 
 class SignatureTable {
   std::unordered_map<std::size_t, unsigned> sig_table;

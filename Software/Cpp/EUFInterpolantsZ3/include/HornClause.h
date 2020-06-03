@@ -6,6 +6,7 @@
 #include <list>
 #include <z3++.h>
 #include "UnionFindExplain.h"
+#include "CongruenceClosureExplain.h"
 #include "Z3Subterms.h"
 #include "Util.h"
 
@@ -19,10 +20,12 @@ class HornClause {
   unsigned        local_max_lit_id;
 
   void normalize(UnionFindExplain &);
+  void normalize(CongruenceClosureExplain &);
   void orient();
   
 public:
   HornClause(z3::context &, z3::expr_vector, z3::expr, UnionFindExplain &);
+  HornClause(z3::context &, z3::expr_vector, z3::expr, CongruenceClosureExplain &);
   ~HornClause();
   
   bool                    checkTriviality(UnionFindExplain &);
