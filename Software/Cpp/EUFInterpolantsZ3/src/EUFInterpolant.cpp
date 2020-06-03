@@ -1,4 +1,5 @@
 #include "EUFInterpolant.h"
+#include <z3++.h>
 
 EUFInterpolant::EUFInterpolant(z3::expr_vector const & assertions) : 
   // Congruence Closure step
@@ -151,93 +152,108 @@ void EUFInterpolant::exposeUncommons(){
 }
 
 void EUFInterpolant::conditionalEliminationEqs(){
+#if DEBUG_COND_ELIM_EQS
+  std::cout << "conditionalElimination" << std::endl;
+#endif
+
   for(auto const & equation : assertions){
     auto const & lhs = equation.arg(0), & rhs = equation.arg(1);
+#if DEBUG_COND_ELIM_EQS
+    std::cout << equation << std::endl;
+#endif
 
     // KEEP: working here
-
+    // FIX: the equivalent class shouldn't be ufe
+    // Remember that the z3 terms are not congruent,
+    // their constants are!
+    
     if(lhs.is_const()){
-      if(rhs.is_const()){
-        if(lhs.is_common()){
-          if(rhs.is_common()){
-
+      if(rhs.is_const())
+        for(auto const & e_x : candidates(lhs))
+          for(auto const & e_y : candidates(rhs)){
+            // TODO: define hc_body appropriately!
+            // TODO: fix ufe, check @ 166
+            z3::expr_vector hc_body(ctx);
+            horn_clauses.add(new HornClause(ctx, hc_body, e_x == e_y, ufe));
+            std::cout << e_x << ", " << e_y << std::endl;
           }
-          else{
-
+      else
+        for(auto const & e_x : candidates(lhs)){
+          for(auto const & e_f_y : candidates(rhs)){
+            // TODO: define hc_body appropriately!
+            // TODO: fix ufe, check @ 166
+            z3::expr_vector hc_body(ctx);
+            horn_clauses.add(new HornClause(ctx, hc_body, e_x == e_f_y, ufe));
+            std::cout << e_x << ", " << e_f_y << std::endl;
           }
-        }
-        else{
-          if(rhs.is_common()){
-
-          }
-          else{
-
-          }
-        }
-      }
-      else{
-        if(lhs.is_common()){
-          if(rhs.is_common()){
-
-          }
-          else{
-
-          }
-        }
-        else{
-          if(rhs.is_common()){
-
-          }
-          else{
-
+          z3::func_decl f_y = rhs.decl();
+          for(auto const & arguments_f_y : cartesianProd(allCandidates(rhs))){
+            // TODO: define hc_body appropriately!
+            // TODO: fix ufe, check @ 166
+            z3::expr_vector hc_body(ctx);
+            horn_clauses.add(new HornClause(ctx, hc_body, e_x == f_y(arguments_f_y), ufe));
+            std::cout << e_x << ", " << f_y(arguments_f_y) << std::endl;
           }
         }
-      }
     }
-
     else{
-      if(rhs.is_const()){
-        if(lhs.is_common()){
-          if(rhs.is_common()){
-
+      if(rhs.is_const())
+        for(auto const & e_y : candidates(rhs)){
+          for(auto const & e_f_x : candidates(lhs)){
+            // TODO: define hc_body appropriately!
+            // TODO: fix ufe, check @ 166
+            z3::expr_vector hc_body(ctx);
+            horn_clauses.add(new HornClause(ctx, hc_body, e_f_x == e_y, ufe));
+            std::cout << e_f_x << ", " << e_y << std::endl;
           }
-          else{
-
+          z3::func_decl f_x = lhs.decl();
+          for(auto const & arguments_f_x : cartesianProd(allCandidates(lhs))){
+            // TODO: define hc_body appropriately!
+            // TODO: fix ufe, check @ 166
+            z3::expr_vector hc_body(ctx);
+            horn_clauses.add(new HornClause(ctx, hc_body, f_x(arguments_f_x) == e_y, ufe));
+            std::cout << f_x(arguments_f_x) << ", " << e_y << std::endl;
           }
         }
-        else{
-          if(rhs.is_common()){
-
-          }
-          else{
-
-          }
-        }
-      }
       else{
-        if(lhs.is_common()){
-          if(rhs.is_common()){
-
+        for(auto const & e_x : candidates(lhs)){
+          for(auto const & e_y : candidates(rhs)){
+            // TODO: define hc_body appropriately!
+            // TODO: fix ufe, check @ 166
+            z3::expr_vector hc_body(ctx);
+            horn_clauses.add(new HornClause(ctx, hc_body, e_x == e_y, ufe));
+            std::cout << e_x << ", " << e_y << std::endl;
           }
-          else{
-
+          z3::func_decl f_y = rhs.decl();
+          for(auto const & arguments_f_y : cartesianProd(allCandidates(rhs))){
+            // TODO: define hc_body appropriately!
+            // TODO: fix ufe, check @ 166
+            z3::expr_vector hc_body(ctx);
+            horn_clauses.add(new HornClause(ctx, hc_body, e_x == f_y(arguments_f_y), ufe));
+            std::cout << e_x << ", " << f_y(arguments_f_y) << std::endl;
           }
         }
-        else{
-          if(rhs.is_common()){
-
+        z3::func_decl f_x = lhs.decl();
+        for(auto const & arguments_f_x : cartesianProd(allCandidates(lhs))){
+          for(auto const & e_y : candidates(rhs)){
+            // TODO: define hc_body appropriately!
+            // TODO: fix ufe, check @ 166
+            z3::expr_vector hc_body(ctx);
+            horn_clauses.add(new HornClause(ctx, hc_body, f_x(arguments_f_x) == e_y, ufe));
+            std::cout << f_x(arguments_f_x) << ", " << e_y << std::endl;
           }
-          else{
-
+          z3::func_decl f_y = rhs.decl();
+          for(auto const & arguments_f_y : cartesianProd(allCandidates(rhs))){
+            // TODO: define hc_body appropriately!
+            // TODO: fix ufe, check @ 166
+            z3::expr_vector hc_body(ctx);
+            horn_clauses.add(new HornClause(ctx, hc_body, f_x(arguments_f_x) == f_y(arguments_f_y), ufe));
+            std::cout << f_x(arguments_f_x) << ", " << f_y(arguments_f_y) << std::endl;
           }
         }
       }
     }
   }
-}
-
-void EUFInterpolant::conditionalEliminationHcs(){
-  throw "Not implemented yet!";
 }
 
 void EUFInterpolant::conditionalElimination(){
@@ -249,9 +265,6 @@ void EUFInterpolant::conditionalElimination(){
   // Process original equations
   conditionalEliminationEqs();
 
-  // Process produced Horn clauses
-  conditionalEliminationHcs();
-
   return;
 }
 
@@ -259,7 +272,7 @@ std::list<z3::expr> EUFInterpolant::candidates(z3::expr const & e){
   std::list<z3::expr> ans({});
 
   if(e.is_common()){
-    //ans.push_back(e);
+    ans.push_back(e);
     return ans;
   }
 

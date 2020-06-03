@@ -4,6 +4,7 @@
 #define DEBUG_EUFINTERPOLANT 0
 #define DEBUG_EXPOSE_UNCOMMS 0
 #define DEBUG_COND_ELIM      0
+#define DEBUG_COND_ELIM_EQS  1
 #define DEBUG_TEMP           0
 
 #include "Input.h"
@@ -20,7 +21,6 @@ class EUFInterpolant : public Input {
 
   void exposeUncommons();
   void conditionalEliminationEqs(); // TODO: Implement this
-  void conditionalEliminationHcs(); // TODO: Implement this
   void conditionalElimination();    // TODO: Implement this
   
   std::list<z3::expr>             candidates(z3::expr const &);
