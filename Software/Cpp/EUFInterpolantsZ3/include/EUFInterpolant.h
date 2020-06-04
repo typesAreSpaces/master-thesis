@@ -3,7 +3,8 @@
 #define DEBUG_DESTRUCTOR_EUF 0
 #define DEBUG_EUFINTERPOLANT 0
 #define DEBUG_EXPOSE_UNCOMMS 0
-#define DEBUG_COND_ELIM      0
+#define DEBUG_HSAT_INTER     0
+#define DEBUG_COND_ELIM      1
 #define DEBUG_COND_ELIM_EQS  1
 #define DEBUG_TEMP           0
 

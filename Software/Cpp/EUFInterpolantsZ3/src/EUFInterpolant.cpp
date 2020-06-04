@@ -21,7 +21,7 @@ EUFInterpolant::EUFInterpolant(z3::expr_vector const & assertions) :
   std::cout << horn_clauses << std::endl;
 #endif
 
-#if DEBUG_COND_ELIM
+#if DEBUG_HSAT_INTER
   std::cout << "After conditional elimination" << std::endl;
   std::cout << hsat << std::endl;
 #endif
@@ -170,6 +170,9 @@ void EUFInterpolant::conditionalEliminationEqs(){
     // their constants are!
     // UPDATE: The latter is already addressed.
     // Needs testing however.
+    // FIX: add uses ufe.. This must be changed.
+    // to the CongruenceClosureExplain
+    // FIX: there is a problem. Check the output..
     
     if(lhs.is_const()){
       if(rhs.is_const())
@@ -204,7 +207,9 @@ void EUFInterpolant::conditionalEliminationEqs(){
           for(auto const & arguments_f_y : cartesianProd(allCandidates(rhs))){
             Explanation expl(ctx);
             expl.add(explainUncommons(e_x, lhs));
-            //expl.add(explainUncommons(f_y(arguments_f_y), rhs)); // FIX: This should be a map over the arguments
+            unsigned _index = 0;
+            for(auto const & arg_f_y : arguments_f_y)
+              expl.add(explainUncommons(rhs.arg(_index++), arg_f_y));
             horn_clauses.add(new HornClause(ctx, 
                   expl.get(), 
                   e_x == f_y(arguments_f_y), 
@@ -233,7 +238,9 @@ void EUFInterpolant::conditionalEliminationEqs(){
           z3::func_decl f_x = lhs.decl();
           for(auto const & arguments_f_x : cartesianProd(allCandidates(lhs))){
             Explanation expl(ctx);
-            //expl.add(explainUncommons(f_x(arguments_f_x), lhs));// FIX: This should be a map over the arguments
+            unsigned _index = 0;
+            for(auto const & arg_f_x : arguments_f_x)
+              expl.add(explainUncommons(lhs.arg(_index++), arg_f_x));
             expl.add(explainUncommons(e_y, rhs));
             horn_clauses.add(new HornClause(ctx, 
                   expl.get(), 
@@ -262,7 +269,9 @@ void EUFInterpolant::conditionalEliminationEqs(){
           for(auto const & arguments_f_y : cartesianProd(allCandidates(rhs))){
             Explanation expl(ctx);
             expl.add(explainUncommons(e_f_x, lhs));
-            //expl.add(explainUncommons(f_y(arguments_f_y), rhs));// FIX: This should be a map over the arguments
+            unsigned _index = 0;
+            for(auto const & arg_f_y : arguments_f_y)
+              expl.add(explainUncommons(rhs.arg(_index++), arg_f_y));
             horn_clauses.add(new HornClause(ctx, 
                   expl.get(), 
                   e_f_x == f_y(arguments_f_y), 
@@ -276,7 +285,9 @@ void EUFInterpolant::conditionalEliminationEqs(){
         for(auto const & arguments_f_x : cartesianProd(allCandidates(lhs))){
           for(auto const & e_f_y : candidates(rhs)){
             Explanation expl(ctx);
-            //expl.add(explainUncommons(f_x(arguments_f_x), lhs));// FIX: This should be a map over the arguments
+            unsigned _index = 0;
+            for(auto const & arg_f_x : arguments_f_x)
+              expl.add(explainUncommons(lhs.arg(_index++), arg_f_x));
             expl.add(explainUncommons(e_f_y, rhs));
             horn_clauses.add(new HornClause(ctx, 
                   expl.get(), 
@@ -289,8 +300,12 @@ void EUFInterpolant::conditionalEliminationEqs(){
           z3::func_decl f_y = rhs.decl();
           for(auto const & arguments_f_y : cartesianProd(allCandidates(rhs))){
             Explanation expl(ctx);
-            //expl.add(explainUncommons(f_x(arguments_f_x), lhs));// FIX: This should be a map over the arguments
-            //expl.add(explainUncommons(f_y(arguments_f_y), rhs));// FIX: This should be a map over the arguments
+            unsigned _index = 0;
+            for(auto const & arg_f_x : arguments_f_x)
+              expl.add(explainUncommons(lhs.arg(_index++), arg_f_x));
+            _index = 0;
+            for(auto const & arg_f_y : arguments_f_y)
+              expl.add(explainUncommons(rhs.arg(_index++), arg_f_y));
             horn_clauses.add(new HornClause(ctx, 
                   expl.get(), 
                   f_x(arguments_f_x) == f_y(arguments_f_y), 
@@ -313,6 +328,10 @@ void EUFInterpolant::conditionalElimination(){
 
   // Process original equations
   conditionalEliminationEqs();
+
+#if DEBUG_COND_ELIM
+  std::cout << horn_clauses << std::endl;
+#endif
 
   return;
 }
