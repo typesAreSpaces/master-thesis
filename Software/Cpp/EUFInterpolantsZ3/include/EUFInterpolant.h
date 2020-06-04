@@ -8,7 +8,7 @@
 #define DEBUG_TEMP           0
 
 #include "Input.h"
-#include <set>
+#include "Explanation.h"
 
 typedef unsigned Z3Index ;
 
@@ -22,13 +22,13 @@ class EUFInterpolant : public Input {
   void exposeUncommons();
   void conditionalEliminationEqs(); // TODO: Implement this
   void conditionalElimination();    // TODO: Implement this
-  
+
   std::list<z3::expr>             candidates(z3::expr const &);
   z3::expr_vector                 explainUncommons(z3::expr const &, z3::expr const &); 
   std::list<std::list<z3::expr> > allCandidates(z3::expr const &);
   std::vector<z3::expr_vector>    cartesianProd(std::list<std::list<z3::expr> >);
-  
- public:
+
+  public:
   EUFInterpolant(z3::expr_vector const &);
   ~EUFInterpolant();
 

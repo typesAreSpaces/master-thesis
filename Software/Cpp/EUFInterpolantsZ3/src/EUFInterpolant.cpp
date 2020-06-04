@@ -113,6 +113,7 @@ EUFInterpolant::EUFInterpolant(z3::expr_vector const & assertions) :
 
 #endif
 
+
   conditionalElimination();
 
   // buildInterpolant();
@@ -139,7 +140,9 @@ void EUFInterpolant::exposeUncommons(){
     if(current_num >= 2)
       for(unsigned index_1 = 0; index_1 < current_num - 1; index_1++)
         for(unsigned index_2 = index_1 + 1; index_2 < current_num; index_2++){
-          z3::expr const & t1 = subterms[iterator.second[index_1]], & t2 = subterms[iterator.second[index_2]];
+          z3::expr const 
+            & t1 = subterms[iterator.second[index_1]], 
+            & t2 = subterms[iterator.second[index_2]];
           // Only expose terms if at least one term is uncommon
           if(!t1.is_common() || !t2.is_common()){
             z3::expr_vector hc_body = buildHCBody(t1, t2);
@@ -162,7 +165,6 @@ void EUFInterpolant::conditionalEliminationEqs(){
     std::cout << equation << std::endl;
 #endif
 
-    // KEEP: working here
     // FIX: the equivalent class shouldn't be ufe
     // Remember that the z3 terms are not congruent,
     // their constants are!
@@ -173,25 +175,43 @@ void EUFInterpolant::conditionalEliminationEqs(){
       if(rhs.is_const())
         for(auto const & e_x : candidates(lhs))
           for(auto const & e_y : candidates(rhs)){
-            // TODO: define hc_body appropriately!
-            z3::expr_vector hc_body(ctx);
-            horn_clauses.add(new HornClause(ctx, hc_body, e_x == e_y, hsat.equiv_classes));
+            Explanation expl(ctx);
+            expl.add(explainUncommons(e_x, lhs));
+            expl.add(explainUncommons(e_y, rhs));
+            horn_clauses.add(new HornClause(ctx, 
+                  expl.get(), 
+                  e_x == e_y, 
+                  hsat.equiv_classes));
+#if DEBUG_COND_ELIM_EQS
             std::cout << e_x << ", " << e_y << std::endl;
+#endif
           }
       else
         for(auto const & e_x : candidates(lhs)){
           for(auto const & e_f_y : candidates(rhs)){
-            // TODO: define hc_body appropriately!
-            z3::expr_vector hc_body(ctx);
-            horn_clauses.add(new HornClause(ctx, hc_body, e_x == e_f_y, hsat.equiv_classes));
+            Explanation expl(ctx);
+            expl.add(explainUncommons(e_x, lhs));
+            expl.add(explainUncommons(e_f_y, rhs));
+            horn_clauses.add(new HornClause(ctx, 
+                  expl.get(), 
+                  e_x == e_f_y, 
+                  hsat.equiv_classes));
+#if DEBUG_COND_ELIM_EQS
             std::cout << e_x << ", " << e_f_y << std::endl;
+#endif
           }
           z3::func_decl f_y = rhs.decl();
           for(auto const & arguments_f_y : cartesianProd(allCandidates(rhs))){
-            // TODO: define hc_body appropriately!
-            z3::expr_vector hc_body(ctx);
-            horn_clauses.add(new HornClause(ctx, hc_body, e_x == f_y(arguments_f_y), hsat.equiv_classes));
+            Explanation expl(ctx);
+            expl.add(explainUncommons(e_x, lhs));
+            //expl.add(explainUncommons(f_y(arguments_f_y), rhs)); // FIX: This should be a map over the arguments
+            horn_clauses.add(new HornClause(ctx, 
+                  expl.get(), 
+                  e_x == f_y(arguments_f_y), 
+                  hsat.equiv_classes));
+#if DEBUG_COND_ELIM_EQS
             std::cout << e_x << ", " << f_y(arguments_f_y) << std::endl;
+#endif
           }
         }
     }
@@ -199,49 +219,85 @@ void EUFInterpolant::conditionalEliminationEqs(){
       if(rhs.is_const())
         for(auto const & e_y : candidates(rhs)){
           for(auto const & e_f_x : candidates(lhs)){
-            // TODO: define hc_body appropriately!
-            z3::expr_vector hc_body(ctx);
-            horn_clauses.add(new HornClause(ctx, hc_body, e_f_x == e_y, hsat.equiv_classes));
+            Explanation expl(ctx);
+            expl.add(explainUncommons(e_f_x, lhs));
+            expl.add(explainUncommons(e_y, rhs));
+            horn_clauses.add(new HornClause(ctx, 
+                  expl.get(), 
+                  e_f_x == e_y, 
+                  hsat.equiv_classes));
+#if DEBUG_COND_ELIM_EQS
             std::cout << e_f_x << ", " << e_y << std::endl;
+#endif
           }
           z3::func_decl f_x = lhs.decl();
           for(auto const & arguments_f_x : cartesianProd(allCandidates(lhs))){
-            // TODO: define hc_body appropriately!
-            z3::expr_vector hc_body(ctx);
-            horn_clauses.add(new HornClause(ctx, hc_body, f_x(arguments_f_x) == e_y, hsat.equiv_classes));
+            Explanation expl(ctx);
+            //expl.add(explainUncommons(f_x(arguments_f_x), lhs));// FIX: This should be a map over the arguments
+            expl.add(explainUncommons(e_y, rhs));
+            horn_clauses.add(new HornClause(ctx, 
+                  expl.get(), 
+                  f_x(arguments_f_x) == e_y, 
+                  hsat.equiv_classes));
+#if DEBUG_COND_ELIM_EQS
             std::cout << f_x(arguments_f_x) << ", " << e_y << std::endl;
+#endif
           }
         }
       else{
-        for(auto const & e_x : candidates(lhs)){
-          for(auto const & e_y : candidates(rhs)){
-            // TODO: define hc_body appropriately!
-            z3::expr_vector hc_body(ctx);
-            horn_clauses.add(new HornClause(ctx, hc_body, e_x == e_y, hsat.equiv_classes));
-            std::cout << e_x << ", " << e_y << std::endl;
+        for(auto const & e_f_x : candidates(lhs)){
+          for(auto const & e_f_y : candidates(rhs)){
+            Explanation expl(ctx);
+            expl.add(explainUncommons(e_f_x, lhs));
+            expl.add(explainUncommons(e_f_y, rhs));
+            horn_clauses.add(new HornClause(ctx, 
+                  expl.get(), 
+                  e_f_x == e_f_y, 
+                  hsat.equiv_classes));
+#if DEBUG_COND_ELIM_EQS
+            std::cout << e_f_x << ", " << e_f_y << std::endl;
+#endif
           }
           z3::func_decl f_y = rhs.decl();
           for(auto const & arguments_f_y : cartesianProd(allCandidates(rhs))){
-            // TODO: define hc_body appropriately!
-            z3::expr_vector hc_body(ctx);
-            horn_clauses.add(new HornClause(ctx, hc_body, e_x == f_y(arguments_f_y), hsat.equiv_classes));
-            std::cout << e_x << ", " << f_y(arguments_f_y) << std::endl;
+            Explanation expl(ctx);
+            expl.add(explainUncommons(e_f_x, lhs));
+            //expl.add(explainUncommons(f_y(arguments_f_y), rhs));// FIX: This should be a map over the arguments
+            horn_clauses.add(new HornClause(ctx, 
+                  expl.get(), 
+                  e_f_x == f_y(arguments_f_y), 
+                  hsat.equiv_classes));
+#if DEBUG_COND_ELIM_EQS
+            std::cout << e_f_x << ", " << f_y(arguments_f_y) << std::endl;
+#endif
           }
         }
         z3::func_decl f_x = lhs.decl();
         for(auto const & arguments_f_x : cartesianProd(allCandidates(lhs))){
-          for(auto const & e_y : candidates(rhs)){
-            // TODO: define hc_body appropriately!
-            z3::expr_vector hc_body(ctx);
-            horn_clauses.add(new HornClause(ctx, hc_body, f_x(arguments_f_x) == e_y, hsat.equiv_classes));
-            std::cout << f_x(arguments_f_x) << ", " << e_y << std::endl;
+          for(auto const & e_f_y : candidates(rhs)){
+            Explanation expl(ctx);
+            //expl.add(explainUncommons(f_x(arguments_f_x), lhs));// FIX: This should be a map over the arguments
+            expl.add(explainUncommons(e_f_y, rhs));
+            horn_clauses.add(new HornClause(ctx, 
+                  expl.get(), 
+                  f_x(arguments_f_x) == e_f_y, 
+                  hsat.equiv_classes));
+#if DEBUG_COND_ELIM_EQS
+            std::cout << f_x(arguments_f_x) << ", " << e_f_y << std::endl;
+#endif
           }
           z3::func_decl f_y = rhs.decl();
           for(auto const & arguments_f_y : cartesianProd(allCandidates(rhs))){
-            // TODO: define hc_body appropriately!
-            z3::expr_vector hc_body(ctx);
-            horn_clauses.add(new HornClause(ctx, hc_body, f_x(arguments_f_x) == f_y(arguments_f_y), hsat.equiv_classes));
+            Explanation expl(ctx);
+            //expl.add(explainUncommons(f_x(arguments_f_x), lhs));// FIX: This should be a map over the arguments
+            //expl.add(explainUncommons(f_y(arguments_f_y), rhs));// FIX: This should be a map over the arguments
+            horn_clauses.add(new HornClause(ctx, 
+                  expl.get(), 
+                  f_x(arguments_f_x) == f_y(arguments_f_y), 
+                  hsat.equiv_classes));
+#if DEBUG_COND_ELIM_EQS
             std::cout << f_x(arguments_f_x) << ", " << f_y(arguments_f_y) << std::endl;
+#endif
           }
         }
       }
@@ -293,16 +349,32 @@ z3::expr_vector EUFInterpolant::explainUncommons(z3::expr const & t1, z3::expr c
   for(auto const & equation : partial_explain){
     if(equation.is_common())
       ans.push_back(equation);
-    else
+    else{
       // --------------------------------
       // Look at the horn_clauses in hsat
       // Identify the proper head term
       // append its antecedent
       // --------------------------------
-      for(auto const & hsat_equation 
-          : hsat.head_term_indexer[equation.id()]->getAntecedent())
-        ans.push_back(hsat_equation);
-    
+      auto const & entry = hsat.head_term_indexer.find(equation.id());
+      if(entry == hsat.head_term_indexer.end())
+        // --------------------------------------------------
+        // This case couldn't match the equation to any
+        // head-term of the Horn clauses. So it just adds 
+        // the equation to the explanation because it means
+        // that the equation is an assertion from the initial
+        // Input
+        // --------------------------------------------------
+        ans.push_back(equation);
+      else
+        // -------------------------------------------------------
+        // This case handles when the equation matches a head-term
+        // of a Horn clause and adds to the explanation 
+        // the equations in the antecedent of this Horn clause
+        // -------------------------------------------------------
+        for(auto const & hsat_equation : entry->second->getAntecedent())
+          ans.push_back(hsat_equation);
+    }
+
   }
   return ans;
 }
