@@ -22,7 +22,7 @@ class HornClauses {
   unsigned                                   curr_num_horn_clauses;
   unsigned                                   max_lit_id;
 
-  void simplifyHornClauses(); // TODO: Implement this
+  void simplify(); // TODO: Implement this
   
  public:
   HornClauses(UnionFindExplain &);

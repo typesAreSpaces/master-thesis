@@ -19,7 +19,7 @@ HornClauses::~HornClauses(){
 // C, D -> a     C -> a
 // ---------------------
 //       C -> a
-void HornClauses::simplifyHornClauses(){
+void HornClauses::simplify(){
   // Group horn clauses by consequent
   // Then make n^2 comparisons per group
   // to determine contaiment relations
@@ -99,7 +99,6 @@ void HornClauses::add(HornClause * hc){
       curr_num_horn_clauses++;
       return;
     case Z3_OP_FALSE:
-      std::cout << "it was added" << std::endl;
       horn_clauses.insert({id, hc});
       if(max_lit_id < hc->getLocalMaxLitId())
         max_lit_id = hc->getLocalMaxLitId();
@@ -136,13 +135,11 @@ unsigned HornClauses::getMaxLitId() const {
 }
 
 std::ostream & operator << (std::ostream & os, const HornClauses & hcs){
-  unsigned i = 0;
+  unsigned _i = 0;
   os << "Horn clauses produced" << std::endl;
-  for(auto it : hcs.horn_clauses){
-    os << i << ". " << it.second << " " << *(it.second) << std::endl;
-    ++i;
-  }
-  os << "Number of horn clauses: " << i;
+  for(auto it : hcs.horn_clauses)
+    os << _i++ << ". " << it.second << " " << *(it.second) << std::endl;
+  os << "Number of horn clauses: " << _i;
 
   return os;
 }

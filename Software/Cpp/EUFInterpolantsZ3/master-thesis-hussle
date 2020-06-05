@@ -1,218 +1,30 @@
 let SessionLoad = 1
-if &cp | set nocp | endif
-let s:cpo_save=&cpo
-set cpo&vim
-inoremap <expr> <Down> pumvisible() ? "\" : "\<Down>"
-inoremap <expr> <S-Tab> pumvisible() ? "\" : "\<S-Tab>"
-inoremap <expr> <Up> pumvisible() ? "\" : "\<Up>"
-imap <Nul> <C-Space>
-inoremap <silent> <Plug>NERDCommenterInsert  <BS>:call NERDComment('i', 'insert')
-imap <C-J> <Plug>IMAP_JumpForward
-inoremap <silent> <Plug>IMAP_JumpBack :call IMAP_Jumpfunc('b', 0)
-inoremap <silent> <Plug>IMAP_JumpForward :call IMAP_Jumpfunc('', 0)
-inoremap <silent> <Plug>CocRefresh =coc#_complete()
-nnoremap <silent>  :TmuxNavigateLeft
-vmap <NL> <Plug>IMAP_JumpForward
-nnoremap <silent> <NL> :TmuxNavigateDown
-nnoremap <silent>  :TmuxNavigateUp
-nnoremap <silent>  :TmuxNavigateRight
-nnoremap  :FZF
-nnoremap  :NERDTreeToggle
-nnoremap <silent>  :CtrlP
-nnoremap <silent>  :TmuxNavigatePrevious
-nnoremap  d :YcmShowDetailedDiagnostic
-nmap  ca <Plug>NERDCommenterAltDelims
-xmap  cu <Plug>NERDCommenterUncomment
-nmap  cu <Plug>NERDCommenterUncomment
-xmap  cb <Plug>NERDCommenterAlignBoth
-nmap  cb <Plug>NERDCommenterAlignBoth
-xmap  cl <Plug>NERDCommenterAlignLeft
-nmap  cl <Plug>NERDCommenterAlignLeft
-nmap  cA <Plug>NERDCommenterAppend
-xmap  cy <Plug>NERDCommenterYank
-nmap  cy <Plug>NERDCommenterYank
-xmap  cs <Plug>NERDCommenterSexy
-nmap  cs <Plug>NERDCommenterSexy
-xmap  ci <Plug>NERDCommenterInvert
-nmap  ci <Plug>NERDCommenterInvert
-nmap  c$ <Plug>NERDCommenterToEOL
-xmap  cn <Plug>NERDCommenterNested
-nmap  cn <Plug>NERDCommenterNested
-xmap  cm <Plug>NERDCommenterMinimal
-nmap  cm <Plug>NERDCommenterMinimal
-xmap  c  <Plug>NERDCommenterToggle
-nmap  c  <Plug>NERDCommenterToggle
-xmap  cc <Plug>NERDCommenterComment
-nmap  cc <Plug>NERDCommenterComment
-noremap  rd :call rtags#Diagnostics()
-noremap  rc :call rtags#FindSubClasses()
-noremap  rC :call rtags#FindSuperClasses()
-noremap  rh :call rtags#ShowHierarchy()
-noremap  rb :call rtags#JumpBack()
-noremap  rv :call rtags#FindVirtuals()
-noremap  rw :call rtags#RenameSymbolUnderCursor()
-noremap  rl :call rtags#ProjectList()
-noremap  rr :call rtags#ReindexFile()
-noremap  rs :call rtags#FindSymbols(input("Pattern? ", "", "customlist,rtags#CompleteSymbols"))
-noremap  rn :call rtags#FindRefsByName(input("Pattern? ", "", "customlist,rtags#CompleteSymbols"))
-noremap  rF :call rtags#FindRefsCallTree()
-noremap  rf :call rtags#FindRefs()
-noremap  rp :call rtags#JumpToParent()
-noremap  rT :call rtags#JumpTo(g:NEW_TAB)
-noremap  rV :call rtags#JumpTo(g:V_SPLIT)
-noremap  rS :call rtags#JumpTo(g:H_SPLIT)
-noremap  rJ :call rtags#JumpTo(g:SAME_WINDOW, { '--declaration-only' : '' })
-noremap  rj :call rtags#JumpTo(g:SAME_WINDOW)
-noremap  ri :call rtags#SymbolInfo()
-nnoremap  p li p
-nnoremap <silent>  o :exe "vertical resize -5"
-nnoremap <silent>  y :exe "vertical resize +5"
-nnoremap <silent>  i :exe "resize +5" 
-nnoremap <silent>  u :exe "resize -5" 
-nnoremap <silent>  gr :YcmCompleter GoToReferences
-nnoremap  l :ls
-nnoremap <silent>  gd :YcmCompleter GoTo
-nnoremap <silent> [B :bfirst
-nnoremap <silent> [b :bprevious
-nnoremap <silent> ]B :bblast
-nnoremap <silent> ]b :bnext
-vmap gx <Plug>NetrwBrowseXVis
-nmap gx <Plug>NetrwBrowseX
-vnoremap <silent> <Plug>NetrwBrowseXVis :call netrw#BrowseXVis()
-nnoremap <silent> <Plug>NetrwBrowseX :call netrw#BrowseX(netrw#GX(),netrw#CheckIfRemote(netrw#GX()))
-nnoremap <silent> <C-Bslash> :TmuxNavigatePrevious
-xnoremap <silent> <Plug>NERDCommenterUncomment :call NERDComment("x", "Uncomment")
-nnoremap <silent> <Plug>NERDCommenterUncomment :call NERDComment("n", "Uncomment")
-xnoremap <silent> <Plug>NERDCommenterAlignBoth :call NERDComment("x", "AlignBoth")
-nnoremap <silent> <Plug>NERDCommenterAlignBoth :call NERDComment("n", "AlignBoth")
-xnoremap <silent> <Plug>NERDCommenterAlignLeft :call NERDComment("x", "AlignLeft")
-nnoremap <silent> <Plug>NERDCommenterAlignLeft :call NERDComment("n", "AlignLeft")
-nnoremap <silent> <Plug>NERDCommenterAppend :call NERDComment("n", "Append")
-xnoremap <silent> <Plug>NERDCommenterYank :call NERDComment("x", "Yank")
-nnoremap <silent> <Plug>NERDCommenterYank :call NERDComment("n", "Yank")
-xnoremap <silent> <Plug>NERDCommenterSexy :call NERDComment("x", "Sexy")
-nnoremap <silent> <Plug>NERDCommenterSexy :call NERDComment("n", "Sexy")
-xnoremap <silent> <Plug>NERDCommenterInvert :call NERDComment("x", "Invert")
-nnoremap <silent> <Plug>NERDCommenterInvert :call NERDComment("n", "Invert")
-nnoremap <silent> <Plug>NERDCommenterToEOL :call NERDComment("n", "ToEOL")
-xnoremap <silent> <Plug>NERDCommenterNested :call NERDComment("x", "Nested")
-nnoremap <silent> <Plug>NERDCommenterNested :call NERDComment("n", "Nested")
-xnoremap <silent> <Plug>NERDCommenterMinimal :call NERDComment("x", "Minimal")
-nnoremap <silent> <Plug>NERDCommenterMinimal :call NERDComment("n", "Minimal")
-xnoremap <silent> <Plug>NERDCommenterToggle :call NERDComment("x", "Toggle")
-nnoremap <silent> <Plug>NERDCommenterToggle :call NERDComment("n", "Toggle")
-xnoremap <silent> <Plug>NERDCommenterComment :call NERDComment("x", "Comment")
-nnoremap <silent> <Plug>NERDCommenterComment :call NERDComment("n", "Comment")
-vmap <C-J> <Plug>IMAP_JumpForward
-vnoremap <silent> <Plug>IMAP_JumpBack `<:call IMAP_Jumpfunc('b', 0)
-vnoremap <silent> <Plug>IMAP_JumpForward :call IMAP_Jumpfunc('', 0)
-vnoremap <silent> <Plug>IMAP_DeleteAndJumpBack "_<Del>:call IMAP_Jumpfunc('b', 0)
-vnoremap <silent> <Plug>IMAP_DeleteAndJumpForward "_<Del>:call IMAP_Jumpfunc('', 0)
-nnoremap <silent> <Plug>IMAP_JumpBack :call IMAP_Jumpfunc('b', 0)
-nnoremap <silent> <Plug>IMAP_JumpForward :call IMAP_Jumpfunc('', 0)
-nnoremap <silent> <C-P> :CtrlP
-nnoremap <silent> <Plug>(Tman) :call man#get_page_from_cword('tab',        v:count)
-nnoremap <silent> <Plug>(Vman) :call man#get_page_from_cword('vertical',   v:count)
-nnoremap <silent> <Plug>(Sman) :call man#get_page_from_cword('horizontal', v:count)
-nnoremap <silent> <Plug>(Man) :call man#get_page_from_cword('horizontal', v:count)
-onoremap <silent> <Plug>(coc-classobj-a) :call coc#rpc#request('selectSymbolRange', [v:false, '', ['Interface', 'Struct', 'Class']])
-onoremap <silent> <Plug>(coc-classobj-i) :call coc#rpc#request('selectSymbolRange', [v:true, '', ['Interface', 'Struct', 'Class']])
-vnoremap <silent> <Plug>(coc-classobj-a) :call coc#rpc#request('selectSymbolRange', [v:false, visualmode(), ['Interface', 'Struct', 'Class']])
-vnoremap <silent> <Plug>(coc-classobj-i) :call coc#rpc#request('selectSymbolRange', [v:true, visualmode(), ['Interface', 'Struct', 'Class']])
-onoremap <silent> <Plug>(coc-funcobj-a) :call coc#rpc#request('selectSymbolRange', [v:false, '', ['Method', 'Function']])
-onoremap <silent> <Plug>(coc-funcobj-i) :call coc#rpc#request('selectSymbolRange', [v:true, '', ['Method', 'Function']])
-vnoremap <silent> <Plug>(coc-funcobj-a) :call coc#rpc#request('selectSymbolRange', [v:false, visualmode(), ['Method', 'Function']])
-vnoremap <silent> <Plug>(coc-funcobj-i) :call coc#rpc#request('selectSymbolRange', [v:true, visualmode(), ['Method', 'Function']])
-nnoremap <silent> <Plug>(coc-cursors-position) :call coc#rpc#request('cursorsSelect', [bufnr('%'), 'position', 'n'])
-nnoremap <silent> <Plug>(coc-cursors-word) :call coc#rpc#request('cursorsSelect', [bufnr('%'), 'word', 'n'])
-vnoremap <silent> <Plug>(coc-cursors-range) :call coc#rpc#request('cursorsSelect', [bufnr('%'), 'range', visualmode()])
-nnoremap <Plug>(coc-refactor) :call       CocActionAsync('refactor')
-nnoremap <Plug>(coc-command-repeat) :call       CocAction('repeatCommand')
-nnoremap <Plug>(coc-float-jump) :call       coc#util#float_jump()
-nnoremap <Plug>(coc-float-hide) :call       coc#util#float_hide()
-nnoremap <Plug>(coc-fix-current) :call       CocActionAsync('doQuickfix')
-nnoremap <Plug>(coc-openlink) :call       CocActionAsync('openLink')
-nnoremap <Plug>(coc-references) :call       CocActionAsync('jumpReferences')
-nnoremap <Plug>(coc-type-definition) :call       CocActionAsync('jumpTypeDefinition')
-nnoremap <Plug>(coc-implementation) :call       CocActionAsync('jumpImplementation')
-nnoremap <Plug>(coc-declaration) :call       CocActionAsync('jumpDeclaration')
-nnoremap <Plug>(coc-definition) :call       CocActionAsync('jumpDefinition')
-nnoremap <Plug>(coc-diagnostic-prev-error) :call       CocActionAsync('diagnosticPrevious', 'error')
-nnoremap <Plug>(coc-diagnostic-next-error) :call       CocActionAsync('diagnosticNext',     'error')
-nnoremap <Plug>(coc-diagnostic-prev) :call       CocActionAsync('diagnosticPrevious')
-nnoremap <Plug>(coc-diagnostic-next) :call       CocActionAsync('diagnosticNext')
-nnoremap <Plug>(coc-diagnostic-info) :call       CocActionAsync('diagnosticInfo')
-nnoremap <Plug>(coc-format) :call       CocActionAsync('format')
-nnoremap <Plug>(coc-rename) :call       CocActionAsync('rename')
-nnoremap <Plug>(coc-codeaction-line) :call       CocActionAsync('codeAction',         'n')
-nnoremap <Plug>(coc-codeaction) :call       CocActionAsync('codeAction',         '')
-vnoremap <Plug>(coc-codeaction-selected) :call       CocActionAsync('codeAction',         visualmode())
-vnoremap <Plug>(coc-format-selected) :call       CocActionAsync('formatSelected',     visualmode())
-nnoremap <Plug>(coc-codelens-action) :call       CocActionAsync('codeLensAction')
-nnoremap <Plug>(coc-range-select) :call       CocAction('rangeSelect',     '', v:true)
-vnoremap <Plug>(coc-range-select-backward) :call       CocAction('rangeSelect',     visualmode(), v:false)
-vnoremap <Plug>(coc-range-select) :call       CocAction('rangeSelect',     visualmode(), v:true)
-nnoremap <silent> <Plug>(startify-open-buffers) :call startify#open_buffers()
-nnoremap <C-N> :NERDTreeToggle
-nnoremap <silent> <C-H> :TmuxNavigateLeft
-nnoremap <silent> <C-L> :TmuxNavigateRight
-nnoremap <silent> <C-K> :TmuxNavigateUp
-nnoremap <silent> <C-J> :TmuxNavigateDown
-inoremap <expr> 	 pumvisible() ? "\" : "\	"
-imap <NL> <Plug>IMAP_JumpForward
-let &cpo=s:cpo_save
-unlet s:cpo_save
-set background=dark
-set backspace=indent,eol,start
-set backupdir=~/.cache/vim/backup//
-set completefunc=RtagsCompleteFunc
-set completeopt=noselect,menuone
-set cpoptions=aAceFsB
-set directory=~/.cache/vim/swap//
-set expandtab
-set fileencodings=ucs-bom,utf-8,default,latin1
-set helplang=en
-set incsearch
-set laststatus=2
-set pyxversion=3
-set ruler
-set runtimepath=~/.vim,~/.vim/plugged/vim-startify,~/.vim/plugged/YouCompleteMe,~/.vim/plugged/coc.nvim,~/.vim/plugged/gruvbox,~/.vim/plugged/vim,~/.vim/plugged/vim-ripgrep,~/.vim/plugged/vim-fugitive,~/.vim/plugged/typescript-vim,~/.vim/plugged/vim-man,~/.vim/plugged/vim-rtags,~/.vim/plugged/ctrlp.vim,~/.vim/plugged/undotree,~/.vim/plugged/vim-smt2,~/.vim/plugged/vim-latex,~/.vim/plugged/VimFStar,~/.vim/plugged/lightline.vim,~/.vim/plugged/nerdtree,~/.vim/plugged/nerdcommenter,~/.vim/plugged/vim-numbertoggle,~/.vim/plugged/vim-tmux-navigator,~/.vim/plugged/fzf,~/.vim/plugged/tabular,~/.vim/plugged/vim-markdown,~/.vim/plugged/haskell-vim,/usr/share/vim/vimfiles,/usr/share/vim/vim82,/usr/share/vim/vimfiles/after,~/.vim/plugged/vim/after,~/.vim/plugged/tabular/after,~/.vim/plugged/vim-markdown/after,~/.vim/plugged/haskell-vim/after,~/.vim/after
-set shiftwidth=2
-set shortmess=filnxtToOFIc
-set smartcase
-set smartindent
-set softtabstop=2
-set suffixes=.bak,~,.o,.info,.swp,.aux,.bbl,.blg,.brf,.cb,.dvi,.idx,.ilg,.ind,.inx,.jpg,.log,.out,.png,.toc
-set noswapfile
-set tabline=%!lightline#tabline()
-set tabstop=2
-set ttimeoutlen=0
-set undodir=~/.vim/undodir
-set undofile
-set window=68
 let s:so_save = &so | let s:siso_save = &siso | set so=0 siso=0
 let v:this_session=expand("<sfile>:p")
 silent only
-silent tabonly
 cd ~/Documents/GithubProjects/master-thesis/Software/Cpp/EUFInterpolantsZ3
 if expand('%') == '' && !&modified && line('$') <= 1 && getline(1) == ''
   let s:wipebuf = bufnr('%')
 endif
 set shortmess=aoO
+badd +3 include/EUFInterpolant.h
+badd +288 src/EUFInterpolant.cpp
+badd +1 include/HornClauses.h
+badd +0 src/HornClauses.cpp
 argglobal
 %argdel
-edit include/HornClause.h
+edit include/EUFInterpolant.h
 set splitbelow splitright
 wincmd _ | wincmd |
 vsplit
 wincmd _ | wincmd |
 vsplit
 2wincmd h
+wincmd w
+wincmd w
 wincmd _ | wincmd |
 split
 1wincmd k
-wincmd w
-wincmd w
 wincmd w
 set nosplitbelow
 set nosplitright
@@ -221,585 +33,101 @@ set winminheight=0
 set winheight=1
 set winminwidth=0
 set winwidth=1
-exe '1resize ' . ((&lines * 33 + 34) / 69)
 exe 'vert 1resize ' . ((&columns * 104 + 157) / 315)
-exe '2resize ' . ((&lines * 33 + 34) / 69)
 exe 'vert 2resize ' . ((&columns * 104 + 157) / 315)
-exe 'vert 3resize ' . ((&columns * 104 + 157) / 315)
+exe '3resize ' . ((&lines * 33 + 34) / 69)
+exe 'vert 3resize ' . ((&columns * 105 + 157) / 315)
+exe '4resize ' . ((&lines * 33 + 34) / 69)
 exe 'vert 4resize ' . ((&columns * 105 + 157) / 315)
 argglobal
-setlocal keymap=
-setlocal noarabic
-setlocal noautoindent
-setlocal backupcopy=
-setlocal balloonexpr=
-setlocal nobinary
-setlocal nobreakindent
-setlocal breakindentopt=
-setlocal bufhidden=
-setlocal buflisted
-setlocal buftype=
-setlocal cindent
-setlocal cinkeys=0{,0},0),0],:,0#,!^F,o,O,e
-setlocal cinoptions=
-setlocal cinwords=if,else,while,do,for,switch
-setlocal colorcolumn=
-setlocal comments=sO:*\ -,mO:*\ \ ,exO:*/,s1:/*,mb:*,ex:*/,://
-setlocal commentstring=/*%s*/
-setlocal complete=.,w,b,u,t,i
-setlocal concealcursor=
-setlocal conceallevel=0
-setlocal completefunc=RtagsCompleteFunc
-setlocal nocopyindent
-setlocal cryptmethod=
-setlocal nocursorbind
-setlocal nocursorcolumn
-setlocal nocursorline
-setlocal cursorlineopt=both
-setlocal define=^\\s*#\\s*define
-setlocal dictionary=
-setlocal nodiff
-setlocal equalprg=
-setlocal errorformat=
-setlocal expandtab
-if &filetype != 'cpp'
-setlocal filetype=cpp
-endif
-setlocal fixendofline
-setlocal foldcolumn=0
-setlocal foldenable
-setlocal foldexpr=0
-setlocal foldignore=#
-setlocal foldlevel=0
-setlocal foldmarker={{{,}}}
-setlocal foldmethod=manual
-setlocal foldminlines=1
-setlocal foldnestmax=20
-setlocal foldtext=foldtext()
-setlocal formatexpr=
-setlocal formatoptions=croql
-setlocal formatlistpat=^\\s*\\d\\+[\\]:.)}\\t\ ]\\s*
-setlocal formatprg=
-setlocal grepprg=
-setlocal iminsert=0
-setlocal imsearch=-1
-setlocal include=^\\s*#\\s*include
-setlocal includeexpr=
-setlocal indentexpr=
-setlocal indentkeys=0{,0},0),0],:,0#,!^F,o,O,e
-setlocal noinfercase
-setlocal iskeyword=@,48-57,_,192-255
-setlocal keywordprg=
-setlocal nolinebreak
-setlocal nolisp
-setlocal lispwords=
-setlocal nolist
-setlocal makeencoding=
-setlocal makeprg=
-setlocal matchpairs=(:),{:},[:]
-setlocal modeline
-setlocal modifiable
-setlocal nrformats=bin,octal,hex
-set number
-setlocal number
-setlocal numberwidth=4
-setlocal omnifunc=ccomplete#Complete
-setlocal path=
-setlocal nopreserveindent
-setlocal nopreviewwindow
-setlocal quoteescape=\\
-setlocal noreadonly
-setlocal norelativenumber
-setlocal norightleft
-setlocal rightleftcmd=search
-setlocal noscrollbind
-setlocal scrolloff=-1
-setlocal shiftwidth=2
-setlocal noshortname
-setlocal showbreak=
-setlocal sidescrolloff=-1
-setlocal signcolumn=auto
-setlocal smartindent
-setlocal softtabstop=2
-setlocal nospell
-setlocal spellcapcheck=[.?!]\\_[\\])'\"\	\ ]\\+
-setlocal spellfile=
-setlocal spelllang=en
-setlocal statusline=%{lightline#link()}%#LightlineLeft_inactive_0#%(\ %t\ %)%#LightlineLeft_inactive_0_1#%#LightlineMiddle_inactive#%=%#LightlineRight_inactive_1_2#%#LightlineRight_inactive_1#%(\ %3p%%\ %)%#LightlineRight_inactive_0_1#%#LightlineRight_inactive_0#%(\ %3l:%-2v\ %)
-setlocal suffixesadd=
-setlocal noswapfile
-setlocal synmaxcol=3000
-if &syntax != 'cpp'
-setlocal syntax=cpp
-endif
-setlocal tabstop=2
-setlocal tagcase=
-setlocal tagfunc=
-setlocal tags=
-setlocal termwinkey=
-setlocal termwinscroll=10000
-setlocal termwinsize=
-setlocal textwidth=0
-setlocal thesaurus=
-setlocal undofile
-setlocal undolevels=-123456
-setlocal varsofttabstop=
-setlocal vartabstop=
-setlocal wincolor=
-setlocal nowinfixheight
-setlocal nowinfixwidth
-setlocal wrap
-setlocal wrapmargin=0
+setlocal fdm=manual
+setlocal fde=0
+setlocal fmr={{{,}}}
+setlocal fdi=#
+setlocal fdl=0
+setlocal fml=1
+setlocal fdn=20
+setlocal fen
 silent! normal! zE
-let s:l = 37 - ((18 * winheight(0) + 16) / 33)
+let s:l = 27 - ((26 * winheight(0) + 33) / 67)
 if s:l < 1 | let s:l = 1 | endif
 exe s:l
 normal! zt
-37
-normal! 048|
-wincmd w
-argglobal
-if bufexists("src/HornClause.cpp") | buffer src/HornClause.cpp | else | edit src/HornClause.cpp | endif
-setlocal keymap=
-setlocal noarabic
-setlocal noautoindent
-setlocal backupcopy=
-setlocal balloonexpr=
-setlocal nobinary
-setlocal nobreakindent
-setlocal breakindentopt=
-setlocal bufhidden=
-setlocal buflisted
-setlocal buftype=
-setlocal cindent
-setlocal cinkeys=0{,0},0),0],:,0#,!^F,o,O,e
-setlocal cinoptions=
-setlocal cinwords=if,else,while,do,for,switch
-setlocal colorcolumn=
-setlocal comments=sO:*\ -,mO:*\ \ ,exO:*/,s1:/*,mb:*,ex:*/,://
-setlocal commentstring=/*%s*/
-setlocal complete=.,w,b,u,t,i
-setlocal concealcursor=
-setlocal conceallevel=0
-setlocal completefunc=RtagsCompleteFunc
-setlocal nocopyindent
-setlocal cryptmethod=
-setlocal nocursorbind
-setlocal nocursorcolumn
-setlocal nocursorline
-setlocal cursorlineopt=both
-setlocal define=^\\s*#\\s*define
-setlocal dictionary=
-setlocal nodiff
-setlocal equalprg=
-setlocal errorformat=
-setlocal expandtab
-if &filetype != 'cpp'
-setlocal filetype=cpp
-endif
-setlocal fixendofline
-setlocal foldcolumn=0
-setlocal foldenable
-setlocal foldexpr=0
-setlocal foldignore=#
-setlocal foldlevel=0
-setlocal foldmarker={{{,}}}
-setlocal foldmethod=manual
-setlocal foldminlines=1
-setlocal foldnestmax=20
-setlocal foldtext=foldtext()
-setlocal formatexpr=
-setlocal formatoptions=croql
-setlocal formatlistpat=^\\s*\\d\\+[\\]:.)}\\t\ ]\\s*
-setlocal formatprg=
-setlocal grepprg=
-setlocal iminsert=0
-setlocal imsearch=-1
-setlocal include=^\\s*#\\s*include
-setlocal includeexpr=
-setlocal indentexpr=
-setlocal indentkeys=0{,0},0),0],:,0#,!^F,o,O,e
-setlocal noinfercase
-setlocal iskeyword=@,48-57,_,192-255
-setlocal keywordprg=
-setlocal nolinebreak
-setlocal nolisp
-setlocal lispwords=
-setlocal nolist
-setlocal makeencoding=
-setlocal makeprg=
-setlocal matchpairs=(:),{:},[:]
-setlocal modeline
-setlocal modifiable
-setlocal nrformats=bin,octal,hex
-set number
-setlocal number
-setlocal numberwidth=4
-setlocal omnifunc=ccomplete#Complete
-setlocal path=
-setlocal nopreserveindent
-setlocal nopreviewwindow
-setlocal quoteescape=\\
-setlocal noreadonly
-setlocal norelativenumber
-setlocal norightleft
-setlocal rightleftcmd=search
-setlocal noscrollbind
-setlocal scrolloff=-1
-setlocal shiftwidth=2
-setlocal noshortname
-setlocal showbreak=
-setlocal sidescrolloff=-1
-setlocal signcolumn=auto
-setlocal smartindent
-setlocal softtabstop=2
-setlocal nospell
-setlocal spellcapcheck=[.?!]\\_[\\])'\"\	\ ]\\+
-setlocal spellfile=
-setlocal spelllang=en
-setlocal statusline=%{lightline#link()}%#LightlineLeft_inactive_0#%(\ %t\ %)%#LightlineLeft_inactive_0_1#%#LightlineMiddle_inactive#%=%#LightlineRight_inactive_1_2#%#LightlineRight_inactive_1#%(\ %3p%%\ %)%#LightlineRight_inactive_0_1#%#LightlineRight_inactive_0#%(\ %3l:%-2v\ %)
-setlocal suffixesadd=
-setlocal noswapfile
-setlocal synmaxcol=3000
-if &syntax != 'cpp'
-setlocal syntax=cpp
-endif
-setlocal tabstop=2
-setlocal tagcase=
-setlocal tagfunc=
-setlocal tags=
-setlocal termwinkey=
-setlocal termwinscroll=10000
-setlocal termwinsize=
-setlocal textwidth=0
-setlocal thesaurus=
-setlocal undofile
-setlocal undolevels=-123456
-setlocal varsofttabstop=
-setlocal vartabstop=
-setlocal wincolor=
-setlocal nowinfixheight
-setlocal nowinfixwidth
-setlocal wrap
-setlocal wrapmargin=0
-silent! normal! zE
-let s:l = 163 - ((23 * winheight(0) + 16) / 33)
-if s:l < 1 | let s:l = 1 | endif
-exe s:l
-normal! zt
-163
-normal! 035|
-wincmd w
-argglobal
-if bufexists("src/EUFInterpolant.cpp") | buffer src/EUFInterpolant.cpp | else | edit src/EUFInterpolant.cpp | endif
-setlocal keymap=
-setlocal noarabic
-setlocal noautoindent
-setlocal backupcopy=
-setlocal balloonexpr=
-setlocal nobinary
-setlocal nobreakindent
-setlocal breakindentopt=
-setlocal bufhidden=
-setlocal buflisted
-setlocal buftype=
-setlocal cindent
-setlocal cinkeys=0{,0},0),0],:,0#,!^F,o,O,e
-setlocal cinoptions=
-setlocal cinwords=if,else,while,do,for,switch
-setlocal colorcolumn=
-setlocal comments=sO:*\ -,mO:*\ \ ,exO:*/,s1:/*,mb:*,ex:*/,://
-setlocal commentstring=/*%s*/
-setlocal complete=.,w,b,u,t,i
-setlocal concealcursor=
-setlocal conceallevel=0
-setlocal completefunc=RtagsCompleteFunc
-setlocal nocopyindent
-setlocal cryptmethod=
-setlocal nocursorbind
-setlocal nocursorcolumn
-setlocal nocursorline
-setlocal cursorlineopt=both
-setlocal define=^\\s*#\\s*define
-setlocal dictionary=
-setlocal nodiff
-setlocal equalprg=
-setlocal errorformat=
-setlocal expandtab
-if &filetype != 'cpp'
-setlocal filetype=cpp
-endif
-setlocal fixendofline
-setlocal foldcolumn=0
-setlocal foldenable
-setlocal foldexpr=0
-setlocal foldignore=#
-setlocal foldlevel=0
-setlocal foldmarker={{{,}}}
-setlocal foldmethod=manual
-setlocal foldminlines=1
-setlocal foldnestmax=20
-setlocal foldtext=foldtext()
-setlocal formatexpr=
-setlocal formatoptions=croql
-setlocal formatlistpat=^\\s*\\d\\+[\\]:.)}\\t\ ]\\s*
-setlocal formatprg=
-setlocal grepprg=
-setlocal iminsert=0
-setlocal imsearch=-1
-setlocal include=^\\s*#\\s*include
-setlocal includeexpr=
-setlocal indentexpr=
-setlocal indentkeys=0{,0},0),0],:,0#,!^F,o,O,e
-setlocal noinfercase
-setlocal iskeyword=@,48-57,_,192-255
-setlocal keywordprg=
-setlocal nolinebreak
-setlocal nolisp
-setlocal lispwords=
-setlocal nolist
-setlocal makeencoding=
-setlocal makeprg=
-setlocal matchpairs=(:),{:},[:]
-setlocal modeline
-setlocal modifiable
-setlocal nrformats=bin,octal,hex
-set number
-setlocal number
-setlocal numberwidth=4
-setlocal omnifunc=ccomplete#Complete
-setlocal path=
-setlocal nopreserveindent
-setlocal nopreviewwindow
-setlocal quoteescape=\\
-setlocal noreadonly
-setlocal norelativenumber
-setlocal norightleft
-setlocal rightleftcmd=search
-setlocal noscrollbind
-setlocal scrolloff=-1
-setlocal shiftwidth=2
-setlocal noshortname
-setlocal showbreak=
-setlocal sidescrolloff=-1
-setlocal signcolumn=auto
-setlocal smartindent
-setlocal softtabstop=2
-setlocal nospell
-setlocal spellcapcheck=[.?!]\\_[\\])'\"\	\ ]\\+
-setlocal spellfile=
-setlocal spelllang=en
-setlocal statusline=%{lightline#link()}%#LightlineLeft_inactive_0#%(\ %t\ %)%#LightlineLeft_inactive_0_1#%#LightlineMiddle_inactive#%=%#LightlineRight_inactive_1_2#%#LightlineRight_inactive_1#%(\ %3p%%\ %)%#LightlineRight_inactive_0_1#%#LightlineRight_inactive_0#%(\ %3l:%-2v\ %)
-setlocal suffixesadd=
-setlocal noswapfile
-setlocal synmaxcol=3000
-if &syntax != 'cpp'
-setlocal syntax=cpp
-endif
-setlocal tabstop=2
-setlocal tagcase=
-setlocal tagfunc=
-setlocal tags=
-setlocal termwinkey=
-setlocal termwinscroll=10000
-setlocal termwinsize=
-setlocal textwidth=0
-setlocal thesaurus=
-setlocal undofile
-setlocal undolevels=-123456
-setlocal varsofttabstop=
-setlocal vartabstop=
-setlocal wincolor=
-setlocal nowinfixheight
-setlocal nowinfixwidth
-setlocal wrap
-setlocal wrapmargin=0
-silent! normal! zE
-let s:l = 428 - ((47 * winheight(0) + 33) / 67)
-if s:l < 1 | let s:l = 1 | endif
-exe s:l
-normal! zt
-428
-normal! 035|
-wincmd w
-argglobal
-if bufexists("src/EUFInterpolant.cpp") | buffer src/EUFInterpolant.cpp | else | edit src/EUFInterpolant.cpp | endif
-setlocal keymap=
-setlocal noarabic
-setlocal noautoindent
-setlocal backupcopy=
-setlocal balloonexpr=
-setlocal nobinary
-setlocal nobreakindent
-setlocal breakindentopt=
-setlocal bufhidden=
-setlocal buflisted
-setlocal buftype=
-setlocal cindent
-setlocal cinkeys=0{,0},0),0],:,0#,!^F,o,O,e
-setlocal cinoptions=
-setlocal cinwords=if,else,while,do,for,switch
-setlocal colorcolumn=
-setlocal comments=sO:*\ -,mO:*\ \ ,exO:*/,s1:/*,mb:*,ex:*/,://
-setlocal commentstring=/*%s*/
-setlocal complete=.,w,b,u,t,i
-setlocal concealcursor=
-setlocal conceallevel=0
-setlocal completefunc=RtagsCompleteFunc
-setlocal nocopyindent
-setlocal cryptmethod=
-setlocal nocursorbind
-setlocal nocursorcolumn
-setlocal nocursorline
-setlocal cursorlineopt=both
-setlocal define=^\\s*#\\s*define
-setlocal dictionary=
-setlocal nodiff
-setlocal equalprg=
-setlocal errorformat=
-setlocal expandtab
-if &filetype != 'cpp'
-setlocal filetype=cpp
-endif
-setlocal fixendofline
-setlocal foldcolumn=0
-setlocal foldenable
-setlocal foldexpr=0
-setlocal foldignore=#
-setlocal foldlevel=0
-setlocal foldmarker={{{,}}}
-setlocal foldmethod=manual
-setlocal foldminlines=1
-setlocal foldnestmax=20
-setlocal foldtext=foldtext()
-setlocal formatexpr=
-setlocal formatoptions=croql
-setlocal formatlistpat=^\\s*\\d\\+[\\]:.)}\\t\ ]\\s*
-setlocal formatprg=
-setlocal grepprg=
-setlocal iminsert=0
-setlocal imsearch=-1
-setlocal include=^\\s*#\\s*include
-setlocal includeexpr=
-setlocal indentexpr=
-setlocal indentkeys=0{,0},0),0],:,0#,!^F,o,O,e
-setlocal noinfercase
-setlocal iskeyword=@,48-57,_,192-255
-setlocal keywordprg=
-setlocal nolinebreak
-setlocal nolisp
-setlocal lispwords=
-setlocal nolist
-setlocal makeencoding=
-setlocal makeprg=
-setlocal matchpairs=(:),{:},[:]
-setlocal modeline
-setlocal modifiable
-setlocal nrformats=bin,octal,hex
-set number
-setlocal number
-setlocal numberwidth=4
-setlocal omnifunc=ccomplete#Complete
-setlocal path=
-setlocal nopreserveindent
-setlocal nopreviewwindow
-setlocal quoteescape=\\
-setlocal noreadonly
-set relativenumber
-setlocal relativenumber
-setlocal norightleft
-setlocal rightleftcmd=search
-setlocal noscrollbind
-setlocal scrolloff=-1
-setlocal shiftwidth=2
-setlocal noshortname
-setlocal showbreak=
-setlocal sidescrolloff=-1
-setlocal signcolumn=auto
-setlocal smartindent
-setlocal softtabstop=2
-setlocal nospell
-setlocal spellcapcheck=[.?!]\\_[\\])'\"\	\ ]\\+
-setlocal spellfile=
-setlocal spelllang=en
-setlocal statusline=%{lightline#link()}%#LightlineLeft_active_0#%(\ %{lightline#mode()}\ %)%{(&paste)?\"|\":\"\"}%(\ %{&paste?\"PASTE\":\"\"}\ %)%#LightlineLeft_active_0_1#%#LightlineLeft_active_1#%(\ %R\ %)%{(&readonly)&&(1||(&modified||!&modifiable))?\"|\":\"\"}%(\ %t\ %)%{(&modified||!&modifiable)?\"|\":\"\"}%(\ %M\ %)%#LightlineLeft_active_1_2#%#LightlineMiddle_active#%=%#LightlineRight_active_2_3#%#LightlineRight_active_2#%(\ %{&ff}\ %)%{1||1?\"|\":\"\"}%(\ %{&fenc!=#\"\"?&fenc:&enc}\ %)%{1?\"|\":\"\"}%(\ %{&ft!=#\"\"?&ft:\"no\ ft\"}\ %)%#LightlineRight_active_1_2#%#LightlineRight_active_1#%(\ %3p%%\ %)%#LightlineRight_active_0_1#%#LightlineRight_active_0#%(\ %3l:%-2v\ %)
-setlocal suffixesadd=
-setlocal noswapfile
-setlocal synmaxcol=3000
-if &syntax != 'cpp'
-setlocal syntax=cpp
-endif
-setlocal tabstop=2
-setlocal tagcase=
-setlocal tagfunc=
-setlocal tags=
-setlocal termwinkey=
-setlocal termwinscroll=10000
-setlocal termwinsize=
-setlocal textwidth=0
-setlocal thesaurus=
-setlocal undofile
-setlocal undolevels=-123456
-setlocal varsofttabstop=
-setlocal vartabstop=
-setlocal wincolor=
-setlocal nowinfixheight
-setlocal nowinfixwidth
-setlocal wrap
-setlocal wrapmargin=0
-silent! normal! zE
-let s:l = 319 - ((57 * winheight(0) + 33) / 67)
-if s:l < 1 | let s:l = 1 | endif
-exe s:l
-normal! zt
-319
+27
 normal! 0
 wincmd w
-4wincmd w
-exe '1resize ' . ((&lines * 33 + 34) / 69)
+argglobal
+if bufexists("src/EUFInterpolant.cpp") | buffer src/EUFInterpolant.cpp | else | edit src/EUFInterpolant.cpp | endif
+setlocal fdm=manual
+setlocal fde=0
+setlocal fmr={{{,}}}
+setlocal fdi=#
+setlocal fdl=0
+setlocal fml=1
+setlocal fdn=20
+setlocal fen
+silent! normal! zE
+let s:l = 283 - ((51 * winheight(0) + 33) / 67)
+if s:l < 1 | let s:l = 1 | endif
+exe s:l
+normal! zt
+283
+normal! 010|
+wincmd w
+argglobal
+if bufexists("include/HornClauses.h") | buffer include/HornClauses.h | else | edit include/HornClauses.h | endif
+setlocal fdm=manual
+setlocal fde=0
+setlocal fmr={{{,}}}
+setlocal fdi=#
+setlocal fdl=0
+setlocal fml=1
+setlocal fdn=20
+setlocal fen
+silent! normal! zE
+let s:l = 8 - ((0 * winheight(0) + 16) / 33)
+if s:l < 1 | let s:l = 1 | endif
+exe s:l
+normal! zt
+8
+normal! 02|
+wincmd w
+argglobal
+if bufexists("src/HornClauses.cpp") | buffer src/HornClauses.cpp | else | edit src/HornClauses.cpp | endif
+setlocal fdm=manual
+setlocal fde=0
+setlocal fmr={{{,}}}
+setlocal fdi=#
+setlocal fdl=0
+setlocal fml=1
+setlocal fdn=20
+setlocal fen
+silent! normal! zE
+let s:l = 22 - ((2 * winheight(0) + 16) / 33)
+if s:l < 1 | let s:l = 1 | endif
+exe s:l
+normal! zt
+22
+normal! 015|
+wincmd w
+2wincmd w
 exe 'vert 1resize ' . ((&columns * 104 + 157) / 315)
-exe '2resize ' . ((&lines * 33 + 34) / 69)
 exe 'vert 2resize ' . ((&columns * 104 + 157) / 315)
-exe 'vert 3resize ' . ((&columns * 104 + 157) / 315)
+exe '3resize ' . ((&lines * 33 + 34) / 69)
+exe 'vert 3resize ' . ((&columns * 105 + 157) / 315)
+exe '4resize ' . ((&lines * 33 + 34) / 69)
 exe 'vert 4resize ' . ((&columns * 105 + 157) / 315)
 tabnext 1
-badd +9 include/EUFInterpolant.h
-badd +368 src/EUFInterpolant.cpp
-badd +19 include/Explanation.h
-badd +20 src/Explanation.cpp
-badd +10 include/CongruenceClosureExplain.h
-badd +3 include/Rename.h
-badd +35 include/HornClause.h
-badd +214 src/HornClause.cpp
-badd +23 include/HornClauses.h
-badd +87 src/Input.cpp
-badd +47 include/Hornsat.h
-badd +36 src/Hornsat.cpp
-badd +436 src/CongruenceClosureExplain.cpp
-badd +35 include/FactoryCurryNodes.h
-badd +5 src/FactoryCurryNodes.cpp
-badd +35 src/Z3Subterms.cpp
-badd +32 include/Z3Subterms.h
-badd +23 include/Input.h
-badd +11 include/CongruenceClosure.h
-badd +1 src/CongruenceClosure.cpp
-badd +76 src/HornClauses.cpp
-badd +68 hmm.txt
-badd +90 ~/.vimrc
-badd +939 master-thesis-hussle
-badd +585 /usr/include/c++/9.3.0/bits/unordered_map.h
-if exists('s:wipebuf') && len(win_findbuf(s:wipebuf)) == 0
+if exists('s:wipebuf') && getbufvar(s:wipebuf, '&buftype') isnot# 'terminal'
   silent exe 'bwipe ' . s:wipebuf
 endif
 unlet! s:wipebuf
-set winheight=1 winwidth=20 shortmess=filnxtToOFIc
-set winminheight=1 winminwidth=1
+set winheight=1 winwidth=20 winminheight=1 winminwidth=1 shortmess=filnxtToOFIc
 let s:sx = expand("<sfile>:p:r")."x.vim"
-if filereadable(s:sx)
+if file_readable(s:sx)
   exe "source " . fnameescape(s:sx)
 endif
 let &so = s:so_save | let &siso = s:siso_save
 doautoall SessionLoadPost
 unlet SessionLoad
-highlight Normal ctermbg=none
 " vim: set ft=vim :
