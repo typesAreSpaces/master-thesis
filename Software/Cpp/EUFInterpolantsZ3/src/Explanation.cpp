@@ -1,5 +1,4 @@
 #include "Explanation.h"
-#include <z3++.h>
 
 Explanation::Explanation(z3::context & ctx) :
   result(ctx), current_ids()
@@ -19,6 +18,3 @@ void Explanation::add(z3::expr_vector const & explanation){
   return; 
 }
 
-z3::expr_vector Explanation::get() const {
-  return result;
-}

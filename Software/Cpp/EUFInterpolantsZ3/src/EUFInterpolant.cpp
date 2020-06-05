@@ -185,7 +185,7 @@ void EUFInterpolant::conditionalEliminationEqs(){
             expl.add(explainUncommons(e_x, lhs));
             expl.add(explainUncommons(e_y, rhs));
             horn_clauses.add(new HornClause(ctx, 
-                  expl.get(), 
+                  expl.result, 
                   e_x == e_y));
 #if DEBUG_COND_ELIM_EQS
             std::cout << e_x << ", " << e_y << std::endl;
@@ -203,7 +203,7 @@ void EUFInterpolant::conditionalEliminationEqs(){
             expl.add(explainUncommons(e_x, lhs));
             expl.add(explainUncommons(e_f_y, rhs));
             horn_clauses.add(new HornClause(ctx, 
-                  expl.get(), 
+                  expl.result, 
                   e_x == e_f_y));
 #if DEBUG_COND_ELIM_EQS
             std::cout << e_x << ", " << e_f_y << std::endl;
@@ -217,7 +217,7 @@ void EUFInterpolant::conditionalEliminationEqs(){
             for(auto const & arg_f_y : arguments_f_y)
               expl.add(explainUncommons(rhs.arg(_index++), arg_f_y));
             horn_clauses.add(new HornClause(ctx, 
-                  expl.get(), 
+                  expl.result, 
                   e_x == f_y(arguments_f_y)));
 #if DEBUG_COND_ELIM_EQS
             std::cout << e_x << ", " << f_y(arguments_f_y) << std::endl;
@@ -240,7 +240,7 @@ void EUFInterpolant::conditionalEliminationEqs(){
             std::cout << e_f_x << ", " << e_y << std::endl;
 #endif
             horn_clauses.add(new HornClause(ctx, 
-                  expl.get(), 
+                  expl.result, 
                   e_f_x == e_y));
           }
           z3::func_decl f_x = lhs.decl();
@@ -254,7 +254,7 @@ void EUFInterpolant::conditionalEliminationEqs(){
             std::cout << f_x(arguments_f_x) << ", " << e_y << std::endl;
 #endif
             horn_clauses.add(new HornClause(ctx, 
-                  expl.get(), 
+                  expl.result, 
                   f_x(arguments_f_x) == e_y));
           }
         }
@@ -272,7 +272,7 @@ void EUFInterpolant::conditionalEliminationEqs(){
             std::cout << e_f_x << ", " << e_f_y << std::endl;
 #endif
             horn_clauses.add(new HornClause(ctx, 
-                  expl.get(), 
+                  expl.result, 
                   e_f_x == e_f_y));
           }
           z3::func_decl f_y = rhs.decl();
@@ -286,7 +286,7 @@ void EUFInterpolant::conditionalEliminationEqs(){
             std::cout << e_f_x << ", " << f_y(arguments_f_y) << std::endl;
 #endif
             horn_clauses.add(new HornClause(ctx, 
-                  expl.get(), 
+                  expl.result, 
                   e_f_x == f_y(arguments_f_y)));
           }
         }
@@ -302,7 +302,7 @@ void EUFInterpolant::conditionalEliminationEqs(){
             std::cout << f_x(arguments_f_x) << ", " << e_f_y << std::endl;
 #endif
             horn_clauses.add(new HornClause(ctx, 
-                  expl.get(), 
+                  expl.result, 
                   f_x(arguments_f_x) == e_f_y));
           }
           z3::func_decl f_y = rhs.decl();
@@ -318,7 +318,7 @@ void EUFInterpolant::conditionalEliminationEqs(){
             std::cout << f_x(arguments_f_x) << ", " << f_y(arguments_f_y) << std::endl;
 #endif
             horn_clauses.add(new HornClause(ctx, 
-                  expl.get(), 
+                  expl.result, 
                   f_x(arguments_f_x) == f_y(arguments_f_y)));
           }
         }

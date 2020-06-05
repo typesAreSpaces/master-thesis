@@ -36,7 +36,7 @@ public:
   bool                    isCommon()            const;
   unsigned                numUncommAntecedent() const;
   unsigned                getLocalMaxLitId()    const;
-  z3::expr                ToZ3Exprc() const;
+  z3::expr                ToZ3Exprc()           const;
 
   friend bool operator <(HornClause const &, HornClause const &);
   friend bool operator >(HornClause const &, HornClause const &);
