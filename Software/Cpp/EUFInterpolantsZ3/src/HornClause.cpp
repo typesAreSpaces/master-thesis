@@ -30,14 +30,21 @@ HornClause::HornClause(z3::context & ctx, z3::expr_vector antecedent, z3::expr c
   return;
 }
 
-HornClause::HornClause(z3::context & ctx, z3::expr_vector antecedent, z3::expr consequent, CongruenceClosureExplain & cce) :
+HornClause::HornClause(z3::context & ctx, z3::expr_vector antecedent, z3::expr consequent) :
   ctx(ctx),
   antecedent(antecedent), consequent(consequent), 
   is_common_antecedent(true), num_uncomm_antecedent(0), local_max_lit_id(0)
 {
 
   // ----------------
-  normalize(cce);  //
+  // We dont' normalize the 
+  // produce Horn clause since
+  // the antecedent will be produced
+  // by some explanation, which means 
+  // that the equations in the antecedent
+  // will be considered trivial by 
+  // the normalization procedure
+  //normalize(cce);//
   orient();        //
   // ----------------
 
@@ -151,6 +158,10 @@ bool HornClause::isCommonAntecedent() const {
 
 bool HornClause::isCommonConsequent() const {
   return consequent.is_common();
+}
+
+bool HornClause::isCommon() const {
+  return is_common_antecedent && consequent.is_common();
 }
 
 unsigned HornClause::numUncommAntecedent() const {

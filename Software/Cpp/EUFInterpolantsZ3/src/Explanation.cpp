@@ -10,8 +10,7 @@ Explanation::~Explanation()
 {
 }
 
-void Explanation::add(z3::expr_vector const & explanation)
-{
+void Explanation::add(z3::expr_vector const & explanation){
   for(auto const & element : explanation)
     if(!(IsMember(current_ids, element))){
       current_ids.insert(element.id());
@@ -20,7 +19,6 @@ void Explanation::add(z3::expr_vector const & explanation)
   return; 
 }
 
-z3::expr_vector Explanation::get() const 
-{
+z3::expr_vector Explanation::get() const {
   return result;
 }

@@ -11,11 +11,11 @@ EUFInterpolant::EUFInterpolant(z3::expr_vector const & assertions) :
   // Conditional uncommon symbol elimination step
   hsat(cce, horn_clauses)
 {        
-  
+
   for(auto const & equation : assertions){
     hsat.equiv_classes.merge(equation.arg(0), equation.arg(1));
   }
-  
+
 #if DEBUG_EXPOSE_UNCOMMS
   std::cout << "After expose uncommons" << std::endl;
   std::cout << horn_clauses << std::endl;
@@ -42,7 +42,7 @@ EUFInterpolant::EUFInterpolant(z3::expr_vector const & assertions) :
   auto t6 = subterms[33]; //33. (c_f c_y2 a_v)
   auto t7 = subterms[28]; //28. c_s2
   auto t8 = subterms[22]; //22. a_v
-  
+
   // Testing candidates
   std::cout << "Testing candidates" << std::endl;
   std::cout << "Candidates for " << t1 << std::endl;
@@ -69,9 +69,9 @@ EUFInterpolant::EUFInterpolant(z3::expr_vector const & assertions) :
   //std::cout << "Testing allCandidates" << std::endl;
   //std::cout << "for " << t8 << std::endl;
   //for(auto const & temp_list : allCandidates(t8)){
-    //for(auto const & elem : temp_list)
-      //std::cout << elem << " ";
-    //std::cout << std::endl;
+  //for(auto const & elem : temp_list)
+  //std::cout << elem << " ";
+  //std::cout << std::endl;
   //}
 
   // Testing explainUncommons
@@ -104,11 +104,11 @@ EUFInterpolant::EUFInterpolant(z3::expr_vector const & assertions) :
   std::cout << "for " << t5 << std::endl;
   for(auto const & w : cartesianProd(allCandidates(t5)))
     std::cout << w << std::endl;
-  
+
   //std::cout << "for " << t8 << std::endl;
   //for(auto const & w : cartesianProd(allCandidates(t8)))
-    //std::cout << w << std::endl;
-  
+  //std::cout << w << std::endl;
+
   std::cout << "END temporal testing" << std::endl;
 
 #endif
@@ -162,7 +162,7 @@ void EUFInterpolant::conditionalEliminationEqs(){
   for(auto const & equation : assertions){
     auto const & lhs = equation.arg(0), & rhs = equation.arg(1);
 #if DEBUG_COND_ELIM_EQS
-    std::cout << equation << std::endl;
+    std::cout << "--Processing this equation: " << equation << std::endl;
 #endif
 
     // FIX: the equivalent class shouldn't be ufe
@@ -173,23 +173,30 @@ void EUFInterpolant::conditionalEliminationEqs(){
     // FIX: add uses ufe.. This must be changed.
     // to the CongruenceClosureExplain
     // FIX: there is a problem. Check the output..
-    
+
     if(lhs.is_const()){
-      if(rhs.is_const())
-        for(auto const & e_x : candidates(lhs))
+      if(rhs.is_const()){
+#if DEBUG_COND_ELIM_EQS 
+        std::cout << "----Case lhs constant rhs constant" << std::endl;
+#endif
+        for(auto const & e_x : candidates(lhs)){
           for(auto const & e_y : candidates(rhs)){
             Explanation expl(ctx);
             expl.add(explainUncommons(e_x, lhs));
             expl.add(explainUncommons(e_y, rhs));
             horn_clauses.add(new HornClause(ctx, 
                   expl.get(), 
-                  e_x == e_y, 
-                  hsat.equiv_classes));
+                  e_x == e_y));
 #if DEBUG_COND_ELIM_EQS
             std::cout << e_x << ", " << e_y << std::endl;
 #endif
           }
-      else
+        }
+      }
+      else{
+#if DEBUG_COND_ELIM_EQS 
+        std::cout << "----Case lhs constant rhs function app" << std::endl;
+#endif
         for(auto const & e_x : candidates(lhs)){
           for(auto const & e_f_y : candidates(rhs)){
             Explanation expl(ctx);
@@ -197,8 +204,7 @@ void EUFInterpolant::conditionalEliminationEqs(){
             expl.add(explainUncommons(e_f_y, rhs));
             horn_clauses.add(new HornClause(ctx, 
                   expl.get(), 
-                  e_x == e_f_y, 
-                  hsat.equiv_classes));
+                  e_x == e_f_y));
 #if DEBUG_COND_ELIM_EQS
             std::cout << e_x << ", " << e_f_y << std::endl;
 #endif
@@ -212,28 +218,30 @@ void EUFInterpolant::conditionalEliminationEqs(){
               expl.add(explainUncommons(rhs.arg(_index++), arg_f_y));
             horn_clauses.add(new HornClause(ctx, 
                   expl.get(), 
-                  e_x == f_y(arguments_f_y), 
-                  hsat.equiv_classes));
+                  e_x == f_y(arguments_f_y)));
 #if DEBUG_COND_ELIM_EQS
             std::cout << e_x << ", " << f_y(arguments_f_y) << std::endl;
 #endif
           }
         }
+      }
     }
     else{
-      if(rhs.is_const())
+      if(rhs.is_const()){
+#if DEBUG_COND_ELIM_EQS 
+        std::cout << "----Case lhs function app rhs constant" << std::endl;
+#endif
         for(auto const & e_y : candidates(rhs)){
           for(auto const & e_f_x : candidates(lhs)){
             Explanation expl(ctx);
             expl.add(explainUncommons(e_f_x, lhs));
             expl.add(explainUncommons(e_y, rhs));
-            horn_clauses.add(new HornClause(ctx, 
-                  expl.get(), 
-                  e_f_x == e_y, 
-                  hsat.equiv_classes));
 #if DEBUG_COND_ELIM_EQS
             std::cout << e_f_x << ", " << e_y << std::endl;
 #endif
+            horn_clauses.add(new HornClause(ctx, 
+                  expl.get(), 
+                  e_f_x == e_y));
           }
           z3::func_decl f_x = lhs.decl();
           for(auto const & arguments_f_x : cartesianProd(allCandidates(lhs))){
@@ -242,28 +250,30 @@ void EUFInterpolant::conditionalEliminationEqs(){
             for(auto const & arg_f_x : arguments_f_x)
               expl.add(explainUncommons(lhs.arg(_index++), arg_f_x));
             expl.add(explainUncommons(e_y, rhs));
-            horn_clauses.add(new HornClause(ctx, 
-                  expl.get(), 
-                  f_x(arguments_f_x) == e_y, 
-                  hsat.equiv_classes));
 #if DEBUG_COND_ELIM_EQS
             std::cout << f_x(arguments_f_x) << ", " << e_y << std::endl;
 #endif
+            horn_clauses.add(new HornClause(ctx, 
+                  expl.get(), 
+                  f_x(arguments_f_x) == e_y));
           }
         }
+      }
       else{
+#if DEBUG_COND_ELIM_EQS 
+        std::cout << "----Case lhs function app rhs function app" << std::endl;
+#endif
         for(auto const & e_f_x : candidates(lhs)){
           for(auto const & e_f_y : candidates(rhs)){
             Explanation expl(ctx);
             expl.add(explainUncommons(e_f_x, lhs));
             expl.add(explainUncommons(e_f_y, rhs));
-            horn_clauses.add(new HornClause(ctx, 
-                  expl.get(), 
-                  e_f_x == e_f_y, 
-                  hsat.equiv_classes));
 #if DEBUG_COND_ELIM_EQS
             std::cout << e_f_x << ", " << e_f_y << std::endl;
 #endif
+            horn_clauses.add(new HornClause(ctx, 
+                  expl.get(), 
+                  e_f_x == e_f_y));
           }
           z3::func_decl f_y = rhs.decl();
           for(auto const & arguments_f_y : cartesianProd(allCandidates(rhs))){
@@ -272,13 +282,12 @@ void EUFInterpolant::conditionalEliminationEqs(){
             unsigned _index = 0;
             for(auto const & arg_f_y : arguments_f_y)
               expl.add(explainUncommons(rhs.arg(_index++), arg_f_y));
-            horn_clauses.add(new HornClause(ctx, 
-                  expl.get(), 
-                  e_f_x == f_y(arguments_f_y), 
-                  hsat.equiv_classes));
 #if DEBUG_COND_ELIM_EQS
             std::cout << e_f_x << ", " << f_y(arguments_f_y) << std::endl;
 #endif
+            horn_clauses.add(new HornClause(ctx, 
+                  expl.get(), 
+                  e_f_x == f_y(arguments_f_y)));
           }
         }
         z3::func_decl f_x = lhs.decl();
@@ -289,13 +298,12 @@ void EUFInterpolant::conditionalEliminationEqs(){
             for(auto const & arg_f_x : arguments_f_x)
               expl.add(explainUncommons(lhs.arg(_index++), arg_f_x));
             expl.add(explainUncommons(e_f_y, rhs));
-            horn_clauses.add(new HornClause(ctx, 
-                  expl.get(), 
-                  f_x(arguments_f_x) == e_f_y, 
-                  hsat.equiv_classes));
 #if DEBUG_COND_ELIM_EQS
             std::cout << f_x(arguments_f_x) << ", " << e_f_y << std::endl;
 #endif
+            horn_clauses.add(new HornClause(ctx, 
+                  expl.get(), 
+                  f_x(arguments_f_x) == e_f_y));
           }
           z3::func_decl f_y = rhs.decl();
           for(auto const & arguments_f_y : cartesianProd(allCandidates(rhs))){
@@ -306,13 +314,12 @@ void EUFInterpolant::conditionalEliminationEqs(){
             _index = 0;
             for(auto const & arg_f_y : arguments_f_y)
               expl.add(explainUncommons(rhs.arg(_index++), arg_f_y));
-            horn_clauses.add(new HornClause(ctx, 
-                  expl.get(), 
-                  f_x(arguments_f_x) == f_y(arguments_f_y), 
-                  hsat.equiv_classes));
 #if DEBUG_COND_ELIM_EQS
             std::cout << f_x(arguments_f_x) << ", " << f_y(arguments_f_y) << std::endl;
 #endif
+            horn_clauses.add(new HornClause(ctx, 
+                  expl.get(), 
+                  f_x(arguments_f_x) == f_y(arguments_f_y)));
           }
         }
       }
@@ -326,8 +333,18 @@ void EUFInterpolant::conditionalElimination(){
   // uncommon term using the explanation 
   // operator
 
+#if DEBUG_COND_ELIM
+  std::cout << horn_clauses << std::endl;
+#endif
+
   // Process original equations
   conditionalEliminationEqs();
+
+  // KEEP: working here
+  unsigned _index = 0;
+  for(auto const & element : horn_clauses)
+    if(element->isCommon())
+      std::cout << _index++ << " " << *element << std::endl;
 
 #if DEBUG_COND_ELIM
   std::cout << horn_clauses << std::endl;
@@ -375,7 +392,7 @@ z3::expr_vector EUFInterpolant::explainUncommons(z3::expr const & t1, z3::expr c
       // append its antecedent
       // --------------------------------
       auto const & entry = hsat.head_term_indexer.find(equation.id());
-      if(entry == hsat.head_term_indexer.end())
+      if(entry == hsat.head_term_indexer.end()){
         // --------------------------------------------------
         // This case couldn't match the equation to any
         // head-term of the Horn clauses. So it just adds 
@@ -383,7 +400,9 @@ z3::expr_vector EUFInterpolant::explainUncommons(z3::expr const & t1, z3::expr c
         // that the equation is an assertion from the initial
         // Input
         // --------------------------------------------------
-        ans.push_back(equation);
+        if(equation.is_common())
+          ans.push_back(equation);
+      }
       else
         // -------------------------------------------------------
         // This case handles when the equation matches a head-term

@@ -25,7 +25,7 @@ class HornClause {
   
 public:
   HornClause(z3::context &, z3::expr_vector, z3::expr, UnionFindExplain &);
-  HornClause(z3::context &, z3::expr_vector, z3::expr, CongruenceClosureExplain &);
+  HornClause(z3::context &, z3::expr_vector, z3::expr);
   ~HornClause();
   
   bool                    checkTriviality(UnionFindExplain &);
@@ -33,6 +33,7 @@ public:
   const z3::expr &        getConsequent()       const;
   bool                    isCommonAntecedent()  const;
   bool                    isCommonConsequent()  const;
+  bool                    isCommon()            const;
   unsigned                numUncommAntecedent() const;
   unsigned                getLocalMaxLitId()    const;
   z3::expr                ToZ3Exprc() const;

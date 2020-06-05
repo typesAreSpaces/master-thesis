@@ -99,6 +99,7 @@ void HornClauses::add(HornClause * hc){
       curr_num_horn_clauses++;
       return;
     case Z3_OP_FALSE:
+      std::cout << "it was added" << std::endl;
       horn_clauses.insert({id, hc});
       if(max_lit_id < hc->getLocalMaxLitId())
         max_lit_id = hc->getLocalMaxLitId();

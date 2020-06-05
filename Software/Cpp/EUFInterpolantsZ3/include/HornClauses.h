@@ -15,10 +15,12 @@
 #include "Match.h"
 #include "Replacement.h"
 
+typedef std::unordered_map<unsigned, HornClause *> UnordMapHornClauses;
+
 class HornClauses {
 
   UnionFindExplain &                         ufe;
-  std::unordered_map<unsigned, HornClause *> horn_clauses;
+  UnordMapHornClauses horn_clauses;
   unsigned                                   curr_num_horn_clauses;
   unsigned                                   max_lit_id;
 
@@ -30,6 +32,32 @@ class HornClauses {
   void swapHornClauses(unsigned, unsigned);
   void add(HornClause *);
 
+  class iterator {
+    UnordMapHornClauses::iterator it;
+    public:
+      iterator(UnordMapHornClauses::iterator it) : 
+        it(it) {}
+      bool operator ==(iterator const & other){
+        return it == other.it;
+      }
+      bool operator !=(iterator const & other){
+        return it != other.it;
+      }
+      iterator & operator ++(){
+        ++it;
+        return *this;
+      }
+      HornClause const * operator *() const {
+        return it->second;
+      }
+  };
+
+  iterator begin() {
+    return iterator(this->horn_clauses.begin());
+  }
+  iterator end() {
+    return iterator(this->horn_clauses.end());
+  }
 
   unsigned                       size() const;
   HornClause *                   operator[] (unsigned) const; 
