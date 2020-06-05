@@ -12,7 +12,6 @@
 
 #include "Z3Subterms.h"
 #include "HornClause.h"
-#include "Match.h"
 #include "Replacement.h"
 
 typedef std::unordered_map<unsigned, HornClause *> UnordMapHornClauses;
