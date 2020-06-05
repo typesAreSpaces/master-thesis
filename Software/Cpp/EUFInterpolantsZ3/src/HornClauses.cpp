@@ -13,12 +13,23 @@ HornClauses::~HornClauses(){
 #endif
 }
 
+void HornClauses::filterCommons(){
+  for(auto it = horn_clauses.begin(); it != horn_clauses.end(); ){
+    if(it->second->isCommon())
+      ++it;
+    else
+      it = horn_clauses.erase(it);
+  }
+}
+
 // This procedure removes
 // unnecessayr Horn Clauses.
 // It implements the following rule:
 // C, D -> a     C -> a
 // ---------------------
 //       C -> a
+// TODO: Implement this
+// KEEP: working here
 void HornClauses::simplify(){
   // Group horn clauses by consequent
   // Then make n^2 comparisons per group

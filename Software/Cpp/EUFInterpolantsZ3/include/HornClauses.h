@@ -22,11 +22,13 @@ class HornClauses {
   unsigned                                   curr_num_horn_clauses;
   unsigned                                   max_lit_id;
 
-  void simplify(); // TODO: Implement this
   
  public:
   HornClauses(UnionFindExplain &);
   ~HornClauses();
+
+  void filterCommons();
+  void simplify(); 
   void swapHornClauses(unsigned, unsigned);
   void add(HornClause *);
 

@@ -275,21 +275,17 @@ std::vector<z3::expr_vector> EUFInterpolant::cartesianProd(std::list<std::list<z
 }
 
 void EUFInterpolant::buildInterpolant(){
-  // KEEP: working here. result needs simplification
-  // Approach: filter the common Horn clauses 
-  // from horn_clauses and then perform simplication
-  // to the latter.
-  // Also,
-  // TODO: Implement HornClauses::simplify
-  unsigned _index = 0;
-  for(auto const & element : horn_clauses)
-    if(element->isCommon()){
+
+  horn_clauses.filterCommons();
+  horn_clauses.simplify();
+
 #if DEBUG_BUILD_INTERP
-      std::cout << _index++ << " " << *element << std::endl;
+  std::cout << horn_clauses << std::endl;
 #endif
-      result.push_back(element->ToZ3Exprc());
-    }
-  
+
+  for(auto const & element : horn_clauses)
+    result.push_back(element->ToZ3Exprc());
+
   return;
 }
 
