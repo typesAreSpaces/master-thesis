@@ -1,6 +1,6 @@
 #include "Util.h"
 
-bool compareEquation(const z3::expr & eq1, const z3::expr & eq2){
+bool Util::compareEquation(const z3::expr & eq1, const z3::expr & eq2){
   switch(eq1.decl().decl_kind()){
     case Z3_OP_EQ:
       switch(eq2.decl().decl_kind()){
@@ -15,7 +15,7 @@ bool compareEquation(const z3::expr & eq1, const z3::expr & eq2){
 }
 
 // Read it as: compareTerm(t1, t2) iff t2 is 'better than' t1
-bool compareTerm(const z3::expr & t1, const z3::expr & t2){
+bool Util::compareTerm(const z3::expr & t1, const z3::expr & t2){
   if (t1.is_common() != t2.is_common())
     return t1.is_common() < t2.is_common();
   else{

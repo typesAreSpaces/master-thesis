@@ -30,7 +30,7 @@ CongruenceClosureDST::CongruenceClosureDST(const Z3Subterms & subterms,
 	  v_repr = w_repr;
 	  w_repr = aux;
 	}
-	if(compareTerm(subterms[v_repr], subterms[w_repr])){
+	if(Util::compareTerm(subterms[v_repr], subterms[w_repr])){
 	  aux = v_repr;
 	  v_repr = w_repr;
 	  w_repr = aux;

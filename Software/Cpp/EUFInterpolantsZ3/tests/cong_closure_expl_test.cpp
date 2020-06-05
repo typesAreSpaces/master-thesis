@@ -171,13 +171,10 @@ void paperExample(){
   input.push_back(f(z1, v) == s1);
   input.push_back(f(z2, v) == s2);
   input.push_back(f(f(y1, v), f(y2, v)) == t);
-
   RenameWithUncomSymbols rename(input, uncomms);
 
-  auto r_input = rename.result;
-
   try {
-    TestCongruenceClosureExplain eufi(r_input);
+    TestCongruenceClosureExplain eufi(rename.result);
   }
   catch(char const * e){
     std::cout << e << std::endl;

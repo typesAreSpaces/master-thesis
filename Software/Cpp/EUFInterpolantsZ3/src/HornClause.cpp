@@ -83,7 +83,7 @@ void HornClause::normalize(UnionFindExplain & ufe){
   for(auto expr : antecedent)
     aux_antecedent.push_back(expr);
 
-  std::sort(aux_antecedent.begin(), aux_antecedent.end(), compareEquation);
+  std::sort(aux_antecedent.begin(), aux_antecedent.end(), Util::compareEquation);
   antecedent.resize(0);
 
   for(auto expr : aux_antecedent){
@@ -102,7 +102,7 @@ void HornClause::normalize(CongruenceClosureExplain & cce){
   for(auto expr : antecedent)
     aux_antecedent.push_back(expr);
 
-  std::sort(aux_antecedent.begin(), aux_antecedent.end(), compareEquation);
+  std::sort(aux_antecedent.begin(), aux_antecedent.end(), Util::compareEquation);
   antecedent.resize(0);
 
   for(auto expr : aux_antecedent){
@@ -123,7 +123,7 @@ void HornClause::orient(){
   z3::expr_vector aux_antecedent(ctx);
   for(auto expr : antecedent){
     current_lhs = expr.arg(0), current_rhs = expr.arg(1);
-    if(compareTerm(current_lhs, current_rhs))
+    if(Util::compareTerm(current_lhs, current_rhs))
       aux_antecedent.push_back(current_rhs == current_lhs);
     else
       aux_antecedent.push_back(expr);
@@ -135,7 +135,7 @@ void HornClause::orient(){
     return;
 
   current_lhs = consequent.arg(0), current_rhs = consequent.arg(1);
-  if(compareTerm(current_lhs, current_rhs))
+  if(Util::compareTerm(current_lhs, current_rhs))
     consequent = (current_rhs == current_lhs);
   return;
 }
