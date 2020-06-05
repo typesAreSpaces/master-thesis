@@ -12,7 +12,6 @@
 #include "CongruenceClosureExplain.h"
 #include "HornClauses.h"
 #include "Util.h"
-#include "Replacement.h"
 
 typedef unsigned TermId;
 typedef unsigned LiteralId;

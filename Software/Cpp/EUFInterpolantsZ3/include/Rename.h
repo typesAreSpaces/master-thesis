@@ -1,5 +1,6 @@
 #ifndef _RENAME_
 #define _RENAME_
+#define DEBUG_RENAME 0
 
 #include <string>
 #include <z3++.h>
@@ -7,16 +8,29 @@
 #include <vector>
 #include <utility>
 
-void traversePartA(z3::expr const &, std::vector<bool> &, std::set<std::string> &);
-void traversePartB(z3::expr const &, std::vector<bool> &, std::set<std::string> &, std::set<std::string> &);
+struct Rename {
+  std::vector<bool> visited;
+  z3::expr_vector   result;
 
-z3::expr reformulate(z3::expr const &, std::set<std::string> const &, std::set<std::string> const &);
-z3::expr reformulate(z3::expr const &, std::set<std::string> const &);
+  Rename(z3::context &);
+};
 
-z3::expr rename(z3::expr const &, z3::expr const &);
-z3::expr rename(z3::expr const &, std::set<std::string> const &);
+struct RenameWithExpressions : public Rename {
+  std::set<std::string> a_local_names, common_names;
 
-z3::expr_vector rename(z3::expr_vector const &, z3::expr_vector const &);
-z3::expr_vector rename(z3::expr_vector const &, std::set<std::string> const &);
+  void traversePartA(z3::expr const &);
+  void traversePartB(z3::expr const &);
+  z3::expr reformulate(z3::expr const &);
+
+  RenameWithExpressions(z3::expr_vector const &, z3::expr_vector const &);
+};
+
+struct RenameWithUncomSymbols : public Rename {
+  std::set<std::string> const & uncommon_names;
+
+  z3::expr reformulate(z3::expr const &);
+
+  RenameWithUncomSymbols(z3::expr_vector const &, std::set<std::string> const &);
+};
 
 #endif

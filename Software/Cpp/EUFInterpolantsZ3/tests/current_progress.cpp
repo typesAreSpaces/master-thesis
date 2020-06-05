@@ -43,15 +43,16 @@ void paperExample(){
   z3::expr v = ctx.constant("v", my_sort);
   z3::expr t = ctx.constant("t", my_sort);
   z3::func_decl f = ctx.function("f", my_sort, my_sort, my_sort);
-  std::set<std::string> uncomms;
-  uncomms.insert("v");
+  std::set<std::string> uncomms({"v"});
 
   z3::expr_vector input(ctx); 
   input.push_back(f(z1, v) == s1);
   input.push_back(f(z2, v) == s2);
   input.push_back(f(f(y1, v), f(y2, v)) == t);
 
-  auto r_input = rename(input, uncomms);
+  RenameWithUncomSymbols rename(input, uncomms);
+
+  auto r_input = rename.result;
 
   try {
     EUFInterpolant eufi(r_input);
