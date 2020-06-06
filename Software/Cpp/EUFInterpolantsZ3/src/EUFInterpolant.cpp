@@ -284,11 +284,16 @@ void EUFInterpolant::buildInterpolant(){
 #endif
 
   for(auto const & element : horn_clauses)
-    result.push_back(element->ToZ3Exprc());
+    if(element->isLeader())
+      result.push_back(element->ToZ3Exprc());
 
   return;
 }
 
+z3::expr_vector EUFInterpolant::getInterpolant() const {
+  return result;
+}
+
 std::ostream & operator << (std::ostream & os, EUFInterpolant & euf){
-  return (os << euf.result);
+  return os;
 }

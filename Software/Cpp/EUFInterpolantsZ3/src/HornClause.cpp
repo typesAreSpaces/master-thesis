@@ -3,7 +3,8 @@
 HornClause::HornClause(z3::context & ctx, z3::expr_vector antecedent, z3::expr consequent, UnionFindExplain & ufe) :
   ctx(ctx),
   antecedent(antecedent), consequent(consequent), 
-  is_common_antecedent(true), num_uncomm_antecedent(0), local_max_lit_id(0)
+  is_common_antecedent(true), num_uncomm_antecedent(0), local_max_lit_id(0),
+  is_leader(true)
 {
 
   // ----------------
@@ -33,7 +34,8 @@ HornClause::HornClause(z3::context & ctx, z3::expr_vector antecedent, z3::expr c
 HornClause::HornClause(z3::context & ctx, z3::expr_vector antecedent, z3::expr consequent) :
   ctx(ctx),
   antecedent(antecedent), consequent(consequent), 
-  is_common_antecedent(true), num_uncomm_antecedent(0), local_max_lit_id(0)
+  is_common_antecedent(true), num_uncomm_antecedent(0), local_max_lit_id(0),
+  is_leader(true)
 {
 
   // ----------------
@@ -174,12 +176,11 @@ unsigned HornClause::getLocalMaxLitId() const {
 
 // Definition: > \in HornClause \times HornClause -> Bool
 // Let hc1 be of the form (/\_{i=0}^m u_i   = v_i  ) => a_1 = a_2
-// Let hc2 be of the form (/\_{j=0}^n u_j^' = v_j^') => b_1 = b_2
-// hc1 > hc2 iff (repr(a_1) \= repr(a_2)) = (repr(b_1) \= repr(b_2))
-//               and (/\_j^n u_j^' = v_j^') => (/\_i^m u_i = v_i_)
-//               and n > m
+// Let hc2 be of the form (/\_{j=0}^n u_j^' = v_j^') => a_1 = a_2
+// hc1 < hc2 iff n < m
+//               and |- (/\_j^n u_j^' = v_j^') => (/\_i^m u_i = v_i_)
 // -------------------------------------------------------------------
-bool operator > (HornClause const & hc1, HornClause const & hc2){
+bool operator < (HornClause const & hc1, HornClause const & hc2){
   // ------------------------------------------------
   // Precondition:
   // This comparison assumes the consequent of
@@ -187,14 +188,11 @@ bool operator > (HornClause const & hc1, HornClause const & hc2){
   // ------------------------------------------------
   assert(hc1.consequent.id() == hc2.consequent.id());
 
-  unsigned num_antecedent_1 = hc1.antecedent.size();
-  unsigned num_antecedent_2 = hc2.antecedent.size();
-
-  if(num_antecedent_2 > num_antecedent_1){
-    z3::solver temp_euf_solver(hc1.ctx, "QF_UF");
-    temp_euf_solver.add(z3::mk_and(hc2.antecedent));
-    temp_euf_solver.add(not(z3::mk_and(hc1.antecedent)));
-    return temp_euf_solver.check() == z3::unsat;
+  if(hc1.antecedent.size() < hc2.antecedent.size()){
+    z3::solver s(hc1.ctx, "QF_UF");
+    s.add(z3::mk_and(hc2.antecedent));
+    s.add(not(z3::mk_and(hc1.antecedent)));
+    return s.check() == z3::unsat;
   }
   return false;
 }
@@ -204,13 +202,22 @@ z3::expr HornClause::ToZ3Exprc() const{
   return z3::implies(mk_and(antecedent), consequent);
 }
 
-bool operator < (HornClause const & hc1, HornClause const & hc2){
-  return hc2 > hc1;
+bool HornClause::isLeader() const {
+  return is_leader;
+}
+
+void HornClause::noLongerLeader(){
+  is_leader = false;
+}
+
+bool operator > (HornClause const & hc1, HornClause const & hc2){
+  return hc2 < hc1;
 }
 
 std::ostream & operator << (std::ostream & os, HornClause const & hc){
   bool first_flag = true;
   unsigned num_antecedent = hc.antecedent.size();
+  os << (hc.isLeader() ? "(Leader) " : "(Not leader) ");
   for(unsigned i = 0; i < num_antecedent; i++){
     if(!first_flag)
       os << " && ";

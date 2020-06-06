@@ -22,6 +22,7 @@ void currentProgress(){
 
   try {
     EUFInterpolant eufi(input);
+    std::cout << eufi << std::endl;
   }
   catch(char const * e){
     std::cout << e << std::endl;
@@ -53,6 +54,7 @@ void paperExample(){
 
   try {
     EUFInterpolant eufi(rename.result);
+    std::cout << eufi.getInterpolant() << std::endl;
   }
   catch(char const * e){
     std::cout << e << std::endl;

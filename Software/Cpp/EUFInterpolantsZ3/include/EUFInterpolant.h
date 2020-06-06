@@ -6,9 +6,10 @@
 #define DEBUG_HSAT_INTER     0
 #define DEBUG_COND_ELIM      0
 #define DEBUG_COND_ELIM_EQS  0
-#define DEBUG_BUILD_INTERP   1
+#define DEBUG_BUILD_INTERP   0
 #define DEBUG_TEMP           0
 
+#include "Rename.h"
 #include "Input.h"
 #include "Explanation.h"
 
@@ -35,7 +36,8 @@ class EUFInterpolant : public Input {
   EUFInterpolant(z3::expr_vector const &);
   ~EUFInterpolant();
 
-  void buildInterpolant();
+  void            buildInterpolant();
+  z3::expr_vector getInterpolant() const;
 
   friend std::ostream & operator << (std::ostream &, EUFInterpolant &);
 };

@@ -18,6 +18,7 @@ class HornClause {
   bool            is_common_antecedent;
   unsigned        num_uncomm_antecedent;
   unsigned        local_max_lit_id;
+  bool            is_leader;
 
   void normalize(UnionFindExplain &);
   void normalize(CongruenceClosureExplain &);
@@ -37,6 +38,8 @@ public:
   unsigned                numUncommAntecedent() const;
   unsigned                getLocalMaxLitId()    const;
   z3::expr                ToZ3Exprc()           const;
+  bool                    isLeader()            const;
+  void                    noLongerLeader();
 
   friend bool operator <(HornClause const &, HornClause const &);
   friend bool operator >(HornClause const &, HornClause const &);
