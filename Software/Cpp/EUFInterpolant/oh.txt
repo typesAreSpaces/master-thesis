@@ -2790,3 +2790,8 @@ Starting consistency test
 To check that (f1 (f3 c_4 c_0) (f3 c_4 c_5)) and (f1 (f3 c_2 c_6) (f3 c_6 c_6)) are equivalent: They are.
 Processing file:  PEQ013_size7.smt2
 Starting consistency test
+To check that (f3 c_2 c_5) and (f3 c_0 (f1 c_3 c_7)) are equivalent: They are.
+Processing file:  PEQ013_size8.smt2
+Starting consistency test
+Processing file:  PEQ014_size10.smt2
+Starting consistency test
