@@ -9,9 +9,9 @@
 #define DEBUG_BUILD_INTERP   0
 #define DEBUG_TEMP           0
 
-#include "Rename.h"
 #include "Input.h"
 #include "Explanation.h"
+#include <z3++.h>
 
 typedef unsigned Z3Index ;
 

@@ -1,7 +1,7 @@
 #include <iostream>
 #include <algorithm>
 #include "Rename.h"
-#include "EUFInterpolant.h"
+#include "EUFInterpolantWithUncomSymbols.h"
 
 void currentProgress(){
  
@@ -50,10 +50,9 @@ void paperExample(){
   input.push_back(f(z1, v) == s1);
   input.push_back(f(z2, v) == s2);
   input.push_back(f(f(y1, v), f(y2, v)) == t);
-  RenameWithUncomSymbols rename(input, uncomms);
 
   try {
-    EUFInterpolant eufi(rename.result);
+    EUFInterpolantWithUncomSymbols eufi(input, uncomms);
     std::cout << eufi.getInterpolant() << std::endl;
   }
   catch(char const * e){
@@ -62,8 +61,6 @@ void paperExample(){
 
   return;
 }
-
-
 
 int main(int argc, char ** argv){
 

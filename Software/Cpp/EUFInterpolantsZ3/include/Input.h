@@ -6,6 +6,7 @@
 #include "Hornsat.h"
 #include "CongruenceClosureExplain.h"
 #include "CurryNode.h"
+#include "Rename.h"
 
 typedef std::map<std::string, std::vector<unsigned> > FSymPositions;
 

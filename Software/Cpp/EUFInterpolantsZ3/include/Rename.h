@@ -10,7 +10,7 @@
 
 struct Rename {
   std::vector<bool> visited;
-  z3::expr_vector   result;
+  z3::expr_vector   renamed_input;
 
   Rename(z3::context &);
 };

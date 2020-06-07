@@ -297,3 +297,4 @@ z3::expr_vector EUFInterpolant::getInterpolant() const {
 std::ostream & operator << (std::ostream & os, EUFInterpolant & euf){
   return os;
 }
+

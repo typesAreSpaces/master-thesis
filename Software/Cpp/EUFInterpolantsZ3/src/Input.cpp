@@ -27,10 +27,10 @@ Input::~Input(){
 
 unsigned Input::maxIdFromAssertions(z3::expr_vector const & assertions){
   unsigned max_id_from_assertions = 0;
-  for(auto const & assertion : assertions){
+  for(auto const & assertion : assertions)
     if(assertion.id() > max_id_from_assertions)
       max_id_from_assertions = assertion.id();
-  }
+  
   return max_id_from_assertions;
 }
 
@@ -90,10 +90,8 @@ void Input::disequalitiesToHCS(){
 
 z3::expr Input::z3_repr(z3::expr const & e){
   return cce.z3Repr(e);
-  //return e;
 }
 
 std::ostream & operator << (std::ostream & os, Input const & input){
   return os;
 }
-

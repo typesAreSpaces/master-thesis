@@ -174,7 +174,7 @@ void paperExample(){
   RenameWithUncomSymbols rename(input, uncomms);
 
   try {
-    TestCongruenceClosureExplain eufi(rename.result);
+    TestCongruenceClosureExplain eufi(rename.renamed_input);
   }
   catch(char const * e){
     std::cout << e << std::endl;
@@ -188,26 +188,26 @@ int main(int argc, char ** argv){
 
   paperExample();
   
-  //testAdditionalMerge();
+  testAdditionalMerge();
   
-  //testCongClosureExpl();
-  //testCongClosureExpl2();
-  //testCongClosureExpl3();
-  //testCongClosureExpl4();
-  //testCongClosureExpl5();
+  testCongClosureExpl();
+  testCongClosureExpl2();
+  testCongClosureExpl3();
+  testCongClosureExpl4();
+  testCongClosureExpl5();
   
-  //try {
-    //inputFile("/home/jose/Documents/GithubProjects/master-thesis/Software/Cpp/EUFInterpolantsZ3/tests/QF_UF/SEQ/SEQ013_size6.smt2");
-    //inputFile("/home/jose/Documents/GithubProjects/master-thesis/Software/Cpp/EUFInterpolantsZ3/tests/QF_UF/2018-Goel-hwbench/QF_UF_v_Unidec_ab_cti_max.smt2");
-    //inputFile("/home/jose/Documents/GithubProjects/master-thesis/Software/Cpp/EUFInterpolantsZ3/tests/QF_UF/SEQ/SEQ018_size7.smt2");
-    //inputFile("/home/jose/Documents/GithubProjects/master-thesis/Software/Cpp/EUFInterpolantsZ3/tests/QF_UF/SEQ/SEQ017_size6.smt2");
-    //inputFile("/home/jose/Documents/GithubProjects/master-thesis/Software/Cpp/EUFInterpolantsZ3/tests/QF_UF/SEQ/SEQ018_size8.smt2");
-    //inputFile("/home/jose/Documents/GithubProjects/master-thesis/Software/Cpp/EUFInterpolantsZ3/tests/QF_UF/SEQ/SEQ019_size6.smt2");
-    //inputFile("/home/jose/Documents/GithubProjects/master-thesis/Software/Cpp/EUFInterpolantsZ3/tests/QF_UF/PEQ/PEQ004_size9.smt2");
-  //}
-  //catch(char const * e){
-    //std::cout << e << std::endl;
-  //}
+  try {
+    inputFile("/home/jose/Documents/GithubProjects/master-thesis/Software/Cpp/EUFInterpolantsZ3/tests/QF_UF/SEQ/SEQ013_size6.smt2");
+    inputFile("/home/jose/Documents/GithubProjects/master-thesis/Software/Cpp/EUFInterpolantsZ3/tests/QF_UF/2018-Goel-hwbench/QF_UF_v_Unidec_ab_cti_max.smt2");
+    inputFile("/home/jose/Documents/GithubProjects/master-thesis/Software/Cpp/EUFInterpolantsZ3/tests/QF_UF/SEQ/SEQ018_size7.smt2");
+    inputFile("/home/jose/Documents/GithubProjects/master-thesis/Software/Cpp/EUFInterpolantsZ3/tests/QF_UF/SEQ/SEQ017_size6.smt2");
+    inputFile("/home/jose/Documents/GithubProjects/master-thesis/Software/Cpp/EUFInterpolantsZ3/tests/QF_UF/SEQ/SEQ018_size8.smt2");
+    inputFile("/home/jose/Documents/GithubProjects/master-thesis/Software/Cpp/EUFInterpolantsZ3/tests/QF_UF/SEQ/SEQ019_size6.smt2");
+    inputFile("/home/jose/Documents/GithubProjects/master-thesis/Software/Cpp/EUFInterpolantsZ3/tests/QF_UF/PEQ/PEQ004_size9.smt2");
+  }
+  catch(char const * e){
+    std::cout << e << std::endl;
+  }
  
   return 0;
 }
