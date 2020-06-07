@@ -77,7 +77,7 @@ void HornClauses::swapHornClauses(unsigned i, unsigned j){
 }
 
 void HornClauses::add(HornClause * hc){
-  z3::expr z3_expr_hc = hc->ToZ3Exprc();
+  z3::expr z3_expr_hc = hc->ToZ3Expr();
   unsigned id = z3_expr_hc.id();
   auto it = horn_clauses.find(id);
 

@@ -285,7 +285,7 @@ void EUFInterpolant::buildInterpolant(){
 
   for(auto const & element : horn_clauses)
     if(element->isLeader())
-      result.push_back(element->ToZ3Exprc());
+      result.push_back(element->ToZ3Expr());
 
   return;
 }

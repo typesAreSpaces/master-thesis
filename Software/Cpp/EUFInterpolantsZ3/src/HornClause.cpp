@@ -198,7 +198,7 @@ bool operator < (HornClause const & hc1, HornClause const & hc2){
 }
 
 
-z3::expr HornClause::ToZ3Exprc() const{
+z3::expr HornClause::ToZ3Expr() const{
   unsigned antecedent_size = antecedent.size();
   switch(antecedent_size){
     case 0:

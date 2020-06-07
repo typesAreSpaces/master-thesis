@@ -37,7 +37,7 @@ public:
   bool                    isCommon()            const;
   unsigned                numUncommAntecedent() const;
   unsigned                getLocalMaxLitId()    const;
-  z3::expr                ToZ3Exprc()           const;
+  z3::expr                ToZ3Expr()            const;
   bool                    isLeader()            const;
   void                    noLongerLeader();
 
