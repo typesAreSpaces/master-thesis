@@ -199,7 +199,15 @@ bool operator < (HornClause const & hc1, HornClause const & hc2){
 
 
 z3::expr HornClause::ToZ3Exprc() const{
-  return z3::implies(mk_and(antecedent), consequent);
+  unsigned antecedent_size = antecedent.size();
+  switch(antecedent_size){
+    case 0:
+      return consequent;
+    case 1:
+      return z3::implies(antecedent[0], consequent);
+    default:
+      return z3::implies(mk_and(antecedent), consequent);
+  }
 }
 
 bool HornClause::isLeader() const {
