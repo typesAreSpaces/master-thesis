@@ -53,12 +53,11 @@ void paperExample(){
 
   try {
     EUFInterpolantWithUncomSymbols eufi(input, uncomms);
-    std::cout << eufi.getInterpolant() << std::endl;
+    std::cout << eufi.removePrefix(eufi.getInterpolant()) << std::endl;
   }
   catch(char const * e){
     std::cout << e << std::endl;
   }
-
   return;
 }
 

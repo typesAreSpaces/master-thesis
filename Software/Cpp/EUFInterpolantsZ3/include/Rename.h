@@ -12,6 +12,9 @@ struct Rename {
   std::vector<bool> visited;
   z3::expr_vector   renamed_input;
 
+  z3::expr        removePrefix(z3::expr const &);
+  z3::expr_vector removePrefix(z3::expr_vector const &);
+
   Rename(z3::context &);
 };
 
