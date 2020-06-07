@@ -1,0 +1,17 @@
+(declare-fun x0 () Int)
+(declare-fun x1 () Int)
+(declare-fun x2 () Int)
+
+(assert (<= (+ x0 x1) 5))
+(assert (<= (+ x0 (- x1)) 5))
+(assert (<= (+ (- x0) x1) 5))
+(assert (<= (+ (- x0) (- x1)) 5))
+(assert (<= (+ x0 x1) (- 5)))
+(assert (<= (+ x0 (- x1)) (- 5)))
+(assert (<= (+ (- x0) x1) (- 5)))
+(assert (<= (+ (- x0) (- x1)) (- 5)))
+
+(assert (<= x0 33))
+(assert (<= x0 (- 45)))
+(assert (<= (- x0) 354))
+(assert (<= (- x0) (- 34)))
