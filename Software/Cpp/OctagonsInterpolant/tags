@@ -1,0 +1,80 @@
+!_TAG_FILE_FORMAT	2	/extended format; --format=1 will not append ;" to lines/
+!_TAG_FILE_SORTED	1	/0=unsorted, 1=sorted, 2=foldcase/
+!_TAG_OUTPUT_FILESEP	slash	/slash or backslash/
+!_TAG_OUTPUT_MODE	u-ctags	/u-ctags or e-ctags/
+!_TAG_PROGRAM_AUTHOR	Universal Ctags Team	//
+!_TAG_PROGRAM_NAME	Universal Ctags	/Derived from Exuberant Ctags/
+!_TAG_PROGRAM_URL	https://ctags.io/	/official site/
+!_TAG_PROGRAM_VERSION	0.0.0	/a3c87ab5/
+$(ODIR)/%.o	Makefile	/^$(ODIR)\/%.o: $(SDIR)\/%.cpp $(DEPS)$/;"	t
+CC	Makefile	/^CC = g++$/;"	m
+DEBUG_OCT_INTER_	include/OctagonsInterpolant.h	/^#define DEBUG_OCT_INTER_ /;"	d
+DEPS	Makefile	/^DEPS = $(wildcard $(IDIR)\/*.h)$/;"	m
+IDIR	Makefile	/^IDIR = .\/include$/;"	m
+INF	include/Octagon.h	/^#define INF /;"	d
+MAX_NUM_ELIM_RAND	include/generateTest.h	/^#define MAX_NUM_ELIM_RAND /;"	d
+MAX_NUM_INEQS	include/Octagon.h	/^#define MAX_NUM_INEQS /;"	d
+MAX_NUM_INEQUALITIES_RAND	include/generateTest.h	/^#define MAX_NUM_INEQUALITIES_RAND /;"	d
+MAX_NUM_VARS	include/Octagon.h	/^#define MAX_NUM_VARS /;"	d
+MAX_NUM_VARS_RAND	include/generateTest.h	/^#define MAX_NUM_VARS_RAND /;"	d
+OBJS	Makefile	/^OBJS = $(patsubst $(SDIR)\/%.cpp, $(ODIR)\/%.o, $(SRC)) $(Z3DIR)\/build\/libz3.$(Z3EXT) $/;"	m
+ODIR	Makefile	/^ODIR = .\/obj$/;"	m
+Octagon	include/Octagon.h	/^class Octagon {$/;"	c
+Octagon	src/Octagon.cpp	/^Octagon::Octagon(char first_sign, char second_sign, int first_var_position, int second_var_posit/;"	f	class:Octagon
+Octagon	src/Octagon.cpp	/^Octagon::Octagon(int n){$/;"	f	class:Octagon
+OctagonsInterpolant	include/OctagonsInterpolant.h	/^class OctagonsInterpolant{$/;"	c
+OctagonsInterpolant	src/OctagonsInterpolant.cpp	/^OctagonsInterpolant::OctagonsInterpolant(const z3::expr & e,$/;"	f	class:OctagonsInterpolant
+OctagonsInterpolant	src/OctagonsInterpolant.cpp	/^OctagonsInterpolant::OctagonsInterpolant(z3::context & ctx, std::istream & in) : ctx(ctx), num_v/;"	f	class:OctagonsInterpolant
+PRINT_INTER	include/OctagonsInterpolant.h	/^#define PRINT_INTER /;"	d
+PRINT_MSG	include/OctagonsInterpolant.h	/^#define PRINT_MSG /;"	d
+SDIR	Makefile	/^SDIR = .\/src$/;"	m
+SRC	Makefile	/^SRC = $(wildcard $(SDIR)\/*.cpp)$/;"	m
+TablePosition	include/OctagonsInterpolant.h	/^typedef std::map<unsigned, int> TablePosition;$/;"	t	typeref:typename:std::map<unsigned,int>
+UNAME	Makefile	/^UNAME = $(shell uname)$/;"	m
+WHO	Makefile	/^WHO = $(shell whoami)$/;"	m
+Z3DIR	Makefile	/^	Z3DIR = \/home\/jose\/Documents\/GithubProjects\/z3__$/;"	m
+Z3DIR	Makefile	/^	Z3DIR = \/nfs\/student\/j\/jose.castellanosjoo\/Documents\/GitProjects\/z3__$/;"	m
+Z3DIR	Makefile	/^Z3DIR = \/Users\/joseabelcastellanosjoo\/Documents\/Applications\/z3__$/;"	m
+Z3EXT	Makefile	/^Z3EXT = dylib$/;"	m
+Z3EXT	Makefile	/^Z3EXT = so$/;"	m
+_GENERATE_	include/generateTest.h	/^#define _GENERATE_$/;"	d
+_OCTAGONSINTER_	include/OctagonsInterpolant.h	/^#define _OCTAGONSINTER_$/;"	d
+_OCTAGON_	include/Octagon.h	/^#define _OCTAGON_$/;"	d
+all	Makefile	/^all: tests\/octagon_interpolator$/;"	t
+auxiliarGetSymbols	src/OctagonsInterpolant.cpp	/^void OctagonsInterpolant::auxiliarGetSymbols(const z3::expr & e, int & counter,$/;"	f	class:OctagonsInterpolant	typeref:typename:void
+bounds	include/OctagonsInterpolant.h	/^  std::vector<int> bounds, variables_to_eliminate;$/;"	m	class:OctagonsInterpolant	typeref:typename:std::vector<int>
+buildInterpolant	src/OctagonsInterpolant.cpp	/^z3::expr OctagonsInterpolant::buildInterpolant(){$/;"	f	class:OctagonsInterpolant	typeref:typename:z3::expr
+clean	Makefile	/^clean:$/;"	t
+ctx	include/OctagonsInterpolant.h	/^  z3::context & ctx;$/;"	m	class:OctagonsInterpolant	typeref:typename:z3::context &
+first_sign	include/Octagon.h	/^  char first_sign, second_sign;$/;"	m	class:Octagon	typeref:typename:char
+first_var_position	include/Octagon.h	/^  int first_var_position, second_var_position;$/;"	m	class:Octagon	typeref:typename:int
+generate	src/generateTest.cpp	/^std::string generate(){$/;"	f	typeref:typename:std::string
+getFirstSign	src/Octagon.cpp	/^const char Octagon::getFirstSign() const {$/;"	f	class:Octagon	typeref:typename:const char
+getFirstVarPosition	src/Octagon.cpp	/^const int Octagon::getFirstVarPosition() const {$/;"	f	class:Octagon	typeref:typename:const int
+getSecondSign	src/Octagon.cpp	/^const char Octagon::getSecondSign() const {$/;"	f	class:Octagon	typeref:typename:const char
+getSecondVarPosition	src/Octagon.cpp	/^const int Octagon::getSecondVarPosition() const {$/;"	f	class:Octagon	typeref:typename:const int
+getSymbols	src/OctagonsInterpolant.cpp	/^void OctagonsInterpolant::getSymbols(const z3::expr & formula, int & counter,$/;"	f	class:OctagonsInterpolant	typeref:typename:void
+getUtvpiPosition	src/Octagon.cpp	/^const int Octagon::getUtvpiPosition() {$/;"	f	class:Octagon	typeref:typename:const int
+main	tests/octagon_interpolator.cpp	/^int main(int argc, char ** argv){$/;"	f	typeref:typename:int
+names	include/OctagonsInterpolant.h	/^  std::vector<std::string> names;$/;"	m	class:OctagonsInterpolant	typeref:typename:std::vector<std::string>
+negative_var_positions	include/OctagonsInterpolant.h	/^  std::vector<std::vector<int> > positive_var_positions, negative_var_positions;$/;"	m	class:OctagonsInterpolant	typeref:typename:std::vector<std::vector<int>>
+normalize	src/Octagon.cpp	/^int Octagon::normalize(int bound){$/;"	f	class:Octagon	typeref:typename:int
+num_args	src/Octagon.cpp	/^const int Octagon::num_args() const {$/;"	f	class:Octagon	typeref:typename:const int
+num_inequalities	include/OctagonsInterpolant.h	/^  int num_vars, num_inequalities, num_uncomm_vars;$/;"	m	class:OctagonsInterpolant	typeref:typename:int
+num_uncomm_vars	include/OctagonsInterpolant.h	/^  int num_vars, num_inequalities, num_uncomm_vars;$/;"	m	class:OctagonsInterpolant	typeref:typename:int
+num_vars	include/OctagonsInterpolant.h	/^  int num_vars, num_inequalities, num_uncomm_vars;$/;"	m	class:OctagonsInterpolant	typeref:typename:int
+operate2Args1Arg	src/OctagonsInterpolant.cpp	/^void OctagonsInterpolant::operate2Args1Arg(int var_to_elim, Octagon & x, Octagon & y){$/;"	f	class:OctagonsInterpolant	typeref:typename:void
+operateBoth1Arg	src/OctagonsInterpolant.cpp	/^void OctagonsInterpolant::operateBoth1Arg(int var_to_elim, Octagon & x, Octagon & y){  $/;"	f	class:OctagonsInterpolant	typeref:typename:void
+operateBoth2Args	src/OctagonsInterpolant.cpp	/^void OctagonsInterpolant::operateBoth2Args(int var_to_elim, Octagon & x, Octagon & y){$/;"	f	class:OctagonsInterpolant	typeref:typename:void
+operator <<	src/Octagon.cpp	/^std::ostream & operator << (std::ostream & os, const Octagon & x){$/;"	f	typeref:typename:std::ostream &
+positive_var_positions	include/OctagonsInterpolant.h	/^  std::vector<std::vector<int> > positive_var_positions, negative_var_positions;$/;"	m	class:OctagonsInterpolant	typeref:typename:std::vector<std::vector<int>>
+printMessage	src/OctagonsInterpolant.cpp	/^void OctagonsInterpolant::printMessage(Octagon & x, Octagon & y, Octagon & z){$/;"	f	class:OctagonsInterpolant	typeref:typename:void
+second_sign	include/Octagon.h	/^  char first_sign, second_sign;$/;"	m	class:Octagon	typeref:typename:char
+second_var_position	include/Octagon.h	/^  int first_var_position, second_var_position;$/;"	m	class:Octagon	typeref:typename:int
+setUtvpiPosition	src/Octagon.cpp	/^void Octagon::setUtvpiPosition(char first_sign, char second_sign, int first_var_position, int se/;"	f	class:Octagon	typeref:typename:void
+tests/octagon_interpolator	Makefile	/^tests\/octagon_interpolator: $(OBJS) $/;"	t
+updatePositions	src/OctagonsInterpolant.cpp	/^void OctagonsInterpolant::updatePositions(Octagon & f){$/;"	f	class:OctagonsInterpolant	typeref:typename:void
+utvpi_position	include/Octagon.h	/^  int utvpi_position;$/;"	m	class:Octagon	typeref:typename:int
+variables_to_eliminate	include/OctagonsInterpolant.h	/^  std::vector<int> bounds, variables_to_eliminate;$/;"	m	class:OctagonsInterpolant	typeref:typename:std::vector<int>
+~Octagon	src/Octagon.cpp	/^Octagon::~Octagon(){}$/;"	f	class:Octagon
+~OctagonsInterpolant	src/OctagonsInterpolant.cpp	/^OctagonsInterpolant::~OctagonsInterpolant(){}$/;"	f	class:OctagonsInterpolant

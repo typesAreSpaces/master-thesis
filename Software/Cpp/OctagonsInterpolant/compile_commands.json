@@ -1,0 +1,66 @@
+[
+ {
+  "directory": "/home/jose/Documents/GithubProjects/master-thesis/Software/Cpp/OctagonsInterpolant",
+  "arguments": [
+   "g++",
+   "-g",
+   "-c",
+   "-o",
+   "obj/generateTest.o",
+   "-I./src",
+   "-I./include",
+   "-std=c++11",
+   "-Wall",
+   "src/generateTest.cpp"
+  ],
+  "file": "src/generateTest.cpp"
+ },
+ {
+  "directory": "/home/jose/Documents/GithubProjects/master-thesis/Software/Cpp/OctagonsInterpolant",
+  "arguments": [
+   "g++",
+   "-g",
+   "-c",
+   "-o",
+   "obj/Octagon.o",
+   "-I./src",
+   "-I./include",
+   "-std=c++11",
+   "-Wall",
+   "src/Octagon.cpp"
+  ],
+  "file": "src/Octagon.cpp"
+ },
+ {
+  "directory": "/home/jose/Documents/GithubProjects/master-thesis/Software/Cpp/OctagonsInterpolant",
+  "arguments": [
+   "g++",
+   "-g",
+   "-c",
+   "-o",
+   "obj/OctagonsInterpolant.o",
+   "-I./src",
+   "-I./include",
+   "-std=c++11",
+   "-Wall",
+   "src/OctagonsInterpolant.cpp"
+  ],
+  "file": "src/OctagonsInterpolant.cpp"
+ },
+ {
+  "directory": "/home/jose/Documents/GithubProjects/master-thesis/Software/Cpp/OctagonsInterpolant",
+  "arguments": [
+   "g++",
+   "-g",
+   "-c",
+   "-o",
+   "./tests/octagon_interpolator.o",
+   "-I./src",
+   "-I./include",
+   "-std=c++11",
+   "-Wall",
+   "./tests/octagon_interpolator.cpp"
+  ],
+  "file": "./tests/octagon_interpolator.cpp"
+ }
+]

@@ -5,7 +5,6 @@ ifeq ($(UNAME), Linux)
 	Z3DIR = /nfs/student/j/jose.castellanosjoo/Documents/GitProjects/z3__
 	endif
 	ifeq ($(WHO), jose)
-# Z3DIR = /home/jose/Documents/Github\ Projects/z3__
 	Z3DIR = /home/jose/Documents/GithubProjects/z3__
 	endif
 Z3EXT = so
@@ -19,36 +18,43 @@ IDIR = ./include
 ODIR = ./obj
 SDIR = ./src
 CC = g++
-FLAGS = -I$(IDIR) -std=c++11
+FLAGS = -I$(SDIR) -I$(IDIR) -std=c++11 -Wall
 
 SRC = $(wildcard $(SDIR)/*.cpp)
-OBJS = $(patsubst $(SDIR)/%.cpp, $(ODIR)/%.o, $(SRC))
+OBJS = $(patsubst $(SDIR)/%.cpp, $(ODIR)/%.o, $(SRC)) $(Z3DIR)/build/libz3.$(Z3EXT) 
 DEPS = $(wildcard $(IDIR)/*.h)
 
-all: octagon_interpolator
+# ------------------------------------------------------------------------------------------
+#  Build
+all: tests/octagon_interpolator
 
 $(ODIR)/%.o: $(SDIR)/%.cpp $(DEPS)
-	$(CC) -g -c -o $@  $(FLAGS) $< -Wall
+	$(CC) -g -c -o $@  $(FLAGS) $< 
+# ------------------------------------------------------------------------------------------
+#  Tests
+.PHONY: tests/octagon_interpolator
+tests/octagon_interpolator: $(OBJS) 
+	$(CC) -g -c -o ./$@.o $(FLAGS) ./$@.cpp
+	$(CC) -g -o $@ $(OBJS) ./$@.o -lpthread -Wall
+	rm -rf tests/*.o $@
 
-octagon_interpolator: $(OBJS) $(Z3DIR)/build/libz3.$(Z3EXT)
-	$(CC) -g -o $@ $^ -lpthread -Wall
-
-run: ./octagon_interpolator
-	for files in ./tests/smtlib2/*; do \
-		echo $$files; \
-		./octagon_interpolator $$files x2; \
-	done
-
-old-format: ./octagon_interpolator
-	for files in ./tests/in_format/*; do \
-		./octagon_interpolator $$files; \
-	done
-
-valgrind-old: ./octagon_interpolator
-	for files in ./tests/in_format/*; do \
-		valgrind ./octagon_interpolator $$files; \
-	done
-
+# ------------------------------------------------------------------------------------------
 .PHONY: clean
 clean:
-	rm -rf $(ODIR)/* octagon_interpolator
+	rm -rf $(ODIR)/* 
+
+#run: ./octagon_interpolator
+	#for files in ./tests/smtlib2/*; do \
+		#echo $$files; \
+		#./octagon_interpolator $$files x2; \
+	#done
+
+#old-format: ./octagon_interpolator
+	#for files in ./tests/in_format/*; do \
+		#./octagon_interpolator $$files; \
+	#done
+
+#valgrind-old: ./octagon_interpolator
+	#for files in ./tests/in_format/*; do \
+		#valgrind ./octagon_interpolator $$files; \
+	#done

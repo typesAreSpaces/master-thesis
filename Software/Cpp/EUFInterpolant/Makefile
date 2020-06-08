@@ -24,13 +24,16 @@ SRC = $(wildcard $(SDIR)/*.cpp)
 OBJS = $(patsubst $(SDIR)/%.cpp, $(ODIR)/%.o, $(SRC)) $(Z3DIR)/build/libz3.$(Z3EXT) 
 DEPS = $(wildcard $(IDIR)/*.h)
 
+# ------------------------------------------------------------------------------------------
+#  Build
 #all: tests/cong_closure_expl_test
 all: tests/current_progress
 #all: valgrind_run
 
 $(ODIR)/%.o: $(SDIR)/%.cpp $(DEPS)
 	$(CC) -g -c -o $@ $(FLAGS) $<
-
+# ------------------------------------------------------------------------------------------
+# Tests
 .PHONY: tests/current_progress
 tests/current_progress: $(OBJS)
 	$(CC) -g -c -o ./$@.o $(FLAGS) ./$@.cpp
@@ -67,7 +70,7 @@ tests/qf_uf_test: $(OBJS)
 	$(CC) -g -o $@ $(OBJS) tests/TestCongruenceClosureExplain.o ./$@.o -lpthread
 	./$@.sh
 	rm -rf tests/*.o $@
-
+# ------------------------------------------------------------------------------------------
 notes:
 	grep -nr "// [A-Z][A-Za-z0-9]*: "
 
