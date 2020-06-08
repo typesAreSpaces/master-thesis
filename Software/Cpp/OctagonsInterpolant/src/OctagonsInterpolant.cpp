@@ -1,16 +1,17 @@
 #include "OctagonsInterpolant.h"
 
-OctagonsInterpolant::OctagonsInterpolant(z3::context & ctx, std::istream & in) : ctx(ctx), num_vars(-1) {
-
+OctagonsInterpolant::OctagonsInterpolant(z3::context & ctx, std::istream & in) : 
+  ctx(ctx), num_vars(-1) 
+{
   int first_var_position, second_var_position, bound;
   char first_sign, second_sign;
 
   // Setting INF for all entries in the bounds vector
   bounds.resize(MAX_NUM_INEQS);
-  
+
   positive_var_positions.resize(MAX_NUM_VARS),
     negative_var_positions.resize(MAX_NUM_VARS);
-  
+
   for(auto & it : bounds)
     it = INF;
 
@@ -45,7 +46,7 @@ OctagonsInterpolant::OctagonsInterpolant(z3::context & ctx, std::istream & in) :
 }
 
 OctagonsInterpolant::OctagonsInterpolant(const z3::expr & e,
-					 const std::vector<std::string> & vars_to_elim) : ctx(e.ctx()){
+    const std::vector<std::string> & vars_to_elim) : ctx(e.ctx()){
   unsigned num_ineqs = e.num_args();
   this->num_inequalities = static_cast<int>(num_ineqs);
   this->num_vars = 1;
@@ -63,10 +64,10 @@ OctagonsInterpolant::OctagonsInterpolant(const z3::expr & e,
   bounds.resize(2*(num_vars+1)*(num_vars+1) + 1);
   positive_var_positions.resize(num_vars),
     negative_var_positions.resize(num_vars);
-  
+
   for(auto & it : bounds)
     it = INF;
-  
+
   // ----------------------------------------------------------------
   // Getting the number of inequalities
   for(unsigned i = 0; i < num_ineqs; ++i){
@@ -75,53 +76,53 @@ OctagonsInterpolant::OctagonsInterpolant(const z3::expr & e,
     auto rhs = current_utvpi.arg(1);
     auto current_pred_name = current_utvpi.decl().name().str();
     bound = rhs.get_numeral_int();
-    
+
     switch(lhs.num_args()){
-    case 0:
-      // One variable
-      if(current_pred_name == "<=")
-	first_sign = '+';
-      else if (current_pred_name == ">="){
-	first_sign = '-';
-	bound = -bound;
-      }
-      else throw "Not an utvpi formula";
-      first_var_position = index_map[lhs.id()];
-      second_sign = '+';
-      second_var_position = -1;
-      break;
-    case 2:
-      // Two variables
-      switch(lhs.arg(0).num_args()){
       case 0:
-	first_var_position = index_map[lhs.arg(0).id()];
-	first_sign = '+';
-	break;
+        // One variable
+        if(current_pred_name == "<=")
+          first_sign = '+';
+        else if (current_pred_name == ">="){
+          first_sign = '-';
+          bound = -bound;
+        }
+        else throw "Not an utvpi formula";
+        first_var_position = index_map[lhs.id()];
+        second_sign = '+';
+        second_var_position = -1;
+        break;
       case 2:
-	first_var_position = index_map[lhs.arg(0).arg(1).id()];
-	first_sign = '-';
-	break;
+        // Two variables
+        switch(lhs.arg(0).num_args()){
+          case 0:
+            first_var_position = index_map[lhs.arg(0).id()];
+            first_sign = '+';
+            break;
+          case 2:
+            first_var_position = index_map[lhs.arg(0).arg(1).id()];
+            first_sign = '-';
+            break;
+          default:
+            throw "Not an utvpi formula";
+            break;
+        }
+        switch(lhs.arg(1).num_args()){
+          case 0:
+            second_var_position = index_map[lhs.arg(1).id()];
+            second_sign = '+';
+            break;
+          case 2:
+            second_var_position = index_map[lhs.arg(1).arg(1).id()];
+            second_sign = '-';
+            break;
+          default:
+            throw "Not an utvpi formula";
+            break;
+        }
+        break;
       default:
-	throw "Not an utvpi formula";
-	break;
-      }
-      switch(lhs.arg(1).num_args()){
-      case 0:
-	second_var_position = index_map[lhs.arg(1).id()];
-	second_sign = '+';
-	break;
-      case 2:
-	second_var_position = index_map[lhs.arg(1).arg(1).id()];
-	second_sign = '-';
-	break;
-      default:
-	throw "Not an utvpi formula";
-	break;
-      }
-      break;
-    default:
-      throw "Not an utvpi formula";
-      break;
+        throw "Not an utvpi formula";
+        break;
     }
     // ----------------------------------------------------------------
     Octagon temp(first_sign, second_sign, first_var_position, second_var_position);
@@ -144,7 +145,9 @@ OctagonsInterpolant::OctagonsInterpolant(const z3::expr & e,
   this->names = names;
 }
 
-OctagonsInterpolant::~OctagonsInterpolant(){}
+OctagonsInterpolant::~OctagonsInterpolant()
+{
+}
 
 void OctagonsInterpolant::updatePositions(Octagon & f){
   char first_sign = f.getFirstSign(), second_sign = f.getSecondSign();
@@ -155,30 +158,30 @@ void OctagonsInterpolant::updatePositions(Octagon & f){
   // the octagon is not of the form 0 <= a (i.e. with position different from 0)
   if(f_position > 0){
     switch(first_sign){
-    case '+':
-      positive_var_positions[first_var_position].push_back(f_position);
-      break;
-    case '-':
-      negative_var_positions[first_var_position].push_back(f_position);
-      break;
-    default:
-      throw "Error sign with the first sign";
-      break;
+      case '+':
+        positive_var_positions[first_var_position].push_back(f_position);
+        break;
+      case '-':
+        negative_var_positions[first_var_position].push_back(f_position);
+        break;
+      default:
+        throw "Error sign with the first sign";
+        break;
     }
     // Only perform the update operation on the second position if
     // the octagon is of the form +/- x +/- y <= b
     // (i.e. the second_var_position is not equal to -1)
     if(second_var_position != -1){
       switch(second_sign){
-      case '+':
-	positive_var_positions[second_var_position].push_back(f_position);
-	break;
-      case '-':
-	negative_var_positions[second_var_position].push_back(f_position);
-	break;
-      default:
-	throw "Error sign with the second sign";
-	break;
+        case '+':
+          positive_var_positions[second_var_position].push_back(f_position);
+          break;
+        case '-':
+          negative_var_positions[second_var_position].push_back(f_position);
+          break;
+        default:
+          throw "Error sign with the second sign";
+          break;
       }
     }
   }
@@ -200,14 +203,14 @@ void OctagonsInterpolant::operateBoth2Args(int var_to_elim, Octagon & x, Octagon
   char first_sign_x = x.getFirstSign(), second_sign_x = x.getSecondSign();
   char first_sign_y = y.getFirstSign(), second_sign_y = y.getSecondSign();
   char first_sign, second_sign;
-  
+
   int first_var_position_x = x.getFirstVarPosition(), second_var_position_x = x.getSecondVarPosition();
   int first_var_position_y = y.getFirstVarPosition(), second_var_position_y = y.getSecondVarPosition();
   int first_var_position, second_var_position;
-  
+
   int bound_x = bounds[x.getUtvpiPosition()], bound_y = bounds[y.getUtvpiPosition()];
   // TODO: Keep working here
-  
+
   // Case +/- x (...); -/+ x (...) 
   if(first_var_position_x == first_var_position_y && first_var_position_x == var_to_elim){
     // Case +/- x +/- y <= b1; -/+ x +/- y <= b2
@@ -232,16 +235,16 @@ void OctagonsInterpolant::operateBoth2Args(int var_to_elim, Octagon & x, Octagon
       // Reorder as necessary so
       // first_sign y1 second_sign y2 <= b (with y1 > y2)
       if(second_var_position_x > second_var_position_y){
-	first_sign = second_sign_x;
-	first_var_position = second_var_position_x;
-	second_sign = second_sign_y;
-	second_var_position = second_var_position_y;
+        first_sign = second_sign_x;
+        first_var_position = second_var_position_x;
+        second_sign = second_sign_y;
+        second_var_position = second_var_position_y;
       }
       else{
-	second_sign = second_sign_x;
-	second_var_position = second_var_position_x;
-	first_sign = second_sign_y;
-	first_var_position = second_var_position_y;
+        second_sign = second_sign_x;
+        second_var_position = second_var_position_x;
+        first_sign = second_sign_y;
+        first_var_position = second_var_position_y;
       }
       Octagon temp(first_sign, second_sign, first_var_position, second_var_position);
       int temp_position = temp.getUtvpiPosition();
@@ -252,7 +255,7 @@ void OctagonsInterpolant::operateBoth2Args(int var_to_elim, Octagon & x, Octagon
 #endif
     }
   }
-  
+
   // Case +/- x (...); (..) -/+ x (..)
   else if(first_var_position_x == second_var_position_y && first_var_position_x == var_to_elim){
     // Case +/- x +/- y <= b1; +/- y -/+ x <= b2
@@ -277,16 +280,16 @@ void OctagonsInterpolant::operateBoth2Args(int var_to_elim, Octagon & x, Octagon
       // Reorder as necessary so
       // first_sign y1 second_sign y2 <= b (with y1 > y2)
       if(second_var_position_x > first_var_position_y){
-	first_sign = second_sign_x;
-	first_var_position = second_var_position_x;
-	second_sign = first_sign_y;
-	second_var_position = first_var_position_y;
+        first_sign = second_sign_x;
+        first_var_position = second_var_position_x;
+        second_sign = first_sign_y;
+        second_var_position = first_var_position_y;
       }
       else{
-	second_sign = second_sign_x;
-	second_var_position = second_var_position_x;
-	first_sign = first_sign_y;
-	first_var_position = first_var_position_y;
+        second_sign = second_sign_x;
+        second_var_position = second_var_position_x;
+        first_sign = first_sign_y;
+        first_var_position = first_var_position_y;
       }
       Octagon temp(first_sign, second_sign, first_var_position, second_var_position);
       int temp_position = temp.getUtvpiPosition();
@@ -297,7 +300,7 @@ void OctagonsInterpolant::operateBoth2Args(int var_to_elim, Octagon & x, Octagon
 #endif
     }
   }
-  
+
   // Case (...) +/- x (...); -/+ x (...)
   else if(second_var_position_x == first_var_position_y && second_var_position_x == var_to_elim){
     // Case +/- y +/- x <= b1; -/+ x +/- y <= b2
@@ -322,16 +325,16 @@ void OctagonsInterpolant::operateBoth2Args(int var_to_elim, Octagon & x, Octagon
       // Reorder as necessary so
       // first_sign y1 second_sign y2 <= b (with y1 > y2)
       if(first_var_position_x > second_var_position_y){
-	first_sign = first_sign_x;
-	first_var_position = first_var_position_x;
-	second_sign = second_sign_y;
-	second_var_position = second_var_position_y;
+        first_sign = first_sign_x;
+        first_var_position = first_var_position_x;
+        second_sign = second_sign_y;
+        second_var_position = second_var_position_y;
       }
       else{
-	second_sign = first_sign_x;
-	second_var_position = first_var_position_x;
-	first_sign = second_sign_y;
-	first_var_position = second_var_position_y;
+        second_sign = first_sign_x;
+        second_var_position = first_var_position_x;
+        first_sign = second_sign_y;
+        first_var_position = second_var_position_y;
       }
       Octagon temp(first_sign, second_sign, first_var_position, second_var_position);
       int temp_position = temp.getUtvpiPosition();
@@ -342,7 +345,7 @@ void OctagonsInterpolant::operateBoth2Args(int var_to_elim, Octagon & x, Octagon
 #endif
     }
   }
-  
+
   // Case (...) +/- x (...); (...) -/+ x (...)
   else if(second_var_position_x == second_var_position_y && second_var_position_x == var_to_elim){
     // Case +/- y +/- x <= b1; +/- y -/+ x <= b2
@@ -367,16 +370,16 @@ void OctagonsInterpolant::operateBoth2Args(int var_to_elim, Octagon & x, Octagon
       // Reorder as necessary so
       // first_sign y1 second_sign y2 <= b (with y1 > y2)
       if(first_var_position_x > first_var_position_y){
-	first_sign = first_sign_x;
-	first_var_position = first_var_position_x;
-	second_sign = first_sign_y;
-	second_var_position = first_var_position_y;
+        first_sign = first_sign_x;
+        first_var_position = first_var_position_x;
+        second_sign = first_sign_y;
+        second_var_position = first_var_position_y;
       }
       else{
-	second_sign = first_sign_x;
-	second_var_position = first_var_position_x;
-	first_sign = first_sign_y;
-	first_var_position = first_var_position_y;
+        second_sign = first_sign_x;
+        second_var_position = first_var_position_x;
+        first_sign = first_sign_y;
+        first_var_position = first_var_position_y;
       }
       Octagon temp(first_sign, second_sign, first_var_position, second_var_position);
       int temp_position = temp.getUtvpiPosition();
@@ -392,7 +395,7 @@ void OctagonsInterpolant::operateBoth2Args(int var_to_elim, Octagon & x, Octagon
 void OctagonsInterpolant::operateBoth1Arg(int var_to_elim, Octagon & x, Octagon & y){  
   int first_var_position_x = x.getFirstVarPosition();
   int first_var_position_y = y.getFirstVarPosition();
-  
+
   int bound_x = bounds[x.getUtvpiPosition()], bound_y = bounds[y.getUtvpiPosition()];
 
   // Case +/- x (-1); -/+ x + (-1) 
@@ -402,12 +405,12 @@ void OctagonsInterpolant::operateBoth1Arg(int var_to_elim, Octagon & x, Octagon 
 
 void OctagonsInterpolant::operate2Args1Arg(int var_to_elim, Octagon & x, Octagon & y){
   char first_sign_x = x.getFirstSign(), second_sign_x = x.getSecondSign();
-  
+
   int first_var_position_x = x.getFirstVarPosition(), second_var_position_x = x.getSecondVarPosition();
   int first_var_position_y = y.getFirstVarPosition();
-  
+
   int bound_x = bounds[x.getUtvpiPosition()], bound_y = bounds[y.getUtvpiPosition()];
-  
+
   // Case +/- x (...); -/+ x + (-1) 
   if(first_var_position_x == first_var_position_y && first_var_position_x == var_to_elim){
     Octagon temp(second_sign_x, '+', second_var_position_x, -1);
@@ -432,7 +435,7 @@ void OctagonsInterpolant::operate2Args1Arg(int var_to_elim, Octagon & x, Octagon
 }
 
 void OctagonsInterpolant::getSymbols(const z3::expr & formula, int & counter,
-				     TablePosition & table, std::vector<std::string> & names){  
+    TablePosition & table, std::vector<std::string> & names){  
   auxiliarGetSymbols(formula, counter, table, names);
   for(auto it : table)
     --table[it.first];
@@ -440,7 +443,7 @@ void OctagonsInterpolant::getSymbols(const z3::expr & formula, int & counter,
 }
 
 void OctagonsInterpolant::auxiliarGetSymbols(const z3::expr & e, int & counter,
-					     TablePosition & table, std::vector<std::string> & names){
+    TablePosition & table, std::vector<std::string> & names){
   if (e.is_app()){
     unsigned num = e.num_args();
     if(num == 0 && e.decl().decl_kind() != Z3_OP_ANUM && table[e.id()] == 0){
@@ -474,29 +477,29 @@ z3::expr OctagonsInterpolant::buildInterpolant(){
 #endif
     for(auto x : positive_var_positions[var_to_eliminate])
       for(auto y : negative_var_positions[var_to_eliminate]){
-	if(bounds[x] != INF && bounds[y] != INF){
-	  Octagon first_octagon = Octagon(x);
-	  Octagon second_octagon = Octagon(y);
-	  if(first_octagon.num_args() == 1){
-	    if(second_octagon.num_args() == 1)
-	      operateBoth1Arg(var_to_eliminate, second_octagon, first_octagon);
-	    else
-	      operate2Args1Arg(var_to_eliminate, second_octagon, first_octagon);
-	  }
-	  else{
-	    if(second_octagon.num_args() == 1)
-	      operate2Args1Arg(var_to_eliminate, first_octagon, second_octagon);
-	    else
-	      operateBoth2Args(var_to_eliminate, first_octagon, second_octagon);
-	  }
-	}
+        if(bounds[x] != INF && bounds[y] != INF){
+          Octagon first_octagon = Octagon(x);
+          Octagon second_octagon = Octagon(y);
+          if(first_octagon.num_args() == 1){
+            if(second_octagon.num_args() == 1)
+              operateBoth1Arg(var_to_eliminate, second_octagon, first_octagon);
+            else
+              operate2Args1Arg(var_to_eliminate, second_octagon, first_octagon);
+          }
+          else{
+            if(second_octagon.num_args() == 1)
+              operate2Args1Arg(var_to_eliminate, first_octagon, second_octagon);
+            else
+              operateBoth2Args(var_to_eliminate, first_octagon, second_octagon);
+          }
+        }
       }
 
     // 'Delete' in positive_var_positions
     // the variable just eliminated
     for(auto index : positive_var_positions[var_to_eliminate])
       bounds[index] = INF;
-    
+
     // 'Delete' in negative_var_positions
     // the variable just eliminated
     for(auto index : negative_var_positions[var_to_eliminate])
@@ -506,9 +509,9 @@ z3::expr OctagonsInterpolant::buildInterpolant(){
     std::cout << "After Eliminating Variable x_" << var_to_eliminate << "\n";
     for(int i = 0; i < max_num_ineqs; ++i)
       if(bounds[i] != INF){
-	Octagon temp = Octagon(i);
-	std::cout << temp;
-	std::cout << " <= " << bounds[i] << "\n";
+        Octagon temp = Octagon(i);
+        std::cout << temp;
+        std::cout << " <= " << bounds[i] << "\n";
       }
     std::cout << std::endl;
 #endif
@@ -519,37 +522,37 @@ z3::expr OctagonsInterpolant::buildInterpolant(){
   for(int i = 0; i < max_num_ineqs; ++i){
     if(bounds[i] != INF){
       Octagon temp = Octagon(i);
-      
+
       char first_sign = temp.getFirstSign(), second_sign = temp.getSecondSign();
       int first_var_position = temp.getFirstVarPosition(), second_var_position = temp.getSecondVarPosition();
-      
+
       switch(temp.num_args()){
-      case 0:
-	return ctx.bool_val(false);
-      case 1:
-	{
-	  if(first_sign == '+')
-	    result_vect.push_back(ctx.int_const(names[first_var_position].c_str()) <= bounds[i]);
-	  else if(first_sign == '-')
-	    result_vect.push_back((-1 * ctx.int_const(names[first_var_position].c_str())) <= bounds[i]);
-	}
-	break;
-      case 2:
-	{
-	  if(first_sign == '+' && second_sign == '+')
-	    result_vect.push_back((ctx.int_const(names[first_var_position].c_str()) + ctx.int_const(names[second_var_position].c_str())) <= bounds[i]);
-	  else if(first_sign == '+' && second_sign == '-')
-	    result_vect.push_back((ctx.int_const(names[first_var_position].c_str()) + (-1 * ctx.int_const(names[second_var_position].c_str()))) <= bounds[i]);    
-	  else if(first_sign == '-' && second_sign == '+')
-	    result_vect.push_back(((-1 * ctx.int_const(names[first_var_position].c_str())) + ctx.int_const(names[second_var_position].c_str())) <= bounds[i]);
-	  else if(first_sign == '-' && second_sign == '-')
-	    result_vect.push_back(((-1 * ctx.int_const(names[first_var_position].c_str())) + (-1 * ctx.int_const(names[second_var_position].c_str()))) <= bounds[i]);
-	}
-	break;
+        case 0:
+          return ctx.bool_val(false);
+        case 1:
+          {
+            if(first_sign == '+')
+              result_vect.push_back(ctx.int_const(names[first_var_position].c_str()) <= bounds[i]);
+            else if(first_sign == '-')
+              result_vect.push_back((-1 * ctx.int_const(names[first_var_position].c_str())) <= bounds[i]);
+          }
+          break;
+        case 2:
+          {
+            if(first_sign == '+' && second_sign == '+')
+              result_vect.push_back((ctx.int_const(names[first_var_position].c_str()) + ctx.int_const(names[second_var_position].c_str())) <= bounds[i]);
+            else if(first_sign == '+' && second_sign == '-')
+              result_vect.push_back((ctx.int_const(names[first_var_position].c_str()) + (-1 * ctx.int_const(names[second_var_position].c_str()))) <= bounds[i]);    
+            else if(first_sign == '-' && second_sign == '+')
+              result_vect.push_back(((-1 * ctx.int_const(names[first_var_position].c_str())) + ctx.int_const(names[second_var_position].c_str())) <= bounds[i]);
+            else if(first_sign == '-' && second_sign == '-')
+              result_vect.push_back(((-1 * ctx.int_const(names[first_var_position].c_str())) + (-1 * ctx.int_const(names[second_var_position].c_str()))) <= bounds[i]);
+          }
+          break;
       }
     }
   }
-  
+
   return mk_and(result_vect);
   // ----------------------------------------------------------------------------------------------------------------
 }
