@@ -1,0 +1,34 @@
+[
+ {
+  "directory": "/home/jose/Documents/GithubProjects/master-thesis/Software/Cpp/OctagonsInterpolantZ3",
+  "arguments": [
+   "g++",
+   "-g",
+   "-c",
+   "-o",
+   "obj/Octagon.o",
+   "-I./src",
+   "-I./include",
+   "-std=c++11",
+   "-Wall",
+   "src/Octagon.cpp"
+  ],
+  "file": "src/Octagon.cpp"
+ },
+ {
+  "directory": "/home/jose/Documents/GithubProjects/master-thesis/Software/Cpp/OctagonsInterpolantZ3",
+  "arguments": [
+   "g++",
+   "-g",
+   "-c",
+   "-o",
+   "./tests/current_progress.o",
+   "-I./src",
+   "-I./include",
+   "-std=c++11",
+   "-Wall",
+   "./tests/current_progress.cpp"
+  ],
+  "file": "./tests/current_progress.cpp"
+ }
+]
