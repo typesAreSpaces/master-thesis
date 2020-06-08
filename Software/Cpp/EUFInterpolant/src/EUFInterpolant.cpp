@@ -98,7 +98,6 @@ EUFInterpolant::EUFInterpolant(z3::expr_vector const & assertions) :
     std::cout << w << std::endl;
 
   std::cout << "END temporal testing" << std::endl;
-
 #endif
 
   conditionalElimination();
@@ -121,7 +120,14 @@ z3::expr_vector EUFInterpolant::buildHCBody(z3::expr const & t1, z3::expr const 
 }
 
 void EUFInterpolant::exposeUncommons(){
-  for(auto iterator : fsym_positions){
+  for(auto const & iterator : fsym_positions){
+#if DEBUG_EXPOSE_UNCOMMS
+    std::cout << "Debugging exposeUncommons" << std::endl;
+    std::cout << iterator.first << std::endl;
+    for(auto const & entry : iterator.second)
+      std::cout << subterms[entry] << std::endl;
+#endif
+
     unsigned current_num = iterator.second.size();
     if(current_num >= 2)
       for(unsigned index_1 = 0; index_1 < current_num - 1; index_1++)
@@ -129,12 +135,15 @@ void EUFInterpolant::exposeUncommons(){
           z3::expr const 
             & t1 = subterms[iterator.second[index_1]], 
             & t2 = subterms[iterator.second[index_2]];
-          // Only expose terms if at least one term is uncommon
-          if(!t1.is_common() || !t2.is_common()){
-            z3::expr_vector hc_body = buildHCBody(t1, t2);
-            z3::expr        hc_head = z3_repr(t1) == z3_repr(t2);
-            horn_clauses.add(new HornClause(ctx, hc_body, hc_head, ufe));
-          }
+
+          // // Only expose terms if at least one term is uncommon
+          // //if(!t1.is_common() || !t2.is_common()){
+          // //}
+          // If the latter is true, some nontrivial
+          // Horn clauses are not produced.
+          z3::expr_vector hc_body = buildHCBody(t1, t2);
+          z3::expr        hc_head = z3_repr(t1) == z3_repr(t2);
+          horn_clauses.add(new HornClause(ctx, hc_body, hc_head, ufe));
         }
   }
   return;

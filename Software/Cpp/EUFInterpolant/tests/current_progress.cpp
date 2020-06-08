@@ -41,9 +41,10 @@ void paperExample(){
   z3::expr s2 = ctx.constant("s2", my_sort);
   z3::expr y1 = ctx.constant("y1", my_sort);
   z3::expr y2 = ctx.constant("y2", my_sort);
-  z3::expr v = ctx.constant("v", my_sort);
-  z3::expr t = ctx.constant("t", my_sort);
+  z3::expr v =  ctx.constant("v",  my_sort);
+  z3::expr t =  ctx.constant("t",  my_sort);
   z3::func_decl f = ctx.function("f", my_sort, my_sort, my_sort);
+  //std::set<std::string> uncomms({"y1"});
   std::set<std::string> uncomms({"v"});
 
   z3::expr_vector input(ctx); 

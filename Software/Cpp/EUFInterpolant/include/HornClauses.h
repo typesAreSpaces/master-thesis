@@ -23,11 +23,12 @@ class HornClauses {
   UnOrdMapHornClauses horn_clauses;
   unsigned            curr_num_horn_clauses;
   unsigned            max_lit_id;
+  z3::expr_vector     hash_consed_hcs;
 
   SimplificationTable simplification_table;
   
  public:
-  HornClauses(UnionFindExplain &);
+  HornClauses(z3::context &, UnionFindExplain &);
   ~HornClauses();
 
   void filterCommons();

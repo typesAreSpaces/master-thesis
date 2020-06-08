@@ -1,7 +1,9 @@
 #include "HornClauses.h"
+#include <z3++.h>
 
-HornClauses::HornClauses(UnionFindExplain & ufe) : 
+HornClauses::HornClauses(z3::context & ctx, UnionFindExplain & ufe) : 
   ufe(ufe), curr_num_horn_clauses(0), max_lit_id(0),
+  hash_consed_hcs(ctx),
   simplification_table()
 {
 }
@@ -77,11 +79,20 @@ void HornClauses::swapHornClauses(unsigned i, unsigned j){
 }
 
 void HornClauses::add(HornClause * hc){
+#if DEBUG_ADDINGHC
+  std::cout << "Debugging HornClauses::add BEGIN" << std::endl;
+  std::cout << *hc << std::endl;
+  std::cout << "Debugging HornClauses::add END" << std::endl;
+#endif
   z3::expr z3_expr_hc = hc->ToZ3Expr();
-  unsigned id = z3_expr_hc.id();
+  unsigned id = z3_expr_hc.hash();
   auto it = horn_clauses.find(id);
 
+  // FIX: This hash-cons structure
   if(it != horn_clauses.end()){
+#if DEBUG_ADDINGHC
+    std::cout << "Not added" << std::endl;
+#endif
     delete hc;
     return;
   }
@@ -90,14 +101,23 @@ void HornClauses::add(HornClause * hc){
     case Z3_OP_EQ:
       if(hc->checkTriviality(ufe)){
         delete hc;
+#if DEBUG_ADDINGHC
+        std::cout << "Not added" << std::endl;
+#endif
         return;
       }
+#if DEBUG_ADDINGHC
+      std::cout << "Added" << std::endl;
+#endif
       horn_clauses.insert({id, hc});
       if(max_lit_id < hc->getLocalMaxLitId())
         max_lit_id = hc->getLocalMaxLitId();
       curr_num_horn_clauses++;
       return;
     case Z3_OP_FALSE:
+#if DEBUG_ADDINGHC
+      std::cout << "Added" << std::endl;
+#endif
       horn_clauses.insert({id, hc});
       if(max_lit_id < hc->getLocalMaxLitId())
         max_lit_id = hc->getLocalMaxLitId();
