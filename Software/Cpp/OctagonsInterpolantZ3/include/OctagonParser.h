@@ -21,19 +21,21 @@ class OctagonParser {
   z3::context &   ctx;
   z3::expr_vector z3_variables;
 
-  UtvpiPosition      id_generator;
-  IdTable            id_table;
-  Bounds             bounds;
+  UtvpiPosition id_generator;
+  IdTable       id_table;
+  Bounds        bounds;
 
-  void checkExprId(z3::expr const &);
+  // TODO: Add opposite sign collector
+  // So we can make reductions
+
+  void          checkExprId(z3::expr const &);
   UtvpiPosition setBoundWith1Var (bool, z3::expr const &);
   UtvpiPosition setBoundWith2Vars(bool, z3::expr const &);
   
   public:
-    OctagonParser(z3::expr_vector const &);
+  OctagonParser(z3::expr_vector const &);
 
-    friend std::ostream & operator << (std::ostream &, OctagonParser const &);
-
+  friend std::ostream & operator << (std::ostream &, OctagonParser const &);
 };
 
 #endif
