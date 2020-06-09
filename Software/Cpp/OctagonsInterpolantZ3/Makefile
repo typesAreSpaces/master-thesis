@@ -32,6 +32,20 @@ $(ODIR)/%.o: $(SDIR)/%.cpp $(DEPS)
 	$(CC) -g -c -o $@  $(FLAGS) $< 
 # ------------------------------------------------------------------------------------------
 #  Tests
+.PHONY: tests/test_octagon_constructor
+tests/test_octagon_constructor: $(OBJS) 
+	$(CC) -g -c -o ./$@.o $(FLAGS) ./$@.cpp
+	$(CC) -g -o $@ $(OBJS) ./$@.o -lpthread -Wall
+	./$@
+	rm -rf tests/*.o $@
+
+.PHONY: tests/test_bound_constructor
+tests/test_bound_constructor: $(OBJS) 
+	$(CC) -g -c -o ./$@.o $(FLAGS) ./$@.cpp
+	$(CC) -g -o $@ $(OBJS) ./$@.o -lpthread -Wall
+	./$@
+	rm -rf tests/*.o $@
+
 .PHONY: tests/current_progress
 tests/current_progress: $(OBJS) 
 	$(CC) -g -c -o ./$@.o $(FLAGS) ./$@.cpp
