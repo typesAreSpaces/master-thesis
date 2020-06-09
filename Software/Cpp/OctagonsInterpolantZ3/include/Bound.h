@@ -10,9 +10,11 @@ struct Bound {
   bool is_positive;
   BoundValue bound_value;
 
+  Bound();
   Bound(bool);
   Bound(BoundValue);
 
+  void update(BoundValue);
   void normalize(BoundValue);
 
   friend Bound operator + (Bound const &, Bound const &);

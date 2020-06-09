@@ -1,5 +1,12 @@
 #include "Bound.h"
 
+Bound::Bound() : 
+  is_infinite(true),
+  is_positive(true),
+  bound_value(0)
+{
+}
+
 Bound::Bound(bool is_positive) : 
   is_infinite(true), 
   is_positive(is_positive), 
@@ -12,6 +19,10 @@ Bound::Bound(BoundValue bound_value) :
   is_positive(bound_value < 0 ? false : true),
   bound_value(bound_value)
 {
+}
+
+void Bound::update(BoundValue new_bound_value){
+  bound_value = new_bound_value;
 }
 
 void Bound::normalize(BoundValue scale_factor){

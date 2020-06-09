@@ -11,22 +11,26 @@ badd +40 include/Octagon.h
 badd +51 src/Octagon.cpp
 badd +2 tests/current_progress.cpp
 badd +22 tests/test_octagon_constructor.cpp
-badd +40 Makefile
+badd +29 Makefile
 badd +1 tests/test_octagon_constructor
-badd +24 include/Bound.h
-badd +89 src/Bound.cpp
-badd +15 tests/test_bound_constructor.cpp
+badd +7 include/Bound.h
+badd +25 src/Bound.cpp
+badd +19 tests/test_bound_constructor.cpp
+badd +12 include/OctagonParser.h
+badd +5 src/OctagonParser.cpp
+badd +17 tests/test_octagon_parser.cpp
 argglobal
 %argdel
-edit include/Bound.h
+edit include/OctagonParser.h
 set splitbelow splitright
 wincmd _ | wincmd |
 vsplit
 wincmd _ | wincmd |
 vsplit
+2wincmd h
 wincmd _ | wincmd |
-vsplit
-3wincmd h
+split
+1wincmd k
 wincmd w
 wincmd w
 wincmd w
@@ -37,10 +41,12 @@ set winminheight=0
 set winheight=1
 set winminwidth=0
 set winwidth=1
-exe 'vert 1resize ' . ((&columns * 78 + 157) / 315)
-exe 'vert 2resize ' . ((&columns * 78 + 157) / 315)
-exe 'vert 3resize ' . ((&columns * 78 + 157) / 315)
-exe 'vert 4resize ' . ((&columns * 78 + 157) / 315)
+exe '1resize ' . ((&lines * 12 + 13) / 27)
+exe 'vert 1resize ' . ((&columns * 104 + 157) / 315)
+exe '2resize ' . ((&lines * 12 + 13) / 27)
+exe 'vert 2resize ' . ((&columns * 104 + 157) / 315)
+exe 'vert 3resize ' . ((&columns * 104 + 157) / 315)
+exe 'vert 4resize ' . ((&columns * 105 + 157) / 315)
 argglobal
 setlocal fdm=manual
 setlocal fde=0
@@ -51,15 +57,33 @@ setlocal fml=1
 setlocal fdn=20
 setlocal fen
 silent! normal! zE
-let s:l = 4 - ((3 * winheight(0) + 29) / 58)
+let s:l = 19 - ((7 * winheight(0) + 6) / 12)
 if s:l < 1 | let s:l = 1 | endif
 exe s:l
 normal! zt
-4
+19
+normal! 042|
+wincmd w
+argglobal
+if bufexists("include/Octagon.h") | buffer include/Octagon.h | else | edit include/Octagon.h | endif
+setlocal fdm=manual
+setlocal fde=0
+setlocal fmr={{{,}}}
+setlocal fdi=#
+setlocal fdl=0
+setlocal fml=1
+setlocal fdn=20
+setlocal fen
+silent! normal! zE
+let s:l = 22 - ((5 * winheight(0) + 6) / 12)
+if s:l < 1 | let s:l = 1 | endif
+exe s:l
+normal! zt
+22
 normal! 0
 wincmd w
 argglobal
-if bufexists("tests/test_bound_constructor.cpp") | buffer tests/test_bound_constructor.cpp | else | edit tests/test_bound_constructor.cpp | endif
+if bufexists("src/OctagonParser.cpp") | buffer src/OctagonParser.cpp | else | edit src/OctagonParser.cpp | endif
 setlocal fdm=manual
 setlocal fde=0
 setlocal fmr={{{,}}}
@@ -69,15 +93,15 @@ setlocal fml=1
 setlocal fdn=20
 setlocal fen
 silent! normal! zE
-let s:l = 15 - ((14 * winheight(0) + 29) / 58)
+let s:l = 7 - ((6 * winheight(0) + 12) / 25)
 if s:l < 1 | let s:l = 1 | endif
 exe s:l
 normal! zt
-15
+7
 normal! 023|
 wincmd w
 argglobal
-if bufexists("src/Bound.cpp") | buffer src/Bound.cpp | else | edit src/Bound.cpp | endif
+if bufexists("tests/test_octagon_parser.cpp") | buffer tests/test_octagon_parser.cpp | else | edit tests/test_octagon_parser.cpp | endif
 setlocal fdm=manual
 setlocal fde=0
 setlocal fmr={{{,}}}
@@ -87,36 +111,20 @@ setlocal fml=1
 setlocal fdn=20
 setlocal fen
 silent! normal! zE
-let s:l = 98 - ((47 * winheight(0) + 29) / 58)
+let s:l = 17 - ((14 * winheight(0) + 12) / 25)
 if s:l < 1 | let s:l = 1 | endif
 exe s:l
 normal! zt
-98
-normal! 04|
-wincmd w
-argglobal
-if bufexists("Makefile") | buffer Makefile | else | edit Makefile | endif
-setlocal fdm=manual
-setlocal fde=0
-setlocal fmr={{{,}}}
-setlocal fdi=#
-setlocal fdl=0
-setlocal fml=1
-setlocal fdn=20
-setlocal fen
-silent! normal! zE
-let s:l = 45 - ((41 * winheight(0) + 29) / 58)
-if s:l < 1 | let s:l = 1 | endif
-exe s:l
-normal! zt
-45
-normal! 06|
+17
+normal! 031|
 wincmd w
 3wincmd w
-exe 'vert 1resize ' . ((&columns * 78 + 157) / 315)
-exe 'vert 2resize ' . ((&columns * 78 + 157) / 315)
-exe 'vert 3resize ' . ((&columns * 78 + 157) / 315)
-exe 'vert 4resize ' . ((&columns * 78 + 157) / 315)
+exe '1resize ' . ((&lines * 12 + 13) / 27)
+exe 'vert 1resize ' . ((&columns * 104 + 157) / 315)
+exe '2resize ' . ((&lines * 12 + 13) / 27)
+exe 'vert 2resize ' . ((&columns * 104 + 157) / 315)
+exe 'vert 3resize ' . ((&columns * 104 + 157) / 315)
+exe 'vert 4resize ' . ((&columns * 105 + 157) / 315)
 tabnext 1
 if exists('s:wipebuf') && getbufvar(s:wipebuf, '&buftype') isnot# 'terminal'
   silent exe 'bwipe ' . s:wipebuf
