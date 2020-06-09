@@ -112,8 +112,7 @@ bool operator >=(Bound const & b1, Bound const & b2){
 }
 
 std::ostream & operator << (std::ostream & os, Bound const & bound){
-  if(bound.is_infinite){
-    return os << "<= " << (bound.is_positive ? "+" : "-") << "inf";
-  }
-  return (os << "<= " << bound.bound_value);
+  if(bound.is_infinite)
+    return os << (bound.is_positive ? "+" : "-") << "inf";
+  return os << bound.bound_value;
 }
