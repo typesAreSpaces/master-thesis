@@ -28,9 +28,12 @@ bool operator !=(Var const & a, VarValue v){
 }
 
 Octagon::Octagon(Coeff coeff1, VarValue value1, Coeff coeff2, VarValue value2) :
-  coeff1(coeff1), coeff2(coeff2),
-  var1(value1), var2(value2)
+  coeff1(value1 < value2 ? coeff2 : coeff1), 
+  coeff2(value1 < value2 ? coeff1 : coeff2),
+  var1  (value1 < value2 ? value2 : value1), 
+  var2  (value1 < value2 ? value1 : value2)
 {
+  return;
   Octagon_return;
 }
 
@@ -126,7 +129,6 @@ UtvpiPosition Octagon::getUtviPosition() const {
 }
 
 std::ostream & operator << (std::ostream & os, Octagon const & oct){
-  os << "Octagon: ";
   switch(oct.coeff1){
     case NEG:
       os << "- x_" << oct.var1.value;
@@ -158,6 +160,5 @@ std::ostream & operator << (std::ostream & os, Octagon const & oct){
       }
       break;
   }
-  os << " Position: " << oct.getUtviPosition();
   return os;
 }

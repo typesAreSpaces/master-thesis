@@ -28,8 +28,8 @@ struct Var {
   inline friend bool operator < (Var const &, Var const &);
   inline friend bool operator > (Var const &, Var const &);
   inline friend bool operator ==(Var const &, Var const &);
-  inline friend bool operator ==(Var const &, VarValue);
   inline friend bool operator !=(Var const &, Var const &);
+  inline friend bool operator ==(Var const &, VarValue);
   inline friend bool operator !=(Var const &, VarValue);
 };
 

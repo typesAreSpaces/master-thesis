@@ -17,7 +17,12 @@ int main(){
   assertions.push_back(x3  <= -51);
   assertions.push_back(x2 + (-x1)  <= 501);
 
-  OctagonParser _p(assertions);
+  try {
+    OctagonParser _p(assertions);
+  }
+  catch(char const * e){
+    std::cout << e << std::endl;
+  }
 
   return 0;
 }
