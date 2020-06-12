@@ -8,24 +8,18 @@
 
 typedef std::set<VarValue> Positions;
 
-class VarPositions {
-  std::vector<std::pair<Positions, Positions> > index_var_positions;
+class VarPositions : public std::vector<std::pair<Positions, Positions> > {
 
   public:
   VarPositions();
 
   inline void insertPositivePosition(VarValue index, UtvpiPosition value){
-    index_var_positions[index].first.insert(value);
+    (*this)[index].first.insert(value);
   }
   inline void insertNegativePosition(VarValue index, UtvpiPosition value){
-    index_var_positions[index].second.insert(value);
+    (*this)[index].second.insert(value);
   }
-  inline void resize(unsigned new_size){
-    index_var_positions.resize(new_size);
-  }
-  inline unsigned size() const {
-    return index_var_positions.size();
-  }
+
   friend std::ostream & operator << (std::ostream &, VarPositions const &);
 };
 

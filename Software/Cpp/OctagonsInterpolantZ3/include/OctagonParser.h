@@ -19,6 +19,8 @@ typedef std::unordered_map<unsigned, VarValue> IdTable;
 
 class OctagonParser {
 
+  protected:
+
   z3::context &   ctx;
   z3::expr_vector z3_variables;
 

@@ -4,6 +4,11 @@ OctagonParser::OctagonParser(z3::expr_vector const & assertions) :
   ctx(assertions.ctx()), z3_variables(ctx),
   id_generator(1), id_table(), bounds(), positions() 
 {
+  // ----------------------------------------
+  // This is just a dummy entry
+  z3_variables.push_back(ctx.bool_val(true)); 
+  // ----------------------------------------
+
   for(auto const & assertion : assertions){
     auto const & inequality = assertion.arg(0);
     auto const & bound = assertion.arg(1).get_numeral_int();
@@ -49,7 +54,8 @@ OctagonParser::OctagonParser(z3::expr_vector const & assertions) :
 #endif
 }
 
-void OctagonParser::setBoundWith1Var(bool is_positive, z3::expr const & var, BoundValue bound){
+void OctagonParser::setBoundWith1Var(bool is_positive, z3::expr const & var, 
+    BoundValue bound){
   checkExprId(var);
   Octagon tmp(is_positive ? POS : NEG, id_table[var.hash()], ZERO, 0);
   UtvpiPosition position = tmp.getUtviPosition();
@@ -58,7 +64,8 @@ void OctagonParser::setBoundWith1Var(bool is_positive, z3::expr const & var, Bou
   return;
 }
 
-void OctagonParser::setBoundWith2Vars(bool is_addition, z3::expr const & inequality, BoundValue bound){
+void OctagonParser::setBoundWith2Vars(bool is_addition, z3::expr const & inequality, 
+    BoundValue bound){
   auto const & var_1 = inequality.arg(0);
   auto const & var_2 = inequality.arg(1);
 
@@ -140,6 +147,7 @@ void OctagonParser::checkExprId(z3::expr const & e){
   unsigned e_hash = e.hash();
   if(!inSet(e_hash, id_table)){
     id_table.insert({e_hash, id_generator});
+    z3_variables.push_back(e);
     id_generator++;
   }
 }

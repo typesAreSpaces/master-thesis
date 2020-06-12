@@ -162,3 +162,30 @@ std::ostream & operator << (std::ostream & os, Octagon const & oct){
   }
   return os;
 }
+
+z3::expr Octagon::toZ3Expr(z3::context & ctx, z3::expr_vector const & z3_variables, 
+    IdTable const & id_table){ 
+  switch(coeff1){
+    case NEG:
+      switch(coeff2){
+        case NEG:
+          return -z3_variables[var1.value]-z3_variables[var2.value];
+        case ZERO:
+          return -z3_variables[var1.value];
+        case POS:
+          return -z3_variables[var1.value]+z3_variables[var2.value];
+      }
+    case ZERO:
+      return ctx.int_val(0);
+    case POS:
+      switch(coeff2){
+        case NEG:
+          return z3_variables[var1.value]-z3_variables[var2.value];
+        case ZERO:
+          return z3_variables[var1.value];
+        case POS:
+          return z3_variables[var1.value]+z3_variables[var2.value];
+      }
+  }
+  throw "Error with Var data structure.";
+}

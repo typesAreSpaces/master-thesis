@@ -12,10 +12,13 @@
 #include <limits>
 #include <assert.h>
 #include <cmath>
+#include <unordered_map>
+#include <z3++.h>
 
 enum Coeff { NEG, ZERO, POS };
 typedef unsigned UtvpiPosition;
 typedef unsigned VarValue; 
+typedef std::unordered_map<unsigned, VarValue> IdTable;
 
 struct Var {
   static UtvpiPosition max_utvpi_value;
@@ -41,6 +44,7 @@ struct Octagon {
   Octagon(UtvpiPosition);
 
   UtvpiPosition getUtviPosition() const;
+  z3::expr toZ3Expr(z3::context &, z3::expr_vector const &, IdTable const &);
   
   friend std::ostream & operator << (std::ostream &, Octagon const &);
 };
