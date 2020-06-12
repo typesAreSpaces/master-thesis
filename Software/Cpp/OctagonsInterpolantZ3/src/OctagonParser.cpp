@@ -2,7 +2,7 @@
 
 OctagonParser::OctagonParser(z3::expr_vector const & assertions) : 
   ctx(assertions.ctx()), z3_variables(ctx),
-  id_generator(1), id_table(), bounds() // FIX: Wrong arity
+  id_generator(1), id_table(), bounds(), positions() 
 {
   for(auto const & assertion : assertions){
     auto const & inequality = assertion.arg(0);
@@ -11,30 +11,22 @@ OctagonParser::OctagonParser(z3::expr_vector const & assertions) :
 
     switch(num_operands){
       case 0:
-        {
           // Non-negative variable
-          UtvpiPosition tmp_position = setBoundWith1Var(true, inequality);
-          bounds.insert(tmp_position, Bound(bound));
+          setBoundWith1Var(true, inequality, bound);
           break;
-        }
       case 1:
-        {
           // Negative variable
-          UtvpiPosition tmp_position = setBoundWith1Var(false, inequality.arg(0));
-          bounds.insert(tmp_position, Bound(bound));
+          setBoundWith1Var(false, inequality.arg(0), bound);
           break;
-        }
       case 2:
-        {
+       {
           auto const & op_name = inequality.decl().name().str();
           if(op_name == "+"){
-            UtvpiPosition tmp_position = setBoundWith2Vars(true, inequality);
-            bounds.insert(tmp_position, Bound(bound));
+            setBoundWith2Vars(true, inequality, bound);
             break;
           }
           else if(op_name == "-"){
-            UtvpiPosition tmp_position = setBoundWith2Vars(false, inequality);
-            bounds.insert(tmp_position, Bound(bound));
+            setBoundWith2Vars(false, inequality, bound);
             break;
           }
           else
@@ -44,23 +36,29 @@ OctagonParser::OctagonParser(z3::expr_vector const & assertions) :
         throw "Error OctagonParser. The operation is not allowed.";
     }
   }
+  // The current id_generator is the
+  // number of variables in the assertions
+  bounds.insert(2*(id_generator-1)*(id_generator-1), Bound());
 
 #if DEBUG_OCT_PAR_CONST
   for(auto const & x : id_table)
     std::cout << x.first << " |-> " << x.second << std::endl;
+  std::cout << std::endl;
   std::cout << bounds << std::endl;
+  std::cout << positions << std::endl;
 #endif
 }
 
-UtvpiPosition OctagonParser::setBoundWith1Var(bool is_positive, z3::expr const & var){
+void OctagonParser::setBoundWith1Var(bool is_positive, z3::expr const & var, BoundValue bound){
   checkExprId(var);
-  Octagon tmp(
-      is_positive ? POS : NEG, id_table[var.hash()],
-      ZERO, 0);
-  return tmp.getUtviPosition();
+  Octagon tmp(is_positive ? POS : NEG, id_table[var.hash()], ZERO, 0);
+  UtvpiPosition position = tmp.getUtviPosition();
+  bounds.insert(position, Bound(bound));
+  updatePositions(is_positive, var, position);
+  return;
 }
 
-UtvpiPosition OctagonParser::setBoundWith2Vars(bool is_addition, z3::expr const & inequality){
+void OctagonParser::setBoundWith2Vars(bool is_addition, z3::expr const & inequality, BoundValue bound){
   auto const & var_1 = inequality.arg(0);
   auto const & var_2 = inequality.arg(1);
 
@@ -76,7 +74,11 @@ UtvpiPosition OctagonParser::setBoundWith2Vars(bool is_addition, z3::expr const 
             Octagon tmp(
                 POS                    , id_table[var_1.hash()], 
                 is_addition ? POS : NEG, id_table[var_2.hash()]);
-            return tmp.getUtviPosition();
+            UtvpiPosition position = tmp.getUtviPosition();
+            bounds.insert(position, Bound(bound));
+            updatePositions(true,        var_1, position);
+            updatePositions(is_addition, var_2, position);
+            return;
           }
         case 1:
           {
@@ -86,7 +88,11 @@ UtvpiPosition OctagonParser::setBoundWith2Vars(bool is_addition, z3::expr const 
             Octagon tmp(
                 POS                    , id_table[var_1.hash()], 
                 is_addition ? NEG : POS, id_table[var_2.arg(0).hash()]);
-            return tmp.getUtviPosition();
+            UtvpiPosition position = tmp.getUtviPosition();
+            bounds.insert(position, Bound(bound));
+            updatePositions(true,         var_1, position);
+            updatePositions(!is_addition, var_2.arg(0), position);
+            return;
           }
         default:
           throw "Not a Utvpi second-variable";
@@ -102,7 +108,11 @@ UtvpiPosition OctagonParser::setBoundWith2Vars(bool is_addition, z3::expr const 
             Octagon tmp(
                 NEG                    , id_table[var_1.arg(0).hash()], 
                 is_addition ? POS : NEG, id_table[var_2.hash()]);
-            return tmp.getUtviPosition();
+            UtvpiPosition position = tmp.getUtviPosition();
+            bounds.insert(position, Bound(bound));
+            updatePositions(false,       var_1.arg(0), position);
+            updatePositions(is_addition, var_2, position);
+            return;
           }
         case 1:
           {
@@ -112,7 +122,11 @@ UtvpiPosition OctagonParser::setBoundWith2Vars(bool is_addition, z3::expr const 
             Octagon tmp(
                 NEG                    , id_table[var_1.arg(0).hash()], 
                 is_addition ? NEG : POS, id_table[var_2.arg(0).hash()]);
-            return tmp.getUtviPosition();
+            UtvpiPosition position = tmp.getUtviPosition();
+            bounds.insert(position, Bound(bound));
+            updatePositions(false,        var_1.arg(0), position);
+            updatePositions(!is_addition, var_2.arg(0), position);
+            return;
           }
         default:
           throw "Not a Utvpi second-variable";
@@ -128,4 +142,21 @@ void OctagonParser::checkExprId(z3::expr const & e){
     id_table.insert({e_hash, id_generator});
     id_generator++;
   }
+}
+
+void OctagonParser::updatePositions(bool is_positive, z3::expr const & e, UtvpiPosition position){
+  VarValue index = id_table[e.hash()];
+
+  if(positions.size() <= index)
+    positions.resize(index+1);
+
+  if(!e.is_common()){
+    if(is_positive){
+      positions.insertPositivePosition(index, position);
+      return;
+    }
+    positions.insertNegativePosition(index, position);
+    return;
+  }
+  return;
 }

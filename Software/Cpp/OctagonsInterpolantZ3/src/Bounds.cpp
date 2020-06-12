@@ -11,10 +11,14 @@ void Bounds::insert(unsigned index, Bound const & value){
 }
 
 std::ostream & operator << (std::ostream & os, Bounds const & bounds){
-  unsigned index = 0;
+  UtvpiPosition index = 0;
   for(auto const & entry : bounds){
-    Octagon tmp(index++);
-    std::cout << tmp << " <= " << entry << std::endl;
+    if(!entry.is_infinite){
+      Octagon tmp(index);
+      os << tmp << " <= " << entry 
+        << " (Position) " << index << std::endl;
+    }
+    index++;
   }
   return os;
 }

@@ -1,6 +1,6 @@
 #ifndef _OCT_PARSER_
 #define _OCT_PARSER_
-#define DEBUG_OCT_PAR_CONST 1
+#define DEBUG_OCT_PAR_CONST 0
 
 #include <z3++.h>
 #include <iostream>
@@ -10,6 +10,7 @@
 #include "Bound.h"
 #include "Bounds.h"
 #include "Octagon.h"
+#include "VarPositions.h"
 
 #define inSet(value, set) (set.find(value) != set.end())
 
@@ -24,13 +25,12 @@ class OctagonParser {
   UtvpiPosition id_generator;
   IdTable       id_table;
   Bounds        bounds;
+  VarPositions  positions;
 
-  // TODO: Add opposite sign collector
-  // So we can make reductions
-
-  void          checkExprId(z3::expr const &);
-  UtvpiPosition setBoundWith1Var (bool, z3::expr const &);
-  UtvpiPosition setBoundWith2Vars(bool, z3::expr const &);
+  void checkExprId(z3::expr const &);
+  void setBoundWith1Var (bool, z3::expr const &, BoundValue);
+  void setBoundWith2Vars(bool, z3::expr const &, BoundValue);
+  void updatePositions(bool, z3::expr const &, UtvpiPosition);
   
   public:
   OctagonParser(z3::expr_vector const &);

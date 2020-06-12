@@ -8,7 +8,7 @@ if expand('%') == '' && !&modified && line('$') <= 1 && getline(1) == ''
 endif
 set shortmess=aoO
 badd +40 include/Octagon.h
-badd +51 src/Octagon.cpp
+badd +162 src/Octagon.cpp
 badd +2 tests/current_progress.cpp
 badd +22 tests/test_octagon_constructor.cpp
 badd +29 Makefile
@@ -16,7 +16,7 @@ badd +1 tests/test_octagon_constructor
 badd +7 include/Bound.h
 badd +25 src/Bound.cpp
 badd +19 tests/test_bound_constructor.cpp
-badd +12 include/OctagonParser.h
+badd +26 include/OctagonParser.h
 badd +5 src/OctagonParser.cpp
 badd +17 tests/test_octagon_parser.cpp
 argglobal
@@ -41,12 +41,12 @@ set winminheight=0
 set winheight=1
 set winminwidth=0
 set winwidth=1
-exe '1resize ' . ((&lines * 12 + 13) / 27)
-exe 'vert 1resize ' . ((&columns * 104 + 157) / 315)
-exe '2resize ' . ((&lines * 12 + 13) / 27)
-exe 'vert 2resize ' . ((&columns * 104 + 157) / 315)
+exe '1resize ' . ((&lines * 24 + 25) / 51)
+exe 'vert 1resize ' . ((&columns * 105 + 157) / 315)
+exe '2resize ' . ((&lines * 24 + 25) / 51)
+exe 'vert 2resize ' . ((&columns * 105 + 157) / 315)
 exe 'vert 3resize ' . ((&columns * 104 + 157) / 315)
-exe 'vert 4resize ' . ((&columns * 105 + 157) / 315)
+exe 'vert 4resize ' . ((&columns * 104 + 157) / 315)
 argglobal
 setlocal fdm=manual
 setlocal fde=0
@@ -57,12 +57,12 @@ setlocal fml=1
 setlocal fdn=20
 setlocal fen
 silent! normal! zE
-let s:l = 19 - ((7 * winheight(0) + 6) / 12)
+let s:l = 26 - ((2 * winheight(0) + 12) / 24)
 if s:l < 1 | let s:l = 1 | endif
 exe s:l
 normal! zt
-19
-normal! 042|
+26
+normal! 03|
 wincmd w
 argglobal
 if bufexists("include/Octagon.h") | buffer include/Octagon.h | else | edit include/Octagon.h | endif
@@ -75,12 +75,12 @@ setlocal fml=1
 setlocal fdn=20
 setlocal fen
 silent! normal! zE
-let s:l = 22 - ((5 * winheight(0) + 6) / 12)
+let s:l = 24 - ((7 * winheight(0) + 12) / 24)
 if s:l < 1 | let s:l = 1 | endif
 exe s:l
 normal! zt
-22
-normal! 0
+24
+normal! 04|
 wincmd w
 argglobal
 if bufexists("src/OctagonParser.cpp") | buffer src/OctagonParser.cpp | else | edit src/OctagonParser.cpp | endif
@@ -93,12 +93,12 @@ setlocal fml=1
 setlocal fdn=20
 setlocal fen
 silent! normal! zE
-let s:l = 7 - ((6 * winheight(0) + 12) / 25)
+let s:l = 1 - ((0 * winheight(0) + 24) / 49)
 if s:l < 1 | let s:l = 1 | endif
 exe s:l
 normal! zt
-7
-normal! 023|
+1
+normal! 0
 wincmd w
 argglobal
 if bufexists("tests/test_octagon_parser.cpp") | buffer tests/test_octagon_parser.cpp | else | edit tests/test_octagon_parser.cpp | endif
@@ -111,20 +111,20 @@ setlocal fml=1
 setlocal fdn=20
 setlocal fen
 silent! normal! zE
-let s:l = 17 - ((14 * winheight(0) + 12) / 25)
+let s:l = 23 - ((0 * winheight(0) + 24) / 49)
 if s:l < 1 | let s:l = 1 | endif
 exe s:l
 normal! zt
-17
+23
 normal! 031|
 wincmd w
-3wincmd w
-exe '1resize ' . ((&lines * 12 + 13) / 27)
-exe 'vert 1resize ' . ((&columns * 104 + 157) / 315)
-exe '2resize ' . ((&lines * 12 + 13) / 27)
-exe 'vert 2resize ' . ((&columns * 104 + 157) / 315)
+2wincmd w
+exe '1resize ' . ((&lines * 24 + 25) / 51)
+exe 'vert 1resize ' . ((&columns * 105 + 157) / 315)
+exe '2resize ' . ((&lines * 24 + 25) / 51)
+exe 'vert 2resize ' . ((&columns * 105 + 157) / 315)
 exe 'vert 3resize ' . ((&columns * 104 + 157) / 315)
-exe 'vert 4resize ' . ((&columns * 105 + 157) / 315)
+exe 'vert 4resize ' . ((&columns * 104 + 157) / 315)
 tabnext 1
 if exists('s:wipebuf') && getbufvar(s:wipebuf, '&buftype') isnot# 'terminal'
   silent exe 'bwipe ' . s:wipebuf

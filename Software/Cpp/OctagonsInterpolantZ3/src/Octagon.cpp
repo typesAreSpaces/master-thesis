@@ -3,7 +3,7 @@
 UtvpiPosition Var::max_utvpi_value = sqrt(std::numeric_limits<UtvpiPosition>::max());
 
 Var::Var(VarValue value) : 
-  value(value) 
+  value(value)
 {
   assert(value >= 0 && value < max_utvpi_value);
 }
