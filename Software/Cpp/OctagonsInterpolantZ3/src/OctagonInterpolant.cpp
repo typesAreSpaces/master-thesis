@@ -170,6 +170,10 @@ void OctagonInterpolant::buildInterpolant(){
   if(!bounds[0].is_infinite && bounds[0].bound_value < 0)
     result.push_back(ctx.bool_val(false));
 
+  // FIX: remove uncommon symbols that
+  // were not remove by the previous step.
+  // This can happen when the cardinaliyt of
+  // positive or negative positions is zero.
   auto entry = bounds.begin();
   entry++;
   UtvpiPosition index = 1;
