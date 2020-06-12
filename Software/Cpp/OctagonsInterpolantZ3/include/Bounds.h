@@ -11,7 +11,8 @@ class Bounds : public std::vector<Bound> {
   public:
   Bounds();
 
-  void insert(unsigned, Bound const &);
+  void insert(UtvpiPosition, Bound const &);
+  void remove(UtvpiPosition);
   friend std::ostream & operator << (std::ostream &, Bounds const &);
 };
 

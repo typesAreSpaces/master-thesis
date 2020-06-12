@@ -33,7 +33,6 @@ Octagon::Octagon(Coeff coeff1, VarValue value1, Coeff coeff2, VarValue value2) :
   var1  (value1 < value2 ? value2 : value1), 
   var2  (value1 < value2 ? value1 : value2)
 {
-  return;
   Octagon_return;
 }
 

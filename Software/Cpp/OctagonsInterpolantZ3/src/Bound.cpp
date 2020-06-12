@@ -28,8 +28,11 @@ void Bound::update(BoundValue new_bound_value){
 void Bound::normalize(BoundValue scale_factor){
   if(is_infinite)
     return;
-  // TODO: double check this considering signs
-  bound_value /= scale_factor; 
+  if(bound_value >= 0){
+    bound_value /= scale_factor; 
+    return;
+  }
+  bound_value = (bound_value-1)/scale_factor;
 }
 
 Bound operator + (Bound const & b1, Bound const & b2){
