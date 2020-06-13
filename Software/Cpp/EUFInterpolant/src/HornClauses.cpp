@@ -88,7 +88,6 @@ void HornClauses::add(HornClause * hc){
   unsigned id = z3_expr_hc.hash();
   auto it = horn_clauses.find(id);
 
-  // FIX: This hash-cons structure
   if(it != horn_clauses.end()){
 #if DEBUG_ADDINGHC
     std::cout << "Not added" << std::endl;

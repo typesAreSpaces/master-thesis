@@ -7,11 +7,12 @@ if expand('%') == '' && !&modified && line('$') <= 1 && getline(1) == ''
   let s:wipebuf = bufnr('%')
 endif
 set shortmess=aoO
-badd +17 include/Purifier.h
-badd +30 src/Purifier.cpp
-badd +0 src/ThCombInterpolator.cpp
-badd +0 include/ThCombInterpolator.h
+badd +1 include/Purifier.h
+badd +165 src/Purifier.cpp
+badd +59 src/ThCombInterpolator.cpp
+badd +1 include/ThCombInterpolator.h
 badd +31 src/main.cpp
+badd +91 src/HornClauses.cpp
 argglobal
 %argdel
 edit include/Purifier.h
@@ -35,13 +36,13 @@ set winminheight=0
 set winheight=1
 set winminwidth=0
 set winwidth=1
-exe '1resize ' . ((&lines * 22 + 23) / 46)
+exe '1resize ' . ((&lines * 28 + 30) / 60)
 exe 'vert 1resize ' . ((&columns * 157 + 157) / 315)
-exe '2resize ' . ((&lines * 21 + 23) / 46)
+exe '2resize ' . ((&lines * 29 + 30) / 60)
 exe 'vert 2resize ' . ((&columns * 157 + 157) / 315)
-exe '3resize ' . ((&lines * 22 + 23) / 46)
+exe '3resize ' . ((&lines * 29 + 30) / 60)
 exe 'vert 3resize ' . ((&columns * 157 + 157) / 315)
-exe '4resize ' . ((&lines * 21 + 23) / 46)
+exe '4resize ' . ((&lines * 28 + 30) / 60)
 exe 'vert 4resize ' . ((&columns * 157 + 157) / 315)
 argglobal
 setlocal fdm=manual
@@ -53,12 +54,12 @@ setlocal fml=1
 setlocal fdn=20
 setlocal fen
 silent! normal! zE
-let s:l = 19 - ((18 * winheight(0) + 11) / 22)
+let s:l = 16 - ((5 * winheight(0) + 14) / 28)
 if s:l < 1 | let s:l = 1 | endif
 exe s:l
 normal! zt
-19
-normal! 0
+16
+normal! 012|
 wincmd w
 argglobal
 if bufexists("include/ThCombInterpolator.h") | buffer include/ThCombInterpolator.h | else | edit include/ThCombInterpolator.h | endif
@@ -71,11 +72,11 @@ setlocal fml=1
 setlocal fdn=20
 setlocal fen
 silent! normal! zE
-let s:l = 4 - ((3 * winheight(0) + 10) / 21)
+let s:l = 6 - ((5 * winheight(0) + 14) / 29)
 if s:l < 1 | let s:l = 1 | endif
 exe s:l
 normal! zt
-4
+6
 normal! 0
 wincmd w
 argglobal
@@ -89,12 +90,12 @@ setlocal fml=1
 setlocal fdn=20
 setlocal fen
 silent! normal! zE
-let s:l = 34 - ((12 * winheight(0) + 11) / 22)
+let s:l = 9 - ((8 * winheight(0) + 14) / 29)
 if s:l < 1 | let s:l = 1 | endif
 exe s:l
 normal! zt
-34
-normal! 03|
+9
+normal! 0
 wincmd w
 argglobal
 if bufexists("src/ThCombInterpolator.cpp") | buffer src/ThCombInterpolator.cpp | else | edit src/ThCombInterpolator.cpp | endif
@@ -107,20 +108,21 @@ setlocal fml=1
 setlocal fdn=20
 setlocal fen
 silent! normal! zE
-let s:l = 1 - ((0 * winheight(0) + 10) / 21)
+let s:l = 5 - ((4 * winheight(0) + 14) / 28)
 if s:l < 1 | let s:l = 1 | endif
 exe s:l
 normal! zt
-1
+5
 normal! 0
 wincmd w
-exe '1resize ' . ((&lines * 22 + 23) / 46)
+4wincmd w
+exe '1resize ' . ((&lines * 28 + 30) / 60)
 exe 'vert 1resize ' . ((&columns * 157 + 157) / 315)
-exe '2resize ' . ((&lines * 21 + 23) / 46)
+exe '2resize ' . ((&lines * 29 + 30) / 60)
 exe 'vert 2resize ' . ((&columns * 157 + 157) / 315)
-exe '3resize ' . ((&lines * 22 + 23) / 46)
+exe '3resize ' . ((&lines * 29 + 30) / 60)
 exe 'vert 3resize ' . ((&columns * 157 + 157) / 315)
-exe '4resize ' . ((&lines * 21 + 23) / 46)
+exe '4resize ' . ((&lines * 28 + 30) / 60)
 exe 'vert 4resize ' . ((&columns * 157 + 157) / 315)
 tabnext 1
 if exists('s:wipebuf') && getbufvar(s:wipebuf, '&buftype') isnot# 'terminal'
