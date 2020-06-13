@@ -1,158 +1,190 @@
 #include "Octagon.h"
 
-Octagon::Octagon(char first_sign, char second_sign, int first_var_position, int second_var_position) :
-  first_sign(first_sign), second_sign(second_sign),
-  first_var_position(first_var_position), second_var_position(second_var_position) 
+UtvpiPosition Var::max_utvpi_value = sqrt(std::numeric_limits<UtvpiPosition>::max());
+
+Var::Var(VarValue value) : 
+  value(value)
 {
-  setUtvpiPosition(first_sign, second_sign, first_var_position, second_var_position);
+  assert(value >= 0 && value < max_utvpi_value);
 }
 
-Octagon::Octagon(int n) : 
-  utvpi_position(n)
+bool operator <(Var const & a, Var const & b){
+  return a.value < b.value;
+}
+bool operator >(Var const & a, Var const & b){
+  return a.value > b.value;
+}
+bool operator ==(Var const & a, Var const & b){
+  return a.value == b.value;
+}
+bool operator !=(Var const & a, Var const & b){
+  return a.value != b.value;
+}
+bool operator ==(Var const & a, VarValue v){
+  return a.value == v;
+}
+bool operator !=(Var const & a, VarValue v){
+  return a.value != v;
+}
+
+Octagon::Octagon(Coeff coeff1, VarValue value1, Coeff coeff2, VarValue value2) :
+  coeff1(value1 < value2 ? coeff2 : coeff1), 
+  coeff2(value1 < value2 ? coeff1 : coeff2),
+  var1  (value1 < value2 ? value2 : value1), 
+  var2  (value1 < value2 ? value1 : value2)
 {
-  if(n == 0){
-    first_sign = '+', first_var_position = -1, second_sign = '+', second_var_position = -1;
+  Octagon_return;
+}
+
+Octagon::Octagon(UtvpiPosition pos) :
+  coeff1(ZERO), coeff2(ZERO),
+  var1(0), var2(0)
+{
+  if(pos == 0){
+    Octagon_return;
   }
-  else{
-    int num_group = sqrt((n-1)/2);
-    first_var_position = num_group;
-    int first_elem_num_group = 2*num_group*num_group + 1;
-    int first_pos_num_group = first_elem_num_group + 2*num_group + 1;
-    if(n < first_pos_num_group){
-      first_sign = '-';
-      if(n == first_elem_num_group)
-        second_sign = '+', second_var_position = -1;
-      else{
-        second_var_position = (n - first_elem_num_group - 1)/2;
-        if(n % 2 == 0)
-          second_sign = '-';
-        else
-          second_sign = '+';
+
+  var1 = (VarValue)(sqrt((pos-1)/2)) + 1;
+  // Note: initial_group_position *should not* overflow
+  // since var1 is a square root of UtviPosition
+  UtvpiPosition initial_group_position = 2*(var1.value-1)*(var1.value-1) + 1, 
+                half_size_group = 2*(var1.value-1), separation; 
+
+  // -------------------------------------------------
+  // First half (i.e. the sign of var1 is negative)
+  if(pos <= initial_group_position + half_size_group){
+    coeff1 = NEG;
+    // First element of first half
+    if(pos == initial_group_position){
+      coeff2 = ZERO;
+      var2   = 0;
+      Octagon_return;
+    }
+    // ---------------------------------------
+    // Rest of the other octagons
+    separation = pos - initial_group_position;
+    var2 = (separation-1)/2 + 1;
+    if(separation % 2 == 0){
+      coeff2 = POS;
+      Octagon_return;
+    }
+    coeff2 = NEG;
+    Octagon_return;
+    // ---------------------------------------
+  }
+  // -------------------------------------------------
+
+  // -------------------------------------------------------------
+  // Second half (i.e. the sign of var1 is positive)
+  coeff1 = POS;
+  // First element of second half
+  if(pos == initial_group_position + half_size_group + 1){
+    coeff2 = ZERO;
+    var2   = 0;
+    Octagon_return;
+  }
+  // -------------------------------------------------------------
+  // Rest of the other octagons
+  separation = pos - initial_group_position - half_size_group - 1;
+  var2 = (separation-1)/2 + 1;
+  if(separation % 2 == 0){
+    coeff2 = POS;
+    Octagon_return;
+  }
+  coeff2 = NEG;
+  Octagon_return;
+  // -------------------------------------------------------------
+  // -------------------------------------------------------------
+}
+
+UtvpiPosition Octagon::getUtviPosition() const {
+  // Note: initial_group_position *should not* overflow
+  // since var1 is a square root of UtviPosition
+  UtvpiPosition initial_group_position = 2*(var1.value-1)*(var1.value-1) + 1; 
+  UtvpiPosition sign_a_offset, sign_b_offset;
+
+  switch(coeff1){
+    case NEG:
+      sign_a_offset = 0;
+      break;
+    case ZERO:
+      return 0;
+    case POS:
+      sign_a_offset = 2*(var1.value-1) + 1;
+      break;
+  }
+  switch(coeff2){
+    case NEG:
+      sign_b_offset = 1 + 2*(var2.value-1);
+      break;
+    case ZERO:
+      sign_b_offset = 0;
+      break;
+    case POS:
+      sign_b_offset = 1 + 2*(var2.value-1) + 1;
+      break;
+  }
+  return initial_group_position + sign_a_offset + sign_b_offset;
+}
+
+std::ostream & operator << (std::ostream & os, Octagon const & oct){
+  switch(oct.coeff1){
+    case NEG:
+      os << "- x_" << oct.var1.value;
+      switch(oct.coeff2){
+        case NEG:
+          os << " - x_" << oct.var2.value;
+          break;
+        case ZERO:
+          break;
+        case POS:
+          os << " + x_" << oct.var2.value;
+          break;
       }
-    }
-    else{
-      first_sign = '+';
-      if(n == first_pos_num_group)
-        second_sign = '+', second_var_position = -1;
-      else{
-        second_var_position = (n - first_pos_num_group - 1)/2;
-        if(n % 2 == 0)
-          second_sign = '+';
-        else
-          second_sign = '-';
+      break;
+    case ZERO:
+      os << "0";
+      break;
+    case POS: 
+      os << "x_" << oct.var1.value;
+      switch(oct.coeff2){
+        case NEG:
+          os << " - x_" << oct.var2.value;
+          break;
+        case ZERO:
+          break;
+        case POS:
+          os << " + x_" << oct.var2.value;
+          break;
       }
-    }
-  }
-}
-
-Octagon::~Octagon(){}
-
-const char Octagon::getFirstSign() const {
-  return first_sign;
-}
-
-const char Octagon::getSecondSign() const {
-  return second_sign;
-}
-
-const int Octagon::getFirstVarPosition() const {
-  return first_var_position;
-}
-
-const int Octagon::getSecondVarPosition() const {
-  return second_var_position;
-}
-
-const int Octagon::getUtvpiPosition() {
-  this->setUtvpiPosition(first_sign, second_sign, first_var_position, second_var_position);
-  return utvpi_position;
-}
-
-const int Octagon::num_args() const {
-  if(utvpi_position == 0)
-    return 0;
-  if(second_var_position == -1)
-    return 1;
-  return 2;
-}
-
-
-// Preconditions:
-// first_var_position > second_var_position
-// + (-1) + (-1) should have position 0
-// The least var_position is 0
-void Octagon::setUtvpiPosition(char first_sign, char second_sign, int first_var_position, int second_var_position) {
-  if(first_sign == '+' && second_sign == '+' && first_var_position == -1 && second_var_position == -1)
-    this->utvpi_position = 0;
-  else{
-    int first_elem_num_group = 2*first_var_position*first_var_position + 1;
-    int first_pos_num_group = first_elem_num_group + 2*first_var_position + 1;
-    if(first_sign == '-'){
-      if(second_sign == '-')
-        this->utvpi_position = first_elem_num_group + 2*(second_var_position + 1) - 1;
-      else
-        this->utvpi_position = first_elem_num_group + 2*(second_var_position + 1);
-    }
-    else{
-      if(second_sign == '-')
-        this->utvpi_position = first_pos_num_group + 2*(second_var_position + 1) - 1 ;
-
-      else
-        this->utvpi_position = first_pos_num_group + 2*(second_var_position + 1);
-    }
-  }
-}
-
-int Octagon::normalize(int bound){
-  int result = bound;
-
-  if(first_var_position == second_var_position){
-    // If +/- x +/- x <= a, then return +/- x + 0 <= floor(a/2)
-    if(first_sign == second_sign){
-      second_sign = '+';
-      second_var_position = -1;
-      result /= 2;
-    }
-    // This is the encoding for 0 <= a
-    else{
-      first_sign = '+';
-      second_sign = '+';
-      first_var_position = -1;
-      second_var_position = -1;
-    }
-  }
-  else{
-    // If first_sign x1 second_sign x2 <= a with x2 > x1, then return second_sign x2 first_sign x1 <= a
-    if(second_var_position > first_var_position){
-      int _first_sign = first_sign,
-          _second_sign = second_sign,
-          _first_var_position = first_var_position,
-          _second_var_position = second_var_position;
-      // Swapping
-      first_sign = _second_sign;
-      first_var_position = _second_var_position;
-      second_sign = _first_sign;
-      second_var_position = _first_var_position;
-    }
-  }
-
-  return result;
-}
-
-std::ostream & operator << (std::ostream & os, const Octagon & x){
-  if(x.second_var_position == -1){
-    // Octagons of the form +/- 0 +/- -1
-    // is reserved for constant cases
-    if(x.first_var_position == -1 && x.first_sign == '+' && x.second_sign == '+')
-      os << "Octagonal Formula: 0";
-    // Octagons of the form +/- x +/- -1
-    // is reserved for single variable inequalities
-    else
-      os << "Octagonal Formula: " << x.first_sign << " x_" << x.first_var_position;
-  }
-  else{
-    os << "Octagonal Formula: " << x.first_sign << " x_" << x.first_var_position
-      << " " << x.second_sign << " x_" << x.second_var_position;
+      break;
   }
   return os;
+}
+
+z3::expr Octagon::toZ3Expr(z3::context & ctx, z3::expr_vector const & z3_variables, 
+    IdTable const & id_table){ 
+  switch(coeff1){
+    case NEG:
+      switch(coeff2){
+        case NEG:
+          return -z3_variables[var1.value]-z3_variables[var2.value];
+        case ZERO:
+          return -z3_variables[var1.value];
+        case POS:
+          return -z3_variables[var1.value]+z3_variables[var2.value];
+      }
+    case ZERO:
+      return ctx.int_val(0);
+    case POS:
+      switch(coeff2){
+        case NEG:
+          return z3_variables[var1.value]-z3_variables[var2.value];
+        case ZERO:
+          return z3_variables[var1.value];
+        case POS:
+          return z3_variables[var1.value]+z3_variables[var2.value];
+      }
+  }
+  throw "Error with Var data structure.";
 }

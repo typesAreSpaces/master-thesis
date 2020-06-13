@@ -26,16 +26,39 @@ DEPS = $(wildcard $(IDIR)/*.h)
 
 # ------------------------------------------------------------------------------------------
 #  Build
-all: tests/octagon_interpolator
+all: tests/test_octagon_parser
 
 $(ODIR)/%.o: $(SDIR)/%.cpp $(DEPS)
 	$(CC) -g -c -o $@  $(FLAGS) $< 
 # ------------------------------------------------------------------------------------------
 #  Tests
-.PHONY: tests/octagon_interpolator
-tests/octagon_interpolator: $(OBJS) 
+
+.PHONY: tests/test_octagon_parser
+tests/test_octagon_parser: $(OBJS) 
 	$(CC) -g -c -o ./$@.o $(FLAGS) ./$@.cpp
 	$(CC) -g -o $@ $(OBJS) ./$@.o -lpthread -Wall
+	./$@
+	rm -rf tests/*.o $@
+
+.PHONY: tests/test_octagon_constructor
+tests/test_octagon_constructor: $(OBJS) 
+	$(CC) -g -c -o ./$@.o $(FLAGS) ./$@.cpp
+	$(CC) -g -o $@ $(OBJS) ./$@.o -lpthread -Wall
+	./$@
+	rm -rf tests/*.o $@
+
+.PHONY: tests/test_bound_constructor
+tests/test_bound_constructor: $(OBJS) 
+	$(CC) -g -c -o ./$@.o $(FLAGS) ./$@.cpp
+	$(CC) -g -o $@ $(OBJS) ./$@.o -lpthread -Wall
+	./$@
+	rm -rf tests/*.o $@
+
+.PHONY: tests/current_progress
+tests/current_progress: $(OBJS) 
+	$(CC) -g -c -o ./$@.o $(FLAGS) ./$@.cpp
+	$(CC) -g -o $@ $(OBJS) ./$@.o -lpthread -Wall
+	./$@
 	rm -rf tests/*.o $@
 
 # ------------------------------------------------------------------------------------------
