@@ -4,24 +4,12 @@
 unsigned Purifier::fresh_var_id = 0;
 
 Purifier::Purifier(z3::expr const & e) :
-  ctx(e.ctx()), from(ctx), to(ctx), formula(ctx),
-  euf_component(ctx), oct_component(ctx)
+  ctx(e.ctx()), 
+  oct_component(ctx), euf_component(ctx), 
+  map_oct(), map_euf(),
+  from(ctx), to(ctx), formula(purify(e))
 {
-
-  try{
-    formula = purify(e);
-  }
-  catch(char const * e){
-    std::cout << e << std::endl;
-  }
-
-  try{
-    split(formula);
-  }
-  catch(char const * e){
-    std::cout << e << std::endl;
-  }
-
+  split(formula);
 #if _DEBUGPURIFIER_
   std::cout << *this << std::endl;
 #endif
@@ -32,8 +20,10 @@ z3::expr Purifier::purify(z3::expr const & e){
   unsigned num_new_symbols = from.size();
   for(unsigned i = 0; i < num_new_symbols; i++)
     _formula = _formula && from[i] == to[i];
+  // "from" and "to" are no longer needed 
   from.resize(0);
-  to.resize(0);
+  to  .resize(0);
+  std::cout << "Done" << std::endl;
   return _formula;
 }
 

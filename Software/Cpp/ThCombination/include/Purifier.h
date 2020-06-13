@@ -16,16 +16,17 @@ protected:
   static unsigned fresh_var_id;
 
   z3::context &   ctx;
-  z3::expr_vector from;
-  z3::expr_vector to;
-  z3::expr        formula;
   
+  z3::expr_vector oct_component;
+  z3::expr_vector euf_component;
+
   std::map<unsigned, unsigned> map_oct;
   std::map<unsigned, unsigned> map_euf;
-  
-  z3::expr_vector euf_component;
-  z3::expr_vector oct_component;
-  
+
+  z3::expr_vector from;
+  z3::expr_vector to;
+  z3::expr const  formula;
+
 private:  
   z3::expr purify(z3::expr const &);
   z3::expr traverse(z3::expr const &);
