@@ -57,8 +57,7 @@ OctagonParser::OctagonParser(z3::expr_vector const & assertions) :
 void OctagonParser::setBoundWith1Var(bool is_positive, z3::expr const & var, 
     BoundValue bound){
   checkExprId(var);
-  Octagon tmp(is_positive ? POS : NEG, id_table[var.hash()], ZERO, 0);
-  UtvpiPosition position = tmp.getUtviPosition();
+  UtvpiPosition position = Octagon(is_positive ? POS : NEG, id_table[var.hash()], ZERO, 0).getUtviPosition();
   bounds.insert(position, Bound(bound));
   updatePositions(is_positive, var, position);
   return;
@@ -78,10 +77,9 @@ void OctagonParser::setBoundWith2Vars(bool is_addition, z3::expr const & inequal
             // Non-negative variable 2
             checkExprId(var_1);
             checkExprId(var_2);
-            Octagon tmp(
+            UtvpiPosition position = Octagon(
                 POS                    , id_table[var_1.hash()], 
-                is_addition ? POS : NEG, id_table[var_2.hash()]);
-            UtvpiPosition position = tmp.getUtviPosition();
+                is_addition ? POS : NEG, id_table[var_2.hash()]).getUtviPosition();
             bounds.insert(position, Bound(bound));
             updatePositions(true,        var_1, position);
             updatePositions(is_addition, var_2, position);
@@ -92,10 +90,9 @@ void OctagonParser::setBoundWith2Vars(bool is_addition, z3::expr const & inequal
             // Negative variable 2
             checkExprId(var_1);
             checkExprId(var_2.arg(0));
-            Octagon tmp(
+            UtvpiPosition position = Octagon(
                 POS                    , id_table[var_1.hash()], 
-                is_addition ? NEG : POS, id_table[var_2.arg(0).hash()]);
-            UtvpiPosition position = tmp.getUtviPosition();
+                is_addition ? NEG : POS, id_table[var_2.arg(0).hash()]).getUtviPosition();
             bounds.insert(position, Bound(bound));
             updatePositions(true,         var_1, position);
             updatePositions(!is_addition, var_2.arg(0), position);
@@ -112,10 +109,9 @@ void OctagonParser::setBoundWith2Vars(bool is_addition, z3::expr const & inequal
             // Non-negative variable 2
             checkExprId(var_1.arg(0));
             checkExprId(var_2);
-            Octagon tmp(
+            UtvpiPosition position = Octagon(
                 NEG                    , id_table[var_1.arg(0).hash()], 
-                is_addition ? POS : NEG, id_table[var_2.hash()]);
-            UtvpiPosition position = tmp.getUtviPosition();
+                is_addition ? POS : NEG, id_table[var_2.hash()]).getUtviPosition();
             bounds.insert(position, Bound(bound));
             updatePositions(false,       var_1.arg(0), position);
             updatePositions(is_addition, var_2, position);
@@ -126,10 +122,9 @@ void OctagonParser::setBoundWith2Vars(bool is_addition, z3::expr const & inequal
             // Negative variable 2
             checkExprId(var_1.arg(0));
             checkExprId(var_2.arg(0));
-            Octagon tmp(
+            UtvpiPosition position = Octagon(
                 NEG                    , id_table[var_1.arg(0).hash()], 
-                is_addition ? NEG : POS, id_table[var_2.arg(0).hash()]);
-            UtvpiPosition position = tmp.getUtviPosition();
+                is_addition ? NEG : POS, id_table[var_2.arg(0).hash()]).getUtviPosition();
             bounds.insert(position, Bound(bound));
             updatePositions(false,        var_1.arg(0), position);
             updatePositions(!is_addition, var_2.arg(0), position);

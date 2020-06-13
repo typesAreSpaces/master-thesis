@@ -20,8 +20,7 @@ std::ostream & operator << (std::ostream & os, Bounds const & bounds){
   UtvpiPosition index = 0;
   for(auto const & entry : bounds){
     if(!entry.is_infinite){
-      Octagon tmp(index);
-      os << tmp << " <= " << entry 
+      os << Octagon(index) << " <= " << entry 
         << " (Position) " << index << std::endl;
     }
     index++;
