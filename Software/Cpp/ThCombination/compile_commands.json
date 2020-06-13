@@ -1,0 +1,62 @@
+[
+ {
+  "directory": "/home/jose/Documents/GithubProjects/master-thesis/Software/Cpp/ThCombination",
+  "arguments": [
+   "g++",
+   "-g",
+   "-c",
+   "-o",
+   "obj/main.o",
+   "-I./include",
+   "-std=c++11",
+   "src/main.cpp",
+   "-Wall"
+  ],
+  "file": "src/main.cpp"
+ },
+ {
+  "directory": "/home/jose/Documents/GithubProjects/master-thesis/Software/Cpp/ThCombination",
+  "arguments": [
+   "g++",
+   "-g",
+   "-c",
+   "-o",
+   "obj/Purifier.o",
+   "-I./include",
+   "-std=c++11",
+   "src/Purifier.cpp",
+   "-Wall"
+  ],
+  "file": "src/Purifier.cpp"
+ },
+ {
+  "directory": "/home/jose/Documents/GithubProjects/master-thesis/Software/Cpp/ThCombination",
+  "arguments": [
+   "g++",
+   "-g",
+   "-c",
+   "-o",
+   "obj/Rename.o",
+   "-I./include",
+   "-std=c++11",
+   "src/Rename.cpp",
+   "-Wall"
+  ],
+  "file": "src/Rename.cpp"
+ },
+ {
+  "directory": "/home/jose/Documents/GithubProjects/master-thesis/Software/Cpp/ThCombination",
+  "arguments": [
+   "g++",
+   "-g",
+   "-c",
+   "-o",
+   "obj/ThCombInterpolator.o",
+   "-I./include",
+   "-std=c++11",
+   "src/ThCombInterpolator.cpp",
+   "-Wall"
+  ],
+  "file": "src/ThCombInterpolator.cpp"
+ }
+]

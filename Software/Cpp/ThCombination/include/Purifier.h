@@ -10,7 +10,7 @@
 // Accepts a *conjunction* of literals
 // in QF_UFLIA
 
-class Purifier{
+class Purifier {
 
 protected:
   z3::context & ctx;

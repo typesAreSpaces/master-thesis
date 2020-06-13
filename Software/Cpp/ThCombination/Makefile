@@ -5,7 +5,6 @@ ifeq ($(UNAME), Linux)
 	Z3DIR = /nfs/student/j/jose.castellanosjoo/Documents/GitProjects/z3__
 	endif
 	ifeq ($(WHO), jose)
-# Z3DIR = /home/jose/Documents/Github\ Projects/z3
 	Z3DIR = /home/jose/Documents/GithubProjects/z3__
 	endif
 Z3EXT = so
@@ -19,22 +18,29 @@ IDIR = ./include
 ODIR = ./obj
 SDIR = ./src
 CC = g++
-FLAGS = -I$(IDIR) -std=c++11
+FLAGS = -I$(SDIR) -I$(IDIR) -std=c++11 -Wall
 
 SRC = $(wildcard $(SDIR)/*.cpp)
-OBJS = $(patsubst $(SDIR)/%.cpp, $(ODIR)/%.o, $(SRC))
+OBJS = $(patsubst $(SDIR)/%.cpp, $(ODIR)/%.o, $(SRC)) $(Z3DIR)/build/libz3.$(Z3EXT) 
 DEPS = $(wildcard $(IDIR)/*.h)
 
-all: thcombination
+# ------------------------------------------------------------------------------------------
+#  Build
+all: tests/basic_test
 
 $(ODIR)/%.o: $(SDIR)/%.cpp $(DEPS)
-	$(CC) -g -c -o $@  $(FLAGS) $< -Wall
+	$(CC) -g -c -o $@  $(FLAGS) $<
+# ------------------------------------------------------------------------------------------
+#  Tests
 
-thcombination: $(OBJS) $(Z3DIR)/build/libz3.$(Z3EXT)
-	$(CC) -g -o $@ $^ -lpthread -Wall
+.PHONY: tests/basic_test
+tests/basic_test: $(OBJS)
+	$(CC) -g -c -o ./$@.o $(FLAGS) ./$@.cpp
+	$(CC) -g -o $@ $(OBJS) ./$@.o -lpthread -Wall
+	./$@
+	rm -rf tests/*.o $@
 
-run: thcombination
-	./thcombination
+# ------------------------------------------------------------------------------------------
 
 parser:
 	make -C ../z3-proofs2latex

@@ -1,5 +1,5 @@
 #include "ThCombInterpolator.h"
-#include "Rename.h"
+//#include "Rename.h"
 #include <string>
 #define _DEBUG_ true
 
