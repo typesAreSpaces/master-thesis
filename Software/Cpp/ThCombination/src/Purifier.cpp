@@ -27,9 +27,6 @@ Purifier::Purifier(z3::expr const & e) :
 #endif
 }
 
-Purifier::~Purifier(){
-}
-
 void Purifier::purify(z3::expr const & e){
   formula = traverse(e);
   unsigned num_new_symbols = from.size();

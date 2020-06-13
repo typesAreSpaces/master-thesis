@@ -23,9 +23,10 @@ protected:
   z3::expr_vector oct_component;
   
 private:  
+  static unsigned fresh_var_id;
+
   z3::expr_vector from;
   z3::expr_vector to;
-  static unsigned fresh_var_id;
 
   void     purify(z3::expr const &);
   z3::expr traverse(z3::expr const &);
@@ -35,7 +36,6 @@ private:
   
 public:
   Purifier(z3::expr const &);
-  ~Purifier();
 
   void addEufFormulasToSolver(z3::solver &);
   void addOctFormulasToSolver(z3::solver &);
