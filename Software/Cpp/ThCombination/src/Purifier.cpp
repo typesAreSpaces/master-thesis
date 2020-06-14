@@ -176,37 +176,31 @@ void Purifier::split(z3::expr const & e){
 }
 
 void Purifier::addEufFormulasToSolver(z3::solver & s){
-  unsigned size = euf_component.size();
-  for(unsigned i = 0; i < size; i++)
-    s.add(euf_component[i]);
+  for(auto const & x : euf_component)
+    s.add(x);
 }
 
 void Purifier::addOctFormulasToSolver(z3::solver & s){
-  unsigned size = oct_component.size();
-  for(unsigned i = 0; i < size; i++)
-    s.add(oct_component[i]);
+  for(auto const & x : oct_component)
+    s.add(x);
 }
 
 bool Purifier::inside(z3::expr const & e){
-  unsigned num = euf_component.size();
-  for(unsigned i = 0; i < num; i++)
-    if(e.id() == euf_component[i].id())
+  for(auto const & x : euf_component)
+    if(e.id() == x.id())
       return true;
-  num = oct_component.size();
-  for(unsigned i = 0; i < num; i++)
-    if(e.id() == oct_component[i].id())
+  for(auto const & x : oct_component)
+    if(e.id() == x.id())
       return true;
   return false;
 }
 
 std::ostream & operator << (std::ostream & os, Purifier & p){
   os << "EUF-component" << std::endl;
-  unsigned num = p.euf_component.size();
-  for(unsigned i = 0; i < num; i++)
-    os << p.euf_component[i] << std::endl;
+  for(auto const & x : p.euf_component)
+    os << x << std::endl;
   os << "Octagon-component" << std::endl;
-  num = p.oct_component.size();
-  for(unsigned i = 0; i < num; i++)
-    os << p.oct_component[i] << std::endl;
+  for(auto const & x : p.oct_component)
+    os << x << std::endl;
   return os;
 }
