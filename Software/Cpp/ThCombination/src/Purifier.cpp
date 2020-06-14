@@ -23,7 +23,6 @@ z3::expr Purifier::purify(z3::expr const & e){
   // "from" and "to" are no longer needed 
   from.resize(0);
   to  .resize(0);
-  std::cout << "Done" << std::endl;
   return _formula;
 }
 

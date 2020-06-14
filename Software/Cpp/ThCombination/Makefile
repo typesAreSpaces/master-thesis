@@ -26,10 +26,12 @@ DEPS = $(wildcard $(IDIR)/*.h)
 
 # ------------------------------------------------------------------------------------------
 #  Build
+
 all: tests/basic_test
 
 $(ODIR)/%.o: $(SDIR)/%.cpp $(DEPS)
-	$(CC) -g -c -o $@  $(FLAGS) $<
+	$(CC) -g -c -o $@ $(FLAGS) $<
+
 # ------------------------------------------------------------------------------------------
 #  Tests
 
@@ -56,4 +58,4 @@ clean_proof:
 
 .PHONY: clean
 clean:
-	rm -rf $(ODIR)/* thcombination print_proof*
+	rm -rf $(ODIR)/*
