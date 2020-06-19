@@ -7,12 +7,13 @@ if expand('%') == '' && !&modified && line('$') <= 1 && getline(1) == ''
   let s:wipebuf = bufnr('%')
 endif
 set shortmess=aoO
-badd +20 include/Purifier.h
-badd +9 src/Purifier.cpp
-badd +59 src/ThCombInterpolator.cpp
-badd +7 include/ThCombInterpolator.h
+badd +1 include/Purifier.h
+badd +180 src/Purifier.cpp
+badd +7 src/ThCombInterpolator.cpp
+badd +17 include/ThCombInterpolator.h
 badd +31 src/main.cpp
 badd +91 src/HornClauses.cpp
+badd +1 tests/basic_test.cpp
 argglobal
 %argdel
 edit include/Purifier.h
@@ -23,7 +24,10 @@ wincmd _ | wincmd |
 vsplit
 wincmd _ | wincmd |
 vsplit
-3wincmd h
+wincmd _ | wincmd |
+vsplit
+4wincmd h
+wincmd w
 wincmd w
 wincmd w
 wincmd w
@@ -34,10 +38,11 @@ set winminheight=0
 set winheight=1
 set winminwidth=0
 set winwidth=1
-exe 'vert 1resize ' . ((&columns * 78 + 157) / 315)
-exe 'vert 2resize ' . ((&columns * 78 + 157) / 315)
-exe 'vert 3resize ' . ((&columns * 78 + 157) / 315)
-exe 'vert 4resize ' . ((&columns * 78 + 157) / 315)
+exe 'vert 1resize ' . ((&columns * 62 + 157) / 315)
+exe 'vert 2resize ' . ((&columns * 62 + 157) / 315)
+exe 'vert 3resize ' . ((&columns * 62 + 157) / 315)
+exe 'vert 4resize ' . ((&columns * 63 + 157) / 315)
+exe 'vert 5resize ' . ((&columns * 62 + 157) / 315)
 argglobal
 setlocal fdm=manual
 setlocal fde=0
@@ -48,12 +53,12 @@ setlocal fml=1
 setlocal fdn=20
 setlocal fen
 silent! normal! zE
-let s:l = 19 - ((18 * winheight(0) + 24) / 49)
+let s:l = 27 - ((0 * winheight(0) + 42) / 84)
 if s:l < 1 | let s:l = 1 | endif
 exe s:l
 normal! zt
-19
-normal! 0
+27
+normal! 036|
 wincmd w
 argglobal
 if bufexists("src/Purifier.cpp") | buffer src/Purifier.cpp | else | edit src/Purifier.cpp | endif
@@ -66,12 +71,12 @@ setlocal fml=1
 setlocal fdn=20
 setlocal fen
 silent! normal! zE
-let s:l = 191 - ((26 * winheight(0) + 24) / 49)
+let s:l = 5 - ((4 * winheight(0) + 42) / 84)
 if s:l < 1 | let s:l = 1 | endif
 exe s:l
 normal! zt
-191
-normal! 016|
+5
+normal! 0
 wincmd w
 argglobal
 if bufexists("include/ThCombInterpolator.h") | buffer include/ThCombInterpolator.h | else | edit include/ThCombInterpolator.h | endif
@@ -84,12 +89,12 @@ setlocal fml=1
 setlocal fdn=20
 setlocal fen
 silent! normal! zE
-let s:l = 9 - ((3 * winheight(0) + 24) / 49)
+let s:l = 17 - ((16 * winheight(0) + 42) / 84)
 if s:l < 1 | let s:l = 1 | endif
 exe s:l
 normal! zt
-9
-normal! 0
+17
+normal! 024|
 wincmd w
 argglobal
 if bufexists("src/ThCombInterpolator.cpp") | buffer src/ThCombInterpolator.cpp | else | edit src/ThCombInterpolator.cpp | endif
@@ -102,18 +107,37 @@ setlocal fml=1
 setlocal fdn=20
 setlocal fen
 silent! normal! zE
-let s:l = 7 - ((6 * winheight(0) + 24) / 49)
+let s:l = 5 - ((4 * winheight(0) + 42) / 84)
 if s:l < 1 | let s:l = 1 | endif
 exe s:l
 normal! zt
-7
-normal! 0
+5
+normal! 010|
 wincmd w
-2wincmd w
-exe 'vert 1resize ' . ((&columns * 78 + 157) / 315)
-exe 'vert 2resize ' . ((&columns * 78 + 157) / 315)
-exe 'vert 3resize ' . ((&columns * 78 + 157) / 315)
-exe 'vert 4resize ' . ((&columns * 78 + 157) / 315)
+argglobal
+if bufexists("tests/basic_test.cpp") | buffer tests/basic_test.cpp | else | edit tests/basic_test.cpp | endif
+setlocal fdm=manual
+setlocal fde=0
+setlocal fmr={{{,}}}
+setlocal fdi=#
+setlocal fdl=0
+setlocal fml=1
+setlocal fdn=20
+setlocal fen
+silent! normal! zE
+let s:l = 46 - ((45 * winheight(0) + 42) / 84)
+if s:l < 1 | let s:l = 1 | endif
+exe s:l
+normal! zt
+46
+normal! 027|
+wincmd w
+4wincmd w
+exe 'vert 1resize ' . ((&columns * 62 + 157) / 315)
+exe 'vert 2resize ' . ((&columns * 62 + 157) / 315)
+exe 'vert 3resize ' . ((&columns * 62 + 157) / 315)
+exe 'vert 4resize ' . ((&columns * 63 + 157) / 315)
+exe 'vert 5resize ' . ((&columns * 62 + 157) / 315)
 tabnext 1
 if exists('s:wipebuf') && getbufvar(s:wipebuf, '&buftype') isnot# 'terminal'
   silent exe 'bwipe ' . s:wipebuf

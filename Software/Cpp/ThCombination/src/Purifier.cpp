@@ -3,27 +3,33 @@
 
 unsigned Purifier::fresh_var_id = 0;
 
-Purifier::Purifier(z3::expr const & e) :
+Purifier::Purifier(z3::expr_vector const & e) :
   ctx(e.ctx()), 
   oct_component(ctx), euf_component(ctx), 
-  map_oct(), map_euf(),
-  from(ctx), to(ctx), formula(purify(e))
+  oct_fresh_ids(), euf_fresh_ids(),from(ctx), to(ctx), input(purify(e))
 {
-  split(formula);
+  split(input);
 #if _DEBUGPURIFIER_
   std::cout << *this << std::endl;
 #endif
 }
 
+z3::expr_vector Purifier::purify(z3::expr_vector const & assertions){
+  z3::expr_vector result(assertions.ctx());
+  for(auto const & assertion : assertions)
+    result.push_back(purify(assertion));
+  return result;
+}
+
 z3::expr Purifier::purify(z3::expr const & e){
-  z3::expr _formula = traverse(e);
+  z3::expr _input = traverse(e);
   unsigned num_new_symbols = from.size();
   for(unsigned i = 0; i < num_new_symbols; i++)
-    _formula = _formula && from[i] == to[i];
+    _input = _input && from[i] == to[i];
   // "from" and "to" are no longer needed 
   from.resize(0);
   to  .resize(0);
-  return _formula;
+  return _input;
 }
 
 z3::expr Purifier::traverse(z3::expr const & e){
@@ -31,8 +37,15 @@ z3::expr Purifier::traverse(z3::expr const & e){
     auto f = e.decl();
 
     switch(f.decl_kind()){
-      case Z3_OP_AND: // FIX: Arity might not be 2 (?)
-        return f(traverse(e.arg(0)), traverse(e.arg(1)));
+      case Z3_OP_AND: 
+        {
+          z3::expr_vector args(ctx);
+          unsigned num_args = e.num_args();
+          for(unsigned _i = 0; _i < num_args; ++_i)
+            args.push_back(traverse(e.arg(_i)));
+          return z3::mk_and(args);
+          //return f(traverse(e.arg(0)), traverse(e.arg(1)));
+        }
       case Z3_OP_EQ:
       case Z3_OP_DISTINCT:
         return f(purifyEUFTerm(e.arg(0)), purifyEUFTerm(e.arg(1)));
@@ -69,10 +82,10 @@ z3::expr Purifier::purifyOctagonTerm(z3::expr const & term){
         {
           if(num == 0)
             return term;
-          if(map_euf.find(term.id()) == map_euf.end()){
+          if(euf_fresh_ids.find(term.id()) == euf_fresh_ids.end()){
             std::string fresh_name = "euf_" + std::to_string(++fresh_var_id);
             auto fresh_constant = ctx.constant(fresh_name.c_str(), f.range());
-            map_euf[term.id()] = fresh_var_id;
+            euf_fresh_ids[term.id()] = fresh_var_id;
             // At this point, the top-most symbol of the term e
             // belongs to the EUF signature
             // So we purify e using that signature
@@ -80,7 +93,7 @@ z3::expr Purifier::purifyOctagonTerm(z3::expr const & term){
             to.push_back(fresh_constant);
             return fresh_constant;
           }	
-          std::string fresh_name = "euf_" + std::to_string(map_euf[term.id()]);
+          std::string fresh_name = "euf_" + std::to_string(euf_fresh_ids[term.id()]);
           return ctx.constant(fresh_name.c_str(), f.range());
         }
       default:
@@ -107,11 +120,10 @@ z3::expr Purifier::purifyEUFTerm(z3::expr const & term){
         // Otherwise, we result such constant
       case Z3_OP_ANUM: 
         {
-
-          if(map_oct.find(term.id()) == map_oct.end()){
+          if(oct_fresh_ids.find(term.id()) == oct_fresh_ids.end()){
             std::string fresh_name = "oct_" + std::to_string(++fresh_var_id);
             auto fresh_constant = ctx.constant(fresh_name.c_str(), f.range());
-            map_oct[term.id()] = fresh_var_id;
+            oct_fresh_ids[term.id()] = fresh_var_id;
 
             // At this point, the top-most symbol of the term e
             // belongs to the Octagon signature
@@ -120,7 +132,7 @@ z3::expr Purifier::purifyEUFTerm(z3::expr const & term){
             to.push_back(fresh_constant);
             return fresh_constant;
           }
-          std::string fresh_name = "oct_" + std::to_string(map_oct[term.id()]);
+          std::string fresh_name = "oct_" + std::to_string(oct_fresh_ids[term.id()]);
           return ctx.constant(fresh_name.c_str(), f.range());
         }
       case Z3_OP_UNINTERPRETED:
@@ -141,14 +153,23 @@ z3::expr Purifier::purifyEUFTerm(z3::expr const & term){
   throw "Error @ Purifier::purifyEUFTerm : The expression is not quantifier free";
 }
 
+void Purifier::split(z3::expr_vector const & e){
+  for(auto const & entry : e)
+    split(entry);
+}
 
 void Purifier::split(z3::expr const & e){
   auto f = e.decl();
 
   switch(f.decl_kind()){
-    case Z3_OP_AND: // FIX: Arity might not be 2 (?)
-      split(e.arg(0));
-      split(e.arg(1));
+    case Z3_OP_AND: 
+      {
+        unsigned num_args = e.num_args();
+        for(unsigned _i = 0; _i < num_args; ++_i)
+          split(e.arg(_i));
+        //split(e.arg(0));
+        //split(e.arg(1));
+      }
       return;
     case Z3_OP_EQ:
     case Z3_OP_DISTINCT:

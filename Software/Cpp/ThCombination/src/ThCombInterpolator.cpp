@@ -2,8 +2,9 @@
 #define _DEBUGEXTPURIFIER_ false
 
 ThCombInterpolator::ThCombInterpolator(z3::context & ctx,
-    z3::expr const & formula_a, z3::expr const & formula_b) :
-  ctx(ctx), part_a(formula_a), part_b(formula_b),
+    z3::expr_vector const & formula_a, z3::expr_vector const & formula_b) :
+  ctx(ctx), 
+  part_a(formula_a), part_b(formula_b),
   euf_solver(ctx, "QF_UF"), oct_solver(ctx, "QF_LIA"),
   partial_interpolants(ctx)
 {
