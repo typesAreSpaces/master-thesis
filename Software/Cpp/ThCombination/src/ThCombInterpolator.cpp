@@ -21,30 +21,23 @@ ThCombInterpolator::~ThCombInterpolator(){
 }
 
 void ThCombInterpolator::checkImpliedEqualities(z3::expr_vector & v, z3::solver & s){
-  // -----------------------------------
-  // // Client code example
-  // z3::expr_vector terms(ctx);
-  // terms.push_back(x1);
-  // terms.push_back(x2);
-  // terms.push_back(x3);
 
-  // check_implied_equalities(terms, s);
-  // -----------------------------------
-  unsigned num = v.size();
-  Z3_ast   terms[num];
-  unsigned class_ids[num];
+  unsigned num_terms = v.size();
+  Z3_ast   terms[num_terms];
+  unsigned class_ids[num_terms];
 
-  for(unsigned i = 0; i < num; i++){
+  for(unsigned i = 0; i < num_terms; i++){
     terms[i] = v[i];
     class_ids[i] = 0;
   }
 
-  auto check = Z3_get_implied_equalities(v.ctx(), s, num, terms, class_ids);
+  auto check = Z3_get_implied_equalities(v.ctx(), s, num_terms, terms, class_ids);
+  //auto check2 = s.check_implied_equalities(num_terms, v, class_ids); // Another option
 
   switch(check){
     case Z3_L_TRUE:
       std::cout << "sat" << std::endl;
-      for(unsigned i = 0; i < num; i++)
+      for(unsigned i = 0; i < num_terms; i++)
         std::cout << "Class " << Z3_ast_to_string(v.ctx(), terms[i])
           << " -> " << class_ids[i] << std::endl;
       return;
