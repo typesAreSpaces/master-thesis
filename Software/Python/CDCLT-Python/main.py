@@ -1,7 +1,8 @@
 #!/usr/bin/env python
-from cdclT       import simple_cdclT
-from print_proof import print_proof
-from z3          import *
+from z3 import *
+# from simple_cdclT import simple_cdclT
+from cdclT import cdclT
+# from print_proof import print_proof
 
 Z = IntSort()
 B = BoolSort()
@@ -17,6 +18,7 @@ example_5 = [[x1, x4],[x1, Not(x3), Not(x8)],[x1, x8, x12],[x2, x11],[Not(x7), N
 example_6 = [[x1, x2],[x1, Not(x2)],[Not(x1), x3],[Not(x1), Not(x3)]]
 example_7 = [[x >= 10, y + x == 192],[x >= 10, Not(y + x == 192)],[Not(x >= 10), x - y < 0],[Not(x >= 10), Not(x - y < 0)]]
 
-simple_cdclT(example_4)
+# simple_cdclT(example_4)
+cdclT(example_4)
 
 # print_proof([Or(clause) for clause in example_5])
