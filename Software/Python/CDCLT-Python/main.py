@@ -19,6 +19,6 @@ example_6 = [[x1, x2],[x1, Not(x2)],[Not(x1), x3],[Not(x1), Not(x3)]]
 example_7 = [[x >= 10, y + x == 192],[x >= 10, Not(y + x == 192)],[Not(x >= 10), x - y < 0],[Not(x >= 10), Not(x - y < 0)]]
 
 # simple_cdclT(example_4)
-cdclT(example_4)
+cdclT(example_3)
 
 # print_proof([Or(clause) for clause in example_5])
