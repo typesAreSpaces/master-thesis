@@ -9,7 +9,7 @@ def cdclT(clauses):
     abstractions = {} 
     concretes    = {}
 
-    prop_solver  .add(abstract_clauses (abstractions, concretes, clauses))
+    prop_solver  .add(abstract_clauses(abstractions, concretes, clauses))
     theory_solver.add([Or(clause) for clause in clauses])
 
     while True:

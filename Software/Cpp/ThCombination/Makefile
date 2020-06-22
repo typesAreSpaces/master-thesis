@@ -27,13 +27,21 @@ DEPS = $(wildcard $(IDIR)/*.h)
 # ------------------------------------------------------------------------------------------
 #  Build
 
-all: tests/basic_test
+#all: tests/basic_test
+all: tests/cdcl_t_test
 
 $(ODIR)/%.o: $(SDIR)/%.cpp $(DEPS)
 	$(CC) -g -c -o $@ $(FLAGS) $<
 
 # ------------------------------------------------------------------------------------------
 #  Tests
+
+.PHONY: tests/cdcl_t_test
+tests/cdcl_t_test: $(OBJS)
+	$(CC) -g -c -o ./$@.o $(FLAGS) ./$@.cpp
+	$(CC) -g -o $@ $(OBJS) ./$@.o -lpthread -Wall
+	./$@
+	rm -rf tests/*.o $@
 
 .PHONY: tests/basic_test
 tests/basic_test: $(OBJS)
