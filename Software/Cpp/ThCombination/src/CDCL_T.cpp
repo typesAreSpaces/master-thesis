@@ -47,9 +47,19 @@ z3::expr CDCL_T::abstract_clause(z3::expr const & clause){
           args.push_back(abstract_lit(clause.arg(_i)));
         return z3::mk_or(args);
       }
-      break;
-    default:
+    case Z3_OP_EQ:
+    case Z3_OP_DISTINCT:
+    case Z3_OP_LE:    
+    case Z3_OP_GE:
+    case Z3_OP_LT:
+    case Z3_OP_GT:
+    case Z3_OP_NOT:
+    case Z3_OP_UNINTERPRETED:
       return abstract_lit(clause);
+    default:
+      throw "Error @ CDCL_T::abstract_lit." 
+        "The expression is not a disjunction of "
+        "allowed predicates in QF_UF with UTVPI.";
   }
   return clause;
 }

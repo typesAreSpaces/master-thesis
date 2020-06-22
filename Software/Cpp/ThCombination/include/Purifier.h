@@ -1,5 +1,6 @@
 #ifndef _PURIFIER_
 #define _PURIFIER_
+#define _DEBUG_SHARING_ 0
 
 #include <iostream>
 #include <z3++.h>
@@ -12,6 +13,11 @@
 
 class Purifier {
 
+  typedef unsigned Z3_EXPR_ID;
+  typedef unsigned OCT_FRESH_ID;
+  typedef unsigned EUF_FRESH_ID;
+  typedef std::map<Z3_EXPR_ID, z3::expr const> SharingMap;
+
 protected:
   static unsigned fresh_var_id;
 
@@ -20,11 +26,14 @@ protected:
   z3::expr_vector oct_component;
   z3::expr_vector euf_component;
 
-  std::map<unsigned, unsigned> oct_fresh_ids;
-  std::map<unsigned, unsigned> euf_fresh_ids;
-  z3::expr_vector              from;
-  z3::expr_vector              to;
-  z3::expr_vector const        input;
+  z3::expr_vector shared_variables;
+
+  std::map<Z3_EXPR_ID, OCT_FRESH_ID> oct_fresh_ids;
+  std::map<Z3_EXPR_ID, EUF_FRESH_ID> euf_fresh_ids;
+
+  z3::expr_vector       from;
+  z3::expr_vector       to;
+  z3::expr_vector const input;
 
 private:  
   z3::expr_vector purify(z3::expr_vector const &);
@@ -35,13 +44,15 @@ private:
 
   void split(z3::expr const &);
   void split(z3::expr_vector const &);
+  void update_shared_vars();
+  void aux_update_shared_vars(z3::expr const &, SharingMap &);
   
 public:
   Purifier(z3::expr_vector const &);
 
-  void addEufFormulasToSolver(z3::solver &);
-  void addOctFormulasToSolver(z3::solver &);
-  bool inside(z3::expr const &);
+  void addEufFormulasToSolver(z3::solver &); // TODO: Why do I need this function?
+  void addOctFormulasToSolver(z3::solver &); // TODO: Why do I need this function?
+  bool inside(z3::expr const &);             // TODO: Why do I need this function?
   
   friend std::ostream & operator << (std::ostream &, Purifier &);
 };

@@ -6,11 +6,21 @@ unsigned Purifier::fresh_var_id = 0;
 Purifier::Purifier(z3::expr_vector const & e) :
   ctx(e.ctx()), 
   oct_component(ctx), euf_component(ctx), 
+  shared_variables(ctx),
   oct_fresh_ids(), euf_fresh_ids(),from(ctx), to(ctx), input(purify(e))
 {
   split(input);
 #if _DEBUGPURIFIER_
   std::cout << *this << std::endl;
+#endif
+  update_shared_vars();
+#if _DEBUG_SHARING_
+  std::cout << "Shared variables" << std::endl;
+  std::cout << shared_variables << std::endl;
+  std::cout << "OCT component" << std::endl;
+  std::cout << oct_component << std::endl;
+  std::cout << "EUF component" << std::endl;
+  std::cout << euf_component << std::endl;
 #endif
 }
 
@@ -159,41 +169,88 @@ void Purifier::split(z3::expr_vector const & e){
 }
 
 void Purifier::split(z3::expr const & e){
-  auto f = e.decl();
+  if(e.is_app()){
+    auto f = e.decl();
 
-  switch(f.decl_kind()){
-    case Z3_OP_AND: 
-      {
-        unsigned num_args = e.num_args();
-        for(unsigned _i = 0; _i < num_args; ++_i)
-          split(e.arg(_i));
-        //split(e.arg(0));
-        //split(e.arg(1));
-      }
-      return;
-    case Z3_OP_EQ:
-    case Z3_OP_DISTINCT:
-      // We check the lhs of the equation/disequation
-      // because we keep the old term "from" on that
-      // side
-      switch(e.arg(0).decl().decl_kind()){
-        case Z3_OP_UNINTERPRETED:
-          euf_component.push_back(e);
-          return;
-        default:
-          oct_component.push_back(e);
-          return;
-      }
-    case Z3_OP_LE:    
-    case Z3_OP_GE:
-    case Z3_OP_LT:
-    case Z3_OP_GT:
-      oct_component.push_back(e);
-      return;
+    switch(f.decl_kind()){
+      case Z3_OP_AND: 
+        {
+          unsigned num_args = e.num_args();
+          for(unsigned _i = 0; _i < num_args; ++_i)
+            split(e.arg(_i));
+        }
+        return;
+      case Z3_OP_EQ:
+      case Z3_OP_DISTINCT:
+        // We check the lhs of the equation/disequation
+        // because we keep the old term "from" on that
+        // side
+        switch(e.arg(0).decl().decl_kind()){
+          case Z3_OP_UNINTERPRETED:
+            euf_component.push_back(e);
+            return;
+          default:
+            oct_component.push_back(e);
+            return;
+        }
+      case Z3_OP_LE:    
+      case Z3_OP_GE:
+      case Z3_OP_LT:
+      case Z3_OP_GT:
+        oct_component.push_back(e);
+        return;
 
-    default:
-      throw "Error @ Purifier::split : Predicate not allowed";
+      default:
+        throw "Error @ Purifier::split :" 
+          "Predicate not allowed";
+    }
   }
+  throw "Error @ Purifier::split :" 
+    "The expression is not an application";
+}
+
+void Purifier::update_shared_vars(){
+  SharingMap oct_map({});
+  SharingMap euf_map({});
+
+  for(auto const & formula : oct_component)
+    aux_update_shared_vars(formula, oct_map);
+  for(auto const & formula : euf_component)
+    aux_update_shared_vars(formula, euf_map);
+
+  for(auto const & map_elem : oct_map)
+    if(euf_map.find(map_elem.first) != euf_map.end())
+      shared_variables.push_back(map_elem.second);
+}
+
+void Purifier::aux_update_shared_vars(z3::expr const & e, SharingMap & s_map){
+  if(e.is_app()){
+
+    auto f = e.decl().decl_kind();
+    switch(f){
+      case Z3_OP_UNINTERPRETED:
+        {
+          unsigned num_args = e.num_args();
+          if(num_args == 0){
+            s_map.insert({e.id(), e});
+            return;
+          }
+          for(unsigned _i = 0; _i < num_args; ++_i){
+            aux_update_shared_vars(e.arg(_i), s_map);
+          }
+          return;
+        }
+      default: 
+        {
+          unsigned num_args = e.num_args();
+          for(unsigned _i = 0; _i < num_args; ++_i)
+            aux_update_shared_vars(e.arg(_i), s_map);
+          return;
+        }
+    }
+  }
+  throw "Error @ Purifier::aux_update_shared_vars"
+    "The expression is not an application";
 }
 
 void Purifier::addEufFormulasToSolver(z3::solver & s){
