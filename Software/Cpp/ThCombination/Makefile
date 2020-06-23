@@ -38,14 +38,14 @@ $(ODIR)/%.o: $(SDIR)/%.cpp $(DEPS)
 #  Tests
 
 .PHONY: tests/cdcl_t_test
-tests/cdcl_t_test: $(OBJS)
+tests/cdcl_t_test: $(OBJS) # Done 
 	$(CC) -g -c -o ./$@.o $(FLAGS) ./$@.cpp
 	$(CC) -g -o $@ $(OBJS) ./$@.o -lpthread -Wall
 	./$@
 	rm -rf tests/*.o $@
 
 .PHONY: tests/combinatorics_test
-tests/combinatorics_test: $(OBJS)
+tests/combinatorics_test: $(OBJS) # Done
 	$(CC) -g -c -o ./$@.o $(FLAGS) ./$@.cpp
 	$(CC) -g -o $@ $(OBJS) ./$@.o -lpthread -Wall
 	./$@
