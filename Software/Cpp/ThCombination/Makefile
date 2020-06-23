@@ -27,7 +27,7 @@ DEPS = $(wildcard $(IDIR)/*.h)
 # ------------------------------------------------------------------------------------------
 #  Build
 
-all: tests/basic_test
+all: tests/combinatorics_test
 #all: tests/cdcl_t_test
 
 $(ODIR)/%.o: $(SDIR)/%.cpp $(DEPS)
@@ -38,6 +38,13 @@ $(ODIR)/%.o: $(SDIR)/%.cpp $(DEPS)
 
 .PHONY: tests/cdcl_t_test
 tests/cdcl_t_test: $(OBJS)
+	$(CC) -g -c -o ./$@.o $(FLAGS) ./$@.cpp
+	$(CC) -g -o $@ $(OBJS) ./$@.o -lpthread -Wall
+	./$@
+	rm -rf tests/*.o $@
+
+.PHONY: tests/combinatorics_test
+tests/combinatorics_test: $(OBJS)
 	$(CC) -g -c -o ./$@.o $(FLAGS) ./$@.cpp
 	$(CC) -g -o $@ $(OBJS) ./$@.o -lpthread -Wall
 	./$@
