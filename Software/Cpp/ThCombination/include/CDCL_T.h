@@ -1,6 +1,7 @@
 #ifndef _CDCL_T_
 #define _CDCL_T_
 
+#include <iostream>
 #include <z3++.h>
 #include <map>
 
@@ -13,6 +14,8 @@ class CDCL_T {
   
   z3::expr_map abstractions;
   z3::expr_map concretes;
+  
+  z3::expr_vector conflict_clauses;
 
   z3::expr abstract_atom(z3::expr const &);
   z3::expr abstract_lit(z3::expr const &);
@@ -21,10 +24,11 @@ class CDCL_T {
 
   z3::expr_vector mk_lits(z3::model const &);
   void block_conflict_clause(z3::expr_vector const &); 
-  void cdcl();
+  void loop();
 
   public:
   CDCL_T(z3::context &, z3::expr_vector const &);
+  friend std::ostream & operator << (std::ostream &, CDCL_T const &);
 };
 
 #endif

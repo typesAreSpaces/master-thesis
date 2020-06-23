@@ -5,7 +5,8 @@ CDCL_T::CDCL_T(z3::context & ctx, z3::expr_vector const & formulas) :
   index(0),
   ctx(ctx),
   prop_solver(ctx), theory_solver(ctx),
-  abstractions(ctx), concretes(ctx)
+  abstractions(ctx), concretes(ctx),
+  conflict_clauses(ctx)
 {
   try {
     for(auto const & abstract_clause : abstract_clauses(formulas))
@@ -18,7 +19,7 @@ CDCL_T::CDCL_T(z3::context & ctx, z3::expr_vector const & formulas) :
   for(auto const & clause : formulas)
     theory_solver.add(clause);
 
-  cdcl();
+  loop();
 }
 
 z3::expr CDCL_T::abstract_atom(z3::expr const & atom){
@@ -89,7 +90,7 @@ void CDCL_T::block_conflict_clause(z3::expr_vector const & unsat_cores){
   prop_solver.add(not(z3::mk_and(result)));
 }
 
-void CDCL_T::cdcl(){
+void CDCL_T::loop(){
   while(true){
     auto is_sat = prop_solver.check();
     if(z3::sat == is_sat){
@@ -98,23 +99,22 @@ void CDCL_T::cdcl(){
       if(z3::unsat == theory_solver.check(lits)){
         auto unsat_cores = theory_solver.unsat_core();
         block_conflict_clause(unsat_cores);
-        // ------------------------------------------
-        // TODO: store the conflict clauses somewhere
-        // in order to compute the
-        // partial conflict clauses interpolants later
-        // -------------------------------------------------
-        auto conflict_clause = not(z3::mk_and(unsat_cores));
-        std::cout << "Conflict clause found " << conflict_clause << std::endl;
-        // -------------------------------------------------------------------
+        conflict_clauses.push_back(not(z3::mk_and(unsat_cores)));
       }
-      else{
-        std::cout << "Result: sat" << std::endl;
-        std::cout << "Model: \n" << theory_solver.get_model() << std::endl;
-      }
+      //else{
+        //std::cout << "Result: sat" << std::endl;
+        //std::cout << "Model: \n" << theory_solver.get_model() << std::endl;
+      //}
     }
     else{
-      std::cout << "Result: unsat" << std::endl;
+      //std::cout << "Result: unsat" << std::endl;
       return;
     }
   }
+}
+
+std::ostream & operator << (std::ostream & os, CDCL_T const & cdcl){
+  return os 
+    << "Conflict clauses found" << std::endl 
+    << cdcl.conflict_clauses;
 }
