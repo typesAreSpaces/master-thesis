@@ -1,4 +1,5 @@
 #include "ThCombInterpolator.h"
+#include <z3++.h>
 #define _DEBUGEXTPURIFIER_ false
 
 ThCombInterpolator::ThCombInterpolator(z3::context & ctx,
@@ -20,31 +21,25 @@ ThCombInterpolator::ThCombInterpolator(z3::context & ctx,
 ThCombInterpolator::~ThCombInterpolator(){
 }
 
-void ThCombInterpolator::checkImpliedEqualities(z3::expr_vector & v, z3::solver & s){
+void ThCombInterpolator::checkImpliedEqualities(z3::expr_vector & terms, z3::solver & s){
 
-  unsigned num_terms = v.size();
-  Z3_ast   terms[num_terms];
+  unsigned num_terms = terms.size();
   unsigned class_ids[num_terms];
 
-  for(unsigned i = 0; i < num_terms; i++){
-    terms[i] = v[i];
+  for(unsigned i = 0; i < num_terms; i++)
     class_ids[i] = 0;
-  }
 
-  auto check = Z3_get_implied_equalities(v.ctx(), s, num_terms, terms, class_ids);
-  //auto check2 = s.check_implied_equalities(num_terms, v, class_ids); // Another option
-
-  switch(check){
-    case Z3_L_TRUE:
+  switch(s.check_implied_equalities(num_terms, terms, class_ids)){
+    case z3::sat:
       std::cout << "sat" << std::endl;
       for(unsigned i = 0; i < num_terms; i++)
-        std::cout << "Class " << Z3_ast_to_string(v.ctx(), terms[i])
+        std::cout << "Class " << terms[i] 
           << " -> " << class_ids[i] << std::endl;
       return;
-    case Z3_L_FALSE:
+    case z3::unsat:
       std::cout << "unsat" << std::endl;
       return;
-    case Z3_L_UNDEF:
+    case z3::unknown:
       std::cout << "unknown" << std::endl;
       return;
   }
@@ -78,15 +73,10 @@ z3::expr ThCombInterpolator::partialInterpolantConvex(){
   return ctx.bool_val(true);
 }
 
-z3::expr ThCombInterpolator::partialInterpolantClauses(){
+z3::expr ThCombInterpolator::partialInterpolantConflictClause(){
   return ctx.bool_val(true);
 }
 
-z3::expr ThCombInterpolator::partialInterpolantThLemmas(){
-  return ctx.bool_val(true);
-}
-
-// The first argument is a partial interpolant
 // The second argument is a proof
 z3::expr ThCombInterpolator::partialInterpolantUnitResolution(z3::expr const & partial_c1, z3::expr const & x){
   unsigned temp_size = x.num_args();
@@ -126,12 +116,12 @@ void ThCombInterpolator::traverseProof1(z3::expr const & proof) {
         {
           // Invariant --------------------------------------------------------
           auto consequent = proof.arg(num - 1);
-          partial_interpolants.insert(consequent, partialInterpolantClauses());
+          partial_interpolants.insert(consequent, partialInterpolantConflictClause());
           //           --------------------------------------------------------
-          // Printing --------------------------------------------------------------------------------------------
+          // Printing -------------------------------
           std::cout << proof_decl.name() << ": ";
           std::cout << "|- " << proof.arg(num - 1) << " ; " << partial_interpolants.find(consequent) << std::endl;
-          //          --------------------------------------------------------------------------------------------
+          //          ---------------------
           return;
         }
       case Z3_OP_PR_ASSERTED:
@@ -153,14 +143,14 @@ void ThCombInterpolator::traverseProof1(z3::expr const & proof) {
           for(unsigned i = 0; i < num - 1; i++)
             traverseProof1(proof.arg(i));
 
-          // Invariant -------------------------------------------------------------------------------------------------------------------
+          // Invariant ----------------------------
           unsigned temp_size = proof.arg(0).num_args();
           z3::expr temp_partial_interpolant = partialInterpolantUnitResolution(partial_interpolants.find(proof.arg(0).arg(temp_size - 1)),
               proof.arg(1));
           for(unsigned i = 2; i < num - 1; i++)
             temp_partial_interpolant = partialInterpolantUnitResolution(temp_partial_interpolant, proof.arg(i));
           partial_interpolants.insert(proof.arg(num - 1), temp_partial_interpolant);
-          //           -------------------------------------------------------------------------------------------------------------------
+          //           ---------------------------
           // Printing -----
           printf___(proof);
           //          -----
@@ -172,7 +162,8 @@ void ThCombInterpolator::traverseProof1(z3::expr const & proof) {
             traverseProof1(proof.arg(i));
 
           // Invariant -----------------------------------------------------------------
-          partial_interpolants.insert(proof.arg(num - 1), partialInterpolantThLemmas());
+          // WRONG:
+          partial_interpolants.insert(proof.arg(num - 1), partialInterpolantConvex());
           //           -----------------------------------------------------------------
           // Printing -----
           printf___(proof);
@@ -193,9 +184,9 @@ void ThCombInterpolator::traverseProof1(z3::expr const & proof) {
           auto consequent = proof.arg(num - 1);
           partial_interpolants.insert(consequent, ctx.bool_val(true)); // Wrong! Just momentarily
 
-          // Printing consequent  --------------------------------------------------------------------------------
+          // Printing consequent  ---------------
           std::cout << "|- " << proof.arg(num - 1) << " ; " << partial_interpolants.find(consequent) << std::endl;
-          //          --------------------------------------------------------------------------------------------
+          //          --------------------------
           return;
         }
     }

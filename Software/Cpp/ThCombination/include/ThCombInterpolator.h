@@ -18,14 +18,12 @@ class ThCombInterpolator {
   bool isProvable(z3::solver &, z3::expr const &);     // Perhaps this wont be used that much (??)
   void addConjunction(z3::solver &, z3::expr const &); // Perhaps this wont be used that much (?)
 
-  z3::expr partialInterpolantConvex();
-  z3::expr partialInterpolantClauses();
-  z3::expr partialInterpolantThLemmas();
-  // The first argument is a partial interpolant
-  // The second argument is a proof
-  z3::expr partialInterpolantUnitResolution(z3::expr const &, z3::expr const &); // Here
+  z3::expr partialInterpolantConvex();// TODO: implement
+  z3::expr partialInterpolantConflictClause();// TODO: implement
+  z3::expr partialInterpolantUnitResolution(z3::expr const &, z3::expr const &);// TODO: implement
   
-  void printf___(z3::expr const &); // Here
+  void printf___(z3::expr const &);
+
   void traverseProof1(z3::expr const &); // Here
   void traverseProof2(z3::expr const &, z3::expr_vector &);
   
