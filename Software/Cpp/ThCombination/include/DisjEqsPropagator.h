@@ -2,6 +2,8 @@
 #define _COMB_
 
 #include <vector>
+#include <deque>
+#include <utility>
 #include <z3++.h>
 
 // Reference
@@ -16,8 +18,12 @@ class DisjEqsPropagator {
   Combination equalities;
 
   unsigned     size;
+  unsigned     subset_size_query;
+
   Combination  current_combination;
   Combinations result;
+
+  std::deque<std::pair<unsigned, unsigned>> current_state;
 
   void makeCombinationsUtil(unsigned, unsigned);
 
@@ -25,6 +31,10 @@ class DisjEqsPropagator {
   DisjEqsPropagator(Combination const &);
 
   Combinations makeCombinations(unsigned);
+
+  void init(unsigned);
+  bool next();
+  Combination getCurrentCombination() const;
 
   class iterator {
 

@@ -32,12 +32,27 @@ void test3(std::vector<z3::expr> const & elems){
   auto it = c.begin();
   unsigned i = 0;
   for(; !it.isLast(); it.next()){
-    std::cout << i++ << ". ";
-    auto const & print_this = *it;
-    for(auto const & x : print_this)
-      std::cout << x << " ";
-    std::cout << std::endl;
+    i++;
+    //std::cout << i++ << ". ";
+    //auto const & print_this = *it;
+    //for(auto const & x : print_this)
+      //std::cout << x << " ";
+    //std::cout << std::endl;
   }
+  std::cout << "Number of nodes visited " << i << std::endl;
+}
+
+void test4(std::vector<z3::expr> const & elems){
+  DisjEqsPropagator c(elems);
+  c.init(2);
+  unsigned count = 0;
+  while(c.next()){
+    //for(auto const & x : c.getCurrentCombination())
+      //std::cout << x << " ";
+    //std::cout << std::endl;
+    ++count;
+  }
+  std::cout << count << std::endl;
 }
 
 int main(){
@@ -64,15 +79,18 @@ int main(){
   elems2.push_back(x1);
   elems2.push_back(x2);
   elems2.push_back(x3);
-  elems2.push_back(x4);
-  elems2.push_back(x5);
-  elems2.push_back(x6);
-  elems2.push_back(x7);
-  elems2.push_back(x8);
+  //elems2.push_back(x4);
+  //elems2.push_back(x5);
+  //elems2.push_back(x6);
+  //elems2.push_back(x7);
+  // Currently DisjEqsPropagator cannot handle 
+  // more than 7 shared variables
+  //elems2.push_back(x8); 
   
   //test1(elems);
   //test2(elems);
-  test3(elems2);
+  //test3(elems2);
+  test4(elems2);
 
   return 0;
 }

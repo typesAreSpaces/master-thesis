@@ -1,0 +1,143 @@
+let SessionLoad = 1
+let s:so_save = &so | let s:siso_save = &siso | set so=0 siso=0
+let v:this_session=expand("<sfile>:p")
+silent only
+cd ~/Documents/GithubProjects/master-thesis/Software/Cpp/ThCombination
+if expand('%') == '' && !&modified && line('$') <= 1 && getline(1) == ''
+  let s:wipebuf = bufnr('%')
+endif
+set shortmess=aoO
+badd +22 include/Purifier.h
+badd +5 src/Purifier.cpp
+badd +145 src/ThCombInterpolator.cpp
+badd +27 include/ThCombInterpolator.h
+badd +31 src/main.cpp
+badd +91 src/HornClauses.cpp
+badd +43 tests/basic_test.cpp
+badd +5 include/DisjEqsIterator.h
+badd +39 include/Combinatorics.h
+badd +1 src/Combinatorics.cpp
+badd +24 tests/combinatorics_test.cpp
+badd +71 tests/disj_eqs_propagator_test.cpp
+badd +10 include/DisjEqsPropagator.h
+badd +63 src/DisjEqsPropagator.cpp
+argglobal
+%argdel
+edit include/DisjEqsPropagator.h
+set splitbelow splitright
+wincmd _ | wincmd |
+vsplit
+wincmd _ | wincmd |
+vsplit
+2wincmd h
+wincmd w
+wincmd _ | wincmd |
+split
+1wincmd k
+wincmd w
+wincmd w
+set nosplitbelow
+set nosplitright
+wincmd t
+set winminheight=0
+set winheight=1
+set winminwidth=0
+set winwidth=1
+exe 'vert 1resize ' . ((&columns * 104 + 157) / 315)
+exe '2resize ' . ((&lines * 20 + 21) / 42)
+exe 'vert 2resize ' . ((&columns * 105 + 157) / 315)
+exe '3resize ' . ((&lines * 19 + 21) / 42)
+exe 'vert 3resize ' . ((&columns * 105 + 157) / 315)
+exe 'vert 4resize ' . ((&columns * 104 + 157) / 315)
+argglobal
+setlocal fdm=manual
+setlocal fde=0
+setlocal fmr={{{,}}}
+setlocal fdi=#
+setlocal fdl=0
+setlocal fml=1
+setlocal fdn=20
+setlocal fen
+silent! normal! zE
+let s:l = 22 - ((17 * winheight(0) + 20) / 40)
+if s:l < 1 | let s:l = 1 | endif
+exe s:l
+normal! zt
+22
+normal! 0
+wincmd w
+argglobal
+if bufexists("src/DisjEqsPropagator.cpp") | buffer src/DisjEqsPropagator.cpp | else | edit src/DisjEqsPropagator.cpp | endif
+setlocal fdm=manual
+setlocal fde=0
+setlocal fmr={{{,}}}
+setlocal fdi=#
+setlocal fdl=0
+setlocal fml=1
+setlocal fdn=20
+setlocal fen
+silent! normal! zE
+let s:l = 52 - ((13 * winheight(0) + 10) / 20)
+if s:l < 1 | let s:l = 1 | endif
+exe s:l
+normal! zt
+52
+normal! 036|
+wincmd w
+argglobal
+if bufexists("src/DisjEqsPropagator.cpp") | buffer src/DisjEqsPropagator.cpp | else | edit src/DisjEqsPropagator.cpp | endif
+setlocal fdm=manual
+setlocal fde=0
+setlocal fmr={{{,}}}
+setlocal fdi=#
+setlocal fdl=0
+setlocal fml=1
+setlocal fdn=20
+setlocal fen
+silent! normal! zE
+let s:l = 6 - ((5 * winheight(0) + 9) / 19)
+if s:l < 1 | let s:l = 1 | endif
+exe s:l
+normal! zt
+6
+normal! 070|
+wincmd w
+argglobal
+if bufexists("tests/disj_eqs_propagator_test.cpp") | buffer tests/disj_eqs_propagator_test.cpp | else | edit tests/disj_eqs_propagator_test.cpp | endif
+setlocal fdm=manual
+setlocal fde=0
+setlocal fmr={{{,}}}
+setlocal fdi=#
+setlocal fdl=0
+setlocal fml=1
+setlocal fdn=20
+setlocal fen
+silent! normal! zE
+let s:l = 47 - ((9 * winheight(0) + 20) / 40)
+if s:l < 1 | let s:l = 1 | endif
+exe s:l
+normal! zt
+47
+normal! 010|
+wincmd w
+2wincmd w
+exe 'vert 1resize ' . ((&columns * 104 + 157) / 315)
+exe '2resize ' . ((&lines * 20 + 21) / 42)
+exe 'vert 2resize ' . ((&columns * 105 + 157) / 315)
+exe '3resize ' . ((&lines * 19 + 21) / 42)
+exe 'vert 3resize ' . ((&columns * 105 + 157) / 315)
+exe 'vert 4resize ' . ((&columns * 104 + 157) / 315)
+tabnext 1
+if exists('s:wipebuf') && getbufvar(s:wipebuf, '&buftype') isnot# 'terminal'
+  silent exe 'bwipe ' . s:wipebuf
+endif
+unlet! s:wipebuf
+set winheight=1 winwidth=20 winminheight=1 winminwidth=1 shortmess=filnxtToOFIc
+let s:sx = expand("<sfile>:p:r")."x.vim"
+if file_readable(s:sx)
+  exe "source " . fnameescape(s:sx)
+endif
+let &so = s:so_save | let &siso = s:siso_save
+doautoall SessionLoadPost
+unlet SessionLoad
+" vim: set ft=vim :
