@@ -71,22 +71,30 @@ DisjEqsPropagator::Combination DisjEqsPropagator::getCurrentCombination() const 
 }
 
 DisjEqsPropagator::iterator::iterator(DisjEqsPropagator * it) : 
-  it(it), index_block(0), 
-  current_block(), current_disj()
+  it(it), index_block(0)
 {
 }
 
 void DisjEqsPropagator::iterator::init(){
   index_block = 1;
-  current_block = it->makeCombinations(index_block);
-  current_disj = current_block.begin();
+  it->init(index_block);
+  // We use it->next() because
+  // DisjEqsPropapator::init  just
+  // initializes the structure.
+  // It doesn't point at any element
+  // yet
+  it->next();
 }
 
 void DisjEqsPropagator::iterator::next(){
-  ++current_disj;
-  if(current_disj == current_block.end()){
-    current_block = it->makeCombinations(++index_block);
-    current_disj = current_block.begin();
+  if(!it->next()){
+    it->init(++index_block);
+    // We use it->next() because
+    // DisjEqsPropapator::init  just
+    // initializes the structure.
+    // It doesn't point at any element
+    // yet
+    it->next(); 
     return;
   }
 }
@@ -100,7 +108,7 @@ bool DisjEqsPropagator::iterator::isLast(){
 }
 
 DisjEqsPropagator::Combination DisjEqsPropagator::iterator::operator *() const {
-  return *current_disj;
+  return it->getCurrentCombination();
 }
 
 DisjEqsPropagator::iterator DisjEqsPropagator::begin(){

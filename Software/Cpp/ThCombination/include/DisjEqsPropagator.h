@@ -41,9 +41,6 @@ class DisjEqsPropagator {
     DisjEqsPropagator * it;
     unsigned            index_block;
 
-    DisjEqsPropagator::Combinations           current_block;
-    DisjEqsPropagator::Combinations::iterator current_disj;
-
     public:
     iterator(DisjEqsPropagator *);
 
