@@ -5,7 +5,7 @@ DisjEqsPropagator::DisjEqsPropagator(std::vector<z3::expr> const & elements) :
   equalities(),
   size(elements.size()*(elements.size() - 1)/2), subset_size_query(0),
   current_combination(), result(),
-  current_state()
+  iterator_state()
 {
   for(auto lhs=elements.begin(); lhs!=elements.end(); ++lhs){
     auto rhs=lhs;
@@ -33,50 +33,35 @@ DisjEqsPropagator::Combinations DisjEqsPropagator::makeCombinations(unsigned sub
 }
 
 void DisjEqsPropagator::init(unsigned subset_size){
-  current_state.clear();
-  subset_size_query = subset_size;
-  current_state.push_back({0, subset_size});
+  iterator_state.clear();
+  current_combination.clear();
 
+  if(!subset_size)
+    return;
+
+  subset_size_query = subset_size;
+  for(unsigned i = 0; i < size; ++i)
+    iterator_state.push_back({i, subset_size - 1});
 }
 
 bool DisjEqsPropagator::next(){
-  while(!current_state.empty()){
-    auto last_state = current_state[0];
-    current_state.pop_front();
-    unsigned current_index = last_state.first, 
-             current_subset_size = last_state.second;
+  while(!iterator_state.empty()){
+    auto current_state = iterator_state[0];
+    iterator_state.pop_front();
 
-    // ----------------------------------------------------
-    unsigned combination_size = current_combination.size(),
-             level = subset_size_query - current_subset_size;
+    unsigned current_index = current_state.first, 
+             current_subset_size = current_state.second,
+             current_level = subset_size_query - current_subset_size;
 
-    std::cout << "Level: " << level << std::endl;
-    std::cout << "State: " 
-      << current_index << ", "
-      << current_subset_size << std::endl;
-    
-    while(combination_size > level){
-      combination_size--;
+    while(current_combination.size() >= current_level)
       current_combination.pop_back();
-    }
-    if(current_index < size)
-      current_combination.push_back(equalities[current_index]);
-    // ----------------------------------------------------
+    current_combination.push_back(equalities[current_index]);
     
-    if(current_subset_size == 0){
-      std::cout << "The equations" << std::endl;
-      for(auto const & eq : equalities)
-        std::cout << eq << " ";
-      std::cout << std::endl;
-      std::cout << "Current combination" << std::endl;
-      for(auto const & x : current_combination)
-        std::cout << x << " ";
-      std::cout << std::endl;
+    if(current_subset_size == 0)
       return true;
-    }
 
-    for(unsigned index = current_index; index < size; ++index)
-      current_state.push_front({index + 1, current_subset_size - 1});
+    for(unsigned index = current_index + 1; index < size; ++index)
+      iterator_state.push_front({index, current_subset_size - 1});
   }
   return false;
 }

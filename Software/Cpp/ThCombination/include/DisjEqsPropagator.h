@@ -23,7 +23,7 @@ class DisjEqsPropagator {
   Combination  current_combination;
   Combinations result;
 
-  std::deque<std::pair<unsigned, unsigned>> current_state;
+  std::deque<std::pair<unsigned, unsigned>> iterator_state;
 
   void makeCombinationsUtil(unsigned, unsigned);
 

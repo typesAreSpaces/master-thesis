@@ -44,12 +44,12 @@ void test3(std::vector<z3::expr> const & elems){
 
 void test4(std::vector<z3::expr> const & elems){
   DisjEqsPropagator c(elems);
-  c.init(2);
+  c.init(4);
   unsigned count = 0;
   while(c.next()){
-    //for(auto const & x : c.getCurrentCombination())
-      //std::cout << x << " ";
-    //std::cout << std::endl;
+    for(auto const & x : c.getCurrentCombination())
+      std::cout << x << " ";
+    std::cout << std::endl;
     ++count;
   }
   std::cout << count << std::endl;
@@ -79,9 +79,9 @@ int main(){
   elems2.push_back(x1);
   elems2.push_back(x2);
   elems2.push_back(x3);
-  //elems2.push_back(x4);
-  //elems2.push_back(x5);
-  //elems2.push_back(x6);
+  elems2.push_back(x4);
+  elems2.push_back(x5);
+  elems2.push_back(x6);
   //elems2.push_back(x7);
   // Currently DisjEqsPropagator cannot handle 
   // more than 7 shared variables
