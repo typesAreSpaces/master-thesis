@@ -1,40 +1,34 @@
-#ifndef _COMB_
-#define _COMB_
+#ifndef _DISJ_EQS_PROPAGATOR_
+#define _DISJ_EQS_PROPAGATOR_
 
-#include <vector>
+#include <z3++.h>
 #include <deque>
 #include <utility>
-#include <z3++.h>
 
 // Reference
 // DFS approach:
 // https://www.geeksforgeeks.org/make-combinations-size-k/
 
 class DisjEqsPropagator {
+  typedef z3::expr_vector                            DisjEqs;
+  typedef unsigned                                   CurrentIndex;
+  typedef unsigned                                   CurrentSubsetSize;
+  typedef std::pair<CurrentIndex, CurrentSubsetSize> DFSState;
 
-  typedef std::vector<z3::expr>    Combination;
-  typedef std::vector<Combination> Combinations;
+  unsigned size;
+  unsigned subset_size_query;
 
-  Combination equalities;
+  z3::expr_vector equalities;
+  DisjEqs         current_disj_eqs;
 
-  unsigned     size;
-  unsigned     subset_size_query;
-
-  Combination  current_combination;
-  Combinations result;
-
-  std::deque<std::pair<unsigned, unsigned>> iterator_state;
-
-  void makeCombinationsUtil(unsigned, unsigned);
+  std::deque<DFSState> iterator_state;
 
   public:
-  DisjEqsPropagator(Combination const &);
+  DisjEqsPropagator(z3::expr_vector const &);
 
-  Combinations makeCombinations(unsigned);
-
-  void init(unsigned);
-  bool next();
-  Combination getCurrentCombination() const;
+  void    subsetSetup(unsigned);
+  bool    hasNext();
+  DisjEqs getCurrentDisjEqs() const;
 
   class iterator {
 
@@ -44,15 +38,13 @@ class DisjEqsPropagator {
     public:
     iterator(DisjEqsPropagator *);
 
-    void init();
-    void last();
-    bool isLast();
-    void operator ++();
-    Combination operator * () const;
+    void    init();
+    bool    isLast();
+    void    operator ++();
+    DisjEqs operator *() const;
   }; 
 
   iterator begin();
-  iterator end();
 };
 
 #endif

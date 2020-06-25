@@ -1,10 +1,8 @@
 #include "DisjEqsPropagator.h"
-#include <z3++.h>
 
-DisjEqsPropagator::DisjEqsPropagator(std::vector<z3::expr> const & elements) : 
-  equalities(),
+DisjEqsPropagator::DisjEqsPropagator(z3::expr_vector const & elements) : 
   size(elements.size()*(elements.size() - 1)/2), subset_size_query(0),
-  current_combination(), result(),
+  equalities(elements.ctx()), current_disj_eqs(elements.ctx()),
   iterator_state()
 {
   for(auto lhs=elements.begin(); lhs!=elements.end(); ++lhs){
@@ -14,27 +12,9 @@ DisjEqsPropagator::DisjEqsPropagator(std::vector<z3::expr> const & elements) :
   }
 } 
 
-void DisjEqsPropagator::makeCombinationsUtil(unsigned current_index, unsigned subset_size){
-  if(!subset_size){
-    result.push_back(current_combination);
-    return;
-  }
-  for(unsigned index = current_index; index < size; ++index){
-    current_combination.push_back(equalities[index]);
-    makeCombinationsUtil(index + 1, subset_size - 1);
-    current_combination.pop_back();
-  }
-}
-
-DisjEqsPropagator::Combinations DisjEqsPropagator::makeCombinations(unsigned subset_size){
-  result.clear();
-  makeCombinationsUtil(0, subset_size);
-  return result;
-}
-
-void DisjEqsPropagator::init(unsigned subset_size){
+void DisjEqsPropagator::subsetSetup(unsigned subset_size){
   iterator_state.clear();
-  current_combination.clear();
+  current_disj_eqs.resize(0);
 
   if(!subset_size)
     return;
@@ -42,9 +22,12 @@ void DisjEqsPropagator::init(unsigned subset_size){
   subset_size_query = subset_size;
   for(unsigned i = 0; i < size; ++i)
     iterator_state.push_back({i, subset_size - 1});
+
+  // Move to the first element
+  hasNext();
 }
 
-bool DisjEqsPropagator::next(){
+bool DisjEqsPropagator::hasNext(){
   while(!iterator_state.empty()){
     auto current_state = iterator_state[0];
     iterator_state.pop_front();
@@ -53,9 +36,9 @@ bool DisjEqsPropagator::next(){
              current_subset_size = current_state.second,
              current_level = subset_size_query - current_subset_size;
 
-    while(current_combination.size() >= current_level)
-      current_combination.pop_back();
-    current_combination.push_back(equalities[current_index]);
+    while(current_disj_eqs.size() >= current_level)
+      current_disj_eqs.pop_back();
+    current_disj_eqs.push_back(equalities[current_index]);
     
     if(current_subset_size == 0)
       return true;
@@ -66,8 +49,8 @@ bool DisjEqsPropagator::next(){
   return false;
 }
 
-DisjEqsPropagator::Combination DisjEqsPropagator::getCurrentCombination() const {
-  return current_combination;
+DisjEqsPropagator::DisjEqs DisjEqsPropagator::getCurrentDisjEqs() const {
+  return current_disj_eqs;
 }
 
 DisjEqsPropagator::iterator::iterator(DisjEqsPropagator * it) : 
@@ -77,48 +60,26 @@ DisjEqsPropagator::iterator::iterator(DisjEqsPropagator * it) :
 
 void DisjEqsPropagator::iterator::init(){
   index_block = 1;
-  it->init(index_block);
-  // We use it->next() because
-  // DisjEqsPropapator::init  just
-  // initializes the structure.
-  // It doesn't point at any element
-  // yet
-  it->next();
+  it->subsetSetup(index_block);
 }
 
 void DisjEqsPropagator::iterator::operator ++(){
-  if(!it->next()){
-    it->init(++index_block);
-    // We use it->next() because
-    // DisjEqsPropapator::init  just
-    // initializes the structure.
-    // It doesn't point at any element
-    // yet
-    it->next(); 
+  if(!it->hasNext()){
+    it->subsetSetup(++index_block);
     return;
   }
-}
-
-void DisjEqsPropagator::iterator::last(){
-  index_block = it->size+1;
 }
 
 bool DisjEqsPropagator::iterator::isLast(){
   return (this->index_block == (it->size + 1));
 }
 
-DisjEqsPropagator::Combination DisjEqsPropagator::iterator::operator *() const {
-  return it->getCurrentCombination();
+DisjEqsPropagator::DisjEqs DisjEqsPropagator::iterator::operator *() const {
+  return it->getCurrentDisjEqs();
 }
 
 DisjEqsPropagator::iterator DisjEqsPropagator::begin(){
   auto it = iterator(this);
   it.init();
-  return it;
-}
-
-DisjEqsPropagator::iterator DisjEqsPropagator::end(){
-  auto it = iterator(this);
-  it.last();
   return it;
 }
