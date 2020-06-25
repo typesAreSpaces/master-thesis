@@ -47,7 +47,7 @@ class DisjEqsPropagator {
     void init();
     void last();
     bool isLast();
-    void next();
+    void operator ++();
     Combination operator * () const;
   }; 
 

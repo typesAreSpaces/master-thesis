@@ -30,7 +30,7 @@ void test3(std::vector<z3::expr> const & elems){
   DisjEqsPropagator c(elems);
   auto it = c.begin();
   unsigned i = 0;
-  for(; !it.isLast(); it.next()){
+  for(; !it.isLast(); ++it){
     auto res = *it;
     //for(auto const & elemens : res)
       //std::cout << elemens << " ";
@@ -68,8 +68,6 @@ int main(){
   elems2.push_back(x5);
   elems2.push_back(x6);
   elems2.push_back(x7);
-  // Currently DisjEqsPropagator cannot handle 
-  // more than 7 shared variables
   elems2.push_back(x8); 
   
   //test1(elems);

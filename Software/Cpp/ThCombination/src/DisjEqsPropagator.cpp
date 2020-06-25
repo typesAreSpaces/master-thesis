@@ -86,7 +86,7 @@ void DisjEqsPropagator::iterator::init(){
   it->next();
 }
 
-void DisjEqsPropagator::iterator::next(){
+void DisjEqsPropagator::iterator::operator ++(){
   if(!it->next()){
     it->init(++index_block);
     // We use it->next() because
