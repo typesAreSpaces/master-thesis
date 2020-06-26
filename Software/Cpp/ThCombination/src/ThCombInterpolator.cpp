@@ -11,7 +11,7 @@ ThCombInterpolator::ThCombInterpolator(z3::context & ctx,
 {
   // unsigned num = euf_component.size();
   // for(unsigned i = 0; i < num; i++)
-  //   euf_solver.add(euf_component[i]);
+ //   euf_solver.add(euf_component[i]);
 
   // num = oct_component.size();
   // for(unsigned i = 0; i < num; i++)
@@ -224,16 +224,16 @@ void ThCombInterpolator::getInterpolant(){
 }
 
 std::ostream & operator << (std::ostream & os, ThCombInterpolator & p){
-  z3::solver temp_solver(p.ctx, "QF_UFLIA");
+  z3::solver aux_solver(p.ctx, "QF_UFLIA");
 
-  p.part_a.addEufFormulasToSolver(temp_solver);
-  p.part_a.addOctFormulasToSolver(temp_solver);
-  p.part_b.addEufFormulasToSolver(temp_solver);
-  p.part_b.addOctFormulasToSolver(temp_solver);
+  //p.part_a.addEufFormulasToSolver(aux_solver);
+  //p.part_a.addOctFormulasToSolver(aux_solver);
+  //p.part_b.addEufFormulasToSolver(aux_solver);
+  //p.part_b.addOctFormulasToSolver(aux_solver);
 
-  if(temp_solver.check() == z3::unsat){
-    p.traverseProof1(temp_solver.proof());
-  }
+  //if(aux_solver.check() == z3::unsat){
+    //p.traverseProof1(aux_solver.proof());
+  //}
 
   os << "Returns interpolant";
   return os;

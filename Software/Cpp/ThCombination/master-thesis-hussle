@@ -10,7 +10,7 @@ set shortmess=aoO
 badd +27 include/Purifier.h
 badd +5 src/Purifier.cpp
 badd +7 src/ThCombInterpolator.cpp
-badd +17 include/ThCombInterpolator.h
+badd +1 include/ThCombInterpolator.h
 badd +31 src/main.cpp
 badd +91 src/HornClauses.cpp
 badd +1 tests/basic_test.cpp
@@ -45,12 +45,12 @@ setlocal fml=1
 setlocal fdn=20
 setlocal fen
 silent! normal! zE
-let s:l = 18 - ((12 * winheight(0) + 29) / 58)
+let s:l = 15 - ((14 * winheight(0) + 24) / 49)
 if s:l < 1 | let s:l = 1 | endif
 exe s:l
 normal! zt
-18
-normal! 024|
+15
+normal! 020|
 wincmd w
 argglobal
 if bufexists("src/ThCombInterpolator.cpp") | buffer src/ThCombInterpolator.cpp | else | edit src/ThCombInterpolator.cpp | endif
@@ -63,12 +63,12 @@ setlocal fml=1
 setlocal fdn=20
 setlocal fen
 silent! normal! zE
-let s:l = 17 - ((15 * winheight(0) + 29) / 58)
+let s:l = 236 - ((44 * winheight(0) + 24) / 49)
 if s:l < 1 | let s:l = 1 | endif
 exe s:l
 normal! zt
-17
-normal! 010|
+236
+normal! 03|
 wincmd w
 argglobal
 if bufexists("tests/basic_test.cpp") | buffer tests/basic_test.cpp | else | edit tests/basic_test.cpp | endif
@@ -81,13 +81,14 @@ setlocal fml=1
 setlocal fdn=20
 setlocal fen
 silent! normal! zE
-let s:l = 44 - ((29 * winheight(0) + 29) / 58)
+let s:l = 6 - ((5 * winheight(0) + 24) / 49)
 if s:l < 1 | let s:l = 1 | endif
 exe s:l
 normal! zt
-44
-normal! 027|
+6
+normal! 0
 wincmd w
+3wincmd w
 exe 'vert 1resize ' . ((&columns * 105 + 157) / 315)
 exe 'vert 2resize ' . ((&columns * 104 + 157) / 315)
 exe 'vert 3resize ' . ((&columns * 104 + 157) / 315)

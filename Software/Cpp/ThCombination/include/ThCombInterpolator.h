@@ -2,6 +2,8 @@
 #define _THCOMB_
 
 #include "Purifier.h"
+#include "DisjEqsPropagator.h"
+#include "CDCL_T.h"
 
 class ThCombInterpolator {
   z3::context & ctx;

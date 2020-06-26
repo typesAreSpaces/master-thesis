@@ -45,7 +45,11 @@ void paperExample(){
   z3::expr t =  ctx.constant("t",  my_sort);
   z3::func_decl f = ctx.function("f", my_sort, my_sort, my_sort);
   //std::set<std::string> uncomms({"y1"});
-  std::set<std::string> uncomms({"v"});
+  //std::set<std::string> uncomms({"y2"});
+  //std::set<std::string> uncomms({"s1"});
+  //std::set<std::string> uncomms({"s2"});
+  //std::set<std::string> uncomms({"v"});
+  std::set<std::string> uncomms({"t"});
 
   z3::expr_vector input(ctx); 
   input.push_back(f(z1, v) == s1);

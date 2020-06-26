@@ -27,9 +27,9 @@ DEPS = $(wildcard $(IDIR)/*.h)
 # ------------------------------------------------------------------------------------------
 #  Build
 
-all: tests/disj_eqs_propagator_test
+#all: tests/disj_eqs_propagator_test
 #all: tests/cdcl_t_test
-#all: tests/basic_test
+all: tests/basic_test
 
 $(ODIR)/%.o: $(SDIR)/%.cpp $(DEPS)
 	$(CC) -g -c -o $@ $(FLAGS) $<

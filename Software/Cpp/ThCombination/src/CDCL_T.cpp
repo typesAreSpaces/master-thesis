@@ -25,7 +25,7 @@ CDCL_T::CDCL_T(z3::context & ctx, z3::expr_vector const & formulas) :
 z3::expr CDCL_T::abstract_atom(z3::expr const & atom){
   if(abstractions.contains(atom))
     return abstractions.find(atom);
-  z3::expr abstract_atom = ctx.bool_const(("p" + std::to_string(index++)).c_str());
+  z3::expr abstract_atom = ctx.bool_const(("__p" + std::to_string(index++)).c_str());
   abstractions.insert(atom, abstract_atom);
   concretes.insert(abstract_atom, atom);
   return abstract_atom;
@@ -101,16 +101,24 @@ void CDCL_T::loop(){
         block_conflict_clause(unsat_cores);
         conflict_clauses.push_back(not(z3::mk_and(unsat_cores)));
       }
-      //else{
-        //std::cout << "Result: sat" << std::endl;
-        //std::cout << "Model: \n" << theory_solver.get_model() << std::endl;
-      //}
+#if _DEBUG_CDCL_T_
+      else{
+        std::cout << "Result: sat" << std::endl;
+        std::cout << "Model: \n" << theory_solver.get_model() << std::endl;
+      }
+#endif
     }
     else{
-      //std::cout << "Result: unsat" << std::endl;
+#if _DEBUG_CDCL_T_
+      std::cout << "Result: unsat" << std::endl;
+#endif
       return;
     }
   }
+}
+
+z3::expr_vector const CDCL_T::getConflictClauses() const {
+  return conflict_clauses;
 }
 
 std::ostream & operator << (std::ostream & os, CDCL_T const & cdcl){

@@ -1,5 +1,6 @@
 #ifndef _CDCL_T_
 #define _CDCL_T_
+#define _DEBUG_CDCL_T_ 0
 
 #include <iostream>
 #include <z3++.h>
@@ -28,6 +29,9 @@ class CDCL_T {
 
   public:
   CDCL_T(z3::context &, z3::expr_vector const &);
+
+  z3::expr_vector const getConflictClauses() const;
+
   friend std::ostream & operator << (std::ostream &, CDCL_T const &);
 };
 
