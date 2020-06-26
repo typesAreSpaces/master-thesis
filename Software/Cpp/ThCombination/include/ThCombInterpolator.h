@@ -14,7 +14,8 @@ class ThCombInterpolator {
   z3::solver    euf_solver;
   z3::solver    oct_solver;
 
-  z3::expr_map  partial_interpolants;
+  z3::expr_vector shared_variables;
+  z3::expr_map    partial_interpolants;
 
   void checkImpliedEqualities(z3::expr_vector &, z3::solver &);
   bool isProvable(z3::solver &, z3::expr const &);     // Perhaps this wont be used that much (??)

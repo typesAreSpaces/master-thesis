@@ -273,6 +273,10 @@ bool Purifier::inside(z3::expr const & e){
   return false;
 }
 
+z3::expr_vector const Purifier::getSharedVariables() const {
+  return shared_variables;
+}
+
 std::ostream & operator << (std::ostream & os, Purifier & p){
   os << "EUF-component" << std::endl;
   for(auto const & x : p.euf_component)

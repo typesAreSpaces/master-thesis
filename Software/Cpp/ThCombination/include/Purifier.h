@@ -53,6 +53,7 @@ public:
   void addEufFormulasToSolver(z3::solver &); // TODO: Why do I need this function?
   void addOctFormulasToSolver(z3::solver &); // TODO: Why do I need this function?
   bool inside(z3::expr const &);             // TODO: Why do I need this function?
+  z3::expr_vector const getSharedVariables() const;
   
   friend std::ostream & operator << (std::ostream &, Purifier &);
 };
