@@ -29,7 +29,7 @@ ThCombInterpolator::ThCombInterpolator(z3::context & ctx,
   for(auto const & shared_var : part_b.getSharedVariables())
     shared_variables.push_back(shared_var);
 
-  DisjEqsPropagator phi_it(shared_variables);
+  DisjEqsPropagator phi(shared_variables);
 
   z3::solver combined_solver(ctx, "QF_UFLIA");
   for(auto const & form : formula_a)

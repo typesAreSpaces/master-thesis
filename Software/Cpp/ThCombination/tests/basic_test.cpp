@@ -38,7 +38,7 @@ int main(){
   // z3::expr formula_b = x <= 2 && b == 2 && f(b) == 5;
   
   ThCombInterpolator test(ctx, formula_a, formula_b);
-  std::cout << test << std::endl;
+  //std::cout << test << std::endl;
 
   // z3::expr_map my_map(ctx);
   // std::cout << my_map.size() << std::endl;
