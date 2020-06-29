@@ -29,13 +29,20 @@ DEPS = $(wildcard $(IDIR)/*.h)
 
 #all: tests/disj_eqs_propagator_test
 #all: tests/cdcl_t_test
-all: tests/basic_test
+all: tests/res_proof_test
+#all: tests/basic_test
 
 $(ODIR)/%.o: $(SDIR)/%.cpp $(DEPS)
 	$(CC) -g -c -o $@ $(FLAGS) $<
 
 # ------------------------------------------------------------------------------------------
 #  Tests
+.PHONY: tests/res_proof_test
+tests/res_proof_test: $(OBJS) 
+	$(CC) -g -c -o ./$@.o $(FLAGS) ./$@.cpp
+	$(CC) -g -o $@ $(OBJS) ./$@.o -lpthread -Wall
+	./$@
+	rm -rf tests/*.o $@
 
 .PHONY: tests/cdcl_t_test
 tests/cdcl_t_test: $(OBJS) # Done 
