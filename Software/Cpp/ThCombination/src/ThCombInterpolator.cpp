@@ -1,6 +1,9 @@
 #include "ThCombInterpolator.h"
 #include <z3++.h>
-#define _DEBUGEXTPURIFIER_ false
+
+bool ThCombInterpolator::z3_const_comparator::operator() (z3::expr const & e1, z3::expr const & e2){
+  return e1.id() < e2.id();
+}
 
 ThCombInterpolator::ThCombInterpolator(z3::context & ctx,
     z3::expr_vector const & formula_a, z3::expr_vector const & formula_b) :
@@ -9,60 +12,92 @@ ThCombInterpolator::ThCombInterpolator(z3::context & ctx,
   euf_solver(ctx, "QF_UF"), oct_solver(ctx, "QF_LIA"),
   shared_variables(ctx), partial_interpolants(ctx)
 {
-
-  // Keep working here
-
-  // Find theory that unsat by passing 
-  // disjuntions of equalities
-  
+#if _DEBUG_TH_COMB_
   std::cout << "Part a" << std::endl;
   std::cout << part_a;
-  std::cout << "Shared variables - a" << std::endl;
-  std::cout << part_a.getSharedVariables() << std::endl;
   std::cout << "Part b" << std::endl;
   std::cout << part_b;
-  std::cout << "Shared variables - b" << std::endl;
-  std::cout << part_b.getSharedVariables() << std::endl;
+  std::cout << "Shared variables" << std::endl;
+  sharedVariables(part_a, part_b);
+  std::cout << shared_variables << std::endl;
+#endif
 
-  for(auto const & shared_var : part_a.getSharedVariables())
-    shared_variables.push_back(shared_var);
-  for(auto const & shared_var : part_b.getSharedVariables())
-    shared_variables.push_back(shared_var);
+  for(auto const & form : part_a.getOctComponent())
+    oct_solver.add(form);
+  for(auto const & form : part_a.getEufComponent())
+    euf_solver.add(form);
+  for(auto const & form : part_b.getOctComponent())
+    oct_solver.add(form);
+  for(auto const & form : part_b.getEufComponent())
+    euf_solver.add(form);
 
-  DisjEqsPropagator phi(shared_variables);
-
-  z3::solver combined_solver(ctx, "QF_UFLIA");
-  for(auto const & form : formula_a)
-    combined_solver.add(form);
-  for(auto const & form : formula_b)
-    combined_solver.add(form);
-
-  // Issue here
-  std::cout << "wait wot " << combined_solver.check() << std::endl;
+  auto oct_check = oct_solver.check(), euf_check = euf_solver.check();
+  std::cout << "sanity check 1 " << oct_check << std::endl;
+  std::cout << "sanity check 2 " << euf_check << std::endl;
   
-  while(combined_solver.check() != z3::unsat){
-    std::cout << "Hey keep working here" << std::endl;
-    unsigned stop;
-    std::cin >> stop;
-  }
+  // Find theory that unsat by passing 
+  // disjuntions of equalities
+  DisjEqsPropagator phi(shared_variables);
+  // TODO: keep working here
+  //while(oct_check == z3::sat && euf_check == z3::sat){
+  //}
 
-  //DisjEqsPropagator phi();
-
+  // TODO:
   //
-  // Using CDCL_T, find conflict clauses
+  // Using CDCL_T, find conflict clauses - Implemented? check, Integrated? not yet
   //
-  // Using Z3, find unsat proof 
-
-  // unsigned num = euf_component.size();
-  // for(unsigned i = 0; i < num; i++)
- //   euf_solver.add(euf_component[i]);
-
-  // num = oct_component.size();
-  // for(unsigned i = 0; i < num; i++)
-  //   oct_solver.add(oct_component[i]);
+  // Using zChaff, find unsat proof - Implemented? not yet, Integrated? not yet obviously
 }
 
 ThCombInterpolator::~ThCombInterpolator(){
+}
+
+void ThCombInterpolator::sharedVariables(Purifier const & part_a, Purifier const & part_b){
+  z3_expr_set oct_set({});
+  z3_expr_set euf_set({});
+
+  for(auto const & formula : part_a.getOctComponent())
+    auxSharedVariables(formula, oct_set);
+  for(auto const & formula : part_b.getOctComponent())
+    auxSharedVariables(formula, oct_set);
+
+  for(auto const & formula : part_a.getEufComponent())
+    auxSharedVariables(formula, euf_set);
+  for(auto const & formula : part_b.getEufComponent())
+    auxSharedVariables(formula, euf_set);
+
+  for(auto const & formula : oct_set)
+    if(euf_set.find(formula) != euf_set.end())
+      shared_variables.push_back(formula);
+}
+
+void ThCombInterpolator::auxSharedVariables(z3::expr const & e, z3_expr_set & _set){
+  if(e.is_app()){
+
+    auto f = e.decl().decl_kind();
+    switch(f){
+      case Z3_OP_UNINTERPRETED:
+        {
+          unsigned num_args = e.num_args();
+          if(num_args == 0){
+            _set.insert(e);
+            return;
+          }
+          for(unsigned _i = 0; _i < num_args; ++_i)
+            auxSharedVariables(e.arg(_i), _set);
+          return;
+        }
+      default: 
+        {
+          unsigned num_args = e.num_args();
+          for(unsigned _i = 0; _i < num_args; ++_i)
+            auxSharedVariables(e.arg(_i), _set);
+          return;
+        }
+    }
+  }
+  throw "Error @ Purifier::aux_update_shared_vars"
+    "The expression is not an application";
 }
 
 void ThCombInterpolator::checkImpliedEqualities(z3::expr_vector & terms, z3::solver & s){

@@ -1,11 +1,20 @@
 #ifndef _THCOMB_
 #define _THCOMB_
+#define _DEBUG_TH_COMB_ 0
 
 #include "Purifier.h"
 #include "DisjEqsPropagator.h"
 #include "CDCL_T.h"
+#include <set>
+
 
 class ThCombInterpolator {
+
+  struct z3_const_comparator {
+    bool operator() (z3::expr const & e1, z3::expr const & e2);
+  };
+  typedef std::set<z3::expr, z3_const_comparator> z3_expr_set;
+
   z3::context & ctx;
 
   Purifier      part_a;
@@ -16,6 +25,9 @@ class ThCombInterpolator {
 
   z3::expr_vector shared_variables;
   z3::expr_map    partial_interpolants;
+
+  void sharedVariables(Purifier const &, Purifier const &);
+  void auxSharedVariables(z3::expr const &, z3_expr_set &);
 
   void checkImpliedEqualities(z3::expr_vector &, z3::solver &);
   bool isProvable(z3::solver &, z3::expr const &);     // Perhaps this wont be used that much (??)

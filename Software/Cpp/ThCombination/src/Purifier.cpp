@@ -6,14 +6,13 @@ unsigned Purifier::fresh_var_id = 0;
 Purifier::Purifier(z3::expr_vector const & e) :
   ctx(e.ctx()), 
   oct_component(ctx), euf_component(ctx), 
-  shared_variables(ctx),
   oct_fresh_ids(), euf_fresh_ids(),from(ctx), to(ctx), input(purify(e))
 {
   split(input);
 #if _DEBUGPURIFIER_
   std::cout << *this << std::endl;
 #endif
-  update_shared_vars();
+
 #if _DEBUG_SHARING_
   std::cout << "Shared variables" << std::endl;
   std::cout << shared_variables << std::endl;
@@ -209,50 +208,6 @@ void Purifier::split(z3::expr const & e){
     "The expression is not an application";
 }
 
-void Purifier::update_shared_vars(){
-  SharingMap oct_map({});
-  SharingMap euf_map({});
-
-  for(auto const & formula : oct_component)
-    aux_update_shared_vars(formula, oct_map);
-  for(auto const & formula : euf_component)
-    aux_update_shared_vars(formula, euf_map);
-
-  for(auto const & map_elem : oct_map)
-    if(euf_map.find(map_elem.first) != euf_map.end())
-      shared_variables.push_back(map_elem.second);
-}
-
-void Purifier::aux_update_shared_vars(z3::expr const & e, SharingMap & s_map){
-  if(e.is_app()){
-
-    auto f = e.decl().decl_kind();
-    switch(f){
-      case Z3_OP_UNINTERPRETED:
-        {
-          unsigned num_args = e.num_args();
-          if(num_args == 0){
-            s_map.insert({e.id(), e});
-            return;
-          }
-          for(unsigned _i = 0; _i < num_args; ++_i){
-            aux_update_shared_vars(e.arg(_i), s_map);
-          }
-          return;
-        }
-      default: 
-        {
-          unsigned num_args = e.num_args();
-          for(unsigned _i = 0; _i < num_args; ++_i)
-            aux_update_shared_vars(e.arg(_i), s_map);
-          return;
-        }
-    }
-  }
-  throw "Error @ Purifier::aux_update_shared_vars"
-    "The expression is not an application";
-}
-
 void Purifier::addEufFormulasToSolver(z3::solver & s){
   for(auto const & x : euf_component)
     s.add(x);
@@ -273,8 +228,12 @@ bool Purifier::inside(z3::expr const & e){
   return false;
 }
 
-z3::expr_vector const Purifier::getSharedVariables() const {
-  return shared_variables;
+z3::expr_vector const Purifier::getOctComponent() const {
+  return oct_component;
+}
+
+z3::expr_vector const Purifier::getEufComponent() const {
+  return euf_component;
 }
 
 std::ostream & operator << (std::ostream & os, Purifier & p){
