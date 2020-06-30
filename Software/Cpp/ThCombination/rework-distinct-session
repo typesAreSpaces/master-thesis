@@ -1,0 +1,179 @@
+let SessionLoad = 1
+let s:so_save = &so | let s:siso_save = &siso | set so=0 siso=0
+let v:this_session=expand("<sfile>:p")
+silent only
+cd ~/Documents/GithubProjects/master-thesis/Software/Cpp/ThCombination
+if expand('%') == '' && !&modified && line('$') <= 1 && getline(1) == ''
+  let s:wipebuf = bufnr('%')
+endif
+set shortmess=aoO
+badd +41 src/Input.cpp
+badd +6 src/Util.cpp
+badd +100 src/HornClauses.cpp
+badd +168 src/Purifier.cpp
+badd +66 src/CDCL_T.cpp
+badd +28 src/RenameWithUncomSymbols.cpp
+badd +51 src/ThCombInterpolator.cpp
+badd +47 src/RenameWithExpressions.cpp
+badd +0 src/Rename.cpp
+argglobal
+%argdel
+edit src/Input.cpp
+set splitbelow splitright
+wincmd _ | wincmd |
+split
+wincmd _ | wincmd |
+split
+wincmd _ | wincmd |
+split
+wincmd _ | wincmd |
+split
+wincmd _ | wincmd |
+split
+5wincmd k
+wincmd w
+wincmd w
+wincmd w
+wincmd w
+wincmd w
+set nosplitbelow
+set nosplitright
+wincmd t
+set winminheight=0
+set winheight=1
+set winminwidth=0
+set winwidth=1
+exe '1resize ' . ((&lines * 13 + 43) / 86)
+exe '2resize ' . ((&lines * 13 + 43) / 86)
+exe '3resize ' . ((&lines * 8 + 43) / 86)
+exe '4resize ' . ((&lines * 8 + 43) / 86)
+exe '5resize ' . ((&lines * 9 + 43) / 86)
+exe '6resize ' . ((&lines * 28 + 43) / 86)
+argglobal
+setlocal fdm=manual
+setlocal fde=0
+setlocal fmr={{{,}}}
+setlocal fdi=#
+setlocal fdl=0
+setlocal fml=1
+setlocal fdn=20
+setlocal fen
+silent! normal! zE
+let s:l = 41 - ((6 * winheight(0) + 6) / 13)
+if s:l < 1 | let s:l = 1 | endif
+exe s:l
+normal! zt
+41
+normal! 07|
+wincmd w
+argglobal
+if bufexists("src/Purifier.cpp") | buffer src/Purifier.cpp | else | edit src/Purifier.cpp | endif
+setlocal fdm=manual
+setlocal fde=0
+setlocal fmr={{{,}}}
+setlocal fdi=#
+setlocal fdl=0
+setlocal fml=1
+setlocal fdn=20
+setlocal fen
+silent! normal! zE
+let s:l = 169 - ((11 * winheight(0) + 6) / 13)
+if s:l < 1 | let s:l = 1 | endif
+exe s:l
+normal! zt
+169
+normal! 0
+wincmd w
+argglobal
+if bufexists("src/CDCL_T.cpp") | buffer src/CDCL_T.cpp | else | edit src/CDCL_T.cpp | endif
+setlocal fdm=manual
+setlocal fde=0
+setlocal fmr={{{,}}}
+setlocal fdi=#
+setlocal fdl=0
+setlocal fml=1
+setlocal fdn=20
+setlocal fen
+silent! normal! zE
+let s:l = 66 - ((4 * winheight(0) + 4) / 8)
+if s:l < 1 | let s:l = 1 | endif
+exe s:l
+normal! zt
+66
+normal! 05|
+wincmd w
+argglobal
+if bufexists("src/RenameWithUncomSymbols.cpp") | buffer src/RenameWithUncomSymbols.cpp | else | edit src/RenameWithUncomSymbols.cpp | endif
+setlocal fdm=manual
+setlocal fde=0
+setlocal fmr={{{,}}}
+setlocal fdi=#
+setlocal fdl=0
+setlocal fml=1
+setlocal fdn=20
+setlocal fen
+silent! normal! zE
+let s:l = 29 - ((3 * winheight(0) + 4) / 8)
+if s:l < 1 | let s:l = 1 | endif
+exe s:l
+normal! zt
+29
+normal! 07|
+wincmd w
+argglobal
+if bufexists("src/RenameWithExpressions.cpp") | buffer src/RenameWithExpressions.cpp | else | edit src/RenameWithExpressions.cpp | endif
+setlocal fdm=manual
+setlocal fde=0
+setlocal fmr={{{,}}}
+setlocal fdi=#
+setlocal fdl=0
+setlocal fml=1
+setlocal fdn=20
+setlocal fen
+silent! normal! zE
+let s:l = 48 - ((8 * winheight(0) + 4) / 9)
+if s:l < 1 | let s:l = 1 | endif
+exe s:l
+normal! zt
+48
+normal! 0
+wincmd w
+argglobal
+if bufexists("src/Rename.cpp") | buffer src/Rename.cpp | else | edit src/Rename.cpp | endif
+setlocal fdm=manual
+setlocal fde=0
+setlocal fmr={{{,}}}
+setlocal fdi=#
+setlocal fdl=0
+setlocal fml=1
+setlocal fdn=20
+setlocal fen
+silent! normal! zE
+let s:l = 33 - ((0 * winheight(0) + 14) / 28)
+if s:l < 1 | let s:l = 1 | endif
+exe s:l
+normal! zt
+33
+normal! 0
+wincmd w
+6wincmd w
+exe '1resize ' . ((&lines * 13 + 43) / 86)
+exe '2resize ' . ((&lines * 13 + 43) / 86)
+exe '3resize ' . ((&lines * 8 + 43) / 86)
+exe '4resize ' . ((&lines * 8 + 43) / 86)
+exe '5resize ' . ((&lines * 9 + 43) / 86)
+exe '6resize ' . ((&lines * 28 + 43) / 86)
+tabnext 1
+if exists('s:wipebuf') && getbufvar(s:wipebuf, '&buftype') isnot# 'terminal'
+  silent exe 'bwipe ' . s:wipebuf
+endif
+unlet! s:wipebuf
+set winheight=1 winwidth=20 winminheight=1 winminwidth=1 shortmess=filnxtToOFIc
+let s:sx = expand("<sfile>:p:r")."x.vim"
+if file_readable(s:sx)
+  exe "source " . fnameescape(s:sx)
+endif
+let &so = s:so_save | let &siso = s:siso_save
+doautoall SessionLoadPost
+unlet SessionLoad
+" vim: set ft=vim :

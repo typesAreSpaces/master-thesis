@@ -58,21 +58,21 @@ void ThCombInterpolator::sharedVariables(Purifier const & part_a, Purifier const
   z3_expr_set euf_set({});
 
   for(auto const & formula : part_a.getOctComponent())
-    auxSharedVariables(formula, oct_set);
+    collectVariables(formula, oct_set);
   for(auto const & formula : part_b.getOctComponent())
-    auxSharedVariables(formula, oct_set);
+    collectVariables(formula, oct_set);
 
   for(auto const & formula : part_a.getEufComponent())
-    auxSharedVariables(formula, euf_set);
+    collectVariables(formula, euf_set);
   for(auto const & formula : part_b.getEufComponent())
-    auxSharedVariables(formula, euf_set);
+    collectVariables(formula, euf_set);
 
   for(auto const & formula : oct_set)
     if(euf_set.find(formula) != euf_set.end())
       shared_variables.push_back(formula);
 }
 
-void ThCombInterpolator::auxSharedVariables(z3::expr const & e, z3_expr_set & _set){
+void ThCombInterpolator::collectVariables(z3::expr const & e, z3_expr_set & _set){
   if(e.is_app()){
 
     auto f = e.decl().decl_kind();
@@ -85,14 +85,14 @@ void ThCombInterpolator::auxSharedVariables(z3::expr const & e, z3_expr_set & _s
             return;
           }
           for(unsigned _i = 0; _i < num_args; ++_i)
-            auxSharedVariables(e.arg(_i), _set);
+            collectVariables(e.arg(_i), _set);
           return;
         }
       default: 
         {
           unsigned num_args = e.num_args();
           for(unsigned _i = 0; _i < num_args; ++_i)
-            auxSharedVariables(e.arg(_i), _set);
+            collectVariables(e.arg(_i), _set);
           return;
         }
     }

@@ -27,7 +27,7 @@ class ThCombInterpolator {
   z3::expr_map    partial_interpolants;
 
   void sharedVariables(Purifier const &, Purifier const &);
-  void auxSharedVariables(z3::expr const &, z3_expr_set &);
+  void collectVariables(z3::expr const &, z3_expr_set &);
 
   void checkImpliedEqualities(z3::expr_vector &, z3::solver &);
   bool isProvable(z3::solver &, z3::expr const &);     // Perhaps this wont be used that much (??)
