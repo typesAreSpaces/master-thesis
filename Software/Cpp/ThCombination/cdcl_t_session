@@ -7,27 +7,18 @@ if expand('%') == '' && !&modified && line('$') <= 1 && getline(1) == ''
   let s:wipebuf = bufnr('%')
 endif
 set shortmess=aoO
-badd +51 include/Purifier.h
-badd +236 src/Purifier.cpp
-badd +65 src/ThCombInterpolator.cpp
-badd +13 include/ThCombInterpolator.h
-badd +31 src/main.cpp
-badd +91 src/HornClauses.cpp
-badd +43 tests/basic_test.cpp
-badd +1 include/DisjEqsPropagator.h
+badd +1 include/CDCL_T.h
+badd +6 src/CDCL_T.cpp
+badd +0 tests/cdcl_t_test.cpp
 argglobal
 %argdel
-edit include/ThCombInterpolator.h
+edit include/CDCL_T.h
 set splitbelow splitright
 wincmd _ | wincmd |
 vsplit
 wincmd _ | wincmd |
 vsplit
 2wincmd h
-wincmd _ | wincmd |
-split
-1wincmd k
-wincmd w
 wincmd w
 wincmd _ | wincmd |
 split
@@ -41,88 +32,13 @@ set winminheight=0
 set winheight=1
 set winminwidth=0
 set winwidth=1
-exe '1resize ' . ((&lines * 28 + 30) / 60)
-exe 'vert 1resize ' . ((&columns * 105 + 157) / 315)
+exe 'vert 1resize ' . ((&columns * 104 + 157) / 315)
 exe '2resize ' . ((&lines * 29 + 30) / 60)
 exe 'vert 2resize ' . ((&columns * 105 + 157) / 315)
-exe '3resize ' . ((&lines * 29 + 30) / 60)
-exe 'vert 3resize ' . ((&columns * 104 + 157) / 315)
-exe '4resize ' . ((&lines * 28 + 30) / 60)
+exe '3resize ' . ((&lines * 28 + 30) / 60)
+exe 'vert 3resize ' . ((&columns * 105 + 157) / 315)
 exe 'vert 4resize ' . ((&columns * 104 + 157) / 315)
-exe 'vert 5resize ' . ((&columns * 104 + 157) / 315)
 argglobal
-setlocal fdm=manual
-setlocal fde=0
-setlocal fmr={{{,}}}
-setlocal fdi=#
-setlocal fdl=0
-setlocal fml=1
-setlocal fdn=20
-setlocal fen
-silent! normal! zE
-let s:l = 3 - ((2 * winheight(0) + 14) / 28)
-if s:l < 1 | let s:l = 1 | endif
-exe s:l
-normal! zt
-3
-normal! 025|
-wincmd w
-argglobal
-if bufexists("include/DisjEqsPropagator.h") | buffer include/DisjEqsPropagator.h | else | edit include/DisjEqsPropagator.h | endif
-setlocal fdm=manual
-setlocal fde=0
-setlocal fmr={{{,}}}
-setlocal fdi=#
-setlocal fdl=0
-setlocal fml=1
-setlocal fdn=20
-setlocal fen
-silent! normal! zE
-let s:l = 27 - ((2 * winheight(0) + 14) / 29)
-if s:l < 1 | let s:l = 1 | endif
-exe s:l
-normal! zt
-27
-normal! 0
-wincmd w
-argglobal
-if bufexists("include/ThCombInterpolator.h") | buffer include/ThCombInterpolator.h | else | edit include/ThCombInterpolator.h | endif
-setlocal fdm=manual
-setlocal fde=0
-setlocal fmr={{{,}}}
-setlocal fdi=#
-setlocal fdl=0
-setlocal fml=1
-setlocal fdn=20
-setlocal fen
-silent! normal! zE
-let s:l = 42 - ((28 * winheight(0) + 14) / 29)
-if s:l < 1 | let s:l = 1 | endif
-exe s:l
-normal! zt
-42
-normal! 0
-wincmd w
-argglobal
-if bufexists("src/ThCombInterpolator.cpp") | buffer src/ThCombInterpolator.cpp | else | edit src/ThCombInterpolator.cpp | endif
-setlocal fdm=manual
-setlocal fde=0
-setlocal fmr={{{,}}}
-setlocal fdi=#
-setlocal fdl=0
-setlocal fml=1
-setlocal fdn=20
-setlocal fen
-silent! normal! zE
-let s:l = 49 - ((23 * winheight(0) + 14) / 28)
-if s:l < 1 | let s:l = 1 | endif
-exe s:l
-normal! zt
-49
-normal! 06|
-wincmd w
-argglobal
-if bufexists("tests/basic_test.cpp") | buffer tests/basic_test.cpp | else | edit tests/basic_test.cpp | endif
 setlocal fdm=manual
 setlocal fde=0
 setlocal fmr={{{,}}}
@@ -137,18 +53,69 @@ if s:l < 1 | let s:l = 1 | endif
 exe s:l
 normal! zt
 41
+normal! 027|
+wincmd w
+argglobal
+if bufexists("src/CDCL_T.cpp") | buffer src/CDCL_T.cpp | else | edit src/CDCL_T.cpp | endif
+setlocal fdm=manual
+setlocal fde=0
+setlocal fmr={{{,}}}
+setlocal fdi=#
+setlocal fdl=0
+setlocal fml=1
+setlocal fdn=20
+setlocal fen
+silent! normal! zE
+let s:l = 58 - ((15 * winheight(0) + 14) / 29)
+if s:l < 1 | let s:l = 1 | endif
+exe s:l
+normal! zt
+58
+normal! 018|
+wincmd w
+argglobal
+if bufexists("src/CDCL_T.cpp") | buffer src/CDCL_T.cpp | else | edit src/CDCL_T.cpp | endif
+setlocal fdm=manual
+setlocal fde=0
+setlocal fmr={{{,}}}
+setlocal fdi=#
+setlocal fdl=0
+setlocal fml=1
+setlocal fdn=20
+setlocal fen
+silent! normal! zE
+let s:l = 138 - ((2 * winheight(0) + 14) / 28)
+if s:l < 1 | let s:l = 1 | endif
+exe s:l
+normal! zt
+138
+normal! 012|
+wincmd w
+argglobal
+if bufexists("tests/cdcl_t_test.cpp") | buffer tests/cdcl_t_test.cpp | else | edit tests/cdcl_t_test.cpp | endif
+setlocal fdm=manual
+setlocal fde=0
+setlocal fmr={{{,}}}
+setlocal fdi=#
+setlocal fdl=0
+setlocal fml=1
+setlocal fdn=20
+setlocal fen
+silent! normal! zE
+let s:l = 46 - ((45 * winheight(0) + 29) / 58)
+if s:l < 1 | let s:l = 1 | endif
+exe s:l
+normal! zt
+46
 normal! 0
 wincmd w
-4wincmd w
-exe '1resize ' . ((&lines * 28 + 30) / 60)
-exe 'vert 1resize ' . ((&columns * 105 + 157) / 315)
+3wincmd w
+exe 'vert 1resize ' . ((&columns * 104 + 157) / 315)
 exe '2resize ' . ((&lines * 29 + 30) / 60)
 exe 'vert 2resize ' . ((&columns * 105 + 157) / 315)
-exe '3resize ' . ((&lines * 29 + 30) / 60)
-exe 'vert 3resize ' . ((&columns * 104 + 157) / 315)
-exe '4resize ' . ((&lines * 28 + 30) / 60)
+exe '3resize ' . ((&lines * 28 + 30) / 60)
+exe 'vert 3resize ' . ((&columns * 105 + 157) / 315)
 exe 'vert 4resize ' . ((&columns * 104 + 157) / 315)
-exe 'vert 5resize ' . ((&columns * 104 + 157) / 315)
 tabnext 1
 if exists('s:wipebuf') && getbufvar(s:wipebuf, '&buftype') isnot# 'terminal'
   silent exe 'bwipe ' . s:wipebuf

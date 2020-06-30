@@ -7,9 +7,9 @@ if expand('%') == '' && !&modified && line('$') <= 1 && getline(1) == ''
   let s:wipebuf = bufnr('%')
 endif
 set shortmess=aoO
-badd +11 include/ResolutionProof.h
+badd +1 include/ResolutionProof.h
 badd +4 src/ResolutionProof.cpp
-badd +0 tests/res_proof_test.cpp
+badd +1 tests/res_proof_test.cpp
 badd +32 Makefile
 argglobal
 %argdel
@@ -43,12 +43,12 @@ setlocal fml=1
 setlocal fdn=20
 setlocal fen
 silent! normal! zE
-let s:l = 14 - ((8 * winheight(0) + 18) / 37)
+let s:l = 14 - ((13 * winheight(0) + 29) / 58)
 if s:l < 1 | let s:l = 1 | endif
 exe s:l
 normal! zt
 14
-normal! 037|
+normal! 01|
 wincmd w
 argglobal
 if bufexists("src/ResolutionProof.cpp") | buffer src/ResolutionProof.cpp | else | edit src/ResolutionProof.cpp | endif
@@ -61,7 +61,7 @@ setlocal fml=1
 setlocal fdn=20
 setlocal fen
 silent! normal! zE
-let s:l = 5 - ((2 * winheight(0) + 18) / 37)
+let s:l = 5 - ((3 * winheight(0) + 29) / 58)
 if s:l < 1 | let s:l = 1 | endif
 exe s:l
 normal! zt
@@ -79,12 +79,12 @@ setlocal fml=1
 setlocal fdn=20
 setlocal fen
 silent! normal! zE
-let s:l = 75 - ((36 * winheight(0) + 18) / 37)
+let s:l = 86 - ((48 * winheight(0) + 29) / 58)
 if s:l < 1 | let s:l = 1 | endif
 exe s:l
 normal! zt
-75
-normal! 03|
+86
+normal! 035|
 wincmd w
 3wincmd w
 exe 'vert 1resize ' . ((&columns * 104 + 157) / 315)

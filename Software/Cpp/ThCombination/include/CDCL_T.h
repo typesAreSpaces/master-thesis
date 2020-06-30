@@ -3,19 +3,24 @@
 #define _DEBUG_CDCL_T_ 0
 
 #include <iostream>
+#include <fstream>
 #include <z3++.h>
-#include <map>
 
 class CDCL_T {
-  unsigned index;
+  unsigned abstraction_fresh_index;
   z3::context & ctx;
+  // The following encodes a cnf
+  z3::expr_vector const & input; 
 
   z3::solver prop_solver;
   z3::solver theory_solver;
   
+  // abstractions : (EUF + OCT) -> propositions
   z3::expr_map abstractions;
+  // concretes = abstractions^{-1}
   z3::expr_map concretes;
   
+  // The following encodes a cnf
   z3::expr_vector conflict_clauses;
 
   z3::expr abstract_atom(z3::expr const &);
@@ -28,9 +33,12 @@ class CDCL_T {
   void loop();
 
   public:
-  CDCL_T(z3::context &, z3::expr_vector const &);
+  CDCL_T(z3::expr_vector const &);
 
   z3::expr_vector const getConflictClauses() const;
+
+  std::ofstream & dimacsClause(std::ofstream &, z3::expr const &) const;
+  void toDimacsFile() const;
 
   friend std::ostream & operator << (std::ostream &, CDCL_T const &);
 };

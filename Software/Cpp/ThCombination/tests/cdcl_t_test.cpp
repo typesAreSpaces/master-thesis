@@ -1,5 +1,3 @@
-#include <iostream>
-#include <z3++.h>
 #include "CDCL_T.h"
 
 void z3_map_example(z3::context & ctx){
@@ -43,8 +41,8 @@ int main(){
   example_3.push_back(not(p(1)));
   example_3.push_back(not(p(2)));
 
-  CDCL_T whatever(ctx, example_3);
-  std::cout << whatever << std::endl;
+  CDCL_T test(example_3);
+  //test.toDimacsFile();
 
   return 0;
 }

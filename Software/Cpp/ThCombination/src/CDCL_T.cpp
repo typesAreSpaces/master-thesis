@@ -1,31 +1,40 @@
 #include "CDCL_T.h"
-#include <z3++.h>
 
-CDCL_T::CDCL_T(z3::context & ctx, z3::expr_vector const & formulas) :
-  index(0),
-  ctx(ctx),
+CDCL_T::CDCL_T(z3::expr_vector const & formulas) :
+  abstraction_fresh_index(0),
+  ctx(formulas.ctx()), input(formulas),
   prop_solver(ctx), theory_solver(ctx),
   abstractions(ctx), concretes(ctx),
   conflict_clauses(ctx)
 {
+#if _DEBUG_CDCL_T_
+  std::cout << "Original formulas" << std::endl;
+  std::cout << input << std::endl;
+#endif
+  // Setup theory solver
+  for(auto const & clause : formulas)
+    theory_solver.add(clause);
   try {
+    // Making abstractions
+    // Setup prop solver
     for(auto const & abstract_clause : abstract_clauses(formulas))
       prop_solver.add(abstract_clause);
+    // Find conflict-clauses
+    loop();
+#if _DEBUG_CDCL_T_
+    std::cout << "Conflict clauses found" << std::endl; 
+    std::cout << conflict_clauses << std::endl;
+#endif
   }
   catch(char const * e){
     std::cout << e << std::endl;
   }
-
-  for(auto const & clause : formulas)
-    theory_solver.add(clause);
-
-  loop();
 }
 
 z3::expr CDCL_T::abstract_atom(z3::expr const & atom){
   if(abstractions.contains(atom))
     return abstractions.find(atom);
-  z3::expr abstract_atom = ctx.bool_const(("__p" + std::to_string(index++)).c_str());
+  z3::expr abstract_atom = ctx.bool_const(("__p" + std::to_string(abstraction_fresh_index++)).c_str());
   abstractions.insert(atom, abstract_atom);
   concretes.insert(abstract_atom, atom);
   return abstract_atom;
@@ -99,7 +108,10 @@ void CDCL_T::loop(){
       if(z3::unsat == theory_solver.check(lits)){
         auto unsat_cores = theory_solver.unsat_core();
         block_conflict_clause(unsat_cores);
-        conflict_clauses.push_back(not(z3::mk_and(unsat_cores)));
+        if(unsat_cores.size() == 1)
+          conflict_clauses.push_back(not(unsat_cores[0]));
+        else
+          conflict_clauses.push_back(not(z3::mk_and(unsat_cores)));
       }
 #if _DEBUG_CDCL_T_
       else{
@@ -121,8 +133,52 @@ z3::expr_vector const CDCL_T::getConflictClauses() const {
   return conflict_clauses;
 }
 
+std::ofstream & CDCL_T::dimacsClause(std::ofstream & file, z3::expr const & e) const {
+  //if(e.is_app()){
+    //auto f = e.decl().decl_kind();
+    //switch(f){
+      //case Z3_OP_OR:
+        //{
+          //unsigned num_args = e.num_args();
+          //for(unsigned _i = 0; _i < num_args; ++_i){
+            
+          //}
+          //return;
+        //}
+      //case Z3_OP_NOT:
+        //return;
+      //case Z3_OP_EQ:
+      //case Z3_OP_DISTINCT:
+      //case Z3_OP_LE:    
+      //case Z3_OP_GE:
+      //case Z3_OP_LT:
+      //case Z3_OP_GT:
+      //case Z3_OP_UNINTERPRETED:
+        //return;
+    //}
+    //file << e;
+    //return file;
+  //}
+  throw "Not a function appication.";
+}
+
+void CDCL_T::toDimacsFile() const {
+  std::ofstream out;
+  out.open("file.cnf");
+  // TODO: keep working here
+  out << "p cnf " << abstraction_fresh_index 
+    << " " << input.size() + conflict_clauses.size() << std::endl;  
+  for(auto const & clause : input){
+    dimacsClause(out, clause) << " 0" << std::endl;
+  }
+  for(auto const & clause : conflict_clauses){
+    dimacsClause(out, clause) << " 0" << std::endl;
+  }
+
+  out.close();
+  return;
+}
+
 std::ostream & operator << (std::ostream & os, CDCL_T const & cdcl){
-  return os 
-    << "Conflict clauses found" << std::endl 
-    << cdcl.conflict_clauses;
+  return os;
 }
