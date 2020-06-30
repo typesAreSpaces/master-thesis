@@ -1,7 +1,7 @@
 #include "CDCL_T.h"
 
 CDCL_T::CDCL_T(z3::expr_vector const & formulas) :
-  abstraction_fresh_index(0),
+  abstraction_fresh_index(1),
   ctx(formulas.ctx()), input(formulas),
   prop_solver(ctx), theory_solver(ctx),
   abstractions(ctx), concretes(ctx),
@@ -29,6 +29,11 @@ CDCL_T::CDCL_T(z3::expr_vector const & formulas) :
   catch(char const * e){
     std::cout << e << std::endl;
   }
+#if _DEBUG_CDCL_T_
+  for(auto const & key : abstractions.keys()){
+    std::cout << key << " |-> " << abstractions.find(key) << std::endl;
+}
+#endif
 }
 
 z3::expr CDCL_T::abstract_atom(z3::expr const & atom){
@@ -43,6 +48,8 @@ z3::expr CDCL_T::abstract_atom(z3::expr const & atom){
 z3::expr CDCL_T::abstract_lit(z3::expr const & lit){
   if(lit.is_not())
     return not(abstract_atom(lit.arg(0)));
+  if(lit.is_distinct())
+    return not(abstract_atom(lit.arg(0) == lit.arg(1)));
   return abstract_atom(lit);
 }
 
@@ -133,46 +140,74 @@ z3::expr_vector const CDCL_T::getConflictClauses() const {
   return conflict_clauses;
 }
 
-std::ofstream & CDCL_T::dimacsClause(std::ofstream & file, z3::expr const & e) const {
-  //if(e.is_app()){
-    //auto f = e.decl().decl_kind();
-    //switch(f){
-      //case Z3_OP_OR:
-        //{
-          //unsigned num_args = e.num_args();
-          //for(unsigned _i = 0; _i < num_args; ++_i){
-            
-          //}
-          //return;
-        //}
-      //case Z3_OP_NOT:
-        //return;
-      //case Z3_OP_EQ:
-      //case Z3_OP_DISTINCT:
-      //case Z3_OP_LE:    
-      //case Z3_OP_GE:
-      //case Z3_OP_LT:
-      //case Z3_OP_GT:
-      //case Z3_OP_UNINTERPRETED:
-        //return;
-    //}
-    //file << e;
-    //return file;
-  //}
+std::ofstream & CDCL_T::dimacsLit(std::ofstream & file, z3::expr const & lit){
+  if(lit.is_not()){
+    auto const & abstract_lit = abstractions.find(lit.arg(0));
+    auto const & abstract_name = abstract_lit.decl().name().str();
+    unsigned identifier = (unsigned)std::stol(abstract_name.substr(3, abstract_name.size() - 1));
+    file << "-" << identifier << " ";
+    return file;
+  }
+  if(lit.is_distinct()){
+    auto const & abstract_lit = abstractions.find(lit.arg(0) == lit.arg(1));
+    auto const & abstract_name = abstract_lit.decl().name().str();
+    unsigned identifier = (unsigned)std::stol(abstract_name.substr(3, abstract_name.size() - 1));
+    file << "-" << identifier << " ";
+    return file;
+  }
+
+  auto const & abstract_lit = abstractions.find(lit);
+  auto const & abstract_name = abstract_lit.decl().name().str();
+  unsigned identifier = (unsigned)std::stol(abstract_name.substr(3, abstract_name.size() - 1));
+  file << identifier << " ";
+  return file;
+}
+
+std::ofstream & CDCL_T::dimacsClause(std::ofstream & file, z3::expr const & e){
+  if(e.is_app()){
+    switch(e.decl().decl_kind()){
+      case Z3_OP_OR:
+        {
+          unsigned num_args = e.num_args();
+          for(unsigned _i = 0; _i < num_args; ++_i)
+            dimacsLit(file, e.arg(_i));
+          break;
+        }
+      case Z3_OP_NOT:
+      case Z3_OP_EQ:
+      case Z3_OP_DISTINCT:
+      case Z3_OP_LE:    
+      case Z3_OP_GE:
+      case Z3_OP_LT:
+      case Z3_OP_GT:
+      case Z3_OP_UNINTERPRETED:
+        dimacsLit(file, e);
+        break;
+      default:
+        throw "There is a problem";
+    }
+    return file;
+  }
   throw "Not a function appication.";
 }
 
-void CDCL_T::toDimacsFile() const {
+void CDCL_T::toDimacsFile(){
   std::ofstream out;
   out.open("file.cnf");
-  // TODO: keep working here
-  out << "p cnf " << abstraction_fresh_index 
-    << " " << input.size() + conflict_clauses.size() << std::endl;  
+  out << "p cnf " 
+    << (abstraction_fresh_index-1) << " " 
+    << input.size() + conflict_clauses.size() << std::endl;  
   for(auto const & clause : input){
-    dimacsClause(out, clause) << " 0" << std::endl;
+#if _DEBUG_CDCL_T_
+    std::cout << clause << std::endl;
+#endif
+    dimacsClause(out, clause) << "0" << std::endl;
   }
   for(auto const & clause : conflict_clauses){
-    dimacsClause(out, clause) << " 0" << std::endl;
+#if _DEBUG_CDCL_T_
+    std::cout << clause << std::endl;
+#endif
+    dimacsClause(out, clause) << "0" << std::endl;
   }
 
   out.close();

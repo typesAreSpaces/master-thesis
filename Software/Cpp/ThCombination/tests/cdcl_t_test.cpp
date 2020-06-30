@@ -42,7 +42,7 @@ int main(){
   example_3.push_back(not(p(2)));
 
   CDCL_T test(example_3);
-  //test.toDimacsFile();
+  test.toDimacsFile();
 
   return 0;
 }

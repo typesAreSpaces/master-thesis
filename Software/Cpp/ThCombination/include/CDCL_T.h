@@ -37,8 +37,9 @@ class CDCL_T {
 
   z3::expr_vector const getConflictClauses() const;
 
-  std::ofstream & dimacsClause(std::ofstream &, z3::expr const &) const;
-  void toDimacsFile() const;
+  std::ofstream & dimacsLit(std::ofstream &, z3::expr const &);
+  std::ofstream & dimacsClause(std::ofstream &, z3::expr const &);
+  void toDimacsFile();
 
   friend std::ostream & operator << (std::ostream &, CDCL_T const &);
 };
