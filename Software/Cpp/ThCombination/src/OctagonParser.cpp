@@ -16,15 +16,15 @@ OctagonParser::OctagonParser(z3::expr_vector const & assertions) :
 
     switch(num_operands){
       case 0:
-          // Non-negative variable
-          setBoundWith1Var(true, inequality, bound);
-          break;
+        // Non-negative variable
+        setBoundWith1Var(true, inequality, bound);
+        break;
       case 1:
-          // Negative variable
-          setBoundWith1Var(false, inequality.arg(0), bound);
-          break;
+        // Negative variable
+        setBoundWith1Var(false, inequality.arg(0), bound);
+        break;
       case 2:
-       {
+        {
           auto const & op_name = inequality.decl().name().str();
           if(op_name == "+"){
             setBoundWith2Vars(true, inequality, bound);
