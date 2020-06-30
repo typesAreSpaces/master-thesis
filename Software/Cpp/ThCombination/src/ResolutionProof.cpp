@@ -1,9 +1,12 @@
 #include "ResolutionProof.h"
 
-ResolutionProof::ResolutionProof()
+ResolutionProof::ResolutionProof(unsigned original_num_clauses)
 {
   std::string current_dir = exec("pwd");
+
+  //system("zchaff ~/booleforce_examples/hole6.cnf > /dev/null");
   system(("zchaff " + current_dir + "/file.cnf > /dev/null").c_str());
+
   std::ifstream resolve_trace_file((current_dir + "/resolve_trace"), std::fstream::in);
   std::string line, proof_kind, aux_symbol;
 

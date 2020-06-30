@@ -10,15 +10,18 @@
 #include <string>
 
 class ResolutionProof {
-  class Lit { 
+  class LitProof { 
+
   };
-  class Clause {
+
+  class ClauseProof {
+
   };
 
   std::string exec(const char *);
 
   public:
-  ResolutionProof();
+  ResolutionProof(unsigned original_num_clauses);
 };
 
 #endif

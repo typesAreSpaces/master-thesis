@@ -2,7 +2,7 @@
 
 int main(){
 
-  ResolutionProof();
+  ResolutionProof(0);
   
   return 0;
 }
