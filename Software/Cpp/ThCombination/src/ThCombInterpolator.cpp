@@ -1,5 +1,4 @@
 #include "ThCombInterpolator.h"
-#include <z3++.h>
 
 bool ThCombInterpolator::z3_const_comparator::operator() (
     z3::expr const & e1, z3::expr const & e2){

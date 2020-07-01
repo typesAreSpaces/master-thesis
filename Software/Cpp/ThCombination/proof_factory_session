@@ -7,14 +7,14 @@ if expand('%') == '' && !&modified && line('$') <= 1 && getline(1) == ''
   let s:wipebuf = bufnr('%')
 endif
 set shortmess=aoO
-badd +1 include/ResolutionProof.h
-badd +4 src/ResolutionProof.cpp
-badd +1 tests/res_proof_test.cpp
-badd +32 Makefile
+badd +13 include/ProofFactory.h
+badd +0 tests/res_proof_test.cpp
+badd +0 src/ProofFactory.cpp
+badd +0 include/ThCombInterpolator.h
+badd +5 src/ThCombInterpolator.cpp
 argglobal
 %argdel
-$argadd include/ResolutionProof.h
-edit include/ResolutionProof.h
+edit include/ProofFactory.h
 set splitbelow splitright
 wincmd _ | wincmd |
 vsplit
@@ -30,8 +30,8 @@ set winminheight=0
 set winheight=1
 set winminwidth=0
 set winwidth=1
-exe 'vert 1resize ' . ((&columns * 104 + 157) / 315)
-exe 'vert 2resize ' . ((&columns * 105 + 157) / 315)
+exe 'vert 1resize ' . ((&columns * 105 + 157) / 315)
+exe 'vert 2resize ' . ((&columns * 104 + 157) / 315)
 exe 'vert 3resize ' . ((&columns * 104 + 157) / 315)
 argglobal
 setlocal fdm=manual
@@ -48,10 +48,10 @@ if s:l < 1 | let s:l = 1 | endif
 exe s:l
 normal! zt
 14
-normal! 01|
+normal! 0
 wincmd w
 argglobal
-if bufexists("src/ResolutionProof.cpp") | buffer src/ResolutionProof.cpp | else | edit src/ResolutionProof.cpp | endif
+if bufexists("src/ProofFactory.cpp") | buffer src/ProofFactory.cpp | else | edit src/ProofFactory.cpp | endif
 setlocal fdm=manual
 setlocal fde=0
 setlocal fmr={{{,}}}
@@ -61,12 +61,12 @@ setlocal fml=1
 setlocal fdn=20
 setlocal fen
 silent! normal! zE
-let s:l = 5 - ((3 * winheight(0) + 29) / 58)
+let s:l = 4 - ((3 * winheight(0) + 29) / 58)
 if s:l < 1 | let s:l = 1 | endif
 exe s:l
 normal! zt
-5
-normal! 025|
+4
+normal! 0
 wincmd w
 argglobal
 if bufexists("tests/res_proof_test.cpp") | buffer tests/res_proof_test.cpp | else | edit tests/res_proof_test.cpp | endif
@@ -79,16 +79,16 @@ setlocal fml=1
 setlocal fdn=20
 setlocal fen
 silent! normal! zE
-let s:l = 86 - ((48 * winheight(0) + 29) / 58)
+let s:l = 2 - ((1 * winheight(0) + 29) / 58)
 if s:l < 1 | let s:l = 1 | endif
 exe s:l
 normal! zt
-86
-normal! 035|
+2
+normal! 0
 wincmd w
-3wincmd w
-exe 'vert 1resize ' . ((&columns * 104 + 157) / 315)
-exe 'vert 2resize ' . ((&columns * 105 + 157) / 315)
+2wincmd w
+exe 'vert 1resize ' . ((&columns * 105 + 157) / 315)
+exe 'vert 2resize ' . ((&columns * 104 + 157) / 315)
 exe 'vert 3resize ' . ((&columns * 104 + 157) / 315)
 tabnext 1
 if exists('s:wipebuf') && getbufvar(s:wipebuf, '&buftype') isnot# 'terminal'

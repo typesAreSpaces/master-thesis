@@ -1,8 +1,10 @@
-#include "ResolutionProof.h"
+#include "ProofFactory.h"
 
 int main(){
 
-  ResolutionProof(0);
+  ProofFactory();
+
+  //ClauseProof cl1(0);
   
   return 0;
 }
