@@ -47,15 +47,13 @@ class LitProof {
 
 class ConflictProof {
 
-  // The id is: 
-  // 2*lit if lit is positive
-  // 2*lit + 1 if lit is negative
-  unsigned                    id;
   std::list<LitProof const *> lit_subproofs;
   ClauseProof const *         clause_subproof;
 
   public:
   ConflictProof();
+  void addSubproof(LitProof const *);
+  void updateClauseProof(ClauseProof const *);
 };
 
 class ProofFactory {

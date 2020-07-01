@@ -63,6 +63,14 @@ ConflictProof::ConflictProof()
 {
 }
 
+void ConflictProof::addSubproof(LitProof const * lit_proof){
+  lit_subproofs.push_back(lit_proof);
+}
+
+void ConflictProof::updateClauseProof(ClauseProof const * clause_proof){
+  clause_subproof = clause_proof;
+}
+
 ProofFactory::ProofFactory():
   clause_proofs(), lit_proofs(), conflict_proof()
 {
@@ -121,7 +129,6 @@ ProofFactory::ProofFactory():
       } while(resolve_trace_line.good());
     }
     else if(proof_kind == "VAR:"){
-
       // ------------------------------------------------
       unsigned pure_literal, aux_number, polarity, 
                antecedent_clause, lit_repr, sub_lit_repr;
@@ -150,23 +157,18 @@ ProofFactory::ProofFactory():
           current_lit.addSubproof(&lit_proofs[sub_lit_repr]);
       }
     }
-    // KEEP: working here
     else if(proof_kind == "CONF:"){
-      std::cout << proof_kind << " ";
-
       // --------------------------
-      unsigned clause_id, lit_repr;
+      unsigned clause_id, sub_lit_repr;
       // --------------------------
 
       resolve_trace_line >> clause_id;
-      std::cout << "empty clause: " << clause_id;
+      conflict_proof.updateClauseProof(&clause_proofs[clause_id]);
       resolve_trace_line >> aux_symbol;
-      std::cout << "the lits: ";
       while(resolve_trace_line.good()){
-        resolve_trace_line >> lit_repr;
-        std::cout << lit_repr << " ";
+        resolve_trace_line >> sub_lit_repr;
+        conflict_proof.addSubproof(&lit_proofs[sub_lit_repr]);
       }
-      std::cout << std::endl;
     }
   }
 #if _DEBUG_CLAUSE_PROOF_

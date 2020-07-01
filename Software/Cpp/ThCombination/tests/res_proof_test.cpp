@@ -2,9 +2,8 @@
 
 int main(){
 
+  // KEEP: working here
   ProofFactory();
-
-  //ClauseProof cl1(0);
   
   return 0;
 }
