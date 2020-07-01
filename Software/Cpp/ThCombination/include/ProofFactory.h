@@ -29,30 +29,42 @@ class ClauseProof {
   friend std::ostream & operator << (std::ostream &, ClauseProof const &);
 };
 
-struct LitProof { 
+class LitProof { 
 
+  // The id is: 
+  // 2*lit if lit is positive
+  // 2*lit + 1 if lit is negative
   unsigned                    id;
-  bool                        polarity;
   std::list<LitProof const *> lit_subproofs;
   ClauseProof const *         clause_subproof;
 
-  LitProof();
+  public:
+  LitProof(unsigned);
+  unsigned getId() const;
+  void addSubproof(LitProof const *);
+  void updateClauseProof(ClauseProof const *);
 };
 
-struct ConflictProof {
+class ConflictProof {
 
+  // The id is: 
+  // 2*lit if lit is positive
+  // 2*lit + 1 if lit is negative
   unsigned                    id;
-  bool                        polarity;
   std::list<LitProof const *> lit_subproofs;
   ClauseProof const *         clause_subproof;
 
+  public:
   ConflictProof();
 };
 
 class ProofFactory {
 
   typedef std::vector<ClauseProof> ClauseProofs;
-  typedef std::vector<LitProof>    LitProofs;
+  class LitProofs : public std::vector<LitProof> {
+    public:
+    void if_enough_push_back_otherwise_resize(LitProof const &);
+  };
 
   ClauseProofs  clause_proofs;
   LitProofs     lit_proofs;

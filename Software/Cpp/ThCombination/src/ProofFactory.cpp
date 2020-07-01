@@ -1,7 +1,7 @@
 #include "ProofFactory.h"
 
 ClauseProof::ClauseProof(unsigned id) : 
-  id(id), literals(), clause_subproofs()
+  id(id), literals({}), clause_subproofs({})
 {
 }
 
@@ -42,8 +42,21 @@ std::ostream & operator << (std::ostream & os, ClauseProof const & cp){
   return os;
 }
 
-LitProof::LitProof()
+LitProof::LitProof(unsigned id) : 
+  id(id), lit_subproofs({}), clause_subproof(nullptr)
 {
+}
+
+unsigned LitProof::getId() const {
+  return id;
+}
+
+void LitProof::addSubproof(LitProof const * lit_proof){
+  lit_subproofs.push_back(lit_proof);
+}
+
+void LitProof::updateClauseProof(ClauseProof const * clause_proof){
+  clause_subproof = clause_proof;
 }
 
 ConflictProof::ConflictProof()
@@ -87,50 +100,57 @@ ProofFactory::ProofFactory():
 
     if(proof_kind == "CL:"){
       // -------------------------------
-      unsigned clause_id, aux_clause_id;
+      unsigned clause_id, sub_clause_id;
       int pivot_id;
       // -------------------------------
+      
       resolve_trace_line >> clause_id;
-      clause_proofs.emplace_back(clause_id);
       resolve_trace_line >> aux_symbol;
-
       resolve_trace_line >> pivot_id; 
-      resolve_trace_line >> aux_clause_id;
-      clause_proofs[clause_id].addSubproof(&clause_proofs[aux_clause_id]);
-      clause_proofs[clause_id].updateLiterals(clause_proofs[aux_clause_id]);
+      resolve_trace_line >> sub_clause_id;
+
+      clause_proofs.emplace_back(clause_id);
+      auto & lhs_clause = clause_proofs[clause_id];
+      lhs_clause.addSubproof(&clause_proofs[sub_clause_id]);
+      lhs_clause.updateLiterals(clause_proofs[sub_clause_id]);
       do {
         resolve_trace_line >> pivot_id; 
-        resolve_trace_line >> aux_clause_id;
-        auto & lhs_clause = clause_proofs[clause_id];
-        auto & rhs_clause = clause_proofs[aux_clause_id];
-        lhs_clause.addSubproof(&rhs_clause);
-        lhs_clause.updateResolution(pivot_id, rhs_clause);
+        resolve_trace_line >> sub_clause_id;
+        lhs_clause.addSubproof(&clause_proofs[sub_clause_id]);
+        lhs_clause.updateResolution(pivot_id, clause_proofs[sub_clause_id]);
       } while(resolve_trace_line.good());
     }
     else if(proof_kind == "VAR:"){
-      std::cout << proof_kind << " ";
 
-      // ----------------------------------------------------------------------
-      unsigned pure_literal, aux_number, polarity, antecedent_clause, lit_repr;
-      // ----------------------------------------------------------------------
+      // ------------------------------------------------
+      unsigned pure_literal, aux_number, polarity, 
+               antecedent_clause, lit_repr, sub_lit_repr;
+      // ------------------------------------------------
 
       resolve_trace_line >> pure_literal;
-      std::cout << "the lit: " << pure_literal << " ";
       resolve_trace_line >> aux_symbol;
       resolve_trace_line >> aux_number;
       resolve_trace_line >> aux_symbol;
       resolve_trace_line >> polarity;
-      std::cout << "polarity: " << polarity << " ";
       resolve_trace_line >> aux_symbol;
       resolve_trace_line >> antecedent_clause;
-      std::cout << "antecedent_clause: " << antecedent_clause << " ";
       resolve_trace_line >> aux_symbol;
-      std::cout << "lits: ";
+
+      lit_repr = polarity ? 2*pure_literal : 2*pure_literal + 1;
+      lit_proofs.if_enough_push_back_otherwise_resize(lit_repr);
+      auto & current_lit = lit_proofs[lit_repr];
+      current_lit.updateClauseProof(&clause_proofs[antecedent_clause]);
       while(resolve_trace_line.good()){
-        resolve_trace_line >> lit_repr;
-        std::cout << lit_repr << " ";
+        resolve_trace_line >> sub_lit_repr;
+        unsigned positive_diff = 
+          sub_lit_repr > lit_repr ? 
+          sub_lit_repr - lit_repr : 
+          lit_repr - sub_lit_repr;
+        if(positive_diff != 1)
+          current_lit.addSubproof(&lit_proofs[sub_lit_repr]);
       }
     }
+    // KEEP: working here
     else if(proof_kind == "CONF:"){
       std::cout << proof_kind << " ";
 
@@ -146,8 +166,8 @@ ProofFactory::ProofFactory():
         resolve_trace_line >> lit_repr;
         std::cout << lit_repr << " ";
       }
+      std::cout << std::endl;
     }
-    std::cout << std::endl;
   }
 #if _DEBUG_CLAUSE_PROOF_
   for(auto const & clause_proof : clause_proofs)
@@ -155,6 +175,13 @@ ProofFactory::ProofFactory():
 #endif
 }
 
+void ProofFactory::LitProofs::if_enough_push_back_otherwise_resize(LitProof const & lit_proof){
+  if(lit_proof.getId() >= size())
+    for(unsigned i = size(); i < lit_proof.getId(); ++i)
+      emplace_back(i);
+ 
+  push_back(lit_proof);
+}
 
 std::string ProofFactory::exec(const char* cmd) {
     std::array<char, 128> buffer;
