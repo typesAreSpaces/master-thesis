@@ -113,8 +113,8 @@ ProofFactory::ProofFactory():
 {
   std::string current_dir = exec("pwd");
 
-  std::ifstream cnf_file("/home/jose/booleforce_examples/hole6.cnf", std::fstream::in);
-  //std::ifstream cnf_file(current_dir + "/file.cnf", std::fstream::in);
+  //std::ifstream cnf_file("/home/jose/booleforce_examples/hole6.cnf", std::fstream::in);
+  std::ifstream cnf_file(current_dir + "/file.cnf", std::fstream::in);
   std::string line;
   std::getline(cnf_file, line);
   // Setup literals
@@ -139,9 +139,8 @@ ProofFactory::ProofFactory():
     clause_id++;
   }
 
-  system("zchaff ~/booleforce_examples/hole6.cnf > /dev/null");
-  //system(("zchaff " + current_dir + "/file.cnf > /dev/null").c_str());
-  //system(("rm " + current_dir + "/file.cnf").c_str());
+  //system("zchaff ~/booleforce_examples/hole6.cnf > /dev/null");
+  system(("zchaff " + current_dir + "/file.cnf > /dev/null").c_str());
 
   std::ifstream resolve_trace_file(current_dir + "/resolve_trace", std::fstream::in);
   std::string proof_kind, aux_symbol;
