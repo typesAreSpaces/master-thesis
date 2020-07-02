@@ -102,7 +102,8 @@ ThCombInterpolator::ThCombInterpolator(z3::context & ctx,
   //
   // Using CDCL_T, find conflict clauses - Implemented? check, Integrated? not yet
   //
-  // Using zChaff, find unsat proof - Implemented? not yet, Integrated? not yet obviously
+  // Using zChaff, find unsat proof - Implemented? check, Integrated? not yet
+  return;
 }
 
 ThCombInterpolator::~ThCombInterpolator(){
