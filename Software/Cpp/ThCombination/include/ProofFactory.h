@@ -1,6 +1,6 @@
 #ifndef _PROOF_FACTORY_
 #define _PROOF_FACTORY_
-#define _DEBUG_CLAUSE_PROOF_ 0
+#define _DEBUG_CLAUSE_PROOF_ 1
 
 #include <iostream>
 #include <cstdlib>
@@ -13,7 +13,13 @@
 #include <vector>
 #include <algorithm>
 
-class ClauseProof {
+struct ResolutionProof {
+  std::list<unsigned> pivots;
+  ResolutionProof();
+  void addPivot(unsigned);
+};
+
+class ClauseProof : public ResolutionProof {
 
   unsigned                       id;
   std::list<int>                 literals;
@@ -24,12 +30,12 @@ class ClauseProof {
 
   void addLiteral(int);
   void addSubproof(ClauseProof const *);
-  void updateLiterals(ClauseProof const &);
+  void setLiterals(ClauseProof const &);
   void updateResolution(int, ClauseProof const &);
   friend std::ostream & operator << (std::ostream &, ClauseProof const &);
 };
 
-class LitProof { 
+class LitProof : public ResolutionProof { 
 
   // The id is: 
   // 2*lit if lit is positive
@@ -42,10 +48,11 @@ class LitProof {
   LitProof(unsigned);
   unsigned getId() const;
   void addSubproof(LitProof const *);
-  void updateClauseProof(ClauseProof const *);
+  void setClauseProof(ClauseProof const *);
+  friend std::ostream & operator << (std::ostream &, LitProof const &);
 };
 
-class ConflictProof {
+class ConflictProof : public ResolutionProof {
 
   std::list<LitProof const *> lit_subproofs;
   ClauseProof const *         clause_subproof;
@@ -53,16 +60,14 @@ class ConflictProof {
   public:
   ConflictProof();
   void addSubproof(LitProof const *);
-  void updateClauseProof(ClauseProof const *);
+  void setClauseProof(ClauseProof const *);
+  friend std::ostream & operator << (std::ostream &, ConflictProof const &);
 };
 
 class ProofFactory {
 
   typedef std::vector<ClauseProof> ClauseProofs;
-  class LitProofs : public std::vector<LitProof> {
-    public:
-    void if_enough_push_back_otherwise_resize(LitProof const &);
-  };
+  typedef std::vector<LitProof>    LitProofs;
 
   ClauseProofs  clause_proofs;
   LitProofs     lit_proofs;
@@ -72,6 +77,7 @@ class ProofFactory {
 
   public:
   ProofFactory();
+  void initLitProofs(unsigned);
 };
 
 #endif
