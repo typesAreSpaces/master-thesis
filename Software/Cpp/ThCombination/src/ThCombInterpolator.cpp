@@ -30,7 +30,7 @@ ThCombInterpolator::ThCombInterpolator(z3::context & ctx,
     euf_solver.add(form);
   for(auto const & form : part_b.getEufComponent())
     euf_solver.add(form);
-  
+
   // Find theory that unsat by passing 
   // disjuntions of shared equalities
   DisjEqsPropagator phi(shared_variables);
@@ -55,13 +55,13 @@ ThCombInterpolator::ThCombInterpolator(z3::context & ctx,
       oct_solver.push();
       oct_solver.add(not(*current_disj_eqs));
       if(oct_solver.check() == z3::unsat){
-        oct_solver.pop();
         euf_solver.pop();
+        oct_solver.pop();
         ++current_disj_eqs;
         continue;
       }
-      oct_solver.pop();
       euf_solver.pop();
+      oct_solver.pop();
       oct_solver.add(*current_disj_eqs);
       current_disj_eqs = phi.begin();
       continue;
@@ -70,14 +70,14 @@ ThCombInterpolator::ThCombInterpolator(z3::context & ctx,
     oct_solver.push();
     oct_solver.add(not(*current_disj_eqs));
     if(oct_solver.check() == z3::unsat){
-      oct_solver.pop();
       euf_solver.pop();
+      oct_solver.pop();
       euf_solver.add(*current_disj_eqs);
       current_disj_eqs = phi.begin();
       continue;
     }
-    oct_solver.pop();
     euf_solver.pop();
+    oct_solver.pop();
     ++current_disj_eqs;
   } 
 
@@ -86,23 +86,33 @@ ThCombInterpolator::ThCombInterpolator(z3::context & ctx,
     return;
   }
 
+  // Commet: Z3 simplies formulas while checking
+  // for consistency
+  
   if(is_EUF_unsat_theory){
     std::cout << "EUF solver found a contradiction" << std::endl;
+    std::cout << "assertions in EUF" << std::endl;
+    for(auto const & x : euf_solver.assertions())
+      std::cout << x << std::endl;
+    CDCL_T(euf_solver.assertions()).toDimacsFile();
+    ProofFactory resolution_proof = ProofFactory();
     return;
   }
 
   std::cout << "OCT solver found a contradiction" << std::endl;
-
-  //std::cout << "Assertions in EUF" << std::endl;
-  //std::cout << euf_solver.assertions() << std::endl;
-  //std::cout << "Assertions in OCT" << std::endl;
-  //std::cout << oct_solver.assertions() << std::endl;
+  std::cout << "assertions in OCT" << std::endl;
+  for(auto const & x : oct_solver.assertions())
+    std::cout << x << std::endl;
+  CDCL_T(oct_solver.assertions()).toDimacsFile();
+  ProofFactory resolution_proof = ProofFactory();
 
   // TODO:
   //
-  // Using CDCL_T, find conflict clauses - Implemented? check, Integrated? not yet
-  //
-  // Using zChaff, find unsat proof - Implemented? check, Integrated? not yet
+  // Build partial interpolants for:
+  // - Rename the proof tree in term of the non-propositonal
+  // elements
+  // - Convex case
+  // - Partial interpolant for conflict clauses
   return;
 }
 

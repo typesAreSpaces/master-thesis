@@ -202,7 +202,6 @@ ProofFactory::ProofFactory():
         }
       }
     }
-    // KEEP: working here
     else if(proof_kind == "CONF:"){
       // --------------------------
       unsigned clause_id, sub_lit_repr;
@@ -222,7 +221,8 @@ ProofFactory::ProofFactory():
       }
     }
   }
-#if _DEBUG_CLAUSE_PROOF_
+//#if _DEBUG_CLAUSE_PROOF_
+#if 1
   for(auto const & clause_proof : clause_proofs)
     std::cout << clause_proof << std::endl;
   for(auto const & lit_proof : lit_proofs)

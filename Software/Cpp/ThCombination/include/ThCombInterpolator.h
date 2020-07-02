@@ -5,6 +5,7 @@
 #include "Purifier.h"
 #include "DisjEqsPropagator.h"
 #include "CDCL_T.h"
+#include "ProofFactory.h"
 #include <set>
 
 

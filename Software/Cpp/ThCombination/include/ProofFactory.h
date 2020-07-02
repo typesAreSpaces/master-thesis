@@ -1,6 +1,6 @@
 #ifndef _PROOF_FACTORY_
 #define _PROOF_FACTORY_
-#define _DEBUG_CLAUSE_PROOF_ 1
+#define _DEBUG_CLAUSE_PROOF_ 0
 
 #include <iostream>
 #include <cstdlib>
