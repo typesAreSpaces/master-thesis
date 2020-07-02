@@ -74,8 +74,11 @@ bool DisjEqsPropagator::iterator::isLast(){
   return (this->index_block == (it->size + 1));
 }
 
-DisjEqsPropagator::DisjEqs DisjEqsPropagator::iterator::operator *() const {
-  return it->getCurrentDisjEqs();
+z3::expr DisjEqsPropagator::iterator::operator *() const {
+  z3::expr_vector current_disj_eqs = it->getCurrentDisjEqs();
+  if(current_disj_eqs.size() == 1)
+    return current_disj_eqs[0];
+  return z3::mk_or(current_disj_eqs);
 }
 
 DisjEqsPropagator::iterator DisjEqsPropagator::begin(){

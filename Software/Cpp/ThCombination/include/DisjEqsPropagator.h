@@ -41,7 +41,7 @@ class DisjEqsPropagator {
     void    init();
     bool    isLast();
     void    operator ++();
-    DisjEqs operator *() const;
+    z3::expr operator *() const;
   }; 
 
   iterator begin();

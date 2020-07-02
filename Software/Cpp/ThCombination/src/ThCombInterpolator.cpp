@@ -12,35 +12,91 @@ ThCombInterpolator::ThCombInterpolator(z3::context & ctx,
   euf_solver(ctx, "QF_UF"), oct_solver(ctx, "QF_LIA"),
   shared_variables(ctx), partial_interpolants(ctx)
 {
+  sharedVariables(part_a, part_b);
 #if _DEBUG_TH_COMB_
   std::cout << "Part a" << std::endl;
   std::cout << part_a;
   std::cout << "Part b" << std::endl;
   std::cout << part_b;
   std::cout << "Shared variables" << std::endl;
-  sharedVariables(part_a, part_b);
   std::cout << shared_variables << std::endl;
 #endif
 
   for(auto const & form : part_a.getOctComponent())
     oct_solver.add(form);
-  for(auto const & form : part_a.getEufComponent())
-    euf_solver.add(form);
   for(auto const & form : part_b.getOctComponent())
     oct_solver.add(form);
+  for(auto const & form : part_a.getEufComponent())
+    euf_solver.add(form);
   for(auto const & form : part_b.getEufComponent())
     euf_solver.add(form);
-
-  auto oct_check = oct_solver.check(), euf_check = euf_solver.check();
-  std::cout << "sanity check 1 " << oct_check << std::endl;
-  std::cout << "sanity check 2 " << euf_check << std::endl;
   
   // Find theory that unsat by passing 
-  // disjuntions of equalities
+  // disjuntions of shared equalities
   DisjEqsPropagator phi(shared_variables);
-  // TODO: keep working here
-  //while(oct_check == z3::sat && euf_check == z3::sat){
-  //}
+  bool is_EUF_unsat_theory;
+  auto current_disj_eqs = phi.begin();
+  while(!current_disj_eqs.isLast()){
+#if _DEBUG_TH_COMB_
+    std::cout << "(inside main loop) current disj eqs" << std::endl;
+    std::cout << *current_disj_eqs << std::endl;
+#endif
+    if(oct_solver.check() == z3::unsat){
+      is_EUF_unsat_theory = false;
+      break;
+    }
+    if(euf_solver.check() == z3::unsat){
+      is_EUF_unsat_theory = true;
+      break;
+    }
+    euf_solver.push();
+    euf_solver.add(not(*current_disj_eqs));
+    if(euf_solver.check() == z3::unsat){
+      oct_solver.push();
+      oct_solver.add(not(*current_disj_eqs));
+      if(oct_solver.check() == z3::unsat){
+        oct_solver.pop();
+        euf_solver.pop();
+        ++current_disj_eqs;
+        continue;
+      }
+      oct_solver.pop();
+      euf_solver.pop();
+      oct_solver.add(*current_disj_eqs);
+      current_disj_eqs = phi.begin();
+      continue;
+    }
+
+    oct_solver.push();
+    oct_solver.add(not(*current_disj_eqs));
+    if(oct_solver.check() == z3::unsat){
+      oct_solver.pop();
+      euf_solver.pop();
+      euf_solver.add(*current_disj_eqs);
+      current_disj_eqs = phi.begin();
+      continue;
+    }
+    oct_solver.pop();
+    euf_solver.pop();
+    ++current_disj_eqs;
+  } 
+
+  if(current_disj_eqs.isLast()){
+    std::cout << "The input-formula is satisfiable" << std::endl;
+    return;
+  }
+
+  if(is_EUF_unsat_theory){
+    std::cout << "EUF solver found a contradiction" << std::endl;
+    return;
+  }
+
+  std::cout << "OCT solver found a contradiction" << std::endl;
+
+  //std::cout << "Assertions in EUF" << std::endl;
+  //std::cout << euf_solver.assertions() << std::endl;
+  //std::cout << "Assertions in OCT" << std::endl;
+  //std::cout << oct_solver.assertions() << std::endl;
 
   // TODO:
   //
