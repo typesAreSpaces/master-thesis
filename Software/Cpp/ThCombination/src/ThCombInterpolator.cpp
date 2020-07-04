@@ -94,7 +94,9 @@ ThCombInterpolator::ThCombInterpolator(z3::context & ctx,
     std::cout << "assertions in EUF" << std::endl;
     for(auto const & x : euf_solver.assertions())
       std::cout << x << std::endl;
-    CDCL_T(euf_solver.assertions()).toDimacsFile();
+    auto const & euf_assertions = euf_solver.assertions();
+    CDCL_T cdcl_t(euf_assertions);
+    cdcl_t.toDimacsFile();
     ProofFactory resolution_proof = ProofFactory();
     return;
   }
@@ -103,7 +105,9 @@ ThCombInterpolator::ThCombInterpolator(z3::context & ctx,
   std::cout << "assertions in OCT" << std::endl;
   for(auto const & x : oct_solver.assertions())
     std::cout << x << std::endl;
-  CDCL_T(oct_solver.assertions()).toDimacsFile();
+  auto const & oct_assertions = oct_solver.assertions();
+  CDCL_T cdcl_t(oct_assertions);
+  cdcl_t.toDimacsFile();
   ProofFactory resolution_proof = ProofFactory();
 
   // TODO:

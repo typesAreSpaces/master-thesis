@@ -1,6 +1,6 @@
 #ifndef _CDCL_T_
 #define _CDCL_T_
-#define _DEBUG_CDCL_T_ 1
+#define _DEBUG_CDCL_T_ 0
 
 #include <iostream>
 #include <fstream>
@@ -21,7 +21,7 @@ class CDCL_T {
   z3::expr_map concretes;
   
   // The following encodes a cnf
-  z3::expr_vector conflict_clauses;
+  z3::expr_vector abstract_conflict_clauses;
 
   z3::expr abstract_atom(z3::expr const &);
   z3::expr abstract_lit(z3::expr const &);
@@ -29,7 +29,6 @@ class CDCL_T {
   z3::expr_vector abstract_clauses(z3::expr_vector const &);
 
   z3::expr_vector mk_lits(z3::model const &);
-  void block_conflict_clause(z3::expr_vector const &); 
   void loop();
 
   public:

@@ -68,8 +68,8 @@ int main(){
   
   z3::context ctx;  
 
-  test1(ctx);
-  //test2(ctx);
+  //test1(ctx);
+  test2(ctx);
   //test3(ctx);
 
   return 0;

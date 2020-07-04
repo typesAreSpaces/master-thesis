@@ -63,7 +63,7 @@ tests/basic_test: $(OBJS)
 	$(CC) -g -c -o ./$@.o $(FLAGS) ./$@.cpp
 	$(CC) -g -o $@ $(OBJS) ./$@.o -lpthread -Wall
 	./$@
-	#rm -rf tests/*.o $@
+	rm -rf tests/*.o $@
 
 # ------------------------------------------------------------------------------------------
 

@@ -1,3 +1,5 @@
-VAR: 3 L: 2 V: 0 A: 3 Lits: 7
-VAR: 4 L: 3 V: 0 A: 4 Lits: 9
+VAR: 1 L: 0 V: 0 A: 0 Lits: 3
+VAR: 2 L: 1 V: 0 A: 1 Lits: 5
+VAR: 3 L: 2 V: 0 A: 3 Lits: 2 7
+VAR: 4 L: 3 V: 0 A: 4 Lits: 4 9
 CONF: 2 == 6 8

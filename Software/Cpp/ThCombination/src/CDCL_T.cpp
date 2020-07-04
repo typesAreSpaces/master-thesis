@@ -5,26 +5,24 @@ CDCL_T::CDCL_T(z3::expr_vector const & formulas) :
   ctx(formulas.ctx()), input(formulas),
   prop_solver(ctx), theory_solver(ctx),
   abstractions(ctx), concretes(ctx),
-  conflict_clauses(ctx)
+  abstract_conflict_clauses(ctx)
 {
 #if _DEBUG_CDCL_T_
   std::cout << "Original formulas" << std::endl;
   std::cout << input << std::endl;
 #endif
   try {
-    // Making abstractions
     // Setup prop solver
     for(auto const & abstract_clause : abstract_clauses(formulas))
       prop_solver.add(abstract_clause);
     // Setup theory solver
-    for(auto const & clause : formulas)
-      theory_solver.add(clause);
+    for(auto const & predicate : abstractions.keys())
+      theory_solver.add(predicate == abstractions.find(predicate));
     // Find conflict-clauses
     loop();
 #if _DEBUG_CDCL_T_
     std::cout << "--Conflict clauses found" << std::endl; 
-    std::cout << conflict_clauses << std::endl;
-    std::cout << std::endl;
+    std::cout << abstract_conflict_clauses << std::endl << std::endl;
 #endif
   }
   catch(char const * e){
@@ -32,10 +30,9 @@ CDCL_T::CDCL_T(z3::expr_vector const & formulas) :
   }
 #if _DEBUG_CDCL_T_
   std::cout << "--Abstractions" << std::endl;
-  for(auto const & key : abstractions.keys()){
+  for(auto const & key : abstractions.keys())
     std::cout << key << " |-> " << abstractions.find(key) << std::endl;
   std::cout << std::endl;
-}
 #endif
 }
 
@@ -95,18 +92,11 @@ z3::expr_vector CDCL_T::mk_lits(z3::model const & m){
   z3::expr_vector result(ctx);
   for(auto const & abstract_lit : concretes.keys()){
     if(m.eval(abstract_lit).is_true())
-      result.push_back(concretes.find(abstract_lit));
+      result.push_back(abstract_lit);
     else
-      result.push_back(not(concretes.find(abstract_lit)));
+      result.push_back(not(abstract_lit));
   }
   return result;
-}
-
-void CDCL_T::block_conflict_clause(z3::expr_vector const & unsat_cores){
-  z3::expr_vector result(ctx);
-  for(auto const & unsat_core : unsat_cores)
-    result.push_back(abstract_lit(unsat_core));
-  prop_solver.add(not(z3::mk_and(result)));
 }
 
 void CDCL_T::loop(){
@@ -114,16 +104,29 @@ void CDCL_T::loop(){
     auto is_sat = prop_solver.check();
     if(z3::sat == is_sat){
       z3::model partial_model = prop_solver.get_model();
-      auto lits               = mk_lits(partial_model);
-      if(z3::unsat == theory_solver.check(lits)){
+      if(z3::unsat == theory_solver.check(mk_lits(partial_model))){
         auto unsat_cores = theory_solver.unsat_core();
-        block_conflict_clause(unsat_cores);
-        std::cout << "-----wiat" << std::endl;
-        std::cout << unsat_cores << std::endl;
-        if(unsat_cores.size() == 1)
-          conflict_clauses.push_back(not(unsat_cores[0]));
-        else
-          conflict_clauses.push_back(not(z3::mk_and(unsat_cores)));
+        prop_solver.add(not(z3::mk_and(unsat_cores)));
+        // -------------------------------------------------------
+        // Track conflic clauses
+        if(unsat_cores.size() == 1){
+          z3::expr conflict_clause = unsat_cores[0];
+          if(conflict_clause.is_not())
+            abstract_conflict_clauses.push_back(conflict_clause.arg(0));
+          else
+            abstract_conflict_clauses.push_back(not(conflict_clause));
+        }
+        else{
+          z3::expr_vector conflict_clause(ctx);
+          for(auto const & unsat_core : unsat_cores){
+            if(unsat_core.is_not())
+              conflict_clause.push_back(unsat_core.arg(0));
+            else
+              conflict_clause.push_back(not(unsat_core));
+          }
+          abstract_conflict_clauses.push_back(z3::mk_or(conflict_clause));
+        }
+        // -------------------------------------------------------
       }
 #if _DEBUG_CDCL_T_
       else{
@@ -142,51 +145,37 @@ void CDCL_T::loop(){
 }
 
 z3::expr_vector const CDCL_T::getConflictClauses() const {
-  return conflict_clauses;
+  return abstract_conflict_clauses;
 }
 
-std::ofstream & CDCL_T::dimacsLit(std::ofstream & file, z3::expr const & lit){
-  if(lit.is_not()){
-    auto const & abstract_lit = abstractions.find(lit.arg(0));
-    auto const & abstract_name = abstract_lit.decl().name().str();
-    unsigned identifier = (unsigned)std::stol(abstract_name.substr(3, abstract_name.size() - 1));
-    file << "-" << identifier << " ";
+std::ofstream & CDCL_T::dimacsLit(std::ofstream & file, z3::expr const & abstract_lit){
+  if(abstract_lit.is_not()){
+    auto const & abstract_name = abstract_lit.arg(0).decl().name().str();
+    file << "-" 
+      << (unsigned)std::stol(abstract_name.substr(3, abstract_name.size() - 1)) 
+      << " ";
     return file;
   }
-  if(lit.is_distinct()){
-    auto const & abstract_lit = abstractions.find(lit.arg(0) == lit.arg(1));
-    auto const & abstract_name = abstract_lit.decl().name().str();
-    unsigned identifier = (unsigned)std::stol(abstract_name.substr(3, abstract_name.size() - 1));
-    file << "-" << identifier << " ";
-    return file;
-  }
-
-  auto const & abstract_lit = abstractions.find(lit);
   auto const & abstract_name = abstract_lit.decl().name().str();
-  unsigned identifier = (unsigned)std::stol(abstract_name.substr(3, abstract_name.size() - 1));
-  file << identifier << " ";
+  file 
+    << (unsigned)std::stol(abstract_name.substr(3, abstract_name.size() - 1)) 
+    << " ";
   return file;
 }
 
-std::ofstream & CDCL_T::dimacsClause(std::ofstream & file, z3::expr const & e){
-  if(e.is_app()){
-    switch(e.decl().decl_kind()){
+std::ofstream & CDCL_T::dimacsClause(std::ofstream & file, z3::expr const & abstract_e){
+  if(abstract_e.is_app()){
+    switch(abstract_e.decl().decl_kind()){
       case Z3_OP_OR:
         {
-          unsigned num_args = e.num_args();
+          unsigned num_args = abstract_e.num_args();
           for(unsigned _i = 0; _i < num_args; ++_i)
-            dimacsLit(file, e.arg(_i));
+            dimacsLit(file, abstract_e.arg(_i));
           break;
         }
       case Z3_OP_NOT:
-      case Z3_OP_EQ:
-      case Z3_OP_DISTINCT:
-      case Z3_OP_LE:    
-      case Z3_OP_GE:
-      case Z3_OP_LT:
-      case Z3_OP_GT:
       case Z3_OP_UNINTERPRETED:
-        dimacsLit(file, e);
+        dimacsLit(file, abstract_e);
         break;
       default:
         throw "There is a problem";
@@ -201,20 +190,19 @@ void CDCL_T::toDimacsFile(){
   out.open("file.cnf");
   out << "p cnf " 
     << (abstraction_fresh_index-1) << " " 
-    << input.size() + conflict_clauses.size() << std::endl;  
-  for(auto const & clause : input){
+    << input.size() + abstract_conflict_clauses.size() << std::endl;  
+  for(auto const & abstract_clause : abstract_clauses(input)){
+#if _DEBUG_CDCL_T_
+    std::cout << abstract_clause << std::endl;
+#endif
+    dimacsClause(out, abstract_clause) << "0" << std::endl;
+  }
+  for(auto const & clause : abstract_conflict_clauses){
 #if _DEBUG_CDCL_T_
     std::cout << clause << std::endl;
 #endif
     dimacsClause(out, clause) << "0" << std::endl;
   }
-  for(auto const & clause : conflict_clauses){
-#if _DEBUG_CDCL_T_
-    std::cout << clause << std::endl;
-#endif
-    dimacsClause(out, clause) << "0" << std::endl;
-  }
-
   out.close();
   return;
 }

@@ -37,6 +37,8 @@ int main(){
 
   z3::expr_vector example_3(ctx);
   example_3.push_back(1 == x || 2 == x);
+  //example_3.push_back(1 <= x);
+  //example_3.push_back(x <= 2);
   example_3.push_back(p(x));
   example_3.push_back(not(p(1)));
   example_3.push_back(not(p(2)));
