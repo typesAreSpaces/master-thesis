@@ -11,27 +11,30 @@ CDCL_T::CDCL_T(z3::expr_vector const & formulas) :
   std::cout << "Original formulas" << std::endl;
   std::cout << input << std::endl;
 #endif
-  // Setup theory solver
-  for(auto const & clause : formulas)
-    theory_solver.add(clause);
   try {
     // Making abstractions
     // Setup prop solver
     for(auto const & abstract_clause : abstract_clauses(formulas))
       prop_solver.add(abstract_clause);
+    // Setup theory solver
+    for(auto const & clause : formulas)
+      theory_solver.add(clause);
     // Find conflict-clauses
     loop();
 #if _DEBUG_CDCL_T_
-    std::cout << "Conflict clauses found" << std::endl; 
+    std::cout << "--Conflict clauses found" << std::endl; 
     std::cout << conflict_clauses << std::endl;
+    std::cout << std::endl;
 #endif
   }
   catch(char const * e){
     std::cout << e << std::endl;
   }
 #if _DEBUG_CDCL_T_
+  std::cout << "--Abstractions" << std::endl;
   for(auto const & key : abstractions.keys()){
     std::cout << key << " |-> " << abstractions.find(key) << std::endl;
+  std::cout << std::endl;
 }
 #endif
 }
@@ -115,6 +118,8 @@ void CDCL_T::loop(){
       if(z3::unsat == theory_solver.check(lits)){
         auto unsat_cores = theory_solver.unsat_core();
         block_conflict_clause(unsat_cores);
+        std::cout << "-----wiat" << std::endl;
+        std::cout << unsat_cores << std::endl;
         if(unsat_cores.size() == 1)
           conflict_clauses.push_back(not(unsat_cores[0]));
         else

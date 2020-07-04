@@ -8,7 +8,7 @@
             "name": "(gdb) Launch",
             "type": "cppdbg",
             "request": "launch",
-            "program": "${workspaceFolder}/tests/disj_eqs_propagator_test",
+            "program": "${workspaceFolder}/tests/basic_test",
             "args": [],
             "stopAtEntry": false,
             "cwd": "${workspaceFolder}",

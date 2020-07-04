@@ -1,6 +1,6 @@
 #ifndef _CDCL_T_
 #define _CDCL_T_
-#define _DEBUG_CDCL_T_ 0
+#define _DEBUG_CDCL_T_ 1
 
 #include <iostream>
 #include <fstream>
