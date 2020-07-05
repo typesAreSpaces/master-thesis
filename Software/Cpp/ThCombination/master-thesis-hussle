@@ -22,7 +22,7 @@ badd +81 src/DisjEqsPropagator.cpp
 badd +2 src/CDCL_T.cpp
 badd +41 tests/cdcl_t_test.cpp
 badd +4 tests/res_proof_test.cpp
-badd +3 include/CDCL_T.h
+badd +1 include/CDCL_T.h
 badd +2430 /usr/include/z3++.h
 argglobal
 %argdel
@@ -50,13 +50,13 @@ set winminheight=0
 set winheight=1
 set winminwidth=0
 set winwidth=1
-exe '1resize ' . ((&lines * 24 + 25) / 51)
+exe '1resize ' . ((&lines * 33 + 34) / 69)
 exe 'vert 1resize ' . ((&columns * 104 + 157) / 315)
-exe '2resize ' . ((&lines * 24 + 25) / 51)
+exe '2resize ' . ((&lines * 33 + 34) / 69)
 exe 'vert 2resize ' . ((&columns * 104 + 157) / 315)
-exe '3resize ' . ((&lines * 24 + 25) / 51)
+exe '3resize ' . ((&lines * 33 + 34) / 69)
 exe 'vert 3resize ' . ((&columns * 105 + 157) / 315)
-exe '4resize ' . ((&lines * 24 + 25) / 51)
+exe '4resize ' . ((&lines * 33 + 34) / 69)
 exe 'vert 4resize ' . ((&columns * 105 + 157) / 315)
 exe 'vert 5resize ' . ((&columns * 104 + 157) / 315)
 argglobal
@@ -69,7 +69,7 @@ setlocal fml=1
 setlocal fdn=20
 setlocal fen
 silent! normal! zE
-let s:l = 3 - ((2 * winheight(0) + 12) / 24)
+let s:l = 3 - ((0 * winheight(0) + 16) / 33)
 if s:l < 1 | let s:l = 1 | endif
 exe s:l
 normal! zt
@@ -87,7 +87,7 @@ setlocal fml=1
 setlocal fdn=20
 setlocal fen
 silent! normal! zE
-let s:l = 10 - ((9 * winheight(0) + 12) / 24)
+let s:l = 10 - ((0 * winheight(0) + 16) / 33)
 if s:l < 1 | let s:l = 1 | endif
 exe s:l
 normal! zt
@@ -105,7 +105,7 @@ setlocal fml=1
 setlocal fdn=20
 setlocal fen
 silent! normal! zE
-let s:l = 9 - ((8 * winheight(0) + 12) / 24)
+let s:l = 9 - ((0 * winheight(0) + 16) / 33)
 if s:l < 1 | let s:l = 1 | endif
 exe s:l
 normal! zt
@@ -123,11 +123,11 @@ setlocal fml=1
 setlocal fdn=20
 setlocal fen
 silent! normal! zE
-let s:l = 110 - ((11 * winheight(0) + 12) / 24)
+let s:l = 99 - ((19 * winheight(0) + 16) / 33)
 if s:l < 1 | let s:l = 1 | endif
 exe s:l
 normal! zt
-110
+99
 normal! 08|
 wincmd w
 argglobal
@@ -141,21 +141,21 @@ setlocal fml=1
 setlocal fdn=20
 setlocal fen
 silent! normal! zE
-let s:l = 72 - ((37 * winheight(0) + 24) / 49)
+let s:l = 73 - ((63 * winheight(0) + 33) / 67)
 if s:l < 1 | let s:l = 1 | endif
 exe s:l
 normal! zt
-72
-normal! 02|
+73
+normal! 0
 wincmd w
 4wincmd w
-exe '1resize ' . ((&lines * 24 + 25) / 51)
+exe '1resize ' . ((&lines * 33 + 34) / 69)
 exe 'vert 1resize ' . ((&columns * 104 + 157) / 315)
-exe '2resize ' . ((&lines * 24 + 25) / 51)
+exe '2resize ' . ((&lines * 33 + 34) / 69)
 exe 'vert 2resize ' . ((&columns * 104 + 157) / 315)
-exe '3resize ' . ((&lines * 24 + 25) / 51)
+exe '3resize ' . ((&lines * 33 + 34) / 69)
 exe 'vert 3resize ' . ((&columns * 105 + 157) / 315)
-exe '4resize ' . ((&lines * 24 + 25) / 51)
+exe '4resize ' . ((&lines * 33 + 34) / 69)
 exe 'vert 4resize ' . ((&columns * 105 + 157) / 315)
 exe 'vert 5resize ' . ((&columns * 104 + 157) / 315)
 tabnext 1
