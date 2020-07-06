@@ -1,6 +1,7 @@
 all: main
 
 PAPER = main.tex
+OUTPUT= $(PAPER:.tex=.pdf)
 FILES = $(wildcard ./*.tex)
 
 main: $(FILES)
@@ -9,7 +10,5 @@ main: $(FILES)
 .PHONY: clean
 clean:
 	rubber --clean $(PAPER)
-
-	#rm -rf main.aux main.lof main.log main.lot main.out main.pdf main.toc \
-	#*\~
+	rm -rf $(OUTPUT) *\~
 
