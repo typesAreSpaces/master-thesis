@@ -34,21 +34,47 @@ ThCombInterpolator::ThCombInterpolator(z3::context & ctx,
   // Find theory that unsat by passing 
   // disjuntions of shared equalities
   DisjEqsPropagator phi(shared_variables);
-  bool is_EUF_unsat_theory;
   auto current_disj_eqs = phi.begin();
+
+  // Commet: Z3 simplies formulas while checking
+  // for consistency
+
   while(!current_disj_eqs.isLast()){
 #if _DEBUG_TH_COMB_
     std::cout << "(inside main loop) current disj eqs" << std::endl;
     std::cout << *current_disj_eqs << std::endl;
 #endif
+    oct_solver.push();
     if(oct_solver.check() == z3::unsat){
-      is_EUF_unsat_theory = false;
-      break;
+      std::cout << "OCT solver found a contradiction" << std::endl;
+      std::cout << oct_solver.assertions() << std::endl;
+      // TODO:
+      //std::cout << "assertions in OCT" << std::endl;
+      //for(auto const & x : oct_solver.assertions())
+      //std::cout << x << std::endl;
+      //auto const & oct_assertions = oct_solver.assertions();
+      //CDCL_T cdcl_t(oct_assertions);
+      //cdcl_t.toDimacsFile();
+      //ProofFactory resolution_proof = ProofFactory();
+      return;
     }
+    oct_solver.pop();
+    euf_solver.push();
     if(euf_solver.check() == z3::unsat){
-      is_EUF_unsat_theory = true;
-      break;
+      std::cout << "EUF solver found a contradiction" << std::endl;
+      std::cout << euf_solver.assertions() << std::endl;
+      // TODO:
+      //std::cout << "assertions in EUF" << std::endl;
+      //for(auto const & x : euf_solver.assertions())
+      //std::cout << x << std::endl;
+      //auto const & euf_assertions = euf_solver.assertions();
+      //CDCL_T cdcl_t(euf_assertions);
+      //cdcl_t.toDimacsFile();
+      //ProofFactory resolution_proof = ProofFactory();
+      return;
     }
+    euf_solver.pop();
+
     euf_solver.push();
     euf_solver.add(not(*current_disj_eqs));
     if(euf_solver.check() == z3::unsat){
@@ -63,6 +89,7 @@ ThCombInterpolator::ThCombInterpolator(z3::context & ctx,
       euf_solver.pop();
       oct_solver.pop();
       oct_solver.add(*current_disj_eqs);
+      // TODO:
       current_disj_eqs = phi.begin();
       continue;
     }
@@ -73,6 +100,7 @@ ThCombInterpolator::ThCombInterpolator(z3::context & ctx,
       euf_solver.pop();
       oct_solver.pop();
       euf_solver.add(*current_disj_eqs);
+      // TODO:
       current_disj_eqs = phi.begin();
       continue;
     }
@@ -81,35 +109,6 @@ ThCombInterpolator::ThCombInterpolator(z3::context & ctx,
     ++current_disj_eqs;
   } 
 
-  if(current_disj_eqs.isLast()){
-    std::cout << "The input-formula is satisfiable" << std::endl;
-    return;
-  }
-
-  // Commet: Z3 simplies formulas while checking
-  // for consistency
-  
-  if(is_EUF_unsat_theory){
-    std::cout << "EUF solver found a contradiction" << std::endl;
-    std::cout << "assertions in EUF" << std::endl;
-    for(auto const & x : euf_solver.assertions())
-      std::cout << x << std::endl;
-    auto const & euf_assertions = euf_solver.assertions();
-    CDCL_T cdcl_t(euf_assertions);
-    cdcl_t.toDimacsFile();
-    ProofFactory resolution_proof = ProofFactory();
-    return;
-  }
-
-  std::cout << "OCT solver found a contradiction" << std::endl;
-  std::cout << "assertions in OCT" << std::endl;
-  for(auto const & x : oct_solver.assertions())
-    std::cout << x << std::endl;
-  auto const & oct_assertions = oct_solver.assertions();
-  CDCL_T cdcl_t(oct_assertions);
-  cdcl_t.toDimacsFile();
-  ProofFactory resolution_proof = ProofFactory();
-
   // TODO:
   //
   // Build partial interpolants for:
@@ -117,6 +116,8 @@ ThCombInterpolator::ThCombInterpolator(z3::context & ctx,
   // elements
   // - Convex case
   // - Partial interpolant for conflict clauses
+  
+  std::cout << "The input-formula is satisfiable" << std::endl;
   return;
 }
 
