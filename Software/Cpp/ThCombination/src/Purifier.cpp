@@ -1,9 +1,8 @@
 #include "Purifier.h"
 #define _DEBUGPURIFIER_ false
 
-unsigned Purifier::fresh_var_id = 0;
-
 Purifier::Purifier(z3::expr_vector const & e) :
+  fresh_var_id(0),
   ctx(e.ctx()), 
   oct_component(ctx), euf_component(ctx), 
   oct_fresh_ids(), euf_fresh_ids(),from(ctx), to(ctx), input(purify(e))
@@ -222,26 +221,6 @@ void Purifier::split(z3::expr const & e){
   }
   throw "Error @ Purifier::split :" 
     "The expression is not an application";
-}
-
-void Purifier::addEufFormulasToSolver(z3::solver & s){
-  for(auto const & x : euf_component)
-    s.add(x);
-}
-
-void Purifier::addOctFormulasToSolver(z3::solver & s){
-  for(auto const & x : oct_component)
-    s.add(x);
-}
-
-bool Purifier::inside(z3::expr const & e){
-  for(auto const & x : euf_component)
-    if(e.id() == x.id())
-      return true;
-  for(auto const & x : oct_component)
-    if(e.id() == x.id())
-      return true;
-  return false;
 }
 
 z3::expr_vector const Purifier::getOctComponent() const {

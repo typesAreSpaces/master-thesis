@@ -31,17 +31,10 @@ class ThCombInterpolator {
   void collectVariables(z3::expr const &, z3_expr_set &);
 
   void checkImpliedEqualities(z3::expr_vector &, z3::solver &);
-  bool isProvable(z3::solver &, z3::expr const &);     // Perhaps this wont be used that much (??)
-  void addConjunction(z3::solver &, z3::expr const &); // Perhaps this wont be used that much (?)
 
   z3::expr partialInterpolantConvex();// TODO: implement
   z3::expr partialInterpolantConflictClause();// TODO: implement
   z3::expr partialInterpolantUnitResolution(z3::expr const &, z3::expr const &);// TODO: implement
-  
-  void printf___(z3::expr const &);
-
-  void traverseProof1(z3::expr const &); // Here
-  void traverseProof2(z3::expr const &, z3::expr_vector &);
   
 public:
   ThCombInterpolator(z3::expr_vector const &, z3::expr_vector const &);

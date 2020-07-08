@@ -18,7 +18,7 @@ class Purifier {
   typedef unsigned EUF_FRESH_ID;
 
 protected:
-  static unsigned fresh_var_id;
+  unsigned fresh_var_id;
 
   z3::context & ctx;
   
@@ -45,10 +45,6 @@ private:
 public:
   Purifier(z3::expr_vector const &);
 
-  void addEufFormulasToSolver(z3::solver &); // TODO: Why do I need this function?
-  void addOctFormulasToSolver(z3::solver &); // TODO: Why do I need this function?
-  bool inside(z3::expr const &);             // TODO: Why do I need this function?
-  
   friend std::ostream & operator << (std::ostream &, Purifier &);
   z3::expr_vector const getOctComponent() const;
   z3::expr_vector const getEufComponent() const;
