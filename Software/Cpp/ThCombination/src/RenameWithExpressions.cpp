@@ -10,7 +10,11 @@ RenameWithExpressions::RenameWithExpressions(
   for(auto const & equation : input_b)
     traversePartB(equation);
   for(auto const & equation : input_a)
-    renamed_input.push_back(reformulate(equation));
+    renamed_input_a
+      .push_back(reformulate(equation));
+  for(auto const & equation : input_b)
+    renamed_input_b
+      .push_back(reformulate(equation));
 }
 
 void RenameWithExpressions::traversePartA(z3::expr const & e){

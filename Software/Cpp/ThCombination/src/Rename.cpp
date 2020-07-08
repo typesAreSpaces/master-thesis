@@ -1,7 +1,7 @@
 #include "Rename.h"
 
 Rename::Rename(z3::context & ctx) : 
-  visited(), renamed_input(ctx)
+  visited(), renamed_input_a(ctx), renamed_input_b(ctx)
 {
 }
 

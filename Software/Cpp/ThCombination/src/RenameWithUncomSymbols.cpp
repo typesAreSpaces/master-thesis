@@ -6,7 +6,7 @@ RenameWithUncomSymbols::RenameWithUncomSymbols(
  Rename(input_a.ctx()), uncommon_names(uncommon_names)
 {
   for(auto const & equation : input_a)
-    renamed_input.push_back(reformulate(equation));
+    renamed_input_a.push_back(reformulate(equation));
 }
 
 z3::expr RenameWithUncomSymbols::reformulate(z3::expr const & e){

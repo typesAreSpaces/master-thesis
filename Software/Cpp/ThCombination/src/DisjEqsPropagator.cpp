@@ -6,8 +6,8 @@ DisjEqsPropagator::DisjEqsPropagator(z3::expr_vector const & elements) :
   equalities(elements.ctx()), current_disj_eqs(elements.ctx()),
   iterator_state()
 {
-  unsigned _index = 0;
 #ifdef DISJ_EQS_PROPAGATOR_NO_AB_MIXED_EQS
+  unsigned _index = 0;
   for(auto lhs=elements.begin(); lhs!=elements.end(); ++lhs){
     auto rhs=lhs;
     for(++rhs; rhs!=elements.end(); ++rhs){

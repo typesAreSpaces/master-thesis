@@ -92,7 +92,11 @@ z3::expr Purifier::purifyOctagonTerm(z3::expr const & term){
           if(num == 0)
             return term;
           if(euf_fresh_ids.find(term.id()) == euf_fresh_ids.end()){
+#ifdef ADD_COMMON_PREFIX
+            std::string fresh_name = "c_euf_" + std::to_string(++fresh_var_id);
+#else
             std::string fresh_name = "euf_" + std::to_string(++fresh_var_id);
+#endif
             auto fresh_constant = ctx.constant(fresh_name.c_str(), f.range());
             euf_fresh_ids[term.id()] = fresh_var_id;
             // At this point, the top-most symbol of the term e
@@ -102,7 +106,11 @@ z3::expr Purifier::purifyOctagonTerm(z3::expr const & term){
             to.push_back(fresh_constant);
             return fresh_constant;
           }	
+#ifdef ADD_COMMON_PREFIX
+          std::string fresh_name = "c_euf_" + std::to_string(euf_fresh_ids[term.id()]);
+#else
           std::string fresh_name = "euf_" + std::to_string(euf_fresh_ids[term.id()]);
+#endif
           return ctx.constant(fresh_name.c_str(), f.range());
         }
       default:
@@ -130,7 +138,11 @@ z3::expr Purifier::purifyEUFTerm(z3::expr const & term){
       case Z3_OP_ANUM: 
         {
           if(oct_fresh_ids.find(term.id()) == oct_fresh_ids.end()){
+#ifdef ADD_COMMON_PREFIX
+            std::string fresh_name = "c_oct_" + std::to_string(++fresh_var_id);
+#else
             std::string fresh_name = "oct_" + std::to_string(++fresh_var_id);
+#endif
             auto fresh_constant = ctx.constant(fresh_name.c_str(), f.range());
             oct_fresh_ids[term.id()] = fresh_var_id;
 
@@ -141,7 +153,11 @@ z3::expr Purifier::purifyEUFTerm(z3::expr const & term){
             to.push_back(fresh_constant);
             return fresh_constant;
           }
+#ifdef ADD_COMMON_PREFIX
+          std::string fresh_name = "c_oct_" + std::to_string(oct_fresh_ids[term.id()]);
+#else
           std::string fresh_name = "oct_" + std::to_string(oct_fresh_ids[term.id()]);
+#endif
           return ctx.constant(fresh_name.c_str(), f.range());
         }
       case Z3_OP_UNINTERPRETED:
