@@ -1,15 +1,33 @@
 #include "DisjEqsPropagator.h"
 
+
 DisjEqsPropagator::DisjEqsPropagator(z3::expr_vector const & elements) : 
   size(elements.size()*(elements.size() - 1)/2), subset_size_query(0),
   equalities(elements.ctx()), current_disj_eqs(elements.ctx()),
   iterator_state()
 {
+  unsigned _index = 0;
+#ifdef DISJ_EQS_PROPAGATOR_NO_AB_MIXED_EQS
+  for(auto lhs=elements.begin(); lhs!=elements.end(); ++lhs){
+    auto rhs=lhs;
+    for(++rhs; rhs!=elements.end(); ++rhs){
+      if(((*lhs).is_a_strict() && (*rhs).is_b_strict()) || ((*lhs).is_b_strict() && (*rhs).is_a_strict())){
+        std::string fresh_name = "c_t_" + std::to_string(_index++);
+        z3::expr new_common_constant = (*lhs).ctx()
+          .constant(fresh_name.c_str(), (*lhs).decl().range());
+        equalities.push_back(*lhs == new_common_constant && *rhs == new_common_constant);
+      }
+      else
+        equalities.push_back(*lhs == *rhs);
+    }
+  }
+#else
   for(auto lhs=elements.begin(); lhs!=elements.end(); ++lhs){
     auto rhs=lhs;
     for(++rhs; rhs!=elements.end(); ++rhs)
       equalities.push_back(*lhs == *rhs);
   }
+#endif
 } 
 
 void DisjEqsPropagator::subsetSetup(unsigned subset_size){
@@ -39,7 +57,7 @@ bool DisjEqsPropagator::hasNext(){
     while(current_disj_eqs.size() >= current_level)
       current_disj_eqs.pop_back();
     current_disj_eqs.push_back(equalities[current_index]);
-    
+
     if(current_subset_size == 0)
       return true;
 

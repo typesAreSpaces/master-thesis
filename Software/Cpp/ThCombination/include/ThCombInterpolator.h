@@ -1,6 +1,6 @@
 #ifndef _THCOMB_
 #define _THCOMB_
-#define _DEBUG_TH_COMB_ 0
+#define _DEBUG_TH_COMB_ 1
 
 #include "Purifier.h"
 #include "DisjEqsPropagator.h"
@@ -44,8 +44,7 @@ class ThCombInterpolator {
   void traverseProof2(z3::expr const &, z3::expr_vector &);
   
 public:
-  ThCombInterpolator(z3::context &, 
-      z3::expr_vector const &, z3::expr_vector const &);
+  ThCombInterpolator(z3::expr_vector const &, z3::expr_vector const &);
   ~ThCombInterpolator();
 
   void getInterpolant();

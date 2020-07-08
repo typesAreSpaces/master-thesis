@@ -5,9 +5,9 @@ bool ThCombInterpolator::z3_const_comparator::operator() (
   return e1.id() < e2.id();
 }
 
-ThCombInterpolator::ThCombInterpolator(z3::context & ctx,
+ThCombInterpolator::ThCombInterpolator(
     z3::expr_vector const & formula_a, z3::expr_vector const & formula_b) :
-  ctx(ctx), 
+  ctx(formula_a.ctx()), 
   part_a(formula_a), part_b(formula_b),
   euf_solver(ctx, "QF_UF"), oct_solver(ctx, "QF_LIA"),
   shared_variables(ctx), partial_interpolants(ctx)

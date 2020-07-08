@@ -27,7 +27,7 @@ void test1(z3::context & ctx){
   formula_b.push_back(x1 <= y1);
   formula_b.push_back(x3 < y3);
   
-  ThCombInterpolator test(ctx, formula_a, formula_b);
+  ThCombInterpolator test(formula_a, formula_b);
 }
 
 void test2(z3::context & ctx){
@@ -44,7 +44,7 @@ void test2(z3::context & ctx){
   formula_b.push_back(x <= 2);
   formula_a.push_back(f(2) != 3);
 
-  ThCombInterpolator test(ctx, formula_a, formula_b);
+  ThCombInterpolator test(formula_a, formula_b);
 }
 
 void test3(z3::context & ctx){
@@ -61,7 +61,7 @@ void test3(z3::context & ctx){
   formula_b.push_back(x <= 2);
   formula_a.push_back(f(2) != 2);
 
-  ThCombInterpolator test(ctx, formula_a, formula_b);
+  ThCombInterpolator test(formula_a, formula_b);
 }
 
 int main(){
