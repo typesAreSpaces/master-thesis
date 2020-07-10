@@ -126,6 +126,7 @@ The algorithm appears below in pseudo-code notation:
 
 \begin{algorithm}
   \caption{Modified Unsatisfiability Testing for Ground Horn Clauses}
+  \linespread{\separationline}\selectfont
   \begin{algorithmic}[1]
     \Procedure {satisfiable}{var H : Hornclause; var queue, combine: queuetype; var GT(H) : Graph; var consistent : boolean}
     \While {queue not empty and consistent}
@@ -167,6 +168,7 @@ The algorithm appears below in pseudo-code notation:
 
 \begin{algorithm}
   \caption{Modified Congruence Closure with Explanation Algorithms - Merge}
+  \linespread{\separationline}\selectfont
   \begin{algorithmic}[2]
     \Procedure {Merge}{R : partition, u, v : node; queue, combine : queuetype}
     \If u and v are constants a and b
@@ -185,6 +187,7 @@ The algorithm appears below in pseudo-code notation:
 
 \begin{algorithm}
   \caption{Modified Congruence Closure with Explanation Algorithms - Propagate}
+  \linespread{\separationline}\selectfont
   \begin{algorithmic}[2]
     \Procedure {Propagate} {\text{ }}
     \While Pending is non-empty
