@@ -76,6 +76,7 @@ ThCombInterpolator::ThCombInterpolator(
       oct_solver.pop();
       // ---------------------------------------------------
       // TODO: compute partial interpolants!
+      std::cout << "Hey 1" << std::endl;
       z3::expr_vector euf_assertions(ctx);
       for(auto const & assertion : euf_solver.assertions())
         euf_assertions.push_back(assertion);
@@ -83,6 +84,7 @@ ThCombInterpolator::ThCombInterpolator(
       CDCL_T cdcl_euf(euf_assertions);
       cdcl_euf.toDimacsFile();
       ProofFactory resolution_proof = ProofFactory();
+      std::cout << resolution_proof << std::endl;
       // TODO: keep working here!
       // ---------------------------------------------------
       oct_solver.add(*current_disj_eqs);
@@ -97,6 +99,7 @@ ThCombInterpolator::ThCombInterpolator(
       oct_solver.pop();
       // ---------------------------------------------------
       // TODO: compute partial interpolants!
+      std::cout << "Hey 2" << std::endl;
       z3::expr_vector oct_assertions(ctx);
       for(auto const & assertion : oct_solver.assertions())
         oct_assertions.push_back(assertion);
@@ -104,6 +107,7 @@ ThCombInterpolator::ThCombInterpolator(
       CDCL_T cdcl_oct(oct_assertions);
       cdcl_oct.toDimacsFile();
       ProofFactory resolution_proof = ProofFactory();
+      std::cout << resolution_proof << std::endl;
       // TODO: keep working here!
       // ---------------------------------------------------
       euf_solver.add(*current_disj_eqs);

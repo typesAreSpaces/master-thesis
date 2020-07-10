@@ -64,7 +64,7 @@ class ConflictProof : public ResolutionProof {
   friend std::ostream & operator << (std::ostream &, ConflictProof const &);
 };
 
-class ProofFactory {
+struct ProofFactory {
 
   typedef std::vector<ClauseProof> ClauseProofs;
   typedef std::vector<LitProof>    LitProofs;
@@ -78,6 +78,7 @@ class ProofFactory {
   public:
   ProofFactory();
   void initLitProofs(unsigned);
+  friend std::ostream & operator << (std::ostream &, ProofFactory const &);
 };
 
 #endif

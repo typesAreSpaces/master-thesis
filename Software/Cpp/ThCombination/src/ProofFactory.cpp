@@ -1,4 +1,5 @@
 #include "ProofFactory.h"
+#include <ostream>
 
 ResolutionProof::ResolutionProof() :
   pivots({})
@@ -154,7 +155,7 @@ ProofFactory::ProofFactory():
       unsigned clause_id, sub_clause_id;
       int pivot_id;
       // -------------------------------
-      
+
       resolve_trace_line 
         >> clause_id >> aux_symbol 
         >> pivot_id >> sub_clause_id;
@@ -202,9 +203,9 @@ ProofFactory::ProofFactory():
       }
     }
     else if(proof_kind == "CONF:"){
-      // --------------------------
+      // ------------------------------
       unsigned clause_id, sub_lit_repr;
-      // --------------------------
+      // ------------------------------
 
       resolve_trace_line >> clause_id
         >> aux_symbol;
@@ -234,15 +235,27 @@ void ProofFactory::initLitProofs(unsigned num_vars){
     lit_proofs.emplace_back(i);
 }
 
+std::ostream & operator << (std::ostream & os, ProofFactory const & pf){
+  os << std::endl << "Clause proofs" << std::endl;
+  for(auto const & x : pf.clause_proofs)
+    os << x << std::endl;
+  os << std::endl << "Lit proofs" << std::endl;
+  for(auto const & x : pf.lit_proofs)
+    os << x << std::endl;
+  os << std::endl << "Conflict Proof" << std::endl;
+  os << pf.conflict_proof << std::endl;
+  return os;
+}
+
 std::string ProofFactory::exec(const char* cmd) {
-    std::array<char, 128> buffer;
-    std::string result;
-    std::unique_ptr<FILE, decltype(&pclose)> pipe(popen(cmd, "r"), pclose);
-    if (!pipe) {
-        throw std::runtime_error("popen() failed!");
-    }
-    while (fgets(buffer.data(), buffer.size(), pipe.get()) != nullptr) {
-        result += buffer.data();
-    }
-    return result.substr(0, result.size() - 1);
+  std::array<char, 128> buffer;
+  std::string result;
+  std::unique_ptr<FILE, decltype(&pclose)> pipe(popen(cmd, "r"), pclose);
+  if (!pipe) {
+    throw std::runtime_error("popen() failed!");
+  }
+  while (fgets(buffer.data(), buffer.size(), pipe.get()) != nullptr) {
+    result += buffer.data();
+  }
+  return result.substr(0, result.size() - 1);
 }
