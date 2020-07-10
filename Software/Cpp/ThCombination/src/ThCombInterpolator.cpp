@@ -48,14 +48,7 @@ ThCombInterpolator::ThCombInterpolator(
     if(oct_solver.check() == z3::unsat){
       std::cout << "OCT solver found a contradiction" << std::endl;
       std::cout << oct_solver.assertions() << std::endl;
-      // TODO:
-      //std::cout << "assertions in OCT" << std::endl;
-      //for(auto const & x : oct_solver.assertions())
-      //std::cout << x << std::endl;
-      //auto const & oct_assertions = oct_solver.assertions();
-      //CDCL_T cdcl_t(oct_assertions);
-      //cdcl_t.toDimacsFile();
-      //ProofFactory resolution_proof = ProofFactory();
+      // TODO: compute final interpolant
       return;
     }
     oct_solver.pop();
@@ -63,14 +56,7 @@ ThCombInterpolator::ThCombInterpolator(
     if(euf_solver.check() == z3::unsat){
       std::cout << "EUF solver found a contradiction" << std::endl;
       std::cout << euf_solver.assertions() << std::endl;
-      // TODO:
-      //std::cout << "assertions in EUF" << std::endl;
-      //for(auto const & x : euf_solver.assertions())
-      //std::cout << x << std::endl;
-      //auto const & euf_assertions = euf_solver.assertions();
-      //CDCL_T cdcl_t(euf_assertions);
-      //cdcl_t.toDimacsFile();
-      //ProofFactory resolution_proof = ProofFactory();
+      // TODO: compute final interpolant
       return;
     }
     euf_solver.pop();
@@ -88,8 +74,18 @@ ThCombInterpolator::ThCombInterpolator(
       }
       euf_solver.pop();
       oct_solver.pop();
+      // ---------------------------------------------------
+      // TODO: compute partial interpolants!
+      z3::expr_vector euf_assertions(ctx);
+      for(auto const & assertion : euf_solver.assertions())
+        euf_assertions.push_back(assertion);
+      euf_assertions.push_back(not(*current_disj_eqs));
+      CDCL_T cdcl_euf(euf_assertions);
+      cdcl_euf.toDimacsFile();
+      ProofFactory resolution_proof = ProofFactory();
+      // TODO: keep working here!
+      // ---------------------------------------------------
       oct_solver.add(*current_disj_eqs);
-      // TODO:
       current_disj_eqs = phi.begin();
       continue;
     }
@@ -99,8 +95,18 @@ ThCombInterpolator::ThCombInterpolator(
     if(oct_solver.check() == z3::unsat){
       euf_solver.pop();
       oct_solver.pop();
+      // ---------------------------------------------------
+      // TODO: compute partial interpolants!
+      z3::expr_vector oct_assertions(ctx);
+      for(auto const & assertion : oct_solver.assertions())
+        oct_assertions.push_back(assertion);
+      oct_assertions.push_back(not(*current_disj_eqs));
+      CDCL_T cdcl_oct(oct_assertions);
+      cdcl_oct.toDimacsFile();
+      ProofFactory resolution_proof = ProofFactory();
+      // TODO: keep working here!
+      // ---------------------------------------------------
       euf_solver.add(*current_disj_eqs);
-      // TODO:
       current_disj_eqs = phi.begin();
       continue;
     }

@@ -1,6 +1,6 @@
 #ifndef _THCOMB_
 #define _THCOMB_
-#define _DEBUG_TH_COMB_ 1
+#define _DEBUG_TH_COMB_ 0
 
 #include "Purifier.h"
 #include "DisjEqsPropagator.h"

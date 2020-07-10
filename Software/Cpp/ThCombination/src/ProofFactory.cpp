@@ -155,10 +155,9 @@ ProofFactory::ProofFactory():
       int pivot_id;
       // -------------------------------
       
-      resolve_trace_line >> clause_id;
-      resolve_trace_line >> aux_symbol;
-      resolve_trace_line >> pivot_id; 
-      resolve_trace_line >> sub_clause_id;
+      resolve_trace_line 
+        >> clause_id >> aux_symbol 
+        >> pivot_id >> sub_clause_id;
 
       clause_proofs.emplace_back(clause_id);
       auto & lhs_clause = clause_proofs[clause_id];
@@ -178,14 +177,14 @@ ProofFactory::ProofFactory():
                antecedent_clause, lit_repr, sub_lit_repr;
       // ------------------------------------------------
 
-      resolve_trace_line >> pure_literal;
-      resolve_trace_line >> aux_symbol;
-      resolve_trace_line >> aux_number;
-      resolve_trace_line >> aux_symbol;
-      resolve_trace_line >> polarity;
-      resolve_trace_line >> aux_symbol;
-      resolve_trace_line >> antecedent_clause;
-      resolve_trace_line >> aux_symbol;
+      resolve_trace_line >> pure_literal
+        >> aux_symbol
+        >> aux_number
+        >> aux_symbol
+        >> polarity
+        >> aux_symbol
+        >> antecedent_clause
+        >> aux_symbol;
 
       lit_repr = polarity ? 2*pure_literal : 2*pure_literal + 1;
       LitProof & current_lit = lit_proofs[lit_repr];
@@ -207,9 +206,9 @@ ProofFactory::ProofFactory():
       unsigned clause_id, sub_lit_repr;
       // --------------------------
 
-      resolve_trace_line >> clause_id;
+      resolve_trace_line >> clause_id
+        >> aux_symbol;
       conflict_proof.setClauseProof(&clause_proofs[clause_id]);
-      resolve_trace_line >> aux_symbol;
       while(resolve_trace_line.good()){
         resolve_trace_line >> sub_lit_repr;
         conflict_proof.addPivot(
@@ -221,8 +220,7 @@ ProofFactory::ProofFactory():
       }
     }
   }
-//#if _DEBUG_CLAUSE_PROOF_
-#if 1
+#if _DEBUG_CLAUSE_PROOF_
   for(auto const & clause_proof : clause_proofs)
     std::cout << clause_proof << std::endl;
   for(auto const & lit_proof : lit_proofs)
