@@ -1,0 +1,80 @@
+\section{Verification}
+
+Given a theory $\mathcal{T}$ in a formula $\psi$ in the language of the theory, how can we know $\models_{\mathcal{T}} \psi$. This general question is known as the verification problem for the theory $\mathcal{T}$.
+
+This question has been studied extensible for many theories interest. Problem 
+
+\subsection{Satisfiability and Satisfiability Modulo Theories}
+ 
+TODO.
+
+\subsection{Congruence Closure}
+
+TODO.
+
+\subsection{Satisfiability of Horn clauses of propositions and grounded equations}
+
+TODO.
+
+\subsection{Nelson-Oppen framework for theory combination}
+
+
+TODO.
+
+\section{Interpolants}
+
+
+TODO.
+
+\subsection{Craig interpolation theorem}
+
+
+Let $\alpha, \beta, \gamma$ be logical formulas in a given theory. If
+$\vdash \alpha \rightarrow \beta$, we say that $\gamma$ is an
+interpolant for the pair $(\alpha, \beta)$ if the following conditions
+are met:
+
+\begin{itemize}
+\item $\vdash \alpha \rightarrow \gamma$
+\item $\vdash \gamma \rightarrow \beta$
+\item Every non-logical symbol in $\gamma$ occurs both in $\alpha$ and
+  $\beta$.
+\end{itemize}
+
+The \emph{interpolantion problem} can be stated naturally as follows: given two
+logical formulas $\alpha, \beta$ such that $\vdash \alpha \rightarrow \beta$, find
+the interpolant for the pair $(\alpha, \beta)$.
+
+In his celebrated work \cite{10.2307/2963594}, Craig proved that for every pair
+$(\alpha, \beta)$ of first order formulas such that
+$\vdash \alpha \rightarrow \beta$, an interpolation formula exists.
+
+Usually, we see the interpolation problem defined differently in the literature, where
+we consider $\beta^{'}$ to be $\neg \beta$ and the problem requires that the pair $(\alpha, \beta^{'})$
+is mutually contradictory (unsatisfiable). This definition was popularized by McMillan
+\cite{10.1007/978-3-540-24730-2_2}. This shift of attention explains partially the further
+development in interpolation generation algorithms since many of these relied on
+SMT solvers that provided refutation proofs in order to (re)construct interpolants
+for different theories (and their combination) \cite{10.1007/978-3-642-02959-2_17,
+  10.1007/978-3-642-36742-7_9, mcmillan2011interpolants}.
+
+Extended definitions are given to the interpolation problem when dealing with specific
+theories \cite{10.1007/11532231_26} in a way that interpreted function can be also part of
+the interpolant. The latter is justify since otherwise, many interpolation formulas might
+not exists in different theories (for example, lisp programs).
+
+We also see different approaches to interpolation generation for particular
+theories that exploits aspects of the underlying theory
+\cite{10.1007/978-3-540-69738-1_25, 10.1007/11814771_21}.
+
+TODO.
+
+\subsection{Interpolants in verification (iZ3)}
+
+
+TODO.
+
+%%% Local Variables:
+%%% mode: latex
+%%% TeX-master: "main"
+%%% End:

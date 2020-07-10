@@ -2,12 +2,47 @@
 \BOOKMARK [0][-]{chapter*.3}{List of Tables}{}% 2
 \BOOKMARK [0][-]{chapter*.4}{Glossary}{}% 3
 \BOOKMARK [0][-]{chapter.1}{Introduction}{}% 4
-\BOOKMARK [1][-]{section.1.1}{Overview}{chapter.1}% 5
-\BOOKMARK [1][-]{section.1.2}{Conclusions}{chapter.1}% 6
-\BOOKMARK [0][-]{chapter.2}{Related Work}{}% 7
-\BOOKMARK [0][-]{chapter.3}{Background}{}% 8
-\BOOKMARK [0][-]{chapter.4}{The Theory of EUF}{}% 9
-\BOOKMARK [0][-]{chapter.5}{The Theory of Octagonal Formulas}{}% 10
-\BOOKMARK [0][-]{chapter.6}{Combining Theories: EUF and Octagonal Formulas}{}% 11
-\BOOKMARK [0][-]{chapter.7}{Future Work}{}% 12
-\BOOKMARK [0][-]{chapter*.5}{Appendices}{}% 13
+\BOOKMARK [1][-]{section.1.1}{Backgroud}{chapter.1}% 5
+\BOOKMARK [1][-]{section.1.2}{Related work}{chapter.1}% 6
+\BOOKMARK [1][-]{section.1.3}{Outline of the thesis}{chapter.1}% 7
+\BOOKMARK [0][-]{chapter.2}{Preliminaries}{}% 8
+\BOOKMARK [1][-]{section.2.1}{First-Order Predicate Logic}{chapter.2}% 9
+\BOOKMARK [2][-]{subsection.2.1.1}{Language}{section.2.1}% 10
+\BOOKMARK [2][-]{subsection.2.1.2}{Semantics}{section.2.1}% 11
+\BOOKMARK [1][-]{section.2.2}{Mathematical Theories}{chapter.2}% 12
+\BOOKMARK [2][-]{subsection.2.2.1}{Equality with uninterpreted functions}{section.2.2}% 13
+\BOOKMARK [2][-]{subsection.2.2.2}{Ordered commutative rings}{section.2.2}% 14
+\BOOKMARK [1][-]{section.2.3}{Verification}{chapter.2}% 15
+\BOOKMARK [2][-]{subsection.2.3.1}{Satisfiability and Satisfiability Modulo Theories}{section.2.3}% 16
+\BOOKMARK [2][-]{subsection.2.3.2}{Congruence Closure}{section.2.3}% 17
+\BOOKMARK [2][-]{subsection.2.3.3}{Satisfiability of Horn clauses of propositions and grounded equations}{section.2.3}% 18
+\BOOKMARK [2][-]{subsection.2.3.4}{Nelson-Oppen framework for theory combination}{section.2.3}% 19
+\BOOKMARK [1][-]{section.2.4}{Interpolants}{chapter.2}% 20
+\BOOKMARK [2][-]{subsection.2.4.1}{Craig interpolation theorem}{section.2.4}% 21
+\BOOKMARK [2][-]{subsection.2.4.2}{Interpolants in verification \(iZ3\)}{section.2.4}% 22
+\BOOKMARK [1][-]{section.2.5}{Algorithms}{chapter.2}% 23
+\BOOKMARK [2][-]{subsection.2.5.1}{DPLL, DPLL\(T\) and extensions}{section.2.5}% 24
+\BOOKMARK [2][-]{subsection.2.5.2}{Congruence Closure algorithms \(DST, NO, with explanations\)}{section.2.5}% 25
+\BOOKMARK [2][-]{subsection.2.5.3}{Gallier}{section.2.5}% 26
+\BOOKMARK [1][-]{section.2.6}{Available tools}{chapter.2}% 27
+\BOOKMARK [2][-]{subsection.2.6.1}{Z3 and my minor modifications}{section.2.6}% 28
+\BOOKMARK [2][-]{subsection.2.6.2}{zChaff and my minor modifications}{section.2.6}% 29
+\BOOKMARK [2][-]{subsection.2.6.3}{DIMACS}{section.2.6}% 30
+\BOOKMARK [0][-]{chapter.3}{The Theory of EUF}{}% 31
+\BOOKMARK [1][-]{section.3.1}{Algorithm}{chapter.3}% 32
+\BOOKMARK [2][-]{subsection.3.1.1}{Contributions}{section.3.1}% 33
+\BOOKMARK [2][-]{subsection.3.1.2}{New optimized conditional elimination step in Kapur's algorithm}{section.3.1}% 34
+\BOOKMARK [2][-]{subsection.3.1.3}{Ground Horn Clauses with Explanations}{section.3.1}% 35
+\BOOKMARK [1][-]{section.3.2}{Implementation}{chapter.3}% 36
+\BOOKMARK [1][-]{section.3.3}{Evaluation}{chapter.3}% 37
+\BOOKMARK [0][-]{chapter.4}{The Theory of Octagonal Formulas}{}% 38
+\BOOKMARK [1][-]{section.4.1}{Algorithm}{chapter.4}% 39
+\BOOKMARK [1][-]{section.4.2}{Implementation}{chapter.4}% 40
+\BOOKMARK [1][-]{section.4.3}{Evaluation}{chapter.4}% 41
+\BOOKMARK [0][-]{chapter.5}{Combining Theories: EUF and Octagonal Formulas}{}% 42
+\BOOKMARK [1][-]{section.5.1}{Algorithm}{chapter.5}% 43
+\BOOKMARK [1][-]{section.5.2}{Implementation}{chapter.5}% 44
+\BOOKMARK [1][-]{section.5.3}{Evaluation}{chapter.5}% 45
+\BOOKMARK [0][-]{chapter.6}{Future Work}{}% 46
+\BOOKMARK [0][-]{chapter*.5}{Appendices}{}% 47
+\BOOKMARK [0][-]{chapter*.6}{References}{}% 48

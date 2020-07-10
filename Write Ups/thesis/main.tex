@@ -7,7 +7,7 @@
 %     Minor mods by N. Doren 08/26/11
 
 % Use the following specification for BOTTOM page numbering:
-\documentclass[botnum, fleqn]{unmeethesis}
+\documentclass[botnum, fleqn, 12]{unmeethesis}
                  % OR
 % Use the following specification for TOP page numbering:
 % \documentclass[fleqn]{unmeethesis}
@@ -21,6 +21,9 @@
 \usepackage{graphicx}
 \usepackage{hyperref}
 \usepackage{listings}
+\usepackage{algpseudocode}
+\usepackage{algorithm, setspace}
+
 \lstset
 { %Formatting for code in appendix
     language=Matlab,
@@ -61,7 +64,7 @@
 % \setlength{\parskip}{0.30cm}
 
 \title{Efficient implementation of interpolation algorithms
-for the theories of equality with uninterpreted functions, unit two variable per inequality, and its combination}
+for the theories of quantifier-free equality with uninterpreted functions, unit two variable per inequality, and its combination}
 
 \author{Jos\'e Abel Castellanos Joo}
 
@@ -95,8 +98,7 @@ for the theories of equality with uninterpreted functions, unit two variable per
 \mainmatter
 
 \input{introduction}
-\input{related_work}
-\input{background}
+\input{preliminaries}
 \input{euf}
 \input{octagonal}
 \input{combination}

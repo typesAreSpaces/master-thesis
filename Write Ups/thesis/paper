@@ -1,0 +1,153 @@
+let SessionLoad = 1
+let s:so_save = &so | let s:siso_save = &siso | set so=0 siso=0
+let v:this_session=expand("<sfile>:p")
+silent only
+cd ~/Documents/GithubProjects/master-thesis/Write\ Ups/thesis
+if expand('%') == '' && !&modified && line('$') <= 1 && getline(1) == ''
+  let s:wipebuf = bufnr('%')
+endif
+set shortmess=aoO
+badd +26 main.tex
+badd +8 abstract.tex
+badd +1 background.tex
+badd +7 preliminaries.tex
+badd +12 introduction.tex
+badd +382 references.bib
+badd +338 unmeethesis.cls
+badd +35 proof_of_main_theorem_octagons.tex
+badd +14 octagonal.tex
+badd +7 dedication_acknowledgments.tex
+badd +3 related_work.tex
+badd +3 glossary.tex
+badd +132 euf.tex
+badd +542 ~/Documents/GithubProjects/master-thesis/Write\ Ups/paper_project/main.tex
+badd +1 ~/Documents/GithubProjects/master-thesis/Write\ Ups/paper_project/algpseudocode.sty
+badd +6 first_order_logic.tex
+badd +14 theories.tex
+badd +1 verification.tex
+badd +10 tools.tex
+badd +28 combination.tex
+argglobal
+%argdel
+edit main.tex
+set splitbelow splitright
+wincmd _ | wincmd |
+vsplit
+wincmd _ | wincmd |
+vsplit
+2wincmd h
+wincmd w
+wincmd w
+set nosplitbelow
+set nosplitright
+wincmd t
+set winminheight=0
+set winheight=1
+set winminwidth=0
+set winwidth=1
+exe 'vert 1resize ' . ((&columns * 104 + 157) / 315)
+exe 'vert 2resize ' . ((&columns * 105 + 157) / 315)
+exe 'vert 3resize ' . ((&columns * 104 + 157) / 315)
+argglobal
+setlocal fdm=manual
+setlocal fde=0
+setlocal fmr={{{,}}}
+setlocal fdi=#
+setlocal fdl=0
+setlocal fml=1
+setlocal fdn=20
+setlocal fen
+silent! normal! zE
+10,55fold
+10
+normal! zo
+let s:l = 83 - ((48 * winheight(0) + 29) / 58)
+if s:l < 1 | let s:l = 1 | endif
+exe s:l
+normal! zt
+83
+normal! 0
+wincmd w
+argglobal
+if bufexists("references.bib") | buffer references.bib | else | edit references.bib | endif
+setlocal fdm=manual
+setlocal fde=0
+setlocal fmr={{{,}}}
+setlocal fdi=#
+setlocal fdl=0
+setlocal fml=1
+setlocal fdn=20
+setlocal fen
+silent! normal! zE
+let s:l = 386 - ((37 * winheight(0) + 29) / 58)
+if s:l < 1 | let s:l = 1 | endif
+exe s:l
+normal! zt
+386
+normal! 0
+wincmd w
+argglobal
+if bufexists("verification.tex") | buffer verification.tex | else | edit verification.tex | endif
+setlocal fdm=manual
+setlocal fde=0
+setlocal fmr={{{,}}}
+setlocal fdi=#
+setlocal fdl=0
+setlocal fml=1
+setlocal fdn=20
+setlocal fen
+silent! normal! zE
+7,10fold
+11,14fold
+15,18fold
+19,23fold
+1,23fold
+38,38fold
+39,39fold
+40,41fold
+29,71fold
+72,80fold
+24,80fold
+1
+normal! zo
+7
+normal! zo
+11
+normal! zo
+15
+normal! zo
+19
+normal! zo
+24
+normal! zo
+29
+normal! zo
+40
+normal! zo
+72
+normal! zo
+let s:l = 52 - ((28 * winheight(0) + 29) / 58)
+if s:l < 1 | let s:l = 1 | endif
+exe s:l
+normal! zt
+52
+normal! 0
+wincmd w
+3wincmd w
+exe 'vert 1resize ' . ((&columns * 104 + 157) / 315)
+exe 'vert 2resize ' . ((&columns * 105 + 157) / 315)
+exe 'vert 3resize ' . ((&columns * 104 + 157) / 315)
+tabnext 1
+if exists('s:wipebuf') && getbufvar(s:wipebuf, '&buftype') isnot# 'terminal'
+  silent exe 'bwipe ' . s:wipebuf
+endif
+unlet! s:wipebuf
+set winheight=1 winwidth=20 winminheight=1 winminwidth=1 shortmess=filnxtToOFIc
+let s:sx = expand("<sfile>:p:r")."x.vim"
+if file_readable(s:sx)
+  exe "source " . fnameescape(s:sx)
+endif
+let &so = s:so_save | let &siso = s:siso_save
+doautoall SessionLoadPost
+unlet SessionLoad
+" vim: set ft=vim :

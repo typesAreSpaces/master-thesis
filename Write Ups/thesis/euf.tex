@@ -1,5 +1,240 @@
 \chapter{The Theory of EUF}
 
+Interpolation algorithms for the theory of equality with uninterpreted functions are relevant as the core component of verification algorithms. Many useful techniques in software engineering like bounded/unbounded model checking and invariant generation benefit directly from this technique. In \cite{10.1007/3-540-58179-0_44}, the authors introduced a methodology to debug/verify the control logic of pipelined microprocessors by encoding its specification and a logical formula denoting the implementation of the circuit into a EUF solver.
+
+Previous work addressing the interpolation problem for EUF has involved techniques ranging from
+interpolant-extraction from refutation proof trees \cite{10.1007/978-3-540-24730-2_2,
+  mcmillan2011interpolants, 10.1007/978-3-642-31612-8_24}, and colored congruence closure
+graphs \cite{10.1007/978-3-642-00768-2_34}. Kapur's algorithm uses a different approach by using
+quantifier-elimination, a procedure that given a formula, it produces a logically equivalent formula
+ without a variable in particular \cite{DBLP:books/daglib/0076838}.
+
+ TODO.
+
+\section{Algorithm}
+
+Kapur's interpolation algorithm for the EUF theory uses quantifier-elimination
+techniques to remove symbols in the first formula of an interpolation problem instance
+that are not common with the second formula of the latter. 
+Hence, the input for this algorithm is a conjunction of equalities in the
+EUF theory and a set of symbols to eliminate, also unknown as uncommon symbols.
+
+The steps/ideas in Kapur's algorithm for interpolant generation for the EUF theory
+are the following:
+
+\begin{itemize}
+\item \textbf{Elimination of uncommon terms using Congruence Closure}. This step builds an equivalence
+  relation using the input of the algorithm such that the representatives are common terms
+  whenever possible. Let \emph{answer} be a variable denoting the conjunction of all the input formulas
+  which uncommon subterms are replaced by their representatives.
+  If all the representatives in the equivalence relation are common terms, return \emph{answer}
+  as the interpolant. Otherwise, continue with the following step.
+\item \textbf{Horn clause generation by exposure}. This step uses Ackermann's reduction \cite{10.5555/1391237}
+  to produce Horn clauses to eliminate uncommon terms identifying two cases:
+  \begin{itemize}
+  \item The term is uncommon because the function symbol is uncommon.
+  \item The term is uncommon because at least one of its arguments is
+    an uncommon term.
+  \end{itemize}
+  Conjunct to \emph{answer} the conjunction of all these Horn Clauses.
+  If all the Horn Clauses above are common, return \emph{answer} as the interpolant.
+  Otherwise, continue with the following step.
+\item \textbf{Conditional elimination}. Since some of the Horn clauses produced by
+  the previous step are not common, we identify the Horn clauses that have
+  \emph{common antecedents} and head equation with at least one uncommon term. For each
+  of these Horn clauses, replace the uncommon term in its head by the common term in its head
+  in the rest of the Horn Clauses, and include its antecedent to the antecedent of such Horn clauses.
+  We can see that this step reduces the number of uncommon terms in the equalities of
+  the Horn Clauses. We repeat this step until it cannot be performed. At the end, we take only the
+  set of Horn Clauses that have common antecedents and have one uncommon term in its head. The call these
+  Horn clauses \emph{useful Horn clauses}. Continue with the next step.
+\item \textbf{Conditional replacement}. Using the \emph{useful Horn clauses} generated in the previous
+  step, update \emph{answer} to be the formula resulting after \emph{conditionally replacing}
+  uncommon terms in each equation of \emph{answer} by an appropriate common term in the head of
+  a \emph{useful Horn clauses}.
+  To be more precise, let $\bigwedge_i a_i = b_i \rightarrow u \mapsto c$ be a useful Horn clause,
+  where the antecedent is a conjunction of common grounded equations, $u$ is an uncommon term,
+  and $c$ is a common term.
+  Then for every instance of $u$ in each equation of \emph{answer}, conditionally replace $u$
+  by $c$ under $\bigwedge_i a_i = b_i$.
+  We notice that equations in \emph{answer}  of the previous step will become Horn Clauses with
+  less uncommon terms. For completeness, we perform these replacements zero or more times
+  (up to the maximal number of instances per equation) in order to leave space for other
+  \emph{useful Horn Clauses} to replace the uncommon term in their heads as well.
+  Remove all the literals in the current \emph{answer} that contain uncommon terms and return this
+  as the interpolant.
+\end{itemize}
+
+If the user is not interested in an explicit interpolant, we can present the \emph{usable Horn
+  clauses} in a proper order such that the replacements can be done without exponentially increasing
+the size of the interpolant. This representation is useful because it provides a more compact
+representation of the interpolant that the user might be able quicker to obtain.
+Additionally, the user might be just interested in a particular subformula of the interpolant, so the
+latter representation offers such feature.
+
+This algorithm allows a flexible implementation which can lead several optimizations
+based on the nature and applications of the interpolant.
+
+\subsection{Contributions}
+
+First, we explain a high level ideal on how we improve the \emph{conditional elimination}
+step in Kapur's algorithm. We notice that this step \emph{propagates equationally} the
+head equations of grounded Horn clauses with common antecedents. Initially we employ the
+unsatisfiability algorithm for Horn clauses to achieve such propagation. However, the original
+algorithm will not be enough because it will only propagate the head equation when all the
+antecedents have truth value equal to true. To fix that problem, we modify two steps in Gallier's
+algorithms:
+
+\begin{itemize}
+\item When we build the data structure \emph{numargs} that keeps track of the number of unproven
+  equations in the antecedent of each Horn clause, we change this number by the number
+  of unproven uncommon equations in the antecedent of each Horn clause. This will be useful
+  because we only introduce head equations intro the queue data structure in Gallier's algorithm
+  when all the antecedents are true. With this modification, our algorithm introduces head equations
+  when all the antecedent equations are common. Additionally the algorithm can still update
+  correctly the truth value of common equations, but these are not relevant for our propagation
+  purposes.
+\item To guarantee that \emph{numargs} keeps the right number of uncommon equations yet to
+  be proven, we also modify the update mechanism for \emph{numargs} in the main while loop of the algorithm.
+  The original algorithm reduces by one the corresponding entry in \emph{numargs}
+  whenever a recently popped element from the queue matches the antecedent of a Horn clause. We only
+  decrease this value if such popped equation is uncommon. This prevents the algorithm from accidentally
+  reducing the number of uncommon equations yet to be proven, which can cause that we propagate the
+  uncommon head equation when the antecedent of a Horn clause only consists of common equations.
+\end{itemize}
+
+At the end of this algorithm we can identify \emph{usable Horn clauses} by checking the Horn clauses
+with \emph{numargs} entries equal to 0. Nonetheless, these Horn clauses are not the
+desired \emph{usable Horn clauses} because the unsatisfiability testing algorithm
+did not update the antecedents of the Horn clauses. The main difficulty to design a data structure
+for the latter to work inside the unsatisfiability testing algorithm was the queue data structure
+only adds grounded equation whenever the truth value of the literal changes to true, which happens
+during \emph{equational propagation} or during the \emph{implicational propagation} steps.
+For the \emph{implicational propagation} the task is easy because we can know the clause
+where the just new proven ground equation comes, but it cannot be the same situation
+for the \emph{equational propagation} since this step relies on the Congruence Closure.
+
+To remedy this issue, we equip our Congruence Closure algorithm with the Explanation operator, so
+we can recover the grounded equations needed to entail any particular grounded equation. Additionally,
+this will require a data structure to maintain the Horn clauses for each grounded equation that
+it is the head equation of. With the latter we can recover the Horn Clauses where each grounded
+equation came from to update the antecedents and obtain \emph{usable Horn clauses}.
+ 
+\subsection{New optimized conditional elimination step in Kapur's algorithm}
+
+The algorithm appears below in pseudo-code notation:
+
+\begin{algorithm}
+  \caption{Modified Unsatisfiability Testing for Ground Horn Clauses}
+  \begin{algorithmic}[1]
+    \Procedure {satisfiable}{var H : Hornclause; var queue, combine: queuetype; var GT(H) : Graph; var consistent : boolean}
+    \While {queue not empty and consistent}
+    \State node := pop(queue);
+    \For {clause1 in H[node].clauselist}
+    \If {$\neg$ clause1.isCommon()}
+    \State {numargs[clause1] := numargs[clause1] - 1}
+    \EndIf
+    \If {numargs[clause1] = 0}
+    \State nextnode := poslitlist[clause1];
+    \If {$\neg$ H[nextnode].val}
+    \If {nextnode $\neq \bot$ }
+    \State {queue := push(nextnode, queue);}
+    \State {H[nextnode].val := true;}
+    \State {u := left(H[nextnode].atom); v := right(H[nextnode].atom);}
+    \If {FIND(R, u) $\neq$ FIND(R, v)}
+    \State {combine := push((u, v), combine);}
+    \EndIf
+    \Else
+    \State {consistent := false;}
+    \EndIf
+    \EndIf
+    \EndIf
+    \EndFor
+    \If {queue is empty and consistent}
+    \State {closure(combine, queue, R);}
+    \EndIf
+    \EndWhile
+    \EndProcedure
+    \Statex
+    \Procedure {closure}{var combine, queue : queuetype; var R : partition}
+    \While {combine is not empty}
+    \State (u, v) = pop(combine)
+    \State MERGE(R, u, v, queue)
+    \EndWhile
+    \EndProcedure
+  \end{algorithmic}
+\end{algorithm}
+
+\begin{algorithm}
+  \caption{Modified Congruence Closure with Explanation Algorithms - Merge}
+  \begin{algorithmic}[2]
+    \Procedure {Merge}{R : partition, u, v : node; queue, combine : queuetype}
+    \If u and v are constants a and b
+    \State add a = b to Pending; Propagate();
+    \Else \Comment u=v is of the form f(a1, a2)=a
+    \If Lookup(Representative(a1), Representative(a2)) is some f(b1, b2)=b
+    \State add (f(a1, a2)=a, f(b1, b2) = b) to Pending; Propagate();
+    \Else
+    \State set Lookup(Representative(a1), Representative(a2)) to f(a1, a2)=a;
+    \State add f(a1, a2)=a to UseList(Representative(a1)) and to UseList(Representative(a2));
+    \EndIf
+    \EndIf
+    \EndProcedure
+  \end{algorithmic}
+\end{algorithm}
+
+\begin{algorithm}
+  \caption{Modified Congruence Closure with Explanation Algorithms - Propagate}
+  \begin{algorithmic}[2]
+    \Procedure {Propagate} {\text{ }}
+    \While Pending is non-empty
+    \State Remove E of the form a=b or (f(a1, a2) = a, f(b1, b2) = b) from Pending
+    \If $Representative(a) \neq Representative(b)$ and w.l.o.g. $|ClassList(Representative(a))| \leq |ClassList(Representative(b))|$
+    \State oldReprA := Representative(a);
+    \State Insert edge $a \rightarrow b$ labelled with E into the proof forest;
+    \For each c in ClassList(oldReprA)
+    \State set Representative(c) to Representative(b)
+    \State move c from ClassList(oldReprA) to ClassList(Representative(b))
+    \For each pointer L in ClassList(u)
+    \If H[L].val = false
+    \State set the field H[L].lclass or H[L].rclass pointed to by p to Representative(b)
+    \If H[L].lclass = H[L].rclass
+    \State queue := push(L, queue);
+    \State H[L].val := true
+    \EndIf
+    \EndIf
+    \EndFor
+    \EndFor
+    \For each f(c1, c2) = c in UseList(oldReprA)
+    \If Lookup(Representative(c1), Representative(c2)) is some f(d1, d2) = d
+    \State add (f(c1, c2) = c, f(d1, d2) = d) to Pending;
+    \State remove f(c1, c2) = c from UseList(oldReprA);
+    \Else
+    \State set Lookup(Representative(c1), Representative(c2)) to f(c1, c2) = c;
+    \State move f(c1, c2) = c from UseList(oldReprA) to UseList(Representative(b));
+    \EndIf
+    \EndFor 
+    \EndIf
+    \EndWhile
+    \EndProcedure
+  \end{algorithmic}
+\end{algorithm}
+
+\subsection{Ground Horn Clauses with Explanations}
+
+We notice that, by removing our changes to the unsatisfiability testing
+for grounded Horn clauses regarding uncommon symbols, we effectively combine
+the congruence closure with explanations to the original unsatisfiability
+testing algorithm. With the latter, we can query the membership of a Horn
+clauses in a given user-defined theory and additionally obtain a proof of
+the latter. This approach works by introducing the antecedent equations of
+a grounded Horn clause as part of the user-defined theory in order to prove
+its head equation. By the Deduction Theorem \cite{10.5555/1642730}, we can
+recover a proof of the original queried Horn clause by removing the antecedent
+equations appearing the proof given by the Explain operation.
+
+TODO.
+
 \begin{theorem}
   Let $t$ be an uncommon term and let $H$ be a collection of Horn equations.
   Assume $antecedent(H) \neq \{\}$. If $consequent(t) = \{\}$, then we cannot
@@ -16,6 +251,14 @@
   We cannot eliminate an uncommont term $t$ unconditionally once
   $consequent(t) = \{\}$.
 \end{corollary}
+
+\section{Implementation}
+
+TODO.
+
+\section{Evaluation}
+
+TODO.
 
 %%% Local Variables:
 %%% mode: latex
