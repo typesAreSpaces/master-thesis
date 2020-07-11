@@ -1,5 +1,10 @@
 \begin{thebibliography}{10}
 
+\bibitem{borger2001classical}
+E.~B{\"o}rger, E.~Gr{\"a}del, and Y.~Gurevich.
+\newblock {\em The Classical Decision Problem}.
+\newblock Universitext. Springer Berlin Heidelberg, 2001.
+
 \bibitem{10.1007/3-540-58179-0_44}
 Jerry~R. Burch and David~L. Dill.
 \newblock Automatic verification of pipelined microprocessor control.
@@ -66,6 +71,11 @@ Deepak Kapur.
   quantifier-free theory of equality over uninterpreted symbols.
 \newblock {\em Manuscript}, 2017.
 
+\bibitem{komori1978}
+Yuichi Komori.
+\newblock Logics without craig's interpolation property.
+\newblock {\em Proc. Japan Acad. Ser. A Math. Sci.}, 54(2):46--48, 1978.
+
 \bibitem{10.1007/978-3-642-02959-2_17}
 Laura Kov{\'a}cs and Andrei Voronkov.
 \newblock Interpolation and symbol elimination.
@@ -76,6 +86,12 @@ Laura Kov{\'a}cs and Andrei Voronkov.
 Daniel Kroening and Ofer Strichman.
 \newblock {\em Decision Procedures: An Algorithmic Point of View}.
 \newblock Springer Publishing Company, Incorporated, 1 edition, 2008.
+
+\bibitem{10.1007/11559306_9}
+Shuvendu~K. Lahiri and Madanlal Musuvathi.
+\newblock An efficient decision procedure for utvpi constraints.
+\newblock In Bernhard Gramlich, editor, {\em Frontiers of Combining Systems},
+  pages 168--183, Berlin, Heidelberg, 2005. Springer Berlin Heidelberg.
 
 \bibitem{10.1007/978-3-540-24730-2_2}
 K.~L. McMillan.

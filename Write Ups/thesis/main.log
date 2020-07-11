@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.20 (TeX Live 2019/Arch Linux) (preloaded format=pdflatex 2020.5.21)  10 JUL 2020 17:28
+This is pdfTeX, Version 3.14159265-2.6-1.40.20 (TeX Live 2019/Arch Linux) (preloaded format=pdflatex 2020.5.21)  11 JUL 2020 02:38
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -469,55 +469,46 @@ Chapter 1.
 [1
 
 
-]) (./preliminaries.tex [2]
+] [2]) (./preliminaries.tex [3]
 Chapter 2.
 (./first_order_logic.tex
 LaTeX Font Info:    Trying to load font information for U+euf on input line 7.
  (/usr/share/texmf-dist/tex/latex/amsfonts/ueuf.fd
 File: ueuf.fd 2013/01/14 v3.01 Euler Fraktur
 )
-[3
+[4
 
-] [4] [5]) (./theories.tex [6] [7]) (./verification.tex [8] [9]
-! Missing \endcsname inserted.
-<to be read again> 
-                   \unhbox 
-l.58 ...es of interest \cite{börger2001classical}
-                                                  .
-The control sequence marked <to be read again> should
-not appear between \csname and \endcsname.
-
-
-LaTeX Warning: Citation `b\unhbox \voidb@x \bgroup \accent 127o\penalty\@M \hsk
-ip \z@skip \egroup rger2001classical' on page 10 undefined on input line 58.
-
-[10]
-Overfull \hbox (22.29951pt too wide) in paragraph at lines 74--74
+] [5] [6]) (./theories.tex [7] [8]) (./verification.tex [9] [10] [11]
+Overfull \hbox (22.29951pt too wide) in paragraph at lines 85--85
 []\OT1/cmr/bx/n/14.4 Satisfiability of Horn clauses of propo-si-tions and groun
 ded|
  []
 
-) (./tools.tex [11] [12])) (./euf.tex [13]
+) (./tools.tex [12]
+Underfull \vbox (badness 10000) has occurred while \output is active []
+
+ [13]))
+(./euf.tex [14] [15]
 Chapter 3.
 
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
- [14
+ [16
 
 ]
-[15] [16] [17]
+[17] [18] [19]
 Package hyperref Info: bookmark level for unknown algorithm defaults to 0 on in
-put line 128.
+put line 141.
 
 Underfull \vbox (badness 2689) has occurred while \output is active []
 
- [18]
-Underfull \hbox (badness 10000) in paragraph at lines 181--182
+ [20]
+Underfull \hbox (badness 10000) in paragraph at lines 194--195
 [] \OT1/cmr/m/n/12 add f(a1, a2)=a to UseList(Representative(a1)) and to
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 195--196
+Underfull \hbox (badness 10000) in paragraph at lines 208--209
 [] \OT1/cmr/bx/n/12 if $ []\OML/cmm/m/it/12 Representative\OT1/cmr/m/n/12 (\OML
 /cmm/m/it/12 a\OT1/cmr/m/n/12 ) \OMS/cmsy/m/n/12 6\OT1/cmr/m/n/12 = \OML/cmm/m/
 it/12 Representative\OT1/cmr/m/n/12 (\OML/cmm/m/it/12 b\OT1/cmr/m/n/12 )$ and w
@@ -525,57 +516,53 @@ it/12 Representative\OT1/cmr/m/n/12 (\OML/cmm/m/it/12 b\OT1/cmr/m/n/12 )$ and w
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 217--218
+Underfull \hbox (badness 10000) in paragraph at lines 230--231
 [] \OT1/cmr/m/n/12 move f(c1, c2) = c from UseList(oldReprA) to
  []
 
 
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
- [19]
-[20]) (./octagonal.tex [21] [22]
+ [21]
+[22]) (./octagonal.tex [23] [24]
 Chapter 4.
-(./proof_of_main_theorem_octagons.tex [23
+(./proof_of_main_theorem_octagons.tex [25
 
-])) (./combination.tex [24]
+])) (./combination.tex [26]
 Chapter 5.
 
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
- [25
+ [27
 
 ])
-(./future_work.tex [26]
+(./future_work.tex [28]
 Chapter 6.
-) (./appendices.tex [27
+) (./appendices.tex [29
 
-]) (./main.bbl [28
+]) (./main.bbl [30
 
-] [29
+] [31
 
-] [30])
+] [32])
 Package atveryend Info: Empty hook `BeforeClearDocument' on input line 115.
- [31]
+ [33]
 Package atveryend Info: Empty hook `AfterLastShipout' on input line 115.
  (./main.aux)
 Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 115.
 Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 115.
 Package rerunfilecheck Info: File `main.out' has not changed.
 (rerunfilecheck)             Checksum: 72E8AEA597C779D5CCAACD4FB767ACF9;3298.
-
-
-LaTeX Warning: There were undefined references.
-
 Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 115.
  ) 
 Here is how much of TeX's memory you used:
- 9187 strings out of 492167
- 128523 string characters out of 6131558
+ 9196 strings out of 492167
+ 128663 string characters out of 6131558
  436244 words of memory out of 5000000
- 13263 multiletter control sequences out of 15000+600000
+ 13267 multiletter control sequences out of 15000+600000
  14345 words of font info for 52 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
- 33i,7n,42p,774b,446s stack positions out of 5000i,500n,10000p,200000b,80000s
+ 33i,7n,42p,774b,444s stack positions out of 5000i,500n,10000p,200000b,80000s
 </usr/share/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx12.pfb></usr/share/
 texmf-dist/fonts/type1/public/amsfonts/cm/cmcsc10.pfb></usr/share/texmf-dist/fo
 nts/type1/public/amsfonts/cm/cmex10.pfb></usr/share/texmf-dist/fonts/type1/publ
@@ -590,10 +577,10 @@ xmf-dist/fonts/type1/public/amsfonts/cm/cmsy8.pfb></usr/share/texmf-dist/fonts/
 type1/public/amsfonts/cm/cmti12.pfb></usr/share/texmf-dist/fonts/type1/public/a
 msfonts/euler/eufm10.pfb></usr/share/texmf-dist/fonts/type1/public/amsfonts/sym
 bols/msam10.pfb>
-Output written on main.pdf (43 pages, 244757 bytes).
+Output written on main.pdf (45 pages, 248127 bytes).
 PDF statistics:
- 607 PDF objects out of 1000 (max. 8388607)
- 540 compressed objects within 6 object streams
- 130 named destinations out of 1000 (max. 500000)
+ 628 PDF objects out of 1000 (max. 8388607)
+ 559 compressed objects within 6 object streams
+ 135 named destinations out of 1000 (max. 500000)
  385 words of extra memory for PDF output out of 10000 (max. 10000000)
 

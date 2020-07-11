@@ -1,13 +1,47 @@
 \chapter{Introduction}
 
-TODO: motivation of the work
+Modern society is witness of the impact computer software has done
+in recent years. The benefits of this massive automation is endless. On the
+other hand, when software fails it becomes a catostrophe to the point that
+some industries are severely affected and human's life are threaded 
+at worst. 
 
-\section{\label{section:backgroud}Backgroud}
+Due to strict and ambitious agendas, many software products
+are shipped with unseen bugs which might potential thread people's life
+like in critical systems. Several approaches have been used to improve 
+software quality. However, many of these approaches offer partial 
+coverage or might take an abyssal amount of human effort to provide 
+such solutions and thus cannot be consideral practical. These contributions 
+are relevant for certain applications and their proper use fit 
+such workflows uniquely. 
+
+Formal methods aim to bring a unique combination of automation, rigor, and 
+efficiency (whenever effecient algorithms exits for the verification task
+at hand). This thesis discusses a particular problem in software verification
+known as \emph{the interpolantion problem} for the theories of the quantifier-free
+fragment of equality with uninterpreted functions (EUF) and unit two variable per
+inequality (UTVPI). These two theories have been studied extensively and 
+researcher have found several applications for them. 
+
+\section{Backgroud}
+
+An interpolant of a pair of two logical formula is a logical formula
+such that it is implied by the first formula in the pair and logically
+inconsistent with the second, having only common symbols of the two formulas
+in the original pair. Informally this means that the interpolant `belongs'
+to the consequence of the first formula of such pair, and `avoids' the 
+consequence of the second formula. Not surprisingly, this intuition is 
+behind many software verification routines where the first formula models
+the desirable state (termination, correctness) of a computer program, 
+and the second formula models the set of undesirable states (non-termination, errors, crashes,
+etc) of such software. In Chapter \ref{preliminaries}, an extensive review
+of the formal concept is provided.
+
+Interpolants find two main application in software verification:
 
 \begin{itemize}
-\item General problem statement
-\item Redefinition (of the latter) for theories 
-\item Applications in verification, i.e. invariant generation, refinement in model checking
+  \item refinement of abstract models: TODO. explain the latter
+  \item invariant generation: TODO. same
 \end{itemize}
 
 \section{Related work}

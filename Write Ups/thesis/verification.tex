@@ -5,33 +5,36 @@ TODO.
 \subsection{Craig interpolation theorem}
 
 Let $\alpha, \beta, \gamma$ be logical formulas in a given theory. If
-$\vdash \alpha \rightarrow \beta$, we say that $\gamma$ is an
+$\models_{\mathcal{T}} \alpha \rightarrow \beta$, we say that $\gamma$ is an
 interpolant for the pair $(\alpha, \beta)$ if the following conditions
 are met:
 
 \begin{itemize}
-\item $\vdash \alpha \rightarrow \gamma$
-\item $\vdash \gamma \rightarrow \beta$
+\item $\models_{\mathcal{T}} \alpha \rightarrow \gamma$
+\item $\models_{\mathcal{T}} \gamma \rightarrow \beta$
 \item Every non-logical symbol in $\gamma$ occurs both in $\alpha$ and
   $\beta$.
 \end{itemize}
 
 The \emph{interpolantion problem} can be stated naturally as follows: given two
-logical formulas $\alpha, \beta$ such that $\vdash \alpha \rightarrow \beta$, find
+logical formulas $\alpha, \beta$ such that $\models_{\mathcal{T}} \alpha \rightarrow \beta$, find
 the interpolant for the pair $(\alpha, \beta)$.
 
-In his celebrated work \cite{10.2307/2963594}, Craig proved that for every pair
-$(\alpha, \beta)$ of first order formulas such that
-$\vdash \alpha \rightarrow \beta$, an interpolation formula exists.
+In his celebrated result \cite{10.2307/2963594}, Craig proved that for every pair
+$(\alpha, \beta)$ of formulas in first-order logic such that
+$\models \alpha \rightarrow \beta$, an interpolation formula exists. Nonetheless,
+there are many logics and theories that this result does not hold \cite{komori1978}.
 
-Usually, we see the interpolation problem defined differently in the literature, where
-we consider $\beta^{'}$ to be $\neg \beta$ and the problem requires that the pair $(\alpha, \beta^{'})$
-is mutually contradictory (unsatisfiable). This definition was popularized by McMillan
-\cite{10.1007/978-3-540-24730-2_2}. This shift of attention explains partially the further
-development in interpolation generation algorithms since many of these relied on
-SMT solvers that provided refutation proofs in order to (re)construct interpolants
-for different theories (and their combination) \cite{10.1007/978-3-642-02959-2_17,
-  10.1007/978-3-642-36742-7_9, mcmillan2011interpolants}.
+Usually, we see the interpolation problem defined differently in the literature, 
+where it is considered $\beta^{'}$ to be $\neg \beta$ and 
+the problem requires that the pair $(\alpha, \beta^{'})$
+is mutually contradictory (unsatisfiable). This definition was popularized by 
+McMillan \cite{10.1007/978-3-540-24730-2_2}. This shift of attention explains 
+partially the further development in interpolation generation algorithms 
+since many of these relied on SMT solvers that provided refutation proofs 
+in order to (re)construct interpolants for different theories (and their 
+combination) \cite{10.1007/978-3-642-02959-2_17, 
+10.1007/978-3-642-36742-7_9, mcmillan2011interpolants}.
 
 Extended definitions are given to the interpolation problem when dealing with specific
 theories \cite{10.1007/11532231_26} in a way that interpreted function can be also part of
@@ -53,11 +56,19 @@ TODO.
 
 Given a theory $\mathcal{T}$ in a formula $\psi$ in 
 the language of the theory, is it possible to know $\models_{\mathcal{T}} \psi$? 
-This general question is known as the verification problem for the respective
+The last question is known as the verification problem for the respective
 theory $\mathcal{T}$. This question has been studied extensively 
-for many theories of interest \cite{börger2001classical}. 
+for many theories of interest \cite{borger2001classical}. 
 
-The theories mentioned in the 
+The theories mentioned in Section \ref{math_theories} are actually 
+undecidable \cite{borger2001classical, DBLP:books/daglib/0076838}.
+Nonetheless, the quantifier-free fragment of EUF and the restriction 
+imposed in the decision problem for the UTVPI theory allow efficient
+algorithms to decide validity in their respective theories 
+\cite{10.1145/322186.322198, 10.1145/322217.322228, 10.1007/11559306_9}.
+
+In the rest of this section we review some decision procedures used in
+the implementation work of the thesis.
 
 \subsection{Satisfiability and Satisfiability Modulo Theories}
  
