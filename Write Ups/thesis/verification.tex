@@ -16,8 +16,9 @@ are met:
   $\beta$.
 \end{itemize}
 
-The \emph{interpolantion problem} can be stated naturally as follows: given two
-logical formulas $\alpha, \beta$ such that $\models_{\mathcal{T}} \alpha \rightarrow \beta$, find
+The \emph{interpolantion problem} can be stated naturally as 
+follows: given two logical formulas $\alpha, \beta$ such that 
+$\models_{\mathcal{T}} \alpha \rightarrow \beta$, find
 the interpolant for the pair $(\alpha, \beta)$.
 
 In his celebrated result \cite{10.2307/2963594}, Craig proved that for every pair
@@ -55,16 +56,24 @@ TODO.
 \section{Decision Procedures}
 
 Given a theory $\mathcal{T}$ in a formula $\psi$ in 
-the language of the theory, is it possible to know $\models_{\mathcal{T}} \psi$? 
-The last question is known as the verification problem for the respective
-theory $\mathcal{T}$. This question has been studied extensively 
-for many theories of interest \cite{borger2001classical}. 
+the language of the theory, is it possible to know 
+$\models_{\mathcal{T}} \psi$? The last question is 
+known as the verification problem for the respective
+theory $\mathcal{T}$. This question has been 
+studied extensively for many theories of interest 
+\cite{borger2001classical}. 
 
-The theories mentioned in Section \ref{math_theories} are actually 
-undecidable \cite{borger2001classical, DBLP:books/daglib/0076838}.
-Nonetheless, the quantifier-free fragment of EUF and the restriction 
-imposed in the decision problem for the UTVPI theory allow efficient
-algorithms to decide validity in their respective theories 
+Regarding the decidability of the theories mentioned in Section \ref{math_theories}, we know that EUF is 
+undecidable \cite{borger2001classical}, and the theory
+of ordered commutative rings is undecidable when the
+structure uses integers as the domain and the semantics
+of the arithmetical operations \cite{DBLP:books/daglib/0076838} (interestingly this theory can be decidable if we
+keep the same structure but use the reals as the domain
+\cite{DBLP:books/daglib/0076838}).
+Nonetheless, the quantifier-free fragment of EUF and 
+the restriction imposed in the decision problem for 
+the UTVPI theory allow efficient algorithms to decide 
+validity and satisfiability in their respective theories 
 \cite{10.1145/322186.322198, 10.1145/322217.322228, 10.1007/11559306_9}.
 
 In the rest of this section we review some decision procedures used in

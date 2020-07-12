@@ -1,19 +1,19 @@
 \chapter{Introduction}
 
-Modern society is witness of the impact computer software has done
-in recent years. The benefits of this massive automation is endless. On the
-other hand, when software fails it becomes a catostrophe to the point that
-some industries are severely affected and human's life are threaded 
-at worst. 
+Modern society is witness of the impact computer software 
+has done in recent years. The benefits of this massive 
+automation is endless. On the other hand, when software 
+fails, it becomes a catostrophe ranging from economic loss
+to threats for human life. 
 
 Due to strict and ambitious agendas, many software products
-are shipped with unseen bugs which might potential thread people's life
-like in critical systems. Several approaches have been used to improve 
-software quality. However, many of these approaches offer partial 
-coverage or might take an abyssal amount of human effort to provide 
-such solutions and thus cannot be consideral practical. These contributions 
-are relevant for certain applications and their proper use fit 
-such workflows uniquely. 
+are shipped with unseen and unintentional bugs which might potentially put
+at risk people's life like in critical systems. Several approaches have been 
+used to improve software quality. However, many of these approaches 
+offer partial coverage or might take an abyssal amount of human effort to 
+provide such solutions and thus cannot be consideral practical. These 
+contributions are relevant for certain applications and their proper 
+use fit such workflows uniquely. 
 
 Formal methods aim to bring a unique combination of automation, rigor, and 
 efficiency (whenever effecient algorithms exits for the verification task
@@ -27,46 +27,76 @@ researcher have found several applications for them.
 
 An interpolant of a pair of two logical formula is a logical formula
 such that it is implied by the first formula in the pair and logically
-inconsistent with the second, having only common symbols of the two formulas
-in the original pair. Informally this means that the interpolant `belongs'
-to the consequence of the first formula of such pair, and `avoids' the 
-consequence of the second formula. Not surprisingly, this intuition is 
-behind many software verification routines where the first formula models
-the desirable state (termination, correctness) of a computer program, 
-and the second formula models the set of undesirable states (non-termination, errors, crashes,
-etc) of such software. In Chapter \ref{preliminaries}, an extensive review
-of the formal concept is provided.
+inconsistent with the second, having only common symbols of the 
+two formulas in the original pair. Informally this means that the 
+interpolant `belongs' to the consequence of the first formula of 
+such pair, and `avoids' the consequence of the second formula. 
+Not surprisingly, this intuition is behind many software verification 
+routines where the first formula models the desirable state 
+(termination, correctness) of a computer program, and the second 
+formula models the set of undesirable states (non-termination, 
+errors, crashes, etc) of such software. In Chapter 
+\ref{preliminaries}, an extensive review of the formal concept 
+is provided.
 
-Interpolants find two main application in software verification:
+Eventhough interpolants are not a direct concern in verification
+problems, these problems are found in the core algorithms of the 
+following two applications:
 
 \begin{itemize}
-  \item refinement of abstract models: TODO. explain the latter
-  \item invariant generation: TODO. same
+  \item Refinement of abstract models: In order to improve 
+    coverage and decrease the complexity in verification problems,
+    abstract interpretation has become a proper technique to 
+    accomplish the latter together with model checking. Eventhough the
+    methodology provides sound results, it is certainly not complete.
+    Additionally, several abstractions do not capture the semantical
+    meaning of programs due to the \emph{over-approximation} approach.
+    Hence, interpolants are used to strength predicate
+    abstractions by using interpolants constructed from valid 
+    traces in the abstract model but not valid in the actual model
+    (\emph{spurious counterexamples}) \cite{10.1145/876638.876643,
+    10.1007/978-3-540-45069-6_1, 10.1145/982962.964021}.
+  \item Invariant generation: following the same idea as in the previous
+    case, if a fix point is obtained in the refinement process 
+    we can produce logical invariant of computer programs \cite
+    {10.1007/978-3-540-45069-6_1, 4401986}. \footnote{Interpolation
+      generation has found applications in a \emph{lazy framework}
+      similarly to the SAT/SMT algorithms. Whereas the former is
+    about the production of interpolants, and the latter is for 
+  assignments/models respectively.}
 \end{itemize}
 
 \section{Related work}
 
-\begin{itemize}
-\item (Theoretical) approaches
-Proof-based
-Color-based
-Brutomesso 
-Bonachina
-\item (Implementation)
-iZ3
-\end{itemize}
+There are several algorithms for interpolation for the theories
+involved in the thesis work. The approaches can be classified
+into the following categories:
 
-TODO.
+\begin{itemize}
+  \item Proof-based approach: This category relies on the availability
+    of a refutational proof. Linear transformations to the proof
+    tree are performed in order to obtain the interpolant.
+    KEEP: working here.
+
+  \item Reduction-based approach: TODO.
+
+\end{itemize}
 
 \section{Outline of the thesis}
 
 \begin{itemize}
-\item Chapter X is about Y ...
-\item and so on and so on ...
-\end{itemize}
-
-
-TODO.
+\item Chapter 2 provides an extensive background 
+  of fundamentals ideas, algorithms and decision procedures 
+  used in the thesis work.
+\item Chapters 3, 4, and 5 explain the implentation aspect
+  of the theories EUF, UTVPI, and their combination. These
+  chapters share the same structure. They start with the
+  algorithms used to solve the interpolation problem, provides
+  discussion about implementation details including diagrams
+  of the arquitecture of the implemented system, and at the end
+  show a performance comparision with the iZ3 interpolation 
+  tool available in the SMT solver Z3 until version 4.7.0.
+\end{itemize} 
 
 %%% Local Variables:
 %%% mode: latex

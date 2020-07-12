@@ -18,6 +18,12 @@ J{\"u}rgen Christ, Jochen Hoenicke, and Alexander Nutz.
   Algorithms for the Construction and Analysis of Systems}, pages 124--138,
   Berlin, Heidelberg, 2013. Springer Berlin Heidelberg.
 
+\bibitem{10.1145/876638.876643}
+Edmund Clarke, Orna Grumberg, Somesh Jha, Yuan Lu, and Helmut Veith.
+\newblock Counterexample-guided abstraction refinement for symbolic model
+  checking.
+\newblock {\em J. ACM}, 50(5):752–794, September 2003.
+
 \bibitem{10.2307/2963594}
 William Craig.
 \newblock Three uses of the herbrand-gentzen theorem in relating model theory
@@ -65,6 +71,11 @@ Jean~H. Gallier.
   with equations.
 \newblock {\em Journal of Symbolic Computation}, 4(2):233 -- 254, 1987.
 
+\bibitem{10.1145/982962.964021}
+Thomas~A. Henzinger, Ranjit Jhala, Rupak Majumdar, and Kenneth~L. McMillan.
+\newblock Abstractions from proofs.
+\newblock {\em SIGPLAN Not.}, 39(1):232–244, January 2004.
+
 \bibitem{KAPUR2017}
 Deepak Kapur.
 \newblock A new algorithm for computing (strongest) interpolants over
@@ -82,6 +93,12 @@ Laura Kov{\'a}cs and Andrei Voronkov.
 \newblock In Renate~A. Schmidt, editor, {\em Automated Deduction -- CADE-22},
   pages 199--213, Berlin, Heidelberg, 2009. Springer Berlin Heidelberg.
 
+\bibitem{4401986}
+D.~{Kroening} and G.~{Weissenbacher}.
+\newblock Lifting propositional interpolants to the word-level.
+\newblock In {\em Formal Methods in Computer Aided Design (FMCAD'07)}, pages
+  85--89, 2007.
+
 \bibitem{10.5555/1391237}
 Daniel Kroening and Ofer Strichman.
 \newblock {\em Decision Procedures: An Algorithmic Point of View}.
@@ -92,6 +109,13 @@ Shuvendu~K. Lahiri and Madanlal Musuvathi.
 \newblock An efficient decision procedure for utvpi constraints.
 \newblock In Bernhard Gramlich, editor, {\em Frontiers of Combining Systems},
   pages 168--183, Berlin, Heidelberg, 2005. Springer Berlin Heidelberg.
+
+\bibitem{10.1007/978-3-540-45069-6_1}
+K.~L. McMillan.
+\newblock Interpolation and sat-based model checking.
+\newblock In Warren~A. Hunt and Fabio Somenzi, editors, {\em Computer Aided
+  Verification}, pages 1--13, Berlin, Heidelberg, 2003. Springer Berlin
+  Heidelberg.
 
 \bibitem{10.1007/978-3-540-24730-2_2}
 K.~L. McMillan.
