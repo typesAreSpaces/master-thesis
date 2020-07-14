@@ -7,40 +7,61 @@ if expand('%') == '' && !&modified && line('$') <= 1 && getline(1) == ''
   let s:wipebuf = bufnr('%')
 endif
 set shortmess=aoO
-badd +1 main.tex
+badd +54 main.tex
 badd +8 abstract.tex
 badd +1 background.tex
-badd +1 preliminaries.tex
-badd +52 introduction.tex
-badd +428 references.bib
+badd +9 preliminaries.tex
+badd +172 introduction.tex
+badd +1 references.bib
 badd +338 unmeethesis.cls
 badd +35 proof_of_main_theorem_octagons.tex
 badd +14 octagonal.tex
 badd +7 dedication_acknowledgments.tex
 badd +3 related_work.tex
 badd +3 glossary.tex
-badd +5 euf.tex
+badd +1 euf.tex
 badd +542 ~/Documents/GithubProjects/master-thesis/Write\ Ups/paper_project/main.tex
 badd +1 ~/Documents/GithubProjects/master-thesis/Write\ Ups/paper_project/algpseudocode.sty
 badd +68 first_order_logic.tex
-badd +17 theories.tex
-badd +22 verification.tex
-badd +10 tools.tex
+badd +27 theories.tex
+badd +21 verification.tex
+badd +6 tools.tex
 badd +28 combination.tex
 badd +1 algpseudocode.sty
 badd +15 ~/Downloads/10.1007_978-3-540-45069-6_1.bib
+badd +102 craig_interpolation.tex
+badd +13 sat-smt.tex
+badd +48 congruence-closure.tex
+badd +4 sat-horn.tex
+badd +8 nelson-oppen-framework.tex
+badd +2 ~/Downloads/10.2307_1990888.txt
 argglobal
 %argdel
-edit main.tex
+edit references.bib
 set splitbelow splitright
 wincmd _ | wincmd |
 vsplit
 wincmd _ | wincmd |
 vsplit
+2wincmd h
+wincmd w
+wincmd _ | wincmd |
+split
+wincmd _ | wincmd |
+split
+wincmd _ | wincmd |
+split
+3wincmd k
+wincmd w
+wincmd w
+wincmd w
+wincmd w
+wincmd _ | wincmd |
+split
+1wincmd k
 wincmd _ | wincmd |
 vsplit
-3wincmd h
-wincmd w
+1wincmd h
 wincmd w
 wincmd w
 set nosplitbelow
@@ -50,10 +71,21 @@ set winminheight=0
 set winheight=1
 set winminwidth=0
 set winwidth=1
-exe 'vert 1resize ' . ((&columns * 78 + 157) / 315)
-exe 'vert 2resize ' . ((&columns * 78 + 157) / 315)
-exe 'vert 3resize ' . ((&columns * 78 + 157) / 315)
-exe 'vert 4resize ' . ((&columns * 78 + 157) / 315)
+exe 'vert 1resize ' . ((&columns * 67 + 135) / 270)
+exe '2resize ' . ((&lines * 12 + 25) / 51)
+exe 'vert 2resize ' . ((&columns * 87 + 135) / 270)
+exe '3resize ' . ((&lines * 11 + 25) / 51)
+exe 'vert 3resize ' . ((&columns * 87 + 135) / 270)
+exe '4resize ' . ((&lines * 12 + 25) / 51)
+exe 'vert 4resize ' . ((&columns * 87 + 135) / 270)
+exe '5resize ' . ((&lines * 11 + 25) / 51)
+exe 'vert 5resize ' . ((&columns * 87 + 135) / 270)
+exe '6resize ' . ((&lines * 24 + 25) / 51)
+exe 'vert 6resize ' . ((&columns * 67 + 135) / 270)
+exe '7resize ' . ((&lines * 24 + 25) / 51)
+exe 'vert 7resize ' . ((&columns * 46 + 135) / 270)
+exe '8resize ' . ((&lines * 24 + 25) / 51)
+exe 'vert 8resize ' . ((&columns * 114 + 135) / 270)
 argglobal
 setlocal fdm=manual
 setlocal fde=0
@@ -64,18 +96,33 @@ setlocal fml=1
 setlocal fdn=20
 setlocal fen
 silent! normal! zE
-10,58fold
-10
-normal! zo
-let s:l = 52 - ((0 * winheight(0) + 29) / 58)
+let s:l = 186 - ((18 * winheight(0) + 24) / 49)
 if s:l < 1 | let s:l = 1 | endif
 exe s:l
 normal! zt
-52
+186
+normal! 016|
+wincmd w
+argglobal
+if bufexists("sat-smt.tex") | buffer sat-smt.tex | else | edit sat-smt.tex | endif
+setlocal fdm=manual
+setlocal fde=0
+setlocal fmr={{{,}}}
+setlocal fdi=#
+setlocal fdl=0
+setlocal fml=1
+setlocal fdn=20
+setlocal fen
+silent! normal! zE
+let s:l = 14 - ((5 * winheight(0) + 6) / 12)
+if s:l < 1 | let s:l = 1 | endif
+exe s:l
+normal! zt
+14
 normal! 0
 wincmd w
 argglobal
-if bufexists("references.bib") | buffer references.bib | else | edit references.bib | endif
+if bufexists("congruence-closure.tex") | buffer congruence-closure.tex | else | edit congruence-closure.tex | endif
 setlocal fdm=manual
 setlocal fde=0
 setlocal fmr={{{,}}}
@@ -85,15 +132,15 @@ setlocal fml=1
 setlocal fdn=20
 setlocal fen
 silent! normal! zE
-let s:l = 218 - ((35 * winheight(0) + 29) / 58)
+let s:l = 4 - ((3 * winheight(0) + 5) / 11)
 if s:l < 1 | let s:l = 1 | endif
 exe s:l
 normal! zt
-218
-normal! 011|
+4
+normal! 0
 wincmd w
 argglobal
-if bufexists("introduction.tex") | buffer introduction.tex | else | edit introduction.tex | endif
+if bufexists("sat-horn.tex") | buffer sat-horn.tex | else | edit sat-horn.tex | endif
 setlocal fdm=manual
 setlocal fde=0
 setlocal fmr={{{,}}}
@@ -103,27 +150,15 @@ setlocal fml=1
 setlocal fdn=20
 setlocal fen
 silent! normal! zE
-68,68fold
-69,84fold
-85,104fold
-1,104fold
-1
-normal! zo
-68
-normal! zo
-69
-normal! zo
-85
-normal! zo
-let s:l = 81 - ((44 * winheight(0) + 29) / 58)
+let s:l = 1 - ((0 * winheight(0) + 6) / 12)
 if s:l < 1 | let s:l = 1 | endif
 exe s:l
 normal! zt
-81
-normal! 039|
+1
+normal! 0
 wincmd w
 argglobal
-if bufexists("introduction.tex") | buffer introduction.tex | else | edit introduction.tex | endif
+if bufexists("nelson-oppen-framework.tex") | buffer nelson-oppen-framework.tex | else | edit nelson-oppen-framework.tex | endif
 setlocal fdm=manual
 setlocal fde=0
 setlocal fmr={{{,}}}
@@ -133,30 +168,109 @@ setlocal fml=1
 setlocal fdn=20
 setlocal fen
 silent! normal! zE
-68,68fold
-69,84fold
-85,104fold
-1,104fold
-1
-normal! zo
-68
-normal! zo
-69
-normal! zo
-85
-normal! zo
-let s:l = 62 - ((51 * winheight(0) + 29) / 58)
+let s:l = 13 - ((9 * winheight(0) + 5) / 11)
 if s:l < 1 | let s:l = 1 | endif
 exe s:l
 normal! zt
-62
-normal! 032|
+13
+normal! 0
+wincmd w
+argglobal
+if bufexists("verification.tex") | buffer verification.tex | else | edit verification.tex | endif
+setlocal fdm=manual
+setlocal fde=0
+setlocal fmr={{{,}}}
+setlocal fdi=#
+setlocal fdl=2
+setlocal fml=1
+setlocal fdn=20
+setlocal fen
+silent! normal! zE
+1,1fold
+38,40fold
+2,40fold
+2
+normal! zo
+let s:l = 40 - ((23 * winheight(0) + 12) / 24)
+if s:l < 1 | let s:l = 1 | endif
+exe s:l
+normal! zt
+40
+normal! 0
+wincmd w
+argglobal
+if bufexists("preliminaries.tex") | buffer preliminaries.tex | else | edit preliminaries.tex | endif
+setlocal fdm=manual
+setlocal fde=0
+setlocal fmr={{{,}}}
+setlocal fdi=#
+setlocal fdl=0
+setlocal fml=1
+setlocal fdn=20
+setlocal fen
+silent! normal! zE
+let s:l = 9 - ((5 * winheight(0) + 12) / 24)
+if s:l < 1 | let s:l = 1 | endif
+exe s:l
+normal! zt
+9
+normal! 013|
+wincmd w
+argglobal
+if bufexists("euf.tex") | buffer euf.tex | else | edit euf.tex | endif
+setlocal fdm=manual
+setlocal fde=0
+setlocal fmr={{{,}}}
+setlocal fdi=#
+setlocal fdl=4
+setlocal fml=1
+setlocal fdn=20
+setlocal fen
+silent! normal! zE
+39,44fold
+48,48fold
+49,50fold
+45,54fold
+55,63fold
+64,78fold
+102,109fold
+110,116fold
+91,135fold
+136,238fold
+239,270fold
+27,270fold
+271,274fold
+275,282fold
+1,282fold
+1
+normal! zo
+27
+normal! zo
+91
+normal! zo
+let s:l = 91 - ((10 * winheight(0) + 12) / 24)
+if s:l < 1 | let s:l = 1 | endif
+exe s:l
+normal! zt
+91
+normal! 013|
 wincmd w
 3wincmd w
-exe 'vert 1resize ' . ((&columns * 78 + 157) / 315)
-exe 'vert 2resize ' . ((&columns * 78 + 157) / 315)
-exe 'vert 3resize ' . ((&columns * 78 + 157) / 315)
-exe 'vert 4resize ' . ((&columns * 78 + 157) / 315)
+exe 'vert 1resize ' . ((&columns * 67 + 135) / 270)
+exe '2resize ' . ((&lines * 12 + 25) / 51)
+exe 'vert 2resize ' . ((&columns * 87 + 135) / 270)
+exe '3resize ' . ((&lines * 11 + 25) / 51)
+exe 'vert 3resize ' . ((&columns * 87 + 135) / 270)
+exe '4resize ' . ((&lines * 12 + 25) / 51)
+exe 'vert 4resize ' . ((&columns * 87 + 135) / 270)
+exe '5resize ' . ((&lines * 11 + 25) / 51)
+exe 'vert 5resize ' . ((&columns * 87 + 135) / 270)
+exe '6resize ' . ((&lines * 24 + 25) / 51)
+exe 'vert 6resize ' . ((&columns * 67 + 135) / 270)
+exe '7resize ' . ((&lines * 24 + 25) / 51)
+exe 'vert 7resize ' . ((&columns * 46 + 135) / 270)
+exe '8resize ' . ((&lines * 24 + 25) / 51)
+exe 'vert 8resize ' . ((&columns * 114 + 135) / 270)
 tabnext 1
 if exists('s:wipebuf') && getbufvar(s:wipebuf, '&buftype') isnot# 'terminal'
   silent exe 'bwipe ' . s:wipebuf

@@ -22,7 +22,8 @@ We notice that the congruence axiom is not a first-order logic axiom, but rather
 In order to describe the UTVPI theory we will first introduce the language and theory of an ordered commutative ring.
 
 \begin{definition}
-  Let $\mathfrak{L}_{Ord-R} = \{, \{0, 1 \}, \{ = , \leq \}, \{+, -, *, / \}, \}$ be the language of an ordered ring $R$. The axioms of the theory are:
+  Let $\mathfrak{L}_{Ord-R} = \{, \{0, 1 \}, \{ = , \leq \}, \{+, -, * \}, \}$ be the 
+  language of an ordered commutative ring $R$. The axioms of the theory are:
   \begin{itemize}
     \item $\forall x . \forall y . \forall z . x + (y + z) = (x + y) + z$
     \item $\forall x . \forall y .  x + y = y + x$
@@ -30,6 +31,7 @@ In order to describe the UTVPI theory we will first introduce the language and t
     \item $\forall x . x + (- x) = 0$
     \item $\forall x . \forall y . \forall z. x * (y * z) = (x * y) * z$
     \item $\forall x . x * 1 = x$
+    \item $\forall x . \forall y .  x * y = y * x$
     \item $\forall x . \forall y . \forall z . x * (y + z) = x * y + x * z$
     \item $\forall x . \forall y . \forall z . (y + z) * x = y*x + z * x$
     \item $\forall x . \forall y . \forall z . x \leq y \rightarrow x + z \leq y + z$
@@ -38,7 +40,9 @@ In order to describe the UTVPI theory we will first introduce the language and t
   \end{itemize}
 \end{definition}
 
-In the next section we will provide further computability aspects for the theories of interest that are relevant for verification.
+Section \ref{decision_procedures} discusses computability 
+aspects for the theories of interest that are relevant 
+for verification.
 
 %%% Local Variables:
 %%% mode: latex

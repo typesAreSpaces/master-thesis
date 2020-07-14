@@ -1,0 +1,111 @@
+\section{Interpolants}
+
+Following the notation in \cite{10.1007/11532231_26}, we denote 
+$\mathcal{V}(\psi)$ to be the set of non-logical symbols, variables
+and constants of formula $\psi$. Given an instance for the interpolation
+problem $(A, B)$ \footnote{For the rest of the thesis, we will denote the 
+  first formula of an interpolantion problem as the A-part 
+and the second component as the B-part}, 
+we distinguish the following categories:
+
+\begin{itemize}
+  \item $\psi$ is \emph{A-local} if $\mathcal{V}(\psi) \in 
+    \mathcal{V}(A) \setminus \mathcal{V}(B)$
+  \item $\psi$ is \emph{B-local} if $\mathcal{V}(\psi) \in 
+    \mathcal{V}(B) \setminus \mathcal{V}(A)$
+  \item $\psi$ is \emph{AB-common} if $\mathcal{V}(\psi) \in
+    \mathcal{V}(A) \cap \mathcal{V}(B)$
+  \item $\psi$ is \emph{AB-pure} when either $\mathcal{V}(\psi) \subseteq 
+    \mathcal{V}(A)$ or $\mathcal{V}(\psi) \subseteq \mathcal{V}(B)$, otherwise
+    $\psi$ is \emph{AB-mixed}
+\end{itemize}
+
+\begin{example} \label{first_example}
+
+  Consider the following interpolation pair: $(f(a + 2) + 1 = c + 1
+    \land f(a + 2) = 0
+  , f(c) \leq b \land b < f(0))$. With respect to the previous 
+  interpolation pair, we can tell that:
+  \begin{itemize}
+    \item The formula $f(a + 2) = c$ is 
+      AB-pure but not A-local nor B-local nor AB-common
+    \item The formula $\neg(a \leq f(f(b) + 1))$ is an AB-mixed
+      literal
+    \item The formula $a + 1 = 1$ is A-local.
+    \item The formula $c + 1 = 1$ is AB-pure but not AB-common.
+    \item The formula $c = 0$ is AB-common.
+    \item In general, $AB-common$ formulas are not $AB-pure$ formulas.
+  \end{itemize}
+\end{example}
+
+\subsection{Craig interpolation theorem}
+
+Let $\alpha, \beta, \gamma$ be logical formulas in a given theory. If
+$\models_{\mathcal{T}} \alpha \rightarrow \beta$, we say that $\gamma$ is an
+interpolant for the interpolation pair $(\alpha, \beta)$ if the following conditions
+are met:
+
+\begin{itemize}
+\item $\models_{\mathcal{T}} \alpha \rightarrow \gamma$
+\item $\models_{\mathcal{T}} \gamma \rightarrow \beta$
+\item Every non-logical symbol in $\gamma$ occurs both in $\alpha$ and
+  $\beta$.
+\end{itemize}
+
+The \emph{interpolantion problem} can be stated naturally as 
+follows: given two logical formulas $\alpha, \beta$ such that 
+$\models_{\mathcal{T}} \alpha \rightarrow \beta$, find
+the interpolant for the pair $(\alpha, \beta)$.
+
+In his celebrated result \cite{10.2307/2963594}, Craig proved that for every pair
+$(\alpha, \beta)$ of formulas in first-order logic such that
+$\models \alpha \rightarrow \beta$, an interpolation formula exists. Nonetheless,
+there are many logics and theories that this result does not hold \cite{komori1978}.
+
+Usually, we see the interpolation problem defined differently in the literature, 
+where it is considered $\beta^{'}$ to be $\neg \beta$ and 
+the problem requires that the pair $(\alpha, \beta^{'})$
+is mutually contradictory (unsatisfiable). This definition was popularized by 
+McMillan \cite{10.1007/978-3-540-24730-2_2}. This shift of attention explains 
+partially the further development in interpolation generation algorithms 
+since many of these relied on SMT solvers that provided refutation proofs 
+in order to (re)construct interpolants for different theories (and their 
+combination) \cite{10.1007/978-3-642-02959-2_17, 
+10.1007/978-3-642-36742-7_9, mcmillan2011interpolants}.
+
+Relaxed definitions are considered to the interpolation 
+problem when dealing with specific
+theories \cite{10.1007/11532231_26} in a way that interpreted 
+function can be also part of the interpolant. The latter is 
+justified since otherwise, many interpolation formulas might
+not exists in different theories or the interpolants obtained might not 
+be relevant (for example, lisp programs). This is formalize as follows:
+
+\begin{definition} \cite{10.1007/11532231_26}
+  Let $\mathcal{T}$ be a first-order theory of a signature $\Sigma$ and 
+  let $\mathcal{L}$ be the class of quantifier-free $\Sigma$ formulas.
+  Let $\Sigma_\mathcal{T} \subseteq \Sigma$ denote a designated set
+  of interpreted symbols in $\mathcal{T}$. Let $A, B$ be formulas
+  in $\mathcal{L}$ such that $A \land B \models_{\mathcal{T}} \bot$.
+  A \emph{theory-specific} interpolant for $(A, B)$ in $\mathcal{T}$
+  is a formula $I$ in $\mathcal{L}$ such that 
+  $A \models_{\mathcal{T}} I$, $B \land I \models_{\mathcal{T}} \bot$,
+  and $I$ refers only to AB-common symbols and symbols in 
+  $\Sigma_{\mathcal{T}}$.
+\end{definition}
+
+\begin{example}
+  In example \ref{first_example} we can tell $c + 1 = 1$ is not an
+  interpolant simplify because the symbol $1$ only appears on the
+  A-part. However, if $\Sigma_{\mathcal{LIA(\mathbb{Z})}}$ contains the
+  interpreted symbols of $LIA(\mathbb{Z})$ (i.e. $+, *, 0, 1, 2, \dots$),
+  then $c + 1 = 1$ becomes a \emph{theory-spefic} interpolant. 
+
+  Notice that $c = 0$ is an interpolant even if the set of interpreted symbols 
+  used for interpolation is empty.
+\end{example}
+
+%%% Local Variables:
+%%% mode: latex
+%%% TeX-master: "main"
+%%% End:

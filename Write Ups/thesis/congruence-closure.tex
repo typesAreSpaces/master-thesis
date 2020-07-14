@@ -1,0 +1,53 @@
+\subsection{Congruence Closure}
+
+TODO.
+
+\subsubsection{Decision Problem}
+
+TODO.
+
+\subsubsection{Decision Procedure}
+
+In \cite{10.1007/978-3-540-32033-3_33}, the authors 
+introduced a Union-Find data structure that supports the 
+Explanation operation. This operation receives as input 
+an equation between constants. If the input equation is 
+a consequence of the current equivalence relation defined 
+in the Union Find data structure, the Explanation operation 
+returns the minimal sequence of equations used to build 
+such equivalence relation, otherwise it returns 
+`Not provable`. A proper implementation of this algorithm 
+extends the traditional Union-Find data structure with 
+a \emph{proof-forest}, which consists of an additional 
+representation of the underlying equivalence relation that 
+does not compress paths whenever a call to the Find 
+operation is made. For efficient reasons, the Find 
+operation uses the path compression and weighted union.
+
+The main observation in \cite{10.1007/978-3-540-32033-3_33} 
+is that, in order to recover an explanation between 
+two terms, by traversing the path between the two nodes 
+in the proof tree, the last edge in the path guarantees to 
+be part of the explanation. Intuitively, this follows because only 
+the last Union operation was responsible of merging the 
+two classes into one. Hence, we can recursively recover 
+the rest of the explanation by recursively traversing 
+the subpaths found.
+
+Additionally, the authors in \cite{10.1007/978-3-540-32033-3_33} 
+extended the Congruence Closure algorithm 
+\cite{10.1007/978-3-540-39813-4_5} using the above data 
+structure to provide Explanations for EUF theory. The congruence 
+closure algorithm is a simplification of the congruence 
+closure algorithm in \cite{10.1145/322217.322228}. The latter 
+combines the traditional \emph{pending} and \emph{combine} list 
+into one single list, hence removing the initial 
+\emph{combination} loop in the algorithm in 
+\cite{10.1145/322217.322228}.
+
+TODO. Does this cover DST, NO and explanations?
+
+%%% Local Variables:
+%%% mode: latex
+%%% TeX-master: "main"
+%%% End:
