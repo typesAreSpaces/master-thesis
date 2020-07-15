@@ -19,7 +19,7 @@
 \BOOKMARK [2][-]{subsection.2.4.1}{Satisfiability and Satisfiability Modulo Theories}{section.2.4}% 19
 \BOOKMARK [2][-]{subsection.2.4.2}{Congruence Closure}{section.2.4}% 20
 \BOOKMARK [2][-]{subsection.2.4.3}{Satisfiability of Horn clauses with ground equations}{section.2.4}% 21
-\BOOKMARK [2][-]{subsection.2.4.4}{Nelson-Oppen framework for theory combination}{section.2.4}% 22
+\BOOKMARK [2][-]{subsection.2.4.4}{Nelson-Oppen framework for theory and interpolation combination}{section.2.4}% 22
 \BOOKMARK [1][-]{section.2.5}{General system description}{chapter.2}% 23
 \BOOKMARK [2][-]{subsection.2.5.1}{Minor modifications to Z3}{section.2.5}% 24
 \BOOKMARK [2][-]{subsection.2.5.2}{Minor modifications to zChaff}{section.2.5}% 25
@@ -39,5 +39,5 @@
 \BOOKMARK [1][-]{section.5.2}{Implementation}{chapter.5}% 39
 \BOOKMARK [1][-]{section.5.3}{Evaluation}{chapter.5}% 40
 \BOOKMARK [0][-]{chapter.6}{Future Work}{}% 41
-\BOOKMARK [0][-]{chapter*.9}{Appendices}{}% 42
-\BOOKMARK [0][-]{chapter*.10}{References}{}% 43
+\BOOKMARK [0][-]{chapter*.5}{Appendices}{}% 42
+\BOOKMARK [0][-]{chapter*.6}{References}{}% 43

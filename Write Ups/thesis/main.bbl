@@ -29,6 +29,11 @@ Edmund Clarke, Orna Grumberg, Somesh Jha, Yuan Lu, and Helmut Veith.
   checking.
 \newblock {\em J. ACM}, 50(5):752–794, September 2003.
 
+\bibitem{10.5555/1097042}
+John Cocke.
+\newblock {\em Programming Languages and Their Compilers: Preliminary Notes}.
+\newblock New York University, USA, 1969.
+
 \bibitem{10.2307/2963594}
 William Craig.
 \newblock Three uses of the herbrand-gentzen theorem in relating model theory

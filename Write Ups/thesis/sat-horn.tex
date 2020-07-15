@@ -1,13 +1,5 @@
 \subsection{Satisfiability of Horn clauses with ground equations}
 
-TODO.
-
-\subsubsection{Decision Problem}
-
-TODO.
-
-\subsubsection{Decision Procedure}
-
 In \cite{GALLIER1987233} it was proposed an algorithm 
 for testing the unsatisfiability
 of ground Horn clauses with equality. The main idea was 
@@ -29,7 +21,14 @@ Additionally, modifications in the data structures
 used by the original algorithms were needed
 to make the interleaving mechanism more efficient.
 
-TODO.
+Our implementation uses the equality propagation
+mechanism in the algorithm proposed by Gallier
+when we have to deal with Horn clauses with ground
+equations. In addition, we also needed to design
+some modifications of the original formulation so
+it can integrate with the congruence closure with
+explanation algorithm mentioned in the previous 
+section.
 
 %%% Local Variables:
 %%% mode: latex
