@@ -7,12 +7,12 @@ if expand('%') == '' && !&modified && line('$') <= 1 && getline(1) == ''
   let s:wipebuf = bufnr('%')
 endif
 set shortmess=aoO
-badd +54 main.tex
+badd +27 main.tex
 badd +8 abstract.tex
 badd +1 background.tex
-badd +9 preliminaries.tex
+badd +4 preliminaries.tex
 badd +172 introduction.tex
-badd +1 references.bib
+badd +550 references.bib
 badd +338 unmeethesis.cls
 badd +35 proof_of_main_theorem_octagons.tex
 badd +14 octagonal.tex
@@ -30,11 +30,12 @@ badd +28 combination.tex
 badd +1 algpseudocode.sty
 badd +15 ~/Downloads/10.1007_978-3-540-45069-6_1.bib
 badd +102 craig_interpolation.tex
-badd +13 sat-smt.tex
+badd +105 sat-smt.tex
 badd +48 congruence-closure.tex
 badd +4 sat-horn.tex
 badd +8 nelson-oppen-framework.tex
 badd +2 ~/Downloads/10.2307_1990888.txt
+badd +2 main.toc
 argglobal
 %argdel
 edit references.bib
@@ -49,20 +50,13 @@ wincmd _ | wincmd |
 split
 wincmd _ | wincmd |
 split
-wincmd _ | wincmd |
-split
-3wincmd k
-wincmd w
+2wincmd k
 wincmd w
 wincmd w
 wincmd w
 wincmd _ | wincmd |
 split
 1wincmd k
-wincmd _ | wincmd |
-vsplit
-1wincmd h
-wincmd w
 wincmd w
 set nosplitbelow
 set nosplitright
@@ -71,21 +65,17 @@ set winminheight=0
 set winheight=1
 set winminwidth=0
 set winwidth=1
-exe 'vert 1resize ' . ((&columns * 67 + 135) / 270)
-exe '2resize ' . ((&lines * 12 + 25) / 51)
-exe 'vert 2resize ' . ((&columns * 87 + 135) / 270)
-exe '3resize ' . ((&lines * 11 + 25) / 51)
-exe 'vert 3resize ' . ((&columns * 87 + 135) / 270)
-exe '4resize ' . ((&lines * 12 + 25) / 51)
-exe 'vert 4resize ' . ((&columns * 87 + 135) / 270)
-exe '5resize ' . ((&lines * 11 + 25) / 51)
-exe 'vert 5resize ' . ((&columns * 87 + 135) / 270)
-exe '6resize ' . ((&lines * 24 + 25) / 51)
-exe 'vert 6resize ' . ((&columns * 67 + 135) / 270)
-exe '7resize ' . ((&lines * 24 + 25) / 51)
-exe 'vert 7resize ' . ((&columns * 46 + 135) / 270)
-exe '8resize ' . ((&lines * 24 + 25) / 51)
-exe 'vert 8resize ' . ((&columns * 114 + 135) / 270)
+exe 'vert 1resize ' . ((&columns * 104 + 157) / 315)
+exe '2resize ' . ((&lines * 22 + 34) / 69)
+exe 'vert 2resize ' . ((&columns * 104 + 157) / 315)
+exe '3resize ' . ((&lines * 22 + 34) / 69)
+exe 'vert 3resize ' . ((&columns * 104 + 157) / 315)
+exe '4resize ' . ((&lines * 21 + 34) / 69)
+exe 'vert 4resize ' . ((&columns * 104 + 157) / 315)
+exe '5resize ' . ((&lines * 33 + 34) / 69)
+exe 'vert 5resize ' . ((&columns * 105 + 157) / 315)
+exe '6resize ' . ((&lines * 33 + 34) / 69)
+exe 'vert 6resize ' . ((&columns * 105 + 157) / 315)
 argglobal
 setlocal fdm=manual
 setlocal fde=0
@@ -96,30 +86,12 @@ setlocal fml=1
 setlocal fdn=20
 setlocal fen
 silent! normal! zE
-let s:l = 186 - ((18 * winheight(0) + 24) / 49)
+let s:l = 186 - ((23 * winheight(0) + 33) / 67)
 if s:l < 1 | let s:l = 1 | endif
 exe s:l
 normal! zt
 186
 normal! 016|
-wincmd w
-argglobal
-if bufexists("sat-smt.tex") | buffer sat-smt.tex | else | edit sat-smt.tex | endif
-setlocal fdm=manual
-setlocal fde=0
-setlocal fmr={{{,}}}
-setlocal fdi=#
-setlocal fdl=0
-setlocal fml=1
-setlocal fdn=20
-setlocal fen
-silent! normal! zE
-let s:l = 14 - ((5 * winheight(0) + 6) / 12)
-if s:l < 1 | let s:l = 1 | endif
-exe s:l
-normal! zt
-14
-normal! 0
 wincmd w
 argglobal
 if bufexists("congruence-closure.tex") | buffer congruence-closure.tex | else | edit congruence-closure.tex | endif
@@ -132,12 +104,12 @@ setlocal fml=1
 setlocal fdn=20
 setlocal fen
 silent! normal! zE
-let s:l = 4 - ((3 * winheight(0) + 5) / 11)
+let s:l = 6 - ((5 * winheight(0) + 11) / 22)
 if s:l < 1 | let s:l = 1 | endif
 exe s:l
 normal! zt
-4
-normal! 0
+6
+normal! 06|
 wincmd w
 argglobal
 if bufexists("sat-horn.tex") | buffer sat-horn.tex | else | edit sat-horn.tex | endif
@@ -150,12 +122,12 @@ setlocal fml=1
 setlocal fdn=20
 setlocal fen
 silent! normal! zE
-let s:l = 1 - ((0 * winheight(0) + 6) / 12)
+let s:l = 1 - ((0 * winheight(0) + 11) / 22)
 if s:l < 1 | let s:l = 1 | endif
 exe s:l
 normal! zt
 1
-normal! 0
+normal! 047|
 wincmd w
 argglobal
 if bufexists("nelson-oppen-framework.tex") | buffer nelson-oppen-framework.tex | else | edit nelson-oppen-framework.tex | endif
@@ -168,11 +140,11 @@ setlocal fml=1
 setlocal fdn=20
 setlocal fen
 silent! normal! zE
-let s:l = 13 - ((9 * winheight(0) + 5) / 11)
+let s:l = 5 - ((4 * winheight(0) + 10) / 21)
 if s:l < 1 | let s:l = 1 | endif
 exe s:l
 normal! zt
-13
+5
 normal! 0
 wincmd w
 argglobal
@@ -189,32 +161,12 @@ silent! normal! zE
 1,1fold
 38,40fold
 2,40fold
-2
-normal! zo
-let s:l = 40 - ((23 * winheight(0) + 12) / 24)
+let s:l = 32 - ((24 * winheight(0) + 16) / 33)
 if s:l < 1 | let s:l = 1 | endif
 exe s:l
 normal! zt
-40
+32
 normal! 0
-wincmd w
-argglobal
-if bufexists("preliminaries.tex") | buffer preliminaries.tex | else | edit preliminaries.tex | endif
-setlocal fdm=manual
-setlocal fde=0
-setlocal fmr={{{,}}}
-setlocal fdi=#
-setlocal fdl=0
-setlocal fml=1
-setlocal fdn=20
-setlocal fen
-silent! normal! zE
-let s:l = 9 - ((5 * winheight(0) + 12) / 24)
-if s:l < 1 | let s:l = 1 | endif
-exe s:l
-normal! zt
-9
-normal! 013|
 wincmd w
 argglobal
 if bufexists("euf.tex") | buffer euf.tex | else | edit euf.tex | endif
@@ -246,31 +198,53 @@ silent! normal! zE
 normal! zo
 27
 normal! zo
+39
+normal! zc
+45
+normal! zo
+48
+normal! zc
+49
+normal! zc
+45
+normal! zc
+55
+normal! zc
+64
+normal! zc
 91
 normal! zo
-let s:l = 91 - ((10 * winheight(0) + 12) / 24)
+102
+normal! zc
+110
+normal! zc
+136
+normal! zc
+239
+normal! zc
+271
+normal! zc
+275
+normal! zc
+let s:l = 93 - ((2 * winheight(0) + 16) / 33)
 if s:l < 1 | let s:l = 1 | endif
 exe s:l
 normal! zt
-91
+93
 normal! 013|
 wincmd w
-3wincmd w
-exe 'vert 1resize ' . ((&columns * 67 + 135) / 270)
-exe '2resize ' . ((&lines * 12 + 25) / 51)
-exe 'vert 2resize ' . ((&columns * 87 + 135) / 270)
-exe '3resize ' . ((&lines * 11 + 25) / 51)
-exe 'vert 3resize ' . ((&columns * 87 + 135) / 270)
-exe '4resize ' . ((&lines * 12 + 25) / 51)
-exe 'vert 4resize ' . ((&columns * 87 + 135) / 270)
-exe '5resize ' . ((&lines * 11 + 25) / 51)
-exe 'vert 5resize ' . ((&columns * 87 + 135) / 270)
-exe '6resize ' . ((&lines * 24 + 25) / 51)
-exe 'vert 6resize ' . ((&columns * 67 + 135) / 270)
-exe '7resize ' . ((&lines * 24 + 25) / 51)
-exe 'vert 7resize ' . ((&columns * 46 + 135) / 270)
-exe '8resize ' . ((&lines * 24 + 25) / 51)
-exe 'vert 8resize ' . ((&columns * 114 + 135) / 270)
+2wincmd w
+exe 'vert 1resize ' . ((&columns * 104 + 157) / 315)
+exe '2resize ' . ((&lines * 22 + 34) / 69)
+exe 'vert 2resize ' . ((&columns * 104 + 157) / 315)
+exe '3resize ' . ((&lines * 22 + 34) / 69)
+exe 'vert 3resize ' . ((&columns * 104 + 157) / 315)
+exe '4resize ' . ((&lines * 21 + 34) / 69)
+exe 'vert 4resize ' . ((&columns * 104 + 157) / 315)
+exe '5resize ' . ((&lines * 33 + 34) / 69)
+exe 'vert 5resize ' . ((&columns * 105 + 157) / 315)
+exe '6resize ' . ((&lines * 33 + 34) / 69)
+exe 'vert 6resize ' . ((&columns * 105 + 157) / 315)
 tabnext 1
 if exists('s:wipebuf') && getbufvar(s:wipebuf, '&buftype') isnot# 'terminal'
   silent exe 'bwipe ' . s:wipebuf
