@@ -1,6 +1,7 @@
 \babel@toc {english}{}
 \addvspace {10\p@ }
 \addvspace {10\p@ }
+\contentsline {figure}{\numberline {2.1}{\ignorespaces DPLL execution on the clauses $\{\{\neg P\}, \{P, Q, \neg R\}, \{R\}, \{P, \neg Q\} \}$}}{15}{figure.2.1}% 
 \addvspace {10\p@ }
 \addvspace {10\p@ }
 \addvspace {10\p@ }
