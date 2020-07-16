@@ -1,7 +1,5 @@
 # Missing parts:
 
-## Decision Procedures        20
-## General system description 10
 ## Future work                20
 
 ## Minor details of EUF background  10

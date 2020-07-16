@@ -1,9 +1,11 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.20 (TeX Live 2019/Arch Linux) (preloaded format=pdflatex 2020.5.21)  15 JUL 2020 18:52
+This is pdfTeX, Version 3.14159265-2.6-1.40.20 (TeX Live 2019/Arch Linux) (preloaded format=pdflatex 2020.5.21)  15 JUL 2020 20:07
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
-**\nonstopmode \input{main.tex}
-(./main.tex (./unmeethesis.cls
+**main
+(./main.tex
+LaTeX2e <2019-10-01> patch level 1
+(./unmeethesis.cls
 Document Class: unmeethesis 1995/10/31 UNM EECE dissertation class-mod 03/27/02
 
 (/usr/share/texmf-dist/tex/latex/base/fleqn.clo
@@ -1017,13 +1019,13 @@ Package rerunfilecheck Info: File `main.out' has not changed.
 Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 131.
  ) 
 Here is how much of TeX's memory you used:
- 21067 strings out of 492167
- 377302 string characters out of 6131558
- 661073 words of memory out of 5000000
- 24812 multiletter control sequences out of 15000+600000
+ 21066 strings out of 492167
+ 377294 string characters out of 6131558
+ 661041 words of memory out of 5000000
+ 24811 multiletter control sequences out of 15000+600000
  16951 words of font info for 62 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
- 62i,21n,73p,774b,1024s stack positions out of 5000i,500n,10000p,200000b,80000s
+ 60i,21n,71p,749b,1024s stack positions out of 5000i,500n,10000p,200000b,80000s
 </usr/share/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx12.pfb></usr/share/
 texmf-dist/fonts/type1/public/amsfonts/cm/cmcsc10.pfb></usr/share/texmf-dist/fo
 nts/type1/public/amsfonts/cm/cmex10.pfb></usr/share/texmf-dist/fonts/type1/publ
@@ -1042,7 +1044,7 @@ hare/texmf-dist/fonts/type1/public/amsfonts/cm/cmtt12.pfb></usr/share/texmf-dis
 t/fonts/type1/public/amsfonts/euler/eufm10.pfb></usr/share/texmf-dist/fonts/typ
 e1/public/amsfonts/symbols/msam10.pfb></usr/share/texmf-dist/fonts/type1/public
 /amsfonts/symbols/msbm10.pfb>
-Output written on main.pdf (56 pages, 407944 bytes).
+Output written on main.pdf (56 pages, 408261 bytes).
 PDF statistics:
  776 PDF objects out of 1000 (max. 8388607)
  684 compressed objects within 7 object streams
