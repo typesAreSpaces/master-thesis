@@ -18,8 +18,10 @@
 \usepackage{amsmath}
 \usepackage{amsfonts}
 \usepackage{amssymb}
+\usepackage{pdfpages}
 \usepackage{graphicx}
 \usepackage{tikz}
+\usetikzlibrary{positioning,fit,arrows.meta,backgrounds}
 \usepackage{hyperref}
 \usepackage{listings}
 \usepackage{algpseudocode}
@@ -57,6 +59,18 @@
 \newtheorem{lemma}[theorem]{Lemma}
 \newtheorem{definition}{Definition}[section]
 \newtheorem{example}{Example}[definition]
+
+
+\tikzset{
+  module/.style={%
+    draw, rounded corners,
+    minimum width=#1,
+    minimum height=7mm,
+    font=\sffamily
+  },
+  module/.default=2cm,
+  >=LaTeX
+}
 
 \begin{document}
 

@@ -97,6 +97,8 @@
 \@writefile{toc}{\contentsline {subsection}{\numberline {2.4.1}Satisfiability and Satisfiability Modulo Theories}{15}{subsection.2.4.1}\protected@file@percent }
 \citation{10.5555/1391237}
 \citation{10.1007/11532231_26}
+\@writefile{lof}{\contentsline {figure}{\numberline {2.2}{\ignorespaces Example of resolution proof}}{16}{figure.2.2}\protected@file@percent }
+\newlabel{example_resolution_proof}{{2.2}{16}{Example of resolution proof}{figure.2.2}{}}
 \citation{10.5555/1097042}
 \citation{10.1145/322217.322228}
 \citation{10.1145/322186.322198}
@@ -116,84 +118,103 @@
 \citation{10.1145/322217.322228}
 \citation{10.1145/322186.322198}
 \@writefile{toc}{\contentsline {subsection}{\numberline {2.4.3}Satisfiability of Horn clauses with ground equations}{18}{subsection.2.4.3}\protected@file@percent }
+\citation{10.1145/357073.357079}
 \@writefile{toc}{\contentsline {subsection}{\numberline {2.4.4}Nelson-Oppen framework for theory and interpolation combination}{19}{subsection.2.4.4}\protected@file@percent }
-\@writefile{toc}{\contentsline {section}{\numberline {2.5}General system description}{19}{section.2.5}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsection}{\numberline {2.5.1}Minor modifications to Z3}{19}{subsection.2.5.1}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsection}{\numberline {2.5.2}Minor modifications to zChaff}{20}{subsection.2.5.2}\protected@file@percent }
+\citation{10.1007/11532231_26}
+\citation{935565}
+\citation{10.1007/978-3-540-78800-3_24}
+\@writefile{toc}{\contentsline {section}{\numberline {2.5}General system description}{20}{section.2.5}\protected@file@percent }
+\citation{BarFT-SMTLIB}
+\citation{mcmillan2011interpolants}
+\@writefile{lof}{\contentsline {figure}{\numberline {2.3}{\ignorespaces General System Diagram}}{21}{figure.2.3}\protected@file@percent }
+\newlabel{general_architecture}{{2.3}{21}{General System Diagram}{figure.2.3}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {2.4}{\ignorespaces EUF Interpolator Diagram}}{21}{figure.2.4}\protected@file@percent }
+\newlabel{euf_architecture}{{2.4}{21}{EUF Interpolator Diagram}{figure.2.4}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {2.5.1}Minor modifications to Z3}{21}{subsection.2.5.1}\protected@file@percent }
+\@writefile{lof}{\contentsline {figure}{\numberline {2.5}{\ignorespaces UTVPI Interpolator Diagram}}{21}{figure.2.5}\protected@file@percent }
+\newlabel{utvpi_architecture}{{2.5}{21}{UTVPI Interpolator Diagram}{figure.2.5}{}}
+\citation{10.1007/11532231_26}
+\citation{inproceedingsproofsrefutationsz3}
+\@writefile{toc}{\contentsline {subsection}{\numberline {2.5.2}Minor modifications to zChaff}{22}{subsection.2.5.2}\protected@file@percent }
+\@writefile{lof}{\contentsline {figure}{\numberline {2.6}{\ignorespaces Problematic SMT query for resolution proofs}}{25}{figure.2.6}\protected@file@percent }
+\newlabel{query_proof_problem}{{2.6}{25}{Problematic SMT query for resolution proofs}{figure.2.6}{}}
 \citation{10.1007/3-540-58179-0_44}
 \citation{10.1007/978-3-540-24730-2_2}
 \citation{mcmillan2011interpolants}
 \citation{10.1007/978-3-642-31612-8_24}
 \citation{10.1007/978-3-642-00768-2_34}
 \citation{DBLP:books/daglib/0076838}
-\@writefile{toc}{\contentsline {chapter}{\numberline {3}The Theory of EUF}{21}{chapter.3}\protected@file@percent }
+\@writefile{toc}{\contentsline {chapter}{\numberline {3}The Theory of EUF}{26}{chapter.3}\protected@file@percent }
 \@writefile{lof}{\addvspace {10\p@ }}
 \@writefile{lot}{\addvspace {10\p@ }}
 \citation{10.5555/1391237}
-\@writefile{toc}{\contentsline {section}{\numberline {3.1}Algorithm}{22}{section.3.1}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsection}{\numberline {3.1.1}Contributions}{24}{subsection.3.1.1}\protected@file@percent }
+\@writefile{toc}{\contentsline {section}{\numberline {3.1}Algorithm}{27}{section.3.1}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.1.1}Contributions}{29}{subsection.3.1.1}\protected@file@percent }
 \citation{10.5555/1642730}
-\@writefile{toc}{\contentsline {subsection}{\numberline {3.1.2}New optimized conditional elimination step in Kapur's algorithm}{26}{subsection.3.1.2}\protected@file@percent }
-\@writefile{loa}{\contentsline {algorithm}{\numberline {1}{\ignorespaces Modified Unsatisfiability Testing for Ground Horn Clauses}}{26}{algorithm.1}\protected@file@percent }
-\@writefile{loa}{\contentsline {algorithm}{\numberline {2}{\ignorespaces Modified Congruence Closure with Explanation Algorithms - Merge}}{27}{algorithm.2}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsection}{\numberline {3.1.3}Ground Horn Clauses with Explanations}{27}{subsection.3.1.3}\protected@file@percent }
-\@writefile{toc}{\contentsline {section}{\numberline {3.2}Implementation}{28}{section.3.2}\protected@file@percent }
-\@writefile{toc}{\contentsline {section}{\numberline {3.3}Evaluation}{28}{section.3.3}\protected@file@percent }
-\@writefile{loa}{\contentsline {algorithm}{\numberline {3}{\ignorespaces Modified Congruence Closure with Explanation Algorithms - Propagate}}{29}{algorithm.3}\protected@file@percent }
-\@writefile{toc}{\contentsline {chapter}{\numberline {4}The Theory of Octagonal Formulas}{30}{chapter.4}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.1.2}New optimized conditional elimination step in Kapur's algorithm}{31}{subsection.3.1.2}\protected@file@percent }
+\@writefile{loa}{\contentsline {algorithm}{\numberline {1}{\ignorespaces Modified Unsatisfiability Testing for Ground Horn Clauses}}{31}{algorithm.1}\protected@file@percent }
+\@writefile{loa}{\contentsline {algorithm}{\numberline {2}{\ignorespaces Modified Congruence Closure with Explanation Algorithms - Merge}}{32}{algorithm.2}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.1.3}Ground Horn Clauses with Explanations}{32}{subsection.3.1.3}\protected@file@percent }
+\@writefile{toc}{\contentsline {section}{\numberline {3.2}Implementation}{33}{section.3.2}\protected@file@percent }
+\@writefile{toc}{\contentsline {section}{\numberline {3.3}Evaluation}{33}{section.3.3}\protected@file@percent }
+\@writefile{loa}{\contentsline {algorithm}{\numberline {3}{\ignorespaces Modified Congruence Closure with Explanation Algorithms - Propagate}}{34}{algorithm.3}\protected@file@percent }
+\@writefile{toc}{\contentsline {chapter}{\numberline {4}The Theory of Octagonal Formulas}{35}{chapter.4}\protected@file@percent }
 \@writefile{lof}{\addvspace {10\p@ }}
 \@writefile{lot}{\addvspace {10\p@ }}
-\@writefile{toc}{\contentsline {section}{\numberline {4.1}Algorithm}{30}{section.4.1}\protected@file@percent }
+\@writefile{toc}{\contentsline {section}{\numberline {4.1}Algorithm}{35}{section.4.1}\protected@file@percent }
 \citation{10.5555/17634}
-\@writefile{toc}{\contentsline {section}{\numberline {4.2}Implementation}{31}{section.4.2}\protected@file@percent }
-\@writefile{toc}{\contentsline {section}{\numberline {4.3}Evaluation}{31}{section.4.3}\protected@file@percent }
-\@writefile{toc}{\contentsline {chapter}{\numberline {5}Combining Theories: EUF and Octagonal Formulas}{32}{chapter.5}\protected@file@percent }
+\@writefile{toc}{\contentsline {section}{\numberline {4.2}Implementation}{36}{section.4.2}\protected@file@percent }
+\@writefile{toc}{\contentsline {section}{\numberline {4.3}Evaluation}{36}{section.4.3}\protected@file@percent }
+\@writefile{toc}{\contentsline {chapter}{\numberline {5}Combining Theories: EUF and Octagonal Formulas}{37}{chapter.5}\protected@file@percent }
 \@writefile{lof}{\addvspace {10\p@ }}
 \@writefile{lot}{\addvspace {10\p@ }}
-\@writefile{toc}{\contentsline {section}{\numberline {5.1}Algorithm}{33}{section.5.1}\protected@file@percent }
-\@writefile{toc}{\contentsline {section}{\numberline {5.2}Implementation}{33}{section.5.2}\protected@file@percent }
-\@writefile{toc}{\contentsline {section}{\numberline {5.3}Evaluation}{33}{section.5.3}\protected@file@percent }
-\@writefile{toc}{\contentsline {chapter}{\numberline {6}Future Work}{34}{chapter.6}\protected@file@percent }
+\@writefile{toc}{\contentsline {section}{\numberline {5.1}Algorithm}{38}{section.5.1}\protected@file@percent }
+\@writefile{toc}{\contentsline {section}{\numberline {5.2}Implementation}{38}{section.5.2}\protected@file@percent }
+\@writefile{toc}{\contentsline {section}{\numberline {5.3}Evaluation}{38}{section.5.3}\protected@file@percent }
+\@writefile{toc}{\contentsline {chapter}{\numberline {6}Future Work}{39}{chapter.6}\protected@file@percent }
 \@writefile{lof}{\addvspace {10\p@ }}
 \@writefile{lot}{\addvspace {10\p@ }}
 \bibstyle{plain}
 \bibdata{references}
-\@writefile{toc}{\contentsline {chapter}{Appendices}{35}{chapter*.5}\protected@file@percent }
-\bibcite{10.1145/371282.371285}{1}
-\bibcite{borger2001classical}{2}
-\bibcite{10.1007/3-540-58179-0_44}{3}
-\bibcite{10.1007/978-3-642-36742-7_9}{4}
-\bibcite{10.1145/876638.876643}{5}
-\bibcite{10.5555/1097042}{6}
-\bibcite{10.2307/2963594}{7}
-\bibcite{10.1145/368273.368557}{8}
-\bibcite{10.1007/978-3-540-78800-3_24}{9}
-\bibcite{DOWLING1984267}{10}
-\@writefile{toc}{\contentsline {chapter}{References}{36}{chapter*.6}\protected@file@percent }
-\bibcite{10.1145/322217.322228}{11}
-\bibcite{DBLP:books/daglib/0076838}{12}
-\bibcite{10.1007/978-3-642-00768-2_34}{13}
-\bibcite{10.1145/364099.364331}{14}
-\bibcite{GALLIER1987233}{15}
-\bibcite{10.1145/982962.964021}{16}
-\bibcite{10.1145/363235.363259}{17}
-\bibcite{KAPUR2017}{18}
-\bibcite{10.5555/2898950}{19}
-\bibcite{komori1978}{20}
-\bibcite{10.1007/978-3-642-02959-2_17}{21}
-\bibcite{10.5555/1391237}{22}
-\bibcite{10.1007/11559306_9}{23}
-\bibcite{10.1007/978-3-540-45069-6_1}{24}
-\bibcite{10.1007/978-3-540-24730-2_2}{25}
-\bibcite{mcmillan2011interpolants}{26}
-\bibcite{10.5555/1642730}{27}
-\bibcite{935565}{28}
-\bibcite{10.1145/322186.322198}{29}
-\bibcite{10.1007/978-3-540-39813-4_5}{30}
-\bibcite{10.1007/978-3-540-32033-3_33}{31}
-\bibcite{10.2307/1990888}{32}
-\bibcite{10.1007/978-3-540-69738-1_25}{33}
-\bibcite{10.5555/17634}{34}
-\bibcite{DBLP:books/daglib/0080654}{35}
-\bibcite{10.1007/978-3-642-31612-8_24}{36}
-\bibcite{10.1007/11532231_26}{37}
+\@writefile{toc}{\contentsline {chapter}{Appendices}{40}{chapter*.5}\protected@file@percent }
+\bibcite{BarFT-SMTLIB}{1}
+\bibcite{10.1145/371282.371285}{2}
+\bibcite{borger2001classical}{3}
+\bibcite{10.1007/3-540-58179-0_44}{4}
+\bibcite{10.1007/978-3-642-36742-7_9}{5}
+\bibcite{10.1145/876638.876643}{6}
+\bibcite{10.5555/1097042}{7}
+\bibcite{10.2307/2963594}{8}
+\bibcite{10.1145/368273.368557}{9}
+\bibcite{10.1007/978-3-540-78800-3_24}{10}
+\@writefile{toc}{\contentsline {chapter}{References}{41}{chapter*.6}\protected@file@percent }
+\bibcite{inproceedingsproofsrefutationsz3}{11}
+\bibcite{DOWLING1984267}{12}
+\bibcite{10.1145/322217.322228}{13}
+\bibcite{DBLP:books/daglib/0076838}{14}
+\bibcite{10.1007/978-3-642-00768-2_34}{15}
+\bibcite{10.1145/364099.364331}{16}
+\bibcite{GALLIER1987233}{17}
+\bibcite{10.1145/982962.964021}{18}
+\bibcite{10.1145/363235.363259}{19}
+\bibcite{KAPUR2017}{20}
+\bibcite{10.5555/2898950}{21}
+\bibcite{komori1978}{22}
+\bibcite{10.1007/978-3-642-02959-2_17}{23}
+\bibcite{10.5555/1391237}{24}
+\bibcite{10.1007/11559306_9}{25}
+\bibcite{10.1007/978-3-540-45069-6_1}{26}
+\bibcite{10.1007/978-3-540-24730-2_2}{27}
+\bibcite{mcmillan2011interpolants}{28}
+\bibcite{10.5555/1642730}{29}
+\bibcite{935565}{30}
+\bibcite{10.1145/357073.357079}{31}
+\bibcite{10.1145/322186.322198}{32}
+\bibcite{10.1007/978-3-540-39813-4_5}{33}
+\bibcite{10.1007/978-3-540-32033-3_33}{34}
+\bibcite{10.2307/1990888}{35}
+\bibcite{10.1007/978-3-540-69738-1_25}{36}
+\bibcite{10.5555/17634}{37}
+\bibcite{DBLP:books/daglib/0080654}{38}
+\bibcite{10.1007/978-3-642-31612-8_24}{39}
+\bibcite{10.1007/11532231_26}{40}

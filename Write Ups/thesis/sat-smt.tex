@@ -1,5 +1,5 @@
 \subsection{Satisfiability and Satisfiability Modulo Theories}
- 
+
 The satisfiability problem consists on finding a 
 propositional assignment for a propositional formula. 
 This problem is at the core level of complexity theory, 
@@ -9,11 +9,11 @@ algorithms seem to be intractable.
 Developments in algorithms and heuristics \cite{10.5555/2898950, 
 935565} have made possible to use satisfiability algorithms 
 to solve real-world problems in verification \footnote{These
-advances do not provide an answer to the well-known P vs. NP
-problem. There are results indicating a class of problem instances
-for many of the SAT algorithms which cannot be solve in less that
+  advances do not provide an answer to the well-known P vs. NP
+  problem. There are results indicating a class of problem instances
+  for many of the SAT algorithms which cannot be solve in less that
   \bigO{2^n} steps \cite{10.5555/2898950}.
-  }.
+}.
 
 The DPLL algorithm \cite{10.1145/368273.368557} 
 (an other extensions) is the frequent algorithm
@@ -26,56 +26,61 @@ operations.
 
 \begin{example}
 
-\begin{figure}
+  \begin{figure}
 
-\centering
+    \centering
 
-\begin{tikzpicture}[->]
-\node(p) at (6, 5) [circle, draw] {P};
-\node(q) at (4,4) [circle, draw] {Q};
-\node(r) at (2, 3) [circle, draw] {R};
-\node(expl1) at (8, 4) [rectangle, draw] {Conflict with $\{\neg P\}$};
-\node(expl2) at (6, 3) [rectangle, draw] {Conflict with $\{P, \neg Q\}$};
-\node(expl3) at (4, 2) [rectangle, draw] {Conflict with $\{P, Q, \neg R\}$};
-\node(expl4) at (0, 2) [rectangle, draw] {Conflict with $\{R\}$};
+    \begin{tikzpicture}[->]
+      \node(p) at (6, 5) [circle, draw] {P};
+      \node(q) at (4,4) [circle, draw] {Q};
+      \node(r) at (2, 3) [circle, draw] {R};
+      \node(expl1) at (8, 4) [rectangle, draw] {Conflict with $\{\neg P\}$};
+      \node(expl2) at (6, 3) [rectangle, draw] {Conflict with $\{P, \neg Q\}$};
+      \node(expl3) at (4, 2) [rectangle, draw] {Conflict with $\{P, Q, \neg R\}$};
+      \node(expl4) at (0, 2) [rectangle, draw] {Conflict with $\{R\}$};
 
-\path[every node/.style={sloped,anchor=south,auto=false}]
-(p) edge node {yes} (expl1)   
-(p) edge node {no}  (q)   
-(q) edge node {yes} (expl2)
-(q) edge node {no}  (r)
-(r) edge node {yes} (expl3)
-(r) edge node {no}  (expl4);
-\end{tikzpicture}
+      \path[every node/.style={sloped,anchor=south,auto=false}]
+      (p) edge node {yes} (expl1)   
+      (p) edge node {no}  (q)   
+      (q) edge node {yes} (expl2)
+      (q) edge node {no}  (r)
+      (r) edge node {yes} (expl3)
+      (r) edge node {no}  (expl4);
+    \end{tikzpicture}
 
-\caption{DPLL execution on the clauses 
-$\{\{\neg P\}, \{P, Q, \neg R\}, \{R\}, 
-\{P, \neg Q\} \}$} \label{dpll_figure}
+    \caption{DPLL execution on the clauses 
+      $\{\{\neg P\}, \{P, Q, \neg R\}, \{R\}, 
+    \{P, \neg Q\} \}$} \label{dpll_figure}
 
-\end{figure}
+  \end{figure}
 
-We can see that the following resolution proof resembles the
-structure of the DPLL execution on figure \ref{dpll_figure}, i.e.
-if we rotate the proof-tree and mark the nodes by the pivots used
-we obtained a similar tree obtained by the execution of the DPLL
-algorithm. This fact becomes relevant becomes it enables us 
-to construct a resolution proof from the traces of a SAT solver used
-in the theory combination part of the implementation. 
+  We can see that the following resolution proof resembles the
+  structure of the DPLL execution on figure \ref{dpll_figure}, i.e.
+  if we rotate the proof-tree and mark the nodes by the pivots used
+  we obtained a similar tree obtained by the execution of the DPLL
+  algorithm. This fact becomes relevant becomes it enables us 
+  to construct a resolution proof from the traces of a SAT solver used
+  in the theory combination part of the implementation. 
 
-\AxiomC{$\neg P$}
-\AxiomC{$P \lor Q \lor \neg R$}
-\RightLabel{$res_P$}
-\BinaryInfC{$Q \lor \neg R$}
-\AxiomC{$R$}
-\RightLabel{$res_R$}
-\BinaryInfC{$Q$}
-\AxiomC{$P \lor \neg Q$}
-\RightLabel{$res_Q$}
-\BinaryInfC{$P$}
-\AxiomC{$\neg P$}
-\RightLabel{$res_P$}
-\BinaryInfC{$\bot$}
-\DisplayProof
+  \begin{figure}
+    \centering
+    \AxiomC{$\neg P$}
+    \AxiomC{$P \lor Q \lor \neg R$}
+    \RightLabel{$res_P$}
+    \BinaryInfC{$Q \lor \neg R$}
+    \AxiomC{$R$}
+    \RightLabel{$res_R$}
+    \BinaryInfC{$Q$}
+    \AxiomC{$P \lor \neg Q$}
+    \RightLabel{$res_Q$}
+    \BinaryInfC{$P$}
+    \AxiomC{$\neg P$}
+    \RightLabel{$res_P$}
+    \BinaryInfC{$\bot$}
+    \DisplayProof
+    \caption{Example of resolution proof} 
+    \label{example_resolution_proof}
+  \end{figure}
 
 \end{example}
 
@@ -103,7 +108,7 @@ The implementation for the interpolation combination method
 in \cite{10.1007/11532231_26} requires a resolution-based
 proof in order to compute partial interpolants by integrating
 Pudlak's algorithm.
- 
+
 %%% Local Variables:
 %%% mode: latex
 %%% TeX-master: "main"

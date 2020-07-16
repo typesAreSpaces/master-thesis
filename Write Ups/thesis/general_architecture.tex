@@ -1,0 +1,32 @@
+\begin{figure}
+
+  \centering
+
+  \begin{tikzpicture}
+    \node[module]                        (I0) {\tiny Input};
+    \node[module, right=3mm of I0]       (I1) {\tiny Parser (Z3)};
+    \node[module, right=3mm of I1]       (I2) {\tiny Preprocessor};
+    \node[module, right=23mm of I2]      (I4) {\tiny Sat engine (zChaff)};
+    \node[module, above=2mm of I4]       (I3) {\tiny Theory Combination Interpolator};
+    \node[module, below left=3mm of I4]  (I5) {\tiny EUF interpolator};
+    \node[module, below right=3mm of I4] (I6) {\tiny UTVPI interpolator};
+    \node[module, right=24mm of I4] (I7) {\tiny Output};
+    \foreach \i in {5, 6}
+    \draw[<->, dashed] (I4)--(I\i);
+    \node[fit=(I4) (I5) (I6), draw, inner sep=0.5mm]           (fitThCombInternal) {};
+    \node[fit=(I3) (fitThCombInternal), draw, inner sep=0.5mm] (fitThComb)         {};
+    \draw[->] (I0)--(I1);
+    \draw[->] (I1)--(I2);
+    \draw[->] (I2)--(I4);
+    \draw[->] (I2)--(I4);
+    \draw[->] (I4)--(I7);
+  \end{tikzpicture}
+
+  \caption{General System Diagram} \label{general_architecture}
+
+\end{figure}
+
+%%% Local Variables:
+%%% mode: latex
+%%% TeX-master: "main"
+%%% End:

@@ -1,5 +1,10 @@
 \begin{thebibliography}{10}
 
+\bibitem{BarFT-SMTLIB}
+Clark Barrett, Pascal Fontaine, and Cesare Tinelli.
+\newblock {The Satisfiability Modulo Theories Library (SMT-LIB)}.
+\newblock {\tt www.SMT-LIB.org}, 2016.
+
 \bibitem{10.1145/371282.371285}
 Andreas Blass and Yuri Gurevich.
 \newblock Inadequacy of computable loop invariants.
@@ -51,6 +56,11 @@ Leonardo de~Moura and Nikolaj Bj{\o}rner.
 \newblock In C.~R. Ramakrishnan and Jakob Rehof, editors, {\em Tools and
   Algorithms for the Construction and Analysis of Systems}, pages 337--340,
   Berlin, Heidelberg, 2008. Springer Berlin Heidelberg.
+
+\bibitem{inproceedingsproofsrefutationsz3}
+Leonardo de~Moura and Nikolaj Bjørner.
+\newblock Proofs and refutations, and z3.
+\newblock volume 418, 01 2008.
 
 \bibitem{DOWLING1984267}
 William~F. Dowling and Jean~H. Gallier.
@@ -159,6 +169,11 @@ M.~W. {Moskewicz}, C.~F. {Madigan}, Y.~{Zhao}, L.~{Zhang}, and S.~{Malik}.
 \newblock Chaff: engineering an efficient sat solver.
 \newblock In {\em Proceedings of the 38th Design Automation Conference (IEEE
   Cat. No.01CH37232)}, pages 530--535, 2001.
+
+\bibitem{10.1145/357073.357079}
+Greg Nelson and Derek~C. Oppen.
+\newblock Simplification by cooperating decision procedures.
+\newblock {\em ACM Trans. Program. Lang. Syst.}, 1(2):245–257, October 1979.
 
 \bibitem{10.1145/322186.322198}
 Greg Nelson and Derek~C. Oppen.

@@ -1,14 +1,82 @@
 \section{General system description}
 
-TODO.
+The algorithms implemented in this thesis used the C++ programming
+language. The overall architecture of the system is the following:
+
+\input{general_architecture}
+\input{euf_architecture}
+\input{utvpi_architecture}
+
+All the decision procedures mentioned in this chapter
+were implemented with the exception of the SAT/SMT algorithms.
+For the latter, zChaff \cite{935565} and Z3 
+\cite{10.1007/978-3-540-78800-3_24} were chosen as the 
+libraries to work with these algorithms. 
+The rest of this section discusses some minor modifications 
+implemented in the above mentioned Z3 and zChaff libraries.
 
 \subsection{Minor modifications to Z3}
 
-TODO.
+Z3 standard input is SMTLib2 \cite{BarFT-SMTLIB}. This grammar
+does not provide a standard specification regarding a suitable
+format to work with interpolants. Interpolation software
+read interpolant formulas based on the order of appereance
+in a conjunction \cite{mcmillan2011interpolants}. In our case
+we require two conjuncts of conjunctions of literals in the
+EUF theory, UTVPI theory or combined theory. 
+
+As we can notice in figures \ref{general_architecture}, \ref{euf_architecture},
+and \ref{utvpi_architecture}, there is preprocessor component which prefixes
+the names of uninterpreted symbols with the strings a\_, b\_, c\_
+to indicate that the symbol name is either an A-local, B-local, or
+common symbol respectively. We extended Z3's API with functions
+that test if a formula is A-local, B-local, AB-pure, AB-common
+based of the definitions in \cite{10.1007/11532231_26} because 
+it is necessary to constantly check this conditions for splitting
+purposes. Another reason for the latter is justified because the 
+implemented congruence closure algorithm takes as an additional
+criteria to maintain as representative term an AB-common term.
+A similar change was implemented in the congruence closure implementation
+of Z3. Nonetheless, it was irrelevant since Z3's internal structure
+separates the abstract syntax tree, which is part of its API
+with the enode data structures, which does not allow the super
+to modify it. This is the reason why it was not
+possible to work directly with Z3 congruence closure implementation
+and a separate implementation was necessary.
 
 \subsection{Minor modifications to zChaff}
 
-TODO.
+We used zChaff to reconstruct a resolution-based proof necessary 
+for Pudlak's algorithm in the interpolation combination componente. 
+Given that Z3 provides a user friendly proof-producing API
+\cite{inproceedingsproofsrefutationsz3}, why did the implementation
+work require another SAT solver to obtain the resolution-proof?
+
+There are several reasons for the latter. First, the author of the
+thesis was not able to find an appropriate configuration of parameters
+for the SMT solver to provide such proofs. In order to grasp an idea
+of the latter, it was implemented a Z3 proof parser that render
+a pdf rendered by \LaTeX. Many examples indicated that
+Z3 selects more convenient theories to work with some problems. For
+instance, the formula in pure propositional logic shown in figure 
+\ref{query_proof_problem} used proof rules from EUF \footnote{Z3 uses
+the term monotonicity instead of congruence}.
+
+%\includepdf[scale=0.2,pages=-,pagecommand={},width=\textwidth, angle=90]{python_proof.pdf}
+\includepdf[scale=0.8,angle=90]{python_proof.pdf}
+
+\begin{figure}
+\centering
+\includegraphics[scale=0.2]{query_screenshot}
+\caption{Problematic SMT query for resolution proofs} \label{query_proof_problem}
+\end{figure}
+
+Thus, we opted to use the zChaff SAT solver which implements the DPLL algorithm. 
+The minor modifications to the software was to include the pivots 
+in the proof trace zChaff produces. Many SAT solvers produce more sophisticated 
+proofs in formats like DRAT, DRUP, etc. The latter require to implement unit-propagation
+to construct a resolution-base proof and hence the implementation might unintentionally
+slow the performance of the solver during the proof-checking step.
 
 %%% Local Variables:
 %%% mode: latex

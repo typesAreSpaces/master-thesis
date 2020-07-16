@@ -1,15 +1,64 @@
 \subsection{Nelson-Oppen framework for theory and interpolation
 combination}
 
-This theory combination problem consists on taking a 
+The theory combination problem consists on taking a 
 formula from the union of two (or more) disjoint 
 languages and tell if such formula is satisfiable
 or not in the combined theory, i.e. a theory resulting
 after putting together two (or more) axiomatizations.
 
+In \cite{10.1145/357073.357079} the authors defined a procedure
+to achieve the above problem. The key idea is to \emph{purify} (
+or separate) the subformulas by including additional constant 
+symbols equating subterms such that the resulting formula 
+can be splitted into components of the appropriate language 
+for each theory solvers to work with. The separation naturally
+will hide relevant information to the solvers and they 
+might not be able to decide satisfiability correctly.
+The authors noticed that to solve the above problem it is enough to 
+share disjunction of equalities between the combined theories of shared
+terms. In addition, they proved that some theories have the 
+following property:
+
+\begin{definition}
+  Let $\mathcal{T}$ be a theory. We say that $\mathcal{T}$
+  is a \emph{convex theory} if a finite conjunction of formulas 
+  in $\mathcal{T}$ $\psi = \bigwedge_{i = 1}^m \psi_i$ satisfies
+  $\psi \models_{\mathcal{T}} \bigvee_{j = 1}^n 
+  x_j = y_j$, then exists $k \in \{1, \dots, n \}$ such that 
+  $\psi \models_{\mathcal{T}} x_k = y_k$.
+\end{definition}
+
+Hence, it is important to detect
+whether the theories involved are convex or not since 
+this can improve performance since convex theories do not
+need to share disjunctions of equalities as mentioned before
+(since all these disjunctions imply a single equality).
+
 \begin{example}
-Let us consider the  
+  \begin{itemize}
+    \item The conjunctive fragment of equality logic is convex since
+      it can always decide the membership of an equation in the 
+      equivalence relation. 
+    \item The theory of UTVPI over the intergers is not 
+      convex. To see the latter consider
+      $1 \leq x \land x \leq 2 \models_{UTVPI(\mathbb{Z})} 1 = x \lor 2 = x$.
+      However, it is not the case that 
+      $1 \leq x \land x \leq 2 \models_{UTVPI(\mathbb{Z})} 1 = x$
+      nor 
+      $1 \leq x \land x \leq 2 \models_{UTVPI(\mathbb{Z})} 2 = x$.
+  \end{itemize}
 \end{example}
+
+An interpolation combination framework as proposed in \cite{10.1007/11532231_26}
+follow the same idea towards theory combination. Inductively, they define
+\emph{partial interpolants} for each shared equality/disjunction of equalities
+until some theory reaches the unsatisfiable state, which is expected since 
+an interpolant is a pair a mutually contradicting formulas.
+
+This framework was implemented in the thesis work. This framework was chosen
+in particular since it allows to work with non-convex theories (in our case
+for the theory of UTVPI over $\mathbb{Z}$).
 
 %%% Local Variables:
 %%% mode: latex
