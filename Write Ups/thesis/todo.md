@@ -1,9 +1,5 @@
 # Missing parts:
 
-## Future work                20
-
-## Minor details of EUF background  10
-## Implementation part of EUF       25
 ## Evaluation part of EUF           25
 
 ## Background part of Octagons     20 - 40

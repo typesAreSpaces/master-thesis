@@ -28,6 +28,12 @@ J{\"u}rgen Christ, Jochen Hoenicke, and Alexander Nutz.
   Algorithms for the Construction and Analysis of Systems}, pages 124--138,
   Berlin, Heidelberg, 2013. Springer Berlin Heidelberg.
 
+\bibitem{10.1007/978-3-642-02959-2_15}
+Alessandro Cimatti, Alberto Griggio, and Roberto Sebastiani.
+\newblock Interpolant generation for utvpi.
+\newblock In Renate~A. Schmidt, editor, {\em Automated Deduction -- CADE-22},
+  pages 167--182, Berlin, Heidelberg, 2009. Springer Berlin Heidelberg.
+
 \bibitem{10.1145/876638.876643}
 Edmund Clarke, Orna Grumberg, Somesh Jha, Yuan Lu, and Helmut Veith.
 \newblock Counterexample-guided abstraction refinement for symbolic model
@@ -57,10 +63,9 @@ Leonardo de~Moura and Nikolaj Bj{\o}rner.
   Algorithms for the Construction and Analysis of Systems}, pages 337--340,
   Berlin, Heidelberg, 2008. Springer Berlin Heidelberg.
 
-\bibitem{inproceedingsproofsrefutationsz3}
+\bibitem{Moura_proofsand}
 Leonardo de~Moura and Nikolaj Bjørner.
-\newblock Proofs and refutations, and z3.
-\newblock volume 418, 01 2008.
+\newblock Proofs and refutations and z3, 01 2008.
 
 \bibitem{DOWLING1984267}
 William~F. Dowling and Jean~H. Gallier.
@@ -77,6 +82,13 @@ Peter~J. Downey, Ravi Sethi, and Robert~Endre Tarjan.
 Herbert~B. Enderton.
 \newblock {\em A mathematical introduction to logic}.
 \newblock Academic Press, 1972.
+
+\bibitem{een03minisat}
+Niklas Eén and Niklas Sörensson.
+\newblock An extensible sat-solver.
+\newblock In Enrico Giunchiglia and Armando Tacchella, editors, {\em SAT},
+  volume 2919 of {\em Lecture Notes in Computer Science}, pages 502--518.
+  Springer, 2003.
 
 \bibitem{10.1007/978-3-642-00768-2_34}
 Alexander Fuchs, Amit Goel, Jim Grundy, Sava Krsti{\'{c}}, and Cesare Tinelli.
@@ -164,6 +176,11 @@ Elliott Mendelson.
 \newblock {\em Introduction to Mathematical Logic}.
 \newblock Chapman and Hall-CRC, 5th edition, 2009.
 
+\bibitem{journals/corr/abs-cs-0703084}
+Antoine Miné.
+\newblock The octagon abstract domain.
+\newblock {\em CoRR}, abs/cs/0703084, 2007.
+
 \bibitem{935565}
 M.~W. {Moskewicz}, C.~F. {Madigan}, Y.~{Zhao}, L.~{Zhang}, and S.~{Malik}.
 \newblock Chaff: engineering an efficient sat solver.
@@ -205,11 +222,6 @@ Andrey Rybalchenko and Viorica Sofronie-Stokkermans.
 \newblock In Byron Cook and Andreas Podelski, editors, {\em Verification, Model
   Checking, and Abstract Interpretation}, pages 346--362, Berlin, Heidelberg,
   2007. Springer Berlin Heidelberg.
-
-\bibitem{10.5555/17634}
-Alexander Schrijver.
-\newblock {\em Theory of Linear and Integer Programming}.
-\newblock John Wiley and Sons, Inc., USA, 1986.
 
 \bibitem{DBLP:books/daglib/0080654}
 Dirk van Dalen.

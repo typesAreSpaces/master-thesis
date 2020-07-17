@@ -6,9 +6,30 @@ of the implementation, but definitely these consume more resources.
 These particular improvements are the following:
 
 \begin{itemize}
-    \item Keep working here
-
+  \item Improve hash function for terms: during testing the congruence closure
+    algorithm, it was evident that dealing with a large of terms, collisions
+    happened  to the point that some terms were merged since the signature
+    function indicated to do so, but this should not happen. Nonetheless, for
+    a typical verification problem the implementation will not find any problems.
+  \item The space needed to encode curry nodes \emph{can be significally reduced
+    } up to an order of \bigO{n}. The reason for this current allocation schema
+    is that it exists a double bonding effect while performing curryification 
+    of all the terms in the arguments of function applications.
+  \item Replace zChaff with SAT solvers with more permissive license: while modifying
+    the code of zChaff the author noticed a request in the README file of zChaff that
+    its license does not allow distribution of the sofware. 
+    However, the software can be used for research and non-exclusive
+    personal use. I think any extension of MiniSat \cite{een03minisat} with proof-logging will
+    suffice for our purposes. This task should not be too complicated since the
+    current implementation does not uses any API of the zChaff inside the implementation.
 \end{itemize}
+
+Regarding potential extension of the systems, it will interesting to explore a
+more specific interpolation combination approach as in \cite{10.1007/978-3-540-69738-1_25}.
+The Nelson-Oppen framework seems to be adequate if the goal is to combine several theories
+or be as general as possible. The reason why the hierarchical reasoning approach
+was not implemented was because the authors did not make any claim about the possibility
+to use non-convex theories. Perhaps, this is not a real limitation of the approach.
 
 %%% Local Variables:
 %%% mode: latex

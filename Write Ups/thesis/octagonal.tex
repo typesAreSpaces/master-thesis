@@ -1,19 +1,82 @@
-\chapter{The Theory of Octagonal Formulas}
+\chapter{The Theory of UTVPI Formulas}
 
-TODO.
+This theory appears heavily in formal methods dealing
+with abstract domains introduced in \cite{journals/corr/abs-cs-0703084}.
+The decision problem consists of checking the satisfiability
+of a particular fragment of $LIA(\mathbb{Z})$. The fragment 
+consists on conjunctions of inequalities with at most
+two variables which integers coefficients are restricted
+to $\{-1, 0, 1\}$. Efficient algorithms are found in the literature
+for both the satisfiability problem \cite{10.1007/11559306_9} as well as 
+for interpolation \cite{10.1007/978-3-642-02959-2_15} for this theory. Eventhough this fragment
+looks severaly constraint, it has been used for a range
+of applications where problems can be modelled using
+this particular literals.
 
 \section{Algorithm}
 
-TODO.
+The algorithm proposed \cite{KAPUR2017} uses to inference rules
+to close the relation and eliminate the uncommon variables from the
+A-part of the input formula. The rules are the following:
 
-\input{proof_of_main_theorem_octagons}
+\begin{center}
+  \AxiomC{$s_1 x_1 + s_2 x_2 \leq c$}
+  \RightLabel{Normalize}
+  \UnaryInfC{$s_1 x_1 \leq \floor{\frac{c}{2}}$}
+  \DisplayProof
+
+  \AxiomC{$s_1 x_1 + s_2 x_2 \leq c_1$}
+  \AxiomC{$- s_2 x_2 + s_3 x_3 \leq c_2$}
+  \RightLabel{Elim}
+  \BinaryInfC{$s_1 x_1 + s_3 x_3 \leq c_1 + c_2$}
+  \DisplayProof
+\end{center}
+
+The algorithm normalizes the inequalities at the beginning as 
+a preprocessing step and applies the Elim rule whenever it is
+possible until no more uncommon variables remain in the 
+input formula. Hence, having an efficient representation of 
+the inequalities and detecting matches (like pivots for
+resolution steps) is important for an efficient implementation.
+To achieve this goal we implemented to an encoding of 
+the inequalities using natural numbers, an array of 
+numbers indexed by the numeral representation of the  inequalities
+which keeps track of the minimum bound of the encoded inequality,
+and a data structure to keep track of the signs of variables
+in the inequalities for efficient matching.
+
+%\input{proof_of_main_theorem_octagons}
 
 \section{Implementation}
-TODO.
+
+In order to obtain a bijection between UTVPI inequalities and
+natural numbers, first we define an ordering on the inequalities
+and notice some invariants of the latter. 
+
+We encode the term $\pm x_m \pm x_n$ using the point
+$(\pm m, \pm n) \in \mathbb{Z}^2$. The variable $x_0$ is a
+\emph{dummy variable} that acts as a place holder for 0. 
+Additionally, we will restrict the terms/pairs such that the first
+index variable is strictly greater \footnote{This condition also
+  avoids the problem of keeping track of variable duplication in 
+the inequality.} since addition is commutative.
+
+We define the following ordering over the terms of the form
+$\pm x_m \pm x_n$:
+
+\begin{definition} Let $t_1 = s_1 x_{m_1} + s_2 x_{m_2}$ and
+  $t_2 = s_1^{'} x_{n_1} + s_2^{'} x_{n_2}$. We say that 
+  $t_1 > t_2$ if and only if or $s_1 = s_2 \land m_1 = m_2 and $
+\end{definition}
+
+
+
+
+The bijection between UTVPI inequalities and natural numbers
+is given by the following procedure:
 
 \section{Evaluation}
 TODO.
-
 
 %%% Local Variables:
 %%% mode: latex

@@ -3,46 +3,44 @@ Capacity: max_strings=100000, hash_size=100000, hash_prime=85009
 The top-level auxiliary file: main.aux
 The style file: plain.bst
 Database file #1: references.bib
-Warning--empty booktitle in inproceedingsproofsrefutationsz3
-You've used 40 entries,
+You've used 42 entries,
             2118 wiz_defined-function locations,
-            741 strings with 10038 characters,
-and the built_in function-call counts, 14505 in all, are:
-= -- 1450
-> -- 588
-< -- 15
-+ -- 231
-- -- 181
-* -- 966
-:= -- 2332
-add.period$ -- 135
-call.type$ -- 40
-change.case$ -- 195
+            755 strings with 10352 characters,
+and the built_in function-call counts, 15500 in all, are:
+= -- 1557
+> -- 631
+< -- 17
++ -- 248
+- -- 194
+* -- 1032
+:= -- 2479
+add.period$ -- 142
+call.type$ -- 42
+change.case$ -- 207
 chr.to.int$ -- 0
-cite$ -- 41
-duplicate$ -- 606
-empty$ -- 1212
-format.name$ -- 181
-if$ -- 3154
+cite$ -- 42
+duplicate$ -- 645
+empty$ -- 1286
+format.name$ -- 194
+if$ -- 3380
 int.to.chr$ -- 0
-int.to.str$ -- 40
+int.to.str$ -- 42
 missing$ -- 47
-newline$ -- 203
-num.names$ -- 106
-pop$ -- 236
+newline$ -- 212
+num.names$ -- 114
+pop$ -- 246
 preamble$ -- 1
-purify$ -- 160
+purify$ -- 169
 quote$ -- 0
-skip$ -- 436
+skip$ -- 477
 stack$ -- 0
-substring$ -- 974
-swap$ -- 159
-text.length$ -- 15
+substring$ -- 1050
+swap$ -- 181
+text.length$ -- 17
 text.prefix$ -- 0
 top$ -- 0
-type$ -- 144
-warning$ -- 1
-while$ -- 151
-width$ -- 42
-write$ -- 463
-(There was 1 warning)
+type$ -- 154
+warning$ -- 0
+while$ -- 163
+width$ -- 44
+write$ -- 487

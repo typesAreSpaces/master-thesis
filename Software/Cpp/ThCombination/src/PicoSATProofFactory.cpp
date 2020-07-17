@@ -20,9 +20,8 @@ PicoProofFactory::PicoProofFactory() :
 {
   std::string current_dir = exec("pwd"), line;
 
-  // TODO: uncomment the next line and comment the next next line
-  //system(("picosat " + current_dir + "/file.cnf -T proof-temp > /dev/null").c_str());
-  system("picosat /home/jose/Documents/CNF_Files/aim-100-1_6-no-1.cnf -T proof-temp > /dev/null");
+  system(("picosat " + current_dir + "/file.cnf -T proof-temp > /dev/null").c_str());
+  //system("picosat /home/jose/Documents/CNF_Files/aim-100-1_6-no-1.cnf -T proof-temp > /dev/null");
   system(("tracecheck " + current_dir + "/proof-temp -B proof > /dev/null").c_str());
 
   std::ifstream resolve_trace_file(current_dir + "/proof", std::fstream::in);

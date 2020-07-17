@@ -1,5 +1,0 @@
-VAR: 2 L: 4 V: 1 A: 1 Lits: 4
-VAR: 4 L: 5 V: 1 A: 3 Lits: 8
-VAR: 7 L: 6 V: 1 A: 6 Lits: 14
-VAR: 8 L: 7 V: 0 A: 7 Lits: 17
-CONF: 8 == 5 9 15 16
