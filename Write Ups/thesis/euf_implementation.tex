@@ -287,21 +287,23 @@ as follows. For the latter, we will require the following auxiliary functions:
     \If {x is constant and y is of the form $f_y(t_1^{'}, \dots, t_{k_2}^{'})$}
     \For {$\sigma_x$ in CANDIDATES(x)}
     \For {$\sigma_{f_y}$ in CANDIDATES($f_y(t_1^{'}, \dots, t_{k_2}^{'})$)}
-  \State {horn\_clause.add(EXPLAIN(x, $\sigma_x$) + EXPLAIN($f_y(t_1^{'}, \dots, t_{k_2}^{'})$), $\sigma_y$), $\sigma_x = \sigma_{f_y}$)}
-  \EndFor
-  \For {$arguments_{f_y}$ in CARTESIANPROD(ALLCANDIDATES($f_y(t_1^{'}, \dots, t_{k_2}^{'})$))}
-  \State {horn\_clause.add(EXPLAIN(x, $\sigma_x$) + $\sum_{i=1}^{k_2}$ EXPLAIN($t_i^{'}$, $arguments_{f_y}[i]$), $\sigma_x = f_y(arguments_{f_y})$)}
-  \EndFor
-  \EndFor
-  \EndIf
+    \State {horn\_clause.add(EXPLAIN(x, $\sigma_x$) + EXPLAIN($f_y(t_1^{'}, \dots, t_{k_2}^{'})$), $\sigma_y$), $\sigma_x = \sigma_{f_y}$}
+    \EndFor
+    \For {$arguments_{f_y}$ in CARTESIANPROD(ALLCANDIDATES($f_y(t_1^{'}, \dots, t_{k_2}^{'})$))}
+    \State {horn\_clause.add(EXPLAIN(x, $\sigma_x$) + $\sum_{i=1}^{k_2}$ EXPLAIN($t_i^{'}$, $arguments_{f_y}[i]$), $\sigma_x = f_y(arguments_{f_y})$)}
+    \EndFor
+    \EndFor
+    \EndIf
 
-  \If {x is of the form $f_x(t_1, \dots, t_{k_1})$ and y is a constant}
-  \State {\textbf{return} CONDITIONAL ELIMINATION(y, x);}
-  \EndIf
+    \If {x is of the form $f_x(t_1, \dots, t_{k_1})$ and y is a constant}
+    \State {\textbf{return} CONDITIONAL ELIMINATION(y, x);}
+    \EndIf
 
-  \EndProcedure
-\end{algorithmic}
+    \EndProcedure
+  \end{algorithmic}
 \end{algorithm}
+
+
 
 \begin{algorithm}
   \caption{Conditional Elimination - Part 2}
@@ -312,26 +314,26 @@ as follows. For the latter, we will require the following auxiliary functions:
     \If {x is of the form $f_x(t_1, \dots, t_{k_1})$ and y is of the form $f_y(t_1^{'}, \dots, t_{k_2}^{'})$}
     \For {$\sigma_{f_x}$ in CANDIDATES($f_x(t_1, \dots, t_{k_1})$)}
     \For {$\sigma_{f_y}$ in CANDIDATES($f_y(t_1^{'}, \dots, t_{k_2}^{'})$)}
-  \State {horn\_clause.add(EXPLAIN($f_x(t_1, \dots, t_{k_1})$, $\sigma_{f_x}$) + EXPLAIN($f_y(t_1^{'}, \dots, t_{k_2}^{'})$), $\sigma_y$), $\sigma_{f_x} = \sigma_{f_y}$)}
-  \EndFor
-  \For {$arguments_{f_y}$ in CARTESIANPROD(ALLCANDIDATES($f_y(t_1^{'}, \dots, t_{k_2}^{'})$))}
-  \State {horn\_clause.add(EXPLAIN($f_x(t_1, \dots, t_{k_1})$, $\sigma_{f_x}$) + $\sum_{i=1}^{k_2}$ EXPLAIN($t_i^{'}$, $arguments_{f_y}[i]$), $\sigma_{f_x} = f_y(arguments_{f_y})$)}
-  \EndFor
-  \EndFor
+    \State {horn\_clause.add(EXPLAIN($f_x(t_1, \dots, t_{k_1})$, $\sigma_{f_x}$) + EXPLAIN($f_y(t_1^{'}, \dots, t_{k_2}^{'})$), $\sigma_y$), $\sigma_{f_x} = \sigma_{f_y}$}
+    \EndFor
+    \For {$arguments_{f_y}$ in CARTESIANPROD(ALLCANDIDATES($f_y(t_1^{'}, \dots, t_{k_2}^{'})$))}
+    \State {horn\_clause.add(EXPLAIN($f_x(t_1, \dots, t_{k_1})$, $\sigma_{f_x}$) + $\sum_{i=1}^{k_2}$ EXPLAIN($t_i^{'}$, $arguments_{f_y}[i]$), $\sigma_{f_x} = f_y(arguments_{f_y})$)}
+    \EndFor
+    \EndFor
 
-  \For {$arguments_{f_x}$ in CARTESIANPROD(ALLCANDIDATES($f_x(t_1, \dots, t_{k_1})$))}
-  \For {$\sigma_{f_y}$ in CANDIDATES($f_y(t_1^{'}, \dots, t_{k_2}^{'})$)}
-\State {horn\_clause.add($\sum_{i=1}^{k_1}$ EXPLAIN($t_i$, $arguments_{f_x}[i]$) + EXPLAIN($f_y(t_1^{'}, \dots, t_{k_2}^{'})$), $\sigma_y$), $f_x(arguments_{f_x}) = \sigma_{f_y}$)}
-\EndFor
-\For {$arguments_{f_y}$ in CARTESIANPROD(ALLCANDIDATES($f_y(t_1^{'}, \dots, t_{k_2}^{'})$))}
-\State {horn\_clause.add($\sum_{i=1}^{k_1}$ EXPLAIN($t_i$, $arguments_{f_x}[i]$) + $\sum_{i=1}^{k_2}$ EXPLAIN($t_i^{'}$, $arguments_{f_y}[i]$), $f_x(arguments_{f_x}) = f_y(arguments_{f_y})$)}
-\EndFor
-\EndFor
+    \For {$arguments_{f_x}$ in CARTESIANPROD(ALLCANDIDATES($f_x(t_1, \dots, t_{k_1})$))}
+    \For {$\sigma_{f_y}$ in CANDIDATES($f_y(t_1^{'}, \dots, t_{k_2}^{'})$)}
+    \State {horn\_clause.add($\sum_{i=1}^{k_1}$ EXPLAIN($t_i$, $arguments_{f_x}[i]$) + EXPLAIN($f_y(t_1^{'}, \dots, t_{k_2}^{'})$), $\sigma_y$), $f_x(arguments_{f_x}) = \sigma_{f_y}$}
+    \EndFor
+    \For {$arguments_{f_y}$ in CARTESIANPROD(ALLCANDIDATES($f_y(t_1^{'}, \dots, t_{k_2}^{'})$))}
+    \State {horn\_clause.add($\sum_{i=1}^{k_1}$ EXPLAIN($t_i$, $arguments_{f_x}[i]$) + $\sum_{i=1}^{k_2}$ EXPLAIN($t_i^{'}$, $arguments_{f_y}[i]$), $f_x(arguments_{f_x}) = f_y(arguments_{f_y})$)}
+    \EndFor
+    \EndFor
 
-\EndIf
+    \EndIf
 
-\EndProcedure
-\end{algorithmic}
+    \EndProcedure
+  \end{algorithmic}
 \end{algorithm}
 
 %%% Local Variables:
