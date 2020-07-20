@@ -64,20 +64,17 @@ operations.
 
   \begin{figure}
     \centering
-    \AxiomC{$\neg P$}
-    \AxiomC{$P \lor Q \lor \neg R$}
-    \RightLabel{$res_P$}
-    \BinaryInfC{$Q \lor \neg R$}
-    \AxiomC{$R$}
-    \RightLabel{$res_R$}
-    \BinaryInfC{$Q$}
-    \AxiomC{$P \lor \neg Q$}
-    \RightLabel{$res_Q$}
-    \BinaryInfC{$P$}
-    \AxiomC{$\neg P$}
-    \RightLabel{$res_P$}
-    \BinaryInfC{$\bot$}
-    \DisplayProof
+    \begin{prooftree}
+      \hypo[]{\neg P}
+      \hypo[]{P \lor Q \lor \neg R}
+      \infer2[$res_P$]{Q \lor \neg R}
+      \hypo[]{R}
+      \infer2[$res_R$]{Q}
+      \hypo[]{P \lor \neg Q}
+      \infer2[$res_Q$]{P}
+      \hypo[]{\neg P}
+      \infer2[$res_P$]{\bot}
+    \end{prooftree}
     \caption{Example of resolution proof} 
     \label{example_resolution_proof}
   \end{figure}

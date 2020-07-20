@@ -29,17 +29,17 @@ to close the relation and eliminate the uncommon variables from the
 A-part of the input formula. The rules are the following:
 
 \begin{center}
-  \AxiomC{$s_1 x_1 + s_2 x_2 \leq c$}
-  \AxiomC{$s_1 = s_2 \in \{ -1, 0, 1 \}$ and $x_1 = x_2 \in Vars$}
-  \RightLabel{Normalize}
-  \BinaryInfC{$s_1 x_1 \leq \floor{\frac{c}{2}}$}
-  \DisplayProof
+  \begin{prooftree}
+    \hypo[]{s_1 x_1 + s_2 x_2 \leq c}
+    \hypo[]{s_1 = s_2 \in \{ -1, 0, 1 \}$ and $x_1 = x_2 \in Vars}
+    \infer2[Normalize]{s_1 x_1 \leq \floor{\frac{c}{2}}}
+  \end{prooftree}
 
-  \AxiomC{$s_1 x_1 + s_2 x_2 \leq c_1$}
-  \AxiomC{$- s_2 x_2 + s_3 x_3 \leq c_2$}
-  \RightLabel{Elim}
-  \BinaryInfC{$s_1 x_1 + s_3 x_3 \leq c_1 + c_2$}
-  \DisplayProof
+  \begin{prooftree}
+    \hypo[]{s_1 x_1 + s_2 x_2 \leq c_1}
+    \hypo[]{- s_2 x_2 + s_3 x_3 \leq c_2}
+    \infer2[Elim]{s_1 x_1 + s_3 x_3 \leq c_1 + c_2}
+  \end{prooftree}
 \end{center}
 
 The algorithm normalizes the inequalities at the beginning as 

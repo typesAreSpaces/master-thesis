@@ -62,14 +62,20 @@ instance, the formula in pure propositional logic shown in figure
 \ref{query_proof_problem} used proof rules from EUF \footnote{Z3 uses
 the term monotonicity instead of congruence}.
 
-%\includepdf[scale=0.2,pages=-,pagecommand={},width=\textwidth, angle=90]{python_proof.pdf}
-\includepdf[scale=0.8,angle=90]{python_proof.pdf}
-
 \begin{figure}
-\centering
-\includegraphics[scale=0.2]{query_screenshot}
-\caption{Problematic SMT query for resolution proofs} \label{query_proof_problem}
+  \centering
+  \includegraphics[scale=0.2]{query_screenshot}
+  \caption{Problematic SMT query for resolution proofs} \label{query_proof_problem}
 \end{figure}
+
+
+%\includepdf[scale=0.2,pages=-,pagecommand={},width=\textwidth, angle=90]{python_proof.pdf}
+\begin{figure}
+  %\includepdf[scale=0.8,pages=-,angle=0]{python_proof.pdf}
+  \input{python_proof}
+  \caption{Z3 proof of figure \ref{query_proof_problem}} \label{smt_proof_problem}
+\end{figure}
+
 
 Thus, we opted to use the zChaff SAT solver which implements the DPLL algorithm. 
 The minor modifications to the software was to include the pivots 

@@ -10,12 +10,12 @@ set shortmess=aoO
 badd +1 main.tex
 badd +8 abstract.tex
 badd +1 background.tex
-badd +4 preliminaries.tex
+badd +9 preliminaries.tex
 badd +172 introduction.tex
 badd +80 references.bib
 badd +338 unmeethesis.cls
-badd +41 proof_of_main_theorem_octagons.tex
-badd +191 octagonal.tex
+badd +32 proof_of_main_theorem_octagons.tex
+badd +42 octagonal.tex
 badd +7 dedication_acknowledgments.tex
 badd +3 related_work.tex
 badd +3 glossary.tex
@@ -25,12 +25,12 @@ badd +1 ~/Documents/GithubProjects/master-thesis/Write\ Ups/paper_project/algpse
 badd +68 first_order_logic.tex
 badd +27 theories.tex
 badd +38 verification.tex
-badd +2 tools.tex
-badd +1 combination.tex
+badd +75 tools.tex
+badd +14 combination.tex
 badd +1 algpseudocode.sty
 badd +15 ~/Downloads/10.1007_978-3-540-45069-6_1.bib
 badd +102 craig_interpolation.tex
-badd +105 sat-smt.tex
+badd +70 sat-smt.tex
 badd +80 congruence-closure.tex
 badd +31 sat-horn.tex
 badd +65 nelson-oppen-framework.tex
@@ -42,9 +42,10 @@ badd +1 general_architecture.tex
 badd +1 bussproofs.sty
 badd +24 future_work.tex
 badd +82 euf_algorithm.tex
-badd +308 euf_implementation.tex
+badd +315 euf_implementation.tex
 badd +3 ~/Downloads/10.1007_978-3-642-02959-2_15.bib
 badd +15 euf_theorem.tex
+badd +4 python_proof.tex
 argglobal
 %argdel
 edit main.tex
@@ -68,10 +69,10 @@ set winheight=1
 set winminwidth=0
 set winwidth=1
 exe '1resize ' . ((&lines * 29 + 30) / 60)
-exe 'vert 1resize ' . ((&columns * 105 + 157) / 315)
+exe 'vert 1resize ' . ((&columns * 104 + 157) / 315)
 exe '2resize ' . ((&lines * 28 + 30) / 60)
-exe 'vert 2resize ' . ((&columns * 105 + 157) / 315)
-exe 'vert 3resize ' . ((&columns * 104 + 157) / 315)
+exe 'vert 2resize ' . ((&columns * 104 + 157) / 315)
+exe 'vert 3resize ' . ((&columns * 105 + 157) / 315)
 exe 'vert 4resize ' . ((&columns * 104 + 157) / 315)
 argglobal
 setlocal fdm=manual
@@ -83,13 +84,13 @@ setlocal fml=1
 setlocal fdn=20
 setlocal fen
 silent! normal! zE
-10,77fold
-let s:l = 47 - ((17 * winheight(0) + 14) / 29)
+10,79fold
+let s:l = 25 - ((20 * winheight(0) + 14) / 29)
 if s:l < 1 | let s:l = 1 | endif
 exe s:l
 normal! zt
-47
-normal! 0
+25
+normal! 021|
 wincmd w
 argglobal
 if bufexists("references.bib") | buffer references.bib | else | edit references.bib | endif
@@ -102,12 +103,12 @@ setlocal fml=1
 setlocal fdn=20
 setlocal fen
 silent! normal! zE
-let s:l = 651 - ((0 * winheight(0) + 14) / 28)
+let s:l = 650 - ((0 * winheight(0) + 14) / 28)
 if s:l < 1 | let s:l = 1 | endif
 exe s:l
 normal! zt
-651
-normal! 017|
+650
+normal! 0
 wincmd w
 argglobal
 if bufexists("combination.tex") | buffer combination.tex | else | edit combination.tex | endif
@@ -123,17 +124,15 @@ silent! normal! zE
 11,60fold
 62,68fold
 1,68fold
-1
-normal! zo
-let s:l = 9 - ((8 * winheight(0) + 29) / 58)
+let s:l = 10 - ((8 * winheight(0) + 29) / 58)
 if s:l < 1 | let s:l = 1 | endif
 exe s:l
 normal! zt
-9
-normal! 059|
+10
+normal! 0
 wincmd w
 argglobal
-if bufexists("euf_implementation.tex") | buffer euf_implementation.tex | else | edit euf_implementation.tex | endif
+if bufexists("combination.tex") | buffer combination.tex | else | edit combination.tex | endif
 setlocal fdm=manual
 setlocal fde=0
 setlocal fmr={{{,}}}
@@ -143,26 +142,22 @@ setlocal fml=1
 setlocal fdn=20
 setlocal fen
 silent! normal! zE
-23,37fold
-38,51fold
-6,191fold
-192,204fold
-205,342fold
-6
-normal! zo
-let s:l = 308 - ((18 * winheight(0) + 29) / 58)
+11,60fold
+62,68fold
+1,68fold
+let s:l = 9 - ((7 * winheight(0) + 29) / 58)
 if s:l < 1 | let s:l = 1 | endif
 exe s:l
 normal! zt
-308
+9
 normal! 0
 wincmd w
 3wincmd w
 exe '1resize ' . ((&lines * 29 + 30) / 60)
-exe 'vert 1resize ' . ((&columns * 105 + 157) / 315)
+exe 'vert 1resize ' . ((&columns * 104 + 157) / 315)
 exe '2resize ' . ((&lines * 28 + 30) / 60)
-exe 'vert 2resize ' . ((&columns * 105 + 157) / 315)
-exe 'vert 3resize ' . ((&columns * 104 + 157) / 315)
+exe 'vert 2resize ' . ((&columns * 104 + 157) / 315)
+exe 'vert 3resize ' . ((&columns * 105 + 157) / 315)
 exe 'vert 4resize ' . ((&columns * 104 + 157) / 315)
 tabnext 1
 if exists('s:wipebuf') && getbufvar(s:wipebuf, '&buftype') isnot# 'terminal'
