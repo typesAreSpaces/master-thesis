@@ -1,22 +1,136 @@
 \chapter{Interpolation algorithm for the theory combination of EUF and UTVPI}
 
-Theory combination is an approach in order to reuse the veriffication algorithms
-for the theories used in a problem.  
+Theory combination techniques involve 
+reusing the algorithms for verification 
+problems of some of the theories involved 
+by either purifying terms over the 
+theories, or reducing the original problem 
+into a base theory, or a combination of these two. 
+Usually the approaches following the first approach 
+aforementioned rely on a Nelson-Oppen
+framework \cite{10.1007/11532231_26, 
+10.1007/978-3-642-22119-4_1, 10.1145/2490253}
+
+Despite possibly more efficient approaches using
+model-based theory combination techniques 
+\footnote{
+  An interesting property of model-based theory combination 
+  is that it is not needed to propagate disjunctions, even if
+  the theories are not convex. The reason for this is because
+  the \emph{disjunctiviness} of the problem is handled 
+  \emph{lazily} by the
+  SAT solver.
+} \cite{10.1007/978-3-642-22119-4_1}, the latter require 
+operations which many SMT solvers does not provide 
+proper API to implement these.
+Hence, the approach used in the thesis work follows 
+\cite{10.1007/11532231_26} since it does not require extensive
+modification to the decision procedures
+used. Many of the necessary modifications 
+were implemented on top of Z3 and PicoSAT/TraceCheck.
+
+The propagation of equalities and disjunction of equalities
+requires the additional step to split these formulas into
+the correct part of the interpolant pair. Among the major
+contributions of \cite{10.1007/11532231_26} was the introduction
+of the class of equality interpolanting theories, which
+facilites the splitting of a propagated formula since
+it is clear that A-local/B-local terms should be included in the
+A-part/B-part of the interpolant pair respectively.
+
+\begin{definition}
+  A theory $\cal{T}$ is \emph{equality interpolanting}
+  if for every $a$ (A-local term) and  $b$ (B-local term)
+  and $\psi$ a formula in $\cal{T}$ such that
+  $\psi \models_{\cal{T}} a = b$, then there exits a term $t$
+  in $\cal{T}$ (called interpolanting term)
+  such that $\psi \models_{\cal{T}} a = t$ and 
+  $\psi \models_{\cal{T}} b = t$
+\end{definition}
+
+The relevance of the existance of the interpolating term for 
+a deduced AB-mixed equality becomes relevant in the context 
+of splitting a formula into a suitable A-part and B-part 
+respectively. If t
+
+Deciding where to include AB-common terms to either the 
+A-part or the B-part of the interpolantion pair affects 
+the final result since the interpolant will be \emph{closer} 
+to the A-part or to the B-part respectively. The original
+paper includes AB-common terms to the B-part. However,
+the implementation work includes AB-common terms to the
+A-part since the interpolantion algorithms implemented
+focus the attention on this part.
 
 \section{Algorithm}
 
-TODO. Discuss relevance of SAT solver and resolution proof. 
-TODO. Mention issues with the negation for literals in UTVPI due to partial interpolantion.
+The algorithm implements a Nelson-Oppen framework. In order to 
+integrate interpolants to the latter, the algorithm includes a 
+\emph{partial interpolant} every time a disjunction of equalities 
+(conflict clause) is propagated. These \emph{partial interpolants} are 
+computed from an unsatisfiability proof obtained by including the 
+negation of the disjunction to the formula using the following
+definition: 
+
+\begin{definition} \cite{10.1007/11532231_26}
+  Let $\langle A, B \rangle$ be a pair of clause sets such
+  that $A \land B \vdash \bot$. Let $\cal{T}$ be a proof of
+  unsatisfiability of $A \land B$. The propositional 
+  formula $p(c)$ for a clause $c$ in $\cal{T}$ is defined
+  by induction on the proof structe:
+  \begin{itemize}
+    \item if $c$ is one of the input clauses then
+      \begin{itemize}
+        \item if $c \in A$, then $p(c) := \bot$
+        \item if $c \in B$, then $p(c) := \top$
+      \end{itemize}
+    \item otherwise, $c$ is a result of resolution, i.e. 
+      \begin{prooftree}
+        \hypo{c_1(= x \lor c_1^{'})}
+        \hypo{c_2 (= \neg x \lor c_2^{'})}
+        \infer2{c (= c_1^{'} \lor c_2^{'})}
+      \end{prooftree}
+      \begin{itemize}
+        \item if $x \in A$ and $x \not \in B$ (x is A-local), then $p(c) := p(c_1) \lor p(c_2)$
+        \item if $x \not \in A$ and $x \in B$ (x is B-local), then $p(c) := p(c_1) \land p(c_2)$
+        \item otherwise (x is AB-common), then $p(c) := (x \lor p(c_1)) \land (\neg x \lor p(c_2))$
+      \end{itemize}
+  \end{itemize}
+\end{definition}
 
 \section{Implementation}
 
-TODO.
+The implementation mantains a map data structure that 
+keeps track of the \emph{partial interpolants}. This ensures
+that the base case for the above formula $p(c)$ is replaced
+by previous clauses as required in \cite{10.1007/11532231_26}.
+
+Since introducting negations is necessary to compute partial interpolants,
+we noticed the following interaction with the theories involved in the
+thesis work:
+
+\begin{itemize}
+  \item EUF case: negations of literals in this theory are just
+    disequalities, which the interpolantion algorithm implemented
+    handles as Horn clauses with a false head term.
+  \item UTVPI case: negations of literals in this theory are either
+    disequalities or strict inequalities. The disequalities are purified
+    an appended to the EUF component, and the strict inequalities are 
+    appended as a disjunction of two non-strict inequalities following
+    the axioms of number theory with addition and a total order relation
+    \cite{DBLP:books/daglib/0076838}.
+\end{itemize}
+
+The main loop of the procedure is shown below:
 
 \begin{algorithm}
   \caption{ Nelson-Oppen Propagation }
   \linespread{\separationline}\selectfont
   \begin{algorithmic}[2]
-    \Procedure { Nelson-Oppen Propagation  } { z3::expr\_vector const \& part\_A, z3::expr\_vector const \& part\_B }
+    \Procedure { Nelson-Oppen Propagation  } { 
+      z3::expr\_vector const \& part\_A, 
+      z3::expr\_vector const \& part\_B 
+  }
 
     \State { $T_1, T_2 = Purify(part\_A, part\_B)$}
 

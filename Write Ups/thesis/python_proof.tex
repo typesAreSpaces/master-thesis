@@ -1,5 +1,5 @@
 \begin{turn}{0}
-\resizebox{420}{40}
+\resizebox{420pt}{40pt}
 {
   \centering
   \begin{prooftree}[separation=-0.5em]\infer0[asserted]{Or(Not(x1), x3)}\infer0[rewrite]{Or(Not(x1), x3)==Or(Not(x1), x3)}\infer2[mp]{Or(Not(x1), x3)}\infer0[rewrite]{Or(Not(x1), x3)==Or(Not(x1), x3)}\infer2[mp]{Or(Not(x1), x3)}\infer0[asserted]{x1}\infer1[iff-true]{x1==True}\infer1[monotonicity]{Not(x1)==Not(True)}\infer0[rewrite]{Not(True)==False}\infer2[trans]{Not(x1)==False}\infer0[asserted]{Or(Not(x1), Not(x3))}\infer0[asserted]{x1}\infer1[iff-true]{x1==True}\infer1[monotonicity]{Not(x1)==Not(True)}\infer0[rewrite]{Not(True)==False}\infer2[trans]{Not(x1)==False}\infer1[monotonicity]{Or(Not(x1), Not(x3))==Or(False, Not(x3))}\infer0[rewrite]{Or(False, Not(x3))==Not(x3)}\infer2[trans]{Or(Not(x1), Not(x3))==Not(x3)}\infer2[mp]{Not(x3)}\infer1[iff-false]{x3==False}\infer2[monotonicity]{Or(Not(x1), x3)==Or(False, False)}\infer0[rewrite]{Or(False, False)==False}\infer2[trans]{Or(Not(x1), x3)==False}\infer2[mp]{False}\end{prooftree}

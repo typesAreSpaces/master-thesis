@@ -8,6 +8,8 @@
 \contentsline {figure}{\numberline {2.5}{\ignorespaces UTVPI Interpolator Diagram}}{21}{figure.2.5}% 
 \contentsline {figure}{\numberline {2.6}{\ignorespaces Problematic SMT query for resolution proofs}}{23}{figure.2.6}% 
 \contentsline {figure}{\numberline {2.7}{\ignorespaces Z3 proof of figure \ref {query_proof_problem}}}{23}{figure.2.7}% 
+\contentsline {figure}{\numberline {2.8}{\ignorespaces Example of extended proof trace by PicoSAT for problem \ref {dpll_figure}}}{24}{figure.2.8}% 
+\contentsline {figure}{\numberline {2.9}{\ignorespaces Example of extended proof trace by PicoSAT for problem \ref {dpll_figure}}}{25}{figure.2.9}% 
 \addvspace {10\p@ }
 \addvspace {10\p@ }
 \addvspace {10\p@ }

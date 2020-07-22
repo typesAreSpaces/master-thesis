@@ -23,22 +23,22 @@
 \contentsline {subsection}{\numberline {2.4.4}Nelson-Oppen framework for theory and interpolation combination}{19}{subsection.2.4.4}% 
 \contentsline {section}{\numberline {2.5}General system description}{20}{section.2.5}% 
 \contentsline {subsection}{\numberline {2.5.1}Minor modifications to Z3}{21}{subsection.2.5.1}% 
-\contentsline {subsection}{\numberline {2.5.2}Minor modifications to zChaff}{22}{subsection.2.5.2}% 
-\contentsline {chapter}{\numberline {3}Interpolation algorithm for the theory of EUF}{24}{chapter.3}% 
-\contentsline {section}{\numberline {3.1}Algorithm}{25}{section.3.1}% 
-\contentsline {section}{\numberline {3.2}Implementation}{27}{section.3.2}% 
-\contentsline {subsection}{\numberline {3.2.1}New optimized conditional elimination step in Kapur's algorithm}{27}{subsection.3.2.1}% 
-\contentsline {subsection}{\numberline {3.2.2}Ground Horn Clauses with Explanations}{29}{subsection.3.2.2}% 
-\contentsline {subsection}{\numberline {3.2.3}New optimized conditional replacement step in Kapur's algorithm}{29}{subsection.3.2.3}% 
-\contentsline {section}{\numberline {3.3}Evaluation}{30}{section.3.3}% 
-\contentsline {chapter}{\numberline {4}Interpolation algorithm for UTVPI Formulas}{37}{chapter.4}% 
-\contentsline {section}{\numberline {4.1}Algorithm}{38}{section.4.1}% 
-\contentsline {section}{\numberline {4.2}Implementation}{38}{section.4.2}% 
-\contentsline {section}{\numberline {4.3}Evaluation}{40}{section.4.3}% 
-\contentsline {chapter}{\numberline {5}Interpolation algorithm for the theory combination of EUF and UTVPI}{43}{chapter.5}% 
-\contentsline {section}{\numberline {5.1}Algorithm}{43}{section.5.1}% 
-\contentsline {section}{\numberline {5.2}Implementation}{43}{section.5.2}% 
-\contentsline {section}{\numberline {5.3}Evaluation}{44}{section.5.3}% 
-\contentsline {chapter}{\numberline {6}Future Work}{45}{chapter.6}% 
-\contentsline {chapter}{Appendices}{47}{chapter*.5}% 
-\contentsline {chapter}{References}{48}{chapter*.6}% 
+\contentsline {subsection}{\numberline {2.5.2}PicoSAT/TraceCheck Proof Format}{22}{subsection.2.5.2}% 
+\contentsline {chapter}{\numberline {3}Interpolation algorithm for the theory of EUF}{26}{chapter.3}% 
+\contentsline {section}{\numberline {3.1}Algorithm}{27}{section.3.1}% 
+\contentsline {section}{\numberline {3.2}Implementation}{29}{section.3.2}% 
+\contentsline {subsection}{\numberline {3.2.1}New optimized conditional elimination step in Kapur's algorithm}{29}{subsection.3.2.1}% 
+\contentsline {subsection}{\numberline {3.2.2}Ground Horn Clauses with Explanations}{31}{subsection.3.2.2}% 
+\contentsline {subsection}{\numberline {3.2.3}New optimized conditional replacement step in Kapur's algorithm}{31}{subsection.3.2.3}% 
+\contentsline {section}{\numberline {3.3}Evaluation}{32}{section.3.3}% 
+\contentsline {chapter}{\numberline {4}Interpolation algorithm for UTVPI Formulas}{39}{chapter.4}% 
+\contentsline {section}{\numberline {4.1}Algorithm}{40}{section.4.1}% 
+\contentsline {section}{\numberline {4.2}Implementation}{40}{section.4.2}% 
+\contentsline {section}{\numberline {4.3}Evaluation}{42}{section.4.3}% 
+\contentsline {chapter}{\numberline {5}Interpolation algorithm for the theory combination of EUF and UTVPI}{45}{chapter.5}% 
+\contentsline {section}{\numberline {5.1}Algorithm}{46}{section.5.1}% 
+\contentsline {section}{\numberline {5.2}Implementation}{47}{section.5.2}% 
+\contentsline {section}{\numberline {5.3}Evaluation}{49}{section.5.3}% 
+\contentsline {chapter}{\numberline {6}Future Work}{50}{chapter.6}% 
+\contentsline {chapter}{Appendices}{52}{chapter*.5}% 
+\contentsline {chapter}{References}{53}{chapter*.6}% 

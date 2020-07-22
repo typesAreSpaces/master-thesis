@@ -22,7 +22,7 @@
 \BOOKMARK [2][-]{subsection.2.4.4}{Nelson-Oppen framework for theory and interpolation combination}{section.2.4}% 22
 \BOOKMARK [1][-]{section.2.5}{General system description}{chapter.2}% 23
 \BOOKMARK [2][-]{subsection.2.5.1}{Minor modifications to Z3}{section.2.5}% 24
-\BOOKMARK [2][-]{subsection.2.5.2}{Minor modifications to zChaff}{section.2.5}% 25
+\BOOKMARK [2][-]{subsection.2.5.2}{PicoSAT/TraceCheck Proof Format}{section.2.5}% 25
 \BOOKMARK [0][-]{chapter.3}{Interpolation algorithm for the theory of EUF}{}% 26
 \BOOKMARK [1][-]{section.3.1}{Algorithm}{chapter.3}% 27
 \BOOKMARK [1][-]{section.3.2}{Implementation}{chapter.3}% 28

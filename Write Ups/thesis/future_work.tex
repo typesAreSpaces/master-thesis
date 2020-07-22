@@ -15,13 +15,6 @@ These particular improvements are the following:
     } up to an order of \bigO{n}. The reason for this current allocation schema
     is that it exists a double bonding effect while performing curryification 
     of all the terms in the arguments of function applications.
-  \item Replace zChaff with SAT solvers with more permissive license: while modifying
-    the code of zChaff the author noticed a request in the README file of zChaff that
-    its license does not allow distribution of the sofware. 
-    However, the software can be used for research and non-exclusive
-    personal use. I think any extension of MiniSat \cite{een03minisat} with proof-logging will
-    suffice for our purposes. This task should not be too complicated since the
-    current implementation does not uses any API of the zChaff inside the implementation.
 \end{itemize}
 
 Regarding potential extension of the systems, it will interesting to explore a
