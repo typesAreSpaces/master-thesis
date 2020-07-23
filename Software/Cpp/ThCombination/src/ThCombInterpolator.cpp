@@ -83,7 +83,7 @@ ThCombInterpolator::ThCombInterpolator(
       euf_assertions.push_back(not(*current_disj_eqs));
       CDCL_T cdcl_euf(euf_assertions);
       cdcl_euf.toDimacsFile();
-      ProofFactory resolution_proof = ProofFactory();
+      PicoProofFactory resolution_proof = PicoProofFactory();
       std::cout << resolution_proof << std::endl;
       // TODO: keep working here!
       // ---------------------------------------------------
@@ -106,7 +106,7 @@ ThCombInterpolator::ThCombInterpolator(
       oct_assertions.push_back(not(*current_disj_eqs));
       CDCL_T cdcl_oct(oct_assertions);
       cdcl_oct.toDimacsFile();
-      ProofFactory resolution_proof = ProofFactory();
+      PicoProofFactory resolution_proof = PicoProofFactory();
       std::cout << resolution_proof << std::endl;
       // TODO: keep working here!
       // ---------------------------------------------------

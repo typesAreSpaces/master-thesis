@@ -16,14 +16,16 @@ badd +91 src/HornClauses.cpp
 badd +72 tests/basic_test.cpp
 badd +44 include/DisjEqsPropagator.h
 badd +20 tests/disj_eqs_propagator_test.cpp
-badd +42 src/ProofFactory.cpp
-badd +6 include/ProofFactory.h
+badd +244 src/ProofFactory.cpp
+badd +82 include/ProofFactory.h
 badd +81 src/DisjEqsPropagator.cpp
 badd +10 src/CDCL_T.cpp
 badd +46 tests/cdcl_t_test.cpp
 badd +4 tests/res_proof_test.cpp
 badd +1 include/CDCL_T.h
 badd +2430 /usr/include/z3++.h
+badd +0 include/PicoSATProofFactory.h
+badd +0 src/PicoSATProofFactory.cpp
 argglobal
 %argdel
 edit include/CDCL_T.h
@@ -62,21 +64,21 @@ set winminheight=0
 set winheight=1
 set winminwidth=0
 set winwidth=1
-exe '1resize ' . ((&lines * 29 + 30) / 60)
+exe '1resize ' . ((&lines * 34 + 34) / 69)
 exe 'vert 1resize ' . ((&columns * 78 + 157) / 315)
-exe '2resize ' . ((&lines * 28 + 30) / 60)
+exe '2resize ' . ((&lines * 32 + 34) / 69)
 exe 'vert 2resize ' . ((&columns * 78 + 157) / 315)
-exe '3resize ' . ((&lines * 19 + 30) / 60)
+exe '3resize ' . ((&lines * 22 + 34) / 69)
 exe 'vert 3resize ' . ((&columns * 157 + 157) / 315)
-exe '4resize ' . ((&lines * 15 + 30) / 60)
+exe '4resize ' . ((&lines * 18 + 34) / 69)
 exe 'vert 4resize ' . ((&columns * 78 + 157) / 315)
-exe '5resize ' . ((&lines * 22 + 30) / 60)
+exe '5resize ' . ((&lines * 25 + 34) / 69)
 exe 'vert 5resize ' . ((&columns * 78 + 157) / 315)
-exe '6resize ' . ((&lines * 38 + 30) / 60)
+exe '6resize ' . ((&lines * 44 + 34) / 69)
 exe 'vert 6resize ' . ((&columns * 78 + 157) / 315)
-exe '7resize ' . ((&lines * 29 + 30) / 60)
+exe '7resize ' . ((&lines * 34 + 34) / 69)
 exe 'vert 7resize ' . ((&columns * 78 + 157) / 315)
-exe '8resize ' . ((&lines * 28 + 30) / 60)
+exe '8resize ' . ((&lines * 32 + 34) / 69)
 exe 'vert 8resize ' . ((&columns * 78 + 157) / 315)
 argglobal
 setlocal fdm=manual
@@ -88,7 +90,7 @@ setlocal fml=1
 setlocal fdn=20
 setlocal fen
 silent! normal! zE
-let s:l = 3 - ((0 * winheight(0) + 14) / 29)
+let s:l = 3 - ((0 * winheight(0) + 17) / 34)
 if s:l < 1 | let s:l = 1 | endif
 exe s:l
 normal! zt
@@ -106,7 +108,7 @@ setlocal fml=1
 setlocal fdn=20
 setlocal fen
 silent! normal! zE
-let s:l = 11 - ((1 * winheight(0) + 14) / 28)
+let s:l = 11 - ((0 * winheight(0) + 16) / 32)
 if s:l < 1 | let s:l = 1 | endif
 exe s:l
 normal! zt
@@ -124,15 +126,15 @@ setlocal fml=1
 setlocal fdn=20
 setlocal fen
 silent! normal! zE
-let s:l = 7 - ((6 * winheight(0) + 9) / 19)
+let s:l = 9 - ((8 * winheight(0) + 11) / 22)
 if s:l < 1 | let s:l = 1 | endif
 exe s:l
 normal! zt
-7
-normal! 019|
+9
+normal! 017|
 wincmd w
 argglobal
-if bufexists("include/ProofFactory.h") | buffer include/ProofFactory.h | else | edit include/ProofFactory.h | endif
+if bufexists("include/PicoSATProofFactory.h") | buffer include/PicoSATProofFactory.h | else | edit include/PicoSATProofFactory.h | endif
 setlocal fdm=manual
 setlocal fde=0
 setlocal fmr={{{,}}}
@@ -142,15 +144,15 @@ setlocal fml=1
 setlocal fdn=20
 setlocal fen
 silent! normal! zE
-let s:l = 82 - ((13 * winheight(0) + 7) / 15)
+let s:l = 34 - ((16 * winheight(0) + 9) / 18)
 if s:l < 1 | let s:l = 1 | endif
 exe s:l
 normal! zt
-82
-normal! 02|
+34
+normal! 0
 wincmd w
 argglobal
-if bufexists("src/ProofFactory.cpp") | buffer src/ProofFactory.cpp | else | edit src/ProofFactory.cpp | endif
+if bufexists("src/PicoSATProofFactory.cpp") | buffer src/PicoSATProofFactory.cpp | else | edit src/PicoSATProofFactory.cpp | endif
 setlocal fdm=manual
 setlocal fde=0
 setlocal fmr={{{,}}}
@@ -160,47 +162,11 @@ setlocal fml=1
 setlocal fdn=20
 setlocal fen
 silent! normal! zE
-let s:l = 244 - ((16 * winheight(0) + 11) / 22)
+let s:l = 1 - ((0 * winheight(0) + 12) / 25)
 if s:l < 1 | let s:l = 1 | endif
 exe s:l
 normal! zt
-244
-normal! 010|
-wincmd w
-argglobal
-if bufexists("src/ThCombInterpolator.cpp") | buffer src/ThCombInterpolator.cpp | else | edit src/ThCombInterpolator.cpp | endif
-setlocal fdm=manual
-setlocal fde=0
-setlocal fmr={{{,}}}
-setlocal fdi=#
-setlocal fdl=0
-setlocal fml=1
-setlocal fdn=20
-setlocal fen
-silent! normal! zE
-let s:l = 89 - ((8 * winheight(0) + 19) / 38)
-if s:l < 1 | let s:l = 1 | endif
-exe s:l
-normal! zt
-89
-normal! 07|
-wincmd w
-argglobal
-if bufexists("tests/basic_test.cpp") | buffer tests/basic_test.cpp | else | edit tests/basic_test.cpp | endif
-setlocal fdm=manual
-setlocal fde=0
-setlocal fmr={{{,}}}
-setlocal fdi=#
-setlocal fdl=0
-setlocal fml=1
-setlocal fdn=20
-setlocal fen
-silent! normal! zE
-let s:l = 70 - ((23 * winheight(0) + 14) / 29)
-if s:l < 1 | let s:l = 1 | endif
-exe s:l
-normal! zt
-70
+1
 normal! 0
 wincmd w
 argglobal
@@ -214,29 +180,65 @@ setlocal fml=1
 setlocal fdn=20
 setlocal fen
 silent! normal! zE
-let s:l = 193 - ((10 * winheight(0) + 14) / 28)
+let s:l = 103 - ((29 * winheight(0) + 22) / 44)
+if s:l < 1 | let s:l = 1 | endif
+exe s:l
+normal! zt
+103
+normal! 07|
+wincmd w
+argglobal
+if bufexists("tests/basic_test.cpp") | buffer tests/basic_test.cpp | else | edit tests/basic_test.cpp | endif
+setlocal fdm=manual
+setlocal fde=0
+setlocal fmr={{{,}}}
+setlocal fdi=#
+setlocal fdl=0
+setlocal fml=1
+setlocal fdn=20
+setlocal fen
+silent! normal! zE
+let s:l = 71 - ((28 * winheight(0) + 17) / 34)
+if s:l < 1 | let s:l = 1 | endif
+exe s:l
+normal! zt
+71
+normal! 0
+wincmd w
+argglobal
+if bufexists("src/ThCombInterpolator.cpp") | buffer src/ThCombInterpolator.cpp | else | edit src/ThCombInterpolator.cpp | endif
+setlocal fdm=manual
+setlocal fde=0
+setlocal fmr={{{,}}}
+setlocal fdi=#
+setlocal fdl=0
+setlocal fml=1
+setlocal fdn=20
+setlocal fen
+silent! normal! zE
+let s:l = 193 - ((0 * winheight(0) + 16) / 32)
 if s:l < 1 | let s:l = 1 | endif
 exe s:l
 normal! zt
 193
 normal! 026|
 wincmd w
-7wincmd w
-exe '1resize ' . ((&lines * 29 + 30) / 60)
+6wincmd w
+exe '1resize ' . ((&lines * 34 + 34) / 69)
 exe 'vert 1resize ' . ((&columns * 78 + 157) / 315)
-exe '2resize ' . ((&lines * 28 + 30) / 60)
+exe '2resize ' . ((&lines * 32 + 34) / 69)
 exe 'vert 2resize ' . ((&columns * 78 + 157) / 315)
-exe '3resize ' . ((&lines * 19 + 30) / 60)
+exe '3resize ' . ((&lines * 22 + 34) / 69)
 exe 'vert 3resize ' . ((&columns * 157 + 157) / 315)
-exe '4resize ' . ((&lines * 15 + 30) / 60)
+exe '4resize ' . ((&lines * 18 + 34) / 69)
 exe 'vert 4resize ' . ((&columns * 78 + 157) / 315)
-exe '5resize ' . ((&lines * 22 + 30) / 60)
+exe '5resize ' . ((&lines * 25 + 34) / 69)
 exe 'vert 5resize ' . ((&columns * 78 + 157) / 315)
-exe '6resize ' . ((&lines * 38 + 30) / 60)
+exe '6resize ' . ((&lines * 44 + 34) / 69)
 exe 'vert 6resize ' . ((&columns * 78 + 157) / 315)
-exe '7resize ' . ((&lines * 29 + 30) / 60)
+exe '7resize ' . ((&lines * 34 + 34) / 69)
 exe 'vert 7resize ' . ((&columns * 78 + 157) / 315)
-exe '8resize ' . ((&lines * 28 + 30) / 60)
+exe '8resize ' . ((&lines * 32 + 34) / 69)
 exe 'vert 8resize ' . ((&columns * 78 + 157) / 315)
 tabnext 1
 if exists('s:wipebuf') && getbufvar(s:wipebuf, '&buftype') isnot# 'terminal'

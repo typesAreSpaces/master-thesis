@@ -7,7 +7,7 @@ if expand('%') == '' && !&modified && line('$') <= 1 && getline(1) == ''
   let s:wipebuf = bufnr('%')
 endif
 set shortmess=aoO
-badd +81 main.tex
+badd +1 main.tex
 badd +8 abstract.tex
 badd +1 background.tex
 badd +9 preliminaries.tex
@@ -26,7 +26,7 @@ badd +68 first_order_logic.tex
 badd +27 theories.tex
 badd +32 verification.tex
 badd +127 tools.tex
-badd +27 combination.tex
+badd +1 combination.tex
 badd +1 algpseudocode.sty
 badd +15 ~/Downloads/10.1007_978-3-540-45069-6_1.bib
 badd +102 craig_interpolation.tex
@@ -66,9 +66,9 @@ set winminheight=0
 set winheight=1
 set winminwidth=0
 set winwidth=1
-exe '1resize ' . ((&lines * 29 + 30) / 60)
+exe '1resize ' . ((&lines * 29 + 32) / 65)
 exe 'vert 1resize ' . ((&columns * 94 + 157) / 315)
-exe '2resize ' . ((&lines * 28 + 30) / 60)
+exe '2resize ' . ((&lines * 33 + 32) / 65)
 exe 'vert 2resize ' . ((&columns * 94 + 157) / 315)
 exe 'vert 3resize ' . ((&columns * 220 + 157) / 315)
 argglobal
@@ -84,11 +84,11 @@ silent! normal! zE
 10,79fold
 10
 normal! zc
-let s:l = 80 - ((0 * winheight(0) + 14) / 29)
+let s:l = 81 - ((1 * winheight(0) + 14) / 29)
 if s:l < 1 | let s:l = 1 | endif
 exe s:l
 normal! zt
-80
+81
 normal! 0
 wincmd w
 argglobal
@@ -102,12 +102,12 @@ setlocal fml=1
 setlocal fdn=20
 setlocal fen
 silent! normal! zE
-let s:l = 708 - ((11 * winheight(0) + 14) / 28)
+let s:l = 392 - ((12 * winheight(0) + 16) / 33)
 if s:l < 1 | let s:l = 1 | endif
 exe s:l
 normal! zt
-708
-normal! 010|
+392
+normal! 07|
 wincmd w
 argglobal
 if bufexists("combination.tex") | buffer combination.tex | else | edit combination.tex | endif
@@ -120,17 +120,17 @@ setlocal fml=1
 setlocal fdn=20
 setlocal fen
 silent! normal! zE
-let s:l = 36 - ((35 * winheight(0) + 29) / 58)
+let s:l = 124 - ((42 * winheight(0) + 31) / 63)
 if s:l < 1 | let s:l = 1 | endif
 exe s:l
 normal! zt
-36
-normal! 0
+124
+normal! 046|
 wincmd w
 3wincmd w
-exe '1resize ' . ((&lines * 29 + 30) / 60)
+exe '1resize ' . ((&lines * 29 + 32) / 65)
 exe 'vert 1resize ' . ((&columns * 94 + 157) / 315)
-exe '2resize ' . ((&lines * 28 + 30) / 60)
+exe '2resize ' . ((&lines * 33 + 32) / 65)
 exe 'vert 2resize ' . ((&columns * 94 + 157) / 315)
 exe 'vert 3resize ' . ((&columns * 220 + 157) / 315)
 tabnext 1
