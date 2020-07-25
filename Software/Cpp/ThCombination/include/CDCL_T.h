@@ -41,7 +41,7 @@ class CDCL_T {
   std::ofstream & dimacsClause(std::ofstream &, z3::expr const &);
   void toDimacsFile();
 
-  z3::expr concretizeAbstraction(z3::expr const &);
+  z3::expr concretizeAbstraction(int);
 
   friend std::ostream & operator << (std::ostream &, CDCL_T const &);
 };

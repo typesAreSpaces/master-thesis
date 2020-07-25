@@ -1,4 +1,5 @@
 #include "ThCombInterpolator.h"
+#include <z3++.h>
 
 bool ThCombInterpolator::z3_const_comparator::operator() (
     z3::expr const & e1, z3::expr const & e2){
@@ -276,43 +277,78 @@ void ThCombInterpolator::partialInterpolantUnitResolution(z3::expr const & parti
   //}
 }
 
-void ThCombInterpolator::partialInterpolantNonConvex(CDCL_T & cdcl_t, PicoProofFactory const & pf, z3::expr const & formula){
-  unsigned id = 0;
-  z3::expr 
-    temp_prop = ctx.bool_val(true), 
-    predicate = ctx.bool_val(true);
+void ThCombInterpolator::partialInterpolantNonConvex(CDCL_T & cdcl_t, 
+    PicoProofFactory const & pf, z3::expr const & formula){
+
+  unsigned id        = 0;
+  z3::expr predicate = ctx.bool_val(true);
+
   for(auto const & res_proof : pf.getProofTable()){
     bool is_fact = res_proof.subproof_1 == -1 && res_proof.subproof_2 == -1;
-    if(res_proof.size() == 0 && is_fact && ++id)
+
+    // Skip element in proof table if it is not defined
+    if(res_proof.size() == 0 && is_fact) {
+      id++;
+      continue; 
+    }
+
+    std::cout << "Clause Id: " << id++;
+
+    if(is_fact){
+      std::cout << " (Fact|";
+      if(res_proof.size() == 1){
+        std::cout << "Literal): ";
+        if(res_proof[0] < 0)
+          predicate = not(cdcl_t.concretizeAbstraction(-res_proof[0]));
+        else
+          predicate = cdcl_t.concretizeAbstraction(res_proof[0]);
+
+        std::cout << "(" << predicate;
+
+        if(partial_interpolants.contains(predicate))
+          std::cout << ", interp: " << partial_interpolants.find(predicate);
+        else{
+          // TODO;
+          // This is a conflict clause that hasn't been processed!
+          // Compute conflict clause interpolant
+          std::cout << ", interp: _";
+        }
+        std::cout << ")" << std::endl;
+
+        continue;
+      }
+
+      assert(res_proof.size() > 1);
+      z3::expr_vector conflict_clauses(ctx);
+      std::cout << "Conflict Clause): ";
+      for(auto const & literal : res_proof){
+        if(literal < 0)
+          conflict_clauses.push_back(not(cdcl_t.concretizeAbstraction(-literal)));
+        else
+          conflict_clauses.push_back(cdcl_t.concretizeAbstraction(literal));
+      }
+      // TODO;
+      // Compute conflict clause interpolant
+      std::cout << z3::mk_or(conflict_clauses) << std::endl;
       continue;
-    std::cout << "Clause Id: " << id;
-    std::cout << (is_fact ? 
-        "(Fact)" : 
-        "(Derived(" + std::to_string(res_proof.subproof_1) 
-        + "," + std::to_string(res_proof.subproof_2) + "))" ) 
-      << " Literals: ";
+    }
+
+    std::cout << " (Derived(" + std::to_string(res_proof.subproof_1) 
+      + "," + std::to_string(res_proof.subproof_2) + "))";
+    z3::expr_vector conflict_clauses(ctx);
+    std::cout << " Clause: ";
     for(auto const & literal : res_proof){
-      int literal_value = literal < 0 ? -literal : literal;
-      temp_prop = ctx.
-        bool_const(
-            ("__p" + std::to_string(literal_value)).c_str()
-            );
-      predicate = literal < 0 ? 
-        not(cdcl_t.concretizeAbstraction(temp_prop)) : 
-        cdcl_t.concretizeAbstraction(temp_prop);
-      std::cout << predicate << " ";
+      if(literal < 0)
+        conflict_clauses.push_back(not(cdcl_t.concretizeAbstraction(-literal)));
+      else
+        conflict_clauses.push_back(cdcl_t.concretizeAbstraction(literal));
     }
-    if(!is_fact){
-      assert(res_proof.pivot > 0);
-      temp_prop = ctx.
-        bool_const(
-            ("__p" + std::to_string(res_proof.pivot)).c_str()
-            );
-      predicate = cdcl_t.concretizeAbstraction(temp_prop);
-      std::cout << " Pivot: " << predicate;
-    }
-    std::cout << std::endl;
-    ++id;
+    // TODO;
+    // Compute resolution interpolant
+    std::cout << z3::mk_or(conflict_clauses) << " ";
+    assert(res_proof.pivot > 0);
+    predicate = cdcl_t.concretizeAbstraction(res_proof.pivot);
+    std::cout << " Pivot: " << predicate << std::endl;
   }
 }
 
