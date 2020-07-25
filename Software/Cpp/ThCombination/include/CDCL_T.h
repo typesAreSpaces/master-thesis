@@ -7,6 +7,7 @@
 #include <z3++.h>
 
 class CDCL_T {
+
   unsigned abstraction_fresh_index;
   z3::context & ctx;
   // The following encodes a cnf
@@ -39,6 +40,8 @@ class CDCL_T {
   std::ofstream & dimacsLit(std::ofstream &, z3::expr const &);
   std::ofstream & dimacsClause(std::ofstream &, z3::expr const &);
   void toDimacsFile();
+
+  z3::expr concretizeAbstraction(z3::expr const &);
 
   friend std::ostream & operator << (std::ostream &, CDCL_T const &);
 };

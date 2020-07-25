@@ -1,4 +1,5 @@
 #include "PicoSATProofFactory.h"
+#include <string>
 
 PicoProofFactory::PicoResolutionProof::PicoResolutionProof() : 
   pivot(0), subproof_1(-1), subproof_2(-1)
@@ -67,6 +68,10 @@ void PicoProofFactory::PicoResolutionProof::updatePivot(PicoProofFactory const &
       return;
     }
   throw "Problem @ PicoProofFactory::PicoResolutionProof::updatePivot. Pivot not found";
+}
+
+std::vector<PicoProofFactory::PicoResolutionProof> PicoProofFactory::getProofTable() const {
+  return proof_table;
 }
 
 std::ostream & operator << (std::ostream & os, PicoProofFactory const & p){

@@ -22,33 +22,43 @@ ThCombInterpolator::ThCombInterpolator(
   std::cout << shared_variables << std::endl;
 #endif
 
-  for(auto const & form : part_a.getOctComponent())
+  for(auto const & form : part_a.getOctComponent()){
     oct_solver.add(form);
-  for(auto const & form : part_b.getOctComponent())
+    partial_interpolants.insert(form, ctx.bool_val(false));
+  }
+  for(auto const & form : part_b.getOctComponent()){
     oct_solver.add(form);
-  for(auto const & form : part_a.getEufComponent())
+    partial_interpolants.insert(form, ctx.bool_val(true));
+  }
+  for(auto const & form : part_a.getEufComponent()){
     euf_solver.add(form);
-  for(auto const & form : part_b.getEufComponent())
+    partial_interpolants.insert(form, ctx.bool_val(false));
+
+  }
+  for(auto const & form : part_b.getEufComponent()){
     euf_solver.add(form);
+    partial_interpolants.insert(form, ctx.bool_val(true));
+  }
 
   // Find theory that unsat by passing 
   // disjuntions of shared equalities
   DisjEqsPropagator phi(shared_variables);
   auto current_disj_eqs = phi.begin();
 
-  // Commet: Z3 simplies formulas while checking
-  // for consistency
 
   while(!current_disj_eqs.isLast()){
-#if _DEBUG_TH_COMB_
-    std::cout << "(inside main loop) current disj eqs" << std::endl;
-    std::cout << *current_disj_eqs << std::endl;
-#endif
+    auto current_disj_eqs_form = *current_disj_eqs;
     oct_solver.push();
     if(oct_solver.check() == z3::unsat){
       std::cout << "OCT solver found a contradiction" << std::endl;
       std::cout << oct_solver.assertions() << std::endl;
+      // ----------------------------------------------------
       // TODO: compute final interpolant
+      PicoProofFactory resolution_proof = PicoProofFactory();
+      //std::cout << resolution_proof << std::endl;
+
+      // TODO: keep working here!
+      // ----------------------------------------------------
       return;
     }
     oct_solver.pop();
@@ -56,16 +66,22 @@ ThCombInterpolator::ThCombInterpolator(
     if(euf_solver.check() == z3::unsat){
       std::cout << "EUF solver found a contradiction" << std::endl;
       std::cout << euf_solver.assertions() << std::endl;
+      // ----------------------------------------------------
       // TODO: compute final interpolant
+      PicoProofFactory resolution_proof = PicoProofFactory();
+      //std::cout << resolution_proof << std::endl;
+
+      // TODO: keep working here!
+      // ----------------------------------------------------
       return;
     }
     euf_solver.pop();
 
     euf_solver.push();
-    euf_solver.add(not(*current_disj_eqs));
+    euf_solver.add(not(current_disj_eqs_form));
     if(euf_solver.check() == z3::unsat){
       oct_solver.push();
-      oct_solver.add(not(*current_disj_eqs));
+      oct_solver.add(not(current_disj_eqs_form));
       if(oct_solver.check() == z3::unsat){
         euf_solver.pop();
         oct_solver.pop();
@@ -76,41 +92,74 @@ ThCombInterpolator::ThCombInterpolator(
       oct_solver.pop();
       // ---------------------------------------------------
       // TODO: compute partial interpolants!
-      std::cout << "Hey 1" << std::endl;
+      std::cout << "Disjunction implied in EUF: "
+        << current_disj_eqs_form
+        << std::endl;
+      
       z3::expr_vector euf_assertions(ctx);
       for(auto const & assertion : euf_solver.assertions())
         euf_assertions.push_back(assertion);
-      euf_assertions.push_back(not(*current_disj_eqs));
+      if(current_disj_eqs_form.decl().decl_kind() == Z3_OP_OR){
+        unsigned num_arg_disj = current_disj_eqs_form.num_args();
+        for(unsigned _i = 0; _i < num_arg_disj; ++_i)
+          euf_assertions.push_back(
+              not(current_disj_eqs_form.arg(_i)));
+      }
+      else{
+        assert(current_disj_eqs_form.decl().decl_kind() == Z3_OP_EQ);
+        euf_assertions.push_back(not(current_disj_eqs_form));
+      }
+      //euf_assertions.push_back(not(current_disj_eqs_form));
+
       CDCL_T cdcl_euf(euf_assertions);
       cdcl_euf.toDimacsFile();
+      
       PicoProofFactory resolution_proof = PicoProofFactory();
-      std::cout << resolution_proof << std::endl;
+      partialInterpolantNonConvex(cdcl_euf, resolution_proof, current_disj_eqs_form);
+
       // TODO: keep working here!
       // ---------------------------------------------------
-      oct_solver.add(*current_disj_eqs);
+      oct_solver.add(current_disj_eqs_form);
       current_disj_eqs = phi.begin();
       continue;
     }
 
     oct_solver.push();
-    oct_solver.add(not(*current_disj_eqs));
+    oct_solver.add(not(current_disj_eqs_form));
     if(oct_solver.check() == z3::unsat){
       euf_solver.pop();
       oct_solver.pop();
       // ---------------------------------------------------
       // TODO: compute partial interpolants!
-      std::cout << "Hey 2" << std::endl;
+      std::cout << "Disjunction implied in OCT: "
+        << current_disj_eqs_form
+        << std::endl;
+
       z3::expr_vector oct_assertions(ctx);
       for(auto const & assertion : oct_solver.assertions())
         oct_assertions.push_back(assertion);
-      oct_assertions.push_back(not(*current_disj_eqs));
+      if(current_disj_eqs_form.decl().decl_kind() == Z3_OP_OR){
+        unsigned num_arg_disj = current_disj_eqs_form.num_args();
+        for(unsigned _i = 0; _i < num_arg_disj; ++_i)
+          oct_assertions.push_back(
+              not(current_disj_eqs_form.arg(_i)));
+      }
+      else{
+        assert(current_disj_eqs_form.decl().decl_kind() == Z3_OP_EQ);
+        oct_assertions.push_back(not(current_disj_eqs_form));
+      }
+      //oct_assertions.push_back(not(current_disj_eqs_form));
+
       CDCL_T cdcl_oct(oct_assertions);
       cdcl_oct.toDimacsFile();
+
       PicoProofFactory resolution_proof = PicoProofFactory();
-      std::cout << resolution_proof << std::endl;
+      partialInterpolantNonConvex(cdcl_oct, resolution_proof, current_disj_eqs_form);
+
       // TODO: keep working here!
       // ---------------------------------------------------
-      euf_solver.add(*current_disj_eqs);
+
+      euf_solver.add(current_disj_eqs_form);
       current_disj_eqs = phi.begin();
       continue;
     }
@@ -206,26 +255,68 @@ void ThCombInterpolator::checkImpliedEqualities(z3::expr_vector & terms, z3::sol
   }
 }
 
-z3::expr ThCombInterpolator::partialInterpolantConvex(){
-  return ctx.bool_val(true);
+void ThCombInterpolator::partialInterpolantConvex(){
+  //return ctx.bool_val(true);
 }
 
-z3::expr ThCombInterpolator::partialInterpolantConflictClause(){
-  return ctx.bool_val(true);
+void ThCombInterpolator::partialInterpolantConflictClause(){
+  //return ctx.bool_val(true);
 }
 
-z3::expr ThCombInterpolator::partialInterpolantUnitResolution(z3::expr const & partial_c1, z3::expr const & x){
+void ThCombInterpolator::partialInterpolantUnitResolution(z3::expr const & partial_c1, z3::expr const & x){
   unsigned temp_size = x.num_args();
   z3::expr partial_x = partial_interpolants.find(x.arg(temp_size - 1));
-  if(x.is_common())
-    return ((x || partial_c1) && (not(x) || partial_x));
-  else if(x.is_a_pure()){
-    return (partial_c1 || partial_x);
-  }
-  else{
-    return (partial_c1 && partial_x);
+  //if(x.is_common())
+    //return ((x || partial_c1) && (not(x) || partial_x));
+  //else if(x.is_a_pure()){
+    //return (partial_c1 || partial_x);
+  //}
+  //else{
+    //return (partial_c1 && partial_x);
+  //}
+}
+
+void ThCombInterpolator::partialInterpolantNonConvex(CDCL_T & cdcl_t, PicoProofFactory const & pf, z3::expr const & formula){
+  unsigned id = 0;
+  z3::expr 
+    temp_prop = ctx.bool_val(true), 
+    predicate = ctx.bool_val(true);
+  for(auto const & res_proof : pf.getProofTable()){
+    bool is_fact = res_proof.subproof_1 == -1 && res_proof.subproof_2 == -1;
+    if(res_proof.size() == 0 && is_fact && ++id)
+      continue;
+    std::cout << "Clause Id: " << id;
+    std::cout << (is_fact ? 
+        "(Fact)" : 
+        "(Derived(" + std::to_string(res_proof.subproof_1) 
+        + "," + std::to_string(res_proof.subproof_2) + "))" ) 
+      << " Literals: ";
+    for(auto const & literal : res_proof){
+      int literal_value = literal < 0 ? -literal : literal;
+      temp_prop = ctx.
+        bool_const(
+            ("__p" + std::to_string(literal_value)).c_str()
+            );
+      predicate = literal < 0 ? 
+        not(cdcl_t.concretizeAbstraction(temp_prop)) : 
+        cdcl_t.concretizeAbstraction(temp_prop);
+      std::cout << predicate << " ";
+    }
+    if(!is_fact){
+      assert(res_proof.pivot > 0);
+      temp_prop = ctx.
+        bool_const(
+            ("__p" + std::to_string(res_proof.pivot)).c_str()
+            );
+      predicate = cdcl_t.concretizeAbstraction(temp_prop);
+      std::cout << " Pivot: " << predicate;
+    }
+    std::cout << std::endl;
+    ++id;
   }
 }
+
+
 
 void ThCombInterpolator::getInterpolant(){
 }

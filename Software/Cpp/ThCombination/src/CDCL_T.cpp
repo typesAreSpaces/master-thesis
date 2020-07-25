@@ -207,6 +207,10 @@ void CDCL_T::toDimacsFile(){
   return;
 }
 
+z3::expr CDCL_T::concretizeAbstraction(z3::expr const & abstraction){
+  return concretes.find(abstraction);
+}
+
 std::ostream & operator << (std::ostream & os, CDCL_T const & cdcl){
   return os;
 }

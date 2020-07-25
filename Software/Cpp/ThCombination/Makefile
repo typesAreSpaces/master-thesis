@@ -90,4 +90,4 @@ clean_proof:
 
 .PHONY: clean
 clean:
-	rm -rf $(ODIR)/*
+	rm -rf $(ODIR)/* proof proof-temp file.cnf
