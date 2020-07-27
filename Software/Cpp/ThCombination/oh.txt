@@ -1,0 +1,62 @@
+g++ -g -c -o ./tests/basic_test.o -I./src -I./include -std=c++11 -Wall -DDISJ_EQS_PROPAGATOR_NO_AB_MIXED_EQS -DADD_COMMON_PREFIX ./tests/basic_test.cpp
+g++ -g -o tests/basic_test  ./obj/Bound.o  ./obj/Bounds.o  ./obj/CDCL_T.o  ./obj/CongruenceClosure.o  ./obj/CongruenceClosureDST.o  ./obj/CongruenceClosureExplain.o  ./obj/CongruenceClosureNO.o  ./obj/CurryNode.o  ./obj/DisjEqsPropagator.o  ./obj/EUFInterpolant-conditionalEliminationEqs.o  ./obj/EUFInterpolant.o  ./obj/EUFInterpolantWithExpressions.o  ./obj/EUFInterpolantWithUncomSymbols.o  ./obj/Explanation.o  ./obj/FactoryCurryNodes.o  ./obj/HornClause.o  ./obj/HornClauses.o  ./obj/Hornsat.o  ./obj/Input.o  ./obj/Octagon.o  ./obj/OctagonInterpolant.o  ./obj/OctagonInterpolantWithExpressions.o  ./obj/OctagonInterpolantWithUncomSymbols.o  ./obj/OctagonParser.o  ./obj/PicoSATProofFactory.o  ./obj/ProofFactory.o  ./obj/Purifier.o  ./obj/Rename.o  ./obj/RenameWithExpressions.o  ./obj/RenameWithUncomSymbols.o  ./obj/ThCombInterpolator.o  ./obj/ThCombInterpolatorWithExpressions.o  ./obj/UnionFind.o  ./obj/UnionFindExplain.o  ./obj/Util.o  ./obj/VarPositions.o  ./obj/Z3Subterms.o /home/jose/Documents/GithubProjects/z3__/build/libz3.so  ./tests/basic_test.o -lpthread -Wall
+./tests/basic_test
+(= (+ c_euf_2 c_x2) c_oct_1)
+(= (+ c_euf_4 c_y2) c_oct_3)
+(<= c_y1 c_x1)
+(<= c_x1 c_y1)
+(< c_x3 c_y3)
+(= c_oct_1 c_x3)
+(= (a_f c_x1) c_euf_2)
+(= c_y3 c_oct_3)
+(= (a_f c_y1) c_euf_4)
+(= c_x2 (b_g b_b))
+(= c_y2 (b_g b_b))
+Disjunction implied in EUF: (= c_x3 c_oct_1)
+Clause Id: 1 (Fact) Predicate: (= c_oct_1 c_x3) Interpolant(old): false
+Clause Id: 7 (Fact) Predicate: (not (= c_x3 c_oct_1)) Interpolant(new): false
+Clause Id: 8 (Conflict Clause) Predicate: (or (not (= c_oct_1 c_x3)) (= c_x3 c_oct_1)) Interpolant(new): true
+Clause Id: 9 (Derived(1,8)) Predicate: (= c_x3 c_oct_1) Pivot: (= c_oct_1 c_x3) Interpolant(new): false
+Clause Id: 10 (Derived(9,7)) Predicate: false Pivot: (= c_x3 c_oct_1) Interpolant(new): false
+Disjunction implied in EUF: (= c_x2 c_y2)
+Clause Id: 5 (Fact) Predicate: (= c_x2 (b_g b_b)) Interpolant(old): true
+Clause Id: 6 (Fact) Predicate: (= c_y2 (b_g b_b)) Interpolant(old): true
+Clause Id: 7 (Fact) Predicate: (not (= c_x2 c_y2)) Interpolant(new): false
+Clause Id: 8 (Conflict Clause) Predicate: (or (not (= c_x2 (b_g b_b))) (not (= c_y2 (b_g b_b))) (= c_x2 c_y2)) Interpolant(new): true
+Clause Id: 9 (Derived(5,8)) Predicate: (or (not (= c_y2 (b_g b_b))) (= c_x2 c_y2)) Pivot: (= c_x2 (b_g b_b)) Interpolant(new): true
+Clause Id: 10 (Derived(9,6)) Predicate: (= c_x2 c_y2) Pivot: (= c_y2 (b_g b_b)) Interpolant(new): true
+Clause Id: 11 (Derived(10,7)) Predicate: false Pivot: (= c_x2 c_y2) Interpolant(new): true
+Disjunction implied in OCT: (= c_x1 c_y1)
+Clause Id: 3 (Fact) Predicate: (<= c_y1 c_x1) Interpolant(old): false
+Clause Id: 4 (Fact) Predicate: (<= c_x1 c_y1) Interpolant(old): true
+Clause Id: 8 (Fact) Predicate: (not (= c_x1 c_y1)) Interpolant(new): false
+Clause Id: 9 (Conflict Clause) Predicate: (or (not (<= c_y1 c_x1)) (not (<= c_x1 c_y1)) (= c_x1 c_y1)) Interpolant(new): true
+Clause Id: 10 (Derived(3,9)) Predicate: (or (not (<= c_x1 c_y1)) (= c_x1 c_y1)) Pivot: (<= c_y1 c_x1) Interpolant(new): false
+Clause Id: 11 (Derived(10,4)) Predicate: (= c_x1 c_y1) Pivot: (<= c_x1 c_y1) Interpolant(new): false
+Clause Id: 12 (Derived(11,8)) Predicate: false Pivot: (= c_x1 c_y1) Interpolant(new): false
+Disjunction implied in EUF: (= c_y3 c_oct_3)
+Disjunction implied in EUF: (= c_euf_2 c_euf_4)
+Clause Id: 2 (Fact) Predicate: (= (a_f c_x1) c_euf_2) Interpolant(old): false
+Clause Id: 4 (Fact) Predicate: (= (a_f c_y1) c_euf_4) Interpolant(old): false
+Clause Id: 7 (Fact) Predicate: (= c_x1 c_y1) Interpolant(old): false
+Clause Id: 8 (Fact) Predicate: (not (= c_euf_2 c_euf_4)) Interpolant(new): false
+Clause Id: 9 (Conflict Clause) Predicate: (or (not (= (a_f c_x1) c_euf_2))
+    (not (= (a_f c_y1) c_euf_4))
+    (not (= c_x1 c_y1))
+    (= c_euf_2 c_euf_4)) Interpolant(new): true
+Clause Id: 10 (Derived(2,9)) Predicate: (or (not (= (a_f c_y1) c_euf_4)) (not (= c_x1 c_y1)) (= c_euf_2 c_euf_4)) Pivot: (= (a_f c_x1) c_euf_2) Interpolant(new): false
+Clause Id: 11 (Derived(10,4)) Predicate: (or (= c_euf_2 c_euf_4) (not (= c_x1 c_y1))) Pivot: (= (a_f c_y1) c_euf_4) Interpolant(new): false
+Clause Id: 12 (Derived(11,7)) Predicate: (= c_euf_2 c_euf_4) Pivot: (= c_x1 c_y1) Interpolant(new): false
+Clause Id: 13 (Derived(12,8)) Predicate: false Pivot: (= c_euf_2 c_euf_4) Interpolant(new): false
+OCT solver found a contradiction
+(ast-vector
+  (= (+ c_euf_2 c_x2) c_oct_1)
+  (= (+ c_euf_4 c_y2) c_oct_3)
+  (<= c_y1 c_x1)
+  (<= c_x1 c_y1)
+  (< c_x3 c_y3)
+  (= c_x3 c_oct_1)
+  (= c_x2 c_y2)
+  (= c_y3 c_oct_3)
+  (= c_euf_2 c_euf_4))
+rm -rf tests/*.o tests/basic_test
