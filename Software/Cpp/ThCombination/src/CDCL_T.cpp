@@ -7,6 +7,7 @@ CDCL_T::CDCL_T(z3::expr_vector const & formulas) :
   abstractions(ctx), concretes(ctx),
   abstract_conflict_clauses(ctx)
 {
+  assert(strlen(PREFIX_PROP) == PREFIX_PROP_LEN);
 #if _DEBUG_CDCL_T_
   std::cout << "Original formulas" << std::endl;
   std::cout << input << std::endl;
@@ -39,7 +40,7 @@ CDCL_T::CDCL_T(z3::expr_vector const & formulas) :
 z3::expr CDCL_T::abstract_atom(z3::expr const & atom){
   if(abstractions.contains(atom))
     return abstractions.find(atom);
-  z3::expr abstract_atom = ctx.bool_const(("__p" + std::to_string(abstraction_fresh_index++)).c_str());
+  z3::expr abstract_atom = PREFIX_PROP_LIT(abstraction_fresh_index++);
   abstractions.insert(atom, abstract_atom);
   concretes.insert(abstract_atom, atom);
   return abstract_atom;
@@ -151,15 +152,11 @@ z3::expr_vector const CDCL_T::getConflictClauses() const {
 std::ofstream & CDCL_T::dimacsLit(std::ofstream & file, z3::expr const & abstract_lit){
   if(abstract_lit.is_not()){
     auto const & abstract_name = abstract_lit.arg(0).decl().name().str();
-    file << "-" 
-      << (unsigned)std::stol(abstract_name.substr(3, abstract_name.size() - 1)) 
-      << " ";
+    file << "-" << PROP2LIT(abstract_name) << " ";
     return file;
   }
   auto const & abstract_name = abstract_lit.decl().name().str();
-  file 
-    << (unsigned)std::stol(abstract_name.substr(3, abstract_name.size() - 1)) 
-    << " ";
+  file << PROP2LIT(abstract_name) << " ";
   return file;
 }
 
@@ -191,25 +188,28 @@ void CDCL_T::toDimacsFile(){
   out << "p cnf " 
     << (abstraction_fresh_index-1) << " " 
     << input.size() + abstract_conflict_clauses.size() << std::endl;  
+  // Facts
   for(auto const & abstract_clause : abstract_clauses(input)){
 #if _DEBUG_CDCL_T_
-    std::cout << abstract_clause << std::endl;
+    std::cout << "Fact " << abstract_clause << std::endl;
 #endif
     dimacsClause(out, abstract_clause) << "0" << std::endl;
   }
+  // Conflicts
   for(auto const & clause : abstract_conflict_clauses){
 #if _DEBUG_CDCL_T_
-    std::cout << clause << std::endl;
+    std::cout << "Conflict " << clause << std::endl;
 #endif
     dimacsClause(out, clause) << "0" << std::endl;
   }
   out.close();
+
   return;
 }
 
 z3::expr CDCL_T::concretizeAbstraction(int literal){
   assert(literal > 0);
-  return concretes.find(ctx.bool_const(("__p" + std::to_string(literal)).c_str()));
+  return concretes.find(PREFIX_PROP_LIT(literal));
 }
 
 std::ostream & operator << (std::ostream & os, CDCL_T const & cdcl){

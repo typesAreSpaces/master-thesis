@@ -26,26 +26,28 @@ ThCombInterpolator::ThCombInterpolator(
   for(auto const & form : part_a.getOctComponent()){
     oct_solver.add(form);
     partial_interpolants.insert(form, ctx.bool_val(false));
+    std::cout << form << std::endl;
   }
   for(auto const & form : part_b.getOctComponent()){
     oct_solver.add(form);
     partial_interpolants.insert(form, ctx.bool_val(true));
+    std::cout << form << std::endl;
   }
   for(auto const & form : part_a.getEufComponent()){
     euf_solver.add(form);
     partial_interpolants.insert(form, ctx.bool_val(false));
-
+    std::cout << form << std::endl;
   }
   for(auto const & form : part_b.getEufComponent()){
     euf_solver.add(form);
     partial_interpolants.insert(form, ctx.bool_val(true));
+    std::cout << form << std::endl;
   }
 
   // Find theory that unsat by passing 
   // disjuntions of shared equalities
   DisjEqsPropagator phi(shared_variables);
   auto current_disj_eqs = phi.begin();
-
 
   while(!current_disj_eqs.isLast()){
     auto current_disj_eqs_form = *current_disj_eqs;
@@ -97,9 +99,12 @@ ThCombInterpolator::ThCombInterpolator(
         << current_disj_eqs_form
         << std::endl;
       
+      // These assertions include the original assertions
       z3::expr_vector euf_assertions(ctx);
       for(auto const & assertion : euf_solver.assertions())
         euf_assertions.push_back(assertion);
+      // and the negations of each disjunct in current_disj_eqs_form
+      // as a conjunct
       if(current_disj_eqs_form.decl().decl_kind() == Z3_OP_OR){
         unsigned num_arg_disj = current_disj_eqs_form.num_args();
         for(unsigned _i = 0; _i < num_arg_disj; ++_i)
@@ -110,13 +115,15 @@ ThCombInterpolator::ThCombInterpolator(
         assert(current_disj_eqs_form.decl().decl_kind() == Z3_OP_EQ);
         euf_assertions.push_back(not(current_disj_eqs_form));
       }
-      //euf_assertions.push_back(not(current_disj_eqs_form));
 
       CDCL_T cdcl_euf(euf_assertions);
       cdcl_euf.toDimacsFile();
-      
       PicoProofFactory resolution_proof = PicoProofFactory();
-      partialInterpolantNonConvex(cdcl_euf, resolution_proof, current_disj_eqs_form);
+      partialInterpolantNonConvex(
+          cdcl_euf, 
+          resolution_proof, 
+          current_disj_eqs_form, 
+          euf_assertions.size());
 
       // TODO: keep working here!
       // ---------------------------------------------------
@@ -136,9 +143,12 @@ ThCombInterpolator::ThCombInterpolator(
         << current_disj_eqs_form
         << std::endl;
 
+      // These assertions include the original assertions
       z3::expr_vector oct_assertions(ctx);
       for(auto const & assertion : oct_solver.assertions())
         oct_assertions.push_back(assertion);
+      // and the negations of each disjunct in current_disj_eqs_form
+      // as a conjunct
       if(current_disj_eqs_form.decl().decl_kind() == Z3_OP_OR){
         unsigned num_arg_disj = current_disj_eqs_form.num_args();
         for(unsigned _i = 0; _i < num_arg_disj; ++_i)
@@ -149,13 +159,15 @@ ThCombInterpolator::ThCombInterpolator(
         assert(current_disj_eqs_form.decl().decl_kind() == Z3_OP_EQ);
         oct_assertions.push_back(not(current_disj_eqs_form));
       }
-      //oct_assertions.push_back(not(current_disj_eqs_form));
 
       CDCL_T cdcl_oct(oct_assertions);
       cdcl_oct.toDimacsFile();
-
       PicoProofFactory resolution_proof = PicoProofFactory();
-      partialInterpolantNonConvex(cdcl_oct, resolution_proof, current_disj_eqs_form);
+      partialInterpolantNonConvex(
+          cdcl_oct, 
+          resolution_proof, 
+          current_disj_eqs_form,
+          oct_assertions.size());
 
       // TODO: keep working here!
       // ---------------------------------------------------
@@ -260,8 +272,8 @@ void ThCombInterpolator::partialInterpolantConvex(){
   //return ctx.bool_val(true);
 }
 
-void ThCombInterpolator::partialInterpolantConflictClause(){
-  //return ctx.bool_val(true);
+void ThCombInterpolator::partialInterpolantConflictClause(z3::expr_vector const & assertions, z3::expr const & formula){
+  return;
 }
 
 void ThCombInterpolator::partialInterpolantUnitResolution(z3::expr const & partial_c1, z3::expr const & x){
@@ -278,8 +290,10 @@ void ThCombInterpolator::partialInterpolantUnitResolution(z3::expr const & parti
 }
 
 void ThCombInterpolator::partialInterpolantNonConvex(CDCL_T & cdcl_t, 
-    PicoProofFactory const & pf, z3::expr const & formula){
+    PicoProofFactory const & pf, z3::expr const & formula, 
+    unsigned original_num_facts){
 
+  z3::expr_map local_partial_interp(ctx);
   unsigned id        = 0;
   z3::expr predicate = ctx.bool_val(true);
 
@@ -292,63 +306,134 @@ void ThCombInterpolator::partialInterpolantNonConvex(CDCL_T & cdcl_t,
       continue; 
     }
 
-    std::cout << "Clause Id: " << id++;
+    std::cout << "Clause Id: " << id;
 
     if(is_fact){
-      std::cout << " (Fact|";
-      if(res_proof.size() == 1){
-        std::cout << "Literal): ";
-        if(res_proof[0] < 0)
-          predicate = not(cdcl_t.concretizeAbstraction(-res_proof[0]));
-        else
-          predicate = cdcl_t.concretizeAbstraction(res_proof[0]);
+      if(id <= original_num_facts){
+        std::cout << " (Fact) ";
 
-        std::cout << "(" << predicate;
-
-        if(partial_interpolants.contains(predicate))
-          std::cout << ", interp: " << partial_interpolants.find(predicate);
-        else{
-          // TODO;
-          // This is a conflict clause that hasn't been processed!
-          // Compute conflict clause interpolant
-          std::cout << ", interp: _";
+        if(res_proof.size() == 1){
+          if(res_proof[0] < 0)
+            predicate = not(cdcl_t.concretizeAbstraction(-res_proof[0]));
+          else
+            predicate = cdcl_t.concretizeAbstraction(res_proof[0]);
         }
-        std::cout << ")" << std::endl;
+        else{
+          assert(res_proof.size() > 1);
+          z3::expr_vector conflict_clauses(ctx);
+          for(auto const & literal : res_proof){
+            if(literal < 0)
+              conflict_clauses.push_back(not(cdcl_t.concretizeAbstraction(-literal)));
+            else
+              conflict_clauses.push_back(cdcl_t.concretizeAbstraction(literal));
+          }
+          predicate = z3::mk_or(conflict_clauses);
+        }
 
-        continue;
+        //assert(partial_interpolants.contains(predicate));
+        std::cout << "Predicate: " << predicate << std::endl;
+          //<< " Interpolant: " << partial_interpolants.find(predicate) << std::endl;
       }
+      else{
+        std::cout << " (Conflict Clause) ";
 
-      assert(res_proof.size() > 1);
-      z3::expr_vector conflict_clauses(ctx);
-      std::cout << "Conflict Clause): ";
-      for(auto const & literal : res_proof){
-        if(literal < 0)
-          conflict_clauses.push_back(not(cdcl_t.concretizeAbstraction(-literal)));
-        else
-          conflict_clauses.push_back(cdcl_t.concretizeAbstraction(literal));
+        if(res_proof.size() == 1){
+          if(res_proof[0] < 0)
+            predicate = not(cdcl_t.concretizeAbstraction(-res_proof[0]));
+          else
+            predicate = cdcl_t.concretizeAbstraction(res_proof[0]);
+        }
+        else{
+          assert(res_proof.size() > 1);
+          z3::expr_vector conflict_clauses(ctx);
+          for(auto const & literal : res_proof){
+            if(literal < 0)
+              conflict_clauses.push_back(not(cdcl_t.concretizeAbstraction(-literal)));
+            else
+              conflict_clauses.push_back(cdcl_t.concretizeAbstraction(literal));
+          }
+          predicate = z3::mk_or(conflict_clauses);
+        }
+
+        std::cout << "Predicate: " << predicate << std::endl;
       }
-      // TODO;
-      // Compute conflict clause interpolant
-      std::cout << z3::mk_or(conflict_clauses) << std::endl;
+      //std::cout << " (Fact|";
+      //if(res_proof.size() == 1){
+        //if(res_proof[0] < 0)
+          //predicate = not(cdcl_t.concretizeAbstraction(-res_proof[0]));
+        //else
+          //predicate = cdcl_t.concretizeAbstraction(res_proof[0]);
+
+        //if(partial_interpolants.contains(predicate)){
+          //std::cout << "Literal): " << predicate 
+            //<< " Interpolant: " << partial_interpolants.find(predicate) << std::endl;
+          //local_partial_interp.insert(predicate, partial_interpolants.find(predicate));
+        //}
+        //else{
+          //std::cout << "Conflict Clause): "
+            //<< predicate
+          //// TODO;
+          //// This is a conflict clause that hasn't been processed!
+          //// Compute conflict clause interpolant
+            //<< " Interpolant: ???" << std::endl;
+          ////partialInterpolantConflictClause(, predicate);
+
+        //}
+        //continue;
+      //}
+
+      //assert(res_proof.size() > 1);
+      //z3::expr_vector conflict_clauses(ctx);
+      //for(auto const & literal : res_proof){
+        //if(literal < 0)
+          //conflict_clauses.push_back(not(cdcl_t.concretizeAbstraction(-literal)));
+        //else
+          //conflict_clauses.push_back(cdcl_t.concretizeAbstraction(literal));
+      //}
+      //predicate = z3::mk_or(conflict_clauses);
+
+      //if(partial_interpolants.contains(predicate)){
+        //std::cout << "Conflict Clause): "
+          //<< predicate
+          //<< " Interpolant: " << partial_interpolants.find(predicate) << std::endl;
+      //}
+      //else{
+        //std::cout << "Conflict Clause): "
+          //<< predicate
+          //// TODO;
+          //// Compute conflict clause interpolant
+          //<< " Interpolant: ???" << std::endl;
+      //}
+      id++;
       continue;
     }
 
-    std::cout << " (Derived(" + std::to_string(res_proof.subproof_1) 
-      + "," + std::to_string(res_proof.subproof_2) + "))";
     z3::expr_vector conflict_clauses(ctx);
-    std::cout << " Clause: ";
     for(auto const & literal : res_proof){
       if(literal < 0)
         conflict_clauses.push_back(not(cdcl_t.concretizeAbstraction(-literal)));
       else
         conflict_clauses.push_back(cdcl_t.concretizeAbstraction(literal));
     }
-    // TODO;
-    // Compute resolution interpolant
-    std::cout << z3::mk_or(conflict_clauses) << " ";
+    predicate = z3::mk_or(conflict_clauses);
+
     assert(res_proof.pivot > 0);
-    predicate = cdcl_t.concretizeAbstraction(res_proof.pivot);
-    std::cout << " Pivot: " << predicate << std::endl;
+    std::cout << " (Derived(" + std::to_string(res_proof.subproof_1) 
+        + "," + std::to_string(res_proof.subproof_2) + "))"
+        << " Predicate: "
+        << predicate
+        << " Pivot: " << cdcl_t.concretizeAbstraction(res_proof.pivot);
+
+    if(partial_interpolants.contains(predicate)){
+      std::cout << " Interpolant: " << partial_interpolants.find(predicate) << std::endl;
+    }
+    else{
+      // TODO;
+      // Compute resolution interpolant
+      std::cout << " Interpolant: ???" << std::endl;
+    }
+
+    id++;
   }
 }
 

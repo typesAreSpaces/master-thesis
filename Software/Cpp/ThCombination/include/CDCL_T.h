@@ -1,10 +1,17 @@
 #ifndef _CDCL_T_
 #define _CDCL_T_
 #define _DEBUG_CDCL_T_ 0
+#define PREFIX_PROP "c__p_"
+#define PREFIX_PROP_LIT(literal) ctx.bool_const((PREFIX_PROP + std::to_string(literal)).c_str())
+// PREFIX_PROP_LEN is the length of PREFIX_PROP
+#define PREFIX_PROP_LEN 5
+#define PROP2LIT(name) (unsigned)std::stol(name.substr(PREFIX_PROP_LEN, name.size() - 1))
 
 #include <iostream>
 #include <fstream>
 #include <z3++.h>
+#include <stdlib.h>
+#include <string.h>
 
 class CDCL_T {
 
