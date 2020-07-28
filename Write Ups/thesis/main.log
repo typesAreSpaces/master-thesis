@@ -1,9 +1,11 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.20 (TeX Live 2019/Arch Linux) (preloaded format=pdflatex 2020.5.21)  28 JUL 2020 01:10
+This is pdfTeX, Version 3.14159265-2.6-1.40.20 (TeX Live 2019/Arch Linux) (preloaded format=pdflatex 2020.5.21)  28 JUL 2020 13:14
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
-**\nonstopmode \input{main.tex}
-(./main.tex (./unmeethesis.cls
+**main.tex
+(./main.tex
+LaTeX2e <2019-10-01> patch level 1
+(./unmeethesis.cls
 Document Class: unmeethesis 1995/10/31 UNM EECE dissertation class-mod 03/27/02
 
 (/usr/share/texmf-dist/tex/latex/base/fleqn.clo
@@ -1249,18 +1251,25 @@ Package atveryend Info: Empty hook `AfterLastShipout' on input line 136.
  (./main.aux)
 Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 136.
 Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 136.
-Package rerunfilecheck Info: File `main.out' has not changed.
-(rerunfilecheck)             Checksum: D6E875903D52B1975BF22FF96DF7EC88;3302.
+
+
+Package rerunfilecheck Warning: File `main.out' has changed.
+(rerunfilecheck)                Rerun to get outlines right
+(rerunfilecheck)                or use package `bookmark'.
+
+Package rerunfilecheck Info: Checksums for `main.out':
+(rerunfilecheck)             Before: D6E875903D52B1975BF22FF96DF7EC88;3302
+(rerunfilecheck)             After:  29168C41E1102755525F2DCC3F6CAD29;3315.
 Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 136.
  ) 
 Here is how much of TeX's memory you used:
- 31266 strings out of 492167
- 581139 string characters out of 6131558
- 852876 words of memory out of 5000000
- 34946 multiletter control sequences out of 15000+600000
+ 31265 strings out of 492167
+ 581131 string characters out of 6131558
+ 852845 words of memory out of 5000000
+ 34945 multiletter control sequences out of 15000+600000
  545028 words of font info for 70 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
- 62i,10n,73p,1034b,1024s stack positions out of 5000i,500n,10000p,200000b,80000s
+ 60i,10n,71p,1013b,1024s stack positions out of 5000i,500n,10000p,200000b,80000s
 </usr/share/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx12.pfb></usr/share/
 texmf-dist/fonts/type1/public/amsfonts/cm/cmcsc10.pfb></usr/share/texmf-dist/fo
 nts/type1/public/amsfonts/cm/cmex10.pfb></usr/share/texmf-dist/fonts/type1/publ
@@ -1279,7 +1288,7 @@ re/texmf-dist/fonts/type1/public/amsfonts/cm/cmtt12.pfb></usr/share/texmf-dist/
 fonts/type1/public/amsfonts/euler/eufm10.pfb></usr/share/texmf-dist/fonts/type1
 /public/amsfonts/symbols/msam10.pfb></usr/share/texmf-dist/fonts/type1/public/a
 msfonts/symbols/msbm10.pfb>
-Output written on main.pdf (69 pages, 447343 bytes).
+Output written on main.pdf (69 pages, 447432 bytes).
 PDF statistics:
  900 PDF objects out of 1000 (max. 8388607)
  798 compressed objects within 8 object streams

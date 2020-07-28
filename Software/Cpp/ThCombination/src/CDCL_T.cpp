@@ -3,11 +3,14 @@
 CDCL_T::CDCL_T(z3::expr_vector const & formulas) :
   abstraction_fresh_index(1),
   ctx(formulas.ctx()), input(formulas),
-  prop_solver(ctx), theory_solver(ctx),
   abstractions(ctx), concretes(ctx),
-  abstract_conflict_clauses(ctx)
+  abstract_conflict_clauses(ctx),
+  prop_solver(ctx, "SAT")
 {
   assert(strlen(PREFIX_PROP) == PREFIX_PROP_LEN);
+
+  z3::solver theory_solver(ctx);
+
 #if _DEBUG_CDCL_T_
   std::cout << "Original formulas" << std::endl;
   std::cout << input << std::endl;

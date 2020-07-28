@@ -89,7 +89,8 @@ ThCombInterpolator::ThCombInterpolator(
       oct_solver.pop();
       // ---------------------------------------------------
       // TODO: compute partial interpolants!
-      std::cout << "Disjunction implied in EUF: "
+      std::cout 
+        << "Disjunction implied in EUF: "
         << current_disj_eqs_form
         << std::endl;
       
@@ -138,7 +139,8 @@ ThCombInterpolator::ThCombInterpolator(
       oct_solver.pop();
       // ---------------------------------------------------
       // TODO: compute partial interpolants!
-      std::cout << "Disjunction implied in OCT: "
+      std::cout 
+        << "Disjunction implied in OCT: "
         << current_disj_eqs_form
         << std::endl;
 
@@ -266,24 +268,28 @@ void ThCombInterpolator::checkImpliedEqualities(z3::expr_vector & terms, z3::sol
 }
 
 // TODO: implement
+void ThCombInterpolator::partialInterpolantConflict(
+    z3::expr const & predicate, 
+    z3::expr_vector const & conflict_lits, 
+    z3::expr_map & local_partial_interp, 
+    Theory th){
+
+  z3::expr_vector part_a(ctx);
+  z3::expr_vector part_b(ctx);
+  
+  switch(th){
+    case EUF:
+      //partialInterpolantConvex();
+      break;
+    case OCT:
+      //partialInterpolantConvex();
+      break;
+  }
+  local_partial_interp.insert(predicate, ctx.bool_val(true)); // WRONG
+}
+
+// TODO: implement
 void ThCombInterpolator::partialInterpolantConvex(z3::expr const & predicate, z3::expr_map & local_partial_interp, Theory th){
-
-  //z3::expr_vector part_a(ctx);
-  //z3::expr_vector part_b(ctx);
-
-  //switch(th){
-    //case EUF:
-      //local_partial_interp.insert(
-          //predicate, 
-          //z3::mk_and(EUFInterpolantWithExpressions(part_a, part_b).getInterpolant()));
-      //break;
-    //case OCT: 
-      //local_partial_interp.insert(
-          //predicate, 
-          //z3::mk_and(OctagonInterpolantWithExpressions(part_a, part_b).getInterpolant()));
-      //break;
-  //}
-
   local_partial_interp.insert(predicate, ctx.bool_val(true)); // WRONG
 }
 
@@ -307,19 +313,24 @@ void ThCombInterpolator::partialInterpolantNonConvex(CDCL_T & cdcl_t,
     }
     // -------------------------------------------------------------------------------
     // Obtain predicate
-    z3::expr_vector conflict_clauses(ctx);
+    z3::expr_vector clause_lits(ctx);
+    z3::expr_vector conflict_lits(ctx);
     for(auto const & literal : res_proof){
-      if(literal < 0)
-        conflict_clauses.push_back(not(cdcl_t.concretizeAbstraction(-literal)));
-      else
-        conflict_clauses.push_back(cdcl_t.concretizeAbstraction(literal));
+      if(literal < 0){
+        clause_lits.push_back(not(cdcl_t.concretizeAbstraction(-literal)));
+        conflict_lits.push_back(cdcl_t.concretizeAbstraction(-literal));
+      }
+      else{
+        clause_lits.push_back(cdcl_t.concretizeAbstraction(literal));
+        conflict_lits.push_back(not(cdcl_t.concretizeAbstraction(literal)));
+      }
     }
     if(res_proof.size() == 0)
       predicate = ctx.bool_val(false);
     else if(res_proof.size() == 1)
-      predicate = conflict_clauses[0];
+      predicate = clause_lits[0];
     else
-      predicate = z3::mk_or(conflict_clauses);
+      predicate = z3::mk_or(clause_lits);
     // -------------------------------------------------------------------------------
     predicates.push_back(predicate);
 
@@ -334,7 +345,7 @@ void ThCombInterpolator::partialInterpolantNonConvex(CDCL_T & cdcl_t,
         }
         else{
           // ------------------------------------------------------------
-          // Compute base case interpolant
+          // Compute local base case interpolant
           if(predicate.is_a_pure()){
             std::cout << " Interpolant(new): false" << std::endl;
             local_partial_interp.insert(predicate, ctx.bool_val(false));
@@ -353,8 +364,8 @@ void ThCombInterpolator::partialInterpolantNonConvex(CDCL_T & cdcl_t,
           local_partial_interp.insert(predicate, partial_interpolants.find(predicate));
         }
         else{
-          // Compute conflict interpolant
-          partialInterpolantConvex(predicate, local_partial_interp, th);
+          // Compute local conflict interpolant
+          partialInterpolantConflict(predicate, conflict_lits, local_partial_interp, th);
           std::cout << " Interpolant(------new): " << local_partial_interp.find(predicate) << std::endl;
         }
       }
@@ -362,7 +373,8 @@ void ThCombInterpolator::partialInterpolantNonConvex(CDCL_T & cdcl_t,
     else{
       assert(res_proof.pivot > 0);
       z3::expr pivot_form = cdcl_t.concretizeAbstraction(res_proof.pivot);
-      std::cout << " (Derived(" + std::to_string(res_proof.subproof_1) + "," + std::to_string(res_proof.subproof_2) + "))"
+      std::cout 
+        << " (Derived(" + std::to_string(res_proof.subproof_1) + "," + std::to_string(res_proof.subproof_2) + "))"
         << " Predicate: " << predicate
         << " Pivot: " << pivot_form;
 
@@ -371,7 +383,7 @@ void ThCombInterpolator::partialInterpolantNonConvex(CDCL_T & cdcl_t,
         local_partial_interp.insert(predicate, partial_interpolants.find(predicate));
       }
       else{
-        // Compute resolution interpolant
+        // Compute local resolution interpolant
         if(pivot_form.is_a_strict()){ // Pivot is A-local
           local_partial_interp.insert(predicate, 
               (local_partial_interp.find(predicates[res_proof.subproof_1]) 
@@ -394,7 +406,7 @@ void ThCombInterpolator::partialInterpolantNonConvex(CDCL_T & cdcl_t,
     id++;
   }
 
-  partial_interpolants.insert(formula, local_partial_interp.find(ctx.bool_val(false))); // Correct
+  partial_interpolants.insert(formula, local_partial_interp.find(ctx.bool_val(false)));
 }
 
 

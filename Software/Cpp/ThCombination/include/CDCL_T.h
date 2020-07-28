@@ -12,6 +12,10 @@
 #include <z3++.h>
 #include <stdlib.h>
 #include <string.h>
+#include "Theories.h"
+
+class CDCL_setup { 
+};
 
 class CDCL_T {
 
@@ -20,9 +24,6 @@ class CDCL_T {
   // The following encodes a cnf
   z3::expr_vector const & input; 
 
-  z3::solver prop_solver;
-  z3::solver theory_solver;
-  
   // abstractions : (EUF + OCT) -> propositions
   z3::expr_map abstractions;
   // concretes = abstractions^{-1}
@@ -30,6 +31,9 @@ class CDCL_T {
   
   // The following encodes a cnf
   z3::expr_vector abstract_conflict_clauses;
+
+  //z3::solver prop_solver;
+  z3::solver theory_solver;
 
   z3::expr abstract_atom(z3::expr const &);
   z3::expr abstract_lit(z3::expr const &);

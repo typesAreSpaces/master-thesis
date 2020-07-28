@@ -8,6 +8,7 @@
 #include "PicoSATProofFactory.h"
 #include "EUFInterpolantWithExpressions.h"
 #include "OctagonInterpolantWithExpressions.h"
+#include "Theories.h"
 #include <set>
 
 class ThCombInterpolator {
@@ -17,17 +18,13 @@ class ThCombInterpolator {
   };
   typedef std::set<z3::expr, z3_const_comparator> z3_expr_set;
    
-  enum Theory {
-    EUF, OCT
-  };
-
   z3::context & ctx;
 
-  Purifier      part_a;
-  Purifier      part_b;
+  Purifier part_a;
+  Purifier part_b;
 
-  z3::solver    euf_solver;
-  z3::solver    oct_solver;
+  z3::solver euf_solver;
+  z3::solver oct_solver;
 
   z3::expr_vector shared_variables;
   z3::expr_map    partial_interpolants;
@@ -37,6 +34,7 @@ class ThCombInterpolator {
 
   void checkImpliedEqualities(z3::expr_vector &, z3::solver &);
 
+  void partialInterpolantConflict(z3::expr const &, z3::expr_vector const &, z3::expr_map &, Theory); // TODO: implement, signature can be modified as needed
   void partialInterpolantConvex(z3::expr const &, z3::expr_map &, Theory); // TODO: implement, signature can be modified as needed
   void partialInterpolantNonConvex(CDCL_T &, PicoProofFactory const &, z3::expr const &, unsigned, Theory);
   
