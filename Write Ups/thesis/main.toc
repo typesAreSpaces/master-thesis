@@ -41,4 +41,7 @@
 \contentsline {section}{\numberline {5.3}Evaluation}{49}{section.5.3}% 
 \contentsline {chapter}{\numberline {6}Future Work}{50}{chapter.6}% 
 \contentsline {chapter}{Appendices}{52}{chapter*.5}% 
-\contentsline {chapter}{References}{53}{chapter*.6}% 
+\contentsline {section}{\numberline {6.1}Theorems about Interpolants}{52}{section.6.1}% 
+\contentsline {subsection}{\numberline {6.1.1}Interpolants are closed under conjunction and disjunction}{52}{subsection.6.1.1}% 
+\contentsline {subsection}{\numberline {6.1.2}Interpolants distribute over disjunctions in the A-part}{53}{subsection.6.1.2}% 
+\contentsline {chapter}{References}{55}{chapter*.6}% 

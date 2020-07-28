@@ -12,7 +12,7 @@ badd +8 abstract.tex
 badd +1 background.tex
 badd +9 preliminaries.tex
 badd +172 introduction.tex
-badd +666 references.bib
+badd +393 references.bib
 badd +338 unmeethesis.cls
 badd +32 proof_of_main_theorem_octagons.tex
 badd +42 octagonal.tex
@@ -26,7 +26,7 @@ badd +68 first_order_logic.tex
 badd +27 theories.tex
 badd +32 verification.tex
 badd +127 tools.tex
-badd +1 combination.tex
+badd +5 combination.tex
 badd +1 algpseudocode.sty
 badd +15 ~/Downloads/10.1007_978-3-540-45069-6_1.bib
 badd +102 craig_interpolation.tex
@@ -47,6 +47,7 @@ badd +3 ~/Downloads/10.1007_978-3-642-02959-2_15.bib
 badd +15 euf_theorem.tex
 badd +7 python_proof.tex
 badd +1 ~/Downloads/10.1007_978-3-642-22119-4_1.bib
+badd +110 appendices.tex
 argglobal
 %argdel
 edit main.tex
@@ -54,10 +55,6 @@ set splitbelow splitright
 wincmd _ | wincmd |
 vsplit
 1wincmd h
-wincmd _ | wincmd |
-split
-1wincmd k
-wincmd w
 wincmd w
 set nosplitbelow
 set nosplitright
@@ -66,33 +63,9 @@ set winminheight=0
 set winheight=1
 set winminwidth=0
 set winwidth=1
-exe '1resize ' . ((&lines * 29 + 32) / 65)
-exe 'vert 1resize ' . ((&columns * 94 + 157) / 315)
-exe '2resize ' . ((&lines * 33 + 32) / 65)
-exe 'vert 2resize ' . ((&columns * 94 + 157) / 315)
-exe 'vert 3resize ' . ((&columns * 220 + 157) / 315)
+exe 'vert 1resize ' . ((&columns * 157 + 157) / 315)
+exe 'vert 2resize ' . ((&columns * 157 + 157) / 315)
 argglobal
-setlocal fdm=manual
-setlocal fde=0
-setlocal fmr={{{,}}}
-setlocal fdi=#
-setlocal fdl=1
-setlocal fml=1
-setlocal fdn=20
-setlocal fen
-silent! normal! zE
-10,79fold
-10
-normal! zc
-let s:l = 81 - ((1 * winheight(0) + 14) / 29)
-if s:l < 1 | let s:l = 1 | endif
-exe s:l
-normal! zt
-81
-normal! 0
-wincmd w
-argglobal
-if bufexists("references.bib") | buffer references.bib | else | edit references.bib | endif
 setlocal fdm=manual
 setlocal fde=0
 setlocal fmr={{{,}}}
@@ -102,12 +75,13 @@ setlocal fml=1
 setlocal fdn=20
 setlocal fen
 silent! normal! zE
-let s:l = 392 - ((12 * winheight(0) + 16) / 33)
+10,79fold
+let s:l = 4 - ((3 * winheight(0) + 29) / 58)
 if s:l < 1 | let s:l = 1 | endif
 exe s:l
 normal! zt
-392
-normal! 07|
+4
+normal! 0
 wincmd w
 argglobal
 if bufexists("combination.tex") | buffer combination.tex | else | edit combination.tex | endif
@@ -120,19 +94,16 @@ setlocal fml=1
 setlocal fdn=20
 setlocal fen
 silent! normal! zE
-let s:l = 124 - ((42 * winheight(0) + 31) / 63)
+let s:l = 6 - ((5 * winheight(0) + 29) / 58)
 if s:l < 1 | let s:l = 1 | endif
 exe s:l
 normal! zt
-124
-normal! 046|
+6
+normal! 035|
 wincmd w
-3wincmd w
-exe '1resize ' . ((&lines * 29 + 32) / 65)
-exe 'vert 1resize ' . ((&columns * 94 + 157) / 315)
-exe '2resize ' . ((&lines * 33 + 32) / 65)
-exe 'vert 2resize ' . ((&columns * 94 + 157) / 315)
-exe 'vert 3resize ' . ((&columns * 220 + 157) / 315)
+2wincmd w
+exe 'vert 1resize ' . ((&columns * 157 + 157) / 315)
+exe 'vert 2resize ' . ((&columns * 157 + 157) / 315)
 tabnext 1
 if exists('s:wipebuf') && getbufvar(s:wipebuf, '&buftype') isnot# 'terminal'
   silent exe 'bwipe ' . s:wipebuf

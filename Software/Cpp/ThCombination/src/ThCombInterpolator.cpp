@@ -355,7 +355,7 @@ void ThCombInterpolator::partialInterpolantNonConvex(CDCL_T & cdcl_t,
         else{
           // Compute conflict interpolant
           partialInterpolantConvex(predicate, local_partial_interp, th);
-          std::cout << " Interpolant(new): " << local_partial_interp.find(predicate) << std::endl;
+          std::cout << " Interpolant(------new): " << local_partial_interp.find(predicate) << std::endl;
         }
       }
     }

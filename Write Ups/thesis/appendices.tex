@@ -1,6 +1,122 @@
-\chapter*{Appendices}
+\chapter*{Appendix}
 
 \addcontentsline{toc}{chapter}{Appendices}
+
+\section{Theorems about Interpolants}
+
+\subsection{Interpolants are closed under conjunction and disjunction}
+
+\begin{theorem}
+  If $I_1, I_2$ are interpolants of $\langle A, B \rangle$, then 
+  $I_1 \land I_2, I_1 \lor I_2$ are also interpolants of $\langle A, B \rangle$.
+\end{theorem}
+
+\begin{proof}
+  We notice that $vars(I_1 \land I_2)
+  \subseteq vars(A) \cap vars(B)$ and 
+  $vars(I_1 \lor I_2) \subseteq vars(A) \cap vars(B)$,
+  otherwise $I_1, I_2$ couldn't be interpolants.
+
+  Since $I_1, I_2$ are interpolants, we have that 
+  $A \vdash I_1$, $B \land I_1 \vdash \bot$ and 
+  $A \vdash I_2$, $B \land I_2 \vdash \bot$
+
+  Here are formal proofs for $A \vdash I_1 \land I_2$ and 
+  $B \land I_1 \land I_2 \vdash \bot$:
+
+  \begin{center}
+    \begin{prooftree}
+      \hypo{A}
+      \ellipsis{}{I_1}
+      \hypo{A}
+      \ellipsis{}{I_2}
+      \infer2{I_1 \land I_2}
+    \end{prooftree}
+    \qquad
+    \begin{prooftree}
+      \hypo{B \land I_1 \land I_2}
+      \infer1{B \land I_1}
+      \ellipsis{}{\bot}
+    \end{prooftree}
+  \end{center}
+
+  Here are formal proofs for $A \vdash I_1 \lor I_2$ and 
+  $B \land (I_1 \lor I_2) \vdash \bot$:
+
+  \begin{center}
+    \begin{prooftree}
+      \hypo{A}
+      \ellipsis{}{I_1}
+      \infer1{I_1 \lor I_2}
+    \end{prooftree}
+    \qquad
+    \begin{prooftree}
+      \hypo{B \land (I_1 \lor I_2)}
+      \ellipsis{*}{(B \land I_1) \lor (B \land I_2)}
+      \infer0{B \land I_1}
+      \ellipsis{}{\bot}
+      \infer0{B \land I_2}
+      \ellipsis{}{\bot}
+      \infer3{\bot}
+    \end{prooftree}
+  \end{center}
+
+  Where $*$ is any proof applying the distributivity property of the conjunction
+  symbol over the disjunction symbol.
+
+\end{proof}
+
+\subsection{Interpolants distribute over disjunctions in the A-part}
+
+\begin{theorem} \label{interp_distribute}
+  Let $\mathcal{F}_i$ be a set of formulas and $I_i$ an interpolant
+  for each $\langle A \land \mathcal{F}_i, B \rangle$ respectively.
+  Then $\bigvee_i I_i$ is an interpolant for 
+  $\langle A \land (\bigvee_i \mathcal{F}_i), B \rangle$
+\end{theorem}
+
+\begin{proof}
+  Let $A_i = A \land \mathcal{F}_i$ and $\hat{A} = A \land (\bigvee_i \mathcal{F}_i)$.
+
+  We see that $vars(I_i) \subseteq vars(A_i) \subseteq vars(\hat{A})$, hence
+  $vars(\bigvee_i I_i) = \bigcup_i vars(I_i) \subseteq \bigcup_i vars(A_i) 
+  \subseteq vars(\hat{A})$. Similarly we can prove that $vars(\bigvee_i I_i) 
+  \subseteq vars(B)$. Thus, $vars(\bigvee_i I_i) \subseteq 
+  vars(A \land (\bigvee_i \mathcal{F}_i)) \cap vars(B)$.
+
+  To prove: $\hat{A} \vdash \bigvee_i I_i$: We notice that $\hat{A} = \bigvee_i A_i$.
+  From the latter and using the generalized version of the disjunction elimination 
+  rule in logic, i.e.
+
+  \begin{prooftree}
+    \hypo{\alpha_1 \lor \dots \lor \alpha_n}
+
+    \infer0{\alpha_1}
+    \ellipsis{}{I_1}
+    \infer1[]{I_1 \lor \dots \lor I_n}
+
+    \hypo{\dots}
+
+    \infer0{\alpha_n}
+    \ellipsis{}{I_n}
+    \infer1{I_1 \lor \dots \lor I_n}
+
+    \infer4{I_1 \lor \dots \lor I_n}
+  \end{prooftree}
+
+  and distributing disjunctions over conjunctions in $\bigvee_i A_i$ the statement
+  holds.
+
+  To prove: $B \land \bigvee_i I_i \vdash \bot$: Since each $B \land I_i \vdash \bot$,
+  by using the generalized version of the disjunction elimination rule from above, the
+  result holds.
+
+  Therefore, $\bigvee_i I_i$ is an interpolant for 
+  $\langle A \land (\bigvee_i \mathcal{F}_i), B \rangle$.
+
+
+\end{proof}
+
 % Next lines duplicated from .toc file and used to create mini
 % "Appendix Table of Contents," if desired:
 % \contentsline {chapter}{\numberline {A}Proving $E=MC^2$}{4}
