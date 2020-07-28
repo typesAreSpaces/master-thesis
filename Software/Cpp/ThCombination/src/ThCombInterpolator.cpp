@@ -112,7 +112,7 @@ ThCombInterpolator::ThCombInterpolator(
       }
 
       if(!partial_interpolants.contains(current_disj_eqs_form)){
-        CDCL_T cdcl_euf(euf_assertions);
+        CDCL_T cdcl_euf(euf_assertions, EUF);
         cdcl_euf.toDimacsFile();
         PicoProofFactory resolution_proof = PicoProofFactory();
         partialInterpolantNonConvex(
@@ -163,7 +163,7 @@ ThCombInterpolator::ThCombInterpolator(
 
 
       if(!partial_interpolants.contains(current_disj_eqs_form)){
-        CDCL_T cdcl_oct(oct_assertions);
+        CDCL_T cdcl_oct(oct_assertions, OCT);
         cdcl_oct.toDimacsFile();
         PicoProofFactory resolution_proof = PicoProofFactory();
         partialInterpolantNonConvex(
@@ -283,6 +283,8 @@ void ThCombInterpolator::partialInterpolantConflict(
       break;
     case OCT:
       //partialInterpolantConvex();
+      break;
+    case ALL:
       break;
   }
   local_partial_interp.insert(predicate, ctx.bool_val(true)); // WRONG
