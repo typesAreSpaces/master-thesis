@@ -6,6 +6,7 @@ void EUFInterpolant::conditionalEliminationEqs(){
 #endif
 
   for(auto const & equation : assertions){
+    if(!equation.is_eq()) continue;
     auto const & lhs = equation.arg(0), & rhs = equation.arg(1);
 #if DEBUG_COND_ELIM_EQS
     std::cout << "--Processing this equation: " << equation << std::endl;

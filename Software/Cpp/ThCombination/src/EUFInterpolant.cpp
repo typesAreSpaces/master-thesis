@@ -12,6 +12,7 @@ EUFInterpolant::EUFInterpolant(z3::expr_vector const & assertions) :
 {        
 
   for(auto const & equation : assertions){
+    if(!equation.is_eq()) continue;
     hsat.equiv_classes.merge(equation.arg(0), equation.arg(1));
   }
 
