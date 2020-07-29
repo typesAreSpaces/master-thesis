@@ -123,8 +123,8 @@ ThCombInterpolator::ThCombInterpolator(
       }
 #if _DEBUG_TH_COMB_
       else
-        std::cout << "Partial interpolant already "
-          "computed" << std::endl;
+        std::cout 
+          << "Partial interpolant already computed" << std::endl;
 #endif
       // ---------------------------------------------------
       oct_solver.add(current_disj_eqs_form);

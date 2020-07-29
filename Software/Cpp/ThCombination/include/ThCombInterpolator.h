@@ -34,8 +34,10 @@ class ThCombInterpolator {
 
   void checkImpliedEqualities(z3::expr_vector &, z3::solver &);
 
-  void partialInterpolantConflict(z3::expr const &, z3::expr_vector const &, z3::expr_map &, Theory); // TODO: implement, signature can be modified as needed
-  void partialInterpolantConvex(z3::expr const &, z3::expr_map &, Theory); // TODO: implement, signature can be modified as needed
+  // TODO: implement, signature can be modified as needed
+  void partialInterpolantConflict(z3::expr const &, z3::expr_vector const &, z3::expr_map &, Theory); 
+  // TODO: implement, signature can be modified as needed
+  void partialInterpolantConvex(z3::expr const &, z3::expr_map &, Theory); 
   void partialInterpolantNonConvex(CDCL_T &, PicoProofFactory const &, z3::expr const &, unsigned, Theory);
   
 public:

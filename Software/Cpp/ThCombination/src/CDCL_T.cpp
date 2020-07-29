@@ -150,7 +150,7 @@ CDCL_T::CDCL_T(z3::expr_vector const & formulas, Theory th) :
   theory_solver(ctx, 
       th == EUF ? "QF_UF" : 
       (th == OCT ? "QF_LIA" : 
-       "QF_AUFLIA"))
+       "QF_UFLIA"))
 {
 #if _DEBUG_CDCL_T_
   std::cout << "Original formulas" << std::endl;
