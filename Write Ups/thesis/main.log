@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.20 (TeX Live 2019/Arch Linux) (preloaded format=pdflatex 2020.5.21)  28 JUL 2020 13:14
+This is pdfTeX, Version 3.14159265-2.6-1.40.20 (TeX Live 2019/Arch Linux) (preloaded format=pdflatex 2020.5.21)  29 JUL 2020 18:36
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -1082,7 +1082,7 @@ l.28
                                                   \fi \fi 
 l.28 
      ] [22]
-<query_screenshot.png, id=563, 893.3375pt x 746.79pt>
+<query_screenshot.png, id=564, 893.3375pt x 746.79pt>
 File: query_screenshot.png Graphic file (type png)
 <use query_screenshot.png>
 Package pdftex.def Info: query_screenshot.png  used on input line 68.
@@ -1251,15 +1251,8 @@ Package atveryend Info: Empty hook `AfterLastShipout' on input line 136.
  (./main.aux)
 Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 136.
 Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 136.
-
-
-Package rerunfilecheck Warning: File `main.out' has changed.
-(rerunfilecheck)                Rerun to get outlines right
-(rerunfilecheck)                or use package `bookmark'.
-
-Package rerunfilecheck Info: Checksums for `main.out':
-(rerunfilecheck)             Before: D6E875903D52B1975BF22FF96DF7EC88;3302
-(rerunfilecheck)             After:  29168C41E1102755525F2DCC3F6CAD29;3315.
+Package rerunfilecheck Info: File `main.out' has not changed.
+(rerunfilecheck)             Checksum: 29168C41E1102755525F2DCC3F6CAD29;3315.
 Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 136.
  ) 
 Here is how much of TeX's memory you used:
@@ -1288,10 +1281,10 @@ re/texmf-dist/fonts/type1/public/amsfonts/cm/cmtt12.pfb></usr/share/texmf-dist/
 fonts/type1/public/amsfonts/euler/eufm10.pfb></usr/share/texmf-dist/fonts/type1
 /public/amsfonts/symbols/msam10.pfb></usr/share/texmf-dist/fonts/type1/public/a
 msfonts/symbols/msbm10.pfb>
-Output written on main.pdf (69 pages, 447432 bytes).
+Output written on main.pdf (69 pages, 447431 bytes).
 PDF statistics:
- 900 PDF objects out of 1000 (max. 8388607)
- 798 compressed objects within 8 object streams
+ 901 PDF objects out of 1000 (max. 8388607)
+ 799 compressed objects within 8 object streams
  210 named destinations out of 1000 (max. 500000)
  386 words of extra memory for PDF output out of 10000 (max. 10000000)
 
