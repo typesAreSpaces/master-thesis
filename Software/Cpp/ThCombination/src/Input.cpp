@@ -3,7 +3,7 @@
 Input::Input(z3::expr_vector const & assertions) :
   original_num_terms(maxIdFromAssertions(assertions) + 1),
   ctx(assertions.ctx()), subterms(ctx), contradiction(ctx.bool_val(false)), disequalities(ctx),
-  fsym_positions(), ufe(original_num_terms), horn_clauses(ctx, ufe),
+  fsym_positions(), ufe(original_num_terms), horn_clauses(ctx, ufe, original_num_terms),
   ids_to_merge(),
   curry_decl(), factory_curry_nodes(original_num_terms, curry_decl),
   cce(

@@ -28,7 +28,7 @@ class HornClauses {
   SimplificationTable simplification_table;
   
  public:
-  HornClauses(z3::context &, UnionFindExplain &);
+  HornClauses(z3::context &, UnionFindExplain &, unsigned);
   ~HornClauses();
 
   void filterCommons();

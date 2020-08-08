@@ -1,8 +1,8 @@
 #include "HornClauses.h"
 #include <z3++.h>
 
-HornClauses::HornClauses(z3::context & ctx, UnionFindExplain & ufe) : 
-  ufe(ufe), curr_num_horn_clauses(0), max_lit_id(0),
+HornClauses::HornClauses(z3::context & ctx, UnionFindExplain & ufe, unsigned num_terms) : 
+  ufe(ufe), curr_num_horn_clauses(0), max_lit_id(num_terms),
   hash_consed_hcs(ctx),
   simplification_table()
 {
