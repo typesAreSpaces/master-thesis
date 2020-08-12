@@ -66,10 +66,46 @@ void paperExample(){
   return;
 }
 
+void example(){
+
+  z3::context ctx;
+  z3::sort my_sort = ctx.uninterpreted_sort("A");
+
+  z3::expr a = ctx.constant("a", my_sort);
+  z3::expr b = ctx.constant("b", my_sort);
+  z3::expr c = ctx.constant("c", my_sort);
+
+  z3::func_decl f = ctx.function("f", my_sort, my_sort);
+  z3::func_decl g = ctx.function("g", my_sort, my_sort);
+  z3::func_decl h = ctx.function("h", my_sort, my_sort, my_sort);
+
+  std::set<std::string> uncomms({"f"});
+
+  // A: f(a) = a, h(f(f(a)), f(a)) = f(c, c)
+  // B: a = b, g(b) = b, h(g(a), g(g(b))) \neq h(c, c)
+
+  z3::expr_vector input(ctx); 
+  input.push_back(f(a) == a);
+  input.push_back(h(f(f(a)), f(a)) == h(c, c));
+
+  try {
+    EUFInterpolantWithUncomSymbols eufi(input, uncomms);
+    std::cout << eufi.removePrefix(eufi.getInterpolant()) << std::endl;
+  }
+  catch(char const * e){
+    std::cout << e << std::endl;
+  }
+  std::cout << "Ok" << std::endl;
+  return;
+}
+
+
+
 int main(int argc, char ** argv){
 
   //currentProgress();
-  paperExample();
+  //paperExample();
+  example();
 
   return 0;
 }
