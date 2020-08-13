@@ -1,13 +1,30 @@
 #ifndef _THCOMB_
 #define _THCOMB_
 #define _DEBUG_TH_COMB_ 0
+#define _MSG(x) std::cout << x
+#define _SKIP do {} while(0)
+#if 1
+#define DEBUG_LOOP_MSG(x) _MSG(x)
+#else
+#define DEBUG_LOOP_MSG(x) _SKIP
+#endif
+#if 1
+#define DEBUG_NON_CONV_MSG(x) _MSG(x)
+#else
+#define DEBUG_NON_CONV_MSG(x) _SKIP
+#endif
+#if 1
+#define DEBUG_CONFLICT_MSG(x) _MSG(x)
+#else
+#define DEBUG_CONFLICT_MSG(x) _SKIP
+#endif
 
 #include "Purifier.h"
 #include "DisjEqsPropagator.h"
 #include "CDCL_T.h"
 #include "PicoSATProofFactory.h"
-#include "EUFInterpolantWithExpressions.h"
-#include "OctagonInterpolantWithExpressions.h"
+#include "EUFInterpolant.h"
+#include "OctagonInterpolant.h"
 #include "Theories.h"
 #include <set>
 
@@ -36,8 +53,6 @@ class ThCombInterpolator {
 
   // TODO: implement, signature can be modified as needed
   void partialInterpolantConflict(z3::expr const &, z3::expr_vector const &, z3::expr_map &, Theory); 
-  // TODO: implement, signature can be modified as needed
-  void partialInterpolantConvex(z3::expr const &, z3::expr_map &, Theory); 
   void partialInterpolantNonConvex(CDCL_T &, PicoProofFactory const &, z3::expr const &, unsigned, Theory);
   
 public:

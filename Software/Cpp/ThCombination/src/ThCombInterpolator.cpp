@@ -26,22 +26,22 @@ ThCombInterpolator::ThCombInterpolator(
   for(auto const & form : part_a.getOctComponent()){
     oct_solver.add(form);
     partial_interpolants.insert(form, ctx.bool_val(false));
-    std::cout << form << std::endl;
+    DEBUG_LOOP_MSG(form << std::endl);
   }
   for(auto const & form : part_b.getOctComponent()){
     oct_solver.add(form);
     partial_interpolants.insert(form, ctx.bool_val(true));
-    std::cout << form << std::endl;
+    DEBUG_LOOP_MSG(form << std::endl);
   }
   for(auto const & form : part_a.getEufComponent()){
     euf_solver.add(form);
     partial_interpolants.insert(form, ctx.bool_val(false));
-    std::cout << form << std::endl;
+    DEBUG_LOOP_MSG(form << std::endl);
   }
   for(auto const & form : part_b.getEufComponent()){
     euf_solver.add(form);
     partial_interpolants.insert(form, ctx.bool_val(true));
-    std::cout << form << std::endl;
+    DEBUG_LOOP_MSG(form << std::endl);
   }
 
   // Find theory that unsat by passing 
@@ -53,8 +53,8 @@ ThCombInterpolator::ThCombInterpolator(
     auto current_disj_eqs_form = *current_disj_eqs;
     oct_solver.push();
     if(oct_solver.check() == z3::unsat){
-      std::cout << "OCT solver found a contradiction" << std::endl;
-      std::cout << oct_solver.assertions() << std::endl;
+      DEBUG_LOOP_MSG("OCT solver found a contradiction" << std::endl);
+      DEBUG_LOOP_MSG(oct_solver.assertions() << std::endl);
       // ----------------------------------------------------
       // TODO: compute final interpolant
       PicoProofFactory resolution_proof = PicoProofFactory();
@@ -64,8 +64,8 @@ ThCombInterpolator::ThCombInterpolator(
     oct_solver.pop();
     euf_solver.push();
     if(euf_solver.check() == z3::unsat){
-      std::cout << "EUF solver found a contradiction" << std::endl;
-      std::cout << euf_solver.assertions() << std::endl;
+      DEBUG_LOOP_MSG("EUF solver found a contradiction" << std::endl);
+      DEBUG_LOOP_MSG(euf_solver.assertions() << std::endl);
       // ----------------------------------------------------
       // TODO: compute final interpolant
       PicoProofFactory resolution_proof = PicoProofFactory();
@@ -89,10 +89,9 @@ ThCombInterpolator::ThCombInterpolator(
       oct_solver.pop();
       // ---------------------------------------------------
       // TODO: compute partial interpolants!
-      std::cout 
-        << "Disjunction implied in EUF: "
+      DEBUG_LOOP_MSG(std::endl << "Disjunction implied in EUF: "
         << current_disj_eqs_form
-        << std::endl;
+        << std::endl);
       
       // These assertions include the original assertions
       z3::expr_vector euf_assertions(ctx);
@@ -139,10 +138,9 @@ ThCombInterpolator::ThCombInterpolator(
       oct_solver.pop();
       // ---------------------------------------------------
       // TODO: compute partial interpolants!
-      std::cout 
-        << "Disjunction implied in OCT: "
+      DEBUG_LOOP_MSG(std::endl << "Disjunction implied in OCT: "
         << current_disj_eqs_form
-        << std::endl;
+        << std::endl);
 
       // These assertions include the original assertions
       z3::expr_vector oct_assertions(ctx);
@@ -188,7 +186,9 @@ ThCombInterpolator::ThCombInterpolator(
     ++current_disj_eqs;
   } 
 
+#if _DEBUG_TH_COMB_
   std::cout << "The input-formula is satisfiable" << std::endl;
+#endif
   return;
 }
 
@@ -276,23 +276,88 @@ void ThCombInterpolator::partialInterpolantConflict(
 
   z3::expr_vector part_a(ctx);
   z3::expr_vector part_b(ctx);
+
+  DEBUG_CONFLICT_MSG("Inside partialInterpolantConflict" << std::endl);
   
   switch(th){
     case EUF:
-      //partialInterpolantConvex();
-      break;
-    case OCT:
-      //partialInterpolantConvex();
-      break;
-    case ALL:
-      break;
-  }
-  local_partial_interp.insert(predicate, ctx.bool_val(true)); // WRONG
-}
+      {
+        // For loop to separate A-part and B-part
+        // respectively
+        for(auto const & conflict : conflict_lits){
+          if(conflict.is_a_pure()){
+            if(conflict.is_not())
+              // Turning (not (= a b)) into (distinct a b)
+              part_a.push_back(conflict.arg(0).arg(0) != conflict.arg(0).arg(1));
+            else
+              part_a.push_back(conflict);
+          }
+          else
+            part_b.push_back(conflict);
+        }
 
-// TODO: implement
-void ThCombInterpolator::partialInterpolantConvex(z3::expr const & predicate, z3::expr_map & local_partial_interp, Theory th){
-  local_partial_interp.insert(predicate, ctx.bool_val(true)); // WRONG
+        DEBUG_CONFLICT_MSG("Part a: ");
+        DEBUG_CONFLICT_MSG(part_a << std::endl);
+        DEBUG_CONFLICT_MSG("Part b: ");
+        DEBUG_CONFLICT_MSG(part_b << std::endl);
+
+        z3::solver s_temp(ctx, "QF_UF");
+        if(s_temp.check(part_a) == z3::unsat){
+          local_partial_interp.insert(predicate, ctx.bool_val(false));
+          return;
+        }
+        // --------------------------------------------------------------
+        // Done
+        try {
+          z3::expr euf_i = z3::mk_and(
+              EUFInterpolant(part_a).getInterpolant());
+          DEBUG_CONFLICT_MSG("Theory-specific Interpolant for EUF: " << euf_i << std::endl);
+          for(auto const & form_a : part_a)
+            if(local_partial_interp.contains(form_a))
+              euf_i = euf_i || local_partial_interp.find(form_a);
+          for(auto const & form_b : part_b)
+            if(local_partial_interp.contains(form_b))
+              euf_i = euf_i && local_partial_interp.find(form_b);
+          DEBUG_CONFLICT_MSG("Interpolant for EUF: " << euf_i << std::endl);
+          local_partial_interp.insert(predicate, euf_i.simplify());
+          return;
+        }
+        catch(char const * e){
+          throw "Error @ ThCombInterpolator::partial"
+            "InterpolantConflict EUF case.";
+        }
+        // --------------------------------------------------------------
+      }
+    case OCT:
+      {
+        // For loop to separate A-part and B-part
+        // respectively
+        // TODO: modify part_a so it only contains <=
+        for(auto const & conflict : conflict_lits){
+          if(conflict.is_a_pure())
+            part_a.push_back(conflict);
+          else
+            part_b.push_back(conflict);
+        }
+
+        z3::solver s_temp(ctx, "QF_LIA");
+        if(s_temp.check(part_a) == z3::unsat){
+          local_partial_interp.insert(predicate, ctx.bool_val(false));
+          return;
+        }
+
+        // TODO: keep working here
+        // TODO: branch disjunctions appropriately
+        // TODO: EUFInterpolantWithExpressions introduces prefixes
+        // to the symbols. Remove those!
+        //OctagonInterpolant oct_i(part_a);
+
+        local_partial_interp.insert(predicate, ctx.bool_val(true)); // WRONG
+        return;
+      }
+    case ALL:
+      throw "Mistake big time";
+  }
 }
 
 void ThCombInterpolator::partialInterpolantNonConvex(CDCL_T & cdcl_t, 
@@ -336,79 +401,125 @@ void ThCombInterpolator::partialInterpolantNonConvex(CDCL_T & cdcl_t,
     // -------------------------------------------------------------------------------
     predicates.push_back(predicate);
 
-    std::cout << "Clause Id: " << id;
+
+    DEBUG_NON_CONV_MSG("Clause Id: " << id);
 
     if(is_fact){
       if(id <= original_num_facts){
-        std::cout << " (Fact) Predicate: " << predicate;
+        DEBUG_NON_CONV_MSG(" (Fact) Predicate: " << predicate);
         if(partial_interpolants.contains(predicate)){
-          std::cout << " Interpolant(old): " << partial_interpolants.find(predicate) << std::endl;
+          // This step ensure that the local maps contains
+          // previous interpolants from processed facts
           local_partial_interp.insert(predicate, partial_interpolants.find(predicate));
+          DEBUG_NON_CONV_MSG(" Interpolant(old): " << partial_interpolants.find(predicate) << std::endl);
         }
         else{
           // ------------------------------------------------------------
           // Compute local base case interpolant
           if(predicate.is_a_pure()){
-            std::cout << " Interpolant(new): false" << std::endl;
             local_partial_interp.insert(predicate, ctx.bool_val(false));
+            DEBUG_NON_CONV_MSG(" Interpolant(new): false" << std::endl);
           }
           else{
-            std::cout << " Interpolant(new): true" << std::endl;
             local_partial_interp.insert(predicate, ctx.bool_val(true));
+            DEBUG_NON_CONV_MSG(" Interpolant((from fact/input)new): true" << std::endl);
           }
           // ------------------------------------------------------------
         }
       }
       else{
-        std::cout << " (Conflict Clause) Predicate: " << predicate;
+        DEBUG_NON_CONV_MSG(" (Conflict Clause) Predicate: " << predicate << std::endl);
         if(partial_interpolants.contains(predicate)){
-          std::cout << " Interpolant(old): " << partial_interpolants.find(predicate) << std::endl;
           local_partial_interp.insert(predicate, partial_interpolants.find(predicate));
+          DEBUG_NON_CONV_MSG(
+              "Interpolant(old): " << partial_interpolants.find(predicate) << std::endl
+              );
         }
         else{
           // Compute local conflict interpolant
           partialInterpolantConflict(predicate, conflict_lits, local_partial_interp, th);
-          std::cout << " Interpolant(------new): " << local_partial_interp.find(predicate) << std::endl;
+          DEBUG_NON_CONV_MSG(
+              "Interpolant((from conflict)new): " << local_partial_interp.find(predicate) << std::endl
+              );
         }
       }
     }
     else{
       assert(res_proof.pivot > 0);
       z3::expr pivot_form = cdcl_t.concretizeAbstraction(res_proof.pivot);
-      std::cout 
-        << " (Derived(" + std::to_string(res_proof.subproof_1) + "," + std::to_string(res_proof.subproof_2) + "))"
+      DEBUG_NON_CONV_MSG(
+        " (Derived(" << std::to_string(res_proof.subproof_1) 
+        << "," << std::to_string(res_proof.subproof_2) << "))"
         << " Predicate: " << predicate
-        << " Pivot: " << pivot_form;
+        << " Pivot: " << pivot_form << std::endl
+        );
 
       if(partial_interpolants.contains(predicate)){
-        std::cout << " Interpolant(old): " << partial_interpolants.find(predicate) << std::endl;
         local_partial_interp.insert(predicate, partial_interpolants.find(predicate));
+        DEBUG_NON_CONV_MSG(
+            "Interpolant(old): " << partial_interpolants.find(predicate) << std::endl
+            );
       }
       else{
         // Compute local resolution interpolant
         if(pivot_form.is_a_strict()){ // Pivot is A-local
+          DEBUG_NON_CONV_MSG("Pivot is A-local" << std::endl);
+          DEBUG_NON_CONV_MSG("Partial interpolant " 
+              <<
+              (local_partial_interp.find(predicates[res_proof.subproof_1]) 
+              || local_partial_interp.find(predicates[res_proof.subproof_2]))
+              << std::endl
+              );
           local_partial_interp.insert(predicate, 
               (local_partial_interp.find(predicates[res_proof.subproof_1]) 
-              || local_partial_interp.find(predicates[res_proof.subproof_1])).simplify());
+              || local_partial_interp.find(predicates[res_proof.subproof_2])).simplify());
         }
         else if(pivot_form.is_b_strict()){ // Pivot is B-local
+          DEBUG_NON_CONV_MSG("Pivot is B-local" << std::endl);
+          DEBUG_NON_CONV_MSG("Partial interpolant "
+              <<
+              (local_partial_interp.find(predicates[res_proof.subproof_1]) 
+              && local_partial_interp.find(predicates[res_proof.subproof_2]))
+              << std::endl;
+              );
           local_partial_interp.insert(predicate, 
               (local_partial_interp.find(predicates[res_proof.subproof_1]) 
-              && local_partial_interp.find(predicates[res_proof.subproof_1])).simplify());
+              && local_partial_interp.find(predicates[res_proof.subproof_2])).simplify());
         }
         else{ // Pivot is AB-common
+          DEBUG_NON_CONV_MSG("Pivot is AB-common" << std::endl);
+          DEBUG_NON_CONV_MSG("Partial interpolant: " 
+              <<
+              (
+               (pivot_form || local_partial_interp.find(predicates[res_proof.subproof_1])) 
+               && 
+              (not(pivot_form) || local_partial_interp.find(predicates[res_proof.subproof_2]))
+              ) 
+              << std::endl
+              );
           local_partial_interp.insert(predicate, 
-              ((pivot_form || local_partial_interp.find(predicates[res_proof.subproof_1])) 
-              && (not(pivot_form) || local_partial_interp.find(predicates[res_proof.subproof_1]))).simplify());
+              (
+               (pivot_form || local_partial_interp.find(predicates[res_proof.subproof_1])) 
+              && 
+              (not(pivot_form) || local_partial_interp.find(predicates[res_proof.subproof_2]))
+              ).simplify());
         }
-        std::cout << " Interpolant(new): " << local_partial_interp.find(predicate) << std::endl;
+        DEBUG_NON_CONV_MSG(
+            "Interpolant((from derived)new): " << local_partial_interp.find(predicate) << std::endl
+            );
       }
     }
 
     id++;
   }
 
-  partial_interpolants.insert(formula, local_partial_interp.find(ctx.bool_val(false)));
+  DEBUG_NON_CONV_MSG(
+      "Final interpolant for conflict clause: " 
+      << local_partial_interp.find(ctx.bool_val(false))
+      << std::endl
+      );
+  partial_interpolants.insert(formula, 
+      local_partial_interp.find(ctx.bool_val(false)));
 }
 
 
