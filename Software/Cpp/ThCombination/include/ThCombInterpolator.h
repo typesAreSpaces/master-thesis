@@ -20,6 +20,7 @@
 #endif
 
 #include "Purifier.h"
+#include "OctagonTerm.h"
 #include "DisjEqsPropagator.h"
 #include "CDCL_T.h"
 #include "PicoSATProofFactory.h"
@@ -49,11 +50,10 @@ class ThCombInterpolator {
   void sharedVariables(Purifier const &, Purifier const &);
   void collectVariables(z3::expr const &, z3_expr_set &);
 
-  void checkImpliedEqualities(z3::expr_vector &, z3::solver &);
-
-  // TODO: implement, signature can be modified as needed
-  void partialInterpolantConflict(z3::expr const &, z3::expr_vector const &, z3::expr_map &, Theory); 
-  void partialInterpolantNonConvex(CDCL_T &, PicoProofFactory const &, z3::expr const &, unsigned, Theory);
+  void partialInterpolantConflict(z3::expr const &, z3::expr_vector const &, 
+      z3::expr_map &, Theory); 
+  void partialInterpolantNonConvex(CDCL_T &, PicoProofFactory const &, 
+      z3::expr const &, unsigned, Theory);
   
 public:
   ThCombInterpolator(z3::expr_vector const &, z3::expr_vector const &);
