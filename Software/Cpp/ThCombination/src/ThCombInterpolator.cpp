@@ -50,30 +50,57 @@ ThCombInterpolator::ThCombInterpolator(
   auto current_disj_eqs = phi.begin();
 
   while(!current_disj_eqs.isLast()){
-    auto current_disj_eqs_form = *current_disj_eqs;
     oct_solver.push();
     if(oct_solver.check() == z3::unsat){
       DEBUG_LOOP_MSG("OCT solver found a contradiction" << std::endl);
       DEBUG_LOOP_MSG(oct_solver.assertions() << std::endl);
+
+      z3::expr_vector oct_assertions(ctx);
+      for(auto const & assertion : oct_solver.assertions())
+        oct_assertions.push_back(assertion);
+      CDCL_T cdcl_oct(oct_assertions, OCT);
+      cdcl_oct.toDimacsFile();
       PicoProofFactory resolution_proof = PicoProofFactory();
-      // ----------------------------------------------------
-      // TODO: compute final interpolant
-      // ----------------------------------------------------
+      partialInterpolantNonConvex(
+          cdcl_oct,
+          resolution_proof,
+          ctx.bool_val(false),
+          oct_assertions.size(), EUF);
+
+      DEBUG_LOOP_MSG(
+          "-> Final Interpolant: " 
+          << partial_interpolants.find(ctx.bool_val(false)) 
+          << std::endl);
       return;
     }
     oct_solver.pop();
+
     euf_solver.push();
     if(euf_solver.check() == z3::unsat){
       DEBUG_LOOP_MSG("EUF solver found a contradiction" << std::endl);
       DEBUG_LOOP_MSG(euf_solver.assertions() << std::endl);
+     
+      z3::expr_vector euf_assertions(ctx);
+      for(auto const & assertion : euf_solver.assertions())
+        euf_assertions.push_back(assertion);
+      CDCL_T cdcl_euf(euf_assertions, EUF);
+      cdcl_euf.toDimacsFile();
       PicoProofFactory resolution_proof = PicoProofFactory();
-      // ----------------------------------------------------
-      // TODO: compute final interpolant
-      // ----------------------------------------------------
+      partialInterpolantNonConvex(
+          cdcl_euf,
+          resolution_proof,
+          ctx.bool_val(false),
+          euf_assertions.size(), EUF);
+
+      DEBUG_LOOP_MSG(
+          "-> Final Interpolant: " 
+          << partial_interpolants.find(ctx.bool_val(false)) 
+          << std::endl);
       return;
     }
     euf_solver.pop();
 
+    auto current_disj_eqs_form = *current_disj_eqs;
     euf_solver.push();
     euf_solver.add(not(current_disj_eqs_form));
     if(euf_solver.check() == z3::unsat){
@@ -557,8 +584,6 @@ void ThCombInterpolator::partialInterpolantNonConvex(CDCL_T & cdcl_t,
   partial_interpolants.insert(formula, 
       local_partial_interp.find(ctx.bool_val(false)));
 }
-
-
 
 void ThCombInterpolator::getInterpolant(){
 }
