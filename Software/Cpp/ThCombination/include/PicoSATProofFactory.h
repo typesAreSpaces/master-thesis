@@ -20,6 +20,8 @@
 
 class PicoProofFactory {
 
+  friend class ThCombInterpolator;
+
   std::string exec(const char *);
 
   struct PicoResolutionProof : public std::vector<int> {
@@ -32,6 +34,7 @@ class PicoProofFactory {
     void addLiteral(int);
     void updateSubproofs(int, int);
     void updatePivot(PicoProofFactory const &);
+    bool containsPivot(int) const;
   };
 
   std::vector<PicoResolutionProof> proof_table;

@@ -9,7 +9,7 @@ endif
 set shortmess=aoO
 badd +24 include/Purifier.h
 badd +5 src/Purifier.cpp
-badd +410 src/ThCombInterpolator.cpp
+badd +428 src/ThCombInterpolator.cpp
 badd +1 include/ThCombInterpolator.h
 badd +31 src/main.cpp
 badd +91 src/HornClauses.cpp
@@ -24,8 +24,8 @@ badd +46 tests/cdcl_t_test.cpp
 badd +4 tests/res_proof_test.cpp
 badd +65 include/CDCL_T.h
 badd +2430 /usr/include/z3++.h
-badd +45 include/PicoSATProofFactory.h
-badd +76 src/PicoSATProofFactory.cpp
+badd +49 include/PicoSATProofFactory.h
+badd +21 src/PicoSATProofFactory.cpp
 badd +2 file.cnf
 badd +1 include/ThCombInterpolatorWithExpressions.h
 badd +108 ~/Documents/GithubProjects/master-thesis/Software/Cpp/EUFInterpolant/tests/current_progress.cpp
@@ -37,7 +37,7 @@ badd +5 src/EUFInterpolant.cpp
 badd +31 include/EUFInterpolant.h
 badd +29 include/Input.h
 badd +12 src/OctagonInterpolant.cpp
-badd +76 src/OctagonParser.cpp
+badd +107 src/OctagonParser.cpp
 badd +17 include/OctagonTerm.h
 badd +58 src/OctagonTerm.cpp
 badd +12 ~/Documents/Programming/Cpp/tactics_example.cpp
@@ -67,15 +67,15 @@ set winminheight=0
 set winheight=1
 set winminwidth=0
 set winwidth=1
-exe '1resize ' . ((&lines * 13 + 42) / 85)
-exe 'vert 1resize ' . ((&columns * 104 + 156) / 313)
-exe '2resize ' . ((&lines * 69 + 42) / 85)
-exe 'vert 2resize ' . ((&columns * 104 + 156) / 313)
-exe '3resize ' . ((&lines * 41 + 42) / 85)
-exe 'vert 3resize ' . ((&columns * 104 + 156) / 313)
-exe '4resize ' . ((&lines * 41 + 42) / 85)
-exe 'vert 4resize ' . ((&columns * 104 + 156) / 313)
-exe 'vert 5resize ' . ((&columns * 103 + 156) / 313)
+exe '1resize ' . ((&lines * 8 + 39) / 79)
+exe 'vert 1resize ' . ((&columns * 125 + 188) / 376)
+exe '2resize ' . ((&lines * 68 + 39) / 79)
+exe 'vert 2resize ' . ((&columns * 125 + 188) / 376)
+exe '3resize ' . ((&lines * 18 + 39) / 79)
+exe 'vert 3resize ' . ((&columns * 125 + 188) / 376)
+exe '4resize ' . ((&lines * 58 + 39) / 79)
+exe 'vert 4resize ' . ((&columns * 125 + 188) / 376)
+exe 'vert 5resize ' . ((&columns * 124 + 188) / 376)
 argglobal
 setlocal fdm=manual
 setlocal fde=0
@@ -86,12 +86,12 @@ setlocal fml=1
 setlocal fdn=20
 setlocal fen
 silent! normal! zE
-let s:l = 55 - ((8 * winheight(0) + 6) / 13)
+let s:l = 11 - ((2 * winheight(0) + 4) / 8)
 if s:l < 1 | let s:l = 1 | endif
 exe s:l
 normal! zt
-55
-normal! 0
+11
+normal! 05|
 wincmd w
 argglobal
 if bufexists("src/ThCombInterpolator.cpp") | buffer src/ThCombInterpolator.cpp | else | edit src/ThCombInterpolator.cpp | endif
@@ -104,48 +104,48 @@ setlocal fml=1
 setlocal fdn=20
 setlocal nofen
 silent! normal! zE
-let s:l = 550 - ((48 * winheight(0) + 34) / 69)
+let s:l = 580 - ((31 * winheight(0) + 34) / 68)
 if s:l < 1 | let s:l = 1 | endif
 exe s:l
 normal! zt
-550
+580
+normal! 05|
+wincmd w
+argglobal
+if bufexists("src/ThCombInterpolator.cpp") | buffer src/ThCombInterpolator.cpp | else | edit src/ThCombInterpolator.cpp | endif
+setlocal fdm=manual
+setlocal fde=0
+setlocal fmr={{{,}}}
+setlocal fdi=#
+setlocal fdl=0
+setlocal fml=1
+setlocal fdn=20
+setlocal fen
+silent! normal! zE
+let s:l = 142 - ((5 * winheight(0) + 9) / 18)
+if s:l < 1 | let s:l = 1 | endif
+exe s:l
+normal! zt
+142
+normal! 017|
+wincmd w
+argglobal
+if bufexists("src/ThCombInterpolator.cpp") | buffer src/ThCombInterpolator.cpp | else | edit src/ThCombInterpolator.cpp | endif
+setlocal fdm=manual
+setlocal fde=0
+setlocal fmr={{{,}}}
+setlocal fdi=#
+setlocal fdl=0
+setlocal fml=1
+setlocal fdn=20
+setlocal fen
+silent! normal! zE
+let s:l = 421 - ((14 * winheight(0) + 29) / 58)
+if s:l < 1 | let s:l = 1 | endif
+exe s:l
+normal! zt
+421
 normal! 03|
-wincmd w
-argglobal
-if bufexists("src/ThCombInterpolator.cpp") | buffer src/ThCombInterpolator.cpp | else | edit src/ThCombInterpolator.cpp | endif
-setlocal fdm=manual
-setlocal fde=0
-setlocal fmr={{{,}}}
-setlocal fdi=#
-setlocal fdl=0
-setlocal fml=1
-setlocal fdn=20
-setlocal fen
-silent! normal! zE
-let s:l = 243 - ((1 * winheight(0) + 20) / 41)
-if s:l < 1 | let s:l = 1 | endif
-exe s:l
-normal! zt
-243
-normal! 0
-wincmd w
-argglobal
-if bufexists("src/ThCombInterpolator.cpp") | buffer src/ThCombInterpolator.cpp | else | edit src/ThCombInterpolator.cpp | endif
-setlocal fdm=manual
-setlocal fde=0
-setlocal fmr={{{,}}}
-setlocal fdi=#
-setlocal fdl=0
-setlocal fml=1
-setlocal fdn=20
-setlocal fen
-silent! normal! zE
-let s:l = 176 - ((29 * winheight(0) + 20) / 41)
-if s:l < 1 | let s:l = 1 | endif
-exe s:l
-normal! zt
-176
-normal! 0
 wincmd w
 argglobal
 if bufexists("src/OctagonParser.cpp") | buffer src/OctagonParser.cpp | else | edit src/OctagonParser.cpp | endif
@@ -158,23 +158,23 @@ setlocal fml=1
 setlocal fdn=20
 setlocal fen
 silent! normal! zE
-let s:l = 104 - ((0 * winheight(0) + 41) / 83)
+let s:l = 110 - ((7 * winheight(0) + 38) / 77)
 if s:l < 1 | let s:l = 1 | endif
 exe s:l
 normal! zt
-104
+110
 normal! 07|
 wincmd w
-4wincmd w
-exe '1resize ' . ((&lines * 13 + 42) / 85)
-exe 'vert 1resize ' . ((&columns * 104 + 156) / 313)
-exe '2resize ' . ((&lines * 69 + 42) / 85)
-exe 'vert 2resize ' . ((&columns * 104 + 156) / 313)
-exe '3resize ' . ((&lines * 41 + 42) / 85)
-exe 'vert 3resize ' . ((&columns * 104 + 156) / 313)
-exe '4resize ' . ((&lines * 41 + 42) / 85)
-exe 'vert 4resize ' . ((&columns * 104 + 156) / 313)
-exe 'vert 5resize ' . ((&columns * 103 + 156) / 313)
+2wincmd w
+exe '1resize ' . ((&lines * 8 + 39) / 79)
+exe 'vert 1resize ' . ((&columns * 125 + 188) / 376)
+exe '2resize ' . ((&lines * 68 + 39) / 79)
+exe 'vert 2resize ' . ((&columns * 125 + 188) / 376)
+exe '3resize ' . ((&lines * 18 + 39) / 79)
+exe 'vert 3resize ' . ((&columns * 125 + 188) / 376)
+exe '4resize ' . ((&lines * 58 + 39) / 79)
+exe 'vert 4resize ' . ((&columns * 125 + 188) / 376)
+exe 'vert 5resize ' . ((&columns * 124 + 188) / 376)
 tabnext 1
 if exists('s:wipebuf') && getbufvar(s:wipebuf, '&buftype') isnot# 'terminal'
   silent exe 'bwipe ' . s:wipebuf

@@ -426,7 +426,7 @@ void ThCombInterpolator::partialInterpolantNonConvex(CDCL_T & cdcl_t,
   z3::expr_vector predicates(ctx);
   z3::expr predicate = ctx.bool_val(true);
 
-  for(auto const & res_proof : pf.getProofTable()){
+  for(auto const & res_proof : pf.proof_table){
     bool is_fact = res_proof.subproof_1 == -1 && res_proof.subproof_2 == -1;
 
     // Skip element in proof table if it is not defined
@@ -548,22 +548,28 @@ void ThCombInterpolator::partialInterpolantNonConvex(CDCL_T & cdcl_t,
                && local_partial_interp.find(predicates[res_proof.subproof_2])).simplify());
         }
         else{ // Pivot is AB-common
+          // TODO: fix proper matching of pivot with the partial interpolants
+          // i.e. if c = res_x(c1, c2), c1 = x \lor c1', and c2 = \not x \lor c2'
+          // then p(c) = (p(c1) \lor x) \land (p(c2) \lor \not x)
+          // currently the output can be (p(c1) \lor \not x) \land (p(c2) \lor x)
+          // since the code doesn't check this condition
           DEBUG_NON_CONV_MSG("Pivot is AB-common" << std::endl);
+          z3::expr actual_pivot = pivot_form;
+          if(!pf.proof_table[res_proof.subproof_1].containsPivot(res_proof.pivot)){
+            actual_pivot = not(actual_pivot);
+          }
+
           DEBUG_NON_CONV_MSG("Partial interpolant: " 
               <<
-              (
-               (pivot_form || local_partial_interp.find(predicates[res_proof.subproof_1])) 
+              ((actual_pivot || local_partial_interp.find(predicates[res_proof.subproof_1])) 
                && 
-               (not(pivot_form) || local_partial_interp.find(predicates[res_proof.subproof_2]))
-              ) 
+               (not(actual_pivot)|| local_partial_interp.find(predicates[res_proof.subproof_2]))) 
               << std::endl
               );
           local_partial_interp.insert(predicate, 
-              (
-               (pivot_form || local_partial_interp.find(predicates[res_proof.subproof_1])) 
+              ((actual_pivot || local_partial_interp.find(predicates[res_proof.subproof_1])) 
                && 
-               (not(pivot_form) || local_partial_interp.find(predicates[res_proof.subproof_2]))
-              ).simplify());
+               (not(actual_pivot) || local_partial_interp.find(predicates[res_proof.subproof_2]))).simplify());
         }
         DEBUG_NON_CONV_MSG(
             "Interpolant((from derived)new): " 
@@ -582,7 +588,7 @@ void ThCombInterpolator::partialInterpolantNonConvex(CDCL_T & cdcl_t,
       << std::endl
       );
   partial_interpolants.insert(formula, 
-      local_partial_interp.find(ctx.bool_val(false)));
+      local_partial_interp.find(ctx.bool_val(false)).simplify());
 }
 
 void ThCombInterpolator::getInterpolant(){

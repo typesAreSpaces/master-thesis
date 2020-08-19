@@ -9,6 +9,14 @@ PicoProofFactory::PicoResolutionProof::PicoResolutionProof() :
 
 void PicoProofFactory::PicoResolutionProof::updatePivot(int new_pivot){ pivot = new_pivot; }
 
+bool PicoProofFactory::PicoResolutionProof::containsPivot(int _pivot) const {
+  assert(pivot >= 0);
+  for(auto const & element : *this)
+    if(_pivot == element)
+      return true;
+  return false;
+}
+
 void PicoProofFactory::PicoResolutionProof::addLiteral(int literal){ push_back(literal); }
 
 void PicoProofFactory::PicoResolutionProof::updateSubproofs(int new_subproof_1, int new_subproof_2){ 
