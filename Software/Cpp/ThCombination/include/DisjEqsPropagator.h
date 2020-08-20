@@ -1,5 +1,6 @@
 #ifndef _DISJ_EQS_PROPAGATOR_
 #define _DISJ_EQS_PROPAGATOR_
+#define PREFIX_AB_TEMP_TERM "c__t_"
 
 #include <z3++.h>
 #include <deque>

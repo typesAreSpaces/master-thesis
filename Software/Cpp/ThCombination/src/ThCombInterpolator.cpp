@@ -10,7 +10,8 @@ ThCombInterpolator::ThCombInterpolator(
     z3::expr_vector const & formula_a, z3::expr_vector const & formula_b) :
   ctx(formula_a.ctx()), 
   part_a(formula_a), part_b(formula_b),
-  shared_variables(ctx), partial_interpolants(ctx)
+  shared_variables(ctx), partial_interpolants(ctx),
+  computed_interpolant(ctx)
 {
   sharedVariables(part_a, part_b);
 #if _DEBUG_TH_COMB_
@@ -71,11 +72,20 @@ ThCombInterpolator::ThCombInterpolator(
           resolution_proof,
           ctx.bool_val(false),
           oct_assertions.size(), EUF);
+      z3::expr_vector existential_quants(ctx);
+      for(unsigned _i = 0; _i < phi.ab_mixed_index; ++_i)
+        existential_quants.push_back(ctx.int_const(("c_t_" + std::to_string(_i)).c_str()));
+      computed_interpolant = z3::exists(existential_quants,
+          partial_interpolants.find(ctx.bool_val(false))).simplify();
       DEBUG_LOOP_MSG(
           "-> Final Interpolant: " 
-          << partial_interpolants.find(ctx.bool_val(false)) 
+          << computed_interpolant
           << std::endl);
-
+      // This should be allowed 
+      // when lift procedures are 
+      // given for all the 
+      // theories involved
+#if 0 
       // *+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+
       // TODO: get all the witness terms introduced
       // and obtain their representatives (these should be common)
@@ -95,6 +105,7 @@ ThCombInterpolator::ThCombInterpolator(
       std::cout << "This must be satisfiable" << std::endl;
       std::cout << (hahaha_euf.check() == z3::sat) << std::endl;
       // *+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+
+#endif
 
       return;
     }
@@ -116,11 +127,21 @@ ThCombInterpolator::ThCombInterpolator(
           resolution_proof,
           ctx.bool_val(false),
           euf_assertions.size(), EUF);
+      z3::expr_vector existential_quants(ctx);
+      for(unsigned _i = 0; _i < phi.ab_mixed_index; ++_i)
+        existential_quants.push_back(ctx.int_const(
+              (PREFIX_AB_TEMP_TERM + std::to_string(_i)).c_str()));
+      computed_interpolant = z3::exists(existential_quants,
+          partial_interpolants.find(ctx.bool_val(false))).simplify();
       DEBUG_LOOP_MSG(
           "-> Final Interpolant: " 
-          << partial_interpolants.find(ctx.bool_val(false)) 
+          << computed_interpolant
           << std::endl);
-
+      // This should be allowed 
+      // when lift procedures are 
+      // given for all the 
+      // theories involved
+#if 0 
       // *+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+
       // TODO: get all the witness terms introduced
       // and obtain their representatives (these should be common)
@@ -140,6 +161,7 @@ ThCombInterpolator::ThCombInterpolator(
       std::cout << "This must be satisfiable" << std::endl;
       std::cout << (hahaha_euf.check() == z3::sat) << std::endl;
       // *+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+
+#endif
 
       return;
     }
@@ -677,17 +699,5 @@ void ThCombInterpolator::getInterpolant(){
 }
 
 std::ostream & operator << (std::ostream & os, ThCombInterpolator & p){
-  //z3::solver aux_solver(p.ctx, "QF_UFLIA");
-
-  //p.part_a.addEufFormulasToSolver(aux_solver);
-  //p.part_a.addOctFormulasToSolver(aux_solver);
-  //p.part_b.addEufFormulasToSolver(aux_solver);
-  //p.part_b.addOctFormulasToSolver(aux_solver);
-
-  //if(aux_solver.check() == z3::unsat){
-  //p.traverseProof1(aux_solver.proof());
-  //}
-
-  os << "Returns interpolant";
-  return os;
+  return os << "The interpolant is: " << p.computed_interpolant;
 }

@@ -11,7 +11,7 @@ DisjEqsPropagator::DisjEqsPropagator(z3::expr_vector const & elements) :
     auto rhs=lhs;
     for(++rhs; rhs!=elements.end(); ++rhs){
       if(((*lhs).is_a_strict() && (*rhs).is_b_strict()) || ((*lhs).is_b_strict() && (*rhs).is_a_strict())){
-        std::string fresh_name = "c_t_" + std::to_string(ab_mixed_index++);
+        std::string fresh_name = PREFIX_AB_TEMP_TERM + std::to_string(ab_mixed_index++);
         z3::expr new_common_constant = (*lhs).ctx()
           .constant(fresh_name.c_str(), (*lhs).decl().range());
         equalities.push_back(*lhs == new_common_constant && *rhs == new_common_constant);

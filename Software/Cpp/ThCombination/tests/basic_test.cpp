@@ -27,6 +27,7 @@ void test1(z3::context & ctx){
   formula_b.push_back(x3 < y3);
   
   ThCombInterpolatorWithExpressions test(formula_a, formula_b);
+  std::cout << test << std::endl;
 }
 
 void test2(z3::context & ctx){
@@ -44,6 +45,7 @@ void test2(z3::context & ctx){
   formula_a.push_back(f(2) != 3);
 
   ThCombInterpolatorWithExpressions test(formula_a, formula_b);
+  std::cout << test << std::endl;
 }
 
 void test3(z3::context & ctx){
@@ -61,6 +63,7 @@ void test3(z3::context & ctx){
   formula_a.push_back(f(2) != 2);
 
   ThCombInterpolatorWithExpressions test(formula_a, formula_b);
+  std::cout << test << std::endl;
 }
 
 void actualExample(z3::context & ctx){
@@ -88,6 +91,7 @@ void actualExample(z3::context & ctx){
   formula_b.push_back(f(y1) != 0);
   
   ThCombInterpolatorWithExpressions test(formula_a, formula_b);
+  std::cout << test << std::endl;
 }
 
 int main(){

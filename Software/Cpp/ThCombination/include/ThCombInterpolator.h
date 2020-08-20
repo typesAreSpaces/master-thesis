@@ -35,7 +35,7 @@ class ThCombInterpolator {
     bool operator() (z3::expr const & e1, z3::expr const & e2);
   };
   typedef std::set<z3::expr, z3_const_comparator> z3_expr_set;
-   
+
   z3::context & ctx;
 
   Purifier part_a;
@@ -52,13 +52,16 @@ class ThCombInterpolator {
       z3::expr_map &, Theory); 
   void partialInterpolantNonConvex(CDCL_T &, PicoProofFactory const &, 
       z3::expr const &, unsigned, Theory);
-  
-public:
+
+  protected:
+  z3::expr computed_interpolant;
+
+  public:
   ThCombInterpolator(z3::expr_vector const &, z3::expr_vector const &);
   ~ThCombInterpolator();
 
   void getInterpolant();
-  
+
   friend std::ostream & operator << (std::ostream &, ThCombInterpolator &);
 };
 
