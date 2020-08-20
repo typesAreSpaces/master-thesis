@@ -10,13 +10,15 @@
 // https://www.geeksforgeeks.org/make-combinations-size-k/
 
 class DisjEqsPropagator {
+
+  friend class ThCombInterpolator;
+
   typedef z3::expr_vector                            DisjEqs;
   typedef unsigned                                   CurrentIndex;
   typedef unsigned                                   CurrentSubsetSize;
   typedef std::pair<CurrentIndex, CurrentSubsetSize> DFSState;
 
-  unsigned size;
-  unsigned subset_size_query;
+  unsigned size, subset_size_query, ab_mixed_index;
 
   z3::expr_vector equalities;
   DisjEqs         current_disj_eqs;

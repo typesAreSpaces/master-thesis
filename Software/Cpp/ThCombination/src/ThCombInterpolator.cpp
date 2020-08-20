@@ -10,7 +10,6 @@ ThCombInterpolator::ThCombInterpolator(
     z3::expr_vector const & formula_a, z3::expr_vector const & formula_b) :
   ctx(formula_a.ctx()), 
   part_a(formula_a), part_b(formula_b),
-  euf_solver(ctx, "QF_UF"), oct_solver(ctx, "QF_LIA"),
   shared_variables(ctx), partial_interpolants(ctx)
 {
   sharedVariables(part_a, part_b);
@@ -22,6 +21,10 @@ ThCombInterpolator::ThCombInterpolator(
   std::cout << "Shared variables" << std::endl;
   std::cout << shared_variables << std::endl;
 #endif
+
+  z3::expr last_formula_added = ctx.bool_val(false);
+  z3::solver
+    euf_solver(ctx, "QF_UF"), oct_solver(ctx, "QF_LIA");
 
   for(auto const & form : part_a.getOctComponent()){
     oct_solver.add(form);
@@ -50,6 +53,8 @@ ThCombInterpolator::ThCombInterpolator(
   auto current_disj_eqs = phi.begin();
 
   while(!current_disj_eqs.isLast()){
+    // ----------------------------------------------------------------
+    // Check if any solver unsats
     oct_solver.push();
     if(oct_solver.check() == z3::unsat){
       DEBUG_LOOP_MSG("OCT solver found a contradiction" << std::endl);
@@ -66,11 +71,31 @@ ThCombInterpolator::ThCombInterpolator(
           resolution_proof,
           ctx.bool_val(false),
           oct_assertions.size(), EUF);
-
       DEBUG_LOOP_MSG(
           "-> Final Interpolant: " 
           << partial_interpolants.find(ctx.bool_val(false)) 
           << std::endl);
+
+      // *+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+
+      // TODO: get all the witness terms introduced
+      // and obtain their representatives (these should be common)
+      // Eliminate the witness terms using the solve-eqs tactic.
+      std::cout << "Hahah Just checking something" << std::endl;
+
+      z3::solver hahaha_oct(ctx);
+      for(auto const & assertion : oct_solver.assertions())
+        if(assertion.id() != last_formula_added.id())
+          hahaha_oct.add(assertion);
+      std::cout << "This must be satisfiable" << std::endl;
+      std::cout << (hahaha_oct.check() == z3::sat) << std::endl;
+
+      z3::solver hahaha_euf(ctx);
+      for(auto const & assertion : euf_solver.assertions())
+        hahaha_euf.add(assertion);
+      std::cout << "This must be satisfiable" << std::endl;
+      std::cout << (hahaha_euf.check() == z3::sat) << std::endl;
+      // *+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+
+
       return;
     }
     oct_solver.pop();
@@ -91,27 +116,55 @@ ThCombInterpolator::ThCombInterpolator(
           resolution_proof,
           ctx.bool_val(false),
           euf_assertions.size(), EUF);
-
       DEBUG_LOOP_MSG(
           "-> Final Interpolant: " 
           << partial_interpolants.find(ctx.bool_val(false)) 
           << std::endl);
+
+      // *+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+
+      // TODO: get all the witness terms introduced
+      // and obtain their representatives (these should be common)
+      // Eliminate the witness terms using the solve-eqs tactic.
+      std::cout << "Hahah Just checking something" << std::endl;
+
+      z3::solver hahaha_oct(ctx);
+      for(auto const & assertion : oct_solver.assertions())
+        hahaha_oct.add(assertion);
+      std::cout << "This must be satisfiable" << std::endl;
+      std::cout << (hahaha_oct.check() == z3::sat) << std::endl;
+
+      z3::solver hahaha_euf(ctx);
+      for(auto const & assertion : euf_solver.assertions())
+        if(assertion.id() != last_formula_added.id())
+          hahaha_euf.add(assertion);
+      std::cout << "This must be satisfiable" << std::endl;
+      std::cout << (hahaha_euf.check() == z3::sat) << std::endl;
+      // *+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+
+
       return;
     }
     euf_solver.pop();
+    // ----------------------------------------------------------------
+    
+    // TODO: add a "solvers' <- state(solvers)" instruction or equivalent here
 
+    // ------------------------------------------------------------------
+    // Modify solvers with current_disj_eqs 
     auto current_disj_eqs_form = *current_disj_eqs;
     euf_solver.push();
     euf_solver.add(not(current_disj_eqs_form));
     if(euf_solver.check() == z3::unsat){
       oct_solver.push();
       oct_solver.add(not(current_disj_eqs_form));
+      // Case |-_{EUF} current_disj_eqs \land |-_{OCT} current_disj_eqs
       if(oct_solver.check() == z3::unsat){
         euf_solver.pop();
         oct_solver.pop();
         ++current_disj_eqs;
         continue;
       }
+
+      // Case |-_{EUF} current_disj_eqs \land not |-_{OCT} current_disj_eqs
       euf_solver.pop();
       oct_solver.pop();
 
@@ -152,6 +205,7 @@ ThCombInterpolator::ThCombInterpolator(
           << "Partial interpolant already computed" << std::endl;
 #endif
 
+      last_formula_added = current_disj_eqs_form;
       oct_solver.add(current_disj_eqs_form);
       current_disj_eqs = phi.begin();
       continue;
@@ -159,6 +213,7 @@ ThCombInterpolator::ThCombInterpolator(
 
     oct_solver.push();
     oct_solver.add(not(current_disj_eqs_form));
+    // Case not |-_{EUF} current_disj_eqs \land |-_{OCT} current_disj_eqs
     if(oct_solver.check() == z3::unsat){
       euf_solver.pop();
       oct_solver.pop();
@@ -201,13 +256,17 @@ ThCombInterpolator::ThCombInterpolator(
           "computed" << std::endl;
 #endif
 
+      last_formula_added = current_disj_eqs_form;
       euf_solver.add(current_disj_eqs_form);
       current_disj_eqs = phi.begin();
       continue;
     }
+
+    // Case not |-_{EUF} current_disj_eqs \land not |-_{OCT} current_disj_eqs
     euf_solver.pop();
     oct_solver.pop();
     ++current_disj_eqs;
+    // ------------------------------------------------------------------
   } 
 
 #if _DEBUG_TH_COMB_
@@ -265,6 +324,29 @@ void ThCombInterpolator::collectVariables(z3::expr const & e, z3_expr_set & _set
   }
   throw "Error @ Purifier::aux_update_shared_vars"
     "The expression is not an application";
+}
+
+void ThCombInterpolator::checkImpliedEqualities(z3::expr_vector const & terms, z3::solver & s){
+  unsigned num_terms = terms.size();
+  unsigned class_ids[num_terms];
+
+  for(unsigned i = 0; i < num_terms; i++)
+    class_ids[i] = 0;
+
+  switch(s.check_implied_equalities(num_terms, (z3::expr_vector &)terms, class_ids)){
+    case z3::sat:
+      std::cout << "sat" << std::endl;
+      for(unsigned i = 0; i < num_terms; i++)
+        std::cout << "Class " << terms[i] 
+          << " -> " << class_ids[i] << std::endl;
+      return;
+    case z3::unsat:
+      std::cout << "unsat" << std::endl;
+      return;
+    case z3::unknown:
+      std::cout << "unknown" << std::endl;
+      return;
+  }
 }
 
 void ThCombInterpolator::partialInterpolantConflict(

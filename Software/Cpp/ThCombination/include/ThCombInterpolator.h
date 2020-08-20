@@ -41,14 +41,12 @@ class ThCombInterpolator {
   Purifier part_a;
   Purifier part_b;
 
-  z3::solver euf_solver;
-  z3::solver oct_solver;
-
   z3::expr_vector shared_variables;
   z3::expr_map    partial_interpolants;
 
   void sharedVariables(Purifier const &, Purifier const &);
   void collectVariables(z3::expr const &, z3_expr_set &);
+  void checkImpliedEqualities(z3::expr_vector const &, z3::solver &);
 
   void partialInterpolantConflict(z3::expr const &, z3::expr_vector const &, 
       z3::expr_map &, Theory); 
