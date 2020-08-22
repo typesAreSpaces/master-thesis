@@ -1,0 +1,66 @@
+g++ -g -c -o ./tests/smt_file_test.o -I./src -I./include -std=c++11 -Wall -DDISJ_EQS_PROPAGATOR_NO_AB_MIXED_EQS -DADD_COMMON_PREFIX ./tests/smt_file_test.cpp
+g++ -g -o tests/smt_file_test  ./obj/Bound.o  ./obj/Bounds.o  ./obj/CDCL_T.o  ./obj/CongruenceClosure.o  ./obj/CongruenceClosureDST.o  ./obj/CongruenceClosureExplain.o  ./obj/CongruenceClosureNO.o  ./obj/CurryNode.o  ./obj/DisjEqsPropagator.o  ./obj/EUFInterpolant-conditionalEliminationEqs.o  ./obj/EUFInterpolant.o  ./obj/EUFInterpolantWithExpressions.o  ./obj/EUFInterpolantWithUncomSymbols.o  ./obj/Explanation.o  ./obj/FactoryCurryNodes.o  ./obj/HornClause.o  ./obj/HornClauses.o  ./obj/Hornsat.o  ./obj/Input.o  ./obj/Octagon.o  ./obj/OctagonInterpolant.o  ./obj/OctagonInterpolantWithExpressions.o  ./obj/OctagonInterpolantWithUncomSymbols.o  ./obj/OctagonParser.o  ./obj/OctagonTerm.o  ./obj/PicoSATProofFactory.o  ./obj/ProofFactory.o  ./obj/Purifier.o  ./obj/Rename.o  ./obj/RenameWithExpressions.o  ./obj/RenameWithUncomSymbols.o  ./obj/ThCombInterpolator.o  ./obj/ThCombInterpolatorWithExpressions.o  ./obj/UnionFind.o  ./obj/UnionFindExplain.o  ./obj/Util.o  ./obj/VarPositions.o  ./obj/Z3Subterms.o /home/jose/Documents/GithubProjects/z3__/build/libz3.so  ./tests/smt_file_test.o -lpthread -Wall
+#./tests/smt_file_test ./tests/smt2-files/example.smt2
+#./tests/smt_file_test ./tests/smt2-files/example1_reduced_z3.smt2
+./tests/smt_file_test ./tests/smt2-files/test1.smt2
+(<= a_fresh_index_1 c_i1)
+(<= a_fresh_index_1 c_i1)
+(>= a_fresh_index_1 a_fresh_index_2)
+(<= a_fresh_index_2 c_i1)
+(<= a_fresh_index_2 c_i1)
+(>= c_i1 0)
+(> b_i2 c_i1)
+(> c_i3 b_i2)
+(distinct (c_rd c_c2 a_fresh_index_1) (c_rd c_c1 a_fresh_index_1))
+(= a_fresh_index_1 c_i3)
+(= a_fresh_index_1 c_i1)
+(distinct (c_rd c_c2 a_fresh_index_1) (c_rd c_c1 a_fresh_index_1))
+(distinct a_fresh_index_1 a_fresh_index_2)
+(distinct (c_rd c_c2 a_fresh_index_2) (c_rd c_c1 a_fresh_index_2))
+(= a_fresh_index_2 c_i3)
+(= a_fresh_index_2 c_i1)
+(distinct (c_rd c_c1 b_i2) (c_rd c_c2 b_i2))
+(= (c_rd c_c2 b_i2) (c_rd c_c1 b_i2))
+(= (c_rd c_c2 b_i2) (c_rd c_c1 b_i2))
+EUF solver found a contradiction
+(ast-vector
+  (distinct (c_rd c_c2 a_fresh_index_1) (c_rd c_c1 a_fresh_index_1))
+  (= a_fresh_index_1 c_i3)
+  (= a_fresh_index_1 c_i1)
+  (distinct (c_rd c_c2 a_fresh_index_1) (c_rd c_c1 a_fresh_index_1))
+  (distinct a_fresh_index_1 a_fresh_index_2)
+  (distinct (c_rd c_c2 a_fresh_index_2) (c_rd c_c1 a_fresh_index_2))
+  (= a_fresh_index_2 c_i3)
+  (= a_fresh_index_2 c_i1)
+  (distinct (c_rd c_c1 b_i2) (c_rd c_c2 b_i2))
+  (= (c_rd c_c2 b_i2) (c_rd c_c1 b_i2))
+  (= (c_rd c_c2 b_i2) (c_rd c_c1 b_i2)))
+Clause Id: 2 (Fact) Predicate: (= a_fresh_index_1 c_i3) Interpolant(old): false
+Clause Id: 5 (Fact) Predicate: (not (= a_fresh_index_1 a_fresh_index_2)) Interpolant(new): false
+Clause Id: 7 (Fact) Predicate: (= a_fresh_index_2 c_i3) Interpolant(old): false
+Clause Id: 12 (Conflict Clause) Predicate: (or (not (= a_fresh_index_1 c_i3))
+    (= a_fresh_index_1 a_fresh_index_2)
+    (not (= a_fresh_index_2 c_i3)))
+Inside partialInterpolantConflict
+Part a: (ast-vector
+  (= a_fresh_index_1 c_i3)
+  (distinct a_fresh_index_1 a_fresh_index_2)
+  (= a_fresh_index_2 c_i3))
+Part b: (ast-vector)
+Interpolant((from conflict)new): false
+Clause Id: 13 (Derived(2,12)) Predicate: (or (= a_fresh_index_1 a_fresh_index_2) (not (= a_fresh_index_2 c_i3))) Pivot: (= a_fresh_index_1 c_i3)
+Pivot is A-local
+Partial interpolant (or false false)
+Interpolant((from derived)new): false
+Clause Id: 14 (Derived(13,5)) Predicate: (not (= a_fresh_index_2 c_i3)) Pivot: (= a_fresh_index_1 a_fresh_index_2)
+Pivot is A-local
+Partial interpolant (or false false)
+Interpolant((from derived)new): false
+Clause Id: 15 (Derived(14,7)) Predicate: false Pivot: (= a_fresh_index_2 c_i3)
+Pivot is A-local
+Partial interpolant (or false false)
+Interpolant((from derived)new): false
+Final interpolant for conflict clause: false
+-> Final Interpolant: false
+The interpolant is: false
+rm -rf tests/*.o tests/smt_file_test
