@@ -73,8 +73,12 @@ void crossTest(z3::context & ctx,
     char * part_a_goals_file_name, 
     char * part_b_goals_file_name){
 
-  std::vector<z3::expr_vector> part_a_forms = parseStream(ctx, sorts, func_decls, part_a_goals_file_name);
-  std::vector<z3::expr_vector> part_b_forms = parseStream(ctx, sorts, func_decls, part_b_goals_file_name); 
+  std::vector<z3::expr_vector> part_a_forms = parseStream(ctx, 
+      sorts, func_decls, 
+      part_a_goals_file_name);
+  std::vector<z3::expr_vector> part_b_forms = parseStream(ctx, 
+      sorts, func_decls, 
+      part_b_goals_file_name); 
 
   unsigned limit = 10;
 
@@ -82,8 +86,8 @@ void crossTest(z3::context & ctx,
     for(auto const & form_b : part_b_forms){
       // TODO: normalize expressions with not's
       try {
-        ThCombInterpolatorWithExpressions test(form_a, form_b);
-        std::cout << test << std::endl;
+        ThCombInterpolatorWithExpressions extensive_test(form_a, form_b);
+        std::cout << extensive_test << std::endl;
       }
       catch(char const * e){
         std::cerr << e << std::endl;
