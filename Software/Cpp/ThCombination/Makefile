@@ -33,7 +33,8 @@ DEPS = $(wildcard $(IDIR)/*.h)
 #all: tests/res_proof_test
 #all: tests/proof_factory_test
 #all: tests/basic_test
-all: tests/smt_file_test
+#all: tests/smt_file_test
+all: tests/extensive_test
 
 $(ODIR)/%.o: $(SDIR)/%.cpp $(DEPS)
 	$(CC) -g -c -o $@ $(FLAGS) $<
@@ -83,6 +84,14 @@ tests/smt_file_test: $(OBJS)
 	#./$@ ./tests/smt2-files/example1_reduced_z3.smt2
 	./$@ ./tests/smt2-files/test1.smt2
 	rm -rf tests/*.o $@
+
+.PHONY: tests/extensive_test
+tests/extensive_test: $(OBJS)
+	$(CC) -g -c -o ./$@.o $(FLAGS) ./$@.cpp
+	$(CC) -g -o $@ $(OBJS) ./$@.o -lpthread -Wall
+	./$@ ./tests/smt2-files/part_a_goals.smt2 ./tests/smt2-files/part_b_goals.smt2
+	rm -rf tests/*.o $@
+
 
 # ------------------------------------------------------------------------------------------
 
