@@ -16,7 +16,7 @@ std::vector<z3::expr_vector> parseStream(
     char *);
 int main(int, char **);
 
-int main(int argc, char * argv[]){
+int main(int argc, char ** argv){
   z3::context ctx;
 
   //(declare-sort ElementSort 0)
