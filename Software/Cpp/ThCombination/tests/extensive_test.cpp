@@ -18,6 +18,21 @@ int main(int, char **);
 int main(int argc, char * argv[]){
   z3::context ctx;
   // TODO: figure out how to obtain these
+//(declare-sort ElementSort 0)
+ //(declare-sort ArraySort 0)
+ //(declare-fun e3 () ElementSort)
+//(declare-fun rd (ArraySort Int) ElementSort)
+//(declare-fun i3 () Int)
+//(declare-fun a () ArraySort)
+//(declare-fun i1 () Int)
+//(declare-fun fresh_array_0 () ArraySort)
+//(declare-fun e1 () ElementSort)
+//(declare-fun b () ArraySort)
+//(declare-fun c2 () ArraySort)
+//(declare-fun c1 () ArraySort)
+//(declare-fun fresh_index_1 () Int)
+//(declare-fun fresh_index_2 () Int)
+//(declare-fun i2 () Int)
   z3::sort_vector sorts(ctx);
   z3::func_decl_vector func_decls(ctx);
   switch(argc){
