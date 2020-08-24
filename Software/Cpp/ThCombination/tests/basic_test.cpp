@@ -1,5 +1,30 @@
 #include "ThCombInterpolatorWithExpressions.h"
 
+void test1(z3::context &);
+void test2(z3::context &);
+void test3(z3::context &);
+void actualExample(z3::context &);
+void range2InequalityExample(z3::context &);
+void range3InequalityExample(z3::context &);
+void range4InequalityExample(z3::context &);
+void range5InequalityExample(z3::context &);
+void range6InequalityExample(z3::context &);
+
+int main(){
+  
+  z3::context ctx;  
+
+  //test1(ctx);
+  //test2(ctx);
+  //test3(ctx);
+  //actualExample(ctx);
+  //range2InequalityExample(ctx);
+  //range3InequalityExample(ctx);
+  range4InequalityExample(ctx);
+
+  return 0;
+}
+
 void test1(z3::context & ctx){
   z3::sort int_sort =  ctx.int_sort();
 
@@ -94,14 +119,63 @@ void actualExample(z3::context & ctx){
   std::cout << test << std::endl;
 }
 
-int main(){
-  
-  z3::context ctx;  
+void range2InequalityExample(z3::context & ctx){
+  z3::sort int_sort =  ctx.int_sort();
+  z3::expr x = ctx.constant("x", int_sort);
+  z3::func_decl f = ctx.function("f", int_sort, int_sort);
 
-  //test1(ctx);
-  //test2(ctx);
-  //test3(ctx);
-  actualExample(ctx);
+  z3::expr_vector formula_a(ctx);
+  formula_a.push_back(1 <= x);
+  formula_a.push_back(x <= 2);
+  //formula_a.push_back(f(x) == 3);
 
-  return 0;
+  z3::expr_vector formula_b(ctx);
+  formula_b.push_back(f(x) == 3);
+  formula_b.push_back(f(1) != 3);
+  formula_b.push_back(f(2) != 3);
+
+  ThCombInterpolatorWithExpressions test(formula_a, formula_b);
+  std::cout << test << std::endl;
 }
+
+void range3InequalityExample(z3::context & ctx){
+  z3::sort int_sort =  ctx.int_sort();
+  z3::expr x = ctx.constant("x", int_sort);
+  z3::func_decl f = ctx.function("f", int_sort, int_sort);
+
+  z3::expr_vector formula_a(ctx);
+  formula_a.push_back(1 <= x);
+  formula_a.push_back(x <= 3);
+  //formula_a.push_back(f(x) == 3);
+
+  z3::expr_vector formula_b(ctx);
+  formula_b.push_back(f(x) == 3);
+  formula_b.push_back(f(1) != 3);
+  formula_b.push_back(f(2) != 3);
+  formula_b.push_back(f(3) != 3);
+
+  ThCombInterpolatorWithExpressions test(formula_a, formula_b);
+  std::cout << test << std::endl;
+}
+
+void range4InequalityExample(z3::context & ctx){
+  z3::sort int_sort =  ctx.int_sort();
+  z3::expr x = ctx.constant("x", int_sort);
+  z3::func_decl f = ctx.function("f", int_sort, int_sort);
+
+  z3::expr_vector formula_a(ctx);
+  formula_a.push_back(1 <= x);
+  formula_a.push_back(x <= 4);
+  //formula_a.push_back(f(x) == 3);
+
+  z3::expr_vector formula_b(ctx);
+  formula_b.push_back(f(x) == 3);
+  formula_b.push_back(f(1) != 3);
+  formula_b.push_back(f(2) != 3);
+  formula_b.push_back(f(3) != 3);
+  formula_b.push_back(f(4) != 3);
+
+  ThCombInterpolatorWithExpressions test(formula_a, formula_b);
+  std::cout << test << std::endl;
+}
+
