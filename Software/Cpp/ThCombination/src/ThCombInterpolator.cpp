@@ -397,6 +397,7 @@ void ThCombInterpolator::partialInterpolantConflict(
   switch(th){
     case EUF:
       {
+        DEBUG_CONFLICT_MSG("Case EUF" << std::endl);
         // For loop to separate A-part and B-part
         // respectively
         for(auto const & conflict : conflict_lits){
@@ -443,6 +444,7 @@ void ThCombInterpolator::partialInterpolantConflict(
       }
     case OCT:
       {
+        DEBUG_CONFLICT_MSG("Case OCT" << std::endl);
         // For loop to separate A-part and B-part
         // respectively
         z3::goal oct_goals(ctx);

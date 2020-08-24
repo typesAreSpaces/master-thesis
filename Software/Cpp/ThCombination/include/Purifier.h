@@ -18,7 +18,8 @@ class Purifier {
   typedef unsigned EUF_FRESH_ID;
 
 protected:
-  unsigned fresh_var_id;
+  static unsigned fresh_var_id;
+  //unsigned fresh_var_id;
 
   z3::context & ctx;
   

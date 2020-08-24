@@ -1,8 +1,10 @@
 #include "Purifier.h"
 #define _DEBUGPURIFIER_ false
 
+unsigned Purifier::fresh_var_id = 0;
+
 Purifier::Purifier(z3::expr_vector const & e) :
-  fresh_var_id(0),
+  //fresh_var_id(0),
   ctx(e.ctx()), 
   oct_component(ctx), euf_component(ctx), 
   oct_fresh_ids(), euf_fresh_ids(),from(ctx), to(ctx), input(purify(e))
