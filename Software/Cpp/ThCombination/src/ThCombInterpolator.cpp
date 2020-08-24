@@ -72,11 +72,18 @@ ThCombInterpolator::ThCombInterpolator(
           resolution_proof,
           ctx.bool_val(false),
           oct_assertions.size(), EUF);
-      z3::expr_vector existential_quants(ctx);
-      for(unsigned _i = 0; _i < phi.ab_mixed_index; ++_i)
-        existential_quants.push_back(ctx.int_const(("c_t_" + std::to_string(_i)).c_str()));
-      computed_interpolant = z3::exists(existential_quants,
-          partial_interpolants.find(ctx.bool_val(false))).simplify();
+      if(phi.ab_mixed_index){
+        z3::expr_vector existential_quants(ctx);
+        for(unsigned _i = 0; _i < phi.ab_mixed_index; ++_i)
+          existential_quants.push_back(ctx.int_const(
+                (PREFIX_AB_TEMP_TERM + std::to_string(_i)).c_str()));
+        computed_interpolant = z3::exists(existential_quants,
+            partial_interpolants.find(ctx.bool_val(false))).simplify();
+      }
+      else{
+        computed_interpolant = partial_interpolants.find(ctx.bool_val(false)).simplify();
+      }
+      
       DEBUG_LOOP_MSG(
           "-> Final Interpolant: " 
           << computed_interpolant
@@ -115,7 +122,7 @@ ThCombInterpolator::ThCombInterpolator(
     if(euf_solver.check() == z3::unsat){
       DEBUG_LOOP_MSG("EUF solver found a contradiction" << std::endl);
       DEBUG_LOOP_MSG(euf_solver.assertions() << std::endl);
-     
+
       z3::expr_vector euf_assertions(ctx);
       for(auto const & assertion : euf_solver.assertions())
         euf_assertions.push_back(assertion);
@@ -127,12 +134,17 @@ ThCombInterpolator::ThCombInterpolator(
           resolution_proof,
           ctx.bool_val(false),
           euf_assertions.size(), EUF);
-      z3::expr_vector existential_quants(ctx);
-      for(unsigned _i = 0; _i < phi.ab_mixed_index; ++_i)
-        existential_quants.push_back(ctx.int_const(
-              (PREFIX_AB_TEMP_TERM + std::to_string(_i)).c_str()));
-      computed_interpolant = z3::exists(existential_quants,
-          partial_interpolants.find(ctx.bool_val(false))).simplify();
+      if(phi.ab_mixed_index){
+        z3::expr_vector existential_quants(ctx);
+        for(unsigned _i = 0; _i < phi.ab_mixed_index; ++_i)
+          existential_quants.push_back(ctx.int_const(
+                (PREFIX_AB_TEMP_TERM + std::to_string(_i)).c_str()));
+        computed_interpolant = z3::exists(existential_quants,
+            partial_interpolants.find(ctx.bool_val(false))).simplify();
+      }
+      else{
+        computed_interpolant = partial_interpolants.find(ctx.bool_val(false)).simplify();
+      }
       DEBUG_LOOP_MSG(
           "-> Final Interpolant: " 
           << computed_interpolant
@@ -167,7 +179,7 @@ ThCombInterpolator::ThCombInterpolator(
     }
     euf_solver.pop();
     // ----------------------------------------------------------------
-    
+
     // TODO: add a "solvers' <- state(solvers)" instruction or equivalent here
 
     // ------------------------------------------------------------------
@@ -191,9 +203,9 @@ ThCombInterpolator::ThCombInterpolator(
       oct_solver.pop();
 
       DEBUG_LOOP_MSG(std::endl << "Disjunction implied in EUF: "
-        << current_disj_eqs_form
-        << std::endl);
-      
+          << current_disj_eqs_form
+          << std::endl);
+
       // These assertions include the original assertions
       z3::expr_vector euf_assertions(ctx);
       for(auto const & assertion : euf_solver.assertions())
@@ -241,8 +253,8 @@ ThCombInterpolator::ThCombInterpolator(
       oct_solver.pop();
 
       DEBUG_LOOP_MSG(std::endl << "Disjunction implied in OCT: "
-        << current_disj_eqs_form
-        << std::endl);
+          << current_disj_eqs_form
+          << std::endl);
 
       // These assertions include the original assertions
       z3::expr_vector oct_assertions(ctx);
@@ -381,7 +393,7 @@ void ThCombInterpolator::partialInterpolantConflict(
   z3::expr_vector part_b(ctx);
 
   DEBUG_CONFLICT_MSG("Inside partialInterpolantConflict" << std::endl);
-  
+
   switch(th){
     case EUF:
       {
@@ -468,7 +480,7 @@ void ThCombInterpolator::partialInterpolantConflict(
           else
             part_b.push_back(conflict);
         }
-        
+
         z3::solver s_temp(ctx, "QF_LIA");
         if(s_temp.check(part_a) == z3::unsat){
           DEBUG_CONFLICT_MSG("-------It was unsat" << std::endl);

@@ -82,48 +82,43 @@ void crossTest(z3::context & ctx,
       part_b_goals_file_name); 
 
   unsigned limit = 30;
-  //unsigned limit = 10;
-  unsigned i = 0;
+  unsigned __i = 0;
 
   for(auto const & form_a : part_a_forms)
     for(auto const & form_b : part_b_forms){
-      if(++i == limit)
-        return;
-      //if(i != 12) continue;
-      if(i == 10 || i == 9 || i == 12 || i == 16
-          || i == 11 || i == 23 || i == 21|| i == 27|| i == 26|| i == 35
-          || i == 32
-          || i == 28
-          || i == 31
-          || i == 42
-          || i == 54
-          || i == 56|| i == 57|| i == 48|| i == 68|| i == 41|| i == 43
-          || i == 50|| i == 59
-          || i == 69
-          || i == 22 || i == 33 || i == 34
-          || i == 40 || i == 44 || i == 46 || i == 45
-          || i == 58
-          || i == 67
-          || i == 60
+      ++__i;
+      if(__i == 10 || __i == 9 || __i == 12 || __i == 16
+          || __i == 11 || __i == 23 || __i == 21|| __i == 27|| __i == 26|| __i == 35
+          || __i == 32
+          || __i == 28
+          || __i == 31
+          || __i == 42
+          || __i == 54
+          || __i == 56|| __i == 57|| __i == 48|| __i == 68|| __i == 41|| __i == 43
+          || __i == 50|| __i == 59
+          || __i == 69
+          || __i == 22 || __i == 33 || __i == 34
+          || __i == 40 || __i == 44 || __i == 46 || __i == 45
+          || __i == 58
+          || __i == 67
+          || __i == 60
           ) continue;
       try {
         auto const & input_a = normalizeExprVector(form_a);
         auto const & input_b = normalizeExprVector(form_b);
-        std::cout << "Test #" << i << std::endl;
+        std::cout << "Test #" << __i << std::endl;
         std::cout << "Input a:" << std::endl;
         std::cout << input_a << std::endl;
         std::cout << "Input b:" << std::endl;
         std::cout << input_b << std::endl;
-        
         ThCombInterpolatorWithExpressions extensive_test(input_a, input_b);
         std::cout << extensive_test << std::endl;
-        //ThCombInterpolatorWithExpressions * extensive_test = new ThCombInterpolatorWithExpressions(input_a, input_b);
-        //std::cout << *extensive_test << std::endl;
-        //delete extensive_test;
       }
       catch(char const * e){
         std::cerr << e << std::endl;
       }
+      if(__i == limit)
+        return;
     }
 } 
 

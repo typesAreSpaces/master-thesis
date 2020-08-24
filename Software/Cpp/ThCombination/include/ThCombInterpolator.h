@@ -3,17 +3,17 @@
 #define _DEBUG_TH_COMB_ 0
 #define _MSG(x) std::cout << x
 #define _SKIP do {} while(0)
-#if 1
+#if 0
 #define DEBUG_LOOP_MSG(x) _MSG(x)
 #else
 #define DEBUG_LOOP_MSG(x) _SKIP
 #endif
-#if 1
+#if 0
 #define DEBUG_NON_CONV_MSG(x) _MSG(x)
 #else
 #define DEBUG_NON_CONV_MSG(x) _SKIP
 #endif
-#if 1
+#if 0
 #define DEBUG_CONFLICT_MSG(x) _MSG(x)
 #else
 #define DEBUG_CONFLICT_MSG(x) _SKIP
