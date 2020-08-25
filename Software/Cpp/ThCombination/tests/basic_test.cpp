@@ -27,7 +27,7 @@ int main(){
   
   //range2InequalityExample(ctx);
   //range3InequalityExample(ctx);
-  //range4InequalityExample(ctx);
+  range4InequalityExample(ctx);
 
   return 0;
 }

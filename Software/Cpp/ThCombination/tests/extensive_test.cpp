@@ -81,31 +81,14 @@ void crossTest(z3::context & ctx,
       sorts, func_decls, 
       part_b_goals_file_name); 
 
-  unsigned limit = 30;
-  //unsigned limit = 10;
+  unsigned limit = 200;
   unsigned i = 0;
 
   for(auto const & form_a : part_a_forms)
     for(auto const & form_b : part_b_forms){
       if(++i == limit)
         return;
-      //if(i != 12) continue;
-      if(i == 10 || i == 9 || i == 12 || i == 16
-          || i == 11 || i == 23 || i == 21|| i == 27|| i == 26|| i == 35
-          || i == 32
-          || i == 28
-          || i == 31
-          || i == 42
-          || i == 54
-          || i == 56|| i == 57|| i == 48|| i == 68|| i == 41|| i == 43
-          || i == 50|| i == 59
-          || i == 69
-          || i == 22 || i == 33 || i == 34
-          || i == 40 || i == 44 || i == 46 || i == 45
-          || i == 58
-          || i == 67
-          || i == 60
-          ) continue;
+      //if(i != 139) continue;
       try {
         auto const & input_a = normalizeExprVector(form_a);
         auto const & input_b = normalizeExprVector(form_b);
@@ -117,9 +100,6 @@ void crossTest(z3::context & ctx,
         
         ThCombInterpolatorWithExpressions extensive_test(input_a, input_b);
         std::cout << extensive_test << std::endl;
-        //ThCombInterpolatorWithExpressions * extensive_test = new ThCombInterpolatorWithExpressions(input_a, input_b);
-        //std::cout << *extensive_test << std::endl;
-        //delete extensive_test;
       }
       catch(char const * e){
         std::cerr << e << std::endl;

@@ -12,6 +12,7 @@
 // in QF_UFLIA
 
 class Purifier {
+  friend class ThCombInterpolator;
 
   typedef unsigned Z3_EXPR_ID;
   typedef unsigned OCT_FRESH_ID;
@@ -31,6 +32,8 @@ protected:
 
   z3::expr_vector       from;
   z3::expr_vector       to;
+  z3::expr_vector       persistent_from;
+  z3::expr_vector       persistent_to;
   z3::expr_vector const input;
 
 private:  

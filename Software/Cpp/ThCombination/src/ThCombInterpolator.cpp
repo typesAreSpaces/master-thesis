@@ -71,49 +71,14 @@ ThCombInterpolator::ThCombInterpolator(
           cdcl_oct,
           resolution_proof,
           ctx.bool_val(false),
-          oct_assertions.size(), EUF);
-      if(phi.ab_mixed_index){
-        z3::expr_vector existential_quants(ctx);
-        for(unsigned _i = 0; _i < phi.ab_mixed_index; ++_i)
-          existential_quants.push_back(ctx.int_const(
-                (PREFIX_AB_TEMP_TERM + std::to_string(_i)).c_str()));
-        computed_interpolant = z3::exists(existential_quants,
-            partial_interpolants.find(ctx.bool_val(false))).simplify();
-      }
-      else{
-        computed_interpolant = partial_interpolants.find(ctx.bool_val(false)).simplify();
-      }
-      
+          oct_assertions.size(), OCT);
+
+      liftInterpolant(phi);
+
       DEBUG_LOOP_MSG(
           "-> Final Interpolant: " 
           << computed_interpolant
           << std::endl);
-      // This should be allowed 
-      // when lift procedures are 
-      // given for all the 
-      // theories involved
-#if 0 
-      // *+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+
-      // TODO: get all the witness terms introduced
-      // and obtain their representatives (these should be common)
-      // Eliminate the witness terms using the solve-eqs tactic.
-      std::cout << "Hahah Just checking something" << std::endl;
-
-      z3::solver hahaha_oct(ctx);
-      for(auto const & assertion : oct_solver.assertions())
-        if(assertion.id() != last_formula_added.id())
-          hahaha_oct.add(assertion);
-      std::cout << "This must be satisfiable" << std::endl;
-      std::cout << (hahaha_oct.check() == z3::sat) << std::endl;
-
-      z3::solver hahaha_euf(ctx);
-      for(auto const & assertion : euf_solver.assertions())
-        hahaha_euf.add(assertion);
-      std::cout << "This must be satisfiable" << std::endl;
-      std::cout << (hahaha_euf.check() == z3::sat) << std::endl;
-      // *+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+
-#endif
-
       return;
     }
     oct_solver.pop();
@@ -134,47 +99,13 @@ ThCombInterpolator::ThCombInterpolator(
           resolution_proof,
           ctx.bool_val(false),
           euf_assertions.size(), EUF);
-      if(phi.ab_mixed_index){
-        z3::expr_vector existential_quants(ctx);
-        for(unsigned _i = 0; _i < phi.ab_mixed_index; ++_i)
-          existential_quants.push_back(ctx.int_const(
-                (PREFIX_AB_TEMP_TERM + std::to_string(_i)).c_str()));
-        computed_interpolant = z3::exists(existential_quants,
-            partial_interpolants.find(ctx.bool_val(false))).simplify();
-      }
-      else{
-        computed_interpolant = partial_interpolants.find(ctx.bool_val(false)).simplify();
-      }
+
+      liftInterpolant(phi);
+
       DEBUG_LOOP_MSG(
           "-> Final Interpolant: " 
           << computed_interpolant
           << std::endl);
-      // This should be allowed 
-      // when lift procedures are 
-      // given for all the 
-      // theories involved
-#if 0 
-      // *+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+
-      // TODO: get all the witness terms introduced
-      // and obtain their representatives (these should be common)
-      // Eliminate the witness terms using the solve-eqs tactic.
-      std::cout << "Hahah Just checking something" << std::endl;
-
-      z3::solver hahaha_oct(ctx);
-      for(auto const & assertion : oct_solver.assertions())
-        hahaha_oct.add(assertion);
-      std::cout << "This must be satisfiable" << std::endl;
-      std::cout << (hahaha_oct.check() == z3::sat) << std::endl;
-
-      z3::solver hahaha_euf(ctx);
-      for(auto const & assertion : euf_solver.assertions())
-        if(assertion.id() != last_formula_added.id())
-          hahaha_euf.add(assertion);
-      std::cout << "This must be satisfiable" << std::endl;
-      std::cout << (hahaha_euf.check() == z3::sat) << std::endl;
-      // *+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+
-#endif
-
       return;
     }
     euf_solver.pop();
@@ -491,6 +422,9 @@ void ThCombInterpolator::partialInterpolantConflict(
         }
 
         DEBUG_CONFLICT_MSG("-------It was sat!" << std::endl);
+        DEBUG_CONFLICT_MSG(part_a << std::endl);
+        DEBUG_CONFLICT_MSG(part_b << std::endl);
+
         auto oct_dnf = z3::repeat(
             z3::tactic(ctx, "split-clause") | z3::tactic(ctx, "skip"))(oct_goals);
         z3::expr_vector conjuncts(ctx);
@@ -503,8 +437,13 @@ void ThCombInterpolator::partialInterpolantConflict(
           for(auto const & conjunct : conjuncts){
             z3::expr_vector oct_input(ctx);
             assert(oct_input.empty());
-            for(unsigned _i = 0; _i < conjunct.num_args(); _i++)
-              oct_input.push_back(conjunct.arg(_i));
+
+            if(conjunct.decl().decl_kind() == Z3_OP_AND)
+              for(unsigned _i = 0; _i < conjunct.num_args(); _i++)
+                oct_input.push_back(conjunct.arg(_i));
+            else
+              oct_input.push_back(conjunct);
+            
 
             DEBUG_CONFLICT_MSG("Input for OctagonInterpolant " << oct_input << std::endl);
             disj_interpolants.push_back(z3::mk_and(OctagonInterpolant(oct_input).getInterpolant()));
@@ -709,7 +648,26 @@ void ThCombInterpolator::partialInterpolantNonConvex(CDCL_T & cdcl_t,
       local_partial_interp.find(ctx.bool_val(false)).simplify());
 }
 
-void ThCombInterpolator::getInterpolant(){
+void ThCombInterpolator::liftInterpolant(DisjEqsPropagator const & phi){
+  if(phi.ab_mixed_index){
+    z3::expr_vector existential_quants(ctx);
+    for(unsigned _i = 0; _i < phi.ab_mixed_index; ++_i)
+      existential_quants.push_back(ctx.int_const(
+            (PREFIX_AB_TEMP_TERM + std::to_string(_i)).c_str()));
+    computed_interpolant = z3::exists(existential_quants,
+        partial_interpolants.find(ctx.bool_val(false))).simplify();
+  }
+  else
+    computed_interpolant = partial_interpolants.find(ctx.bool_val(false)).simplify();
+
+  computed_interpolant = computed_interpolant
+    .substitute(part_a.persistent_to, part_a.persistent_from)
+    .substitute(part_b.persistent_to, part_b.persistent_from)
+    .simplify();
+}
+
+z3::expr ThCombInterpolator::getInterpolant() const {
+  return computed_interpolant;
 }
 
 std::ostream & operator << (std::ostream & os, ThCombInterpolator & p){

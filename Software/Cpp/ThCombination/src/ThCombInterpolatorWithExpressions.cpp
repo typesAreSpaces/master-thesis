@@ -5,7 +5,14 @@ ThCombInterpolatorWithExpressions::ThCombInterpolatorWithExpressions(z3::expr_ve
 {
 }
 
-std::ostream & operator << (std::ostream & os, ThCombInterpolatorWithExpressions const & p) {
-  return os << "The interpolant is: " << p.computed_interpolant;
+std::ostream & operator << (std::ostream & os, ThCombInterpolatorWithExpressions & p) {
+  os << "The interpolant is: ";
+  try {
+    os << p.removePrefix(p.computed_interpolant);
+  }
+  catch(char const * e){
+    std::cerr << e << std::endl;
+  }
+  return os;
 }
 

@@ -7,7 +7,10 @@ Purifier::Purifier(z3::expr_vector const & e) :
   //fresh_var_id(0),
   ctx(e.ctx()), 
   oct_component(ctx), euf_component(ctx), 
-  oct_fresh_ids(), euf_fresh_ids(),from(ctx), to(ctx), input(purify(e))
+  oct_fresh_ids(), euf_fresh_ids(),
+  from(ctx), to(ctx), 
+  persistent_from(ctx), persistent_to(ctx), 
+  input(purify(e))
 {
   split(input);
 #if _DEBUGPURIFIER_
@@ -34,8 +37,11 @@ z3::expr_vector Purifier::purify(z3::expr_vector const & assertions){
 z3::expr Purifier::purify(z3::expr const & e){
   z3::expr _input = traverse(e);
   unsigned num_new_symbols = from.size();
-  for(unsigned i = 0; i < num_new_symbols; i++)
+  for(unsigned i = 0; i < num_new_symbols; i++){
     _input = _input && from[i] == to[i];
+    persistent_from.push_back(from[i]);
+    persistent_to.push_back(to[i]);
+  }
   // "from" and "to" are no longer needed 
   from.resize(0);
   to  .resize(0);

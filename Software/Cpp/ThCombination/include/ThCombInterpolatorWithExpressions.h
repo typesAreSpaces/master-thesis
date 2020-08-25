@@ -7,7 +7,7 @@
 class ThCombInterpolatorWithExpressions : public RenameWithExpressions, public ThCombInterpolator {
   public:
     ThCombInterpolatorWithExpressions(z3::expr_vector const &, z3::expr_vector const &);
-    friend std::ostream & operator << (std::ostream &, ThCombInterpolatorWithExpressions const &);
+    friend std::ostream & operator << (std::ostream &, ThCombInterpolatorWithExpressions &);
 };
 
 #endif

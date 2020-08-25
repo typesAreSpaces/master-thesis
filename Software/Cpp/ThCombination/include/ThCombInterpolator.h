@@ -1,19 +1,19 @@
 #ifndef _THCOMB_
 #define _THCOMB_
-#define _DEBUG_TH_COMB_ 1
+#define _DEBUG_TH_COMB_ 0
 #define _MSG(x) std::cout << x
 #define _SKIP do {} while(0)
-#if 1
+#if 0
 #define DEBUG_LOOP_MSG(x) _MSG(x)
 #else
 #define DEBUG_LOOP_MSG(x) _SKIP
 #endif
-#if 1
+#if 0
 #define DEBUG_NON_CONV_MSG(x) _MSG(x)
 #else
 #define DEBUG_NON_CONV_MSG(x) _SKIP
 #endif
-#if 1
+#if 0
 #define DEBUG_CONFLICT_MSG(x) _MSG(x)
 #else
 #define DEBUG_CONFLICT_MSG(x) _SKIP
@@ -53,6 +53,8 @@ class ThCombInterpolator {
   void partialInterpolantNonConvex(CDCL_T &, PicoProofFactory const &, 
       z3::expr const &, unsigned, Theory);
 
+  void liftInterpolant(DisjEqsPropagator const &);
+
   protected:
   z3::expr computed_interpolant;
 
@@ -60,7 +62,7 @@ class ThCombInterpolator {
   ThCombInterpolator(z3::expr_vector const &, z3::expr_vector const &);
   ~ThCombInterpolator();
 
-  void getInterpolant();
+  z3::expr getInterpolant() const;
 
   friend std::ostream & operator << (std::ostream &, ThCombInterpolator &);
 };

@@ -19,7 +19,6 @@ ODIR = ./obj
 SDIR = ./src
 CC = g++
 FLAGS = -I$(SDIR) -I$(IDIR) -std=c++11 -Wall -DDISJ_EQS_PROPAGATOR_NO_AB_MIXED_EQS -DADD_COMMON_PREFIX
-#FLAGS = -I$(SDIR) -I$(IDIR) -std=c++11 -Wall
 
 SRC = $(wildcard $(SDIR)/*.cpp)
 OBJS = $(patsubst $(SDIR)/%.cpp, $(ODIR)/%.o, $(SRC)) $(Z3DIR)/build/libz3.$(Z3EXT) 
