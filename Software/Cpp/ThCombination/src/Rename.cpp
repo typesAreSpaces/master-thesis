@@ -66,10 +66,10 @@ z3::expr Rename::removePrefix(z3::expr const & e){
           return new_f(new_args);
         }
       default:
-        throw "Problem @ RenameWithUncomSymbols::reformulate: The formula e is not an QF_IUF.";
+        throw "Problem @ Rename::reformulate: The formula e is not an QF_IUF.";
     }
   }
-  throw "Problem @ RenameWithUncomSymbols::reformulate: The formula e is not an expression.";
+  throw "Problem @ Rename::reformulate: The formula e is not an expression.";
 }
 
 z3::expr_vector Rename::removePrefix(z3::expr_vector const & input){

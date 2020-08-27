@@ -6,11 +6,14 @@ Rename::Rename(z3::context & ctx) :
 }
 
 z3::expr Rename::removePrefix(z3::expr const & e){
+  std::cout << e << std::endl;
   if(e.is_app()){
 
     auto f = e.decl();
 
     switch(f.decl_kind()){
+      case Z3_OP_TRUE:
+      case Z3_OP_FALSE:
       case Z3_OP_ANUM:
         return e;
       case Z3_OP_UMINUS:
@@ -38,7 +41,6 @@ z3::expr Rename::removePrefix(z3::expr const & e){
         return f(removePrefix(e.arg(0)), removePrefix(e.arg(1)));
       case Z3_OP_UNINTERPRETED:
         {
-
           unsigned num = e.num_args();
           z3::expr_vector new_args    (e.ctx());
           z3::sort_vector domain_sorts(e.ctx());
@@ -55,10 +57,10 @@ z3::expr Rename::removePrefix(z3::expr const & e){
           return new_f(new_args);
         }
       default:
-        throw "Problem @ RenameWithUncomSymbols::reformulate: The formula e is not an QF_IUF.";
+        throw "Problem @ Rename::reformulate: The formula e is not an QF_IUF.";
     }
   }
-  throw "Problem @ RenameWithUncomSymbols::reformulate: The formula e is not an expression.";
+  throw "Problem @ Rename::reformulate: The formula e is not an expression.";
 }
 
 z3::expr_vector Rename::removePrefix(z3::expr_vector const & input){
