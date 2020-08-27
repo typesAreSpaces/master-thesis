@@ -3,9 +3,24 @@
 #include "Rename.h"
 #include "EUFInterpolantWithUncomSymbols.h"
 
-void currentProgress(){
- 
+void currentProgress(z3::context &);
+void paperExample(z3::context &);
+void example(z3::context &);
+void example2(z3::context &);
+
+int main(int argc, char ** argv){
+
   z3::context ctx;
+  //currentProgress(ctx);
+  //paperExample(ctx);
+  //example(ctx);
+  example2(ctx);
+
+  return 0;
+}
+
+void currentProgress(z3::context & ctx){
+ 
   z3::sort my_sort = ctx.uninterpreted_sort("A");
   z3::expr a = ctx.constant("a", my_sort);
   z3::expr b = ctx.constant("b", my_sort);
@@ -31,9 +46,8 @@ void currentProgress(){
   return;
 }
 
-void paperExample(){
+void paperExample(z3::context & ctx){
 
-  z3::context ctx;
   z3::sort my_sort = ctx.uninterpreted_sort("A");
   z3::expr z1 = ctx.constant("z1", my_sort);
   z3::expr z2 = ctx.constant("z2", my_sort);
@@ -66,9 +80,8 @@ void paperExample(){
   return;
 }
 
-void example(){
+void example(z3::context & ctx){
 
-  z3::context ctx;
   z3::sort my_sort = ctx.uninterpreted_sort("A");
 
   z3::expr a = ctx.constant("a", my_sort);
@@ -99,15 +112,26 @@ void example(){
   return;
 }
 
+void example2(z3::context & ctx){
 
+  z3::sort my_sort = ctx.uninterpreted_sort("A");
 
-int main(int argc, char ** argv){
+  z3::expr x1 = ctx.constant("x1", my_sort);
+  z3::expr x2 = ctx.constant("x2", my_sort);
+  z3::func_decl f = ctx.function("f", my_sort, my_sort);
+  std::set<std::string> uncomms({"f"});
 
-  //currentProgress();
-  //paperExample();
-  example();
+  z3::expr_vector input(ctx); 
+  input.push_back(f(x1) != f(x2));
 
-  return 0;
+  try {
+    EUFInterpolantWithUncomSymbols eufi(input, uncomms);
+    std::cout << eufi.removePrefix(eufi.getInterpolant()) << std::endl;
+  }
+  catch(char const * e){
+    std::cout << e << std::endl;
+  }
+  std::cout << "Ok" << std::endl;
+  return;
 }
-
 
