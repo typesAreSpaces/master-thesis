@@ -1,5 +1,6 @@
 #include <iostream>
 #include <algorithm>
+#include <z3++.h>
 #include "Rename.h"
 #include "EUFInterpolantWithUncomSymbols.h"
 
@@ -7,6 +8,7 @@ void currentProgress(z3::context &);
 void paperExample(z3::context &);
 void example(z3::context &);
 void example2(z3::context &);
+void example3(z3::context &);
 
 int main(int argc, char ** argv){
 
@@ -14,7 +16,8 @@ int main(int argc, char ** argv){
   //currentProgress(ctx);
   //paperExample(ctx);
   //example(ctx);
-  example2(ctx);
+  //example2(ctx);
+  example3(ctx);
 
   return 0;
 }
@@ -113,6 +116,33 @@ void example(z3::context & ctx){
 }
 
 void example2(z3::context & ctx){
+
+  z3::sort my_sort = ctx.uninterpreted_sort("A");
+
+  z3::expr x1 = ctx.constant("x1", my_sort);
+  z3::expr x2 = ctx.constant("x2", my_sort);
+  z3::expr a1 = ctx.constant("a1", my_sort);
+  z3::expr a2 = ctx.constant("a2", my_sort);
+  z3::func_decl f = ctx.function("f", my_sort, my_sort);
+  std::set<std::string> uncomms({"f", "a1", "a2"});
+
+  z3::expr_vector input(ctx); 
+  input.push_back(a1 != a2);
+  input.push_back(f(x1) == a1);
+  input.push_back(f(x2) == a2);
+
+  try {
+    EUFInterpolantWithUncomSymbols eufi(input, uncomms);
+    std::cout << eufi.removePrefix(eufi.getInterpolant()) << std::endl;
+  }
+  catch(char const * e){
+    std::cout << e << std::endl;
+  }
+  std::cout << "Ok" << std::endl;
+  return;
+}
+
+void example3(z3::context & ctx){
 
   z3::sort my_sort = ctx.uninterpreted_sort("A");
 

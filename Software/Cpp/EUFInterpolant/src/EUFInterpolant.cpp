@@ -5,12 +5,12 @@ EUFInterpolant::EUFInterpolant(z3::expr_vector const & assertions) :
   Input(assertions), 
   assertions((
         // Unconditional uncommon symbol elimination step
-        exposeUncommons()
-        , assertions)), 
+        exposeUncommons(), 
+        assertions)), 
   // Conditional uncommon symbol elimination step
-  hsat(cce, horn_clauses), result(ctx)
+  hsat(cce, horn_clauses), result(ctx),
+  conditional_horn_clauses(ctx, ufe, original_num_terms)
 {        
-
   for(auto const & equation : assertions){
     if(!equation.is_eq()) continue;
     hsat.equiv_classes.merge(equation.arg(0), equation.arg(1));
@@ -29,76 +29,6 @@ EUFInterpolant::EUFInterpolant(z3::expr_vector const & assertions) :
 #if DEBUG_TEMP
   std::cout << "All the subterms" << std::endl;
   std::cout << subterms << std::endl;
-#endif
-
-#if DEBUG_TEMP
-  std::cout << "BEGIN temporal testing" << std::endl;
-
-  auto t1 = subterms[31]; //31. (c_f c_y1 a_v)
-  auto t2 = subterms[21]; //21. c_z1
-  auto t3 = subterms[24]; //24. c_s1
-  auto t4 = subterms[32]; //32. c_y2
-  auto t5 = subterms[34]; //34. (c_f (c_f c_y1 a_v) (c_f c_y2 a_v)) 
-  auto t6 = subterms[33]; //33. (c_f c_y2 a_v)
-  auto t7 = subterms[28]; //28. c_s2
-  auto t8 = subterms[22]; //22. a_v
-
-  // Testing candidates
-  std::cout << "Testing candidates" << std::endl;
-  std::cout << "Candidates for " << t1 << std::endl;
-  for(auto elem : candidates(t1))
-    std::cout << elem << std::endl;
-  std::cout << "Candidates for " << t6 << std::endl;
-  for(auto elem : candidates(t6))
-    std::cout << elem << std::endl;
-  std::cout << "Candidates for " << t3 << std::endl;
-  for(auto elem : candidates(t3))
-    std::cout << elem << std::endl;
-  std::cout << "Candidates for " << t7 << std::endl;
-  for(auto elem : candidates(t7))
-    std::cout << elem << std::endl;
-
-  // Testing allCandidates
-  std::cout << "Testing allCandidates" << std::endl;
-  std::cout << "for " << t5 << std::endl;
-  for(auto const & temp_list : allCandidates(t5)){
-    for(auto const & elem : temp_list)
-      std::cout << elem << " ";
-    std::cout << std::endl;
-  }
-
-  // Testing explainUncommons
-  std::cout << "Testing explainUncommons" << std::endl;
-  std::cout << t1 << " = " << t3 << std::endl;
-  std::cout << explainUncommons(t1, t3) << std::endl;
-  std::cout << t3 << " = " << t1 << std::endl;
-  std::cout << explainUncommons(t3, t1) << std::endl;
-  std::cout << t3 << " = " << t3 << std::endl;
-  std::cout << explainUncommons(t3, t3) << std::endl;
-
-  // Testing cartesianProd
-  std::cout << "Testing cartesianProd" << std::endl;
-  std::list<std::list<z3::expr> > abc({{t1, t2}, {t3, t1}, {t4, t1, t2}});
-  unsigned temp_index = 1;
-  for(auto const & temp : cartesianProd(abc)){
-    std::cout << "candidate " << temp_index++ << std::endl;
-    std::cout << temp << std::endl;
-  }
-  std::list<std::list<z3::expr> > def({{}});
-  temp_index = 1;
-  for(auto const & temp : cartesianProd(def)){
-    std::cout << "candidate " << temp_index++ << std::endl;
-    std::cout << temp << std::endl;
-  }
-
-  // Testing composition of cartesianProd and allCandidates
-  std::cout << "Testing composition of cartesianProd and allCandidates" << std::endl;
-
-  std::cout << "for " << t5 << std::endl;
-  for(auto const & w : cartesianProd(allCandidates(t5)))
-    std::cout << w << std::endl;
-
-  std::cout << "END temporal testing" << std::endl;
 #endif
 
   conditionalElimination();
@@ -157,6 +87,7 @@ void EUFInterpolant::conditionalElimination(){
   // operator
 
 #if DEBUG_COND_ELIM
+  std::cout << "Before conditionalEliminationEqs" << std::endl;
   std::cout << horn_clauses << std::endl;
 #endif
 
@@ -164,6 +95,16 @@ void EUFInterpolant::conditionalElimination(){
   conditionalEliminationEqs();
 
 #if DEBUG_COND_ELIM
+  std::cout << "After conditionalEliminationEqs/" 
+    "Before conditionalEliminationHcs" << std::endl;
+  std::cout << horn_clauses << std::endl;
+#endif
+
+  // Process Horn clauses produced
+  conditionalEliminationHcs();
+
+#if DEBUG_COND_ELIM
+  std::cout << "After conditionalEliminationHcs" << std::endl;
   std::cout << horn_clauses << std::endl;
 #endif
 
@@ -288,12 +229,18 @@ void EUFInterpolant::buildInterpolant(){
 
   horn_clauses.filterCommons();
   horn_clauses.simplify();
+  conditional_horn_clauses.filterCommons();
+  conditional_horn_clauses.simplify();
 
 #if DEBUG_BUILD_INTERP
   std::cout << horn_clauses << std::endl;
+  std::cout << conditional_horn_clauses << std::endl;
 #endif
 
   for(auto const & element : horn_clauses)
+    if(element->isLeader())
+      result.push_back(element->ToZ3Expr());
+  for(auto const & element : conditional_horn_clauses)
     if(element->isLeader())
       result.push_back(element->ToZ3Expr());
 

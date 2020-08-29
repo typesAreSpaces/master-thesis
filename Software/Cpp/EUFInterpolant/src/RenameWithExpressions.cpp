@@ -29,9 +29,9 @@ void RenameWithExpressions::traversePartA(z3::expr const & e){
         traversePartA(e.arg(0));
         return;
       case Z3_OP_AND:
-          for(unsigned i = 0; i < num; i++)
-            traversePartA(e.arg(i));
-          return;
+        for(unsigned i = 0; i < num; i++)
+          traversePartA(e.arg(i));
+        return;
       case Z3_OP_EQ:
       case Z3_OP_DISTINCT:
       case Z3_OP_LE:
@@ -74,9 +74,9 @@ void RenameWithExpressions::traversePartB(z3::expr const & e){
         traversePartB(e.arg(0));
         return;
       case Z3_OP_AND:
-          for(unsigned i = 0; i < num; i++)
-            traversePartB(e.arg(i));
-          return;
+        for(unsigned i = 0; i < num; i++)
+          traversePartB(e.arg(i));
+        return;
       case Z3_OP_EQ:
       case Z3_OP_DISTINCT:
       case Z3_OP_LE:

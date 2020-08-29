@@ -6,7 +6,6 @@ Rename::Rename(z3::context & ctx) :
 }
 
 z3::expr Rename::removePrefix(z3::expr const & e){
-  std::cout << e << std::endl;
   if(e.is_app()){
 
     auto f = e.decl();

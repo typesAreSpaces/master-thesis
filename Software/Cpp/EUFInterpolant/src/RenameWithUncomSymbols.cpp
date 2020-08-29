@@ -3,7 +3,7 @@
 RenameWithUncomSymbols::RenameWithUncomSymbols(
     z3::expr_vector const & input_a, 
     std::set<std::string> const & uncommon_names) :
- Rename(input_a.ctx()), uncommon_names(uncommon_names)
+  Rename(input_a.ctx()), uncommon_names(uncommon_names)
 {
   for(auto const & equation : input_a)
     renamed_input.push_back(reformulate(equation));
