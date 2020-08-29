@@ -1,7 +1,7 @@
 #ifndef _HORNSAT_
 #define _HORNSAT_
 #include <unordered_map>
-#define FALSELITERAL          0
+#define FALSELITERAL          0 // THIS SHOULD NOT BE CHANGED!
 #define DEBUG_DESTRUCTORS     0
 #define DEBUGGING_SATISFIABLE 0
 #define DEBUGGING_UNIONUPDATE 0

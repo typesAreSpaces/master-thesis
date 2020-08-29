@@ -1,8 +1,11 @@
+#define DEBUG_ 1
+
 #include <functional>
 #include <iostream>
 #include <fstream>
 #include <z3++.h>
 #include <vector>
+#include <chrono>
 #include "ThCombInterpolatorWithExpressions.h"
 
 void crossTest(z3::context &, 
@@ -86,20 +89,33 @@ void crossTest(z3::context & ctx,
 
   for(auto const & form_a : part_a_forms)
     for(auto const & form_b : part_b_forms){
+#if DEBUG_
+      std::cout << "--> Test # " << i << std::endl;
+#endif
       if(++i == limit)
         return;
-      //if(i != 139) continue;
+      //if(i != 150) continue;
       try {
         auto const & input_a = normalizeExprVector(form_a);
         auto const & input_b = normalizeExprVector(form_b);
+#if 0
         std::cout << "Test #" << i << std::endl;
         std::cout << "Input a:" << std::endl;
         std::cout << input_a << std::endl;
         std::cout << "Input b:" << std::endl;
         std::cout << input_b << std::endl;
+#endif
         
+        auto start = std::chrono::high_resolution_clock().now();
         ThCombInterpolatorWithExpressions extensive_test(input_a, input_b);
-        std::cout << extensive_test << std::endl;
+        auto stop = std::chrono::high_resolution_clock().now();
+        std::cout 
+          << input_a << " & "
+          << input_b << " & "
+          << extensive_test << " & "
+          << std::chrono::duration_cast<std::chrono::milliseconds>(stop - start).count()
+          << std::endl << std::endl;
+        
       }
       catch(char const * e){
         std::cerr << e << std::endl;

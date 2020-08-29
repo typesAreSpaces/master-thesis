@@ -18,7 +18,7 @@ int main(){
   //test1(ctx);
   //test2(ctx);
   //test3(ctx);
-  //actualExample(ctx);
+  actualExample(ctx);
   
   // This one doesn't work 
   // because it contains an inequality
@@ -27,7 +27,7 @@ int main(){
   
   //range2InequalityExample(ctx);
   //range3InequalityExample(ctx);
-  range4InequalityExample(ctx);
+  //range4InequalityExample(ctx);
 
   return 0;
 }

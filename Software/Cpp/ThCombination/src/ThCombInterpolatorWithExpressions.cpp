@@ -6,7 +6,7 @@ ThCombInterpolatorWithExpressions::ThCombInterpolatorWithExpressions(z3::expr_ve
 }
 
 std::ostream & operator << (std::ostream & os, ThCombInterpolatorWithExpressions & p) {
-  os << "The interpolant is: ";
+  //os << "The interpolant is: ";
   try {
     os << p.removePrefix(p.computed_interpolant);
   }

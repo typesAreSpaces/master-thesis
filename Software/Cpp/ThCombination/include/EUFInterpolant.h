@@ -6,6 +6,7 @@
 #define DEBUG_HSAT_INTER     0
 #define DEBUG_COND_ELIM      0
 #define DEBUG_COND_ELIM_EQS  0
+#define DEBUG_COND_ELIM_HCS  0
 #define DEBUG_BUILD_INTERP   0
 #define DEBUG_TEMP           0
 
@@ -20,12 +21,15 @@ class EUFInterpolant : public Input {
   z3::expr_vector const & assertions;
   Hornsat                 hsat;
   z3::expr_vector         result;
+  HornClauses             conditional_horn_clauses;
 
   z3::expr_vector buildHCBody(z3::expr const &, z3::expr const &);
 
   void exposeUncommons();
   void conditionalElimination(); 
   void conditionalEliminationEqs(); 
+  void conditionalEliminationHcs(); 
+  void conditionalEliminationHcsComUncom(z3::expr_vector const &, z3::expr const &);
 
   z3::expr_vector                 explainUncommons(z3::expr const &, z3::expr const &); 
   std::list<z3::expr>             candidates(z3::expr const &);

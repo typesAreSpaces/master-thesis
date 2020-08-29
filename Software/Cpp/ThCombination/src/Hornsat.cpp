@@ -33,7 +33,8 @@ void Hornsat::build(CongruenceClosureExplain & cce, HornClauses const & hcs){
     std::cout << index_hc << " " << *horn_clause << std::endl;
 #endif
     // We only process Horn clauses with uncommon consequent
-    if(!horn_clause->isCommonConsequent()){
+    //if(!horn_clause->isCommonConsequent()){
+    if(true){
       // -----------------------------------------------------
       // The following line defines our approach -------------
       // towards conditional elimination
@@ -82,13 +83,15 @@ void Hornsat::build(CongruenceClosureExplain & cce, HornClauses const & hcs){
       // can be spreading because the its antecedent is
       // common.
       if(num_args[index_hc] == 0){
-        literal->val = true;
-        facts.push(consequent.id());
-        to_combine.push(TermIdPair(
-              consequent.arg(0).id(), 
-              consequent.arg(1).id()));
         if(literal->literal_id == FALSELITERAL)
           consistent = false;
+        else{
+          literal->val = true;
+          facts.push(consequent.id());
+          to_combine.push(TermIdPair(
+                consequent.arg(0).id(), 
+                consequent.arg(1).id()));
+        }
       }
       // ------------------------------------------------------------
     }
@@ -147,7 +150,8 @@ void Hornsat::satisfiable(){
         } 
       }
     }
-    if(facts.empty() && consistent)
+    //if(facts.empty() && consistent)
+    if(facts.empty())
       closure();
   }
 }
