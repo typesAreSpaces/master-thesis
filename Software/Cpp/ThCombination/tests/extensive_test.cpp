@@ -94,7 +94,7 @@ void crossTest(z3::context & ctx,
 #endif
       if(++i == limit)
         return;
-      //if(i != 150) continue;
+      //if(i != 139) continue;
       try {
         auto const & input_a = normalizeExprVector(form_a);
         auto const & input_b = normalizeExprVector(form_b);

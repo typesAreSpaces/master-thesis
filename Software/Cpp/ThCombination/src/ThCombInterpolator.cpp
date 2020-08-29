@@ -10,6 +10,7 @@ ThCombInterpolator::ThCombInterpolator(
     z3::expr_vector const & formula_a, z3::expr_vector const & formula_b) :
   ctx(formula_a.ctx()), 
   part_a(formula_a), part_b(formula_b),
+  original_part_a_ids({}), original_part_b_ids({}),
   shared_variables(ctx), partial_interpolants(ctx),
   computed_interpolant(ctx)
 {
@@ -27,23 +28,39 @@ ThCombInterpolator::ThCombInterpolator(
   z3::solver
     euf_solver(ctx, "QF_UF"), oct_solver(ctx, "QF_LIA");
 
-  for(auto const & form : part_a.getOctComponent()){
+  for(auto const & _form : part_a.getOctComponent()){
+    z3::expr form = _form;
+    if(form.is_distinct())
+      form = !(_form.arg(0) == _form.arg(1));
     oct_solver.add(form);
+    original_part_a_ids.insert(form.id());
     partial_interpolants.insert(form, ctx.bool_val(false));
     DEBUG_LOOP_MSG(form << std::endl);
   }
-  for(auto const & form : part_b.getOctComponent()){
+  for(auto const & _form : part_b.getOctComponent()){
+    z3::expr form = _form;
+    if(form.is_distinct())
+      form = !(_form.arg(0) == _form.arg(1));
     oct_solver.add(form);
+    original_part_b_ids.insert(form.id());
     partial_interpolants.insert(form, ctx.bool_val(true));
     DEBUG_LOOP_MSG(form << std::endl);
   }
-  for(auto const & form : part_a.getEufComponent()){
+  for(auto const & _form : part_a.getEufComponent()){
+    z3::expr form = _form;
+    if(form.is_distinct())
+      form = !(_form.arg(0) == _form.arg(1));
     euf_solver.add(form);
+    original_part_a_ids.insert(form.id());
     partial_interpolants.insert(form, ctx.bool_val(false));
     DEBUG_LOOP_MSG(form << std::endl);
   }
-  for(auto const & form : part_b.getEufComponent()){
+  for(auto const & _form : part_b.getEufComponent()){
+    z3::expr form = _form;
+    if(form.is_distinct())
+      form = !(_form.arg(0) == _form.arg(1));
     euf_solver.add(form);
+    original_part_b_ids.insert(form.id());
     partial_interpolants.insert(form, ctx.bool_val(true));
     DEBUG_LOOP_MSG(form << std::endl);
   }
@@ -111,8 +128,6 @@ ThCombInterpolator::ThCombInterpolator(
     euf_solver.pop();
     // ----------------------------------------------------------------
 
-    // TODO: add a "solvers' <- state(solvers)" instruction or equivalent here
-
     // ------------------------------------------------------------------
     // Modify solvers with current_disj_eqs 
     auto current_disj_eqs_form = *current_disj_eqs;
@@ -137,7 +152,7 @@ ThCombInterpolator::ThCombInterpolator(
           << current_disj_eqs_form
           << std::endl);
 
-      // These assertions include the original assertions
+      // These assertions include the original current assertions
       z3::expr_vector euf_assertions(ctx);
       for(auto const & assertion : euf_solver.assertions())
         euf_assertions.push_back(assertion);
@@ -187,7 +202,7 @@ ThCombInterpolator::ThCombInterpolator(
           << current_disj_eqs_form
           << std::endl);
 
-      // These assertions include the original assertions
+      // These assertions include the original current assertions
       z3::expr_vector oct_assertions(ctx);
       for(auto const & assertion : oct_solver.assertions())
         oct_assertions.push_back(assertion);
@@ -196,8 +211,7 @@ ThCombInterpolator::ThCombInterpolator(
       if(current_disj_eqs_form.decl().decl_kind() == Z3_OP_OR){
         unsigned num_arg_disj = current_disj_eqs_form.num_args();
         for(unsigned _i = 0; _i < num_arg_disj; ++_i)
-          oct_assertions.push_back(
-              not(current_disj_eqs_form.arg(_i)));
+          oct_assertions.push_back(not(current_disj_eqs_form.arg(_i)));
       }
       else{
         assert(current_disj_eqs_form.decl().decl_kind() == Z3_OP_EQ);
@@ -332,7 +346,10 @@ void ThCombInterpolator::partialInterpolantConflict(
         // For loop to separate A-part and B-part
         // respectively
         for(auto const & conflict : conflict_lits){
-          if(conflict.is_a_pure()){
+          auto const & in_a_part = inSet(conflict.id(), original_part_a_ids);
+          auto const & in_b_part = inSet(conflict.id(), original_part_b_ids);
+          //if(conflict.is_a_pure()){
+          if((!in_a_part && !in_b_part && conflict.is_a_pure()) || in_a_part){
             if(conflict.is_not())
               // Turning (not (= a b)) into (distinct a b)
               part_a.push_back(conflict.arg(0).arg(0) != conflict.arg(0).arg(1));
@@ -380,7 +397,9 @@ void ThCombInterpolator::partialInterpolantConflict(
         // respectively
         z3::goal oct_goals(ctx);
         for(auto const & conflict : conflict_lits){
-          if(conflict.is_a_pure()){
+          auto const & in_a_part = inSet(conflict.id(), original_part_a_ids);
+          auto const & in_b_part = inSet(conflict.id(), original_part_b_ids);
+          if((!in_a_part && !in_b_part && conflict.is_a_pure()) || in_a_part){
             part_a.push_back(conflict);
             if(conflict.is_not()){
               auto const & pos_part = conflict.arg(0);
@@ -493,7 +512,7 @@ void ThCombInterpolator::partialInterpolantNonConvex(CDCL_T & cdcl_t,
       continue; 
     }
     // -------------------------------------------------------------------------------
-    // Obtain predicate
+    // Obtain predicates
     z3::expr_vector clause_lits(ctx);
     z3::expr_vector conflict_lits(ctx);
     for(auto const & literal : res_proof){
@@ -514,7 +533,6 @@ void ThCombInterpolator::partialInterpolantNonConvex(CDCL_T & cdcl_t,
       predicate = z3::mk_or(clause_lits);
     // -------------------------------------------------------------------------------
     predicates.push_back(predicate);
-
 
     DEBUG_NON_CONV_MSG("Clause Id: " << id);
 

@@ -1,19 +1,19 @@
 #ifndef _THCOMB_
 #define _THCOMB_
-#define _DEBUG_TH_COMB_ 1
+#define _DEBUG_TH_COMB_ 0
 #define _MSG(x) std::cout << x
 #define _SKIP do {} while(0)
-#if 1
+#if 0
 #define DEBUG_LOOP_MSG(x) _MSG(x)
 #else
 #define DEBUG_LOOP_MSG(x) _SKIP
 #endif
-#if 1
+#if 0
 #define DEBUG_NON_CONV_MSG(x) _MSG(x)
 #else
 #define DEBUG_NON_CONV_MSG(x) _SKIP
 #endif
-#if 1
+#if 0
 #define DEBUG_CONFLICT_MSG(x) _MSG(x)
 #else
 #define DEBUG_CONFLICT_MSG(x) _SKIP
@@ -40,6 +40,9 @@ class ThCombInterpolator {
 
   Purifier part_a;
   Purifier part_b;
+
+  std::set<unsigned> original_part_a_ids;
+  std::set<unsigned> original_part_b_ids;
 
   z3::expr_vector shared_variables;
   z3::expr_map    partial_interpolants;
