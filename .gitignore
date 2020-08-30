@@ -4,6 +4,8 @@
 file.cnf
 proof
 proof-temp
+mathsat
+z3-interp
 .*
 *.idx
 !/.gitignore
