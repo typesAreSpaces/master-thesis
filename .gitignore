@@ -1,6 +1,10 @@
 *\~
 *.o
 *.txt
+*.aux
+*.log
+*.out
+*.toc
 file.cnf
 proof
 proof-temp
