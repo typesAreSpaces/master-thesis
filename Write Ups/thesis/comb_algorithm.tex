@@ -1,0 +1,40 @@
+\section{Algorithm}
+
+The algorithm implements a Nelson-Oppen framework. In order to 
+integrate interpolants to the latter, the algorithm includes a 
+\emph{partial interpolant} every time a disjunction of equalities 
+(conflict clause) is propagated. These \emph{partial interpolants} are 
+computed from an unsatisfiability proof obtained by including the 
+negation of the disjunction to the formula using the following
+definition: 
+
+\begin{definition} \cite{10.1007/11532231_26}
+  Let $\langle A, B \rangle$ be a pair of clause sets such
+  that $A \land B \vdash \bot$. Let $\cal{T}$ be a proof of
+  unsatisfiability of $A \land B$. The propositional 
+  formula $p(c)$ for a clause $c$ in $\cal{T}$ is defined
+  by induction on the proof structe:
+  \begin{itemize}
+    \item if $c$ is one of the input clauses then
+      \begin{itemize}
+        \item if $c \in A$, then $p(c) := \bot$
+        \item if $c \in B$, then $p(c) := \top$
+      \end{itemize}
+    \item otherwise, $c$ is a result of resolution, i.e. 
+      \begin{prooftree}
+        \hypo{c_1[= x \lor c_1^{'}]}
+        \hypo{c_2 [= \neg x \lor c_2^{'}]}
+        \infer2{c [= c_1^{'} \lor c_2^{'}]}
+      \end{prooftree}
+      \begin{itemize}
+        \item if $x \in A$ and $x \not \in B$ (x is A-local), then $p(c) := p(c_1) \lor p(c_2)$
+        \item if $x \not \in A$ and $x \in B$ (x is B-local), then $p(c) := p(c_1) \land p(c_2)$
+        \item otherwise (x is AB-common), then $p(c) := (x \lor p(c_1)) \land (\neg x \lor p(c_2))$
+      \end{itemize}
+  \end{itemize}
+\end{definition}
+
+%%% Local Variables:
+%%% mode: latex
+%%% TeX-master: "main"
+%%% End:

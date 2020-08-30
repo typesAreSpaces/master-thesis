@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.21 (TeX Live 2020/Arch Linux) (preloaded format=pdflatex 2020.8.13)  26 AUG 2020 02:26
+This is pdfTeX, Version 3.14159265-2.6-1.40.21 (TeX Live 2020/Arch Linux) (preloaded format=pdflatex 2020.8.13)  30 AUG 2020 02:00
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -859,17 +859,27 @@ Underfull \hbox (badness 10000) has occurred while \output is active
  [][]  
  []
 
-[7])
+[7]
+Underfull \hbox (badness 10000) has occurred while \output is active
+ [][]  
+ []
+
+
+Underfull \hbox (badness 10000) has occurred while \output is active
+ [][]  
+ []
+
+[8])
 \tf@toc=\write5
- [8] (./main.lof)
+ [9] (./main.lof)
 \tf@lof=\write6
- [9
+ [10
 
 ] (./main.lot)
 \tf@lot=\write7
- (./glossary.tex [10
+ (./glossary.tex [11
 
-]) [11
+]) [12
 
 ]
 (./introduction.tex
@@ -934,7 +944,7 @@ l.28
                                                   \fi \fi 
 l.28 
      ] [22]
-<query_screenshot.png, id=564, 893.3375pt x 746.79pt>
+<query_screenshot.png, id=599, 893.3375pt x 746.79pt>
 File: query_screenshot.png Graphic file (type png)
 <use query_screenshot.png>
 Package pdftex.def Info: query_screenshot.png  used on input line 68.
@@ -968,7 +978,7 @@ l.148 T
 l.1 \chapter
             {Interpolation algorithm for the theory of EUF}]
 Chapter 3.
-(./euf_algorithm.tex
+(./euf_abstract.tex) (./euf_algorithm.tex
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
  [26
@@ -976,20 +986,20 @@ Underfull \vbox (badness 10000) has occurred while \output is active []
 ]
 [27] [28]) (./euf_implementation.tex [29] [30]
 Package hyperref Info: bookmark level for unknown algorithm defaults to 0 on in
-put line 89.
+put line 91.
 
-Underfull \hbox (badness 2556) in paragraph at lines 146--147
+Underfull \hbox (badness 2556) in paragraph at lines 148--149
 [] \OT1/cmr/m/n/12 set Lookup(Representative(a1), Rep-re-sen-ta-tive(a2)) to ap
 -ply(a1,
  []
 
 
-Underfull \hbox (badness 7415) in paragraph at lines 147--148
+Underfull \hbox (badness 7415) in paragraph at lines 149--150
 [] \OT1/cmr/m/n/12 add ap-ply(a1, a2)=a to UseList(Representative(a1)) and to
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 161--162
+Underfull \hbox (badness 10000) in paragraph at lines 163--164
 [] \OT1/cmr/bx/n/12 if $\OML/cmm/m/it/12 Representative\OT1/cmr/m/n/12 (\OML/cm
 m/m/it/12 a\OT1/cmr/m/n/12 ) \OMS/cmsy/m/n/12 6\OT1/cmr/m/n/12 = \OML/cmm/m/it/
 12 Representative\OT1/cmr/m/n/12 (\OML/cmm/m/it/12 b\OT1/cmr/m/n/12 )$ and w.l.
@@ -997,108 +1007,105 @@ o.g.
  []
 
 
-Underfull \hbox (badness 1910) in paragraph at lines 182--183
+Underfull \hbox (badness 1910) in paragraph at lines 184--185
 [] \OT1/cmr/m/n/12 set Lookup(Representative(c1), Rep-re-sen-ta-tive(c2)) to ap
 -
  []
 
 
-Underfull \hbox (badness 7308) in paragraph at lines 183--184
+Underfull \hbox (badness 7308) in paragraph at lines 185--186
 [] \OT1/cmr/m/n/12 move ap-ply(c1, c2) = c from UseList(oldReprA) to
  []
 
 
-Underfull \hbox (badness 1033) in paragraph at lines 290--291
+Underfull \hbox (badness 1033) in paragraph at lines 292--293
 [] \OT1/cmr/m/n/12 horn[]clause.add(EXPLAIN(x, $\OML/cmm/m/it/12 ^^[[]$\OT1/cmr
 /m/n/12 ) + EXPLAIN($\OML/cmm/m/it/12 f[]\OT1/cmr/m/n/12 (\OML/cmm/m/it/12 t[];
  [] ; t[]\OT1/cmr/m/n/12 )$),
  []
 
 
-Overfull \hbox (36.39694pt too wide) in paragraph at lines 292--293
+Overfull \hbox (36.39694pt too wide) in paragraph at lines 294--295
 [] \OT1/cmr/bx/n/12 for $\OML/cmm/m/it/12 arguments[]$ \OT1/cmr/m/n/12 in CARTE
 SIANPROD(ALLCANDIDATES($\OML/cmm/m/it/12 f[]\OT1/cmr/m/n/12 (\OML/cmm/m/it/12 t
 []; [] ; t[]\OT1/cmr/m/n/12 )$))|
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 293--294
+Underfull \hbox (badness 10000) in paragraph at lines 295--296
 [] \OT1/cmr/m/n/12 horn[]clause.add(EXPLAIN(x, $\OML/cmm/m/it/12 ^^[[]$\OT1/cmr
 /m/n/12 ) + $[][]$ EXPLAIN($\OML/cmm/m/it/12 t[]$\OT1/cmr/m/n/12 ,
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 317--318
+Underfull \hbox (badness 10000) in paragraph at lines 319--320
 [] \OT1/cmr/m/n/12 horn[]clause.add(EXPLAIN($\OML/cmm/m/it/12 f[]\OT1/cmr/m/n/1
 2 (\OML/cmm/m/it/12 t[]; [] ; t[]\OT1/cmr/m/n/12 )$, $\OML/cmm/m/it/12 ^^[[]$\O
 T1/cmr/m/n/12 ) +
  []
 
 
-Overfull \hbox (36.39694pt too wide) in paragraph at lines 319--320
+Overfull \hbox (36.39694pt too wide) in paragraph at lines 321--322
 [] \OT1/cmr/bx/n/12 for $\OML/cmm/m/it/12 arguments[]$ \OT1/cmr/m/n/12 in CARTE
 SIANPROD(ALLCANDIDATES($\OML/cmm/m/it/12 f[]\OT1/cmr/m/n/12 (\OML/cmm/m/it/12 t
 []; [] ; t[]\OT1/cmr/m/n/12 )$))|
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 320--321
+Underfull \hbox (badness 10000) in paragraph at lines 322--323
 [] \OT1/cmr/m/n/12 horn[]clause.add(EXPLAIN($\OML/cmm/m/it/12 f[]\OT1/cmr/m/n/1
 2 (\OML/cmm/m/it/12 t[]; [] ; t[]\OT1/cmr/m/n/12 )$, $\OML/cmm/m/it/12 ^^[[]$\O
 T1/cmr/m/n/12 ) + $[][]$
  []
 
 
-Overfull \hbox (19.24203pt too wide) in paragraph at lines 324--325
+Overfull \hbox (19.24203pt too wide) in paragraph at lines 326--327
 [] \OT1/cmr/bx/n/12 for $\OML/cmm/m/it/12 arguments[]$ \OT1/cmr/m/n/12 in CARTE
 SIANPROD(ALLCANDIDATES($\OML/cmm/m/it/12 f[]\OT1/cmr/m/n/12 (\OML/cmm/m/it/12 t
 []; [] ; t[]\OT1/cmr/m/n/12 )$))|
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 326--327
+Underfull \hbox (badness 10000) in paragraph at lines 328--329
 [] \OT1/cmr/m/n/12 horn[]clause.add($[][]$ EXPLAIN($\OML/cmm/m/it/12 t[]$\OT1/c
 mr/m/n/12 , $\OML/cmm/m/it/12 arguments[]\OT1/cmr/m/n/12 [\OML/cmm/m/it/12 i\OT
 1/cmr/m/n/12 ]$) +
  []
 
 
-Overfull \hbox (36.39694pt too wide) in paragraph at lines 328--329
+Overfull \hbox (36.39694pt too wide) in paragraph at lines 330--331
 [] \OT1/cmr/bx/n/12 for $\OML/cmm/m/it/12 arguments[]$ \OT1/cmr/m/n/12 in CARTE
 SIANPROD(ALLCANDIDATES($\OML/cmm/m/it/12 f[]\OT1/cmr/m/n/12 (\OML/cmm/m/it/12 t
 []; [] ; t[]\OT1/cmr/m/n/12 )$))|
  []
 
 
-Underfull \hbox (badness 2626) in paragraph at lines 329--330
+Underfull \hbox (badness 2626) in paragraph at lines 331--332
 [] \OT1/cmr/m/n/12 horn[]clause.add($[][]$ EXPLAIN($\OML/cmm/m/it/12 t[]$\OT1/c
 mr/m/n/12 , $\OML/cmm/m/it/12 arguments[]\OT1/cmr/m/n/12 [\OML/cmm/m/it/12 i\OT
 1/cmr/m/n/12 ]$) + $[][]$
  []
 
-)) (./octagonal.tex [31] [32] [33] [34] [35] [36] [37] [38]
+) (./euf_evaluation.tex [31])) (./octagonal.tex [32] [33] [34] [35] [36]
+[37] [38]
 Chapter 4.
-[39
+(./oct_abstract.tex) (./oct_algorithm.tex [39
 
-] [40] [41]) (./combination.tex [42] [43] [44]
+]) (./oct_implementation.tex
+[40] [41]) (./oct_evaluation.tex)) (./combination.tex [42] [43] [44]
 Chapter 5.
-[45
+(./comb_abstract.tex [45
 
-] [46] [47]) (./future_work.tex
-Overfull \hbox (14.95903pt too wide) in paragraph at lines 179--1
-[]|
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 179--1
-
- []
-
-
+]) (./comb_algorithm.tex [46])
+(./comb_implementation.tex [47]) (./comb_evaluation.tex
 Underfull \vbox (badness 6625) has occurred while \output is active []
 
  [48]
-[49]
+Overfull \hbox (32.58385pt too wide) in paragraph at lines 9--16
+[][] |
+ []
+
+)) (./future_work.tex [49]
 Chapter 6.
 [50
 
@@ -1114,14 +1121,14 @@ Package atveryend Info: Empty hook `AfterLastShipout' on input line 137.
 Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 137.
 Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 137.
 Package rerunfilecheck Info: File `main.out' has not changed.
-(rerunfilecheck)             Checksum: 29168C41E1102755525F2DCC3F6CAD29;3315.
+(rerunfilecheck)             Checksum: CCFC34A2FBF147EA3DEA597ED893B927;3795.
 Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 137.
  ) 
 Here is how much of TeX's memory you used:
- 21953 strings out of 480478
- 401176 string characters out of 5905959
+ 21996 strings out of 480478
+ 401920 string characters out of 5905959
  879023 words of memory out of 5000000
- 37258 multiletter control sequences out of 15000+600000
+ 37274 multiletter control sequences out of 15000+600000
  545028 words of font info for 70 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
  62i,10n,73p,1034b,1014s stack positions out of 5000i,500n,10000p,200000b,80000s
@@ -1143,10 +1150,10 @@ re/texmf-dist/fonts/type1/public/amsfonts/cm/cmtt12.pfb></usr/share/texmf-dist/
 fonts/type1/public/amsfonts/euler/eufm10.pfb></usr/share/texmf-dist/fonts/type1
 /public/amsfonts/symbols/msam10.pfb></usr/share/texmf-dist/fonts/type1/public/a
 msfonts/symbols/msbm10.pfb>
-Output written on main.pdf (69 pages, 447592 bytes).
+Output written on main.pdf (70 pages, 449235 bytes).
 PDF statistics:
- 901 PDF objects out of 1000 (max. 8388607)
- 799 compressed objects within 8 object streams
- 210 named destinations out of 1000 (max. 500000)
- 386 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 941 PDF objects out of 1000 (max. 8388607)
+ 837 compressed objects within 9 object streams
+ 217 named destinations out of 1000 (max. 500000)
+ 434 words of extra memory for PDF output out of 10000 (max. 10000000)
 

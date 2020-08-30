@@ -1,0 +1,181 @@
+let SessionLoad = 1
+let s:so_save = &so | let s:siso_save = &siso | set so=0 siso=0
+let v:this_session=expand("<sfile>:p")
+silent only
+cd ~/Documents/GithubProjects/master-thesis/Write\ Ups/thesis
+if expand('%') == '' && !&modified && line('$') <= 1 && getline(1) == ''
+  let s:wipebuf = bufnr('%')
+endif
+set shortmess=aoO
+badd +1 main.tex
+badd +8 abstract.tex
+badd +1 background.tex
+badd +9 preliminaries.tex
+badd +172 introduction.tex
+badd +393 references.bib
+badd +338 unmeethesis.cls
+badd +32 proof_of_main_theorem_octagons.tex
+badd +7 octagonal.tex
+badd +7 dedication_acknowledgments.tex
+badd +3 related_work.tex
+badd +3 glossary.tex
+badd +10 euf.tex
+badd +542 ~/Documents/GithubProjects/master-thesis/Write\ Ups/paper_project/main.tex
+badd +1 ~/Documents/GithubProjects/master-thesis/Write\ Ups/paper_project/algpseudocode.sty
+badd +68 first_order_logic.tex
+badd +27 theories.tex
+badd +32 verification.tex
+badd +127 tools.tex
+badd +8 combination.tex
+badd +1 algpseudocode.sty
+badd +15 ~/Downloads/10.1007_978-3-540-45069-6_1.bib
+badd +102 craig_interpolation.tex
+badd +53 sat-smt.tex
+badd +80 congruence-closure.tex
+badd +31 sat-horn.tex
+badd +65 nelson-oppen-framework.tex
+badd +2 ~/Downloads/10.2307_1990888.txt
+badd +2 main.toc
+badd +1 euf_architecture.tex
+badd +10 utvpi_architecture.tex
+badd +1 general_architecture.tex
+badd +1 bussproofs.sty
+badd +18 future_work.tex
+badd +2 euf_algorithm.tex
+badd +2 euf_implementation.tex
+badd +3 ~/Downloads/10.1007_978-3-642-02959-2_15.bib
+badd +15 euf_theorem.tex
+badd +7 python_proof.tex
+badd +1 ~/Downloads/10.1007_978-3-642-22119-4_1.bib
+badd +110 appendices.tex
+badd +1 booktabs.sty
+badd +2 oct_algorithm.tex
+badd +2 oct_implementation.tex
+badd +2 euf_evaluation.tex
+badd +2 oct_evaluation.tex
+badd +25 euf_abstract.tex
+badd +23 oct_abstract.tex
+badd +63 comb_abstract.tex
+badd +2 comb_algorithm.tex
+badd +2 comb_implementation.tex
+badd +1 comb_evaluation.tex
+argglobal
+%argdel
+edit main.tex
+set splitbelow splitright
+wincmd _ | wincmd |
+vsplit
+wincmd _ | wincmd |
+vsplit
+wincmd _ | wincmd |
+vsplit
+3wincmd h
+wincmd w
+wincmd w
+wincmd w
+set nosplitbelow
+set nosplitright
+wincmd t
+set winminheight=0
+set winheight=1
+set winminwidth=0
+set winwidth=1
+exe 'vert 1resize ' . ((&columns * 77 + 171) / 342)
+exe 'vert 2resize ' . ((&columns * 78 + 171) / 342)
+exe 'vert 3resize ' . ((&columns * 78 + 171) / 342)
+exe 'vert 4resize ' . ((&columns * 106 + 171) / 342)
+argglobal
+setlocal fdm=manual
+setlocal fde=0
+setlocal fmr={{{,}}}
+setlocal fdi=#
+setlocal fdl=1
+setlocal fml=1
+setlocal fdn=20
+setlocal fen
+silent! normal! zE
+10,80fold
+10
+normal! zc
+let s:l = 10 - ((4 * winheight(0) + 25) / 50)
+if s:l < 1 | let s:l = 1 | endif
+exe s:l
+normal! zt
+10
+normal! 0
+wincmd w
+argglobal
+if bufexists("euf_evaluation.tex") | buffer euf_evaluation.tex | else | edit euf_evaluation.tex | endif
+setlocal fdm=manual
+setlocal fde=0
+setlocal fmr={{{,}}}
+setlocal fdi=#
+setlocal fdl=0
+setlocal fml=1
+setlocal fdn=20
+setlocal fen
+silent! normal! zE
+let s:l = 7 - ((6 * winheight(0) + 25) / 50)
+if s:l < 1 | let s:l = 1 | endif
+exe s:l
+normal! zt
+7
+normal! 0
+wincmd w
+argglobal
+if bufexists("oct_evaluation.tex") | buffer oct_evaluation.tex | else | edit oct_evaluation.tex | endif
+setlocal fdm=manual
+setlocal fde=0
+setlocal fmr={{{,}}}
+setlocal fdi=#
+setlocal fdl=0
+setlocal fml=1
+setlocal fdn=20
+setlocal fen
+silent! normal! zE
+let s:l = 6 - ((5 * winheight(0) + 25) / 50)
+if s:l < 1 | let s:l = 1 | endif
+exe s:l
+normal! zt
+6
+normal! 06|
+wincmd w
+argglobal
+if bufexists("comb_evaluation.tex") | buffer comb_evaluation.tex | else | edit comb_evaluation.tex | endif
+setlocal fdm=manual
+setlocal fde=0
+setlocal fmr={{{,}}}
+setlocal fdi=#
+setlocal fdl=1
+setlocal fml=1
+setlocal fdn=20
+setlocal fen
+silent! normal! zE
+3,5fold
+6,20fold
+let s:l = 12 - ((11 * winheight(0) + 25) / 50)
+if s:l < 1 | let s:l = 1 | endif
+exe s:l
+normal! zt
+12
+normal! 018|
+wincmd w
+3wincmd w
+exe 'vert 1resize ' . ((&columns * 77 + 171) / 342)
+exe 'vert 2resize ' . ((&columns * 78 + 171) / 342)
+exe 'vert 3resize ' . ((&columns * 78 + 171) / 342)
+exe 'vert 4resize ' . ((&columns * 106 + 171) / 342)
+tabnext 1
+if exists('s:wipebuf') && getbufvar(s:wipebuf, '&buftype') isnot# 'terminal'
+  silent exe 'bwipe ' . s:wipebuf
+endif
+unlet! s:wipebuf
+set winheight=1 winwidth=20 winminheight=1 winminwidth=1 shortmess=filnxtToOFIc
+let s:sx = expand("<sfile>:p:r")."x.vim"
+if file_readable(s:sx)
+  exe "source " . fnameescape(s:sx)
+endif
+let &so = s:so_save | let &siso = s:siso_save
+doautoall SessionLoadPost
+unlet SessionLoad
+" vim: set ft=vim :

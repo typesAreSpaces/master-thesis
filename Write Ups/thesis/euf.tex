@@ -1,40 +1,14 @@
 \chapter{Interpolation algorithm for the theory of EUF}
 
-Interpolation algorithms for the theory of equality 
-with uninterpreted functions are relevant as the core 
-component of verification algorithms. Many useful techniques 
-in software engineering like bounded/unbounded model 
-checking and invariant generation benefit directly from 
-this technique. In \cite{10.1007/3-540-58179-0_44}, the 
-authors introduced a methodology to debug/verify the 
-control logic of pipelined microprocessors by encoding 
-its specification and a logical formula denoting the 
-implementation of the circuit into a EUF solver.
-
-Previous work addressing the interpolation problem for 
-EUF has involved techniques ranging from
-interpolant-extraction from refutation proof 
-trees \cite{10.1007/978-3-540-24730-2_2, mcmillan2011interpolants, 
-10.1007/978-3-642-31612-8_24}, and colored congruence closure
-graphs \cite{10.1007/978-3-642-00768-2_34}. Kapur's algorithm 
-uses a different approach by using approximated
-quantifier-elimination, a procedure that given a formula, 
-it produces a logically equivalent formula
- without a variable in particular \cite{DBLP:books/daglib/0076838}.
-
-\section{Algorithm}
+\input{euf_abstract}
 
 \input{euf_algorithm}
 
 %\input{euf_theorem}
 
-\section{Implementation}
-
 \input{euf_implementation}
 
-\section{Evaluation}
-
-TODO: keep working here.
+\input{euf_evaluation}
 
 %%% Local Variables:
 %%% mode: latex
