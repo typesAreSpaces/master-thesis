@@ -32,13 +32,11 @@
 \contentsline {subsection}{\numberline {3.2.3}New optimized conditional replacement step in Kapur's algorithm}{31}{subsection.3.2.3}%
 \contentsline {section}{\numberline {3.3}Evaluation}{32}{section.3.3}%
 \contentsline {subsection}{\numberline {3.3.1}Full evaluation of an example}{32}{subsection.3.3.1}%
-\contentsline {subsection}{\numberline {3.3.2}Performance comparision}{32}{subsection.3.3.2}%
 \contentsline {chapter}{\numberline {4}Interpolation algorithm for UTVPI Formulas}{39}{chapter.4}%
 \contentsline {section}{\numberline {4.1}Algorithm}{40}{section.4.1}%
 \contentsline {section}{\numberline {4.2}Implementation}{40}{section.4.2}%
 \contentsline {section}{\numberline {4.3}Evaluation}{42}{section.4.3}%
 \contentsline {subsection}{\numberline {4.3.1}Full evaluation of an example}{42}{subsection.4.3.1}%
-\contentsline {subsection}{\numberline {4.3.2}Performance comparision}{42}{subsection.4.3.2}%
 \contentsline {chapter}{\numberline {5}Interpolation algorithm for the theory combination of EUF and UTVPI}{45}{chapter.5}%
 \contentsline {section}{\numberline {5.1}Algorithm}{46}{section.5.1}%
 \contentsline {section}{\numberline {5.2}Implementation}{47}{section.5.2}%
