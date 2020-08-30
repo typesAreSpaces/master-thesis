@@ -14,10 +14,10 @@ int main(int argc, char ** argv){
 
   z3::context ctx;
   //currentProgress(ctx);
-  //paperExample(ctx);
+  paperExample(ctx);
   //example(ctx);
   //example2(ctx);
-  example3(ctx);
+  //example3(ctx);
 
   return 0;
 }
@@ -66,7 +66,7 @@ void paperExample(z3::context & ctx){
   //std::set<std::string> uncomms({"s1"});
   //std::set<std::string> uncomms({"s2"});
   //std::set<std::string> uncomms({"v"});
-  std::set<std::string> uncomms({"t"});
+  std::set<std::string> uncomms({"v"});
 
   z3::expr_vector input(ctx); 
   input.push_back(f(z1, v) == s1);
