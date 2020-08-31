@@ -14,10 +14,10 @@ int main(int argc, char ** argv){
 
   z3::context ctx;
   //currentProgress(ctx);
-  paperExample(ctx);
+  //paperExample(ctx);
   //example(ctx);
   //example2(ctx);
-  //example3(ctx);
+  example3(ctx);
 
   return 0;
 }
