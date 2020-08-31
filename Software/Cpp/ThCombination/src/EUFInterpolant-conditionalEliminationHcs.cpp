@@ -22,42 +22,56 @@ void EUFInterpolant::conditionalEliminationHcs(){
       }
     }
     else{
-      // Case antecedent : uncommon ; consequent : common
+      if(horn_clause->isCommonConsequent()){
+        // Case antecedent : uncommon ; consequent : common
 #if DEBUG_COND_ELIM_HCS
         std::cout << "Case antecedent : uncommon ; consequent : common" << std::endl;
 #endif
-      if(horn_clause->isCommonConsequent()){
+        bool is_antecedent_explainable = true;
         Explanation expl(ctx);
-        for(auto const & antecedent : horn_clause->getAntecedent())
-          expl.add(
-              explainUncommons(
-                antecedent.arg(0), antecedent.arg(1)));
-        conditional_horn_clauses.add(new HornClause(ctx,
-              expl.result,
-              horn_clause->getConsequent()));
+        for(auto const & equation : horn_clause->getAntecedent()){
+          auto const & lhs = equation.arg(0);
+          auto const & rhs = equation.arg(1);
+          if(!hsat.equiv_classes.areSameClass(lhs, rhs)){
+            is_antecedent_explainable = false;
+            break;
+          }
+          expl.add(explainUncommons(lhs, rhs));
+        }
+        if(is_antecedent_explainable)
+          conditional_horn_clauses.add(new HornClause(ctx,
+                expl.result,
+                horn_clause->getConsequent()));
       }
       else{
-      // Case antecedent : uncommon ; consequent : uncommon
+        // Case antecedent : uncommon ; consequent : uncommon
 #if DEBUG_COND_ELIM_HCS
         std::cout << "Case antecedent : uncommon ; consequent : uncommon" << std::endl;
 #endif
+        bool is_antecedent_explainable = true;
         z3::expr_vector _antecedent(ctx);
         for(auto const & equation : horn_clause->getAntecedent()){
           if(equation.is_common())
             _antecedent.push_back(equation);
           else{
-            for(auto const & explanation : explainUncommons(equation.arg(0), equation.arg(1)))
+            auto const & lhs = equation.arg(0);
+            auto const & rhs = equation.arg(1);
+            if(!hsat.equiv_classes.areSameClass(lhs, rhs)){
+              is_antecedent_explainable = false;
+              break;
+            }
+            for(auto const & explanation : explainUncommons(lhs, rhs))
               _antecedent.push_back(explanation);
           }
         }
 
-        conditionalEliminationHcsComUncom(
-            _antecedent,
-            horn_clause->getConsequent());
+        if(is_antecedent_explainable)
+          conditionalEliminationHcsComUncom(
+              _antecedent,
+              horn_clause->getConsequent());
       }
     }
   }
-
 }
 
 void EUFInterpolant::conditionalEliminationHcsComUncom(z3::expr_vector const & antecedent, z3::expr const & consequent){
@@ -228,5 +242,4 @@ void EUFInterpolant::conditionalEliminationHcsComUncom(z3::expr_vector const & a
       }
     }
   }
-
 }
