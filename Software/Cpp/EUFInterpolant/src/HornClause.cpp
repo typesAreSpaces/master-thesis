@@ -228,7 +228,7 @@ std::ostream & operator << (std::ostream & os, HornClause const & hc){
   os << (hc.isLeader() ? "(Leader) " : "(Not leader) ");
   for(unsigned i = 0; i < num_antecedent; i++){
     if(!first_flag)
-      os << " && ";
+      os << " and ";
     first_flag = false;
     os << hc.antecedent[i];
   }
