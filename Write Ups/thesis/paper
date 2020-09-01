@@ -7,7 +7,7 @@ if expand('%') == '' && !&modified && line('$') <= 1 && getline(1) == ''
   let s:wipebuf = bufnr('%')
 endif
 set shortmess=aoO
-badd +17 main.tex
+badd +1 main.tex
 badd +8 abstract.tex
 badd +1 background.tex
 badd +9 preliminaries.tex
@@ -42,7 +42,7 @@ badd +1 general_architecture.tex
 badd +1 bussproofs.sty
 badd +18 future_work.tex
 badd +2 euf_algorithm.tex
-badd +1 euf_implementation.tex
+badd +8 euf_implementation.tex
 badd +3 ~/Downloads/10.1007_978-3-642-02959-2_15.bib
 badd +15 euf_theorem.tex
 badd +7 python_proof.tex
@@ -51,7 +51,7 @@ badd +110 appendices.tex
 badd +1 booktabs.sty
 badd +2 oct_algorithm.tex
 badd +1 oct_implementation.tex
-badd +8 euf_evaluation.tex
+badd +21 euf_evaluation.tex
 badd +3 oct_evaluation.tex
 badd +25 euf_abstract.tex
 badd +23 oct_abstract.tex
@@ -65,13 +65,10 @@ edit main.tex
 set splitbelow splitright
 wincmd _ | wincmd |
 vsplit
-wincmd _ | wincmd |
-vsplit
-2wincmd h
+1wincmd h
 wincmd _ | wincmd |
 split
 1wincmd k
-wincmd w
 wincmd w
 wincmd w
 set nosplitbelow
@@ -81,12 +78,11 @@ set winminheight=0
 set winheight=1
 set winminwidth=0
 set winwidth=1
-exe '1resize ' . ((&lines * 24 + 25) / 50)
-exe 'vert 1resize ' . ((&columns * 104 + 156) / 313)
-exe '2resize ' . ((&lines * 23 + 25) / 50)
-exe 'vert 2resize ' . ((&columns * 104 + 156) / 313)
-exe 'vert 3resize ' . ((&columns * 104 + 156) / 313)
-exe 'vert 4resize ' . ((&columns * 103 + 156) / 313)
+exe '1resize ' . ((&lines * 43 + 42) / 85)
+exe 'vert 1resize ' . ((&columns * 156 + 156) / 313)
+exe '2resize ' . ((&lines * 39 + 42) / 85)
+exe 'vert 2resize ' . ((&columns * 156 + 156) / 313)
+exe 'vert 3resize ' . ((&columns * 156 + 156) / 313)
 argglobal
 setlocal fdm=manual
 setlocal fde=0
@@ -98,12 +94,14 @@ setlocal fdn=20
 setlocal fen
 silent! normal! zE
 10,81fold
-let s:l = 17 - ((8 * winheight(0) + 12) / 24)
+10
+normal! zc
+let s:l = 17 - ((7 * winheight(0) + 21) / 43)
 if s:l < 1 | let s:l = 1 | endif
 exe s:l
 normal! zt
 17
-normal! 018|
+normal! 01|
 wincmd w
 argglobal
 if bufexists("references.bib") | buffer references.bib | else | edit references.bib | endif
@@ -116,7 +114,7 @@ setlocal fml=1
 setlocal fdn=20
 setlocal fen
 silent! normal! zE
-let s:l = 79 - ((2 * winheight(0) + 11) / 23)
+let s:l = 79 - ((0 * winheight(0) + 19) / 39)
 if s:l < 1 | let s:l = 1 | endif
 exe s:l
 normal! zt
@@ -124,7 +122,7 @@ normal! zt
 normal! 019|
 wincmd w
 argglobal
-if bufexists("euf_evaluation.tex") | buffer euf_evaluation.tex | else | edit euf_evaluation.tex | endif
+if bufexists("oct_evaluation.tex") | buffer oct_evaluation.tex | else | edit oct_evaluation.tex | endif
 setlocal fdm=manual
 setlocal fde=0
 setlocal fmr={{{,}}}
@@ -134,48 +132,19 @@ setlocal fml=1
 setlocal fdn=20
 setlocal fen
 silent! normal! zE
-let s:l = 10 - ((9 * winheight(0) + 24) / 48)
+let s:l = 3 - ((2 * winheight(0) + 41) / 83)
 if s:l < 1 | let s:l = 1 | endif
 exe s:l
 normal! zt
-10
-normal! 045|
-wincmd w
-argglobal
-if bufexists("euf_implementation.tex") | buffer euf_implementation.tex | else | edit euf_implementation.tex | endif
-setlocal fdm=manual
-setlocal fde=0
-setlocal fmr={{{,}}}
-setlocal fdi=#
-setlocal fdl=3
-setlocal fml=1
-setlocal fdn=20
-setlocal fen
-silent! normal! zE
-25,39fold
-40,53fold
-8,193fold
-194,206fold
-207,379fold
-1,379fold
-1
-normal! zo
-8
-normal! zo
-let s:l = 8 - ((7 * winheight(0) + 24) / 48)
-if s:l < 1 | let s:l = 1 | endif
-exe s:l
-normal! zt
-8
+3
 normal! 0
 wincmd w
 3wincmd w
-exe '1resize ' . ((&lines * 24 + 25) / 50)
-exe 'vert 1resize ' . ((&columns * 104 + 156) / 313)
-exe '2resize ' . ((&lines * 23 + 25) / 50)
-exe 'vert 2resize ' . ((&columns * 104 + 156) / 313)
-exe 'vert 3resize ' . ((&columns * 104 + 156) / 313)
-exe 'vert 4resize ' . ((&columns * 103 + 156) / 313)
+exe '1resize ' . ((&lines * 43 + 42) / 85)
+exe 'vert 1resize ' . ((&columns * 156 + 156) / 313)
+exe '2resize ' . ((&lines * 39 + 42) / 85)
+exe 'vert 2resize ' . ((&columns * 156 + 156) / 313)
+exe 'vert 3resize ' . ((&columns * 156 + 156) / 313)
 tabnext 1
 if exists('s:wipebuf') && getbufvar(s:wipebuf, '&buftype') isnot# 'terminal'
   silent exe 'bwipe ' . s:wipebuf
