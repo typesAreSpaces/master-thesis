@@ -14,6 +14,15 @@
 
 \usepackage[utf8]{inputenc}
 \usepackage[english]{babel}
+\usepackage{verbatim}
+\usepackage{etoolbox}
+\makeatletter
+\patchcmd{\@verbatim}
+  {\verbatim@font}
+  {\verbatim@font\tiny}
+  {}{}
+\makeatother
+\usepackage{float}
 \usepackage{amsthm}
 \usepackage{amsmath}
 \usepackage{amsfonts}
@@ -29,7 +38,6 @@
 \usepackage{algorithm}
 \usepackage{ebproof}
 \usepackage{booktabs}
-%\usepackage{bussproofs}
 
 \lstset
 { %Formatting for code in appendix

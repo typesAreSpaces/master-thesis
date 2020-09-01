@@ -39,7 +39,7 @@ tests/current_progress: $(OBJS)
 	$(CC) -g -c -o ./$@.o $(FLAGS) ./$@.cpp
 	$(CC) -g -o $@ $(OBJS) ./$@.o -lpthread
 	./$@
-	#rm -rf tests/*.o $@
+	rm -rf tests/*.o $@
 
 .PHONY: valgrind_run
 valgrind_run: $(OBJS)

@@ -87,7 +87,7 @@ obtain \emph{usable Horn clauses}.
 
 The algorithm appears below in pseudo-code notation:
 
-\begin{algorithm}
+\begin{algorithm}[!ht]
   \caption{Modified Unsatisfiability Testing for Ground Horn Clauses}
   \linespread{\separationline}\selectfont
   \begin{algorithmic}[1]
@@ -132,7 +132,7 @@ The algorithm appears below in pseudo-code notation:
   \end{algorithmic}
 \end{algorithm}
 
-\begin{algorithm}
+\begin{algorithm}[!ht]
   \caption{Modified Congruence Closure with Explanation Algorithms - Merge}
   \linespread{\separationline}\selectfont
   \begin{algorithmic}[2]
@@ -153,7 +153,7 @@ The algorithm appears below in pseudo-code notation:
   \end{algorithmic}
 \end{algorithm}
 
-\begin{algorithm}
+\begin{algorithm}[!ht]
   \caption{Modified Congruence Closure with Explanation Algorithms - Propagate}
   \linespread{\separationline}\selectfont
   \begin{algorithmic}[2]
@@ -204,13 +204,13 @@ its head equation. By the Deduction Theorem \cite{10.5555/1642730}, we can
 recover a proof of the original queried Horn clause by removing the antecedent
 equations appearing the proof given by the Explain operation.
 
-\subsection{New optimized conditional replacement step in Kapur's algorithm}
+\subsection{Conditional propagation in Kapur's algorithm}
 
 Once the conditional congruence closure data structure is built after 
 the execution of the previous step, we can compute conditional eliminations
 as follows. For the latter, we will require the following auxiliary functions:
 
-\begin{algorithm}
+\begin{algorithm}[!ht]
   \caption{Auxiliary function - Candidates}
   \linespread{\separationline}\selectfont
   \begin{algorithmic}[2]
@@ -224,7 +224,7 @@ as follows. For the latter, we will require the following auxiliary functions:
   \end{algorithmic}
 \end{algorithm}
 
-\begin{algorithm}
+\begin{algorithm}[!ht]
   \caption{Auxiliary function - Auxiliar explain}
   \linespread{\separationline}\selectfont
   \begin{algorithmic}[2]
@@ -254,7 +254,7 @@ as follows. For the latter, we will require the following auxiliary functions:
   \end{algorithmic}
 \end{algorithm}
 
-\begin{algorithm}
+\begin{algorithm}[!ht]
   \caption{Auxiliary function - allCandidates}
   \linespread{\separationline}\selectfont
   \begin{algorithmic}[2]
@@ -272,7 +272,7 @@ as follows. For the latter, we will require the following auxiliary functions:
   \end{algorithmic}
 \end{algorithm}
 
-\begin{algorithm}
+\begin{algorithm}[!ht]
   \caption{Conditional Elimination - Part 1}
   \linespread{\separationline}\selectfont
   \begin{algorithmic}[2]
@@ -305,9 +305,7 @@ as follows. For the latter, we will require the following auxiliary functions:
   \end{algorithmic}
 \end{algorithm}
 
-
-
-\begin{algorithm}
+\begin{algorithm}[!ht]
   \caption{Conditional Elimination - Part 2}
   \linespread{\separationline}\selectfont
   \begin{algorithmic}[2]
@@ -338,7 +336,42 @@ as follows. For the latter, we will require the following auxiliary functions:
   \end{algorithmic}
 \end{algorithm}
 
-TODO: add more information.
+The conditional propagation algorithm produces common Horn clauses from previous
+uncommon equations and uncommon Horn clauses obtained in previous steps of Kapur's
+algorithm. The are two main invariants for the Horn clauses formed by the
+conditional propagation procedure: 
+
+\begin{itemize}
+  \item the antecedents are constructed using the \emph{Explain} operator, 
+    which returns a sequence of common equations since these are the 
+    only merged terms added at the beginning of the initialization 
+    routine of the modified Gallier's data structure.
+
+    An additional property must be checked when processing previous
+    Horn clauses. The `previous' antecedent for these clauses must be \emph{explainable},
+    which means that every equation in the antecedent must belong to the conditional
+    congruence closure, otherwise an empty explaination will be produced by the
+    \emph{Explain} operator. If a Horn clause antecedent is not \emph{explainable}
+    the resulting Horn clause cannot be added to the final result.
+    
+  \item the consequents are constructed with the help of the \emph{Candidates},
+    \emph{AllCandidates}, and the \emph{CartesianProd} operators. 
+    The former is a function that takes as input
+    a term and returns a list of common terms
+    that belong to the equivalence relation of a given term if such term is uncommon,
+    and return a list containing the term itself if the term is common; the 
+    \emph{AllCandidates} function takes as input a function application term and
+    constructs a list of lists with common terms that are equivalent to the arguments
+    of the function application if the function symbol is common, and returns an empty
+    list otherwise; \emph{CartesianProd} implements a cartesian product, i.e. it 
+    produces a list of n-tuples given as input a list of $n$ list of terms (the 
+      composition of \emph{CartesianProd} and \emph{AllCandidates} are meant to be
+    used to produce a function application free of uncommon terms). Finally, the
+    head equations for the new Horn clauses are obtained by equating the left-hand
+    side common candidates and right-hand side common candidates obtained by these 
+    procedures.
+
+\end{itemize}
 
 %%% Local Variables:
 %%% mode: latex

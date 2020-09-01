@@ -5,10 +5,52 @@
 In this section we discuss in full detail the execution trace
 of the implementation of some examples. 
 
-Let us consider the input formula $\{f(x)\}$
+\subsubsection{Symbol elimination example}
 
-\subsection{Comparision with Z3 and Mathsat}
-TODO: keep working here.
+Let us consider the following example from \cite{KAPUR2017} 
+$\alpha_1 = \{f(z_1, v) = s_1, f(z_2, v) = s_2, f(f(y_1, v), f(y_2, v)) = t\}$
+with the set of symbols to eliminate $U_1 = \{u\}$. The implementation produces the following
+trace (slightly modified for presentation purposes) in order to compute 
+the interpolant for $\alpha_1; U_1$:
+
+\verbatiminput{../../Software/Cpp/EUFInterpolant/tests/traces/current_progress_example1.txt}
+
+The interface offered by SMT solvers with interpolation features usually provide the 
+conventional A-part, B-part format. In order to compare the results with the implementation two 
+instances were tested so we can obtain interpolants from both systems:
+
+\begin{itemize}
+\item Problem instance: A-part : $\{f(z_1, v) = s_1, f(z_2, v) = s_2, f(f(y_1, v), f(y_2, v)) = t\}$; B-part : $\{z_1 = z_2, s_1 \neq s_2 \}$
+\begin{itemize}
+\item Z3: (or (= s2 s1) (not (= z2 z1)))
+\item Mathsat: (not (and (= z1 z2) (not (= s1 s2))))
+\item Our implemenation: ($\rightarrow$ (= z1 z2) (= s1 s2))
+\end{itemize}
+
+\item Problem instance: A-part : $\{f(z_1, v) = s_1, f(z_2, v) = s_2, f(f(y_1, v), f(y_2, v)) = t\}$; B-part : $\{z_1 = y_1, z_1 = y_2, f(s_1, s_1) \neq t\}$
+\begin{itemize}
+\item Z3: (or (= (f s1 s1) t) (not (= z1 y1)) (not (= y2 y1)))
+\item Mathsat: (not (and (not (= t (f s1 s1))) (and (= z1 y1) (= z1 y2))))
+\item Our implemenation: ($\rightarrow$ (and (= y1 y2) (= z1 y2) (= z1 y2)) (= t (f s1 s1))))
+
+\end{itemize}
+
+Clearly, the interpolant obtained by just eliminating the symbol $v$ implies
+the outputs produced by Z3 and Mathsat for the previous problem instances.
+
+\subsubsection{Simple example with disequality}
+
+Let us consider another example from \cite{KAPUR2017} 
+$\alpha_2 = \{f(x_1) \neq f(x_2)\}$
+with the set of symbols to eliminate $U_2 = \{f\}$. The implementation produces the following
+trace for $\alpha_2; U_2$:
+
+\verbatiminput{../../Software/Cpp/EUFInterpolant/tests/traces/current_progress_example2.txt}
+
+To compare our result with the Z3 and Mathsat we 
+included the B-part formula to be $\{x_1 = x_2\}$.
+The interpolants obtained by these systems were the 
+same, which was (not (= x1 x2)).
 
 %%% Local Variables:
 %%% mode: latex
