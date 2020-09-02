@@ -47,7 +47,7 @@ void example2(z3::context & ctx){
   z3::expr_vector assertions(ctx);
   assertions.push_back(x2 + x1 <= 3);
   assertions.push_back(-x3 - x1 <= 1);
-  assertions.push_back(x4 + x3 <= 6);
+  assertions.push_back(x4 + x3 <= -6);
   assertions.push_back(-x5 - x4 <= 1);
 
   try {

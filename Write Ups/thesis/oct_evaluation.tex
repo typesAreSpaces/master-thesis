@@ -1,10 +1,60 @@
 \section{Evaluation}
 
 \subsection{Detailed evaluation of examples}
-TODO: keep working here.
 
-\subsection{Comparision with Z3 and Mathsat}
-TODO: keep working here.
+Let us consider the following example:
+$\alpha_1 = \{x_1 - x_2 \geq -4, -x_2 - x_3 \geq 5, 
+  x_2 + x_6 \geq 4, x_2 + x_5 \geq -3\}; 
+\beta_1 = \{-x_1 + x_3 \geq -2, -x_4 - x_6 \geq 0, -x_5 + x_4 \geq 0\}$. 
+Our implementation produces the following trace:
+
+\verbatiminput{../../Software/Cpp/OctagonsInterpolant/tests/traces/example1.txt}
+
+The Z3 SMT solver provides mechanisms to modified the arithmetic engine 
+and several plugins to specialize algorithm for specific theories. It contains a
+proper specialization to work with Utvpi queries for satisfiability checking. However, 
+       the interpolation APIs do not include mechanisms to specialize the 
+       interpolation algorithm for Utvpi formulas. Thus, the interpolant obtained by Z3 
+       for the above problem is : 
+       (and ($\leq$ 9 (+ (* (- 1) x3) (* 2 x6) x1)) ($\leq$ (- 5) (+ (* (- 1) x3) (* 2 x5) x1))).
+       We can notice by the coefficients in the result that the interpolant is not
+       a Utvpi formula, thus Z3 must have reduced the problem to linear integer arithmetic.
+
+  The result obtained by Mathsat is 
+(and ($\leq$ (- 5) (+ x1 (+ (* (- 1) x3) (* 2 x5)))) ($\leq$ 9 (+ x1 (+ (* (- 1) x3) (* 2 x6))))) 
+  which is the same as Z3 modulo the commutativity of the
+  additions in the expression. Despite this difference, the following query 
+  to Z3 verifies that the interpolation produced by our implementation implies 
+  the interpolation produced by the SMT solver above mentioned; at the same time,
+  the interpolant produced by the SMT solver does not imply our interpolant.
+
+  \verbatiminput{../../Software/Cpp/OctagonsInterpolant/verification/example1_strongest_inter_verification.smt2}
+
+  For the next example, let us consider $\alpha_2 = \{
+  -x_2 - x_1 + 3 \geq 0, 
+  x_1 + x_3 + 1 \geq 0, 
+  -x_3 - x_4 - 6 \geq 0, 
+  x_5 + x_4 + 1 \geq 0 
+  \}; \beta_2 = \{
+  x_2 + x_3 + 3 \geq 0,
+  x_6 - x_5 - 1 \geq 0,
+  x_4 - x_6 + 4 \geq 0
+  \}$. Our implementation produces the following trace:
+
+\verbatiminput{../../Software/Cpp/OctagonsInterpolant/tests/traces/example2.txt}
+
+The interpolant obtained by Z3 is 
+ (and ($\leq$ (- 4) (+ x3 (* (- 1) x2))) ($\leq$ (+ x3 x4) (- 6)) ($\geq$ (+ x4 x5) (- 1))); 
+ and the interpolant produced by Mathsat is ($\leq$ (+ x2 (+ x3 (+ x4 (* (- 1) x5)))) (- 7)).
+ Using Z3, we were able to verify that: 
+ \begin{itemize}
+ \item the interpolantion obtained by our implementation
+ is equivalent to the interpolant obtained by Z3. 
+ \item the interpolant obtained by our implementation implies the interpolant
+ obtained by Mathsat, but the converse does not hold.
+ \end{itemize}
+
+\verbatiminput{../../Software/Cpp/OctagonsInterpolant/verification/example2_strongest_inter_verification.smt2}
 
 %%% Local Variables:
 %%% mode: latex

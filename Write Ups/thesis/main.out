@@ -36,17 +36,16 @@
 \BOOKMARK [1][-]{section.4.2}{Implementation}{chapter.4}% 36
 \BOOKMARK [1][-]{section.4.3}{Evaluation}{chapter.4}% 37
 \BOOKMARK [2][-]{subsection.4.3.1}{Detailed evaluation of examples}{section.4.3}% 38
-\BOOKMARK [2][-]{subsection.4.3.2}{Comparision with Z3 and Mathsat}{section.4.3}% 39
-\BOOKMARK [0][-]{chapter.5}{Interpolation algorithm for the theory combination of EUF and UTVPI}{}% 40
-\BOOKMARK [1][-]{section.5.1}{Algorithm}{chapter.5}% 41
-\BOOKMARK [1][-]{section.5.2}{Implementation}{chapter.5}% 42
-\BOOKMARK [1][-]{section.5.3}{Evaluation}{chapter.5}% 43
-\BOOKMARK [2][-]{subsection.5.3.1}{Detailed evaluation of a complete example}{section.5.3}% 44
-\BOOKMARK [2][-]{subsection.5.3.2}{Comparision with Z3 and Mathsat}{section.5.3}% 45
-\BOOKMARK [2][-]{subsection.5.3.3}{Performance comparision}{section.5.3}% 46
-\BOOKMARK [0][-]{chapter.6}{Future Work}{}% 47
-\BOOKMARK [0][-]{chapter*.7}{Appendices}{}% 48
-\BOOKMARK [1][-]{section.6.1}{Theorems about Interpolants}{chapter*.7}% 49
-\BOOKMARK [2][-]{subsection.6.1.1}{Interpolants are closed under conjunction and disjunction}{section.6.1}% 50
-\BOOKMARK [2][-]{subsection.6.1.2}{Interpolants distribute conjunctions over disjunctions in the A-part}{section.6.1}% 51
-\BOOKMARK [0][-]{chapter*.8}{References}{}% 52
+\BOOKMARK [0][-]{chapter.5}{Interpolation algorithm for the theory combination of EUF and UTVPI}{}% 39
+\BOOKMARK [1][-]{section.5.1}{Algorithm}{chapter.5}% 40
+\BOOKMARK [1][-]{section.5.2}{Implementation}{chapter.5}% 41
+\BOOKMARK [1][-]{section.5.3}{Evaluation}{chapter.5}% 42
+\BOOKMARK [2][-]{subsection.5.3.1}{Detailed evaluation of a complete example}{section.5.3}% 43
+\BOOKMARK [2][-]{subsection.5.3.2}{Comparision with Z3 and Mathsat}{section.5.3}% 44
+\BOOKMARK [2][-]{subsection.5.3.3}{Performance comparision}{section.5.3}% 45
+\BOOKMARK [0][-]{chapter.6}{Future Work}{}% 46
+\BOOKMARK [0][-]{chapter*.7}{Appendices}{}% 47
+\BOOKMARK [1][-]{section.6.1}{Theorems about Interpolants}{chapter*.7}% 48
+\BOOKMARK [2][-]{subsection.6.1.1}{Interpolants are closed under conjunction and disjunction}{section.6.1}% 49
+\BOOKMARK [2][-]{subsection.6.1.2}{Interpolants distribute conjunctions over disjunctions in the A-part}{section.6.1}% 50
+\BOOKMARK [0][-]{chapter*.8}{References}{}% 51
