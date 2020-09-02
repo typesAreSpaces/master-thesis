@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.21 (TeX Live 2020/Arch Linux) (preloaded format=pdflatex 2020.8.13)  2 SEP 2020 00:12
+This is pdfTeX, Version 3.14159265-2.6-1.40.21 (TeX Live 2020/Arch Linux) (preloaded format=pdflatex 2020.8.13)  2 SEP 2020 04:12
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -912,7 +912,7 @@ Overfull \hbox (27.61998pt too wide) in paragraph at lines 25--26
  []
 
 ) (./utvpi_architecture.tex) [20] [21] [22]
-<query_screenshot.png, id=588, 893.3375pt x 746.79pt>
+<query_screenshot.png, id=603, 893.3375pt x 746.79pt>
 File: query_screenshot.png Graphic file (type png)
 <use query_screenshot.png>
 Package pdftex.def Info: query_screenshot.png  used on input line 68.
@@ -1073,33 +1073,93 @@ Chapter 5.
 Underfull \vbox (badness 6625) has occurred while \output is active []
 
  [54]
-Overfull \hbox (32.58385pt too wide) in paragraph at lines 9--16
+File: "th_comb_example_interp.txt"  (verbatim)
+File: "../../Software/Cpp/ThCombination/tests/verification/verification_basic_t
+est_actual_example.smt2"  (verbatim)
+
+[55]
+File: "../../Software/Cpp/ThCombination/tests/verification/basic_test_actual_ex
+ample_final_check.smt2"  (verbatim)
+ [56]
+Underfull \vbox (badness 10000) has occurred while \output is active []
+
+ [57]
+Overfull \hbox (32.58385pt too wide) in paragraph at lines 54--61
 [][] |
  []
 
-)) (./future_work.tex [55]
+)) (./future_work.tex [58]
 Chapter 6.
-[56
+[59
 
-]) (./appendices.tex [57] [58
+]) (./appendix_a.tex [60] [61
 
-] [59]) (./main.bbl [60] [61
+] [62]) (./appendix_b.tex [63]
+Overfull \hbox (1.3797pt too wide) in paragraph at lines 5--5
+[]\OT1/cmr/bx/n/17.28 Trace for ex-am-ple in the-ory com-bi-na-tion chap-|
+ []
 
-] [62] [63])
-[64]
-Package atveryend Info: Empty hook `BeforeClearDocument' on input line 145.
-Package atveryend Info: Empty hook `AfterLastShipout' on input line 145.
+File: "../../Software/Cpp/ThCombination/tests/traces/example1.txt"  (verbatim)
+
+Underfull \vbox (badness 1418) has occurred while \output is active []
+
+ [64
+
+]
+Overfull \hbox (3.50623pt too wide) in paragraph at lines 7--7
+[]\OT1/cmtt/m/n/6 Clause Id: 9 (Derived(2,8)) Predicate: (or (not (<= c_x1 b_b)
+) (not (= c_x1 a_a)) (not (= c_y1 b_b)) (= c_x1 c_y1)) Pivot: (<= c_y1 a_a)[] |
+
+ []
+
+
+Underfull \vbox (badness 10000) has occurred while \output is active []
+
+ [65]
+Underfull \vbox (badness 10000) has occurred while \output is active []
+
+ [66]
+Underfull \vbox (badness 10000) has occurred while \output is active []
+
+ [67]
+Underfull \vbox (badness 10000) has occurred while \output is active []
+
+ [68]
+Overfull \hbox (22.6315pt too wide) in paragraph at lines 7--7
+[]\OT1/cmtt/m/n/6 Clause Id: 8 (Derived(1,7)) Predicate: (or (= (c_f c_y1) c_oc
+t_2) (not (= c_x1 c_y1)) (not (= c_oct_1 c_oct_2))) Pivot: (= (c_f c_x1) c_oct_
+1)[] |
+ []
+
+
+Underfull \vbox (badness 10000) has occurred while \output is active []
+
+ [69]
+Underfull \vbox (badness 10000) has occurred while \output is active []
+
+ [70]
+Underfull \vbox (badness 10000) has occurred while \output is active []
+
+ [71]
+Underfull \vbox (badness 10000) has occurred while \output is active []
+
+ [72])
+(./main.bbl [73] [74
+
+] [75] [76]) [77]
+Package atveryend Info: Empty hook `BeforeClearDocument' on input line 146.
+Package atveryend Info: Empty hook `AfterLastShipout' on input line 146.
  (./main.aux)
-Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 145.
-Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 145.
+Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 146.
+Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 146.
 Package rerunfilecheck Info: File `main.out' has not changed.
-(rerunfilecheck)             Checksum: 000B63629A288150CECA11A3967D86DA;3638.
+(rerunfilecheck)             Checksum: 012993D1028B3B0866D5A7D8B66F4CD7;3857.
  ) 
 Here is how much of TeX's memory you used:
- 22361 strings out of 480478
- 407251 string characters out of 5905959
- 885771 words of memory out of 5000000
- 37616 multiletter control sequences out of 15000+600000
+ 22398 strings out of 480478
+ 408255 string characters out of 5905959
+ 886772 words of memory out of 5000000
+ 37628 multiletter control sequences out of 15000+600000
  545196 words of font info for 71 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
  62i,10n,73p,1034b,1014s stack positions out of 5000i,500n,10000p,200000b,80000s
@@ -1122,10 +1182,10 @@ fonts/type1/public/amsfonts/cm/cmtt8.pfb></usr/share/texmf-dist/fonts/type1/pub
 lic/amsfonts/euler/eufm10.pfb></usr/share/texmf-dist/fonts/type1/public/amsfont
 s/symbols/msam10.pfb></usr/share/texmf-dist/fonts/type1/public/amsfonts/symbols
 /msbm10.pfb>
-Output written on main.pdf (76 pages, 472777 bytes).
+Output written on main.pdf (89 pages, 488949 bytes).
 PDF statistics:
- 965 PDF objects out of 1000 (max. 8388607)
- 854 compressed objects within 9 object streams
- 223 named destinations out of 1000 (max. 500000)
- 418 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 1041 PDF objects out of 1200 (max. 8388607)
+ 916 compressed objects within 10 object streams
+ 241 named destinations out of 1000 (max. 500000)
+ 442 words of extra memory for PDF output out of 10000 (max. 10000000)
 
