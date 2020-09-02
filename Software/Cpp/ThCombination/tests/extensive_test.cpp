@@ -110,11 +110,14 @@ void crossTest(z3::context & ctx,
         ThCombInterpolatorWithExpressions extensive_test(input_a, input_b);
         auto stop = std::chrono::high_resolution_clock().now();
         std::cout 
-          << input_a << " & "
-          << input_b << " & "
-          << extensive_test << " & "
-          << std::chrono::duration_cast<std::chrono::milliseconds>(stop - start).count()
-          << std::endl << std::endl;
+          << std::chrono::duration_cast<std::chrono::microseconds>(stop - start).count()
+          << std::endl;
+        //std::cout 
+          //<< input_a << " & "
+          //<< input_b << " & "
+          //<< extensive_test << " & "
+          //<< std::chrono::duration_cast<std::chrono::milliseconds>(stop - start).count()
+          //<< std::endl << std::endl;
         
       }
       catch(char const * e){

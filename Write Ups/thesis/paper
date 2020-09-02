@@ -26,7 +26,7 @@ badd +68 first_order_logic.tex
 badd +27 theories.tex
 badd +32 verification.tex
 badd +127 tools.tex
-badd +8 combination.tex
+badd +7 combination.tex
 badd +1 algpseudocode.sty
 badd +15 ~/Downloads/10.1007_978-3-540-45069-6_1.bib
 badd +102 craig_interpolation.tex
@@ -51,14 +51,14 @@ badd +1 appendices.tex
 badd +1 booktabs.sty
 badd +2 oct_algorithm.tex
 badd +1 oct_implementation.tex
-badd +35 euf_evaluation.tex
+badd +1 euf_evaluation.tex
 badd +57 oct_evaluation.tex
 badd +25 euf_abstract.tex
 badd +23 oct_abstract.tex
 badd +63 comb_abstract.tex
-badd +2 comb_algorithm.tex
-badd +24 comb_implementation.tex
-badd +12 comb_evaluation.tex
+badd +14 comb_algorithm.tex
+badd +69 comb_implementation.tex
+badd +66 comb_evaluation.tex
 badd +6 appendices_b.tex
 badd +3 th_comb_example_interp.txt
 argglobal
@@ -100,6 +100,8 @@ setlocal fdn=20
 setlocal fen
 silent! normal! zE
 10,81fold
+10
+normal! zc
 let s:l = 140 - ((13 * winheight(0) + 9) / 19)
 if s:l < 1 | let s:l = 1 | endif
 exe s:l
@@ -118,7 +120,7 @@ setlocal fml=1
 setlocal fdn=20
 setlocal fen
 silent! normal! zE
-let s:l = 83 - ((6 * winheight(0) + 9) / 19)
+let s:l = 83 - ((0 * winheight(0) + 9) / 19)
 if s:l < 1 | let s:l = 1 | endif
 exe s:l
 normal! zt
@@ -137,16 +139,16 @@ setlocal fdn=20
 setlocal fen
 silent! normal! zE
 3,3fold
-50,77fold
-1,77fold
+50,85fold
+1,85fold
 1
 normal! zo
-let s:l = 65 - ((28 * winheight(0) + 19) / 39)
+let s:l = 64 - ((24 * winheight(0) + 19) / 39)
 if s:l < 1 | let s:l = 1 | endif
 exe s:l
 normal! zt
-65
-normal! 0
+64
+normal! 027|
 wincmd w
 argglobal
 if bufexists("euf_evaluation.tex") | buffer euf_evaluation.tex | else | edit euf_evaluation.tex | endif
@@ -175,11 +177,25 @@ normal! zo
 normal! zo
 8
 normal! zo
-let s:l = 12 - ((8 * winheight(0) + 19) / 39)
+25
+normal! zc
+26
+normal! zc
+27
+normal! zc
+32
+normal! zc
+33
+normal! zc
+34
+normal! zc
+42
+normal! zc
+let s:l = 13 - ((1 * winheight(0) + 19) / 39)
 if s:l < 1 | let s:l = 1 | endif
 exe s:l
 normal! zt
-12
+13
 normal! 0
 wincmd w
 3wincmd w

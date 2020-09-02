@@ -47,7 +47,7 @@ to compute the expected result discussed above. This particular test
 was useful to check disjunction of equalities propagation mechanism in the
 implementation work.
 
-\subsection{Performance comparision}
+\subsection{Performance evaluation}
 
 The following collection of examples were produced from a reduction 
 algorithm that takes an input formula in the theory of arrays combined with
@@ -60,13 +60,21 @@ simplify($a - b \star 0$) using Z3's arithmetic rewriter.
 The latter is justified formally since integers 
 satisfy the cancellation property over addition.
 
+TODO: explain the original input formula and details 
+about the cases \footnote{Time was measured in microseconds}}.
 
-TODO: keep working here
+\centering
+\begin{tabular}{cccccc} \toprule
+  & \multicolumn{4}{c}{Performance evaluation} &\\
+  %\multicolumn{2}{l}{Input Formula} & \multicolumn{2}{c}{Z3} & 
+  %\multicolumn{2}{c}{Mathsat} & \multicolumn{2}{c}{The implementation} \\
+  Test & Time & Test & Time & Test & Time \\
+  %\cmidrule(lr){1-2} \cmidrule(lr){3-4} \cmidrule(lr){5-6} \cmidrule(lr){7-8}
+  %A-part & B-part & Result & Time (m.s.) & Result & Time (micro.s.) & Result & Time (m.s.) \\
 
-\begin{tabular}{llcccccc} \toprule
-  \multicolumn{2}{l}{Input Formula} & \multicolumn{2}{c}{Z3}& \multicolumn{2}{c}{Mathsat}& \multicolumn{2}{c}{The implementation} 
-  \\\cmidrule(lr){1-2}\cmidrule(lr){3-4}\cmidrule(lr){5-6}\cmidrule(lr){7-8}
-  A-part & B-part & Result & Time (m.s.) & Result & Time (m.s.) & Result & Time (m.s.) \\
+  \#1 & 820 & \#21 & 201 & \#41 & 234 \\
+  \#2 & 820 & \#22 & 201 & \#42 & 234 \\
+  \#3 & 820 & \#23 & 201 & \#43 & 234 \\
   
   %&  & & & & & & \\
 \end{tabular}
