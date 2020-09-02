@@ -49,7 +49,19 @@ implementation work.
 
 \subsection{Performance comparision}
 
-TODO: keep working here.
+The following collection of examples were produced from a reduction 
+algorithm that takes an input formula in the theory of arrays combined with
+total orders, reducing the formula to EUF and total order. We can use our
+implementation of theory combination of EUF + UTVPI formulas because 
+given an expression of the form $a \star b$ where
+$\star$ is either $<, \leq, >, \geq, =, \neq$, 
+the latter is equivalent to 
+simplify($a - b \star 0$) using Z3's arithmetic rewriter. 
+The latter is justified formally since integers 
+satisfy the cancellation property over addition.
+
+
+TODO: keep working here
 
 \begin{tabular}{llcccccc} \toprule
   \multicolumn{2}{l}{Input Formula} & \multicolumn{2}{c}{Z3}& \multicolumn{2}{c}{Mathsat}& \multicolumn{2}{c}{The implementation} 

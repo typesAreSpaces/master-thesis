@@ -12,7 +12,7 @@ badd +8 abstract.tex
 badd +1 background.tex
 badd +9 preliminaries.tex
 badd +172 introduction.tex
-badd +393 references.bib
+badd +79 references.bib
 badd +338 unmeethesis.cls
 badd +32 proof_of_main_theorem_octagons.tex
 badd +7 octagonal.tex
@@ -47,28 +47,33 @@ badd +3 ~/Downloads/10.1007_978-3-642-02959-2_15.bib
 badd +15 euf_theorem.tex
 badd +7 python_proof.tex
 badd +1 ~/Downloads/10.1007_978-3-642-22119-4_1.bib
-badd +110 appendices.tex
+badd +1 appendices.tex
 badd +1 booktabs.sty
 badd +2 oct_algorithm.tex
 badd +1 oct_implementation.tex
-badd +21 euf_evaluation.tex
-badd +3 oct_evaluation.tex
+badd +35 euf_evaluation.tex
+badd +57 oct_evaluation.tex
 badd +25 euf_abstract.tex
 badd +23 oct_abstract.tex
 badd +63 comb_abstract.tex
 badd +2 comb_algorithm.tex
 badd +24 comb_implementation.tex
-badd +9 comb_evaluation.tex
+badd +12 comb_evaluation.tex
+badd +6 appendices_b.tex
+badd +3 th_comb_example_interp.txt
 argglobal
 %argdel
 edit main.tex
 set splitbelow splitright
 wincmd _ | wincmd |
 vsplit
-1wincmd h
+wincmd _ | wincmd |
+vsplit
+2wincmd h
 wincmd _ | wincmd |
 split
 1wincmd k
+wincmd w
 wincmd w
 wincmd w
 set nosplitbelow
@@ -78,11 +83,12 @@ set winminheight=0
 set winheight=1
 set winminwidth=0
 set winwidth=1
-exe '1resize ' . ((&lines * 43 + 42) / 85)
-exe 'vert 1resize ' . ((&columns * 156 + 156) / 313)
-exe '2resize ' . ((&lines * 39 + 42) / 85)
-exe 'vert 2resize ' . ((&columns * 156 + 156) / 313)
-exe 'vert 3resize ' . ((&columns * 156 + 156) / 313)
+exe '1resize ' . ((&lines * 19 + 20) / 41)
+exe 'vert 1resize ' . ((&columns * 104 + 156) / 313)
+exe '2resize ' . ((&lines * 19 + 20) / 41)
+exe 'vert 2resize ' . ((&columns * 104 + 156) / 313)
+exe 'vert 3resize ' . ((&columns * 103 + 156) / 313)
+exe 'vert 4resize ' . ((&columns * 104 + 156) / 313)
 argglobal
 setlocal fdm=manual
 setlocal fde=0
@@ -94,14 +100,12 @@ setlocal fdn=20
 setlocal fen
 silent! normal! zE
 10,81fold
-10
-normal! zc
-let s:l = 17 - ((7 * winheight(0) + 21) / 43)
+let s:l = 140 - ((13 * winheight(0) + 9) / 19)
 if s:l < 1 | let s:l = 1 | endif
 exe s:l
 normal! zt
-17
-normal! 01|
+140
+normal! 015|
 wincmd w
 argglobal
 if bufexists("references.bib") | buffer references.bib | else | edit references.bib | endif
@@ -114,37 +118,77 @@ setlocal fml=1
 setlocal fdn=20
 setlocal fen
 silent! normal! zE
-let s:l = 79 - ((0 * winheight(0) + 19) / 39)
+let s:l = 83 - ((6 * winheight(0) + 9) / 19)
 if s:l < 1 | let s:l = 1 | endif
 exe s:l
 normal! zt
-79
-normal! 019|
+83
+normal! 016|
 wincmd w
 argglobal
-if bufexists("oct_evaluation.tex") | buffer oct_evaluation.tex | else | edit oct_evaluation.tex | endif
+if bufexists("comb_evaluation.tex") | buffer comb_evaluation.tex | else | edit comb_evaluation.tex | endif
 setlocal fdm=manual
 setlocal fde=0
 setlocal fmr={{{,}}}
 setlocal fdi=#
-setlocal fdl=0
+setlocal fdl=2
 setlocal fml=1
 setlocal fdn=20
 setlocal fen
 silent! normal! zE
-let s:l = 3 - ((2 * winheight(0) + 41) / 83)
+3,3fold
+50,77fold
+1,77fold
+1
+normal! zo
+let s:l = 65 - ((28 * winheight(0) + 19) / 39)
 if s:l < 1 | let s:l = 1 | endif
 exe s:l
 normal! zt
+65
+normal! 0
+wincmd w
+argglobal
+if bufexists("euf_evaluation.tex") | buffer euf_evaluation.tex | else | edit euf_evaluation.tex | endif
+setlocal fdm=manual
+setlocal fde=0
+setlocal fmr={{{,}}}
+setlocal fdi=#
+setlocal fdl=4
+setlocal fml=1
+setlocal fdn=20
+setlocal fen
+silent! normal! zE
+25,25fold
+26,26fold
+27,27fold
+32,32fold
+33,33fold
+34,36fold
+8,41fold
+42,59fold
+3,59fold
+1,59fold
+1
+normal! zo
 3
+normal! zo
+8
+normal! zo
+let s:l = 12 - ((8 * winheight(0) + 19) / 39)
+if s:l < 1 | let s:l = 1 | endif
+exe s:l
+normal! zt
+12
 normal! 0
 wincmd w
 3wincmd w
-exe '1resize ' . ((&lines * 43 + 42) / 85)
-exe 'vert 1resize ' . ((&columns * 156 + 156) / 313)
-exe '2resize ' . ((&lines * 39 + 42) / 85)
-exe 'vert 2resize ' . ((&columns * 156 + 156) / 313)
-exe 'vert 3resize ' . ((&columns * 156 + 156) / 313)
+exe '1resize ' . ((&lines * 19 + 20) / 41)
+exe 'vert 1resize ' . ((&columns * 104 + 156) / 313)
+exe '2resize ' . ((&lines * 19 + 20) / 41)
+exe 'vert 2resize ' . ((&columns * 104 + 156) / 313)
+exe 'vert 3resize ' . ((&columns * 103 + 156) / 313)
+exe 'vert 4resize ' . ((&columns * 104 + 156) / 313)
 tabnext 1
 if exists('s:wipebuf') && getbufvar(s:wipebuf, '&buftype') isnot# 'terminal'
   silent exe 'bwipe ' . s:wipebuf
