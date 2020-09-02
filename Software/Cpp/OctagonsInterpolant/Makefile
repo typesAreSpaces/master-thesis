@@ -26,7 +26,8 @@ DEPS = $(wildcard $(IDIR)/*.h)
 
 # ------------------------------------------------------------------------------------------
 #  Build
-all: tests/test_octagon_parser
+#all: tests/test_octagon_parser
+all: tests/current_progress
 
 $(ODIR)/%.o: $(SDIR)/%.cpp $(DEPS)
 	$(CC) -g -c -o $@  $(FLAGS) $< 
@@ -65,19 +66,3 @@ tests/current_progress: $(OBJS)
 .PHONY: clean
 clean:
 	rm -rf $(ODIR)/* 
-
-#run: ./octagon_interpolator
-	#for files in ./tests/smtlib2/*; do \
-		#echo $$files; \
-		#./octagon_interpolator $$files x2; \
-	#done
-
-#old-format: ./octagon_interpolator
-	#for files in ./tests/in_format/*; do \
-		#./octagon_interpolator $$files; \
-	#done
-
-#valgrind-old: ./octagon_interpolator
-	#for files in ./tests/in_format/*; do \
-		#valgrind ./octagon_interpolator $$files; \
-	#done

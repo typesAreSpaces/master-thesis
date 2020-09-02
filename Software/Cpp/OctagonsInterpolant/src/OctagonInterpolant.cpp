@@ -10,7 +10,7 @@ OctagonInterpolant::OctagonInterpolant(z3::expr_vector const & assertions) :
   VarValue var_value_to_elim = 0;
   for(auto const & var_to_elim : positions){
 #if _DEBUG_ELIM_
-    std::cout << "Removing this var: " << var_value_to_elim << std::endl;
+    std::cout << "Removing this var: x_" << var_value_to_elim << std::endl;
 #endif
     for(auto const & pos_position : var_to_elim.first){
       for(auto const & neg_position : var_to_elim.second){

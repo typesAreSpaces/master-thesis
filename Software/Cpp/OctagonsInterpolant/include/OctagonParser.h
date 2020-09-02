@@ -1,6 +1,7 @@
 #ifndef _OCT_PARSER_
 #define _OCT_PARSER_
 #define DEBUG_OCT_PAR_CONST 0
+#define DEBUG_OCT_SET2VARS 0
 
 #include <z3++.h>
 #include <iostream>

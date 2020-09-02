@@ -16,15 +16,15 @@ OctagonParser::OctagonParser(z3::expr_vector const & assertions) :
 
     switch(num_operands){
       case 0:
-          // Non-negative variable
-          setBoundWith1Var(true, inequality, bound);
-          break;
+        // Non-negative variable
+        setBoundWith1Var(true, inequality, bound);
+        break;
       case 1:
-          // Negative variable
-          setBoundWith1Var(false, inequality.arg(0), bound);
-          break;
+        // Negative variable
+        setBoundWith1Var(false, inequality.arg(0), bound);
+        break;
       case 2:
-       {
+        {
           auto const & op_name = inequality.decl().name().str();
           if(op_name == "+"){
             setBoundWith2Vars(true, inequality, bound);
@@ -65,6 +65,10 @@ void OctagonParser::setBoundWith1Var(bool is_positive, z3::expr const & var,
 
 void OctagonParser::setBoundWith2Vars(bool is_addition, z3::expr const & inequality, 
     BoundValue bound){
+#if DEBUG_OCT_SET2VARS
+  std::cout << "Processing" << std::endl;
+  std::cout << inequality << std::endl;
+#endif
   auto const & var_1 = inequality.arg(0);
   auto const & var_2 = inequality.arg(1);
 
@@ -80,6 +84,11 @@ void OctagonParser::setBoundWith2Vars(bool is_addition, z3::expr const & inequal
             UtvpiPosition position = Octagon(
                 POS                    , id_table[var_1.hash()], 
                 is_addition ? POS : NEG, id_table[var_2.hash()]).getUtviPosition();
+#if DEBUG_OCT_SET2VARS
+            std::cout << "Updating structure with" << std::endl;
+            std::cout << Octagon(position) << " <= ";
+            std::cout << bound << std::endl;
+#endif
             bounds.insert(position, Bound(bound));
             updatePositions(true,        var_1, position);
             updatePositions(is_addition, var_2, position);
@@ -93,6 +102,11 @@ void OctagonParser::setBoundWith2Vars(bool is_addition, z3::expr const & inequal
             UtvpiPosition position = Octagon(
                 POS                    , id_table[var_1.hash()], 
                 is_addition ? NEG : POS, id_table[var_2.arg(0).hash()]).getUtviPosition();
+#if DEBUG_OCT_SET2VARS
+            std::cout << "Updating structure with" << std::endl;
+            std::cout << Octagon(position) << " <= ";
+            std::cout << bound << std::endl;
+#endif
             bounds.insert(position, Bound(bound));
             updatePositions(true,         var_1, position);
             updatePositions(!is_addition, var_2.arg(0), position);
@@ -112,6 +126,11 @@ void OctagonParser::setBoundWith2Vars(bool is_addition, z3::expr const & inequal
             UtvpiPosition position = Octagon(
                 NEG                    , id_table[var_1.arg(0).hash()], 
                 is_addition ? POS : NEG, id_table[var_2.hash()]).getUtviPosition();
+#if DEBUG_OCT_SET2VARS
+            std::cout << "Updating structure with" << std::endl;
+            std::cout << Octagon(position) << " <= ";
+            std::cout << bound << std::endl;
+#endif
             bounds.insert(position, Bound(bound));
             updatePositions(false,       var_1.arg(0), position);
             updatePositions(is_addition, var_2, position);
@@ -125,6 +144,11 @@ void OctagonParser::setBoundWith2Vars(bool is_addition, z3::expr const & inequal
             UtvpiPosition position = Octagon(
                 NEG                    , id_table[var_1.arg(0).hash()], 
                 is_addition ? NEG : POS, id_table[var_2.arg(0).hash()]).getUtviPosition();
+#if DEBUG_OCT_SET2VARS
+            std::cout << "Updating structure with" << std::endl;
+            std::cout << Octagon(position) << " <= ";
+            std::cout << bound << std::endl;
+#endif
             bounds.insert(position, Bound(bound));
             updatePositions(false,        var_1.arg(0), position);
             updatePositions(!is_addition, var_2.arg(0), position);
