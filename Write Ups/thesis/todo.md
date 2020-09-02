@@ -1,7 +1,9 @@
 # Missing parts:
 
-## Evaluation part of EUF           25
+## Dedication
 
-## Evaluation part of Octagons     20 - 40
+## Acknowledgments
+
+## Glossary
 
 ## Evaluation part of Combination 20 - 40
