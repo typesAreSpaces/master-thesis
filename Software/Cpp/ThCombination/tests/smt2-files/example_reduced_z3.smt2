@@ -1,4 +1,3 @@
-; 
 (set-info :status unknown)
 (declare-sort ElementSort 0)
  (declare-sort ArraySort 0)

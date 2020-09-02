@@ -8,7 +8,7 @@ Let us consider the following example:
 $\alpha = \{ f(x_1) = 0, x_1 = a, y_1 \leq a\}; 
 \beta = \{x_1 \leq b, y_1 = b, f(y_1) \neq 0\}$.
 The implementation produces the following interpolant \footnote{A trace of the
-execution can be found at the Appendix section since it is considerably
+  execution can be found at the Appendix section since it is considerably
 large to include it in this section}: 
 
 \verbatiminput{th_comb_example_interp.txt}
@@ -22,8 +22,8 @@ For this example these are the interpolants reported by Z3 and Mathsat
 respectively:
 
 \begin{itemize}
-\item Z3 interpolant: (and ($\geq$ (+ x1 (* (- 1) y1)) 0) (= (f x1) 0))
-\item Mathsat interpolant: (or (= (f y1) 0) ($\leq$ 1 (+ x1 (* (- 1) y1))))
+  \item Z3 interpolant: (and ($\geq$ (+ x1 (* (- 1) y1)) 0) (= (f x1) 0))
+  \item Mathsat interpolant: (or (= (f y1) 0) ($\leq$ 1 (+ x1 (* (- 1) y1))))
 \end{itemize}
 
 The following SMT query verifies the strength relation between the interpolants produced:
@@ -35,9 +35,9 @@ The following SMT query verifies the strength relation between the interpolants 
 
 Let us consider the following parametrized 
 example: $\alpha = \{1 \leq x, x \leq n \}; \beta = \{f(x) = a, 
-f(1) \neq a,
-f(2) \neq a, \dots
-f(n-1) \neq a,
+  f(1) \neq a,
+  f(2) \neq a, \dots
+  f(n-1) \neq a,
 f(n) \neq a\}$ where $n > 1, a$ are fixed integers. We can see that an 
 interpolant for this parametrized input problem is 
 $x = 1 \lor x = 2 \lor \dots \lor x = n-1 \lor x = n$.
@@ -60,23 +60,41 @@ simplify($a - b \star 0$) using Z3's arithmetic rewriter.
 The latter is justified formally since integers 
 satisfy the cancellation property over addition.
 
-TODO: explain the original input formula and details 
-about the cases \footnote{Time was measured in microseconds}}.
+The cases used in this test followed from branching the disjunctions
+of the following SMT2 query:
+
+\verbatiminput{../../Software/Cpp/ThCombination/tests/smt2-files/example_reduced_z3.smt2}
+
+The time shown in next table was measured in microseconds:
 
 \centering
-\begin{tabular}{cccccc} \toprule
-  & \multicolumn{4}{c}{Performance evaluation} &\\
-  %\multicolumn{2}{l}{Input Formula} & \multicolumn{2}{c}{Z3} & 
-  %\multicolumn{2}{c}{Mathsat} & \multicolumn{2}{c}{The implementation} \\
-  Test & Time & Test & Time & Test & Time \\
-  %\cmidrule(lr){1-2} \cmidrule(lr){3-4} \cmidrule(lr){5-6} \cmidrule(lr){7-8}
-  %A-part & B-part & Result & Time (m.s.) & Result & Time (micro.s.) & Result & Time (m.s.) \\
+\begin{tabular}{cccccccccc}
+  \toprule
+  &  & & \multicolumn{4}{c}{Performance evaluation} & & & \\
+  \toprule
+  Test & Time & Test & Time & Test & Time & Test & Time & Test & Time \\
+  \cmidrule(lr){1-2} \cmidrule(lr){3-4} \cmidrule(lr){5-6} \cmidrule(lr){7-8} \cmidrule(lr){9-10}
 
-  \#1 & 820 & \#21 & 201 & \#41 & 234 \\
-  \#2 & 820 & \#22 & 201 & \#42 & 234 \\
-  \#3 & 820 & \#23 & 201 & \#43 & 234 \\
-  
-  %&  & & & & & & \\
+  \#1 & 8459 & \#21 & 8604 & \#41 & 7777 & \#61 & 7836 & \#81 & 8609 \\
+  \#2 & 7757 & \#22 & 8620 & \#42 & 7781 & \#62 & 7791 & \#82 & 8739 \\
+  \#3 & 7686 & \#23 & 8584 & \#43 & 7724 & \#63 & 7838 & \#83 & 8642 \\
+  \#4 & 8742 & \#24 & 8663 & \#44 & 8644 & \#64 & 8633 & \#84 & 8633 \\
+  \#5 & 7813 & \#25 & 7728 & \#45 & 8655 & \#65 & 7737 & \#85 & 7843 \\
+  \#6 & 7743 & \#26 & 7777 & \#46 & 8662 & \#66 & 7716 & \#86 & 7775 \\
+  \#7 & 7766 & \#27 & 7863 & \#47 & 8568 & \#67 & 7729 & \#87 & 7785 \\
+  \#8 & 8651 & \#28 & 8644 & \#48 & 8636 & \#68 & 8590 & \#88 & 8781 \\
+  \#9 & 8584 & \#29 & 7739 & \#49 & 7810 & \#69 & 8712 & \#89 & 7821 \\
+  \#10 & 8614 & \#30 & 7700 & \#50 & 7818 & \#70 & 8670 & \#90 & 7868 \\
+  \#11 & 8655 & \#31 & 7749 & \#51 & 7730 & \#71 & 8804 & \#91 & 7852 \\
+  \#12 & 8600 & \#32 & 8570 & \#52 & 8680 & \#72 & 8694 & \#92 & 9172 \\
+  \#13 & 7727 & \#33 & 8746 & \#53 & 7703 & \#73 & 7740 & \#93 & 8709 \\
+  \#14 & 7760 & \#34 & 8634 & \#54 & 7700 & \#74 & 7796 & \#94 & 8641 \\
+  \#15 & 7752 & \#35 & 8654 & \#55 & 7766 & \#75 & 7812 & \#95 & 8729 \\
+  \#16 & 8688 & \#36 & 8605 & \#56 & 8565 & \#76 & 8667 & \#96 & 8722 \\
+  \#17 & 7708 & \#37 & 7768 & \#57 & 8616 & \#77 & 7745 & \#97 & 7829 \\
+  \#18 & 7754 & \#38 & 7749 & \#58 & 8670 & \#78 & 7787 & \#98 & 7798 \\
+  \#19 & 7609 & \#39 & 7759 & \#59 & 8578 & \#79 & 7751 & \#99 & 7819 \\
+  \#20 & 8575 & \#40 & 8695 & \#60 & 8688 & \#80 & 8655 & \#100 & 8739
 \end{tabular}
 
 %%% Local Variables:
