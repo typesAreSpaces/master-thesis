@@ -86,6 +86,9 @@ void Hornsat::build(CongruenceClosureExplain & cce, HornClauses const & hcs){
         if(literal->literal_id == FALSELITERAL)
           consistent = false;
         else{
+#if DEBUGGING_CONSTRUCTOR
+          std::cout << "Pushing " << consequent << " into the (conditional) equiv_classes" << std::endl;
+#endif
           literal->val = true;
           facts.push(consequent.id());
           to_combine.push(TermIdPair(

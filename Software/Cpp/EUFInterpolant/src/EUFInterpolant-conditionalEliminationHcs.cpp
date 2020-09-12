@@ -38,6 +38,10 @@ void EUFInterpolant::conditionalEliminationHcs(){
           }
           expl.add(explainUncommons(lhs, rhs));
         }
+#if DEBUG_COND_ELIM_HCS
+        std::cout << "Is antecedent explainable?" << std::endl;
+        std::cout << (is_antecedent_explainable ? "Yes" : "No") << std::endl;
+#endif
         if(is_antecedent_explainable)
           conditional_horn_clauses.add(new HornClause(ctx,
                 expl.result,
@@ -68,7 +72,7 @@ void EUFInterpolant::conditionalEliminationHcs(){
         if(is_antecedent_explainable)
           conditionalEliminationHcsComUncom(
               _antecedent,
-              horn_clause->getConsequent());
+            horn_clause->getConsequent());
       }
     }
   }

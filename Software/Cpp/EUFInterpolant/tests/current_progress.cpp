@@ -9,6 +9,7 @@ void paperExample(z3::context &);
 void example(z3::context &);
 void example2(z3::context &);
 void example3(z3::context &);
+void parametric_example(z3::context &);
 
 int main(int argc, char ** argv){
 
@@ -17,7 +18,9 @@ int main(int argc, char ** argv){
   //paperExample(ctx);
   //example(ctx);
   //example2(ctx);
-  example3(ctx);
+  //example3(ctx);
+
+  parametric_example(ctx);
 
   return 0;
 }
@@ -162,3 +165,30 @@ void example3(z3::context & ctx){
   return;
 }
 
+void parametric_example(z3::context & ctx){
+  z3::sort my_sort = ctx.uninterpreted_sort("A");
+  z3::expr x = ctx.constant("x", my_sort);
+  z3::expr a = ctx.constant("a", my_sort);
+  z3::func_decl f = ctx.function("f", my_sort, my_sort);
+  std::set<std::string> uncomms({"f"});
+
+  z3::expr_vector input(ctx); 
+  input.push_back((f(f(x))) == x);
+  input.push_back(
+      f(f(f(f(f(f(f(f(f(f(f(f(f(f(f(f(x))))))))))))))))
+      ==
+      f(f(f(f(f(f(f(f(f(f(f(f(f(f(f(f(f(x)))))))))))))))))
+      );
+  input.push_back(f(a) != a);
+
+  try {
+    EUFInterpolantWithUncomSymbols eufi(input, uncomms);
+    std::cout << eufi.removePrefix(eufi.getInterpolant()) << std::endl;
+    std::cout << "Nice" << std::endl;
+  }
+  catch(char const * e){
+    std::cout << e << std::endl;
+  }
+
+  return;
+}
