@@ -1,0 +1,36 @@
+Processing
+(+ (- c_x1) a_x2)
+Updating structure with
+x_2 - x_1 <= 4
+Processing
+(+ a_x2 c_x3)
+Updating structure with
+x_3 + x_2 <= -5
+Processing
+(- (- a_x2) c_x6)
+Updating structure with
+- x_4 - x_2 <= -4
+Processing
+(- (- a_x2) c_x5)
+Updating structure with
+- x_5 - x_2 <= 3
+Removing this var: x_0
+Removing this var: x_1
+Removing this var: x_2
+Reducing x_2 - x_1 and - x_4 - x_2
+Result: - x_4 - x_1
+Reducing x_2 - x_1 and - x_5 - x_2
+Result: - x_5 - x_1
+Reducing x_3 + x_2 and - x_4 - x_2
+Result: - x_4 + x_3
+Reducing x_3 + x_2 and - x_5 - x_2
+Result: - x_5 + x_3
+Removing this var: x_3
+Removing this var: x_4
+Removing this var: x_5
+Interpolant:
+(ast-vector
+  (<= (- (- x6) x1) 0)
+  (<= (+ (- x6) x3) (- 9))
+  (<= (- (- x5) x1) 7)
+  (<= (+ (- x5) x3) (- 2)))
