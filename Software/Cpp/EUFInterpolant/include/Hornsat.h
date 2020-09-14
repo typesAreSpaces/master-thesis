@@ -2,9 +2,9 @@
 #define _HORNSAT_
 #include <unordered_map>
 #define FALSELITERAL          0 // THIS SHOULD NOT BE CHANGED!
-#define DEBUG_DESTRUCTORS     1
-#define DEBUGGING_SATISFIABLE 1
-#define DEBUGGING_UNIONUPDATE 1
+#define DEBUG_DESTRUCTORS     0
+#define DEBUGGING_SATISFIABLE 0
+#define DEBUGGING_UNIONUPDATE 0
 #define DEBUGGING_CONSTRUCTOR 1
 
 #include <iostream>
