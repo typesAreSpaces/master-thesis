@@ -1,7 +1,7 @@
 \babel@toc {english}{}
 \addvspace {10\p@ }
 \addvspace {10\p@ }
-\contentsline {figure}{\numberline {2.1}{\ignorespaces DPLL execution on the clauses $\{\{\neg P\}, \{P, Q, \neg R\}, \{R\}, \{P, \neg Q\} \}$}}{15}{figure.2.1}%
+\contentsline {figure}{\numberline {2.1}{\ignorespaces Example of DPLL execution on $\{\{\neg P\}, \{P, Q, \neg R\}, \{R\}, \{P, \neg Q\} \}$}}{15}{figure.2.1}%
 \contentsline {figure}{\numberline {2.2}{\ignorespaces Example of resolution proof}}{16}{figure.2.2}%
 \contentsline {figure}{\numberline {2.3}{\ignorespaces General System Diagram}}{21}{figure.2.3}%
 \contentsline {figure}{\numberline {2.4}{\ignorespaces EUF Interpolator Diagram}}{21}{figure.2.4}%

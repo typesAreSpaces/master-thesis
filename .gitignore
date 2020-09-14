@@ -1,6 +1,5 @@
 *\~
 *.o
-*.txt
 *.aux
 *.log
 *.out
