@@ -76,9 +76,12 @@ following definition for notation purposes:
 \end{definition}
 
 The interpolating formula produced by Kapur's algorith is a conjunction of equations
-and Horn clauses. Due to its relevance in the procedure, for a horn clause $h$
-we denote $antecedent(h)$ to be the conjuntion of equations in the antecedent of $h$ 
-and $head(h)$ to be the head equation \footnote{Or possible the particle $\bot$} of $h$. 
+and Horn clauses. A Horn clause if a disjunction of literals which contain at most
+one non-negated literal.
+Due to its relevance in the procedure in the EUF theory, for a Horn clause $h$
+we denote $antecedent(h)$ to be the conjuntion of disequations in the disjunction of $h$ 
+and $head(h)$ to be either the equation in the disjunction if such is present in $h$ 
+or the particle $\bot$ otherwise.
 
 The main steps in Kapur's algorithm for interpolant generation for the EUF theory
 are the following:
@@ -161,23 +164,58 @@ to introduce the following definitions:
   such that $a \succ b$ whenever 
   $a$ is common and $b$ is uncommon. A \emph{dependency pair}
   for a horn clause $h := \bigwedge_i (a_i = b_i) \rightarrow c = d$
-  is a pair $(min(a, b, \succ), \{max(a, b, \succ)\} \cup \{ u | u$ 
-  is an uncommon term appering in the antecedent of h $\})$
+  is a pair $(min(c, d, \succ), \{max(c, d, \succ)\} \cup \{ u | u$ 
+  is an uncommon term appering in antecedent(h) $\})$.
+  The first element of a dependency pair is denoted as the
+  target of $h$ and the second element the source of $h$.
+
+  A \emph{valid dependency pair} is a dependency pair for some
+  Horn clause $h$ which its target is not included in its
+  source.
 \end{definition}
 
-Using \emph{dependency pairs} of the Horn clauses 
-produced in Phase II
-we can construct of directed graph 
-by connecting the first element of each dependency pair with each 
-element in the second element of the pair.
-From the definition \ref{dep_pair} it is not guaranteed that the
-the above graph with will acyclic. Using a spanning tree algorithm
-we can detect such structure. Finally, we the latter we can perform 
-a topological ordering in linear time in order to find the 
-ordered sequent of formulas for the lazy interpolant.
+We can notice from definition \ref{dep_pair} than even for 
+equations, its source is never empty. 
 
-\textbf{Lazy/pseudo interpolant} avoids the 
-exponentially possible exponential size of the 
+\begin{definition}\label{dep_graph}
+  Let $\succ$ be a partial order between terms 
+  such that $a \succ b$ whenever 
+  $a$ is common and $b$ is uncommon. Given a set of 
+  Horn clauses $H$, a \emph{dependency graph for H}
+  is the directed graph $G_H = (V, E)$ where
+  \begin{itemize}
+    \item $V := \{(target_i, source_i) | (target_i, source_i)$ 
+      is a valid depency pair from $H \}$
+    \item $E := \{(target_i, source_i) \rightarrow (target_j, source_j) | 
+        \{target_i\} \cup source_i \subseteq source_j
+      \}$ 
+  \end{itemize}
+\end{definition}
+
+Using \emph{valid dependency pairs} of the Horn clauses 
+produced in Phase II
+we can construct an acyclic directed graph as shown 
+by the following theorem:
+
+\begin{theorem}
+  For any set of Horn clauses $H$, its dependency graph 
+  never contains a cycle between its nodes.
+\end{theorem}
+
+\begin{proof}
+  Suppose there exists a sequence of $n$ nodes such that 
+  $(target_1, source_1) \rightarrow \dots 
+  \rightarrow (target_n, source_n) \rightarrow (target_1, source_1)$.
+  Since $\subseteq$ is transitive we can conclude that 
+  $target_1 \in source_1$, which leads to a contradiction since all
+  the nodes in a dependency graph are valid depency pairs.
+\end{proof}
+
+Thus, given a set of Horn clauses $H$, we can compute its
+dependency graph and use a topological sort algorithm to 
+produce the ordered sequence required in the lazy interpolant
+representation. Lazy interpolants avoid the 
+possible exponential size of the 
 formal interpolant. This representation 
 is useful because it provides a more compact
 representation of the interpolant that the user 
@@ -185,9 +223,8 @@ might be able quicker to obtain.
 Additionally, the user might be just 
 interested in a particular subformula of 
 the interpolant, so the
-latter representation offers such feature.
-
-This algorithm allows a flexible implementation 
+latter representation offers such feature. This algorithm 
+allows a flexible implementation 
 which can lead several optimizations
 based on the nature and applications of the 
 interpolant.
