@@ -1,74 +1,184 @@
 \section{Algorithm}
 
 Kapur's interpolation algorithm for the EUF theory uses quantifier-elimination
-techniques to remove symbols in the first formula of an interpolation problem instance
+techniques to remove symbols in the first formula of an inconsistent pair of formulas
 that are not common with the second formula of the latter. 
 Hence, the input for this algorithm is a conjunction of equalities in the
-EUF theory and a set of symbols to eliminate, also unknown as uncommon symbols.
+EUF theory and a set of symbols to eliminate, also known as uncommon symbols.
+In preparation to discuss Kapur's algorithm we need to provide the 
+following definitions.
 
-The steps/ideas in Kapur's algorithm for interpolant generation for the EUF theory
+\begin{definition} 
+  Let $f$ be a $n-ary$ function symbol and $a_1, \dots, a_n,
+  b$ terms from the EUF language. We say 
+  \begin{equation*}
+    f(a_1, \dots, a_n) = b
+  \end{equation*}
+  is an $f-equation$ if the terms $a_1, \dots, a_n, b$ are constants in
+  the EUF language. We refer to the \emph{outermost symbol of the f-equation}
+  as the function symbol appearing in such $f-equation$.
+\end{definition}
+
+$f-equations$ are used in Kapur's algorithm to simplify the structure of terms 
+and in Phase II to expose hidden arguments and eliminate uncommon function symbols.
+
+As part of the input of Kapur's algorithm, there is a set of uncommon symbols given 
+directly or computed from the inconsistent pair of formulas by inspection. Using
+these symbols we can define the following recursive definition of \emph{uncommon terms}:
+
+\begin{definition}
+  A term $t$ in the EUF language is \emph{uncommon} if:
+  \begin{itemize}
+    \item $t$ is an uncommon constant
+    \item $t$ is a function application of the form $f(t_1, \dots, t_n)$
+      where either $f$ is an uncommon symbol or any $t_i$ where $1 \leq i \leq n$ 
+      is an uncommon term
+  \end{itemize}
+
+  Similarly, we can extend homomorphically the notion of uncommon terms to uncommon 
+  predicates following a similar construction.
+
+  \begin{itemize}
+    \item Let $t_1, t_2$ be terms in the EUF language. $t_1 = t_2$,
+      $t_1 \neq t_2$ are uncommon predicates if either $t_1$ or $t_2$
+      are uncommon terms.
+    \item Let $\psi, \varphi$ be predicates in the EUF language. 
+      $\psi \star \varphi$ are uncommon predicates if either $\psi$
+      or $\varphi$ are uncommon predicates where $\star \in \{ \land,
+      \lor, \rightarrow \}$. $\neg \psi$ is an uncommon predicate if $\psi$
+      is an uncommon predicate.
+
+  \end{itemize}
+\end{definition}
+
+
+Regarding extensions of the language with new constants, the \emph{uncommon} property
+is preserved under equalities. Formally, we mean the following:
+
+\begin{definition}
+  Let $\mathfrak{L}$ be a EUF language and $\mathfrak{a}$ a constant symbol
+  not belonging to $\mathfrak{L}$. We say $\mathfrak{a}$ is a \emph{common constant under
+  the theory $\mathcal{T}$ in the extended language $\mathfrak{L} \cup \{\mathfrak{a}\}$}
+  if there exists a common term $t$ in the language $\mathfrak{L}$ such that 
+  $\models_{\mathcal{T}} t = \mathfrak{a}$, otherwise $\mathfrak{a}$ is an \emph{
+  uncommon constant}.
+\end{definition}
+
+Since congruence closure algorithms are revelant to Kapur's algorithm, we introduce the 
+following definition for notation purposes:
+
+\begin{definition}
+  Let $\mathcal{E}$ be an equivalence relation between grounded terms of some 
+  language $\mathfrak{A}$. The function $repr_{\mathcal{E}} : \mathfrak{A} \rightarrow 
+  \mathfrak{A} , repr_{\mathcal{E}} : a \mapsto b$  where $b$ is the representative
+  element in $\mathcal{E}$ for $a$.
+
+\end{definition}
+
+The interpolating formula produced by Kapur's algorith is a conjunction of equations
+and Horn clauses. Due to its relevance in the procedure, for a horn clause $h$
+we denote $antecedent(h)$ to be the conjuntion of equations in the antecedent of $h$ 
+and $head(h)$ to be the head equation \footnote{Or possible the particle $\bot$} of $h$. 
+
+The main steps in Kapur's algorithm for interpolant generation for the EUF theory
 are the following:
 
 \begin{itemize}
-\item \textbf{Elimination of uncommon terms using congruence closure}.
-  This step builds an equivalence
-  relation using the input of the algorithm such that the representatives are common terms
-  whenever possible. Let \emph{answer} be a variable denoting the 
-  conjunction of all the input formulas
-  which uncommon subterms are replaced by their representatives.
-  If all the representatives in the equivalence relation are common terms, return \emph{answer}
-  as the interpolant. Otherwise, continue with the following step.
-\item \textbf{Horn clause generation by exposure}. This step uses Ackermann's 
-  reduction \cite{10.5555/1391237}
-  to produce Horn clauses to eliminate uncommon terms identifying two cases:
-  \begin{itemize}
-  \item The term is uncommon because the function symbol is uncommon.
-  \item The term is uncommon because at least one of its arguments is
-    an uncommon term.
-  \end{itemize}
-  Conjunct to \emph{answer} the conjunction of all these Horn Clauses.
-  If all the Horn Clauses above are common, return \emph{answer} as the interpolant.
-  Otherwise, continue with the following step.
-\item \textbf{Conditional elimination}. Since some of the Horn clauses produced by
-  the previous step are not common, we identify the Horn clauses that have
-  \emph{common antecedents} and head equation with at least one uncommon term. For each
-  of these Horn clauses, replace the uncommon term in its head by the common term in its head
-  in the rest of the Horn Clauses, and include its antecedent 
-  to the antecedent of such Horn clauses.
-  We can see that this step reduces the number of uncommon 
-  terms in the equalities of
-  the Horn Clauses. We repeat this step until it cannot 
-  be performed. At the end, we take only the
-  set of Horn Clauses that have common antecedents 
-  and have one uncommon term in its head. The call these
-  Horn clauses \emph{useful Horn clauses}. Continue with the next step.
-\item \textbf{Conditional replacement}. Using the \emph{useful Horn clauses} 
-  generated in the previous
-  step, update \emph{answer} to be the formula resulting 
-  after \emph{conditionally replacing}
-  uncommon terms in each equation of \emph{answer} by an 
-  appropriate common term in the head of
-  a \emph{useful Horn clauses}.
-  To be more precise, let $\bigwedge_i a_i = b_i \rightarrow u \mapsto c$ 
-  be a useful Horn clause,
-  where the antecedent is a conjunction of common grounded equations, 
-  $u$ is an uncommon term,
-  and $c$ is a common term.
-  Then for every instance of $u$ in each equation of \emph{answer}, conditionally replace $u$
-  by $c$ under $\bigwedge_i a_i = b_i$.
-  We notice that equations in \emph{answer}  of the previous step will become Horn Clauses with
-  less uncommon terms. For completeness, we perform these replacements zero or more times
-  (up to the maximal number of instances per equation) in order to leave space for other
-  \emph{useful Horn Clauses} to replace the uncommon term in their heads as well.
-  Remove all the literals in the current \emph{answer} that contain 
-  uncommon terms and return this as the interpolant.
+  \item \textbf{Flattening:} 
+    For each subterm $t$ in the input formula assign a fresh unique constant $\mathfrak{a}_t$. 
+    Additionally, for each subterm $t$ generate new equations of the form:
+    \begin{itemize}
+      \item $c = \mathfrak{a}_c$, if $t$ is a constant $c$
+      \item $f(\mathfrak{a}_{t_1}, \dots, \mathfrak{a}_{t_n}) 
+        = \mathfrak{a}_{f(t_1, \dots, t_n)}$, if $t$ is a 
+        function application of the form $f(t_1, \dots, t_n)$
+    \end{itemize}
+    Clearly, we can see that this step generates $f-equations$.
+  \item \textbf{Elimination of uncommon terms using congruence closure:}
+    This step builds an equivalence 
+    relation $\mathcal{E}$ of the $f-equations$ introduced in the 
+    Flattening step using a congruence closure algorithm such 
+    that the representatives are common terms
+    whenever possible. Uncommon terms appearing in the current conjunction of 
+    equations are replaced by their representatives.
+  \item \textbf{Horn clause generation by exposure:} 
+    This step produces for all pairs of $f-equations$ 
+    $(f(\mathfrak{a}_1, \dots, \mathfrak{a}_n) = \mathfrak{c}, 
+    f(\mathfrak{b}_1, \dots, \mathfrak{b}_n) = \mathfrak{d})$
+    Horn clauses of the form 
+    $\bigwedge_{i=1}^n(repr_{\mathcal{E}}(\mathfrak{a}_i) = repr_{\mathcal{E}}(\mathfrak{b}_i))
+    \rightarrow repr_{\mathcal{E}}(\mathfrak{c}) = repr_{\mathcal{E}}(\mathfrak{d})$
+    when any of the two following situations happen \footnote{Trivial equations in the antecedent
+    of a Horn clause are removed; if the head equation of Horn clause produced in this 
+    step is trivial then such Horn clause is discarded}:
+    \begin{itemize}
+      \item The outermost symbol of the $f-equations$ is an uncommon symbol.
+      \item There is at least one constant argument in any of the $f-equations$ 
+        that is an uncommon constant.
+    \end{itemize}
+  \item \textbf{Conditional elimination:} 
+    We identify the Horn clauses $h := \bigwedge_i (c_i = d_i) \rightarrow a = b$
+    that have \emph{common antecedents} and uncommon head equations. 
+    We perform the following procedure: 
+
+    \begin{itemize}
+      \item if $a$ and $b$ are both uncommon terms:
+        replace the equation $a = b$ appearing in the antecedents
+        of all the current Horn clauses by $antecedent(h)$.
+      \item if either $a$ is common and $b$ uncommon: replace $b$ by $a$
+        in all the current Horn clauses $h^{'}$ and append $antecedent(h)$ to 
+        $antecedent(h^{'})$.
+      \item if either $a$ is uncommon and $b$ common: Proceed similarly as in the
+        previous case.
+    \end{itemize}
+
+    We repeat this step until we cannot produce any new Horn clauses. 
+
+  \item \textbf{Conditional replacement:} 
+    For each Horn clause of the form $\bigwedge_i(a_i = b_i) 
+    \rightarrow u = c$ 
+    where the antecedent is common, the term $u$ in its 
+    head equation is an uncommon term,
+    and the term $c$ is a common term, 
+    replace every instance of $u$ appearing in each 
+    $f-equation$ by $c$ to generate Horn clauses with 
+    antecedent $\bigwedge_i a_i = b_i$.
+
+    Return the conjunction of formulas obtained 
+    as the interpolant.
 \end{itemize}
 
 If the user is not interested in an explicit interpolant, 
-we can present the \emph{usable Horn
-  clauses} in a proper order such that the replacements 
-  can be done without exponentially increasing
-the size of the interpolant. This representation 
+we can present a \textbf{lazy/pseudo interpolant}
+which is an ordered sequence of the original equations 
+together with the Horn clauses produced in Phase II 
+using an appropriate order between the uncommon terms. In order to
+provide a description of a procedure for the latter we need
+to introduce the following definitions:
+
+\begin{definition}\label{dep_pair}
+  Let $\succ$ be a partial order between terms 
+  such that $a \succ b$ whenever 
+  $a$ is common and $b$ is uncommon. A \emph{dependency pair}
+  for a horn clause $h := \bigwedge_i (a_i = b_i) \rightarrow c = d$
+  is a pair $(min(a, b, \succ), \{max(a, b, \succ)\} \cup \{ u | u$ 
+  is an uncommon term appering in the antecedent of h $\})$
+\end{definition}
+
+Using \emph{dependency pairs} of the Horn clauses 
+produced in Phase II
+we can construct of directed graph 
+by connecting the first element of each dependency pair with each 
+element in the second element of the pair.
+From the definition \ref{dep_pair} it is not guaranteed that the
+the above graph with will acyclic. Using a spanning tree algorithm
+we can detect such structure. Finally, we the latter we can perform 
+a topological ordering in linear time in order to find the 
+ordered sequent of formulas for the lazy interpolant.
+
+\textbf{Lazy/pseudo interpolant} avoids the 
+exponentially possible exponential size of the 
+formal interpolant. This representation 
 is useful because it provides a more compact
 representation of the interpolant that the user 
 might be able quicker to obtain.

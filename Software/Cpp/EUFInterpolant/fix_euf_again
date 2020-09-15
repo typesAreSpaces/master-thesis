@@ -58,12 +58,12 @@ setlocal fml=1
 setlocal fdn=20
 setlocal fen
 silent! normal! zE
-let s:l = 95 - ((44 * winheight(0) + 28) / 57)
+let s:l = 98 - ((47 * winheight(0) + 28) / 57)
 if s:l < 1 | let s:l = 1 | endif
 exe s:l
 normal! zt
-95
-normal! 030|
+98
+normal! 07|
 wincmd w
 argglobal
 if bufexists("src/Hornsat.cpp") | buffer src/Hornsat.cpp | else | edit src/Hornsat.cpp | endif
