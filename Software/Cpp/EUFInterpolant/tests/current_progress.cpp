@@ -4,56 +4,25 @@
 #include "Rename.h"
 #include "EUFInterpolantWithUncomSymbols.h"
 
-void currentProgress(z3::context &);
 void paperExample(z3::context &);
 void example(z3::context &);
-void example2(z3::context &);
-void example3(z3::context &);
-void parametric_example(z3::context &);
+void testDiseqFuncAppWithConst(z3::context &);
+void testDiseqFuncAppNoConst(z3::context &);
+void parametricExample(z3::context &);
 
 int main(int argc, char ** argv){
-
   z3::context ctx;
-  //currentProgress(ctx);
+
   //paperExample(ctx);
   //example(ctx);
-  //example2(ctx);
-  //example3(ctx);
-
-  parametric_example(ctx);
+  //testDiseqFuncAppWithConst(ctx);
+  //testDiseqFuncAppNoConst(ctx);
+  parametricExample(ctx);
 
   return 0;
 }
 
-void currentProgress(z3::context & ctx){
- 
-  z3::sort my_sort = ctx.uninterpreted_sort("A");
-  z3::expr a = ctx.constant("a", my_sort);
-  z3::expr b = ctx.constant("b", my_sort);
-  z3::func_decl g = ctx.function("g", my_sort, my_sort, my_sort, my_sort);
-  z3::func_decl h = ctx.function("h", my_sort, my_sort);
-
-  z3::expr_vector input(ctx); 
-  input.push_back(g(a, h(b), b) == b );
-  input.push_back(g(a, h(b), h(b)) == h(b) );
-  input.push_back(g(a, h(b), h(h(b))) == h(h(b)) );
-  input.push_back(h(b) == b);
-  input.push_back(a != b);
-  //input.push_back(h(h(b)) != b);
-
-  try {
-    EUFInterpolant eufi(input);
-    std::cout << eufi << std::endl;
-  }
-  catch(char const * e){
-    std::cout << e << std::endl;
-  }
-
-  return;
-}
-
 void paperExample(z3::context & ctx){
-
   z3::sort my_sort = ctx.uninterpreted_sort("A");
   z3::expr z1 = ctx.constant("z1", my_sort);
   z3::expr z2 = ctx.constant("z2", my_sort);
@@ -84,7 +53,6 @@ void paperExample(z3::context & ctx){
 }
 
 void example(z3::context & ctx){
-
   z3::sort my_sort = ctx.uninterpreted_sort("A");
 
   z3::expr a = ctx.constant("a", my_sort);
@@ -97,7 +65,7 @@ void example(z3::context & ctx){
 
   std::set<std::string> uncomms({"f"});
 
-  // A: f(a) = a, h(f(f(a)), f(a)) = f(c, c)
+  // A: f(a) = a, h(f(f(a)), f(a)) = h(c, c)
   // B: a = b, g(b) = b, h(g(a), g(g(b))) \neq h(c, c)
 
   z3::expr_vector input(ctx); 
@@ -115,8 +83,7 @@ void example(z3::context & ctx){
   return;
 }
 
-void example2(z3::context & ctx){
-
+void testDiseqFuncAppWithConst(z3::context & ctx){
   z3::sort my_sort = ctx.uninterpreted_sort("A");
 
   z3::expr x1 = ctx.constant("x1", my_sort);
@@ -142,8 +109,7 @@ void example2(z3::context & ctx){
   return;
 }
 
-void example3(z3::context & ctx){
-
+void testDiseqFuncAppNoConst(z3::context & ctx){
   z3::sort my_sort = ctx.uninterpreted_sort("A");
 
   z3::expr x1 = ctx.constant("x1", my_sort);
@@ -165,7 +131,7 @@ void example3(z3::context & ctx){
   return;
 }
 
-void parametric_example(z3::context & ctx){
+void parametricExample(z3::context & ctx){
   z3::sort my_sort = ctx.uninterpreted_sort("A");
   z3::expr x = ctx.constant("x", my_sort);
   z3::expr a = ctx.constant("a", my_sort);
