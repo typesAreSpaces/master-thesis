@@ -1,6 +1,6 @@
 #ifndef _OCT_TERM_
 #define _OCT_TERM_
-#define _DEBUG_OCT_TERM_ 0
+#define _DEBUG_OCT_TERM_ 1
 
 #include <z3++.h>
 

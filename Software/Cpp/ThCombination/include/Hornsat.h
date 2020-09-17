@@ -9,6 +9,7 @@
 
 #include <iostream>
 #include <queue>
+#include "Debugging.h"
 #include "CongruenceClosureExplain.h"
 #include "HornClauses.h"
 #include "Util.h"

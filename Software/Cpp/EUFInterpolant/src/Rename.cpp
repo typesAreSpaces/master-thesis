@@ -15,8 +15,17 @@ z3::expr Rename::removePrefix(z3::expr const & e){
       case Z3_OP_FALSE:
       case Z3_OP_ANUM:
         return e;
+      case Z3_OP_NOT:
       case Z3_OP_UMINUS:
         return f(removePrefix(e.arg(0)));
+      case Z3_OP_OR:
+        {
+          unsigned num = e.num_args();
+          z3::expr_vector new_args(e.ctx());
+          for(unsigned i = 0; i < num; i++)
+            new_args.push_back(removePrefix(e.arg(i)));
+          return z3::mk_or(new_args);
+        }
       case Z3_OP_AND:
         {
           unsigned num = e.num_args();

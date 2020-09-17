@@ -3,7 +3,7 @@
 HornClause::HornClause(z3::context & ctx, z3::expr_vector antecedent, z3::expr consequent, UnionFindExplain & ufe) :
   ctx(ctx),
   antecedent(antecedent), consequent(consequent), 
-  is_common_antecedent(true), num_uncomm_antecedent(0), local_max_lit_id(0),
+  is_common_antecedent(true), local_max_lit_id(0),
   is_leader(true)
 {
 
@@ -14,15 +14,12 @@ HornClause::HornClause(z3::context & ctx, z3::expr_vector antecedent, z3::expr c
 
   // ---------------------------------------------------------------
   // This part updates:
-  // 1) num_uncomm_antecedent
-  // 2) is_common_antecedent
+  // 1) is_common_antecedent
   for(auto hyp : this->antecedent){
     if(local_max_lit_id < hyp.id())
       local_max_lit_id = hyp.id();
-    if(!hyp.is_common()){
-      num_uncomm_antecedent++;
+    if(!hyp.is_common())
       is_common_antecedent = false;
-    }
   }
   if(local_max_lit_id < this->consequent.id()){
     local_max_lit_id = this->consequent.id();
@@ -34,7 +31,7 @@ HornClause::HornClause(z3::context & ctx, z3::expr_vector antecedent, z3::expr c
 HornClause::HornClause(z3::context & ctx, z3::expr_vector antecedent, z3::expr consequent) :
   ctx(ctx),
   antecedent(antecedent), consequent(consequent), 
-  is_common_antecedent(true), num_uncomm_antecedent(0), local_max_lit_id(0),
+  is_common_antecedent(true), local_max_lit_id(0),
   is_leader(true)
 {
 
@@ -57,10 +54,8 @@ HornClause::HornClause(z3::context & ctx, z3::expr_vector antecedent, z3::expr c
   for(auto hyp : this->antecedent){
     if(local_max_lit_id < hyp.id())
       local_max_lit_id = hyp.id();
-    if(!hyp.is_common()){
-      num_uncomm_antecedent++;
+    if(!hyp.is_common())
       is_common_antecedent = false;
-    }
   }
   if(local_max_lit_id < this->consequent.id()){
     local_max_lit_id = this->consequent.id();
@@ -166,8 +161,8 @@ bool HornClause::isCommon() const {
   return is_common_antecedent && consequent.is_common();
 }
 
-unsigned HornClause::numUncommAntecedent() const {
-  return num_uncomm_antecedent;
+unsigned HornClause::numAntecedent() const {
+  return antecedent.size();
 }
 
 unsigned HornClause::getLocalMaxLitId() const {

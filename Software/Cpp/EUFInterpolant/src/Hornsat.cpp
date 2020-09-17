@@ -30,74 +30,85 @@ void Hornsat::build(CongruenceClosureExplain & cce, HornClauses const & hcs){
   ClauseId index_hc = 0;
   for(auto horn_clause : hcs.getHornClauses()){
 #if DEBUGGING_CONSTRUCTOR
+    std::cout << "Processing this Horn clause:" << std::endl;
     std::cout << index_hc << " " << *horn_clause << std::endl;
+    std::cout << "Num antecedent: " << horn_clause->numAntecedent() << std::endl;
 #endif
-    // We only process Horn clauses with uncommon consequent
-    //if(!horn_clause->isCommonConsequent()){
-    if(true){
-      // -----------------------------------------------------
-      // The following line defines our approach -------------
-      // towards conditional elimination
-      num_args[index_hc] = horn_clause->numUncommAntecedent();
-      // -----------------------------------------------------
+    // -----------------------------------------------------
+    // The following line defines our approach -------------
+    // towards conditional elimination
+    //num_args[index_hc] = horn_clause->numUncommAntecedent();
+    num_args[index_hc] = horn_clause->numAntecedent();
+    // -----------------------------------------------------
 
-      // ------------------------------------------------------
-      // Horn clause body processing --------------------------
-      // Remark: We only have equations in the antecedent
-      for(auto antecedent : horn_clause->getAntecedent()){
+    // ------------------------------------------------------
+    // Horn clause body processing --------------------------
+    // Remark: We only have equations in the antecedent
+    for(auto antecedent : horn_clause->getAntecedent()){
 #if DEBUGGING_CONSTRUCTOR
-        std::cout << "Literals inside antedecent " 
-          << antecedent.id() << " " 
-          << antecedent << std::endl;
+      std::cout << "Literals inside antedecent " 
+        << antecedent.id() << " " 
+        << antecedent 
+        << (antecedent.is_common() ? " This one is common! " : " Not common " )
+        << std::endl;
 #endif
-        Literal * literal = &list_of_literals[antecedent.id()];
-        literal->update(antecedent, cce, index_hc);
-        class_list[literal->l_id].emplace_back(literal, LHS);
-        class_list[literal->r_id].emplace_back(literal, RHS);
-      }
-      // ------------------------------------------------------
+      Literal * literal = &list_of_literals[antecedent.id()];
+      literal->update(antecedent, cce, index_hc);
+      class_list[literal->l_id].emplace_back(literal, LHS);
+      class_list[literal->r_id].emplace_back(literal, RHS);
 
-      // ------------------------------------------------------------
-      // Horn clause head processing --------------------------------
-      auto consequent = horn_clause->getConsequent();
-      // This structure is only used in our approach
-      // for conditional-elimination
-      head_term_indexer[consequent.id()] = horn_clause;
-#if DEBUGGING_CONSTRUCTOR
-      std::cout << "Consequent Literal " 
-        << consequent.id() << " " << consequent << std::endl;
-#endif
-      Literal * literal = 
-        &list_of_literals[consequent.decl().name().str() == "false" ?
-        FALSELITERAL : consequent.id()];
-
-      pos_lit_list[index_hc] = literal->literal_id;
-      if(literal->literal_id > FALSELITERAL){
-        literal->update(consequent, cce);
-        class_list[literal->l_id].emplace_back(literal, LHS);
-        class_list[literal->r_id].emplace_back(literal, RHS);
+      // If literal is common insert it as a fact
+      if(antecedent.is_common()){
+        literal->val = true;
+        facts.push(antecedent.id());
+        to_combine.push(TermIdPair(
+              antecedent.arg(0).id(), 
+              antecedent.arg(1).id()));
       }
-      // In the original formulation by Gallier, 
-      // this checks if the Horn Clause is a fact,
-      // in this approach, this checks if a Horn Clause
-      // can be spreading because the its antecedent is
-      // common.
-      if(num_args[index_hc] == 0){
-        if(literal->literal_id == FALSELITERAL)
-          consistent = false;
-        else{
-#if DEBUGGING_CONSTRUCTOR
-          std::cout << "Pushing " << consequent << " into the (conditional) equiv_classes" << std::endl;
-#endif
-          literal->val = true;
-          facts.push(consequent.id());
-          to_combine.push(TermIdPair(
-                consequent.arg(0).id(), 
-                consequent.arg(1).id()));
-        }
-      }
-      // ------------------------------------------------------------
     }
+    // ------------------------------------------------------
+
+    // ------------------------------------------------------------
+    // Horn clause head processing --------------------------------
+    auto consequent = horn_clause->getConsequent();
+    // This structure is only used in our approach
+    // for conditional-elimination
+    head_term_indexer[consequent.id()] = horn_clause;
+#if DEBUGGING_CONSTRUCTOR
+    std::cout << "Consequent Literal " 
+      << consequent.id() << " " << consequent << std::endl;
+#endif
+    Literal * literal = 
+      &list_of_literals[consequent.decl().name().str() == "false" ?
+      FALSELITERAL : consequent.id()];
+
+    pos_lit_list[index_hc] = literal->literal_id;
+    if(literal->literal_id > FALSELITERAL){
+      literal->update(consequent, cce);
+      class_list[literal->l_id].emplace_back(literal, LHS);
+      class_list[literal->r_id].emplace_back(literal, RHS);
+    }
+    // In the original formulation by Gallier, 
+    // this checks if the Horn Clause is a fact,
+    // in this approach, this checks if a Horn Clause
+    // can be spreading because the its antecedent is
+    // common.
+    if(num_args[index_hc] == 0){
+      if(literal->literal_id == FALSELITERAL)
+        consistent = false;
+      else{
+#if DEBUGGING_CONSTRUCTOR
+        std::cout << "Pushing " << consequent << " into the (conditional) equiv_classes" << std::endl;
+#endif
+        literal->val = true;
+        facts.push(consequent.id());
+        to_combine.push(TermIdPair(
+              consequent.arg(0).id(), 
+              consequent.arg(1).id()));
+      }
+    }
+    // ------------------------------------------------------------
+
     index_hc++;
   }
 #if DEBUGGING_CONSTRUCTOR
@@ -125,17 +136,18 @@ Hornsat::~Hornsat(){
 
 void Hornsat::satisfiable(){
   LiteralId node;
-  while(!facts.empty() && consistent){
+  //while(!facts.empty() && consistent){
+  while(!facts.empty()){
     node = facts.front();
 
     facts.pop();
     for(auto it : *(list_of_literals[node].clause_list)){
       ClauseId clause1 = it->clause_id;
-      // -----------------------------------------------
-      // In this implementation, num_args only decreases
-      // if the propagated literal is uncommon
-      if(!list_of_literals[node].is_common)
-        --num_args[clause1];
+      --num_args[clause1];
+#if DEBUGGING_SATISFIABLE
+      ASSERT(num_args[clause1] >= 0, 
+          "num_args become negative");
+#endif
       // -----------------------------------------------
       if(num_args[clause1] == 0){
         LiteralId nextnode = pos_lit_list[clause1];

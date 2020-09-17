@@ -11,10 +11,10 @@ EUFInterpolant::EUFInterpolant(z3::expr_vector const & assertions) :
   hsat(cce, horn_clauses), result(ctx),
   conditional_horn_clauses(ctx, ufe, original_num_terms)
 {        
-  for(auto const & equation : assertions){
-    if(!equation.is_eq()) continue;
-    hsat.equiv_classes.merge(equation.arg(0), equation.arg(1));
-  }
+  //for(auto const & equation : assertions){
+    //if(!equation.is_eq()) continue;
+    //hsat.equiv_classes.merge(equation.arg(0), equation.arg(1));
+  //}
 
 #if DEBUG_EXPOSE_UNCOMMS
   std::cout << "After expose uncommons" << std::endl;
@@ -112,11 +112,21 @@ void EUFInterpolant::conditionalElimination(){
 }
 
 z3::expr_vector EUFInterpolant::explainUncommons(z3::expr const & t1, z3::expr const & t2){
+#if DEBUG_COND_ELIM
+  std::cout << "Inside explainUncommons" << std::endl;
+  std::cout << "Inputs: " << std::endl << t1 << std::endl << t2 << std::endl;
+#endif
   z3::expr_vector ans(t1.ctx());
   if(t1.id() == t2.id())
     return ans;
   auto partial_explain = hsat.equiv_classes.z3Explain(t1, t2);
+#if DEBUG_COND_ELIM
+  std::cout << "Explanation " << partial_explain << std::endl;
+#endif
   for(auto const & equation : partial_explain){
+#if DEBUG_COND_ELIM
+  std::cout << equation << std::endl;
+#endif
     if(equation.is_common())
       ans.push_back(equation);
     else{
@@ -126,25 +136,21 @@ z3::expr_vector EUFInterpolant::explainUncommons(z3::expr const & t1, z3::expr c
       // append its antecedent
       // --------------------------------
       auto const & entry = hsat.head_term_indexer.find(equation.id());
-      if(entry == hsat.head_term_indexer.end()){
-        // --------------------------------------------------
-        // This case couldn't match the equation to any
-        // head-term of the Horn clauses. So it just adds 
-        // the equation to the explanation because it means
-        // that the equation is an assertion from the initial
-        // Input
-        // --------------------------------------------------
-        if(equation.is_common())
-          ans.push_back(equation);
+      ASSERT(entry != hsat.head_term_indexer.end(), 
+          "At this point the system should able to find some "
+          "Horn clause with "
+          "quote(equation) as head equation");
+      for(auto const & antecedent_equation : entry->second->getAntecedent()){
+        if(antecedent_equation.is_common())
+          ans.push_back(antecedent_equation);
+        else{
+#if DEBUG_COND_ELIM
+          std::cout << "Pushing extra common equations" << std::endl;
+#endif
+          for(auto extra_common_equation : explainUncommons(antecedent_equation.arg(0), antecedent_equation.arg(1)))
+            ans.push_back(extra_common_equation);
+        }
       }
-      else
-        // -------------------------------------------------------
-        // This case handles when the equation matches a head-term
-        // of a Horn clause and adds to the explanation 
-        // the equations in the antecedent of this Horn clause
-        // -------------------------------------------------------
-        for(auto const & hsat_equation : entry->second->getAntecedent())
-          ans.push_back(hsat_equation);
     }
 
   }
@@ -239,10 +245,12 @@ void EUFInterpolant::buildInterpolant(){
 
   for(auto const & element : horn_clauses)
     if(element->isLeader())
-      result.push_back(element->ToZ3Expr());
+      //result.push_back(element->ToZ3Expr());
+      result.push_back(element->ToZ3Expr().simplify());
   for(auto const & element : conditional_horn_clauses)
     if(element->isLeader())
-      result.push_back(element->ToZ3Expr());
+      //result.push_back(element->ToZ3Expr());
+      result.push_back(element->ToZ3Expr().simplify());
 
   return;
 }

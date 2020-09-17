@@ -5,10 +5,11 @@
 #define DEBUG_DESTRUCTORS     0
 #define DEBUGGING_SATISFIABLE 0
 #define DEBUGGING_UNIONUPDATE 0
-#define DEBUGGING_CONSTRUCTOR 1
+#define DEBUGGING_CONSTRUCTOR 0
 
 #include <iostream>
 #include <queue>
+#include "Debugging.h"
 #include "CongruenceClosureExplain.h"
 #include "HornClauses.h"
 #include "Util.h"

@@ -16,7 +16,6 @@ class HornClause {
   z3::expr_vector antecedent;
   z3::expr        consequent;
   bool            is_common_antecedent;
-  unsigned        num_uncomm_antecedent;
   unsigned        local_max_lit_id;
   bool            is_leader;
 
@@ -35,7 +34,7 @@ public:
   bool                    isCommonAntecedent()  const;
   bool                    isCommonConsequent()  const;
   bool                    isCommon()            const;
-  unsigned                numUncommAntecedent() const;
+  unsigned                numAntecedent()       const;
   unsigned                getLocalMaxLitId()    const;
   z3::expr                ToZ3Expr()            const;
   bool                    isLeader()            const;

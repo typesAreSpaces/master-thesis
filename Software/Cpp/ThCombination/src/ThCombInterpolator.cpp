@@ -393,6 +393,11 @@ void ThCombInterpolator::partialInterpolantConflict(
     case OCT:
       {
         DEBUG_CONFLICT_MSG("Case OCT" << std::endl);
+        std::cout << "Conflict lits: " << conflict_lits << std::endl;
+
+        // TODO: work here
+        //z3::apply_result solved_eqs = z3::tactic(ctx, "solve-eqs")(z3::mk_and(conflict_lits));
+
         // For loop to separate A-part and B-part
         // respectively
         z3::goal oct_goals(ctx);
@@ -432,6 +437,8 @@ void ThCombInterpolator::partialInterpolantConflict(
           else
             part_b.push_back(conflict);
         }
+
+        std::cout << "----- Hmm ---- " << part_a << std::endl;
 
         z3::solver s_temp(ctx, "QF_LIA");
         if(s_temp.check(part_a) == z3::unsat){

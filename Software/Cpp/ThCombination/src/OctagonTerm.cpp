@@ -27,6 +27,9 @@ void OctagonTerm::update(z3::expr const & e){
 }
 
 void OctagonTerm::octagonize(){
+#if _DEBUG_OCT_TERM_
+  std::cout << "Current formula (to be octagonized): " << *this << std::endl;
+#endif
   auto const & op = this->decl();
   z3::expr result = op(this->arg(0) - this->arg(1), 0).simplify();
   // The following case was setting the lhs with the constant

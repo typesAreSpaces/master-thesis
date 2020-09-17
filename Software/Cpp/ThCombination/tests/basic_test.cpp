@@ -1,8 +1,9 @@
 #include "ThCombInterpolatorWithExpressions.h"
 
-void test1(z3::context &);
-void test2(z3::context &);
-void test3(z3::context &);
+void notAnOctagonNotATest(z3::context &);
+void combinedOctagonTest(z3::context &);
+void actualTest(z3::context &);
+void itSatsNotATest(z3::context &);
 void actualExample(z3::context &);
 void exampleFromCombinedCovers1(z3::context &);
 void range2InequalityExample(z3::context &);
@@ -15,10 +16,11 @@ int main(){
   
   z3::context ctx;  
 
-  //test1(ctx);
-  //test2(ctx);
-  //test3(ctx);
-  actualExample(ctx);
+  //notAnOctagonNotATest(ctx);
+  combinedOctagonTest(ctx);
+  //actualTest(ctx);
+  //itSatsNotATest(ctx);
+  //actualExample(ctx);
   
   // This one doesn't work 
   // because it contains an inequality
@@ -32,7 +34,7 @@ int main(){
   return 0;
 }
 
-void test1(z3::context & ctx){
+void notAnOctagonNotATest(z3::context & ctx){
   z3::sort int_sort =  ctx.int_sort();
 
   z3::expr x1 = ctx.constant("x1", int_sort);
@@ -56,13 +58,49 @@ void test1(z3::context & ctx){
   formula_b.push_back(x2 == g(b));
   formula_b.push_back(y2 == g(b));
   formula_b.push_back(x1 <= y1);
-  formula_b.push_back(x3 < y3);
-  
-  ThCombInterpolatorWithExpressions test(formula_a, formula_b);
-  std::cout << test << std::endl;
+  formula_b.push_back(x3 + 1 <= y3);
+  try { 
+    ThCombInterpolatorWithExpressions test(formula_a, formula_b);
+  }
+  catch(char * const e){
+    std::cout << e << std::endl;
+  }
+  //std::cout << test << std::endl;
 }
 
-void test2(z3::context & ctx){
+void combinedOctagonTest(z3::context & ctx){
+  z3::sort int_sort =  ctx.int_sort();
+
+  z3::expr x1 = ctx.constant("x1", int_sort);
+  z3::expr x2 = ctx.constant("x2", int_sort);
+  z3::expr y1 = ctx.constant("y1", int_sort);
+  z3::expr y3 = ctx.constant("y3", int_sort);
+  z3::expr a  = ctx.constant("a", int_sort);
+  z3::expr b  = ctx.constant("b", int_sort);
+
+  z3::func_decl f = ctx.function("f", int_sort, int_sort);
+  z3::func_decl g = ctx.function("g", int_sort, int_sort);
+
+  z3::expr_vector formula_a(ctx); 
+  formula_a.push_back(f(x1) + x2 == 0);
+  formula_a.push_back(y3 == f(y1));
+  formula_a.push_back(y1 <= x1);
+
+  z3::expr_vector formula_b(ctx); 
+  formula_b.push_back(x2 == g(b));
+  formula_b.push_back(0 == g(b));
+  formula_b.push_back(x1 <= y1);
+  formula_b.push_back(1 <= y3);
+  try { 
+    ThCombInterpolatorWithExpressions test(formula_a, formula_b);
+  }
+  catch(char * const e){
+    std::cout << e << std::endl;
+  }
+  //std::cout << test << std::endl;
+}
+
+void actualTest(z3::context & ctx){
   z3::sort int_sort =  ctx.int_sort();
   z3::expr x = ctx.constant("x", int_sort);
   z3::func_decl f = ctx.function("f", int_sort, int_sort);
@@ -80,7 +118,7 @@ void test2(z3::context & ctx){
   std::cout << test << std::endl;
 }
 
-void test3(z3::context & ctx){
+void itSatsNotATest(z3::context & ctx){
   z3::sort int_sort =  ctx.int_sort();
   z3::expr x = ctx.constant("x", int_sort);
   z3::func_decl f = ctx.function("f", int_sort, int_sort);
