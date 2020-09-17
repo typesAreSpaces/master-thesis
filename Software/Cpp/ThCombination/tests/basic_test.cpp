@@ -17,7 +17,7 @@ int main(){
   z3::context ctx;  
 
   //notAnOctagonNotATest(ctx);
-  combinedOctagonTest(ctx);
+  //combinedOctagonTest(ctx);
   //actualTest(ctx);
   //itSatsNotATest(ctx);
   //actualExample(ctx);
@@ -29,7 +29,7 @@ int main(){
   
   //range2InequalityExample(ctx);
   //range3InequalityExample(ctx);
-  //range4InequalityExample(ctx);
+  range4InequalityExample(ctx);
 
   return 0;
 }

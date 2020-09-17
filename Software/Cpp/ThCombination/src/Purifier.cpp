@@ -1,5 +1,5 @@
 #include "Purifier.h"
-#define _DEBUGPURIFIER_ false
+#define _DEBUGPURIFIER_ 1
 
 unsigned Purifier::fresh_var_id = 0;
 
@@ -100,9 +100,9 @@ z3::expr Purifier::purifyOctagonTerm(z3::expr const & term){
             return term;
           if(euf_fresh_ids.find(term.id()) == euf_fresh_ids.end()){
 #ifdef ADD_COMMON_PREFIX
-            std::string fresh_name = "c_euf_" + std::to_string(++fresh_var_id);
+            std::string fresh_name = PREFIX_COMM_EUF + std::to_string(++fresh_var_id);
 #else
-            std::string fresh_name = "euf_" + std::to_string(++fresh_var_id);
+            std::string fresh_name = PREFIX_EUF + std::to_string(++fresh_var_id);
 #endif
             auto fresh_constant = ctx.constant(fresh_name.c_str(), f.range());
             euf_fresh_ids[term.id()] = fresh_var_id;
@@ -114,9 +114,9 @@ z3::expr Purifier::purifyOctagonTerm(z3::expr const & term){
             return fresh_constant;
           }	
 #ifdef ADD_COMMON_PREFIX
-          std::string fresh_name = "c_euf_" + std::to_string(euf_fresh_ids[term.id()]);
+          std::string fresh_name = PREFIX_COMM_EUF + std::to_string(euf_fresh_ids[term.id()]);
 #else
-          std::string fresh_name = "euf_" + std::to_string(euf_fresh_ids[term.id()]);
+          std::string fresh_name = PREFIX_EUF + std::to_string(euf_fresh_ids[term.id()]);
 #endif
           return ctx.constant(fresh_name.c_str(), f.range());
         }
@@ -146,9 +146,9 @@ z3::expr Purifier::purifyEUFTerm(z3::expr const & term){
         {
           if(oct_fresh_ids.find(term.id()) == oct_fresh_ids.end()){
 #ifdef ADD_COMMON_PREFIX
-            std::string fresh_name = "c_oct_" + std::to_string(++fresh_var_id);
+            std::string fresh_name = PREFIX_COMM_OCT + std::to_string(++fresh_var_id);
 #else
-            std::string fresh_name = "oct_" + std::to_string(++fresh_var_id);
+            std::string fresh_name = PREFIX_OCT + std::to_string(++fresh_var_id);
 #endif
             auto fresh_constant = ctx.constant(fresh_name.c_str(), f.range());
             oct_fresh_ids[term.id()] = fresh_var_id;
@@ -161,9 +161,9 @@ z3::expr Purifier::purifyEUFTerm(z3::expr const & term){
             return fresh_constant;
           }
 #ifdef ADD_COMMON_PREFIX
-          std::string fresh_name = "c_oct_" + std::to_string(oct_fresh_ids[term.id()]);
+          std::string fresh_name = PREFIX_COMM_OCT + std::to_string(oct_fresh_ids[term.id()]);
 #else
-          std::string fresh_name = "oct_" + std::to_string(oct_fresh_ids[term.id()]);
+          std::string fresh_name = PREFIX_OCT + std::to_string(oct_fresh_ids[term.id()]);
 #endif
           return ctx.constant(fresh_name.c_str(), f.range());
         }
@@ -204,17 +204,24 @@ void Purifier::split(z3::expr const & e){
         return;
       case Z3_OP_EQ:
       case Z3_OP_DISTINCT:
-        // We check the lhs of the equation/disequation
-        // because we keep the old term "from" on that
-        // side
-        switch(e.arg(0).decl().decl_kind()){
-          case Z3_OP_UNINTERPRETED:
-            euf_component.push_back(e);
-            return;
-          default:
-            oct_component.push_back(e);
-            return;
+        // If both elements are constants, then it should 
+        // go to the oct component
+        if(e.arg(0).is_const() && e.arg(1).is_const()){
+          oct_component.push_back(e);
+          return;
         }
+        else
+          // We check the lhs of the equation/disequation
+          // because we keep the old term "from" is on that
+          // side
+          switch(e.arg(0).decl().decl_kind()){
+            case Z3_OP_UNINTERPRETED:
+              euf_component.push_back(e);
+              return;
+            default:
+              oct_component.push_back(e);
+              //return;
+          }
       case Z3_OP_LE:    
       case Z3_OP_GE:
       case Z3_OP_LT:

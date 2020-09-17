@@ -1,5 +1,6 @@
 #ifndef _THCOMB_
 #define _THCOMB_
+#define NEW_APPROACH 1
 #define _DEBUG_TH_COMB_ 1
 #define _MSG(x) std::cout << x
 #define _SKIP do {} while(0)
@@ -57,6 +58,7 @@ class ThCombInterpolator {
       z3::expr const &, unsigned, Theory);
 
   void liftInterpolant(DisjEqsPropagator const &);
+  bool isPurifiedEquality(z3::expr const &) const;
 
   protected:
   z3::expr computed_interpolant;

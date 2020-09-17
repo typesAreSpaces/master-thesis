@@ -1,6 +1,10 @@
 #ifndef _PURIFIER_
 #define _PURIFIER_
 #define _DEBUG_SHARING_ 0
+#define PREFIX_COMM_OCT "c_oct_"
+#define PREFIX_OCT      "oct_"
+#define PREFIX_COMM_EUF "c_euf_"
+#define PREFIX_EUF      "euf_"
 
 #include <iostream>
 #include <z3++.h>
