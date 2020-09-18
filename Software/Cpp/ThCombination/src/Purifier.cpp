@@ -1,5 +1,5 @@
 #include "Purifier.h"
-#define _DEBUGPURIFIER_ 1
+#define _DEBUGPURIFIER_ 0
 
 unsigned Purifier::fresh_var_id = 0;
 
@@ -100,7 +100,13 @@ z3::expr Purifier::purifyOctagonTerm(z3::expr const & term){
             return term;
           if(euf_fresh_ids.find(term.id()) == euf_fresh_ids.end()){
 #ifdef ADD_COMMON_PREFIX
-            std::string fresh_name = PREFIX_COMM_EUF + std::to_string(++fresh_var_id);
+            std::string fresh_name;
+            if(term.is_common())
+              fresh_name = PREFIX_COMM_EUF + std::to_string(++fresh_var_id);
+            else if(term.is_a_strict())
+              fresh_name = PREFIX_A_EUF + std::to_string(++fresh_var_id);
+            else
+              fresh_name = PREFIX_B_EUF + std::to_string(++fresh_var_id);
 #else
             std::string fresh_name = PREFIX_EUF + std::to_string(++fresh_var_id);
 #endif
@@ -114,7 +120,15 @@ z3::expr Purifier::purifyOctagonTerm(z3::expr const & term){
             return fresh_constant;
           }	
 #ifdef ADD_COMMON_PREFIX
-          std::string fresh_name = PREFIX_COMM_EUF + std::to_string(euf_fresh_ids[term.id()]);
+          std::string fresh_name;
+          if(term.is_common())
+            fresh_name = PREFIX_COMM_EUF + std::to_string(euf_fresh_ids[term.id()]);
+          else if(term.is_a_strict())
+            fresh_name = PREFIX_A_EUF + std::to_string(euf_fresh_ids[term.id()]);
+          else
+            fresh_name = PREFIX_B_EUF + std::to_string(euf_fresh_ids[term.id()]);
+
+
 #else
           std::string fresh_name = PREFIX_EUF + std::to_string(euf_fresh_ids[term.id()]);
 #endif
@@ -146,7 +160,13 @@ z3::expr Purifier::purifyEUFTerm(z3::expr const & term){
         {
           if(oct_fresh_ids.find(term.id()) == oct_fresh_ids.end()){
 #ifdef ADD_COMMON_PREFIX
-            std::string fresh_name = PREFIX_COMM_OCT + std::to_string(++fresh_var_id);
+            std::string fresh_name;
+            if(term.is_common())
+              fresh_name = PREFIX_COMM_OCT + std::to_string(++fresh_var_id);
+            else if(term.is_a_strict())
+              fresh_name = PREFIX_A_OCT + std::to_string(++fresh_var_id);
+            else
+              fresh_name = PREFIX_B_OCT + std::to_string(++fresh_var_id);
 #else
             std::string fresh_name = PREFIX_OCT + std::to_string(++fresh_var_id);
 #endif
@@ -161,7 +181,13 @@ z3::expr Purifier::purifyEUFTerm(z3::expr const & term){
             return fresh_constant;
           }
 #ifdef ADD_COMMON_PREFIX
-          std::string fresh_name = PREFIX_COMM_OCT + std::to_string(oct_fresh_ids[term.id()]);
+          std::string fresh_name;
+          if(term.is_common())
+            fresh_name = PREFIX_COMM_OCT + std::to_string(oct_fresh_ids[term.id()]);
+          else if(term.is_a_strict())
+            fresh_name = PREFIX_A_OCT + std::to_string(oct_fresh_ids[term.id()]);
+          else
+            fresh_name = PREFIX_B_OCT + std::to_string(oct_fresh_ids[term.id()]);
 #else
           std::string fresh_name = PREFIX_OCT + std::to_string(oct_fresh_ids[term.id()]);
 #endif

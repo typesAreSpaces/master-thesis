@@ -17,7 +17,7 @@ int main(){
   z3::context ctx;  
 
   //notAnOctagonNotATest(ctx);
-  //combinedOctagonTest(ctx);
+  combinedOctagonTest(ctx);
   //actualTest(ctx);
   //itSatsNotATest(ctx);
   //actualExample(ctx);
@@ -29,7 +29,7 @@ int main(){
   
   //range2InequalityExample(ctx);
   //range3InequalityExample(ctx);
-  range4InequalityExample(ctx);
+  //range4InequalityExample(ctx);
 
   return 0;
 }
@@ -93,6 +93,8 @@ void combinedOctagonTest(z3::context & ctx){
   formula_b.push_back(1 <= y3);
   try { 
     ThCombInterpolatorWithExpressions test(formula_a, formula_b);
+    std::cout << "Interpolant:" << std::endl;
+    std::cout << test << std::endl;
   }
   catch(char * const e){
     std::cout << e << std::endl;

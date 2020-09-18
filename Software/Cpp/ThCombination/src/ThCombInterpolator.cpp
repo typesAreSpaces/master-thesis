@@ -396,7 +396,7 @@ void ThCombInterpolator::partialInterpolantConflict(
         case OCT:
         {
           DEBUG_CONFLICT_MSG("Case OCT" << std::endl);
-          std::cout << "Conflict lits: " << conflict_lits << std::endl;
+          DEBUG_CONFLICT_MSG("Conflict lits: " << conflict_lits << std::endl);
 
           // For loop to separate A-part and B-part
           // respectively
@@ -404,10 +404,12 @@ void ThCombInterpolator::partialInterpolantConflict(
           for(auto const & conflict : conflict_lits){
             auto const & in_a_part = inSet(conflict.id(), original_part_a_ids);
             auto const & in_b_part = inSet(conflict.id(), original_part_b_ids);
+#if _DEBUG_TH_COMB_
             std::cout << "Stats about this conflict: " << conflict << std::endl;
             std::cout << "in_a_part: " << in_a_part << std::endl;
             std::cout << "in_b_part: " << in_b_part << std::endl;
             std::cout << "is_a_pure: " << conflict.is_a_pure() << std::endl;
+#endif
             if((!in_a_part && !in_b_part && conflict.is_a_pure()) || in_a_part){
               part_a.push_back(conflict);
               // ------------------------------------------------------------------------
@@ -459,8 +461,10 @@ void ThCombInterpolator::partialInterpolantConflict(
 
 #if NEW_APPROACH
           z3::apply_result solved_eqs = z3::tactic(ctx, "solve-eqs")(oct_goals);
+#if _DEBUG_TH_COMB_
           std::cout << "Before Solved eqs " << oct_goals << std::endl;
           std::cout << "Solved eqs " << solved_eqs << std::endl;
+#endif
           assert(solved_eqs.size() == 1);
           z3::expr solved_conj_eqs = solved_eqs[0].as_expr();
           if(solved_conj_eqs.bool_value() == true){
@@ -469,38 +473,15 @@ void ThCombInterpolator::partialInterpolantConflict(
               temp_goals_.push_back(oct_goals[_i]);
             solved_conj_eqs = z3::mk_and(temp_goals_);
           }
+#if _DEBUG_TH_COMB_
+          std::cout << "Solved conj eqs: " << solved_conj_eqs << std::endl;
+#endif
           z3::goal propagated_oct_goals(ctx);
-          for(unsigned _i = 0; _i < solved_conj_eqs.num_args(); _i++){
-            auto conflict = solved_conj_eqs.arg(_i);
-            std::cout << "Current conflict " << conflict << std::endl;
-            if(conflict.is_not()){
-              auto const & pos_part = conflict.arg(0);
-              switch(pos_part.decl().decl_kind()){
-                case Z3_OP_EQ:
-                  propagated_oct_goals.add(OctagonTerm(pos_part.arg(0) != pos_part.arg(1), true).toZ3());
-                  break;
-                case Z3_OP_DISTINCT:
-                  propagated_oct_goals.add(OctagonTerm(pos_part.arg(0) == pos_part.arg(1), true).toZ3());
-                  break;
-                case Z3_OP_GE:
-                  propagated_oct_goals.add(OctagonTerm(pos_part.arg(0) < pos_part.arg(1), true).toZ3());
-                  break;
-                case Z3_OP_LE:
-                  propagated_oct_goals.add(OctagonTerm(pos_part.arg(0) > pos_part.arg(1), true).toZ3());
-                  break;
-                case Z3_OP_GT:
-                  propagated_oct_goals.add(OctagonTerm(pos_part.arg(0) <= pos_part.arg(1), true).toZ3());
-                  break;
-                case Z3_OP_LT:
-                  propagated_oct_goals.add(OctagonTerm(pos_part.arg(0) <= pos_part.arg(1), true).toZ3());
-                  break;
-                default:
-                  throw "Not an octagonal formula";
-              }
-            }
-            else
-              propagated_oct_goals.add(OctagonTerm(conflict, true).toZ3());
-          }
+          if(solved_conj_eqs.is_and())
+            for(unsigned _i = 0; _i < solved_conj_eqs.num_args(); _i++)
+              updateOctGoals(solved_conj_eqs.arg(_i), propagated_oct_goals);
+          else
+            updateOctGoals(solved_conj_eqs, propagated_oct_goals);
 #endif
 
           z3::solver s_temp(ctx, "QF_LIA");
@@ -536,17 +517,17 @@ void ThCombInterpolator::partialInterpolantConflict(
               disj_interpolants.push_back(z3::mk_and(OctagonInterpolant(oct_input).getInterpolant()));
             }
 
-            z3::expr euf_i = z3::mk_or(disj_interpolants);
+            z3::expr oct_i = z3::mk_or(disj_interpolants);
             DEBUG_CONFLICT_MSG("Theory-specific interpolant: " 
-                << euf_i << std::endl);
+                << oct_i << std::endl);
             for(auto const & form_a : part_a)
               if(local_partial_interp.contains(form_a))
-                euf_i = euf_i || local_partial_interp.find(form_a);
+                oct_i = oct_i || local_partial_interp.find(form_a);
             for(auto const & form_b : part_b)
               if(local_partial_interp.contains(form_b))
-                euf_i = euf_i && local_partial_interp.find(form_b);
-            DEBUG_CONFLICT_MSG("Interpolant for OCT: " << euf_i << std::endl);
-            local_partial_interp.insert(predicate, euf_i.simplify());
+                oct_i = oct_i && local_partial_interp.find(form_b);
+            DEBUG_CONFLICT_MSG("Interpolant for OCT: " << oct_i << std::endl);
+            local_partial_interp.insert(predicate, oct_i.simplify());
             return;
           }
           catch(char const * e){
@@ -770,6 +751,40 @@ void ThCombInterpolator::partialInterpolantConflict(
         || (std::mismatch(oct_prefix.begin(), oct_prefix.end(), lhs_name.begin()).first == oct_prefix.end());
     }
     return false;
+  }
+
+  void ThCombInterpolator::updateOctGoals(z3::expr const & conflict, z3::goal & oct_goals){
+#if _DEBUG_TH_COMB_
+    std::cout << "Current conflict " << conflict << std::endl;
+#endif
+    if(conflict.is_not()){
+      auto const & pos_part = conflict.arg(0);
+      switch(pos_part.decl().decl_kind()){
+        case Z3_OP_EQ:
+          oct_goals.add(OctagonTerm(pos_part.arg(0) != pos_part.arg(1), true).toZ3());
+          break;
+        case Z3_OP_DISTINCT:
+          oct_goals.add(OctagonTerm(pos_part.arg(0) == pos_part.arg(1), true).toZ3());
+          break;
+        case Z3_OP_GE:
+          oct_goals.add(OctagonTerm(pos_part.arg(0) < pos_part.arg(1), true).toZ3());
+          break;
+        case Z3_OP_LE:
+          oct_goals.add(OctagonTerm(pos_part.arg(0) > pos_part.arg(1), true).toZ3());
+          break;
+        case Z3_OP_GT:
+          oct_goals.add(OctagonTerm(pos_part.arg(0) <= pos_part.arg(1), true).toZ3());
+          break;
+        case Z3_OP_LT:
+          oct_goals.add(OctagonTerm(pos_part.arg(0) >= pos_part.arg(1), true).toZ3());
+          break;
+        default:
+          throw "Not an octagonal formula";
+      }
+    }
+    else
+      oct_goals.add(OctagonTerm(conflict, true).toZ3());
+    return;
   }
 
   z3::expr ThCombInterpolator::getInterpolant() const {
