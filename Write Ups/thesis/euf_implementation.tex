@@ -2,14 +2,58 @@
 
 The description of the interpolation algorithm presented in the
 previous section suggests a straight forward implementation
-of the first two stages. This thesis work considers the following
+of the first two stages using well-known algorithms 
+\cite{10.1145/322186.322198,10.1145/322217.322228} 
+and data structures from the SMT
+solver Z3 \cite{10.1007/978-3-540-78800-3_24} to represent 
+elements from the EUF language. One particular changes was 
+required in the congruence closure algorithm since Kapur's 
+algorithm requires to keep common terms as representative
+whenever common terms belong to a partition of terms induced
+by the equivalence class.
+
+Originally, the algorithm in \cite{10.1145/322217.322228}
+uses a union-find data structure to encode the equivalence classes
+of the nodes in the abstract syntax tree of the input formula with 
+a `modify the smaller subtree' strategy. This means that
+when two nodes $u, v$ in the abstract syntax tree are
+meant to be merged, the representative of the new 
+combined equivalence class is the node which has a bigger
+numbers of predecessors nodes in the abstract
+syntax tree pointing to the
+equivalence class of the node. The idea was to update the least
+amount of nodes that possibly can change representatives
+due to the most recent merge operation of the equivalence classes 
+and congruence.
+
+Our algorithm uses a difference partial order to encode the 
+requirement to maintain common terms as representatives of 
+the equivalence class. The non-reflexive relation 
+\footnote{the reflexive relation $u \succeq_{common} v$
+  is defined as $u = v \lor u \succ_{common} v$ as
+usual}
+$\succ_{common}$ is defined for all nodes $u, v$ in the abstract syntax 
+tree of terms as:
+
+\begin{equation*}
+  u \succ_{common} v = \begin{cases} 
+  |list(repr(u))| > |list(repr(v))| & \text{if }u \text{ is a common term } \Leftrightarrow v \text{ is a common term} \\
+  (\text{u is a common term}) & \text{otherwise}
+    \end{cases}
+\end{equation*}
+
+
+TODO: keep working here
+
+The thesis work considers the following
 implementation for the rest of the stages of the algorithm.
 
-\subsection{New optimized conditional elimination step in Kapur's algorithm}
+\subsection{New optimized conditional elimination 
+and replacement step in Kapur's algorithm}
 
 The modification of Phase III implemented in this thesis work
-combines and extends the algorithms and data structures from 
-the H TODO: continue working here
+combines and extends the algorithms and data structures introduced
+in \cite{GALLIER1987233, 10.1007/978-3-540-32033-3_33}.
 
 First, we explain a high level ideal on how 
 we improve the \emph{conditional elimination}
@@ -357,7 +401,7 @@ conditional propagation procedure:
     congruence closure, otherwise an empty explaination will be produced by the
     \emph{Explain} operator. If a Horn clause antecedent is not \emph{explainable}
     the resulting Horn clause cannot be added to the final result.
-    
+
   \item the consequents are constructed with the help of the \emph{Candidates},
     \emph{AllCandidates}, and the \emph{CartesianProd} operators. 
     The former is a function that takes as input

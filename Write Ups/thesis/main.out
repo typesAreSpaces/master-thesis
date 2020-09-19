@@ -24,7 +24,7 @@
 \BOOKMARK [0][-]{chapter.3}{Interpolation algorithm for the theory of EUF}{}% 24
 \BOOKMARK [1][-]{section.3.1}{Algorithm}{chapter.3}% 25
 \BOOKMARK [1][-]{section.3.2}{Implementation}{chapter.3}% 26
-\BOOKMARK [2][-]{subsection.3.2.1}{New optimized conditional elimination step in Kapur's algorithm}{section.3.2}% 27
+\BOOKMARK [2][-]{subsection.3.2.1}{New optimized conditional elimination and replacement step in Kapur's algorithm}{section.3.2}% 27
 \BOOKMARK [2][-]{subsection.3.2.2}{Ground Horn Clauses with Explanations}{section.3.2}% 28
 \BOOKMARK [2][-]{subsection.3.2.3}{Conditional propagation in Kapur's algorithm}{section.3.2}% 29
 \BOOKMARK [1][-]{section.3.3}{Evaluation}{chapter.3}% 30

@@ -42,7 +42,7 @@ badd +1 general_architecture.tex
 badd +1 bussproofs.sty
 badd +18 future_work.tex
 badd +235 euf_algorithm.tex
-badd +1 euf_implementation.tex
+badd +37 euf_implementation.tex
 badd +3 ~/Downloads/10.1007_978-3-642-02959-2_15.bib
 badd +15 euf_theorem.tex
 badd +7 python_proof.tex
@@ -84,14 +84,14 @@ set winminheight=0
 set winheight=1
 set winminwidth=0
 set winwidth=1
-exe '1resize ' . ((&lines * 19 + 29) / 59)
-exe 'vert 1resize ' . ((&columns * 167 + 171) / 342)
-exe '2resize ' . ((&lines * 37 + 29) / 59)
-exe 'vert 2resize ' . ((&columns * 167 + 171) / 342)
-exe '3resize ' . ((&lines * 6 + 29) / 59)
-exe 'vert 3resize ' . ((&columns * 174 + 171) / 342)
-exe '4resize ' . ((&lines * 50 + 29) / 59)
-exe 'vert 4resize ' . ((&columns * 174 + 171) / 342)
+exe '1resize ' . ((&lines * 29 + 30) / 61)
+exe 'vert 1resize ' . ((&columns * 77 + 77) / 155)
+exe '2resize ' . ((&lines * 29 + 30) / 61)
+exe 'vert 2resize ' . ((&columns * 77 + 77) / 155)
+exe '3resize ' . ((&lines * 29 + 30) / 61)
+exe 'vert 3resize ' . ((&columns * 77 + 77) / 155)
+exe '4resize ' . ((&lines * 29 + 30) / 61)
+exe 'vert 4resize ' . ((&columns * 77 + 77) / 155)
 argglobal
 setlocal fdm=manual
 setlocal fde=0
@@ -105,11 +105,11 @@ silent! normal! zE
 10,81fold
 10
 normal! zc
-let s:l = 4 - ((0 * winheight(0) + 9) / 19)
+let s:l = 5 - ((0 * winheight(0) + 14) / 29)
 if s:l < 1 | let s:l = 1 | endif
 exe s:l
 normal! zt
-4
+5
 normal! 0
 wincmd w
 argglobal
@@ -123,12 +123,12 @@ setlocal fml=1
 setlocal fdn=20
 setlocal fen
 silent! normal! zE
-let s:l = 74 - ((0 * winheight(0) + 18) / 37)
+let s:l = 100 - ((3 * winheight(0) + 14) / 29)
 if s:l < 1 | let s:l = 1 | endif
 exe s:l
 normal! zt
-74
-normal! 016|
+100
+normal! 010|
 wincmd w
 argglobal
 if bufexists("euf.tex") | buffer euf.tex | else | edit euf.tex | endif
@@ -141,11 +141,11 @@ setlocal fml=1
 setlocal fdn=20
 setlocal fen
 silent! normal! zE
-let s:l = 3 - ((0 * winheight(0) + 3) / 6)
+let s:l = 5 - ((1 * winheight(0) + 14) / 29)
 if s:l < 1 | let s:l = 1 | endif
 exe s:l
 normal! zt
-3
+5
 normal! 0
 wincmd w
 argglobal
@@ -159,49 +159,35 @@ setlocal fml=1
 setlocal fdn=20
 setlocal fen
 silent! normal! zE
-29,42fold
-45,57fold
-8,197fold
-198,210fold
-349,360fold
-361,377fold
-211,383fold
-1,383fold
+73,86fold
+89,101fold
+52,241fold
+242,254fold
+393,404fold
+405,421fold
+255,427fold
+1,427fold
 1
 normal! zo
-8
+52
 normal! zo
-29
-normal! zc
-45
-normal! zc
-198
-normal! zc
-211
-normal! zo
-349
-normal! zc
-361
-normal! zc
-211
-normal! zc
-let s:l = 12 - ((8 * winheight(0) + 25) / 50)
+let s:l = 46 - ((18 * winheight(0) + 14) / 29)
 if s:l < 1 | let s:l = 1 | endif
 exe s:l
 normal! zt
-12
-normal! 033|
+46
+normal! 023|
 lcd ~/Documents/GithubProjects/master-thesis/Write\ Ups/thesis
 wincmd w
 4wincmd w
-exe '1resize ' . ((&lines * 19 + 29) / 59)
-exe 'vert 1resize ' . ((&columns * 167 + 171) / 342)
-exe '2resize ' . ((&lines * 37 + 29) / 59)
-exe 'vert 2resize ' . ((&columns * 167 + 171) / 342)
-exe '3resize ' . ((&lines * 6 + 29) / 59)
-exe 'vert 3resize ' . ((&columns * 174 + 171) / 342)
-exe '4resize ' . ((&lines * 50 + 29) / 59)
-exe 'vert 4resize ' . ((&columns * 174 + 171) / 342)
+exe '1resize ' . ((&lines * 29 + 30) / 61)
+exe 'vert 1resize ' . ((&columns * 77 + 77) / 155)
+exe '2resize ' . ((&lines * 29 + 30) / 61)
+exe 'vert 2resize ' . ((&columns * 77 + 77) / 155)
+exe '3resize ' . ((&lines * 29 + 30) / 61)
+exe 'vert 3resize ' . ((&columns * 77 + 77) / 155)
+exe '4resize ' . ((&lines * 29 + 30) / 61)
+exe 'vert 4resize ' . ((&columns * 77 + 77) / 155)
 tabnext 1
 if exists('s:wipebuf') && getbufvar(s:wipebuf, '&buftype') isnot# 'terminal'
   silent exe 'bwipe ' . s:wipebuf
