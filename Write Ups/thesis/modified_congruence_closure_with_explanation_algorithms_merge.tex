@@ -1,0 +1,25 @@
+\begin{algorithm}[!ht]
+  \caption{Modified Congruence Closure with Explanation Algorithms - Merge}
+  \linespread{\separationline}\selectfont
+  \begin{algorithmic}[2]
+    \Procedure {Merge}{R : partition, u, v : node; queue, combine : queuetype}
+    \If {u and v are constants a and b}
+    \State {add a = b to Pending;} 
+    \State {Propagate();}
+    \Else \Comment {u=v is of the form apply(a1, a2)=a}
+    \If {Lookup(Representative(a1), Representative(a2)) is some apply(b1, b2)=b}
+    \State {add (apply(a1, a2)=a, apply(b1, b2) = b) to Pending;} 
+    \State {Propagate();}
+    \Else
+    \State {set Lookup(Representative(a1), Representative(a2)) to apply(a1, a2)=a;}
+    \State {add apply(a1, a2)=a to UseList(Representative(a1)) and to UseList(Representative(a2));}
+    \EndIf
+    \EndIf
+    \EndProcedure
+  \end{algorithmic}
+\end{algorithm}
+
+%%% Local Variables:
+%%% mode: latex
+%%% TeX-master: "main"
+%%% End:

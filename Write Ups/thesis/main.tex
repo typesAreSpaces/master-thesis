@@ -18,9 +18,9 @@
 \usepackage{etoolbox}
 \makeatletter
 \patchcmd{\@verbatim}
-  {\verbatim@font}
-  {\verbatim@font\tiny}
-  {}{}
+{\verbatim@font}
+{\verbatim@font\tiny}
+{}{}
 \makeatother
 \usepackage{float}
 \usepackage{amsthm}
@@ -38,18 +38,36 @@
 \usepackage{algorithm}
 \usepackage{ebproof}
 \usepackage{booktabs}
+\usepackage{listing}
+\usepackage{xcolor}
 
-\lstset
-{ %Formatting for code in appendix
-    language=Matlab,
-    basicstyle=\footnotesize,
-    numbers=left,
-    stepnumber=1,
-    showstringspaces=false,
-    tabsize=1,    
-    breaklines=true,
-    breakatwhitespace=false,
+
+\definecolor{codegreen}{rgb}{0,0.6,0}
+\definecolor{codegray}{rgb}{0.5,0.5,0.5}
+\definecolor{codepurple}{rgb}{0.58,0,0.82}
+\definecolor{backcolour}{rgb}{0.95,0.95,0.92}
+
+\lstdefinestyle{mystyle}{
+  backgroundcolor=\color{backcolour},   
+  commentstyle=\color{codegreen},
+  keywordstyle=\color{magenta},
+  numberstyle=\tiny\color{codegray},
+  stringstyle=\color{codepurple},
+  basicstyle=\ttfamily\footnotesize,
+  breakatwhitespace=false,         
+  breaklines=true,                 
+  captionpos=b,                    
+  keepspaces=true,                 
+  numbers=left,                    
+  numbersep=5pt,                  
+  showspaces=false,                
+  showstringspaces=false,
+  showtabs=false,                  
+  tabsize=2
 }
+
+\lstset{style=mystyle}
+
 % Keywords command
 \providecommand{\keywords}[1]
 {
@@ -69,6 +87,7 @@
 \newcommand{\separationline}[0]{0.75}
 
 \newtheorem{theorem}{Theorem}[section]
+\newtheorem{notation}{Notation}[section]
 \newtheorem{corollary}{Corollary}[theorem]
 \newtheorem{lemma}[theorem]{Lemma}
 \newtheorem{definition}{Definition}[section]
@@ -139,6 +158,7 @@ for Software Verification}
 
 \input{appendix_a}
 \input{appendix_b}
+\input{appendix_c}
 
 \bibliographystyle{plain}
 \bibliography{references}

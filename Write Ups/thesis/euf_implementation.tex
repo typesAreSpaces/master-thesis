@@ -6,13 +6,13 @@ of the first two stages using well-known algorithms
 \cite{10.1145/322186.322198,10.1145/322217.322228} 
 and data structures from the SMT
 solver Z3 \cite{10.1007/978-3-540-78800-3_24} to represent 
-elements from the EUF language. One particular changes was 
+elements from the EUF language. One particular change was 
 required in the congruence closure algorithm since Kapur's 
-algorithm requires to keep common terms as representative
+algorithm keeps common terms as representatives
 whenever common terms belong to a partition of terms induced
-by the equivalence class.
+by the equivalence relation.
 
-Originally, the algorithm in \cite{10.1145/322217.322228}
+The algorithm in \cite{10.1145/322217.322228}
 uses a union-find data structure to encode the equivalence classes
 of the nodes in the abstract syntax tree of the input formula with 
 a `modify the smaller subtree' strategy. This means that
@@ -26,27 +26,42 @@ amount of nodes that possibly can change representatives
 due to the most recent merge operation of the equivalence classes 
 and congruence.
 
-Our algorithm uses a difference partial order to encode the 
-requirement to maintain common terms as representatives of 
-the equivalence class. The non-reflexive relation 
-\footnote{the reflexive relation $u \succeq_{common} v$
-  is defined as $u = v \lor u \succ_{common} v$ as
-usual}
-$\succ_{common}$ is defined for all nodes $u, v$ in the abstract syntax 
+\begin{notation}
+  Given a theory $\mathcal{E}$ and a term $u$ in the language of 
+  $\mathcal{E}$, we can indicate by $[u]$ the equivalence class
+  induced by $\mathcal{E}$, i.e. $[u]_{\mathcal{E}} = \{ v \in TERMS | 
+  \models_{\mathcal{E}} u = v\}$ \footnote{If the theory
+    is clear from context, the notation $[u]$
+  denotes the equivalence class of $u$.}
+\end{notation}
+
+Our algorithm uses a difference partial order to 
+maintain common terms as representatives of 
+the equivalence classes. The non-reflexive relation 
+$\succ_{common}$ 
+\footnote{The reflexive relation $u \succeq_{common} v$
+  is defined as $u = v \lor u \succ_{common} v$, where
+  the equality between nodes is defined as $|list(u)| = 
+  |list(v)| \land u$ is a common term $\iff$ 
+  $v$ is a common term.
+}
+is defined for all nodes $u, v$ in the abstract syntax 
 tree of terms as:
 
 \begin{equation*}
   u \succ_{common} v = \begin{cases} 
-  |list(repr(u))| > |list(repr(v))| & \text{if }u \text{ is a common term } \Leftrightarrow v \text{ is a common term} \\
-  (\text{u is a common term}) & \text{otherwise}
-    \end{cases}
+    |list(u)| > |list(v)| & \text{if }(u \text{ is a common term}\Leftrightarrow \\ 
+    & v \text{ is a common term}) \\
+    \text{u is a common term} & \text{otherwise}
+  \end{cases}
 \end{equation*}
 
+where $list(u) = \{ f(u_1, \dots, u_n) \in \text{TERMS} 
+| \exists u_i . u_i \in [u] ] \}$
 
-TODO: keep working here
 
-The thesis work considers the following
-implementation for the rest of the stages of the algorithm.
+In the next section we will discuss the changes proposed to 
+Phase III in Kapur's algorithm. 
 
 \subsection{New optimized conditional elimination 
 and replacement step in Kapur's algorithm}
@@ -54,52 +69,65 @@ and replacement step in Kapur's algorithm}
 The modification of Phase III implemented in this thesis work
 combines and extends the algorithms and data structures introduced
 in \cite{GALLIER1987233, 10.1007/978-3-540-32033-3_33}.
-
-First, we explain a high level ideal on how 
-we improve the \emph{conditional elimination}
-step in Kapur's algorithm. We notice that this 
-step \emph{propagates equationally} the
-head equations of grounded Horn clauses with 
-common antecedents. Initially we employ the
-unsatisfiability algorithm for Horn clauses 
-to achieve such propagation. However, the original
-algorithm will not be enough because it will 
-only propagate the head equation when all the
-antecedents have truth value equal to 
-true. To fix that problem, we modify two steps in Gallier's
-algorithms:
+The motivation behind the combination of these two procedures
+is twofold: 
 
 \begin{itemize}
-  \item When we build the data structure \emph{numargs} that keeps 
-    track of the number of unproven
-    equations in the antecedent of each Horn clause, we change 
-    this number by the number
-    of unproven uncommon equations in the antecedent of each 
-    Horn clause. This will be useful
-    because we only introduce head equations intro the queue 
-    data structure in Gallier's algorithm
-    when all the antecedents are true. With this 
-    modification, our algorithm introduces head equations
-    when all the antecedent equations are common. 
-    Additionally the algorithm can still update
-    correctly the truth value of common equations, 
-    but these are not relevant for our propagation
-    purposes.
-  \item To guarantee that \emph{numargs} keeps the 
-    right number of uncommon equations yet to
-    be proven, we also modify the update mechanism for 
-    \emph{numargs} in the main while loop of the algorithm.
-    The original algorithm reduces by one the 
-    corresponding entry in \emph{numargs}
-    whenever a recently popped element from the queue 
-    matches the antecedent of a Horn clause. We only
-    decrease this value if such popped equation is uncommon. 
-    This prevents the algorithm from accidentally
-    reducing the number of uncommon equations yet to be proven, 
-    which can cause that we propagate the
-    uncommon head equation when the antecedent of a Horn 
-    clause only consists of common equations.
+  \item[] 1. First, we want to introduce 
+    common equations from the antecedents of 
+    the Horn clauses obtained during Phase II
+    to a conditional equivalence relation as well
+    as updating the conditional equivalence relation 
+    structure by using the equation propagation mechanism
+    from the congruence closure algorithm and 
+    the implicational propagation component 
+    from Gallier's structure.
+  \item[] 2. Additionally, we want to find all the common
+    Horn clauses provable from the original input 
+    of equations. The Explain operator in 
+    \cite{10.1007/978-3-540-32033-3_33} is recursively 
+    used to construct 
+    the antecedent of such Horn clauses during the 
+    conditional replacement step. The Explain operator 
+    traverses a proof-tree data structure containing the nodes
+    that were used to combine equivalence classes 
+    in the underlying union-find data structure.
+    Thus, the MERGE operation in \cite{GALLIER1987233} is
+    required to update the proof tree 
+    \footnote{This structure is used in order to retrieve
+    explanations.}
+    from \cite{10.1007/978-3-540-32033-3_33} as well.
 \end{itemize}
+
+The thesis work accomplishes the previous
+points by implementing the following:
+
+\begin{itemize}
+  \item[] 1. In addition to the parsing procedure
+    and initialization of the Gallier data structure,
+    we assert into the union-find data structure 
+    every common equation in the 
+    antecedent of a Horn clause.
+  \item[] 2. The implemented C++ class for 
+    the congruence closure with explanation 
+    \footnote{
+      A fragment of the actual code is shown
+      at Section \ref{congruence_closure_label}.
+    } 
+    includes a pointer as data member to the 
+    class implementation
+    for the Gallier data structure in order to propagate 
+    the equational information achieved during
+    merges and updates due to congruence.
+  \item[] 3. We implement th ExtendedExplain 
+    procedure which returns a list of common equations
+    when an equation given as input is provable in the 
+    conditional equivalence relation. The pseudo-code
+    for the ExtendedExplain procedure is shown below:
+\end{itemize}
+
+TODO: keep working here. Write the ExtendedExplain
+procedure.
 
 At the end of this algorithm we can identify 
 \emph{usable Horn clauses} by checking the Horn clauses
@@ -135,109 +163,9 @@ obtain \emph{usable Horn clauses}.
 
 The algorithm appears below in pseudo-code notation:
 
-\begin{algorithm}[!ht]
-  \caption{Modified Unsatisfiability Testing for Ground Horn Clauses}
-  \linespread{\separationline}\selectfont
-  \begin{algorithmic}[1]
-    \Procedure {satisfiable}{var H : Hornclause; var queue, combine: queuetype; 
-    var GT(H) : Graph; var consistent : boolean}
-    \While {queue not empty and consistent}
-    \State node := pop(queue);
-    \For {clause1 in H[node].clauselist}
-    \If {$\neg$ clause1.isCommon()}
-    \State {numargs[clause1] := numargs[clause1] - 1}
-    \EndIf
-    \If {numargs[clause1] = 0}
-    \State nextnode := poslitlist[clause1];
-    \If {$\neg$ H[nextnode].val}
-    \If {nextnode $\neq \bot$ }
-    \State {queue := push(nextnode, queue);}
-    \State {H[nextnode].val := true;}
-    \State {u := left(H[nextnode].atom);} 
-    \State {v := right(H[nextnode].atom);}
-    \If {FIND(R, u) $\neq$ FIND(R, v)}
-    \State {combine := push((u, v), combine);}
-    \EndIf
-    \Else
-    \State {consistent := false;}
-    \EndIf
-    \EndIf
-    \EndIf
-    \EndFor
-    \If {queue is empty and consistent}
-    \State {closure(combine, queue, R);}
-    \EndIf
-    \EndWhile
-    \EndProcedure
-    \Statex
-    \Procedure {closure}{var combine, queue : queuetype; 
-    var R : partition}
-    \While {combine is not empty}
-    \State (u, v) = pop(combine)
-    \State MERGE(R, u, v, queue)
-    \EndWhile
-    \EndProcedure
-  \end{algorithmic}
-\end{algorithm}
-
-\begin{algorithm}[!ht]
-  \caption{Modified Congruence Closure with Explanation Algorithms - Merge}
-  \linespread{\separationline}\selectfont
-  \begin{algorithmic}[2]
-    \Procedure {Merge}{R : partition, u, v : node; queue, combine : queuetype}
-    \If {u and v are constants a and b}
-    \State {add a = b to Pending;} 
-    \State {Propagate();}
-    \Else \Comment {u=v is of the form apply(a1, a2)=a}
-    \If {Lookup(Representative(a1), Representative(a2)) is some apply(b1, b2)=b}
-    \State {add (apply(a1, a2)=a, apply(b1, b2) = b) to Pending;} 
-    \State {Propagate();}
-    \Else
-    \State {set Lookup(Representative(a1), Representative(a2)) to apply(a1, a2)=a;}
-    \State {add apply(a1, a2)=a to UseList(Representative(a1)) and to UseList(Representative(a2));}
-    \EndIf
-    \EndIf
-    \EndProcedure
-  \end{algorithmic}
-\end{algorithm}
-
-\begin{algorithm}[!ht]
-  \caption{Modified Congruence Closure with Explanation Algorithms - Propagate}
-  \linespread{\separationline}\selectfont
-  \begin{algorithmic}[2]
-    \Procedure {Propagate} {\text{ }}
-    \While {Pending is non-empty}
-    \State {Remove E of the form a=b or (apply(a1, a2) = a, apply(b1, b2) = b) from Pending}
-    \If {$Representative(a) \neq Representative(b)$ and w.l.o.g. $|ClassList(Representative(a))| \leq |ClassList(Representative(b))|$}
-    \State {oldReprA := Representative(a);}
-    \State {Insert edge $a \rightarrow b$ labelled with E into the proof forest;}
-    \For {each c in ClassList(oldReprA)}
-    \State {set Representative(c) to Representative(b)}
-    \State {move c from ClassList(oldReprA) to ClassList(Representative(b))}
-    \For {each pointer L in ClassList(u)}
-    \If {H[L].val = false}
-    \State {set the field H[L].lclass or H[L].rclass pointed to by p to Representative(b)}
-    \If {H[L].lclass = H[L].rclass}
-    \State {queue := push(L, queue);}
-    \State {H[L].val := true}
-    \EndIf
-    \EndIf
-    \EndFor
-    \EndFor
-    \For {each apply(c1, c2) = c in UseList(oldReprA)}
-    \If {Lookup(Representative(c1), Representative(c2)) is some apply(d1, d2) = d}
-    \State {add (apply(c1, c2) = c, apply(d1, d2) = d) to Pending;}
-    \State {remove apply(c1, c2) = c from UseList(oldReprA);}
-    \Else
-    \State {set Lookup(Representative(c1), Representative(c2)) to apply(c1, c2) = c;}
-    \State {move apply(c1, c2) = c from UseList(oldReprA) to UseList(Representative(b));}
-    \EndIf
-    \EndFor 
-    \EndIf
-    \EndWhile
-    \EndProcedure
-  \end{algorithmic}
-\end{algorithm}
+\input{modified_unsatisfiability_testing_for_grounded_horn_clauses}
+\input{modified_congruence_closure_with_explanation_algorithms_merge}
+\input{modified_congruence_closure_with_explanation_algorithms_propagate}
 
 \subsection{Ground Horn Clauses with Explanations}
 
@@ -258,131 +186,12 @@ Once the conditional congruence closure data structure is built after
 the execution of the previous step, we can compute conditional eliminations
 as follows. For the latter, we will require the following auxiliary functions:
 
-\begin{algorithm}[!ht]
-  \caption{Auxiliary function - Candidates}
-  \linespread{\separationline}\selectfont
-  \begin{algorithmic}[2]
-    \Procedure {Candidates} {z3::expr const \& t}
-    \If {t is common}
-    \State {\textbf{return} $\{ t \}$}
-    \Else
-    \State {\textbf{return} $\{ t^{'} | t^{'}  \in Class(t), t^{'} \text{is common} \}$}
-    \EndIf
-    \EndProcedure
-  \end{algorithmic}
-\end{algorithm}
+\input{auxiliary_function_candidates}
+\input{auxiliary_function_auxiliar_explain}
+\input{auxiliary_function_allcandidates}
 
-\begin{algorithm}[!ht]
-  \caption{Auxiliary function - Auxiliar explain}
-  \linespread{\separationline}\selectfont
-  \begin{algorithmic}[2]
-    \Procedure {Explain} {z3::expr const \& t1, z3::expr const \& t2}
-    \State {z3::expr\_vector ans;}
-    \If {t1.id() equals t2.id()}
-    \State {\textbf{return} ans;}
-    \EndIf
-    \State {auto partial\_explain = hsat.equiv\_class.explain(t1, t2);} 
-    \For {(auto const \& element : partial\_explain)}
-    \If {element is common}
-    \State {ans.push\_back(element);}
-    \Else
-    \State {auto const \& entry = hsat.head\_term\_indexer.find(equation.id());}
-    \If {entry equals hsat.head\_term\_indexer.end()}
-    \If {equation is common}
-    \State {ans.push\_back(equation)};
-    \EndIf
-    \Else
-    \For {(auto const \& hsat\_equation : entry $\rightarrow$ second $\rightarrow$ getAntecedent())}
-    \State {ans.push\_back(hsat\_equation);}
-    \EndFor
-    \EndIf
-    \EndIf
-    \EndFor
-    \EndProcedure
-  \end{algorithmic}
-\end{algorithm}
-
-\begin{algorithm}[!ht]
-  \caption{Auxiliary function - allCandidates}
-  \linespread{\separationline}\selectfont
-  \begin{algorithmic}[2]
-    \Procedure {allCandidates} {z3::expr const \& t}
-    \If {t has f-symbol uncommon}
-    \State {\textbf{return} $\{\{\}\}$;}
-    \EndIf
-    \If {t has f-symbol common and is of the form $f(t_1, \dots, t_n)$}
-    \State {\textbf{return} $\{candidates(t_1), \dots, candidates(t_n)\}$;}
-    \EndIf
-    \If {t is a constant}
-    \State {undefined}
-    \EndIf
-    \EndProcedure
-  \end{algorithmic}
-\end{algorithm}
-
-\begin{algorithm}[!ht]
-  \caption{Conditional Elimination - Part 1}
-  \linespread{\separationline}\selectfont
-  \begin{algorithmic}[2]
-    \Procedure {Conditional Elimination} {z3::expr const \& x, z3::expr const \& y}
-
-    \If {x is constant and y is constant}
-    \For {$\sigma_x$ in CANDIDATES(x)}
-    \For {$\sigma_y$ in CANDIDATES(y)}
-    \State {horn\_clause.add(EXPLAIN(x, $\sigma_x$) + EXPLAIN(y, $\sigma_y$), $\sigma_x = \sigma_y$)}
-    \EndFor
-    \EndFor
-    \EndIf
-
-    \If {x is constant and y is of the form $f_y(t_1^{'}, \dots, t_{k_2}^{'})$}
-    \For {$\sigma_x$ in CANDIDATES(x)}
-    \For {$\sigma_{f_y}$ in CANDIDATES($f_y(t_1^{'}, \dots, t_{k_2}^{'})$)}
-    \State {horn\_clause.add(EXPLAIN(x, $\sigma_x$) + EXPLAIN($f_y(t_1^{'}, \dots, t_{k_2}^{'})$), $\sigma_y$), $\sigma_x = \sigma_{f_y}$}
-    \EndFor
-    \For {$arguments_{f_y}$ in CARTESIANPROD(ALLCANDIDATES($f_y(t_1^{'}, \dots, t_{k_2}^{'})$))}
-    \State {horn\_clause.add(EXPLAIN(x, $\sigma_x$) + $\sum_{i=1}^{k_2}$ EXPLAIN($t_i^{'}$, $arguments_{f_y}[i]$), $\sigma_x = f_y(arguments_{f_y})$)}
-    \EndFor
-    \EndFor
-    \EndIf
-
-    \If {x is of the form $f_x(t_1, \dots, t_{k_1})$ and y is a constant}
-    \State {\textbf{return} CONDITIONAL ELIMINATION(y, x);}
-    \EndIf
-
-    \EndProcedure
-  \end{algorithmic}
-\end{algorithm}
-
-\begin{algorithm}[!ht]
-  \caption{Conditional Elimination - Part 2}
-  \linespread{\separationline}\selectfont
-  \begin{algorithmic}[2]
-    \Procedure {Conditional Elimination} {z3::expr const \& x, z3::expr const \& y}
-
-    \If {x is of the form $f_x(t_1, \dots, t_{k_1})$ and y is of the form $f_y(t_1^{'}, \dots, t_{k_2}^{'})$}
-    \For {$\sigma_{f_x}$ in CANDIDATES($f_x(t_1, \dots, t_{k_1})$)}
-    \For {$\sigma_{f_y}$ in CANDIDATES($f_y(t_1^{'}, \dots, t_{k_2}^{'})$)}
-    \State {horn\_clause.add(EXPLAIN($f_x(t_1, \dots, t_{k_1})$, $\sigma_{f_x}$) + EXPLAIN($f_y(t_1^{'}, \dots, t_{k_2}^{'})$), $\sigma_y$), $\sigma_{f_x} = \sigma_{f_y}$}
-    \EndFor
-    \For {$arguments_{f_y}$ in CARTESIANPROD(ALLCANDIDATES($f_y(t_1^{'}, \dots, t_{k_2}^{'})$))}
-    \State {horn\_clause.add(EXPLAIN($f_x(t_1, \dots, t_{k_1})$, $\sigma_{f_x}$) + $\sum_{i=1}^{k_2}$ EXPLAIN($t_i^{'}$, $arguments_{f_y}[i]$), $\sigma_{f_x} = f_y(arguments_{f_y})$)}
-    \EndFor
-    \EndFor
-
-    \For {$arguments_{f_x}$ in CARTESIANPROD(ALLCANDIDATES($f_x(t_1, \dots, t_{k_1})$))}
-    \For {$\sigma_{f_y}$ in CANDIDATES($f_y(t_1^{'}, \dots, t_{k_2}^{'})$)}
-    \State {horn\_clause.add($\sum_{i=1}^{k_1}$ EXPLAIN($t_i$, $arguments_{f_x}[i]$) + EXPLAIN($f_y(t_1^{'}, \dots, t_{k_2}^{'})$), $\sigma_y$), $f_x(arguments_{f_x}) = \sigma_{f_y}$}
-    \EndFor
-    \For {$arguments_{f_y}$ in CARTESIANPROD(ALLCANDIDATES($f_y(t_1^{'}, \dots, t_{k_2}^{'})$))}
-    \State {horn\_clause.add($\sum_{i=1}^{k_1}$ EXPLAIN($t_i$, $arguments_{f_x}[i]$) + $\sum_{i=1}^{k_2}$ EXPLAIN($t_i^{'}$, $arguments_{f_y}[i]$), $f_x(arguments_{f_x}) = f_y(arguments_{f_y})$)}
-    \EndFor
-    \EndFor
-
-    \EndIf
-
-    \EndProcedure
-  \end{algorithmic}
-\end{algorithm}
+\input{conditional_elimination_part_1}
+\input{conditional_elimination_part_2}
 
 The conditional propagation algorithm produces common Horn clauses from previous
 uncommon equations and uncommon Horn clauses obtained in previous steps of Kapur's

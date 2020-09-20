@@ -1,0 +1,49 @@
+\begin{algorithm}[!ht]
+  \caption{Modified Unsatisfiability Testing for Ground Horn Clauses}
+  \linespread{\separationline}\selectfont
+  \begin{algorithmic}[1]
+    \Procedure {satisfiable}{var H : Hornclause; var queue, combine: queuetype; 
+    var GT(H) : Graph; var consistent : boolean}
+    \While {queue not empty and consistent}
+    \State node := pop(queue);
+    \For {clause1 in H[node].clauselist}
+    \If {$\neg$ clause1.isCommon()}
+    \State {numargs[clause1] := numargs[clause1] - 1}
+    \EndIf
+    \If {numargs[clause1] = 0}
+    \State nextnode := poslitlist[clause1];
+    \If {$\neg$ H[nextnode].val}
+    \If {nextnode $\neq \bot$ }
+    \State {queue := push(nextnode, queue);}
+    \State {H[nextnode].val := true;}
+    \State {u := left(H[nextnode].atom);} 
+    \State {v := right(H[nextnode].atom);}
+    \If {FIND(R, u) $\neq$ FIND(R, v)}
+    \State {combine := push((u, v), combine);}
+    \EndIf
+    \Else
+    \State {consistent := false;}
+    \EndIf
+    \EndIf
+    \EndIf
+    \EndFor
+    \If {queue is empty and consistent}
+    \State {closure(combine, queue, R);}
+    \EndIf
+    \EndWhile
+    \EndProcedure
+    \Statex
+    \Procedure {closure}{var combine, queue : queuetype; 
+    var R : partition}
+    \While {combine is not empty}
+    \State (u, v) = pop(combine)
+    \State MERGE(R, u, v, queue)
+    \EndWhile
+    \EndProcedure
+  \end{algorithmic}
+\end{algorithm}
+
+%%% Local Variables:
+%%% mode: latex
+%%% TeX-master: "main"
+%%% End:

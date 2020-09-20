@@ -1,0 +1,34 @@
+\begin{algorithm}[!ht]
+  \caption{Auxiliary function - Auxiliar explain}
+  \linespread{\separationline}\selectfont
+  \begin{algorithmic}[2]
+    \Procedure {Explain} {z3::expr const \& t1, z3::expr const \& t2}
+    \State {z3::expr\_vector ans;}
+    \If {t1.id() equals t2.id()}
+    \State {\textbf{return} ans;}
+    \EndIf
+    \State {auto partial\_explain = hsat.equiv\_class.explain(t1, t2);} 
+    \For {(auto const \& element : partial\_explain)}
+    \If {element is common}
+    \State {ans.push\_back(element);}
+    \Else
+    \State {auto const \& entry = hsat.head\_term\_indexer.find(equation.id());}
+    \If {entry equals hsat.head\_term\_indexer.end()}
+    \If {equation is common}
+    \State {ans.push\_back(equation)};
+    \EndIf
+    \Else
+    \For {(auto const \& hsat\_equation : entry $\rightarrow$ second $\rightarrow$ getAntecedent())}
+    \State {ans.push\_back(hsat\_equation);}
+    \EndFor
+    \EndIf
+    \EndIf
+    \EndFor
+    \EndProcedure
+  \end{algorithmic}
+\end{algorithm}
+
+%%% Local Variables:
+%%% mode: latex
+%%% TeX-master: "main"
+%%% End:
