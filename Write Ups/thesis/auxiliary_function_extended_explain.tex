@@ -1,0 +1,24 @@
+\begin{algorithm}[!ht]\label{extended_explain}
+  \caption{Auxiliary function - ExtendedExplain}
+  \linespread{\separationline}\selectfont
+  \begin{algorithmic}[2]
+    \Procedure {ExtendedExplain} { $t_1$ : TERMS, $t_2$ : TERMS, $H$ : Horn clauses}
+    \State {let $result = \{\}$}
+    \If {$t_1.id() = t_2.id()$}
+    \State {\textbf{return} $result$;}
+    \EndIf
+    \State ${\{c, u\}$ = Explain($t_1$, $t_2$)} where $c$ is a list
+    of common equation and $u$ is a list of uncommon equations
+    \State {\textbf{return} $c \cup \bigcup \{ExtendedExplain(eq) | 
+        consequent \in u,  
+        eq \in antecedent,  
+        (\bigwedge antecedent) \rightarrow consequent \in H
+    \}$}
+    \EndProcedure
+  \end{algorithmic}
+\end{algorithm}
+
+%%% Local Variables:
+%%% mode: latex
+%%% TeX-master: "main"
+%%% End:

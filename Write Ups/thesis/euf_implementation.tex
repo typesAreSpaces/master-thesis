@@ -123,11 +123,13 @@ points by implementing the following:
     procedure which returns a list of common equations
     when an equation given as input is provable in the 
     conditional equivalence relation. The pseudo-code
-    for the ExtendedExplain procedure is shown below:
+    for the ExtendedExplain procedure is shown 
+    below:
 \end{itemize}
 
-TODO: keep working here. Write the ExtendedExplain
-procedure.
+\input{auxiliary_function_extended_explain}
+
+TODO: keep working here. Write theorems about extended explain.
 
 At the end of this algorithm we can identify 
 \emph{usable Horn clauses} by checking the Horn clauses
@@ -187,7 +189,6 @@ the execution of the previous step, we can compute conditional eliminations
 as follows. For the latter, we will require the following auxiliary functions:
 
 \input{auxiliary_function_candidates}
-\input{auxiliary_function_auxiliar_explain}
 \input{auxiliary_function_allcandidates}
 
 \input{conditional_elimination_part_1}

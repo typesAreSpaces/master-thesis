@@ -26,10 +26,10 @@
 \contentsline {section}{\numberline {3.1}Algorithm}{27}{section.3.1}%
 \contentsline {section}{\numberline {3.2}Implementation}{32}{section.3.2}%
 \contentsline {subsection}{\numberline {3.2.1}New optimized conditional elimination and replacement step in Kapur's algorithm}{33}{subsection.3.2.1}%
-\contentsline {subsection}{\numberline {3.2.2}Ground Horn Clauses with Explanations}{35}{subsection.3.2.2}%
+\contentsline {subsection}{\numberline {3.2.2}Ground Horn Clauses with Explanations}{36}{subsection.3.2.2}%
 \contentsline {subsection}{\numberline {3.2.3}Conditional propagation in Kapur's algorithm}{37}{subsection.3.2.3}%
-\contentsline {section}{\numberline {3.3}Evaluation}{42}{section.3.3}%
-\contentsline {subsection}{\numberline {3.3.1}Detailed evaluation of examples}{42}{subsection.3.3.1}%
+\contentsline {section}{\numberline {3.3}Evaluation}{41}{section.3.3}%
+\contentsline {subsection}{\numberline {3.3.1}Detailed evaluation of examples}{41}{subsection.3.3.1}%
 \contentsline {subsubsection}{Symbol elimination example}{42}{section*.3}%
 \contentsline {subsubsection}{Simple example with disequality}{44}{section*.4}%
 \contentsline {section}{\numberline {3.4}Conclusions}{45}{section.3.4}%
