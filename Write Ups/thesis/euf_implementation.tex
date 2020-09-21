@@ -292,12 +292,32 @@ TODO: keep working here. Pay special attention to details of
 the formalization.
 
 \begin{lemma}
-  Let $\{f(\mathfrak{a}_1, \dots, \mathfrak{a}_n) 
-  = \mathfrak{a}\}$ be the set of equations produced
-  in Phase I of Kapur's algorithms.
-  Executing Conditional elimination only produces common 
-  Horn clauses
+  Let $Eqs := \{f(\mathfrak{a}_{i, 1}, \dots, \mathfrak{a}_{i, n}) 
+  = \mathfrak{a}_i\}$ be the set of equations produced
+  in Phase I of Kapur's algorithms, $H$ the set of 
+  Horn clauses obtained in Phase II, and $\mathcal{E^{'}}$ the 
+  conditional equivalence
+  relation obtained by the proposed conditional elimination
+  step.
+  Executing the proposed conditional replacement step
+  on $Eqs, H, \mathcal{E}$ produces common Horn clauses.
 \end{lemma}
+
+\begin{proof}
+  From inspection of the algorithm in MISSING REF
+  we noticed that the antecedent of the Horn clauses 
+  constructed are obtained using the ExtendedExplain 
+  procedure, which from lemma MISSING REF it only 
+  produces common equations.
+
+  Additionally, the consequent part of all the Horn
+  clauses produced in the conditional replacement procedure
+  are obtained using the $candidates$ and a cartesian 
+  combination (?) of the members of $allCandidates$. Hence,
+  the consequents are common equations.
+  
+  Therefore, the algorithm only adds common Horn clauses.
+\end{proof}
 
 TODO: fix vagueness in this paragraph.
 
