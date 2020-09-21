@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.21 (TeX Live 2020/Arch Linux) (preloaded format=pdflatex 2020.9.12)  21 SEP 2020 04:42
+This is pdfTeX, Version 3.14159265-2.6-1.40.21 (TeX Live 2020/Arch Linux) (preloaded format=pdflatex 2020.9.21)  21 SEP 2020 12:02
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -1034,26 +1034,25 @@ cmr/m/n/12 ) =
  []
 
 ) [40] [41] [42]
-Overfull \hbox (5.26353pt too wide) in paragraph at lines 352--362
-[]\OT1/cmr/m/n/12 We no-tice that, by re-mov-ing our changes to the un-sat-is-f
-i-a-bil-ity test-ing for grounded|
- []
+! Undefined control sequence.
+<recently read> \bigwegde 
+                          
+l.362 $\bigwegde
+                 (a_i = b_i) \rightarrow consequent$, we can
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
 
-) (./euf_evaluation.tex
-Underfull \vbox (badness 10000) has occurred while \output is active []
-
- [43]
+[43]) (./euf_evaluation.tex
 File: "../../Software/Cpp/EUFInterpolant/tests/traces/current_progress_example1
 .txt"  (verbatim)
-
-[44]
-Underfull \vbox (badness 1546) has occurred while \output is active []
-
- [45]
+ [44] [45]
 File: "../../Software/Cpp/EUFInterpolant/tests/traces/current_progress_example2
 .txt"  (verbatim)
-
-[46]) (./euf_conclusion.tex)) (./octagonal.tex [47]
+ [46]) (./euf_conclusion.tex))
+(./octagonal.tex [47]
 Chapter 4.
 (./oct_abstract.tex) (./oct_algorithm.tex [48
 
@@ -1180,10 +1179,10 @@ Package rerunfilecheck Info: File `main.out' has not changed.
 (rerunfilecheck)             Checksum: B1B5784C972C80AA22BD992DE33B8E44;4301.
  ) 
 Here is how much of TeX's memory you used:
- 23146 strings out of 480478
- 418363 string characters out of 5905959
- 922498 words of memory out of 5000000
- 38212 multiletter control sequences out of 15000+600000
+ 23148 strings out of 480478
+ 418384 string characters out of 5905959
+ 922499 words of memory out of 5000000
+ 38213 multiletter control sequences out of 15000+600000
  545364 words of font info for 72 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
  62i,11n,73p,1034b,2032s stack positions out of 5000i,500n,10000p,200000b,80000s
@@ -1210,10 +1209,10 @@ ic/amsfonts/cm/cmtt12.pfb></usr/share/texmf-dist/fonts/type1/public/amsfonts/cm
 /cmtt8.pfb></usr/share/texmf-dist/fonts/type1/public/amsfonts/euler/eufm10.pfb>
 </usr/share/texmf-dist/fonts/type1/public/amsfonts/symbols/msam10.pfb></usr/sha
 re/texmf-dist/fonts/type1/public/amsfonts/symbols/msbm10.pfb>
-Output written on main.pdf (100 pages, 556062 bytes).
+Output written on main.pdf (100 pages, 556688 bytes).
 PDF statistics:
  1281 PDF objects out of 1440 (max. 8388607)
  1141 compressed objects within 12 object streams
- 368 named destinations out of 1000 (max. 500000)
+ 369 named destinations out of 1000 (max. 500000)
  482 words of extra memory for PDF output out of 10000 (max. 10000000)
 

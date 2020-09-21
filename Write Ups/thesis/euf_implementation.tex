@@ -347,19 +347,37 @@ conditional propagation procedure:
 
 \subsection{An extra application: Ground Horn Clauses with Explanations}
 
-TODO: Fix vagueness, explain how this is done.
+We notice that by adding common equations
+from the antecedent of the Horn clauses during the 
+conditional elimination step we are able to 
+extend the equivalence relation to a conditional
+equivalence relation that includes the set 
+of consequences from the afore mentioned common equations.
+In a more general setting we can specify arbitrarily the
+set of equations that are meant to enlarge the theory
+to a conditional equivalence relation for specific purposes.
 
-We notice that, by removing our changes to the unsatisfiability testing
-for grounded Horn clauses regarding uncommon symbols, we effectively combine
-the congruence closure with explanations to the original unsatisfiability
-testing algorithm. With the latter, we can query the membership of a Horn
-clauses in a given user-defined theory and additionally obtain a proof of
-the latter. This approach works by introducing the antecedent equations of
-a grounded Horn clause as part of the user-defined theory in order to prove
-its head equation. By the Deduction Theorem \cite{10.5555/1642730}, we can
-recover a proof of the original queried Horn clause by removing the antecedent
-equations appearing the proof given by the Explain operation.
+In particular, given an equivalence relation $\mathcal{E}$, a 
+set of Horn clauses $H$, and Horn clause $h$ of the form 
+$\bigwegde (a_i = b_i) \rightarrow consequent$, we can 
+provide an explanation to the query $H \models_{\mathcal{E}} h$
+by conditionally extending $H$ with the equations
+from the antecedent of $h$ and then retrieving an explanation
+for the member of the consequent of $H$ in the conditional 
+equivalence relation.
 
+TODO: keep working here. Fill the missing details.
+\begin{lemma}
+  Let $H$ be blah blah blah
+  Let $explanation := \{equation_1 \dots equation_n \}$ be the 
+  explanation of $H \models_{\mathcal{E^{'}}} consequent$.
+  The explanation for $H \models_{\mathcal{E}} antecedent 
+  \rightarrow consequent$ is the subset of $explanation$
+  that does not contain the equation from $antecedent$.
+\end{lemma}
+
+\begin{proof}
+\end{proof} 
 
 %%% Local Variables:
 %%% mode: latex
