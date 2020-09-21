@@ -3,16 +3,16 @@
   \linespread{\separationline}\selectfont
   \begin{algorithmic}[2]
     \Procedure {Merge}{R : partition, u, v : node; queue, combine : queuetype}
-    \If {u and v are constants a and b}
-    \State {add a = b to Pending;} 
+    \If {$u$ and $v$ are constants $a$ and $b$}
+    \State {add $a = b$ to Pending;} 
     \State {Propagate();}
-    \Else \Comment {u=v is of the form apply(a1, a2)=a}
-    \If {Lookup(Representative(a1), Representative(a2)) is some apply(b1, b2)=b}
-    \State {add (apply(a1, a2)=a, apply(b1, b2) = b) to Pending;} 
+    \Else \Comment {$u=v$ is of the form $apply(a_1, a_2)=a$}
+    \If {$Lookup(Representative(a_1), Representative(a_2))$ is some $apply(b_1, b_2)=b$}
+    \State {add ($apply(a_1, a_2)=a, apply(b_1, b_2) = b$) to Pending;} 
     \State {Propagate();}
     \Else
-    \State {set Lookup(Representative(a1), Representative(a2)) to apply(a1, a2)=a;}
-    \State {add apply(a1, a2)=a to UseList(Representative(a1)) and to UseList(Representative(a2));}
+    \State {set Lookup(Representative($a_1$), Representative($a_2$)) to $apply(a_1, a_2)$=$a$;}
+    \State {add $apply(a_1, a_2)$=$a$ to UseList(Representative($a_1$)) and to UseList(Representative($a_2$));}
     \EndIf
     \EndIf
     \EndProcedure

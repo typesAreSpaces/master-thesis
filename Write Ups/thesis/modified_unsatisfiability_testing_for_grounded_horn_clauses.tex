@@ -6,9 +6,9 @@
     var GT(H) : Graph; var consistent : boolean}
     \While {queue not empty}
     \State node := pop(queue);
-    \For {clause1 in H[node].clauselist}
-    \If {numargs[clause1] = 0}
-    \State nextnode := poslitlist[clause1];
+    \For {$clause_1$ in H[node].clauselist}
+    \If {numargs[$clause_1$] = 0}
+    \State nextnode := poslitlist[$clause_1$];
     \If {$\neg$ H[nextnode].val}
     \If {nextnode $\neq \bot$ }
     \State {queue := push(nextnode, queue);}

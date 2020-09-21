@@ -62,8 +62,8 @@ where $list(u) = \{ f(u_1, \dots, u_n) \in \text{TERMS}
 In the next section we will discuss the changes proposed to 
 Phase III in Kapur's algorithm. 
 
-\subsection{New optimized conditional elimination 
-and replacement step in Kapur's algorithm}
+\subsection{New conditional elimination 
+step in Kapur's algorithm}
 
 The modification of Phase III implemented in this thesis work
 combines and extends the algorithms and data structures introduced
@@ -139,16 +139,26 @@ points by implementing the following:
     class implementation
     for the Gallier data structure in order to propagate 
     the equational information achieved during
-    merges and updates due to congruence.
+    merges and updates due to congruence. The modified 
+    algorithms appears below in pseudo-code notation:
+
+    \input{modified_unsatisfiability_testing_for_grounded_horn_clauses}
+    \input{modified_congruence_closure_with_explanation_algorithms_merge}
+    \input{modified_congruence_closure_with_explanation_algorithms_propagate}
+
   \item[] 3. We implement the ExtendedExplain 
     procedure which returns a list of common equations
     when an equation given as input is provable in the 
     conditional equivalence relation. The pseudo-code
     for the ExtendedExplain procedure is shown 
     below:
+
+    \input{auxiliary_function_extended_explain}
+
 \end{itemize}
 
-\input{auxiliary_function_extended_explain}
+\subsection{Invariants of the proposed
+conditional elimination step}
 
 We can prove that if a pair of terms $t_1, t_2$ belong
 to the same equivalence class, then ExtendedExplain returns
@@ -210,7 +220,7 @@ inference rules with the following lemmas:
 
   The proof proceeds by induction on the complexity of the 
   derivation:
-  
+
   \begin{itemize}
     \item Case: the last inference rule in the proof 
       tree was Reflexivity. The ExtendedExplain 
@@ -252,77 +262,55 @@ inference rules with the following lemmas:
   $H \models_{\mathcal{E^{'}}} a = b$ if and only if
   $\exists \text{ common } x \subseteq 
   \bigcup_{h \in H} antecedent(h)$ such that
-$H \models_{\mathcal{E}} \bigwedge x \rightarrow a = b$.
+  $H \models_{\mathcal{E}} \bigwedge x \rightarrow a = b$.
 \end{corollary}
 
-TODO: keep working here.
+\subsection{New conditional replacement
+step in Kapur's algorithm}
 
-At the end of this algorithm we can identify 
-\emph{usable Horn clauses} by checking the Horn clauses
-with \emph{numargs} entries equal to 0. Nonetheless, these 
-Horn clauses are not the
-desired \emph{usable Horn clauses} because the 
-unsatisfiability testing algorithm
-did not update the antecedents of the Horn clauses. 
-The main difficulty to design a data structure
-for the latter to work inside the unsatisfiability 
-testing algorithm was the queue data structure
-only adds grounded equation whenever the truth 
-value of the literal changes to true, which happens
-during \emph{equational propagation} or during 
-the \emph{implicational propagation} steps.
-For the \emph{implicational propagation} the task is 
-easy because we can know the clause
-where the just new proven ground equation comes, 
-but it cannot be the same situation
-for the \emph{equational propagation} since this 
-step relies on congruence closure.
-
-To remedy this issue, we equip our congruence closure 
-algorithm with the Explanation operator, so
-we can recover the grounded equations needed to entail 
-any particular grounded equation. Additionally,
-this will require a data structure to maintain the Horn 
-clauses for each grounded equation that
-it is the head equation of. With the latter we can 
-recover the Horn Clauses where each grounded
-equation came from to update the antecedents and 
-obtain \emph{usable Horn clauses}.
-
-The algorithm appears below in pseudo-code notation:
-
-\input{modified_unsatisfiability_testing_for_grounded_horn_clauses}
-\input{modified_congruence_closure_with_explanation_algorithms_merge}
-\input{modified_congruence_closure_with_explanation_algorithms_propagate}
-
-\subsection{Ground Horn Clauses with Explanations}
-
-We notice that, by removing our changes to the unsatisfiability testing
-for grounded Horn clauses regarding uncommon symbols, we effectively combine
-the congruence closure with explanations to the original unsatisfiability
-testing algorithm. With the latter, we can query the membership of a Horn
-clauses in a given user-defined theory and additionally obtain a proof of
-the latter. This approach works by introducing the antecedent equations of
-a grounded Horn clause as part of the user-defined theory in order to prove
-its head equation. By the Deduction Theorem \cite{10.5555/1642730}, we can
-recover a proof of the original queried Horn clause by removing the antecedent
-equations appearing the proof given by the Explain operation.
-
-\subsection{Conditional propagation in Kapur's algorithm}
-
-Once the conditional congruence closure data structure is built after 
+Once the conditional equivalence relation is built after 
 the execution of the previous step, we can compute conditional eliminations
 as follows. For the latter, we will require the following auxiliary functions:
 
 \input{auxiliary_function_candidates}
 \input{auxiliary_function_allcandidates}
 
+By inspection is easy to notice that $Candidates$ 
+and $allCandidates$ return a set of common terms and
+a set of sets of common terms respectively.
+
+The proposed conditional elimination step produces common Horn 
+clauses from previous uncommon equations and uncommon Horn 
+clauses obtained in Phase II of Kapur's algorithm.
+The pseudo-code of the algorithms to 
+process the original equations are shown below:
+
 \input{conditional_elimination_part_1}
 \input{conditional_elimination_part_2}
 
-The conditional propagation algorithm produces common Horn clauses from previous
-uncommon equations and uncommon Horn clauses obtained in previous steps of Kapur's
-algorithm. The are two main invariants for the Horn clauses formed by the
+TODO: keep working here. Pay special attention to details of
+the formalization.
+
+\begin{lemma}
+  Let $\{f(\mathfrak{a}_1, \dots, \mathfrak{a}_n) 
+  = \mathfrak{a}\}$ be the set of equations produced
+  in Phase I of Kapur's algorithms.
+  Executing Conditional elimination only produces common 
+  Horn clauses
+\end{lemma}
+
+TODO: fix vagueness in this paragraph.
+
+In order to process Horn clauses obtained 
+from Phase II of Kapur's algorithm, we apply 
+the conditional elimination step for equation
+over the equation in the a
+At the end of this algorithm we can identify 
+\emph{usable Horn clauses} by checking the Horn clauses
+with \emph{numargs} entries equal to 0. 
+
+
+The are two main invariants for the Horn clauses formed by the
 conditional propagation procedure: 
 
 \begin{itemize}
@@ -354,8 +342,24 @@ conditional propagation procedure:
     head equations for the new Horn clauses are obtained by equating the left-hand
     side common candidates and right-hand side common candidates obtained by these 
     procedures.
-
 \end{itemize}
+
+
+\subsection{An extra application: Ground Horn Clauses with Explanations}
+
+TODO: Fix vagueness, explain how this is done.
+
+We notice that, by removing our changes to the unsatisfiability testing
+for grounded Horn clauses regarding uncommon symbols, we effectively combine
+the congruence closure with explanations to the original unsatisfiability
+testing algorithm. With the latter, we can query the membership of a Horn
+clauses in a given user-defined theory and additionally obtain a proof of
+the latter. This approach works by introducing the antecedent equations of
+a grounded Horn clause as part of the user-defined theory in order to prove
+its head equation. By the Deduction Theorem \cite{10.5555/1642730}, we can
+recover a proof of the original queried Horn clause by removing the antecedent
+equations appearing the proof given by the Explain operation.
+
 
 %%% Local Variables:
 %%% mode: latex

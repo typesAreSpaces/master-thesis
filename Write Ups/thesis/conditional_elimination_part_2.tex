@@ -5,21 +5,21 @@
     \Procedure {Conditional Elimination} {z3::expr const \& x, z3::expr const \& y}
 
     \If {x is of the form $f_x(t_1, \dots, t_{k_1})$ and y is of the form $f_y(t_1^{'}, \dots, t_{k_2}^{'})$}
-    \For {$\sigma_{f_x}$ in CANDIDATES($f_x(t_1, \dots, t_{k_1})$)}
-    \For {$\sigma_{f_y}$ in CANDIDATES($f_y(t_1^{'}, \dots, t_{k_2}^{'})$)}
-    \State {horn\_clause.add(EXPLAIN($f_x(t_1, \dots, t_{k_1})$, $\sigma_{f_x}$) + EXPLAIN($f_y(t_1^{'}, \dots, t_{k_2}^{'})$), $\sigma_y$), $\sigma_{f_x} = \sigma_{f_y}$}
+    \For {$\sigma_{f_x}$ in Candidates($f_x(t_1, \dots, t_{k_1})$)}
+    \For {$\sigma_{f_y}$ in Candidates($f_y(t_1^{'}, \dots, t_{k_2}^{'})$)}
+    \State {horn\_clause.add(ExtendedExplain($f_x(t_1, \dots, t_{k_1})$, $\sigma_{f_x}$) + ExtendedExplain($f_y(t_1^{'}, \dots, t_{k_2}^{'})$, $\sigma_y$), $\sigma_{f_x} = \sigma_{f_y})$}
     \EndFor
-    \For {$arguments_{f_y}$ in CARTESIANPROD(ALLCANDIDATES($f_y(t_1^{'}, \dots, t_{k_2}^{'})$))}
-    \State {horn\_clause.add(EXPLAIN($f_x(t_1, \dots, t_{k_1})$, $\sigma_{f_x}$) + $\sum_{i=1}^{k_2}$ EXPLAIN($t_i^{'}$, $arguments_{f_y}[i]$), $\sigma_{f_x} = f_y(arguments_{f_y})$)}
+    \For {$arguments_{f_y}$ in CartesianProd(AllCandidates($f_y(t_1^{'}, \dots, t_{k_2}^{'})$))}
+    \State {horn\_clause.add(ExtendedExplain($f_x(t_1, \dots, t_{k_1})$, $\sigma_{f_x}$) + $\sum_{i=1}^{k_2}$ ExtendedExplain($t_i^{'}$, $arguments_{f_y}[i]$), $\sigma_{f_x} = f_y(arguments_{f_y})$)}
     \EndFor
     \EndFor
 
-    \For {$arguments_{f_x}$ in CARTESIANPROD(ALLCANDIDATES($f_x(t_1, \dots, t_{k_1})$))}
-    \For {$\sigma_{f_y}$ in CANDIDATES($f_y(t_1^{'}, \dots, t_{k_2}^{'})$)}
-    \State {horn\_clause.add($\sum_{i=1}^{k_1}$ EXPLAIN($t_i$, $arguments_{f_x}[i]$) + EXPLAIN($f_y(t_1^{'}, \dots, t_{k_2}^{'})$), $\sigma_y$), $f_x(arguments_{f_x}) = \sigma_{f_y}$}
+    \For {$arguments_{f_x}$ in CartesianProd(AllCandidates($f_x(t_1, \dots, t_{k_1})$))}
+    \For {$\sigma_{f_y}$ in Candidates($f_y(t_1^{'}, \dots, t_{k_2}^{'})$)}
+    \State {horn\_clause.add($\sum_{i=1}^{k_1}$ ExtendedExplain($t_i$, $arguments_{f_x}[i]$) + ExtendedExplain($f_y(t_1^{'}, \dots, t_{k_2}^{'})$, $\sigma_y$), $f_x(arguments_{f_x}) = \sigma_{f_y})$}
     \EndFor
-    \For {$arguments_{f_y}$ in CARTESIANPROD(ALLCANDIDATES($f_y(t_1^{'}, \dots, t_{k_2}^{'})$))}
-    \State {horn\_clause.add($\sum_{i=1}^{k_1}$ EXPLAIN($t_i$, $arguments_{f_x}[i]$) + $\sum_{i=1}^{k_2}$ EXPLAIN($t_i^{'}$, $arguments_{f_y}[i]$), $f_x(arguments_{f_x}) = f_y(arguments_{f_y})$)}
+    \For {$arguments_{f_y}$ in CartesianProd(AllCandidates($f_y(t_1^{'}, \dots, t_{k_2}^{'})$))}
+    \State {horn\_clause.add($\sum_{i=1}^{k_1}$ ExtendedExplain($t_i$, $arguments_{f_x}[i]$) + $\sum_{i=1}^{k_2}$ ExtendedExplain($t_i^{'}$, $arguments_{f_y}[i]$), $f_x(arguments_{f_x}) = f_y(arguments_{f_y})$)}
     \EndFor
     \EndFor
 
