@@ -26,36 +26,36 @@
 \contentsline {section}{\numberline {3.1}Algorithm}{27}{section.3.1}%
 \contentsline {section}{\numberline {3.2}Implementation}{32}{section.3.2}%
 \contentsline {subsection}{\numberline {3.2.1}New optimized conditional elimination and replacement step in Kapur's algorithm}{33}{subsection.3.2.1}%
-\contentsline {subsection}{\numberline {3.2.2}Ground Horn Clauses with Explanations}{36}{subsection.3.2.2}%
-\contentsline {subsection}{\numberline {3.2.3}Conditional propagation in Kapur's algorithm}{37}{subsection.3.2.3}%
-\contentsline {section}{\numberline {3.3}Evaluation}{41}{section.3.3}%
-\contentsline {subsection}{\numberline {3.3.1}Detailed evaluation of examples}{41}{subsection.3.3.1}%
-\contentsline {subsubsection}{Symbol elimination example}{42}{section*.3}%
-\contentsline {subsubsection}{Simple example with disequality}{44}{section*.4}%
-\contentsline {section}{\numberline {3.4}Conclusions}{45}{section.3.4}%
-\contentsline {chapter}{\numberline {4}Interpolation algorithm for UTVPI Formulas}{46}{chapter.4}%
-\contentsline {section}{\numberline {4.1}Algorithm}{47}{section.4.1}%
-\contentsline {section}{\numberline {4.2}Implementation}{47}{section.4.2}%
-\contentsline {section}{\numberline {4.3}Evaluation}{49}{section.4.3}%
-\contentsline {subsection}{\numberline {4.3.1}Detailed evaluation of examples}{49}{subsection.4.3.1}%
-\contentsline {section}{\numberline {4.4}Conclusions}{54}{section.4.4}%
-\contentsline {chapter}{\numberline {5}Interpolation algorithm for the theory combination of EUF and UTVPI}{55}{chapter.5}%
-\contentsline {section}{\numberline {5.1}Algorithm}{56}{section.5.1}%
-\contentsline {section}{\numberline {5.2}Implementation}{57}{section.5.2}%
-\contentsline {section}{\numberline {5.3}Evaluation}{59}{section.5.3}%
-\contentsline {subsection}{\numberline {5.3.1}Detailed evaluation of a complete example}{59}{subsection.5.3.1}%
-\contentsline {subsubsection}{A simple example}{59}{section*.5}%
-\contentsline {subsection}{\numberline {5.3.2}A parametrized example}{62}{subsection.5.3.2}%
-\contentsline {subsection}{\numberline {5.3.3}Performance evaluation}{62}{subsection.5.3.3}%
-\contentsline {section}{\numberline {5.4}Conclusions}{65}{section.5.4}%
-\contentsline {chapter}{\numberline {6}Future Work}{66}{chapter.6}%
-\contentsline {chapter}{Appendix A}{68}{chapter*.6}%
-\contentsline {section}{\numberline {6.1}Theorems about Interpolants}{68}{section.6.1}%
-\contentsline {subsection}{\numberline {6.1.1}Interpolants are closed under conjunction and disjunction}{68}{subsection.6.1.1}%
-\contentsline {subsection}{\numberline {6.1.2}Interpolants distribute conjunctions over disjunctions in the A-part}{69}{subsection.6.1.2}%
-\contentsline {chapter}{Appendix B}{71}{chapter*.7}%
-\contentsline {section}{\numberline {6.2}Trace for example in theory combination chapter}{71}{section.6.2}%
-\contentsline {chapter}{Appendix C}{81}{chapter*.8}%
-\contentsline {section}{\numberline {6.3}Congruence Closure with Explanation operation header}{81}{section.6.3}%
-\contentsline {section}{\numberline {6.4}Hornsat (Gallier's data structure) header}{83}{section.6.4}%
-\contentsline {chapter}{References}{85}{chapter*.9}%
+\contentsline {subsection}{\numberline {3.2.2}Ground Horn Clauses with Explanations}{38}{subsection.3.2.2}%
+\contentsline {subsection}{\numberline {3.2.3}Conditional propagation in Kapur's algorithm}{38}{subsection.3.2.3}%
+\contentsline {section}{\numberline {3.3}Evaluation}{42}{section.3.3}%
+\contentsline {subsection}{\numberline {3.3.1}Detailed evaluation of examples}{42}{subsection.3.3.1}%
+\contentsline {subsubsection}{Symbol elimination example}{43}{section*.3}%
+\contentsline {subsubsection}{Simple example with disequality}{46}{section*.4}%
+\contentsline {section}{\numberline {3.4}Conclusions}{47}{section.3.4}%
+\contentsline {chapter}{\numberline {4}Interpolation algorithm for UTVPI Formulas}{48}{chapter.4}%
+\contentsline {section}{\numberline {4.1}Algorithm}{49}{section.4.1}%
+\contentsline {section}{\numberline {4.2}Implementation}{49}{section.4.2}%
+\contentsline {section}{\numberline {4.3}Evaluation}{51}{section.4.3}%
+\contentsline {subsection}{\numberline {4.3.1}Detailed evaluation of examples}{51}{subsection.4.3.1}%
+\contentsline {section}{\numberline {4.4}Conclusions}{56}{section.4.4}%
+\contentsline {chapter}{\numberline {5}Interpolation algorithm for the theory combination of EUF and UTVPI}{57}{chapter.5}%
+\contentsline {section}{\numberline {5.1}Algorithm}{58}{section.5.1}%
+\contentsline {section}{\numberline {5.2}Implementation}{59}{section.5.2}%
+\contentsline {section}{\numberline {5.3}Evaluation}{61}{section.5.3}%
+\contentsline {subsection}{\numberline {5.3.1}Detailed evaluation of a complete example}{61}{subsection.5.3.1}%
+\contentsline {subsubsection}{A simple example}{61}{section*.5}%
+\contentsline {subsection}{\numberline {5.3.2}A parametrized example}{64}{subsection.5.3.2}%
+\contentsline {subsection}{\numberline {5.3.3}Performance evaluation}{64}{subsection.5.3.3}%
+\contentsline {section}{\numberline {5.4}Conclusions}{67}{section.5.4}%
+\contentsline {chapter}{\numberline {6}Future Work}{68}{chapter.6}%
+\contentsline {chapter}{Appendix A}{70}{chapter*.6}%
+\contentsline {section}{\numberline {6.1}Theorems about Interpolants}{70}{section.6.1}%
+\contentsline {subsection}{\numberline {6.1.1}Interpolants are closed under conjunction and disjunction}{70}{subsection.6.1.1}%
+\contentsline {subsection}{\numberline {6.1.2}Interpolants distribute conjunctions over disjunctions in the A-part}{71}{subsection.6.1.2}%
+\contentsline {chapter}{Appendix B}{73}{chapter*.7}%
+\contentsline {section}{\numberline {6.2}Trace for example in theory combination chapter}{73}{section.6.2}%
+\contentsline {chapter}{Appendix C}{83}{chapter*.8}%
+\contentsline {section}{\numberline {6.3}Congruence Closure with Explanation operation header}{83}{section.6.3}%
+\contentsline {section}{\numberline {6.4}Hornsat (Gallier's data structure) header}{85}{section.6.4}%
+\contentsline {chapter}{References}{87}{chapter*.9}%

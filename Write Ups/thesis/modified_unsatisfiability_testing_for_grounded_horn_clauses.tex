@@ -4,12 +4,9 @@
   \begin{algorithmic}[1]
     \Procedure {satisfiable}{var H : Hornclause; var queue, combine: queuetype; 
     var GT(H) : Graph; var consistent : boolean}
-    \While {queue not empty and consistent}
+    \While {queue not empty}
     \State node := pop(queue);
     \For {clause1 in H[node].clauselist}
-    \If {$\neg$ clause1.isCommon()}
-    \State {numargs[clause1] := numargs[clause1] - 1}
-    \EndIf
     \If {numargs[clause1] = 0}
     \State nextnode := poslitlist[clause1];
     \If {$\neg$ H[nextnode].val}
@@ -27,7 +24,7 @@
     \EndIf
     \EndIf
     \EndFor
-    \If {queue is empty and consistent}
+    \If {queue is empty}
     \State {closure(combine, queue, R);}
     \EndIf
     \EndWhile

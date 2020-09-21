@@ -19,7 +19,7 @@ badd +7 octagonal.tex
 badd +7 dedication_acknowledgments.tex
 badd +3 related_work.tex
 badd +3 glossary.tex
-badd +4 euf.tex
+badd +8 euf.tex
 badd +542 ~/Documents/GithubProjects/master-thesis/Write\ Ups/paper_project/main.tex
 badd +1 ~/Documents/GithubProjects/master-thesis/Write\ Ups/paper_project/algpseudocode.sty
 badd +68 first_order_logic.tex
@@ -42,7 +42,7 @@ badd +1 general_architecture.tex
 badd +1 bussproofs.sty
 badd +18 future_work.tex
 badd +235 euf_algorithm.tex
-badd +37 euf_implementation.tex
+badd +159 euf_implementation.tex
 badd +3 ~/Downloads/10.1007_978-3-642-02959-2_15.bib
 badd +15 euf_theorem.tex
 badd +7 python_proof.tex
@@ -51,16 +51,30 @@ badd +1 appendices.tex
 badd +1 booktabs.sty
 badd +2 oct_algorithm.tex
 badd +1 oct_implementation.tex
-badd +13 euf_evaluation.tex
+badd +1 euf_evaluation.tex
 badd +57 oct_evaluation.tex
 badd +25 euf_abstract.tex
 badd +23 oct_abstract.tex
-badd +63 comb_abstract.tex
+badd +8 comb_abstract.tex
 badd +14 comb_algorithm.tex
 badd +69 comb_implementation.tex
 badd +50 comb_evaluation.tex
 badd +6 appendices_b.tex
 badd +3 th_comb_example_interp.txt
+badd +1 euf_conclusion.tex
+badd +1 oct_conclusion.tex
+badd +1 comb_conclusion.tex
+badd +5 appendix_a.tex
+badd +13 appendix_c.tex
+badd +29 modified_unsatisfiability_testing_for_grounded_horn_clauses.tex
+badd +3 modified_congruence_closure_with_explanation_algorithms_merge.tex
+badd +4 modified_congruence_closure_with_explanation_algorithms_propagate.tex
+badd +1 auxiliary_function_candidates.tex
+badd +2 auxiliary_function_auxiliar_explain.tex
+badd +2 auxiliary_function_allcandidates.tex
+badd +33 conditional_elimination_part_1.tex
+badd +31 conditional_elimination_part_2.tex
+badd +12 auxiliary_function_extended_explain.tex
 argglobal
 %argdel
 edit main.tex
@@ -84,14 +98,14 @@ set winminheight=0
 set winheight=1
 set winminwidth=0
 set winwidth=1
-exe '1resize ' . ((&lines * 29 + 30) / 61)
-exe 'vert 1resize ' . ((&columns * 77 + 77) / 155)
-exe '2resize ' . ((&lines * 29 + 30) / 61)
-exe 'vert 2resize ' . ((&columns * 77 + 77) / 155)
-exe '3resize ' . ((&lines * 29 + 30) / 61)
-exe 'vert 3resize ' . ((&columns * 77 + 77) / 155)
-exe '4resize ' . ((&lines * 29 + 30) / 61)
-exe 'vert 4resize ' . ((&columns * 77 + 77) / 155)
+exe '1resize ' . ((&lines * 22 + 23) / 47)
+exe 'vert 1resize ' . ((&columns * 69 + 69) / 139)
+exe '2resize ' . ((&lines * 22 + 23) / 47)
+exe 'vert 2resize ' . ((&columns * 69 + 69) / 139)
+exe '3resize ' . ((&lines * 12 + 23) / 47)
+exe 'vert 3resize ' . ((&columns * 69 + 69) / 139)
+exe '4resize ' . ((&lines * 32 + 23) / 47)
+exe 'vert 4resize ' . ((&columns * 69 + 69) / 139)
 argglobal
 setlocal fdm=manual
 setlocal fde=0
@@ -102,14 +116,12 @@ setlocal fml=1
 setlocal fdn=20
 setlocal fen
 silent! normal! zE
-10,81fold
-10
-normal! zc
-let s:l = 5 - ((0 * winheight(0) + 14) / 29)
+10,100fold
+let s:l = 161 - ((20 * winheight(0) + 11) / 22)
 if s:l < 1 | let s:l = 1 | endif
 exe s:l
 normal! zt
-5
+161
 normal! 0
 wincmd w
 argglobal
@@ -123,11 +135,11 @@ setlocal fml=1
 setlocal fdn=20
 setlocal fen
 silent! normal! zE
-let s:l = 100 - ((3 * winheight(0) + 14) / 29)
+let s:l = 118 - ((8 * winheight(0) + 11) / 22)
 if s:l < 1 | let s:l = 1 | endif
 exe s:l
 normal! zt
-100
+118
 normal! 010|
 wincmd w
 argglobal
@@ -141,12 +153,12 @@ setlocal fml=1
 setlocal fdn=20
 setlocal fen
 silent! normal! zE
-let s:l = 5 - ((1 * winheight(0) + 14) / 29)
+let s:l = 1 - ((0 * winheight(0) + 6) / 12)
 if s:l < 1 | let s:l = 1 | endif
 exe s:l
 normal! zt
-5
-normal! 0
+1
+normal! 03|
 wincmd w
 argglobal
 if bufexists("euf_implementation.tex") | buffer euf_implementation.tex | else | edit euf_implementation.tex | endif
@@ -159,35 +171,31 @@ setlocal fml=1
 setlocal fdn=20
 setlocal fen
 silent! normal! zE
-73,86fold
-89,101fold
-52,241fold
-242,254fold
-393,404fold
-405,421fold
-255,427fold
-1,427fold
+66,280fold
+281,293fold
+312,323fold
+324,340fold
+294,346fold
+1,346fold
 1
 normal! zo
-52
-normal! zo
-let s:l = 46 - ((18 * winheight(0) + 14) / 29)
+let s:l = 247 - ((23 * winheight(0) + 16) / 32)
 if s:l < 1 | let s:l = 1 | endif
 exe s:l
 normal! zt
-46
-normal! 023|
+247
+normal! 038|
 lcd ~/Documents/GithubProjects/master-thesis/Write\ Ups/thesis
 wincmd w
 4wincmd w
-exe '1resize ' . ((&lines * 29 + 30) / 61)
-exe 'vert 1resize ' . ((&columns * 77 + 77) / 155)
-exe '2resize ' . ((&lines * 29 + 30) / 61)
-exe 'vert 2resize ' . ((&columns * 77 + 77) / 155)
-exe '3resize ' . ((&lines * 29 + 30) / 61)
-exe 'vert 3resize ' . ((&columns * 77 + 77) / 155)
-exe '4resize ' . ((&lines * 29 + 30) / 61)
-exe 'vert 4resize ' . ((&columns * 77 + 77) / 155)
+exe '1resize ' . ((&lines * 22 + 23) / 47)
+exe 'vert 1resize ' . ((&columns * 69 + 69) / 139)
+exe '2resize ' . ((&lines * 22 + 23) / 47)
+exe 'vert 2resize ' . ((&columns * 69 + 69) / 139)
+exe '3resize ' . ((&lines * 12 + 23) / 47)
+exe 'vert 3resize ' . ((&columns * 69 + 69) / 139)
+exe '4resize ' . ((&lines * 32 + 23) / 47)
+exe 'vert 4resize ' . ((&columns * 69 + 69) / 139)
 tabnext 1
 if exists('s:wipebuf') && getbufvar(s:wipebuf, '&buftype') isnot# 'terminal'
   silent exe 'bwipe ' . s:wipebuf

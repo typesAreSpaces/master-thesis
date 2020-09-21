@@ -2,16 +2,18 @@
   \caption{Auxiliary function - ExtendedExplain}
   \linespread{\separationline}\selectfont
   \begin{algorithmic}[2]
-    \Procedure {ExtendedExplain} { $t_1$ : TERMS, $t_2$ : TERMS, $H$ : Horn clauses}
-    \State {let $result = \{\}$}
-    \If {$t_1.id() = t_2.id()$}
-    \State {\textbf{return} $result$;}
+    \Procedure {ExtendedExplain} { $t_1$ : TERMS, $t_2$ : TERMS, $H$ : Horn clauses, $\mathcal{E}$ : Conditional Equivalence Relation}
+    \If {$Find(t_1, \mathcal{E}) \neq Find(t_2, \mathcal{E})$}
+    \State {\textbf{throw } Error: $t_1, t_2$ do not belong to the same equivalence class }
     \EndIf
-    \State ${\{c, u\}$ = Explain($t_1$, $t_2$)} where $c$ is a list
+    \If {$t_1.id() = t_2.id()$}
+    \State {\textbf{return} $\{\}$}
+    \EndIf
+    \State {$\{c, u\}$ = Explain($t_1$, $t_2$, $\mathcal{E}$)} where $c$ is a list
     of common equation and $u$ is a list of uncommon equations
-    \State {\textbf{return} $c \cup \bigcup \{ExtendedExplain(eq) | 
+    \State {\textbf{return} $c \cup \bigcup \{ExtendedExplain(a, b, H, \mathcal{E}) | 
         consequent \in u,  
-        eq \in antecedent,  
+        a=b \in antecedent,  
         (\bigwedge antecedent) \rightarrow consequent \in H
     \}$}
     \EndProcedure
