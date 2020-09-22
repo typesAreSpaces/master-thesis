@@ -59,7 +59,7 @@ same, which was (not (= x1 x2)).
 
 \subsection{Performance comparison with iZ3 and MathSat}
 
-This discuss will discuss a parametric problem which will allows to test 
+This discuss will discuss a parametrized problem which will allows to test 
 our implementation and constrast the execution with other interpolant generation
 algorithms from Z3 and MathSat.
 
@@ -95,7 +95,8 @@ algorithms from Z3 and MathSat.
 \end{proof}
 
 The interpolation pair for our performance test 
-is $(f^n(x) = f^{n+1}(x) \land f^2(x) = x \land f(a) \neq a, x = a)$.
+is $(f^n(x) = f^{n+1}(x) \land f^2(x) = x \land f(a) \neq a, x = a)$
+for fixed $n \in \mathbb{N}$.
 It is easy to see that the pair is inconsistent due to the lemma 
 \ref{performance_test_lemma}.
 
