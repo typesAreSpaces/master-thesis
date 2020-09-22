@@ -11,7 +11,7 @@ Let us consider the following example from \cite{KAPUR2017}
 $\alpha_1 = \{f(z_1, v) = s_1, f(z_2, v) = s_2, f(f(y_1, v), f(y_2, v)) = t\}$
 with the set of symbols to eliminate $U_1 = \{u\}$. The implementation produces the following
 trace (slightly modified for presentation purposes) in order to compute 
-the interpolant for $\alpha_1; U_1$:
+the interpolant of $\alpha_1; U_1$:
 
 \verbatiminput{../../Software/Cpp/EUFInterpolant/tests/traces/current_progress_example1.txt}
 
@@ -20,14 +20,18 @@ conventional A-part, B-part format. In order to compare the results with the imp
 instances were tested so we can obtain interpolants from both systems:
 
 \begin{itemize}
-\item Problem instance: A-part : $\{f(z_1, v) = s_1, f(z_2, v) = s_2, f(f(y_1, v), f(y_2, v)) = t\}$; B-part : $\{z_1 = z_2, s_1 \neq s_2 \}$
+\item Problem instance: A-part : $\{f(z_1, v) = s_1, f(z_2, v) 
+  = s_2, f(f(y_1, v), f(y_2, v)) = t\}$; B-part : 
+  $\{z_1 = z_2, s_1 \neq s_2 \}$
 \begin{itemize}
 \item Z3: (or (= s2 s1) (not (= z2 z1)))
 \item Mathsat: (not (and (= z1 z2) (not (= s1 s2))))
 \item Our implemenation: ($\rightarrow$ (= z1 z2) (= s1 s2))
 \end{itemize}
 
-\item Problem instance: A-part : $\{f(z_1, v) = s_1, f(z_2, v) = s_2, f(f(y_1, v), f(y_2, v)) = t\}$; B-part : $\{z_1 = y_1, z_1 = y_2, f(s_1, s_1) \neq t\}$
+\item Problem instance: A-part : $\{f(z_1, v) = s_1, f(z_2, v) 
+  = s_2, f(f(y_1, v), f(y_2, v)) = t\}$; 
+  B-part : $\{z_1 = y_1, z_1 = y_2, f(s_1, s_1) \neq t\}$
 \begin{itemize}
 \item Z3: (or (= (f s1 s1) t) (not (= z1 y1)) (not (= y2 y1)))
 \item Mathsat: (not (and (not (= t (f s1 s1))) (and (= z1 y1) (= z1 y2))))
@@ -52,6 +56,53 @@ To compare our result with Z3 and Mathsat we
 included the B-part formula to be $\{x_1 = x_2\}$.
 The interpolants obtained by these systems were the 
 same, which was (not (= x1 x2)).
+
+\subsection{Performance comparison with iZ3 and MathSat}
+
+This discuss will discuss a parametric problem which will allows to test 
+our implementation and constrast the execution with other interpolant generation
+algorithms from Z3 and MathSat.
+
+\begin{lemma} \label{performance_test_lemma}
+  Let $x$ be a constant and $f$ an unary function in the EUF language. 
+  For every $n \in \mathbb{N}$ the following conjunction is unsatisfiable:
+  \begin{equation*}
+    f^n(x) = f^{n+1}(x), f^2(x) = x, f(x) \neq x
+  \end{equation*}
+  where $f^n(x)$ denotes de application of the function $f$ n-times
+  to the constant $x$.
+\end{lemma}
+
+\begin{proof}
+  Applying the congruence and transitive rules to the equation $f^2(x) = x$, 
+  we can prove that for any number $n$ the two following equations hold:
+  $x = f^{2n}(x)$ and $f(x) = f^{2n+1}(x)$.
+
+  At this point we distinguish two cases for $n$:
+
+  \begin{itemize}
+    \item Case $n$ is even: Then $\exists m \in \mathbb{N} . n = 2m$.
+      So by choosing $n = m$ to the above sequence
+      and by the axiom $f^{2m}(x) = f^{2m+1}(x)$ we have that
+      $x = f(x)$.
+    \item Case $n$ is odd: Similarly to the previous reasoning, 
+      we can also infer the equation $f^{2m+1}(x) = f^{2m+2}(x)$
+      by congruence, so $x = f(x)$.
+    \end{itemize}
+
+    In both cases the equation $x = f(x)$ reaches contradiction with the
+    disequality $x \neq f(x)$.
+\end{proof}
+
+The interpolation pair for our performance test 
+is $(f^n(x) = f^{n+1}(x) \land f^2(x) = x \land f(a) \neq a, x = a)$.
+It is easy to see that the pair is inconsistent due to the lemma 
+\ref{performance_test_lemma}.
+
+We executed this problem for the following values of $n$ TODO: MISSING
+VALUES. 
+The times reported by our implementation, iZ3, and the interpolation 
+generation algorithm of MathSat are the following:
 
 %%% Local Variables:
 %%% mode: latex
