@@ -40,40 +40,33 @@ $(ODIR)/%.o: $(SDIR)/%.cpp $(DEPS)
 
 # ------------------------------------------------------------------------------------------
 #  Tests
+
+.PHONY: tester
+tester: $(OBJS)
+	$(CC) -g -c -o ./$(param1).o $(FLAGS) ./$(param1).cpp
+	$(CC) -g -o $(param1) $(OBJS) ./$(param1).o -lpthread -Wall
+	./$(param1)
+	rm -rf tests/*.o $(param1)
+
 .PHONY: tests/res_proof_test
 tests/res_proof_test: $(OBJS) 
-	$(CC) -g -c -o ./$@.o $(FLAGS) ./$@.cpp
-	$(CC) -g -o $@ $(OBJS) ./$@.o -lpthread -Wall
-	./$@
-	rm -rf tests/*.o $@
+	make tester param1=tests/res_proof_test
 
 .PHONY: tests/proof_factory_test
 tests/proof_factory_test: $(OBJS) 
-	$(CC) -g -c -o ./$@.o $(FLAGS) ./$@.cpp
-	$(CC) -g -o $@ $(OBJS) ./$@.o -lpthread -Wall
-	./$@
-	rm -rf tests/*.o $@
+	make tester param1=tests/proof_factory_test
 
 .PHONY: tests/cdcl_t_test
-tests/cdcl_t_test: $(OBJS) # Done 
-	$(CC) -g -c -o ./$@.o $(FLAGS) ./$@.cpp
-	$(CC) -g -o $@ $(OBJS) ./$@.o -lpthread -Wall
-	./$@
-	rm -rf tests/*.o $@
+tests/cdcl_t_test: $(OBJS) 
+	make tester param1=tests/cdcl_t_test
 
 .PHONY: tests/disj_eqs_propagator_test
-tests/disj_eqs_propagator_test: $(OBJS) # Done
-	$(CC) -g -c -o ./$@.o $(FLAGS) ./$@.cpp
-	$(CC) -g -o $@ $(OBJS) ./$@.o -lpthread -Wall
-	./$@
-	rm -rf tests/*.o $@
+tests/disj_eqs_propagator_test: $(OBJS) 
+	make tester param1=tests/disj_eqs_propagator_test
 
 .PHONY: tests/basic_test
 tests/basic_test: $(OBJS)
-	$(CC) -g -c -o ./$@.o $(FLAGS) ./$@.cpp
-	$(CC) -g -o $@ $(OBJS) ./$@.o -lpthread -Wall
-	./$@
-	rm -rf tests/*.o $@
+	make tester param1=tests/basic_test
 
 .PHONY: tests/smt_file_test
 tests/smt_file_test: $(OBJS)

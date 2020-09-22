@@ -34,33 +34,28 @@ $(ODIR)/%.o: $(SDIR)/%.cpp $(DEPS)
 # ------------------------------------------------------------------------------------------
 #  Tests
 
+.PHONY: tester
+tester: $(OBJS)
+	$(CC) -g -c -o ./$(param1).o $(FLAGS) ./$(param1).cpp
+	$(CC) -g -o $(param1) $(OBJS) ./$(param1).o -lpthread -Wall
+	./$(param1)
+	rm -rf tests/*.o $(param1)
+
 .PHONY: tests/test_octagon_parser
 tests/test_octagon_parser: $(OBJS) 
-	$(CC) -g -c -o ./$@.o $(FLAGS) ./$@.cpp
-	$(CC) -g -o $@ $(OBJS) ./$@.o -lpthread -Wall
-	./$@
-	rm -rf tests/*.o $@
+	make tester param1=tests/test_octagon_parser
 
 .PHONY: tests/test_octagon_constructor
 tests/test_octagon_constructor: $(OBJS) 
-	$(CC) -g -c -o ./$@.o $(FLAGS) ./$@.cpp
-	$(CC) -g -o $@ $(OBJS) ./$@.o -lpthread -Wall
-	./$@
-	rm -rf tests/*.o $@
+	make tester param1=tests/test_octagon_constructor
 
 .PHONY: tests/test_bound_constructor
 tests/test_bound_constructor: $(OBJS) 
-	$(CC) -g -c -o ./$@.o $(FLAGS) ./$@.cpp
-	$(CC) -g -o $@ $(OBJS) ./$@.o -lpthread -Wall
-	./$@
-	rm -rf tests/*.o $@
+	make tester param1=tests/test_bound_constructor
 
 .PHONY: tests/current_progress
 tests/current_progress: $(OBJS) 
-	$(CC) -g -c -o ./$@.o $(FLAGS) ./$@.cpp
-	$(CC) -g -o $@ $(OBJS) ./$@.o -lpthread -Wall
-	./$@
-	rm -rf tests/*.o $@
+	make tester param1=tests/current_progress
 
 # ------------------------------------------------------------------------------------------
 .PHONY: clean

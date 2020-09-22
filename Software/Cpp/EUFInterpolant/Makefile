@@ -34,12 +34,17 @@ $(ODIR)/%.o: $(SDIR)/%.cpp $(DEPS)
 	$(CC) -g -c -o $@ $(FLAGS) $<
 # ------------------------------------------------------------------------------------------
 # Tests
+
+.PHONY: tester
+tester: $(OBJS)
+	$(CC) -g -c -o ./$(param1).o $(FLAGS) ./$(param1).cpp
+	$(CC) -g -o $(param1) $(OBJS) ./$(param1).o -lpthread -Wall
+	./$(param1)
+	rm -rf tests/*.o $(param1)
+
 .PHONY: tests/current_progress
 tests/current_progress: $(OBJS)
-	$(CC) -g -c -o ./$@.o $(FLAGS) ./$@.cpp
-	$(CC) -g -o $@ $(OBJS) ./$@.o -lpthread
-	./$@
-	#rm -rf tests/*.o $@
+	make tester param1=tests/current_progress
 
 .PHONY: valgrind_run
 valgrind_run: $(OBJS)
