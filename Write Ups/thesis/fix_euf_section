@@ -7,12 +7,12 @@ if expand('%') == '' && !&modified && line('$') <= 1 && getline(1) == ''
   let s:wipebuf = bufnr('%')
 endif
 set shortmess=aoO
-badd +1 main.tex
+badd +30 main.tex
 badd +8 abstract.tex
 badd +1 background.tex
 badd +9 preliminaries.tex
 badd +172 introduction.tex
-badd +79 references.bib
+badd +95 references.bib
 badd +338 unmeethesis.cls
 badd +32 proof_of_main_theorem_octagons.tex
 badd +7 octagonal.tex
@@ -42,7 +42,7 @@ badd +1 general_architecture.tex
 badd +1 bussproofs.sty
 badd +18 future_work.tex
 badd +235 euf_algorithm.tex
-badd +280 euf_implementation.tex
+badd +171 euf_implementation.tex
 badd +3 ~/Downloads/10.1007_978-3-642-02959-2_15.bib
 badd +15 euf_theorem.tex
 badd +7 python_proof.tex
@@ -72,21 +72,15 @@ badd +26 modified_congruence_closure_with_explanation_algorithms_propagate.tex
 badd +1 auxiliary_function_candidates.tex
 badd +2 auxiliary_function_auxiliar_explain.tex
 badd +9 auxiliary_function_allcandidates.tex
-badd +5 conditional_elimination_part_1.tex
-badd +21 conditional_elimination_part_2.tex
+badd +18 conditional_elimination_part_1.tex
+badd +20 conditional_elimination_part_2.tex
 badd +12 auxiliary_function_extended_explain.tex
+badd +5 conditional_replacement_part_1.tex
+badd +5 conditional_replacement_part_2.tex
 argglobal
 %argdel
-edit main.tex
+edit euf.tex
 set splitbelow splitright
-wincmd _ | wincmd |
-vsplit
-1wincmd h
-wincmd _ | wincmd |
-split
-1wincmd k
-wincmd w
-wincmd w
 wincmd _ | wincmd |
 split
 1wincmd k
@@ -98,36 +92,9 @@ set winminheight=0
 set winheight=1
 set winminwidth=0
 set winwidth=1
-exe '1resize ' . ((&lines * 37 + 35) / 70)
-exe 'vert 1resize ' . ((&columns * 69 + 69) / 139)
-exe '2resize ' . ((&lines * 30 + 35) / 70)
-exe 'vert 2resize ' . ((&columns * 69 + 69) / 139)
-exe '3resize ' . ((&lines * 13 + 35) / 70)
-exe 'vert 3resize ' . ((&columns * 69 + 69) / 139)
-exe '4resize ' . ((&lines * 54 + 35) / 70)
-exe 'vert 4resize ' . ((&columns * 69 + 69) / 139)
+exe '1resize ' . ((&lines * 14 + 30) / 61)
+exe '2resize ' . ((&lines * 44 + 30) / 61)
 argglobal
-setlocal fdm=manual
-setlocal fde=0
-setlocal fmr={{{,}}}
-setlocal fdi=#
-setlocal fdl=1
-setlocal fml=1
-setlocal fdn=20
-setlocal fen
-silent! normal! zE
-10,100fold
-10
-normal! zc
-let s:l = 161 - ((32 * winheight(0) + 18) / 37)
-if s:l < 1 | let s:l = 1 | endif
-exe s:l
-normal! zt
-161
-normal! 0
-wincmd w
-argglobal
-if bufexists("references.bib") | buffer references.bib | else | edit references.bib | endif
 setlocal fdm=manual
 setlocal fde=0
 setlocal fmr={{{,}}}
@@ -137,30 +104,12 @@ setlocal fml=1
 setlocal fdn=20
 setlocal fen
 silent! normal! zE
-let s:l = 115 - ((0 * winheight(0) + 15) / 30)
+let s:l = 2 - ((0 * winheight(0) + 7) / 14)
 if s:l < 1 | let s:l = 1 | endif
 exe s:l
 normal! zt
-115
+2
 normal! 0
-wincmd w
-argglobal
-if bufexists("euf.tex") | buffer euf.tex | else | edit euf.tex | endif
-setlocal fdm=manual
-setlocal fde=0
-setlocal fmr={{{,}}}
-setlocal fdi=#
-setlocal fdl=0
-setlocal fml=1
-setlocal fdn=20
-setlocal fen
-silent! normal! zE
-let s:l = 1 - ((0 * winheight(0) + 6) / 13)
-if s:l < 1 | let s:l = 1 | endif
-exe s:l
-normal! zt
-1
-normal! 03|
 wincmd w
 argglobal
 if bufexists("euf_implementation.tex") | buffer euf_implementation.tex | else | edit euf_implementation.tex | endif
@@ -174,30 +123,24 @@ setlocal fdn=20
 setlocal fen
 silent! normal! zE
 66,270fold
-316,326fold
-327,343fold
-271,365fold
-1,365fold
+335,339fold
+342,373fold
+271,373fold
+1,373fold
 1
 normal! zo
 271
 normal! zo
-let s:l = 349 - ((16 * winheight(0) + 27) / 54)
+let s:l = 376 - ((17 * winheight(0) + 22) / 44)
 if s:l < 1 | let s:l = 1 | endif
 exe s:l
 normal! zt
-349
+376
 normal! 0
 wincmd w
-4wincmd w
-exe '1resize ' . ((&lines * 37 + 35) / 70)
-exe 'vert 1resize ' . ((&columns * 69 + 69) / 139)
-exe '2resize ' . ((&lines * 30 + 35) / 70)
-exe 'vert 2resize ' . ((&columns * 69 + 69) / 139)
-exe '3resize ' . ((&lines * 13 + 35) / 70)
-exe 'vert 3resize ' . ((&columns * 69 + 69) / 139)
-exe '4resize ' . ((&lines * 54 + 35) / 70)
-exe 'vert 4resize ' . ((&columns * 69 + 69) / 139)
+2wincmd w
+exe '1resize ' . ((&lines * 14 + 30) / 61)
+exe '2resize ' . ((&lines * 44 + 30) / 61)
 tabnext 1
 if exists('s:wipebuf') && getbufvar(s:wipebuf, '&buftype') isnot# 'terminal'
   silent exe 'bwipe ' . s:wipebuf

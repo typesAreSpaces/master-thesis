@@ -28,10 +28,10 @@
 \contentsline {subsection}{\numberline {3.2.1}New conditional elimination step in Kapur's algorithm}{33}{subsection.3.2.1}%
 \contentsline {subsection}{\numberline {3.2.2}Invariants of the proposed conditional elimination step}{36}{subsection.3.2.2}%
 \contentsline {subsection}{\numberline {3.2.3}New conditional replacement step in Kapur's algorithm}{39}{subsection.3.2.3}%
-\contentsline {subsection}{\numberline {3.2.4}An extra application: Ground Horn Clauses with Explanations}{43}{subsection.3.2.4}%
-\contentsline {section}{\numberline {3.3}Evaluation}{44}{section.3.3}%
-\contentsline {subsection}{\numberline {3.3.1}Detailed evaluation of examples}{44}{subsection.3.3.1}%
-\contentsline {subsubsection}{Symbol elimination example}{44}{section*.3}%
+\contentsline {subsection}{\numberline {3.2.4}An additional application: checking membership of ground Horn clauses with Explanations}{43}{subsection.3.2.4}%
+\contentsline {section}{\numberline {3.3}Evaluation}{45}{section.3.3}%
+\contentsline {subsection}{\numberline {3.3.1}Detailed evaluation of examples}{45}{subsection.3.3.1}%
+\contentsline {subsubsection}{Symbol elimination example}{45}{section*.3}%
 \contentsline {subsubsection}{Simple example with disequality}{47}{section*.4}%
 \contentsline {section}{\numberline {3.4}Conclusions}{48}{section.3.4}%
 \contentsline {chapter}{\numberline {4}Interpolation algorithm for UTVPI Formulas}{49}{chapter.4}%

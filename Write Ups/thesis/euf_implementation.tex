@@ -196,7 +196,7 @@ inference rules with the following lemmas:
   should exists in $H$.
 \end{proof}
 
-\begin{lemma}
+\begin{lemma}\label{extended_explain_common_lemma}
 
   Let $H$ be a set of Horn clauses produced by Phase II
   of Kapur's algorithm in some EUF language 
@@ -269,8 +269,9 @@ inference rules with the following lemmas:
 step in Kapur's algorithm}
 
 Once the conditional equivalence relation is built after 
-the execution of the previous step, we can compute conditional eliminations
-as follows. For the latter, we will require the following auxiliary functions:
+the execution of the previous step, we can compute conditional
+replacements as follows. For the latter, we will require 
+the following auxiliary functions:
 
 \input{auxiliary_function_candidates}
 \input{auxiliary_function_allcandidates}
@@ -279,125 +280,177 @@ By inspection is easy to notice that $Candidates$
 and $allCandidates$ return a set of common terms and
 a set of sets of common terms respectively.
 
-The proposed conditional elimination step produces common Horn 
+The proposed conditional replacement step produces common Horn 
 clauses from previous uncommon equations and uncommon Horn 
 clauses obtained in Phase II of Kapur's algorithm.
 The pseudo-code of the algorithms to 
 process the original equations are shown below:
 
-\input{conditional_elimination_part_1}
-\input{conditional_elimination_part_2}
+\input{conditional_replacement_part_1}
+\input{conditional_replacement_part_2}
 
-TODO: keep working here. Pay special attention to details of
-the formalization.
-
-\begin{lemma}
+\begin{lemma} \label{conditional_replacement_lemma}
   Let $Eqs := \{f(\mathfrak{a}_{i, 1}, \dots, \mathfrak{a}_{i, n}) 
   = \mathfrak{a}_i\}$ be the set of equations produced
   in Phase I of Kapur's algorithms, $H$ the set of 
   Horn clauses obtained in Phase II, and $\mathcal{E^{'}}$ the 
   conditional equivalence
-  relation obtained by the proposed conditional elimination
+  relation obtained by the proposed conditional replacement
   step.
   Executing the proposed conditional replacement step
   on $Eqs, H, \mathcal{E}$ produces common Horn clauses.
 \end{lemma}
 
 \begin{proof}
-  From inspection of the algorithm in MISSING REF
-  we noticed that the antecedent of the Horn clauses 
+  By inspecting the conditional replacement algorithm 
+  in \ref{conditional_replacement_part_1_impl},
+  we noticed the antecedents of the Horn clauses 
   constructed are obtained using the ExtendedExplain 
-  procedure, which from lemma MISSING REF it only 
-  produces common equations.
+  procedure, which from lemma \ref{extended_explain_common_lemma} 
+  it produces a list of only common equations.
 
-  Additionally, the consequent part of all the Horn
-  clauses produced in the conditional replacement procedure
-  are obtained using the $candidates$ and a cartesian 
-  combination (?) of the members of $allCandidates$. Hence,
-  the consequents are common equations.
+  Additionally, the equations in the consequent part 
+  of the Horn clauses produced in the conditional replacement 
+  procedure are of the form:
   
-  Therefore, the algorithm only adds common Horn clauses.
-\end{proof}
+  \begin{itemize}
+      \item $\sigma_x = \sigma_y$, 
+        where $\exists t_1, t_2 \in TERMS$
+        such that $\sigma_x \in Candidates(t_1)$ and 
+        $\sigma_y \in Candidates(t_2)$
+      \item $\sigma_x = f(arguments_{f})$, 
+        where $\exists t, f(t_1, \dots, t_n) \in TERMS$
+        such that $\sigma_x \in Candidates(t)$ and
+        $f(arguments_f) \in \{f(\hat{t_1}, \dots, \hat{t_n})
+          | \text{ f is a common functional symbol },
+          \hat{t_i} \in Candidates(t_i) \text{ for } 1 \leq i \leq n
+        \}$
+      \item $f_x(arguments_x) = f_y(arguments_y)$, using the same
+        definition for $f(arguments_f)$ from previous item
+  \end{itemize}
 
-TODO: fix vagueness in this paragraph.
+  It is easy to see that the above equations are common if any
+  of the involved sets are not empty. Therefore, the algorithm 
+  only produces common Horn clauses.
+\end{proof}
 
 In order to process Horn clauses obtained 
 from Phase II of Kapur's algorithm, we apply 
-the conditional elimination step for equation
-over the equation in the a
-At the end of this algorithm we can identify 
-\emph{usable Horn clauses} by checking the Horn clauses
-with \emph{numargs} entries equal to 0. 
+the conditional replacement step for equations
+over the equations in the consequent of all 
+the Horn clauses which $numargs$ entries are 
+equal to 0.
 
-
-The are two main invariants for the Horn clauses formed by the
-conditional propagation procedure: 
-
-\begin{itemize}
-  \item the antecedents are constructed using the \emph{Explain} operator, 
-    which returns a sequence of common equations since these are the 
-    only merged terms added at the beginning of the initialization 
-    routine of the modified Gallier's data structure.
-
-    An additional property must be checked when processing previous
-    Horn clauses. The `previous' antecedent for these clauses must be \emph{explainable},
-    which means that every equation in the antecedent must belong to the conditional
-    congruence closure, otherwise an empty explaination will be produced by the
-    \emph{Explain} operator. If a Horn clause antecedent is not \emph{explainable}
-    the resulting Horn clause cannot be added to the final result.
-
-  \item the consequents are constructed with the help of the \emph{Candidates},
-    \emph{AllCandidates}, and the \emph{CartesianProd} operators. 
-    The former is a function that takes as input
-    a term and returns a list of common terms
-    that belong to the equivalence relation of a given term if such term is uncommon,
-    and return a list containing the term itself if the term is common; the 
-    \emph{AllCandidates} function takes as input a function application term and
-    constructs a list of lists with common terms that are equivalent to the arguments
-    of the function application if the function symbol is common, and returns an empty
-    list otherwise; \emph{CartesianProd} implements a cartesian product, i.e. it 
-    produces a list of n-tuples given as input a list of $n$ list of terms (the 
-      composition of \emph{CartesianProd} and \emph{AllCandidates} are meant to be
-    used to produce a function application free of uncommon terms). Finally, the
-    head equations for the new Horn clauses are obtained by equating the left-hand
-    side common candidates and right-hand side common candidates obtained by these 
-    procedures.
-\end{itemize}
-
-
-\subsection{An extra application: Ground Horn Clauses with Explanations}
-
-We notice that by adding common equations
-from the antecedent of the Horn clauses during the 
-conditional elimination step we are able to 
-extend the equivalence relation to a conditional
-equivalence relation that includes the set 
-of consequences from the afore mentioned common equations.
-In a more general setting we can specify arbitrarily the
-set of equations that are meant to enlarge the theory
-to a conditional equivalence relation for specific purposes.
-
-In particular, given an equivalence relation $\mathcal{E}$, a 
-set of Horn clauses $H$, and Horn clause $h$ of the form 
-$\bigwegde (a_i = b_i) \rightarrow consequent$, we can 
-provide an explanation to the query $H \models_{\mathcal{E}} h$
-by conditionally extending $H$ with the equations
-from the antecedent of $h$ and then retrieving an explanation
-for the member of the consequent of $H$ in the conditional 
-equivalence relation.
-
-TODO: keep working here. Fill the missing details.
 \begin{lemma}
-  Let $H$ be blah blah blah
-  Let $explanation := \{equation_1 \dots equation_n \}$ be the 
-  explanation of $H \models_{\mathcal{E^{'}}} consequent$.
-  The explanation for $H \models_{\mathcal{E}} antecedent 
-  \rightarrow consequent$ is the subset of $explanation$
-  that does not contain the equation from $antecedent$.
+  Let $H$ be the set of Horn clauses
+  obtained at the end of Phase II of Kapur's 
+  algorithm with $numargs$ entry equal to 0 
+  and $\mathcal{E^{'}}$ the associated
+  conditional equivalence relation obtained 
+  at the end of the conditional elimination 
+  procedure. 
+  If $h \in H$ is of the form $\bigwedge_i (a_i = b_i) 
+  \rightarrow c = d$, then the Horn clauses
+  $\{\bigwedge_i ExtendedExplain(a_i, b_i, H, \mathcal{E^{'}})
+    \rightarrow h^{'}  | 
+    h^{'} \in 
+ConditionalReplacement(c, d, H, \mathcal{E^{'}})\}$
+are common Horn clauses.
 \end{lemma}
 
 \begin{proof}
-\end{proof} 
+  We observe that if the $numargs$ entry of a Horn clause
+  $h \in H$ is equal to 0, then 
+  all the equations in the antecedent of $h$ belong 
+  to the conditional equivalence relation. Thus, 
+  there exists a proof in $\mathcal{E^{'}}$ for
+  each of these equations. From the latter, the consequent
+  of $h$ also belongs to the conditional equivalence
+  relation. Using Lemmas \ref{extended_explain_common_lemma}
+  and \ref{conditional_replacement_lemma} we can conclude that
+  the Horn clause in the statement is a common Horn clause.
+\end{proof}
+
+\subsection{An additional application: checking
+  membership of ground Horn clauses 
+with Explanations}
+
+By adding common equations
+from the antecedent of the Horn clauses during the 
+conditional elimination step we are able to 
+extend an equivalence relation to a conditional
+equivalence relation that includes the set 
+of consequences from the aforementioned common equations.
+In a more general setting, we can specify an arbitrary
+set of equations, or property, 
+that are meant to enlarge the theory
+to a conditional equivalence relation for 
+specific purposes. In order to reuse the ExtendedExplain
+procedure and associated lemmas, we replace the $common$
+predicate for any predicate of interest.
+
+In particular, given an equivalence relation $\mathcal{E}$, a 
+set of Horn clauses $H$, and Horn clause $h$ of the form 
+$\bigwedge (a_i = b_i) \rightarrow c = d$, we can 
+find an explanation to the query $H \models_{\mathcal{E}} h$
+by conditionally extending $H$ with the equations
+from the antecedent of $h$ and then retrieving an explanation
+of the membership of the consequent of $h$ in the conditional 
+equivalence relation.
+
+\begin{lemma}
+  Let $H$ be a set of Horn clauses, $h$ a Horn clause of the
+  form $(\bigwedge_i a_i = b_i) \rightarrow c = d$, 
+  $\mathcal{E}$ an equivalence relation between terms 
+  of a language in EUF, and $\mathcal{E^{'}}$ the asociated
+  conditional equivalence relation obtained from extending
+  $\mathcal{E}$ with the equations in the antecedent of $h$.
+
+  If there exists an explanation 
+  $\mathfrak{p} := \{\mathfrak{a}_1 = \mathfrak{b}_1 
+  \dots \mathfrak{a}_n = \mathfrak{b}_n\}$ 
+  for the query $H \models_{\mathcal{E^{'}}} c = d$,
+  then the explanation for the query 
+  $H \models_{\mathcal{E}} (\bigwedge_i a_i = b_i) 
+  \rightarrow c = d$ is the subset of $\mathfrak{p}$
+  that does not contain equations from 
+  $\bigcup_{i=1}^n\{a_i = b_i\}$.
+\end{lemma}
+
+\begin{proof}
+  If there exists an explanation $\mathfrak{p}$ for 
+  $H \models_{\mathcal{E^{'}}} c = d$ then there exists 
+  a proof tree with $c = d$ as root node and the equations
+  from $\mathfrak{p}$ as leaves. 
+  From lemma \ref{existence_horn_in_explain} and the definition \ref{explain_def}
+  we notice that $\mathfrak{p}$ only contains
+  equations derived from $\mathcal{E}$ 
+  and the antecedent of $h$. 
+
+  Using the \emph{discharge
+  rule} from basic propositional logic, i.e. 
+  \begin{prooftree}
+    \hypo[]{[A]}
+    \ellipsis{}{B}
+    \infer1{A \rightarrow B}
+  \end{prooftree}
+  , then we can obtain a proof tree with leaves
+  only containing terms that do not belong to the antecedent 
+  of $h$.
+
+  Hence, the new proof tree will 
+  have $(\bigwedge_{i=1}^m a^{'}_i = b^{'}_i) \rightarrow c = d$
+  as root node and derived equations from $\mathcal{E}$
+  as leaves, where $\{a^{'}_i = b^{'}_i\} \subseteq 
+  antecedent(h)$ for each $1 \leq i \leq m$. 
+  Thus $\models antecedent(h) 
+  \rightarrow a^{'}_i = b^{'}_i$ for each $1 \leq i \leq m$.
+  Let $\mathfrak{p^{'}}$ be $\mathfrak{p} \setminus \bigcup_{i=1}^m\{a_i = b_i\}$.
+  Therefore, by transitivity, we have that $\mathfrak{p^{'}}$
+  is an explanation in $\mathcal{E}$ for $H \models_{\mathcal{E}}
+  h$.
+
+\end{proof}
 
 %%% Local Variables:
 %%% mode: latex
