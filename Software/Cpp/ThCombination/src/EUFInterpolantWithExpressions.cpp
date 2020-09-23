@@ -8,3 +8,7 @@ EUFInterpolantWithExpressions::EUFInterpolantWithExpressions(z3::expr_vector con
 EUFInterpolantWithExpressions::~EUFInterpolantWithExpressions()
 {
 }
+
+std::ostream & operator << (std::ostream & os, EUFInterpolantWithExpressions const & eufiexp){
+  return os << eufiexp.removePrefix(eufiexp.getInterpolant());
+}

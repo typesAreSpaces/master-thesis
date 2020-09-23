@@ -9,6 +9,8 @@ class EUFInterpolantWithExpressions : public RenameWithExpressions, public EUFIn
   EUFInterpolantWithExpressions(z3::expr_vector const &, z3::expr_vector const &);
   ~EUFInterpolantWithExpressions();
 
+  friend std::ostream & operator << (std::ostream &, EUFInterpolantWithExpressions const &);
+
 };
 
 #endif
