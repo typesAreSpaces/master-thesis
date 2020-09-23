@@ -26,12 +26,24 @@ DEPS = $(wildcard $(IDIR)/*.h)
 
 # ------------------------------------------------------------------------------------------
 #  Build
+#all: bin/eufi
 #all: tests/cong_closure_expl_test
-all: tests/current_progress
+#all: tests/current_progress
+all: tests/parametric_example
 #all: valgrind_run
 
 $(ODIR)/%.o: $(SDIR)/%.cpp $(DEPS)
 	$(CC) -g -c -o $@ $(FLAGS) $<
+
+
+# ------------------------------------------------------------------------------------------
+#  Binaries
+
+bin/eufi: $(OBJS) ./tests/eufi.cpp
+	$(CC) -g -c -o ./tests/eufi.o $(FLAGS) ./tests/eufi.cpp
+	$(CC) -g -o ./bin/eufi $(OBJS) ./tests/eufi.o -lpthread -Wall
+	rm -rf tests/*.o
+
 # ------------------------------------------------------------------------------------------
 # Tests
 
@@ -45,6 +57,10 @@ tester: $(OBJS)
 .PHONY: tests/current_progress
 tests/current_progress: $(OBJS)
 	make tester param1=tests/current_progress
+
+.PHONY: tests/parametric_example
+tests/parametric_example: $(OBJS)
+	make tester param1=tests/parametric_example
 
 .PHONY: valgrind_run
 valgrind_run: $(OBJS)
