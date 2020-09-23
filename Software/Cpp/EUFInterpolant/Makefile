@@ -59,8 +59,9 @@ tests/current_progress: $(OBJS)
 	make tester param1=tests/current_progress
 
 .PHONY: tests/parametric_example
-tests/parametric_example: $(OBJS)
-	make tester param1=tests/parametric_example
+tests/parametric_example:
+	$(CC) -g -o ./tests/parametric_example ./tests/parametric_example.cpp -pthread
+	./tests/parametric_example
 
 .PHONY: valgrind_run
 valgrind_run: $(OBJS)

@@ -1,3 +1,5 @@
+#include <exception>
+#include <thread>
 #include <fstream>
 #include <iostream>
 #include <string>
@@ -14,29 +16,32 @@ void iz3_instance(unsigned);
 void mathsat_instance(unsigned);
 void eufi_instance(unsigned);
 
-int main(){
+void iz3_process(unsigned);
+void mathsat_process(unsigned);
+void eufi_process_0(unsigned);
+void eufi_process_1(unsigned);
+void eufi_process_2(unsigned);
+void eufi_process_3(unsigned);
 
-  system("rm -rf iz3_results.txt");
-  system("rm -rf mathsat_results.txt");
-  system("rm -rf eufi_results.txt");
+int main(){
 
   unsigned n = 10000;
   //unsigned n = 100;
   //unsigned n = 10;
 
-  for(unsigned i = 1; i < n; ++i){
-    iz3_instance(i);
-    system(("{ time ../../bin/z3-interp  " + (IZ3_PREFIX + std::to_string(i)) + SMT_SUFFIX + "; } 2>> iz3_results.txt").c_str());
-    system(("rm " + (IZ3_PREFIX + std::to_string(i)) + SMT_SUFFIX).c_str());
+  std::thread iz3(iz3_process, n);
+  std::thread mathsat(mathsat_process, n);
+  std::thread eufi_0(eufi_process_0, n);
+  std::thread eufi_1(eufi_process_1, n);
+  std::thread eufi_2(eufi_process_2, n);
+  std::thread eufi_3(eufi_process_3, n);
 
-    mathsat_instance(i);
-    system(("{ time ../../bin/mathsat " + (MATHSAT_PREFIX + std::to_string(i)) + SMT_SUFFIX + "; } 2>> mathsat_results.txt").c_str());
-    system(("rm " + (MATHSAT_PREFIX + std::to_string(i)) + SMT_SUFFIX).c_str());
-
-    eufi_instance(i);
-    system(("{ time ./bin/eufi " + (EUFI_PREFIX + std::to_string(i)) + SMT_SUFFIX + "; } 2>> eufi_results.txt").c_str());
-    system(("rm " + (EUFI_PREFIX + std::to_string(i)) + SMT_SUFFIX).c_str());
-  }
+  iz3.join();
+  mathsat.join();
+  eufi_0.join();
+  eufi_1.join();
+  eufi_2.join();
+  eufi_3.join();
 
   return 0;
 }
@@ -164,4 +169,76 @@ void eufi_instance(unsigned n){
   out << std::endl;
   out << "(check-sat)" << std::endl;
   out.close();
+}
+
+void iz3_process(unsigned n){
+  system("rm -rf iz3_results.txt");
+  for(unsigned i = 1; i < n; ++i){
+    iz3_instance(i);
+    system(("echo \"test: " + std::to_string(i) + "\">> iz3_results.txt").c_str());
+    system(("{ time ../../bin/z3-interp  " + (IZ3_PREFIX + std::to_string(i)) + SMT_SUFFIX + "; } 2>> iz3_results.txt").c_str());
+    system(("rm " + (IZ3_PREFIX + std::to_string(i)) + SMT_SUFFIX).c_str());
+  }
+}
+
+void mathsat_process(unsigned n){
+  system("rm -rf mathsat_results.txt");
+  for(unsigned i = 1; i < n; ++i){
+    mathsat_instance(i);
+    system(("echo \"test: " + std::to_string(i) + "\">> mathsat_results.txt").c_str());
+    system(("{ time ../../bin/mathsat " + (MATHSAT_PREFIX + std::to_string(i)) + SMT_SUFFIX + "; } 2>> mathsat_results.txt").c_str());
+    system(("rm " + (MATHSAT_PREFIX + std::to_string(i)) + SMT_SUFFIX).c_str());
+  }
+}
+
+void eufi_process_0(unsigned n){
+  system("rm -rf eufi_results_0.txt");
+  for(unsigned i = 1; i < n; ++i){
+    unsigned r = i % 4;
+    if(r == 0){
+      eufi_instance(i);
+      system(("echo \"test: " + std::to_string(i) + "\">> eufi_results_0.txt").c_str());
+      system(("{ time ./bin/eufi " + (EUFI_PREFIX + std::to_string(i)) + SMT_SUFFIX + "; } 2>> eufi_results_0.txt").c_str());
+      system(("rm " + (EUFI_PREFIX + std::to_string(i)) + SMT_SUFFIX).c_str());
+    }
+  }
+}
+
+void eufi_process_1(unsigned n){
+  system("rm -rf eufi_results_1.txt");
+  for(unsigned i = 1; i < n; ++i){
+    unsigned r = i % 4;
+    if(r == 1){
+      eufi_instance(i);
+      system(("echo \"test: " + std::to_string(i) + "\">> eufi_results_1.txt").c_str());
+      system(("{ time ./bin/eufi " + (EUFI_PREFIX + std::to_string(i)) + SMT_SUFFIX + "; } 2>> eufi_results_1.txt").c_str());
+      system(("rm " + (EUFI_PREFIX + std::to_string(i)) + SMT_SUFFIX).c_str());
+    }
+  }
+}
+
+void eufi_process_2(unsigned n){
+  system("rm -rf eufi_results_2.txt");
+  for(unsigned i = 1; i < n; ++i){
+    unsigned r = i % 4;
+    if(r == 2){
+      eufi_instance(i);
+      system(("echo \"test: " + std::to_string(i) + "\">> eufi_results_2.txt").c_str());
+      system(("{ time ./bin/eufi " + (EUFI_PREFIX + std::to_string(i)) + SMT_SUFFIX + "; } 2>> eufi_results_2.txt").c_str());
+      system(("rm " + (EUFI_PREFIX + std::to_string(i)) + SMT_SUFFIX).c_str());
+    }
+  }
+}
+
+void eufi_process_3(unsigned n){
+  system("rm -rf eufi_results_3.txt");
+  for(unsigned i = 1; i < n; ++i){
+    unsigned r = i % 4;
+    if(r == 3){
+      eufi_instance(i);
+      system(("echo \"test: " + std::to_string(i) + "\">> eufi_results_3.txt").c_str());
+      system(("{ time ./bin/eufi " + (EUFI_PREFIX + std::to_string(i)) + SMT_SUFFIX + "; } 2>> eufi_results_3.txt").c_str());
+      system(("rm " + (EUFI_PREFIX + std::to_string(i)) + SMT_SUFFIX).c_str());
+    }
+  }
 }
