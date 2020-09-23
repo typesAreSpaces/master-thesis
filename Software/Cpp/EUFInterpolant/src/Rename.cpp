@@ -5,7 +5,7 @@ Rename::Rename(z3::context & ctx) :
 {
 }
 
-z3::expr Rename::removePrefix(z3::expr const & e){
+z3::expr Rename::removePrefix(z3::expr const & e) const {
   if(e.is_app()){
 
     auto f = e.decl();
@@ -71,7 +71,7 @@ z3::expr Rename::removePrefix(z3::expr const & e){
   throw "Problem @ Rename::reformulate: The formula e is not an expression.";
 }
 
-z3::expr_vector Rename::removePrefix(z3::expr_vector const & input){
+z3::expr_vector Rename::removePrefix(z3::expr_vector const & input) const {
   z3::expr_vector ans(input.ctx());
   for(auto const & entry : input)
     ans.push_back(removePrefix(entry));
