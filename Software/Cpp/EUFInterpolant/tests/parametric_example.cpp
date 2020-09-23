@@ -4,7 +4,8 @@
 #define IZ3_PREFIX     "iz3_instance_"
 #define MATHSAT_PREFIX "mathsat_instance_"
 #define EUFI_PREFIX    "eufi_instance_"
-#define SUFFIX         ".smt2"
+#define SMT_SUFFIX     ".smt2"
+#define TXT_SUFFIX     ".txt"
 
 // A-part : f^n(x) = f^{n+1}(x), f^2(x) = x, f(a) \neq a
 // B-part : x = a
@@ -15,26 +16,33 @@ void eufi_instance(unsigned);
 
 int main(){
 
-  //unsigned n = 10000;
-  unsigned n = 10;
+  system("rm -rf iz3_results.txt");
+  system("rm -rf mathsat_results.txt");
+  system("rm -rf eufi_results.txt");
 
-  iz3_instance(n);
-  system(("time ../../bin/z3-interp  " + (IZ3_PREFIX + std::to_string(n)) + SUFFIX).c_str());
-  system(("rm " + (IZ3_PREFIX + std::to_string(n)) + SUFFIX).c_str());
+  unsigned n = 10000;
+  //unsigned n = 100;
+  //unsigned n = 10;
 
-  mathsat_instance(n);
-  system(("time ../../bin/mathsat " + (MATHSAT_PREFIX + std::to_string(n)) + SUFFIX).c_str());
-  system(("rm " + (MATHSAT_PREFIX + std::to_string(n)) + SUFFIX).c_str());
+  for(unsigned i = 1; i < n; ++i){
+    iz3_instance(i);
+    system(("{ time ../../bin/z3-interp  " + (IZ3_PREFIX + std::to_string(i)) + SMT_SUFFIX + "; } 2>> iz3_results.txt").c_str());
+    system(("rm " + (IZ3_PREFIX + std::to_string(i)) + SMT_SUFFIX).c_str());
 
-  eufi_instance(n);
-  system(("time ./bin/eufi " + (EUFI_PREFIX + std::to_string(n)) + SUFFIX).c_str());
-  system(("rm " + (EUFI_PREFIX + std::to_string(n)) + SUFFIX).c_str());
-  
+    mathsat_instance(i);
+    system(("{ time ../../bin/mathsat " + (MATHSAT_PREFIX + std::to_string(i)) + SMT_SUFFIX + "; } 2>> mathsat_results.txt").c_str());
+    system(("rm " + (MATHSAT_PREFIX + std::to_string(i)) + SMT_SUFFIX).c_str());
+
+    eufi_instance(i);
+    system(("{ time ./bin/eufi " + (EUFI_PREFIX + std::to_string(i)) + SMT_SUFFIX + "; } 2>> eufi_results.txt").c_str());
+    system(("rm " + (EUFI_PREFIX + std::to_string(i)) + SMT_SUFFIX).c_str());
+  }
+
   return 0;
 }
 
 void iz3_instance(unsigned n){
-  std::ofstream out(IZ3_PREFIX + std::to_string(n) + SUFFIX);
+  std::ofstream out(IZ3_PREFIX + std::to_string(n) + SMT_SUFFIX);
 
   out << "(set-option :produce-interpolants true)" << std::endl;
   out << "(declare-sort A 0)" << std::endl;
@@ -77,7 +85,7 @@ void iz3_instance(unsigned n){
 } 
 
 void mathsat_instance(unsigned n){
-  std::ofstream out(MATHSAT_PREFIX + std::to_string(n) + SUFFIX);
+  std::ofstream out(MATHSAT_PREFIX + std::to_string(n) + SMT_SUFFIX);
 
   out << "(set-option :produce-interpolants true)" << std::endl;
   out << "(declare-sort A 0)" << std::endl;
@@ -121,7 +129,7 @@ void mathsat_instance(unsigned n){
 }
 
 void eufi_instance(unsigned n){
-  std::ofstream out(EUFI_PREFIX + std::to_string(n) + SUFFIX);
+  std::ofstream out(EUFI_PREFIX + std::to_string(n) + SMT_SUFFIX);
 
   out << "(declare-sort A 0)" << std::endl;
   out << "(declare-fun x () A)" << std::endl;
