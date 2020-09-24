@@ -12,6 +12,9 @@ OctagonParser::OctagonParser(z3::expr_vector const & assertions) :
   for(auto const & assertion : assertions){
     auto const & inequality = assertion.arg(0);
     auto const & bound = assertion.arg(1).get_numeral_int();
+#if DEBUG_OCT_PAR_CONST
+    std::cout << "Processing current assertion: " << assertion << std::endl;
+#endif
     unsigned num_operands = inequality.num_args();
 
     switch(num_operands){
@@ -41,6 +44,9 @@ OctagonParser::OctagonParser(z3::expr_vector const & assertions) :
         throw "Error OctagonParser. The operation is not allowed.";
     }
   }
+#if DEBUG_OCT_PAR_CONST
+  std::cout << "Done with assertions" << std::endl;
+#endif
   // The current id_generator is the
   // number of variables in the assertions
   bounds.insert(2*(id_generator-1)*(id_generator-1), Bound());
