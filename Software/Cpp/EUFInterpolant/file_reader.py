@@ -47,7 +47,7 @@ ax.scatter(steps, data_mathsat, marker='o', color='blue', label='Mathsat')
 
 ax.set_xlabel('# Test')
 ax.set_ylabel('Time in seconds')
-ax.set_title('Performance comparison of interpolant generation algorithms for EUF')
+ax.set_title('Performance comparison of interpolant generation algorithms for EUF using parametrized problem from section 3.2.2.')
 
 legend = ax.legend(loc='upper left', shadow=True, fontsize='x-large')
 
