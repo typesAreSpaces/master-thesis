@@ -17,6 +17,7 @@
 
 // The index is the hash of a z3::expr
 typedef std::unordered_map<unsigned, VarValue> IdTable;
+typedef std::unordered_map<VarValue, bool> IsCommonTable;
 
 class OctagonParser {
 
@@ -27,6 +28,7 @@ class OctagonParser {
 
   UtvpiPosition id_generator;
   IdTable       id_table;
+  IsCommonTable is_common_table;
   Bounds        bounds;
   VarPositions  positions;
 

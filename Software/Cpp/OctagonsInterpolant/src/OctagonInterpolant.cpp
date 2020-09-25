@@ -11,11 +11,12 @@ OctagonInterpolant::OctagonInterpolant(z3::expr_vector const & assertions) :
   for(auto const & var_to_elim : positions){
 #if _DEBUG_ELIM_
     std::cout << "Removing this var: x_" << var_value_to_elim << std::endl;
+    std::cout << "Initial state of bounds" << std::endl;
+    std::cout << bounds << std::endl;
 #endif
     for(auto const & pos_position : var_to_elim.first){
-      for(auto const & neg_position : var_to_elim.second){
+      for(auto const & neg_position : var_to_elim.second)
         elimination(pos_position, neg_position, var_value_to_elim);
-      }
       // update pos_position to inf.
       // The reason is line 178
       bounds.remove(pos_position);
@@ -42,9 +43,11 @@ void OctagonInterpolant::elimination(UtvpiPosition pos_position, UtvpiPosition n
       if(oct1.var2.value == oct2.var2.value){ // Same index
         if(oct1.coeff2 == oct2.coeff2){ // Same symbol sign
           new_bound.normalize(2);
-          bounds.insert(Octagon(oct1.coeff2, oct1.var2.value, ZERO, 0).getUtviPosition(), new_bound);
+          auto new_position = Octagon(oct1.coeff2, oct1.var2.value, ZERO, 0).getUtviPosition();
+          bounds.insert(new_position, new_bound);
+          updatePositions(oct1.coeff2, oct1.var2, v, new_position);
 #if _DEBUG_ELIM_
-          std::cout << "Result: " << Octagon(oct1.coeff2, oct1.var2.value, ZERO, 0) << std::endl;
+          std::cout << "Result(1): " << Octagon(oct1.coeff2, oct1.var2.value, ZERO, 0) << std::endl;
 #endif
           return;
         }
@@ -52,15 +55,18 @@ void OctagonInterpolant::elimination(UtvpiPosition pos_position, UtvpiPosition n
           new_bound.normalize(2);
           bounds.insert(0, new_bound); // Update the first inequality (0 <= c) in bounds
 #if _DEBUG_ELIM_
-          std::cout << "Result: " << Octagon(0) << std::endl;
+          std::cout << "Result(2): " << Octagon(0) << std::endl;
 #endif
           return;
         }
       }
       else{ // Different index
-        bounds.insert(Octagon(oct1.coeff2, oct1.var2.value, oct2.coeff2, oct2.var2.value).getUtviPosition(), new_bound);
+        auto new_position = Octagon(oct1.coeff2, oct1.var2.value, oct2.coeff2, oct2.var2.value).getUtviPosition();
+        bounds.insert(new_position, new_bound);
+        updatePositions(oct1.coeff2, oct1.var2, v, new_position);
+        updatePositions(oct2.coeff2, oct2.var2, v, new_position);
 #if _DEBUG_ELIM_
-        std::cout << "Result: " << Octagon(oct1.coeff2, oct1.var2.value, oct2.coeff2, oct2.var2.value) << std::endl;
+        std::cout << "Result(3): " << Octagon(oct1.coeff2, oct1.var2.value, oct2.coeff2, oct2.var2.value) << std::endl;
 #endif
         return;
       }
@@ -71,9 +77,11 @@ void OctagonInterpolant::elimination(UtvpiPosition pos_position, UtvpiPosition n
       if(oct1.var2.value == oct2.var1.value){ // Same index
         if(oct1.coeff2 == oct2.coeff1){ // Same symbol sign
           new_bound.normalize(2);
-          bounds.insert(Octagon(oct1.coeff2, oct1.var2.value, ZERO, 0).getUtviPosition(), new_bound);
+          auto new_position = Octagon(oct1.coeff2, oct1.var2.value, ZERO, 0).getUtviPosition();
+          bounds.insert(new_position, new_bound);
+          updatePositions(oct1.coeff2, oct1.var2, v, new_position);
 #if _DEBUG_ELIM_
-          std::cout << "Result: " << Octagon(oct1.coeff2, oct1.var2.value, ZERO, 0) << std::endl;
+          std::cout << "Result(4): " << Octagon(oct1.coeff2, oct1.var2.value, ZERO, 0) << std::endl;
 
 #endif
           return;
@@ -82,15 +90,18 @@ void OctagonInterpolant::elimination(UtvpiPosition pos_position, UtvpiPosition n
           new_bound.normalize(2);
           bounds.insert(0, new_bound); // Update the first inequality (0 <= c) in bounds
 #if _DEBUG_ELIM_
-          std::cout << Octagon(0) << std::endl;
+          std::cout << "Result(5): " << Octagon(0) << std::endl;
 #endif
           return;
         }
       }
       else{ // Different index
-        bounds.insert(Octagon(oct1.coeff2, oct1.var2.value, oct2.coeff1, oct2.var1.value).getUtviPosition(), new_bound);
+        auto new_position = Octagon(oct1.coeff2, oct1.var2.value, oct2.coeff1, oct2.var1.value).getUtviPosition();
+        bounds.insert(new_position, new_bound);
+        updatePositions(oct1.coeff2, oct1.var2, v, new_position);
+        updatePositions(oct2.coeff1, oct2.var1, v, new_position);
 #if _DEBUG_ELIM_
-        std::cout << "Result: " << Octagon(oct1.coeff2, oct1.var2.value, oct2.coeff1, oct2.var1.value) << std::endl;
+        std::cout << "Result(6): " << Octagon(oct1.coeff2, oct1.var2.value, oct2.coeff1, oct2.var1.value) << std::endl;
 #endif
         return;
       }
@@ -103,9 +114,11 @@ void OctagonInterpolant::elimination(UtvpiPosition pos_position, UtvpiPosition n
       if(oct1.var1.value == oct2.var2.value){ // Same index
         if(oct1.coeff1 == oct2.coeff2){ // Same symbol sign
           new_bound.normalize(2);
-          bounds.insert(Octagon(oct1.coeff1, oct1.var1.value, ZERO, 0).getUtviPosition(), new_bound);
+          auto new_position = Octagon(oct1.coeff1, oct1.var1.value, ZERO, 0).getUtviPosition();
+          bounds.insert(new_position, new_bound);
+          updatePositions(oct1.coeff1, oct1.var1, v, new_position);
 #if _DEBUG_ELIM_
-          std::cout << "Result: " << Octagon(oct1.coeff1, oct1.var1.value, ZERO, 0) << std::endl;
+          std::cout << "Result(7): " << Octagon(oct1.coeff1, oct1.var1.value, ZERO, 0) << std::endl;
 #endif
           return;
         }
@@ -113,15 +126,18 @@ void OctagonInterpolant::elimination(UtvpiPosition pos_position, UtvpiPosition n
           new_bound.normalize(2);
           bounds.insert(0, new_bound); // Update the first inequality (0 <= c) in bounds
 #if _DEBUG_ELIM_
-          std::cout << Octagon(0) << std::endl;
+          std::cout << "Result(8): " << Octagon(0) << std::endl;
 #endif
           return;
         }
       }
       else{ // Different index
-        bounds.insert(Octagon(oct1.coeff1, oct1.var1.value, oct2.coeff2, oct2.var2.value).getUtviPosition(), new_bound);
+        auto new_position = Octagon(oct1.coeff1, oct1.var1.value, oct2.coeff2, oct2.var2.value).getUtviPosition();
+        bounds.insert(new_position, new_bound);
+        updatePositions(oct1.coeff1, oct1.var1, v, new_position);
+        updatePositions(oct2.coeff2, oct2.var2, v, new_position);
 #if _DEBUG_ELIM_
-        std::cout << "Result: " << Octagon(oct1.coeff1, oct1.var1.value, oct2.coeff2, oct2.var2.value) << std::endl;
+        std::cout << "Result(9): " << Octagon(oct1.coeff1, oct1.var1.value, oct2.coeff2, oct2.var2.value) << std::endl;
 #endif
         return;
       }
@@ -132,9 +148,11 @@ void OctagonInterpolant::elimination(UtvpiPosition pos_position, UtvpiPosition n
       if(oct1.var1.value == oct2.var1.value){ // Same index
         if(oct1.coeff1 == oct2.coeff1){ // Same symbol sign
           new_bound.normalize(2);
-          bounds.insert(Octagon(oct1.coeff1, oct1.var1.value, ZERO, 0).getUtviPosition(), new_bound);
+          auto new_position = Octagon(oct1.coeff1, oct1.var1.value, ZERO, 0).getUtviPosition();
+          bounds.insert(new_position, new_bound);
+          updatePositions(oct1.coeff1, oct1.var1, v, new_position);
 #if _DEBUG_ELIM_
-          std::cout << "Result: " << Octagon(oct1.coeff1, oct1.var1.value, ZERO, 0) << std::endl;
+          std::cout << "Result(10): " << Octagon(oct1.coeff1, oct1.var1.value, ZERO, 0) << std::endl;
 #endif
           return;
         }
@@ -142,21 +160,41 @@ void OctagonInterpolant::elimination(UtvpiPosition pos_position, UtvpiPosition n
           new_bound.normalize(2);
           bounds.insert(0, new_bound); // Update the first inequality (0 <= c) in bounds
 #if _DEBUG_ELIM_
-          std::cout << Octagon(0) << std::endl;
+          std::cout << "Result(11): " << Octagon(0) << std::endl;
 #endif
           return;
         }
       }
       else{ // Different index
-        bounds.insert(Octagon(oct1.coeff1, oct1.var1.value, oct2.coeff1, oct2.var1.value).getUtviPosition(), new_bound);
+        auto new_position = Octagon(oct1.coeff1, oct1.var1.value, oct2.coeff1, oct2.var1.value).getUtviPosition();
+        bounds.insert(new_position, new_bound);
+        updatePositions(oct1.coeff1, oct1.var1, v, new_position);
+        updatePositions(oct2.coeff1, oct2.var1, v, new_position);
 #if _DEBUG_ELIM_
-        std::cout << "Result: " << Octagon(oct1.coeff1, oct1.var1.value, oct2.coeff1, oct2.var1.value) << std::endl;
+        std::cout << "Result(12): " << Octagon(oct1.coeff1, oct1.var1.value, oct2.coeff1, oct2.var1.value) << std::endl;
 #endif
         return;
       }
       // -------------------------------------------------------------------------------
     }
   }
+}
+
+void OctagonInterpolant::updatePositions(Coeff const & coeff, Var const & var, VarValue const & current_elim_value, UtvpiPosition const & new_position){
+#if 1
+  if(!is_common_table[var.value] && var.value > current_elim_value){
+    switch(coeff){
+      case POS:
+        positions.insertPositivePosition(var.value, new_position);
+        break;
+      case NEG:
+        positions.insertNegativePosition(var.value, new_position);
+        break;
+      case ZERO:
+        break;
+    }
+  }
+#endif
 }
 
 void OctagonInterpolant::buildInterpolant(){

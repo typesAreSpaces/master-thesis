@@ -1,0 +1,97 @@
+Removing this var: x_0
+Initial state of bounds
+x_2 - x_1 <= 4 (Position) 7
+x_3 + x_2 <= -5 (Position) 18
+- x_4 - x_2 <= -4 (Position) 22
+- x_5 - x_2 <= 3 (Position) 36
+
+Removing this var: x_1
+Initial state of bounds
+x_2 - x_1 <= 4 (Position) 7
+x_3 + x_2 <= -5 (Position) 18
+- x_4 - x_2 <= -4 (Position) 22
+- x_5 - x_2 <= 3 (Position) 36
+
+Removing this var: x_2
+Initial state of bounds
+x_2 - x_1 <= 4 (Position) 7
+x_3 + x_2 <= -5 (Position) 18
+- x_4 - x_2 <= -4 (Position) 22
+- x_5 - x_2 <= 3 (Position) 36
+
+Reducing x_2 - x_1 and - x_4 - x_2
+Result(6): - x_4 - x_1
+x_2 - x_1 <= 4 (Position) 7
+x_3 + x_2 <= -5 (Position) 18
+- x_4 - x_1 <= 0 (Position) 20
+- x_4 - x_2 <= -4 (Position) 22
+- x_5 - x_2 <= 3 (Position) 36
+
+Reducing x_2 - x_1 and - x_5 - x_2
+Result(6): - x_5 - x_1
+x_2 - x_1 <= 4 (Position) 7
+x_3 + x_2 <= -5 (Position) 18
+- x_4 - x_1 <= 0 (Position) 20
+- x_4 - x_2 <= -4 (Position) 22
+- x_5 - x_1 <= 7 (Position) 34
+- x_5 - x_2 <= 3 (Position) 36
+
+Reducing x_3 + x_2 and - x_4 - x_2
+Result(12): - x_4 + x_3
+x_3 + x_2 <= -5 (Position) 18
+- x_4 - x_1 <= 0 (Position) 20
+- x_4 - x_2 <= -4 (Position) 22
+- x_4 + x_3 <= -9 (Position) 25
+- x_5 - x_1 <= 7 (Position) 34
+- x_5 - x_2 <= 3 (Position) 36
+
+Reducing x_3 + x_2 and - x_5 - x_2
+Result(12): - x_5 + x_3
+x_3 + x_2 <= -5 (Position) 18
+- x_4 - x_1 <= 0 (Position) 20
+- x_4 - x_2 <= -4 (Position) 22
+- x_4 + x_3 <= -9 (Position) 25
+- x_5 - x_1 <= 7 (Position) 34
+- x_5 - x_2 <= 3 (Position) 36
+- x_5 + x_3 <= -2 (Position) 39
+
+Removing this var: x_3
+Initial state of bounds
+- x_4 - x_1 <= 0 (Position) 20
+- x_4 + x_3 <= -9 (Position) 25
+- x_5 - x_1 <= 7 (Position) 34
+- x_5 + x_3 <= -2 (Position) 39
+
+Removing this var: x_4
+Initial state of bounds
+- x_4 - x_1 <= 0 (Position) 20
+- x_4 + x_3 <= -9 (Position) 25
+- x_5 - x_1 <= 7 (Position) 34
+- x_5 + x_3 <= -2 (Position) 39
+
+Removing this var: x_5
+Initial state of bounds
+- x_4 - x_1 <= 0 (Position) 20
+- x_4 + x_3 <= -9 (Position) 25
+- x_5 - x_1 <= 7 (Position) 34
+- x_5 + x_3 <= -2 (Position) 39
+
+Bounds at buildInterpolant
+- x_4 - x_1 <= 0 (Position) 20
+- x_4 + x_3 <= -9 (Position) 25
+- x_5 - x_1 <= 7 (Position) 34
+- x_5 + x_3 <= -2 (Position) 39
+
+Bounds at buildInterpolant
+- x_4 - x_1 <= 0 (Position) 20
+- x_4 + x_3 <= -9 (Position) 25
+- x_5 - x_1 <= 7 (Position) 34
+- x_5 + x_3 <= -2 (Position) 39
+
+(ast-vector
+  (<= (- (- x6) x1) 0)
+  (<= (+ (- x6) x3) (- 9))
+  (<= (- (- x5) x1) 7)
+  (<= (+ (- x5) x3) (- 2)))
+rm -rf tests/*.o tests/current_progress
+make[1]: Leaving directory '/home/jose/Documents/GithubProjects/master-thesis/Software/Cpp/OctagonsInterpolant'

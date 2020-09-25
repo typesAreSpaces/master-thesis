@@ -2,7 +2,7 @@
 
 OctagonParser::OctagonParser(z3::expr_vector const & assertions) : 
   ctx(assertions.ctx()), z3_variables(ctx),
-  id_generator(1), id_table(), bounds(), positions() 
+  id_generator(1), id_table(), is_common_table(), bounds(), positions() 
 {
   // ----------------------------------------
   // This is just a dummy entry
@@ -172,6 +172,7 @@ void OctagonParser::checkExprId(z3::expr const & e){
   unsigned e_hash = e.hash();
   if(!inSet(e_hash, id_table)){
     id_table.insert({e_hash, id_generator});
+    is_common_table.insert({id_generator, e.is_common()});
     z3_variables.push_back(e);
     id_generator++;
   }
