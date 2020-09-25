@@ -7,6 +7,8 @@
 class OctagonInterpolantWithExpressions : public RenameWithExpressions, public OctagonInterpolant {
   public:
     OctagonInterpolantWithExpressions(z3::expr_vector const &, z3::expr_vector const &);
+
+    friend std::ostream & operator << (std::ostream &, OctagonInterpolantWithExpressions const &);
 };
 
 #endif
