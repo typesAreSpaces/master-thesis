@@ -27,16 +27,26 @@ DEPS = $(wildcard $(IDIR)/*.h)
 # ------------------------------------------------------------------------------------------
 #  Build
 
+#all: bin/thci
 #all: tests/disj_eqs_propagator_test
 #all: tests/cdcl_t_test
 #all: tests/res_proof_test
 #all: tests/proof_factory_test
-all: tests/basic_test
+#all: tests/basic_test
 #all: tests/smt_file_test
 #all: tests/extensive_test
+all: tests/parametric_example
 
 $(ODIR)/%.o: $(SDIR)/%.cpp $(DEPS)
 	$(CC) -g -c -o $@ $(FLAGS) $<
+
+# ------------------------------------------------------------------------------------------
+#  Binaries
+
+bin/thci: $(OBJS) ./tests/thci.cpp
+	$(CC) -g -c -o ./tests/thci.o $(FLAGS) ./tests/thci.cpp
+	$(CC) -g -o ./bin/thci $(OBJS) ./tests/thci.o -lpthread -Wall
+	rm -rf tests/*.o
 
 # ------------------------------------------------------------------------------------------
 #  Tests
@@ -83,6 +93,12 @@ tests/extensive_test: $(OBJS)
 	$(CC) -g -o $@ $(OBJS) ./$@.o -lpthread -Wall
 	./$@ ./tests/smt2-files/part_a_goals.smt2 ./tests/smt2-files/part_b_goals.smt2
 	rm -rf tests/*.o $@
+
+.PHONY: tests/parametric_example
+tests/parametric_example:
+	$(CC) -g -o ./tests/parametric_example ./tests/parametric_example.cpp -pthread
+	./tests/parametric_example
+	rm -rf ./tests/parametric_example
 
 
 # ------------------------------------------------------------------------------------------

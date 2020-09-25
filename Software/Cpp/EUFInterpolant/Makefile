@@ -62,7 +62,7 @@ tests/current_progress: $(OBJS)
 tests/parametric_example:
 	$(CC) -g -o ./tests/parametric_example ./tests/parametric_example.cpp -pthread
 	./tests/parametric_example
-	rm -rt ./tests/parametric_example
+	rm -rf ./tests/parametric_example
 
 .PHONY: valgrind_run
 valgrind_run: $(OBJS)
