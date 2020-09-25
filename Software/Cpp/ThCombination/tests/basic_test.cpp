@@ -27,7 +27,7 @@ int main(){
   // which is not an octagon inequality
   //exampleFromCombinedCovers1(ctx); 
   
-  //range2InequalityExample(ctx);
+  range2InequalityExample(ctx);
   //range3InequalityExample(ctx);
   //range4InequalityExample(ctx);
 
