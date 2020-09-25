@@ -26,11 +26,22 @@ DEPS = $(wildcard $(IDIR)/*.h)
 
 # ------------------------------------------------------------------------------------------
 #  Build
+#all: bin/octi
 #all: tests/test_octagon_parser
 all: tests/current_progress
 
 $(ODIR)/%.o: $(SDIR)/%.cpp $(DEPS)
 	$(CC) -g -c -o $@  $(FLAGS) $< 
+
+# ------------------------------------------------------------------------------------------
+#  Binaries
+
+bin/octi: $(OBJS) ./tests/octi.cpp
+	$(CC) -g -c -o ./tests/octi.o $(FLAGS) ./tests/octi.cpp
+	$(CC) -g -o ./bin/octi $(OBJS) ./tests/octi.o -lpthread -Wall
+	rm -rf tests/*.o
+
+
 # ------------------------------------------------------------------------------------------
 #  Tests
 
