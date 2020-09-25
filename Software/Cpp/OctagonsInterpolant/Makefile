@@ -28,7 +28,8 @@ DEPS = $(wildcard $(IDIR)/*.h)
 #  Build
 #all: bin/octi
 #all: tests/test_octagon_parser
-all: tests/current_progress
+#all: tests/current_progress
+all: tests/parametric_example
 
 $(ODIR)/%.o: $(SDIR)/%.cpp $(DEPS)
 	$(CC) -g -c -o $@  $(FLAGS) $< 
@@ -67,6 +68,13 @@ tests/test_bound_constructor: $(OBJS)
 .PHONY: tests/current_progress
 tests/current_progress: $(OBJS) 
 	make tester param1=tests/current_progress
+
+.PHONY: tests/parametric_example
+tests/parametric_example:
+	$(CC) -g -o ./tests/parametric_example ./tests/parametric_example.cpp -pthread
+	./tests/parametric_example
+
+
 
 # ------------------------------------------------------------------------------------------
 .PHONY: clean
