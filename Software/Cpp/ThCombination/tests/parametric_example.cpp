@@ -25,7 +25,7 @@ void thci_process_3(unsigned);
 
 int main(){
 
-  unsigned n = 8;
+  unsigned n = 9;
 
   std::thread iz3(iz3_process, n);
   std::thread mathsat(mathsat_process, n);
@@ -148,7 +148,7 @@ void mathsat_process(unsigned n){
 void thci_process_0(unsigned n){
   system("rm -rf thci_results_0.txt");
   for(unsigned i = 2; i < n; ++i){
-    unsigned r = i % 3;
+    unsigned r = i % 4;
     if(r == 0){
       thci_instance(i);
       system(("echo \"test: " + std::to_string(i) + "\">> thci_results_0.txt").c_str());
@@ -161,7 +161,7 @@ void thci_process_0(unsigned n){
 void thci_process_1(unsigned n){
   system("rm -rf thci_results_1.txt");
   for(unsigned i = 2; i < n; ++i){
-    unsigned r = i % 3;
+    unsigned r = i % 4;
     if(r == 1){
       thci_instance(i);
       system(("echo \"test: " + std::to_string(i) + "\">> thci_results_1.txt").c_str());
@@ -174,11 +174,24 @@ void thci_process_1(unsigned n){
 void thci_process_2(unsigned n){
   system("rm -rf thci_results_2.txt");
   for(unsigned i = 2; i < n; ++i){
-    unsigned r = i % 3;
+    unsigned r = i % 4;
     if(r == 2){
       thci_instance(i);
       system(("echo \"test: " + std::to_string(i) + "\">> thci_results_2.txt").c_str());
       system(("{ time ./bin/thci " + (THCI_PREFIX + std::to_string(i)) + SMT_SUFFIX + "; } 2>> thci_results_2.txt").c_str());
+      system(("rm " + (THCI_PREFIX + std::to_string(i)) + SMT_SUFFIX).c_str());
+    }
+  }
+}
+
+void thci_process_3(unsigned n){
+  system("rm -rf thci_results_3.txt");
+  for(unsigned i = 2; i < n; ++i){
+    unsigned r = i % 4;
+    if(r == 3){
+      thci_instance(i);
+      system(("echo \"test: " + std::to_string(i) + "\">> thci_results_3.txt").c_str());
+      system(("{ time ./bin/thci " + (THCI_PREFIX + std::to_string(i)) + SMT_SUFFIX + "; } 2>> thci_results_3.txt").c_str());
       system(("rm " + (THCI_PREFIX + std::to_string(i)) + SMT_SUFFIX).c_str());
     }
   }
