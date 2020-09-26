@@ -11,6 +11,7 @@
 \contentsline {figure}{\numberline {2.8}{\ignorespaces Example of extended proof trace by PicoSAT for problem \ref {dpll_figure}}}{24}{figure.2.8}%
 \contentsline {figure}{\numberline {2.9}{\ignorespaces Example of extended proof trace by PicoSAT for problem \ref {dpll_figure}}}{25}{figure.2.9}%
 \addvspace {10\p@ }
+\contentsline {figure}{\numberline {3.1}{\ignorespaces Performance comparison graph of EUF interpolant generation algorithms for paramatrized problem from section \ref {performance_euf}}}{50}{figure.3.1}%
 \addvspace {10\p@ }
 \addvspace {10\p@ }
 \addvspace {10\p@ }

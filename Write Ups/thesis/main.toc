@@ -34,30 +34,30 @@
 \contentsline {subsubsection}{Symbol elimination example}{45}{section*.3}%
 \contentsline {subsubsection}{Simple example with disequality}{47}{section*.4}%
 \contentsline {subsection}{\numberline {3.3.2}Performance comparison with iZ3 and MathSat}{48}{subsection.3.3.2}%
-\contentsline {section}{\numberline {3.4}Conclusions}{49}{section.3.4}%
-\contentsline {chapter}{\numberline {4}Interpolation algorithm for UTVPI Formulas}{50}{chapter.4}%
-\contentsline {section}{\numberline {4.1}Algorithm}{51}{section.4.1}%
-\contentsline {section}{\numberline {4.2}Implementation}{51}{section.4.2}%
-\contentsline {section}{\numberline {4.3}Evaluation}{53}{section.4.3}%
-\contentsline {subsection}{\numberline {4.3.1}Detailed evaluation of examples}{53}{subsection.4.3.1}%
-\contentsline {section}{\numberline {4.4}Conclusions}{58}{section.4.4}%
-\contentsline {chapter}{\numberline {5}Interpolation algorithm for the theory combination of EUF and UTVPI}{59}{chapter.5}%
-\contentsline {section}{\numberline {5.1}Algorithm}{60}{section.5.1}%
-\contentsline {section}{\numberline {5.2}Implementation}{61}{section.5.2}%
-\contentsline {section}{\numberline {5.3}Evaluation}{63}{section.5.3}%
-\contentsline {subsection}{\numberline {5.3.1}Detailed evaluation of a complete example}{63}{subsection.5.3.1}%
-\contentsline {subsubsection}{A simple example}{63}{section*.5}%
-\contentsline {subsection}{\numberline {5.3.2}A parametrized example}{66}{subsection.5.3.2}%
-\contentsline {subsection}{\numberline {5.3.3}Performance evaluation}{66}{subsection.5.3.3}%
-\contentsline {section}{\numberline {5.4}Conclusions}{69}{section.5.4}%
-\contentsline {chapter}{\numberline {6}Future Work}{70}{chapter.6}%
-\contentsline {chapter}{Appendix A}{72}{chapter*.6}%
-\contentsline {section}{\numberline {6.1}Theorems about Interpolants}{72}{section.6.1}%
-\contentsline {subsection}{\numberline {6.1.1}Interpolants are closed under conjunction and disjunction}{72}{subsection.6.1.1}%
-\contentsline {subsection}{\numberline {6.1.2}Interpolants distribute conjunctions over disjunctions in the A-part}{73}{subsection.6.1.2}%
-\contentsline {chapter}{Appendix B}{75}{chapter*.7}%
-\contentsline {section}{\numberline {6.2}Trace for example in theory combination chapter}{75}{section.6.2}%
-\contentsline {chapter}{Appendix C}{85}{chapter*.8}%
-\contentsline {section}{\numberline {6.3}Congruence Closure with Explanation operation header}{85}{section.6.3}%
-\contentsline {section}{\numberline {6.4}Hornsat (Gallier's data structure) header}{87}{section.6.4}%
-\contentsline {chapter}{References}{89}{chapter*.9}%
+\contentsline {section}{\numberline {3.4}Conclusions}{50}{section.3.4}%
+\contentsline {chapter}{\numberline {4}Interpolation algorithm for UTVPI Formulas}{52}{chapter.4}%
+\contentsline {section}{\numberline {4.1}Algorithm}{53}{section.4.1}%
+\contentsline {section}{\numberline {4.2}Implementation}{53}{section.4.2}%
+\contentsline {section}{\numberline {4.3}Evaluation}{55}{section.4.3}%
+\contentsline {subsection}{\numberline {4.3.1}Detailed evaluation of examples}{55}{subsection.4.3.1}%
+\contentsline {section}{\numberline {4.4}Conclusions}{60}{section.4.4}%
+\contentsline {chapter}{\numberline {5}Interpolation algorithm for the theory combination of EUF and UTVPI}{61}{chapter.5}%
+\contentsline {section}{\numberline {5.1}Algorithm}{62}{section.5.1}%
+\contentsline {section}{\numberline {5.2}Implementation}{63}{section.5.2}%
+\contentsline {section}{\numberline {5.3}Evaluation}{65}{section.5.3}%
+\contentsline {subsection}{\numberline {5.3.1}Detailed evaluation of a complete example}{65}{subsection.5.3.1}%
+\contentsline {subsubsection}{A simple example}{65}{section*.5}%
+\contentsline {subsection}{\numberline {5.3.2}A parametrized example}{68}{subsection.5.3.2}%
+\contentsline {subsection}{\numberline {5.3.3}Performance evaluation}{68}{subsection.5.3.3}%
+\contentsline {section}{\numberline {5.4}Conclusions}{71}{section.5.4}%
+\contentsline {chapter}{\numberline {6}Future Work}{72}{chapter.6}%
+\contentsline {chapter}{Appendix A}{74}{chapter*.6}%
+\contentsline {section}{\numberline {6.1}Theorems about Interpolants}{74}{section.6.1}%
+\contentsline {subsection}{\numberline {6.1.1}Interpolants are closed under conjunction and disjunction}{74}{subsection.6.1.1}%
+\contentsline {subsection}{\numberline {6.1.2}Interpolants distribute conjunctions over disjunctions in the A-part}{75}{subsection.6.1.2}%
+\contentsline {chapter}{Appendix B}{77}{chapter*.7}%
+\contentsline {section}{\numberline {6.2}Trace for example in theory combination chapter}{77}{section.6.2}%
+\contentsline {chapter}{Appendix C}{87}{chapter*.8}%
+\contentsline {section}{\numberline {6.3}Congruence Closure with Explanation operation header}{87}{section.6.3}%
+\contentsline {section}{\numberline {6.4}Hornsat (Gallier's data structure) header}{89}{section.6.4}%
+\contentsline {chapter}{References}{91}{chapter*.9}%
