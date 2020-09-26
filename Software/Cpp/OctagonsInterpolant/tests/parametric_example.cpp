@@ -21,10 +21,6 @@ void mathsat_process(unsigned);
 void octi_process_0(unsigned);
 void octi_process_1(unsigned);
 void octi_process_2(unsigned);
-void octi_process_3(unsigned);
-void octi_process_4(unsigned);
-void octi_process_5(unsigned);
-void octi_process_6(unsigned);
 
 int main(){
 
@@ -33,25 +29,17 @@ int main(){
   //unsigned n = 10;
 
 #if 1
-  std::thread iz3(iz3_process, n);
-  std::thread mathsat(mathsat_process, n);
-  //std::thread octi_0(octi_process_0, n);
-  //std::thread octi_1(octi_process_1, n);
-  //std::thread octi_2(octi_process_2, n);
-  //std::thread octi_3(octi_process_3, n);
-  //std::thread octi_4(octi_process_4, n);
-  //std::thread octi_5(octi_process_5, n);
-  //std::thread octi_6(octi_process_6, n);
+  //std::thread iz3(iz3_process, n);
+  //std::thread mathsat(mathsat_process, n);
+  std::thread octi_0(octi_process_0, n);
+  std::thread octi_1(octi_process_1, n);
+  std::thread octi_2(octi_process_2, n);
   
-  iz3.join();
-  mathsat.join();
-  //octi_0.join();
-  //octi_1.join();
-  //octi_2.join();
-  //octi_3.join();
-  //octi_4.join();
-  //octi_5.join();
-  //octi_6.join();
+  //iz3.join();
+  //mathsat.join();
+  octi_0.join();
+  octi_1.join();
+  octi_2.join();
 #endif 
 
   return 0;
@@ -168,8 +156,8 @@ void mathsat_process(unsigned n){
 
 void octi_process_0(unsigned n){
   system("rm -rf octi_results_0.txt");
-  for(unsigned i = 6000; i < n; ++i){
-    unsigned r = i % 18;
+  for(unsigned i = 1; i < n; ++i){
+    unsigned r = i % 3;
     if(r == 0){
       octi_instance(i);
       system(("echo \"test: " + std::to_string(i) + "\">> octi_results_0.txt").c_str());
@@ -181,8 +169,8 @@ void octi_process_0(unsigned n){
 
 void octi_process_1(unsigned n){
   system("rm -rf octi_results_1.txt");
-  for(unsigned i = 6000; i < n; ++i){
-    unsigned r = i % 18;
+  for(unsigned i = 1; i < n; ++i){
+    unsigned r = i % 3;
     if(r == 1){
       octi_instance(i);
       system(("echo \"test: " + std::to_string(i) + "\">> octi_results_1.txt").c_str());
@@ -194,8 +182,8 @@ void octi_process_1(unsigned n){
 
 void octi_process_2(unsigned n){
   system("rm -rf octi_results_2.txt");
-  for(unsigned i = 6000; i < n; ++i){
-    unsigned r = i % 18;
+  for(unsigned i = 1; i < n; ++i){
+    unsigned r = i % 3;
     if(r == 2){
       octi_instance(i);
       system(("echo \"test: " + std::to_string(i) + "\">> octi_results_2.txt").c_str());
@@ -204,56 +192,3 @@ void octi_process_2(unsigned n){
     }
   }
 }
-
-void octi_process_3(unsigned n){
-  system("rm -rf octi_results_3.txt");
-  for(unsigned i = 6000; i < n; ++i){
-    unsigned r = i % 18;
-    if(r == 3){
-      octi_instance(i);
-      system(("echo \"test: " + std::to_string(i) + "\">> octi_results_3.txt").c_str());
-      system(("{ time ./bin/octi " + (EUFI_PREFIX + std::to_string(i)) + SMT_SUFFIX + "; } 2>> octi_results_3.txt").c_str());
-      system(("rm " + (EUFI_PREFIX + std::to_string(i)) + SMT_SUFFIX).c_str());
-    }
-  }
-}
-
-void octi_process_4(unsigned n){
-  system("rm -rf octi_results_4.txt");
-  for(unsigned i = 6000; i < n; ++i){
-    unsigned r = i % 18;
-    if(r == 4){
-      octi_instance(i);
-      system(("echo \"test: " + std::to_string(i) + "\">> octi_results_4.txt").c_str());
-      system(("{ time ./bin/octi " + (EUFI_PREFIX + std::to_string(i)) + SMT_SUFFIX + "; } 2>> octi_results_4.txt").c_str());
-      system(("rm " + (EUFI_PREFIX + std::to_string(i)) + SMT_SUFFIX).c_str());
-    }
-  }
-}
-
-void octi_process_5(unsigned n){
-  system("rm -rf octi_results_5.txt");
-  for(unsigned i = 6000; i < n; ++i){
-    unsigned r = i % 18;
-    if(r == 5){
-      octi_instance(i);
-      system(("echo \"test: " + std::to_string(i) + "\">> octi_results_5.txt").c_str());
-      system(("{ time ./bin/octi " + (EUFI_PREFIX + std::to_string(i)) + SMT_SUFFIX + "; } 2>> octi_results_5.txt").c_str());
-      system(("rm " + (EUFI_PREFIX + std::to_string(i)) + SMT_SUFFIX).c_str());
-    }
-  }
-}
-
-void octi_process_6(unsigned n){
-  system("rm -rf octi_results_6.txt");
-  for(unsigned i = 6000; i < n; ++i){
-    unsigned r = i % 18;
-    if(r == 6){
-      octi_instance(i);
-      system(("echo \"test: " + std::to_string(i) + "\">> octi_results_6.txt").c_str());
-      system(("{ time ./bin/octi " + (EUFI_PREFIX + std::to_string(i)) + SMT_SUFFIX + "; } 2>> octi_results_6.txt").c_str());
-      system(("rm " + (EUFI_PREFIX + std::to_string(i)) + SMT_SUFFIX).c_str());
-    }
-  }
-}
-
