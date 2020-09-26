@@ -58,64 +58,47 @@ The interpolant obtained by Z3 is
 
 \subsection{Performance comparison with iZ3 and MathSat}\label{performance_oct}
 
-TODO: START change this
-This discuss will discuss a parametrized problem which will allows to test 
-our implementation and constrast the execution with other interpolant generation
-algorithms from Z3 and MathSat.
+This section discusses a parametrized problem 
+in the UTVPI theory and compares the times required by
+our implementation, iZ3, and Mathsat.
 
 \begin{lemma} \label{performance_test_lemma_oct}
-  Let $x$ be a constant and $f$ an unary function in the EUF language. 
-  For every $n \in \mathbb{N}$ the following conjunction is unsatisfiable:
-  \begin{equation*}
-    f^n(x) = f^{n+1}(x), f^2(x) = x, f(x) \neq x
+  Let $x_i$ for $1 \leq i \leq n$ where $n \in \mathbb{N}$ is fixed.
+  The following conjunction of inequalities is unsatisfiable:
+  \begin{equation*}\label{oct_problem}
+    x_1 + x_2 \leq 1 
+    \land \bigwedge_{i=2}^{n-1} (x_{i+1} - x_i \leq 1) 
+    \land x_1 - x_n \leq 1
+    \land x_1 > \ceil{n/2}
   \end{equation*}
-  where $f^n(x)$ denotes de application of the function $f$ n-times
-  to the constant $x$.
 \end{lemma}
 
 \begin{proof}
-  Applying the congruence and transitive rules to the equation $f^2(x) = x$, 
-  we can prove that for any number $n$ the two following equations hold:
-  $x = f^{2n}(x)$ and $f(x) = f^{2n+1}(x)$.
-
-  At this point we distinguish two cases for $n$:
-
-  \begin{itemize}
-    \item Case $n$ is even: Then $\exists m \in \mathbb{N} . n = 2m$.
-      So by choosing $n = m$ to the above sequence
-      and by the axiom $f^{2m}(x) = f^{2m+1}(x)$ we have that
-      $x = f(x)$.
-    \item Case $n$ is odd: Similarly to the previous reasoning, 
-      we can also infer the equation $f^{2m+1}(x) = f^{2m+2}(x)$
-      by congruence, so $x = f(x)$.
-    \end{itemize}
-
-    In both cases the equation $x = f(x)$ reaches contradiction with the
-    disequality $x \neq f(x)$.
+  Using the first $n-1$ inequalities of the conjunction
+  in \ref{oct_problem} we can conclude that $2x_1 \leq n$.
+  The latter contradicts the last inequality $x_1 \cei{n/2}$.
 \end{proof}
 
 The interpolation pair for our performance test 
-is $(f^n(x) = f^{n+1}(x) \land f^2(x) = x \land f(a) \neq a, x = a)$
+is $(x_1 + x_2 \leq 1 
+    \land \bigwedge_{i=2}^{n-1} (x_{i+1} - x_i \leq 1) 
+    \land x_1 - x_n \leq 1, x_1 > \ceil{n/2})$
 for fixed $n \in \mathbb{N}$.
 It is easy to see that the pair is inconsistent due to the lemma 
 \ref{performance_test_lemma_oct}. 
 
 By lemma \ref{performance_test_lemma_oct}
-we can also see that the formula $x = a \rightarrow \bot$ is an 
+we can also see that the formula $x_1 \leq \ceil{n/2}$ is an 
 interpolating formula for all fixed $n$ in this parametrized problem.
 We designed this problem because it is easy to verify the 
 correctness of output of the algorithms and to measure 
 the time used by the algorithms for large values of $n$. 
 We executed instances of this problem for values of $n$
-in the range $\{1, \dots, 10000\}$ using a computer desktop
-equipped with an Intel i7-9700 @ 4.70 GHz and 16Gb of memory. 
-The output produced by the interpolant generation algorithms
-were the expected formula.
-The following graphs reports the time measured by the UNIX
-utility $times$ of our implementation, iZ3, and the interpolation 
-generation algorithm from Mathsat.
-
-TODO: END change this
+in the range $\{1, \dots, 10000\}$ using the same setup 
+used in the performance comparison for the parametrized 
+problem discussed in \ref{performance_test_lemma}.
+The follow graph shows similar results as 
+in \ref{performance_test_lemma}.
 
 \begin{figure}
   \centering
@@ -125,18 +108,11 @@ TODO: END change this
   \label{performance_graph_euf}
 \end{figure}
 
-TODO: change the following
 We noticed a quadractic behaviour in the graph for the time 
-required by our implementation
-and a linear behaviour by iZ3 and Mathsat. However, 
-according to the following polynomial 
-fitting computation, 
-we noticed that for the case of our implementation, 
-a linear fitting obtained a smaller 
-quadratic error compared to the quadratic fitting;  
-for the case of the Mathsat
-results, a quadratic fitting obtained a smaller 
-quadratic errror.
+required by all the algorithms. Indeed, the latter was
+validated since a quadratic fitting has a smaller quadratic
+error compared to a linear fitting in all the implementations
+as show in the following table:
 
 \begin{table}[h]
   \centering
