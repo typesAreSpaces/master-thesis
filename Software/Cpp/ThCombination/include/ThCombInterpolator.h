@@ -19,6 +19,7 @@
 #else
 #define DEBUG_CONFLICT_MSG(x) _SKIP
 #endif
+#define QUICK_COMM_CHECK 0
 
 #include "Purifier.h"
 #include "OctagonTerm.h"

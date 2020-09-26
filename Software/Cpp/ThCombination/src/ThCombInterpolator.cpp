@@ -14,6 +14,16 @@ ThCombInterpolator::ThCombInterpolator(
   shared_variables(ctx), partial_interpolants(ctx),
   computed_interpolant(ctx)
 {
+#if QUICK_COMM_CHECK
+  if(z3::mk_and(part_a.getEufComponent()).is_common() && z3::mk_and(part_b.getOctComponent()).is_common()){
+    computed_interpolant = z3::mk_and(part_a.getEufComponent()) && z3::mk_and(part_b.getOctComponent());
+    computed_interpolant = computed_interpolant
+      .substitute(part_a.persistent_to, part_a.persistent_from)
+      .substitute(part_b.persistent_to, part_b.persistent_from)
+      .simplify();
+    return;
+  }
+#endif
   sharedVariables(part_a, part_b);
 #if _DEBUG_TH_COMB_
   std::cout << "Part a" << std::endl;
@@ -27,9 +37,7 @@ ThCombInterpolator::ThCombInterpolator(
   z3::expr last_formula_added = ctx.bool_val(false);
   z3::solver
     euf_solver(ctx, "QF_UF"), oct_solver(ctx, "QF_LIA");
-
-  for(auto const & _form : part_a.getOctComponent()){
-    z3::expr form = _form;
+for(auto const & _form : part_a.getOctComponent()){ z3::expr form = _form;
     if(form.is_distinct())
       form = !(_form.arg(0) == _form.arg(1));
     oct_solver.add(form);
