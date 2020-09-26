@@ -37,23 +37,24 @@
 \BOOKMARK [1][-]{section.4.2}{Implementation}{chapter.4}% 37
 \BOOKMARK [1][-]{section.4.3}{Evaluation}{chapter.4}% 38
 \BOOKMARK [2][-]{subsection.4.3.1}{Detailed evaluation of examples}{section.4.3}% 39
-\BOOKMARK [1][-]{section.4.4}{Conclusions}{chapter.4}% 40
-\BOOKMARK [0][-]{chapter.5}{Interpolation algorithm for the theory combination of EUF and UTVPI}{}% 41
-\BOOKMARK [1][-]{section.5.1}{Algorithm}{chapter.5}% 42
-\BOOKMARK [1][-]{section.5.2}{Implementation}{chapter.5}% 43
-\BOOKMARK [1][-]{section.5.3}{Evaluation}{chapter.5}% 44
-\BOOKMARK [2][-]{subsection.5.3.1}{Detailed evaluation of a complete example}{section.5.3}% 45
-\BOOKMARK [2][-]{subsection.5.3.2}{A parametrized example}{section.5.3}% 46
-\BOOKMARK [2][-]{subsection.5.3.3}{Performance evaluation}{section.5.3}% 47
-\BOOKMARK [1][-]{section.5.4}{Conclusions}{chapter.5}% 48
-\BOOKMARK [0][-]{chapter.6}{Future Work}{}% 49
-\BOOKMARK [0][-]{chapter*.6}{Appendix A}{}% 50
-\BOOKMARK [1][-]{section.6.1}{Theorems about Interpolants}{chapter*.6}% 51
-\BOOKMARK [2][-]{subsection.6.1.1}{Interpolants are closed under conjunction and disjunction}{section.6.1}% 52
-\BOOKMARK [2][-]{subsection.6.1.2}{Interpolants distribute conjunctions over disjunctions in the A-part}{section.6.1}% 53
-\BOOKMARK [0][-]{chapter*.7}{Appendix B}{}% 54
-\BOOKMARK [1][-]{section.6.2}{Trace for example in theory combination chapter}{chapter*.7}% 55
-\BOOKMARK [0][-]{chapter*.8}{Appendix C}{}% 56
-\BOOKMARK [1][-]{section.6.3}{Congruence Closure with Explanation operation header}{chapter*.8}% 57
-\BOOKMARK [1][-]{section.6.4}{Hornsat \(Gallier's data structure\) header}{chapter*.8}% 58
-\BOOKMARK [0][-]{chapter*.9}{References}{}% 59
+\BOOKMARK [2][-]{subsection.4.3.2}{Performance comparison with iZ3 and MathSat}{section.4.3}% 40
+\BOOKMARK [1][-]{section.4.4}{Conclusions}{chapter.4}% 41
+\BOOKMARK [0][-]{chapter.5}{Interpolation algorithm for the theory combination of EUF and UTVPI}{}% 42
+\BOOKMARK [1][-]{section.5.1}{Algorithm}{chapter.5}% 43
+\BOOKMARK [1][-]{section.5.2}{Implementation}{chapter.5}% 44
+\BOOKMARK [1][-]{section.5.3}{Evaluation}{chapter.5}% 45
+\BOOKMARK [2][-]{subsection.5.3.1}{Detailed evaluation of a complete example}{section.5.3}% 46
+\BOOKMARK [2][-]{subsection.5.3.2}{A parametrized example}{section.5.3}% 47
+\BOOKMARK [2][-]{subsection.5.3.3}{Performance evaluation}{section.5.3}% 48
+\BOOKMARK [1][-]{section.5.4}{Conclusions}{chapter.5}% 49
+\BOOKMARK [0][-]{chapter.6}{Future Work}{}% 50
+\BOOKMARK [0][-]{chapter*.6}{Appendix A}{}% 51
+\BOOKMARK [1][-]{section.6.1}{Theorems about Interpolants}{chapter*.6}% 52
+\BOOKMARK [2][-]{subsection.6.1.1}{Interpolants are closed under conjunction and disjunction}{section.6.1}% 53
+\BOOKMARK [2][-]{subsection.6.1.2}{Interpolants distribute conjunctions over disjunctions in the A-part}{section.6.1}% 54
+\BOOKMARK [0][-]{chapter*.7}{Appendix B}{}% 55
+\BOOKMARK [1][-]{section.6.2}{Trace for example in theory combination chapter}{chapter*.7}% 56
+\BOOKMARK [0][-]{chapter*.8}{Appendix C}{}% 57
+\BOOKMARK [1][-]{section.6.3}{Congruence Closure with Explanation operation header}{chapter*.8}% 58
+\BOOKMARK [1][-]{section.6.4}{Hornsat \(Gallier's data structure\) header}{chapter*.8}% 59
+\BOOKMARK [0][-]{chapter*.9}{References}{}% 60
