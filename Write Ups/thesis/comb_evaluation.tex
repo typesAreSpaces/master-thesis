@@ -47,58 +47,109 @@ to compute the expected result discussed above. This particular test
 was useful to check disjunction of equalities propagation mechanism in the
 implementation work.
 
-\subsection{Performance evaluation}
+\subsection{Performance evaluation} \label{performance_thcomb}
 
+%TODO: keep working here
 
-TODO: keep working here
+%The following collection of examples were produced from a reduction 
+%algorithm that takes an input formula in the theory of arrays combined with
+%total orders, reducing the formula to EUF and total order. We can use our
+%implementation of theory combination of EUF + UTVPI formulas because 
+%given an expression of the form $a \star b$ where
+%$\star$ is either $<, \leq, >, \geq, =, \neq$, 
+%the latter is equivalent to 
+%simplify($a - b \star 0$) using Z3's arithmetic rewriter. 
+%The latter is justified formally since integers 
+%satisfy the cancellation property over addition.
 
-The following collection of examples were produced from a reduction 
-algorithm that takes an input formula in the theory of arrays combined with
-total orders, reducing the formula to EUF and total order. We can use our
-implementation of theory combination of EUF + UTVPI formulas because 
-given an expression of the form $a \star b$ where
-$\star$ is either $<, \leq, >, \geq, =, \neq$, 
-the latter is equivalent to 
-simplify($a - b \star 0$) using Z3's arithmetic rewriter. 
-The latter is justified formally since integers 
-satisfy the cancellation property over addition.
+%The cases used in this test followed from branching the disjunctions
+%of the following SMT2 query:
 
-The cases used in this test followed from branching the disjunctions
-of the following SMT2 query:
+%\verbatiminput{../../Software/Cpp/ThCombination/tests/smt2-files/example_reduced_z3.smt2}
 
-\verbatiminput{../../Software/Cpp/ThCombination/tests/smt2-files/example_reduced_z3.smt2}
+%The time shown in next table was measured in microseconds:
 
-The time shown in next table was measured in microseconds:
+%\begin{tabular}{cccccccccc}
+  %\toprule
+  %&  & & \multicolumn{4}{c}{Performance evaluation} & & & \\
+  %\toprule
+  %Test & Time & Test & Time & Test & Time & Test & Time & Test & Time \\
+  %\cmidrule(lr){1-2} \cmidrule(lr){3-4} \cmidrule(lr){5-6} \cmidrule(lr){7-8} \cmidrule(lr){9-10}
 
-\centering
-\begin{tabular}{cccccccccc}
-  \toprule
-  &  & & \multicolumn{4}{c}{Performance evaluation} & & & \\
-  \toprule
-  Test & Time & Test & Time & Test & Time & Test & Time & Test & Time \\
-  \cmidrule(lr){1-2} \cmidrule(lr){3-4} \cmidrule(lr){5-6} \cmidrule(lr){7-8} \cmidrule(lr){9-10}
+  %\#1 & 8459 & \#21 & 8604 & \#41 & 7777 & \#61 & 7836 & \#81 & 8609 \\
+  %\#2 & 7757 & \#22 & 8620 & \#42 & 7781 & \#62 & 7791 & \#82 & 8739 \\
+  %\#3 & 7686 & \#23 & 8584 & \#43 & 7724 & \#63 & 7838 & \#83 & 8642 \\
+  %\#4 & 8742 & \#24 & 8663 & \#44 & 8644 & \#64 & 8633 & \#84 & 8633 \\
+  %\#5 & 7813 & \#25 & 7728 & \#45 & 8655 & \#65 & 7737 & \#85 & 7843 \\
+  %\#6 & 7743 & \#26 & 7777 & \#46 & 8662 & \#66 & 7716 & \#86 & 7775 \\
+  %\#7 & 7766 & \#27 & 7863 & \#47 & 8568 & \#67 & 7729 & \#87 & 7785 \\
+  %\#8 & 8651 & \#28 & 8644 & \#48 & 8636 & \#68 & 8590 & \#88 & 8781 \\
+  %\#9 & 8584 & \#29 & 7739 & \#49 & 7810 & \#69 & 8712 & \#89 & 7821 \\
+  %\#10 & 8614 & \#30 & 7700 & \#50 & 7818 & \#70 & 8670 & \#90 & 7868 \\
+  %\#11 & 8655 & \#31 & 7749 & \#51 & 7730 & \#71 & 8804 & \#91 & 7852 \\
+  %\#12 & 8600 & \#32 & 8570 & \#52 & 8680 & \#72 & 8694 & \#92 & 9172 \\
+  %\#13 & 7727 & \#33 & 8746 & \#53 & 7703 & \#73 & 7740 & \#93 & 8709 \\
+  %\#14 & 7760 & \#34 & 8634 & \#54 & 7700 & \#74 & 7796 & \#94 & 8641 \\
+  %\#15 & 7752 & \#35 & 8654 & \#55 & 7766 & \#75 & 7812 & \#95 & 8729 \\
+  %\#16 & 8688 & \#36 & 8605 & \#56 & 8565 & \#76 & 8667 & \#96 & 8722 \\
+  %\#17 & 7708 & \#37 & 7768 & \#57 & 8616 & \#77 & 7745 & \#97 & 7829 \\
+  %\#18 & 7754 & \#38 & 7749 & \#58 & 8670 & \#78 & 7787 & \#98 & 7798 \\
+  %\#19 & 7609 & \#39 & 7759 & \#59 & 8578 & \#79 & 7751 & \#99 & 7819 \\
+  %\#20 & 8575 & \#40 & 8695 & \#60 & 8688 & \#80 & 8655 & \#100 & 8739
+%\end{tabular}
 
-  \#1 & 8459 & \#21 & 8604 & \#41 & 7777 & \#61 & 7836 & \#81 & 8609 \\
-  \#2 & 7757 & \#22 & 8620 & \#42 & 7781 & \#62 & 7791 & \#82 & 8739 \\
-  \#3 & 7686 & \#23 & 8584 & \#43 & 7724 & \#63 & 7838 & \#83 & 8642 \\
-  \#4 & 8742 & \#24 & 8663 & \#44 & 8644 & \#64 & 8633 & \#84 & 8633 \\
-  \#5 & 7813 & \#25 & 7728 & \#45 & 8655 & \#65 & 7737 & \#85 & 7843 \\
-  \#6 & 7743 & \#26 & 7777 & \#46 & 8662 & \#66 & 7716 & \#86 & 7775 \\
-  \#7 & 7766 & \#27 & 7863 & \#47 & 8568 & \#67 & 7729 & \#87 & 7785 \\
-  \#8 & 8651 & \#28 & 8644 & \#48 & 8636 & \#68 & 8590 & \#88 & 8781 \\
-  \#9 & 8584 & \#29 & 7739 & \#49 & 7810 & \#69 & 8712 & \#89 & 7821 \\
-  \#10 & 8614 & \#30 & 7700 & \#50 & 7818 & \#70 & 8670 & \#90 & 7868 \\
-  \#11 & 8655 & \#31 & 7749 & \#51 & 7730 & \#71 & 8804 & \#91 & 7852 \\
-  \#12 & 8600 & \#32 & 8570 & \#52 & 8680 & \#72 & 8694 & \#92 & 9172 \\
-  \#13 & 7727 & \#33 & 8746 & \#53 & 7703 & \#73 & 7740 & \#93 & 8709 \\
-  \#14 & 7760 & \#34 & 8634 & \#54 & 7700 & \#74 & 7796 & \#94 & 8641 \\
-  \#15 & 7752 & \#35 & 8654 & \#55 & 7766 & \#75 & 7812 & \#95 & 8729 \\
-  \#16 & 8688 & \#36 & 8605 & \#56 & 8565 & \#76 & 8667 & \#96 & 8722 \\
-  \#17 & 7708 & \#37 & 7768 & \#57 & 8616 & \#77 & 7745 & \#97 & 7829 \\
-  \#18 & 7754 & \#38 & 7749 & \#58 & 8670 & \#78 & 7787 & \#98 & 7798 \\
-  \#19 & 7609 & \#39 & 7759 & \#59 & 8578 & \#79 & 7751 & \#99 & 7819 \\
-  \#20 & 8575 & \#40 & 8695 & \#60 & 8688 & \#80 & 8655 & \#100 & 8739
-\end{tabular}
+This section discusses a parametrized problem 
+in the EUF + UTVPI theory and compares the times required by
+our implementation, iZ3, and Mathsat.
+
+\begin{lemma} \label{performance_test_lemma_thcomb}
+  Let $x, a$ be constants and $f$ a unary function 
+  in the language of the combined theory of EUF and UTVPI.
+  The following conjunction is unsatisfiable for any
+  fixed $n \in \mathbb{N}$:
+  \begin{equation*}
+    1 \leq x \land x \leq n 
+    \land f(x) = a 
+    \land \bigwedge_{i=1}^{n} f(i) \neq a
+  \end{equation*}
+\end{lemma}
+
+\begin{proof}
+  Using the inequalities $1 \leq x \land x \leq n$
+  we can conclude that $x = 1 \lor x = 2 \lor \dots \lor x = n$.
+  since we are in the theory of UTVPI for integers.
+  We can prove that $x \neq i$ where $i \in \{1, \dots, n \}$.
+  Suppose, by contradiction, that $x = i$, so by congruence
+  we have that $f(x) = f(i)$, thus $f(i) = a$. This will 
+  contradict the conjunction $\bigwedge_{i=1}^{n} f(i) \neq a$.
+  Repeating the above step we can prove that 
+  $\bigwedge_{i=1}^n x \neq i$. Using $n$ resolution steps, 
+  the first disjunction will entail $\bot$ with 
+  $\bigwedge_{i=1}^{n} x \neq i$.
+\end{proof}
+
+The interpolation pair for our performance test 
+is $(1 \leq x \land x \leq n, 
+f(x) = a \land \bigwedge_{i=1}^{n} f(i) \neq a)$
+for fixed $n \in \mathbb{N}$.
+It is easy to see that the pair is inconsistent due to the lemma 
+\ref{performance_test_lemma_thcomb}. 
+
+The interpolant in this problem is pretty simple since the 
+A-part is already a common conjunction in the language of the
+combined theory. For the latter, we tested two versions of our
+implementation, one that executes the algorithm proprosed in
+this section and the second includes an additional check in 
+the algorithm described in this chapter which returns as result
+the formula in the A-part if this formula is a conjunction of 
+common symbols.
+
+The first experiment tested values for $n$ from $\{2, \dots, 8\}$.
+Since the second approach returns a result immediately after
+checking if the input is common or not, we tested the parametrized
+problem for values in $\{2, \dots, 3000\}$.
+
+TODO: add the two graphs.
 
 %%% Local Variables:
 %%% mode: latex

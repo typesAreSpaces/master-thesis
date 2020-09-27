@@ -74,9 +74,10 @@ our implementation, iZ3, and Mathsat.
 \end{lemma}
 
 \begin{proof}
-  Using the first $n-1$ inequalities of the conjunction
-  in \ref{oct_problem} we can conclude that $2x_1 \leq n$.
-  The latter contradicts the last inequality $x_1 \cei{n/2}$.
+  Using the inequalities $x_1 + x_2 \leq 1 
+  \land \bigwedge_{i=2}^{n-1} (x_{i+1} - x_i \leq 1)$
+   we can conclude that $2x_1 \leq n$.
+  The latter contradicts the last inequality $x_1 > \ceil{n/2}$.
 \end{proof}
 
 The interpolation pair for our performance test 
@@ -90,9 +91,10 @@ It is easy to see that the pair is inconsistent due to the lemma
 By lemma \ref{performance_test_lemma_oct}
 we can also see that the formula $x_1 \leq \ceil{n/2}$ is an 
 interpolating formula for all fixed $n$ in this parametrized problem.
-We designed this problem because it is easy to verify the 
+Similarly to the parametric problem in \ref{performance_euf}, 
+we designed this problem because it is easy to verify the 
 correctness of output of the algorithms and to measure 
-the time used by the algorithms for large values of $n$. 
+the time for various values of $n$. 
 We executed instances of this problem for values of $n$
 in the range $\{1, \dots, 10000\}$ using the same setup 
 used in the performance comparison for the parametrized 
