@@ -1,0 +1,10 @@
+test: 2
+
+real	0m0.026s
+user	0m0.026s
+sys	0m0.000s
+test: 6
+
+real	0m11.428s
+user	0m11.347s
+sys	0m0.073s
