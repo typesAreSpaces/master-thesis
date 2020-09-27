@@ -18,6 +18,13 @@ void thci_instance(unsigned);
 
 void iz3_process(unsigned);
 void mathsat_process(unsigned);
+void mathsat_process_0(unsigned);
+void mathsat_process_1(unsigned);
+void mathsat_process_2(unsigned);
+void mathsat_process_3(unsigned);
+void mathsat_process_4(unsigned);
+void mathsat_process_5(unsigned);
+void mathsat_process_6(unsigned);
 void thci_process_0(unsigned);
 void thci_process_1(unsigned);
 void thci_process_2(unsigned);
@@ -25,21 +32,37 @@ void thci_process_3(unsigned);
 
 int main(){
 
-  unsigned n = 8;
+  unsigned n = 3000;
 
-  std::thread iz3(iz3_process, n);
-  std::thread mathsat(mathsat_process, n);
-  std::thread thci_0(thci_process_0, n);
-  std::thread thci_1(thci_process_1, n);
-  std::thread thci_2(thci_process_2, n);
-  std::thread thci_3(thci_process_3, n);
+  //std::thread iz3(iz3_process, n);
+  //std::thread mathsat(mathsat_process, n);
+  //std::thread thci_0(thci_process_0, n);
+  //std::thread thci_1(thci_process_1, n);
+  //std::thread thci_2(thci_process_2, n);
+  //std::thread thci_3(thci_process_3, n);
   
-  iz3.join();
-  mathsat.join();
-  thci_0.join();
-  thci_1.join();
-  thci_2.join();
-  thci_3.join();
+  //iz3.join();
+  //mathsat.join();
+  //thci_0.join();
+  //thci_1.join();
+  //thci_2.join();
+  //thci_3.join();
+
+  std::thread mathsat_0(mathsat_process_0, n);
+  std::thread mathsat_1(mathsat_process_1, n);
+  std::thread mathsat_2(mathsat_process_2, n);
+  std::thread mathsat_3(mathsat_process_3, n);
+  std::thread mathsat_4(mathsat_process_4, n);
+  std::thread mathsat_5(mathsat_process_5, n);
+  std::thread mathsat_6(mathsat_process_6, n);
+  
+  mathsat_0.join();
+  mathsat_1.join();
+  mathsat_2.join();
+  mathsat_3.join();
+  mathsat_4.join();
+  mathsat_5.join();
+  mathsat_6.join();
 
   return 0;
 }
@@ -51,8 +74,6 @@ void iz3_instance(unsigned n){
   out << "(declare-fun x () Int)" << std::endl;
   out << "(declare-fun a () Int)" << std::endl;
   out << "(declare-fun f (Int) Int)" << std::endl;
-  out << std::endl;
-  out << "(assert (!" << std::endl;
   out << "(and" << std::endl;
   out << "(<= 1 x)" << std::endl;
   out << "(<= x " << n << ")" << std::endl;
@@ -148,7 +169,7 @@ void mathsat_process(unsigned n){
 void thci_process_0(unsigned n){
   system("rm -rf thci_results_0.txt");
   for(unsigned i = 2; i < n; ++i){
-    unsigned r = i % 3;
+    unsigned r = i % 4;
     if(r == 0){
       thci_instance(i);
       system(("echo \"test: " + std::to_string(i) + "\">> thci_results_0.txt").c_str());
@@ -161,7 +182,7 @@ void thci_process_0(unsigned n){
 void thci_process_1(unsigned n){
   system("rm -rf thci_results_1.txt");
   for(unsigned i = 2; i < n; ++i){
-    unsigned r = i % 3;
+    unsigned r = i % 4;
     if(r == 1){
       thci_instance(i);
       system(("echo \"test: " + std::to_string(i) + "\">> thci_results_1.txt").c_str());
@@ -174,12 +195,113 @@ void thci_process_1(unsigned n){
 void thci_process_2(unsigned n){
   system("rm -rf thci_results_2.txt");
   for(unsigned i = 2; i < n; ++i){
-    unsigned r = i % 3;
+    unsigned r = i % 4;
     if(r == 2){
       thci_instance(i);
       system(("echo \"test: " + std::to_string(i) + "\">> thci_results_2.txt").c_str());
       system(("{ time ./bin/thci " + (THCI_PREFIX + std::to_string(i)) + SMT_SUFFIX + "; } 2>> thci_results_2.txt").c_str());
       system(("rm " + (THCI_PREFIX + std::to_string(i)) + SMT_SUFFIX).c_str());
+    }
+  }
+}
+
+void thci_process_3(unsigned n){
+  system("rm -rf thci_results_3.txt");
+  for(unsigned i = 2; i < n; ++i){
+    unsigned r = i % 4;
+    if(r == 3){
+      thci_instance(i);
+      system(("echo \"test: " + std::to_string(i) + "\">> thci_results_3.txt").c_str()); system(("{ time ./bin/thci " + (THCI_PREFIX + std::to_string(i)) + SMT_SUFFIX + "; } 2>> thci_results_3.txt").c_str()); system(("rm " + (THCI_PREFIX + std::to_string(i)) + SMT_SUFFIX).c_str()); }
+  }
+}
+
+void mathsat_process_0(unsigned n){
+  system("rm -rf mathsat_results_0.txt");
+  for(unsigned i = 2500; i < n; ++i){
+    unsigned r = i % 7;
+    if(r == 0){
+      mathsat_instance(i);
+      system(("echo \"test: " + std::to_string(i) + "\">> mathsat_results_0.txt").c_str());
+      system(("{ time ../../bin/mathsat " + (MATHSAT_PREFIX + std::to_string(i)) + SMT_SUFFIX + "; } 2>> mathsat_results_0.txt").c_str());
+      system(("rm " + (MATHSAT_PREFIX + std::to_string(i)) + SMT_SUFFIX).c_str());
+    }
+  }
+}
+
+void mathsat_process_1(unsigned n){
+  system("rm -rf mathsat_results_1.txt");
+  for(unsigned i = 2500; i < n; ++i){
+    unsigned r = i % 7;
+    if(r == 1){
+      mathsat_instance(i);
+      system(("echo \"test: " + std::to_string(i) + "\">> mathsat_results_1.txt").c_str());
+      system(("{ time ../../bin/mathsat " + (MATHSAT_PREFIX + std::to_string(i)) + SMT_SUFFIX + "; } 2>> mathsat_results_1.txt").c_str());
+      system(("rm " + (MATHSAT_PREFIX + std::to_string(i)) + SMT_SUFFIX).c_str());
+    }
+  }
+}
+
+void mathsat_process_2(unsigned n){
+  system("rm -rf mathsat_results_2.txt");
+  for(unsigned i = 2500; i < n; ++i){
+    unsigned r = i % 7;
+    if(r == 2){
+      mathsat_instance(i);
+      system(("echo \"test: " + std::to_string(i) + "\">> mathsat_results_2.txt").c_str());
+      system(("{ time ../../bin/mathsat " + (MATHSAT_PREFIX + std::to_string(i)) + SMT_SUFFIX + "; } 2>> mathsat_results_2.txt").c_str());
+      system(("rm " + (MATHSAT_PREFIX + std::to_string(i)) + SMT_SUFFIX).c_str());
+    }
+  }
+}
+
+void mathsat_process_3(unsigned n){
+  system("rm -rf mathsat_results_3.txt");
+  for(unsigned i = 2500; i < n; ++i){
+    unsigned r = i % 7;
+    if(r == 3){
+      mathsat_instance(i);
+      system(("echo \"test: " + std::to_string(i) + "\">> mathsat_results_3.txt").c_str());
+      system(("{ time ../../bin/mathsat " + (MATHSAT_PREFIX + std::to_string(i)) + SMT_SUFFIX + "; } 2>> mathsat_results_3.txt").c_str());
+      system(("rm " + (MATHSAT_PREFIX + std::to_string(i)) + SMT_SUFFIX).c_str());
+    }
+  }
+}
+
+void mathsat_process_4(unsigned n){
+  system("rm -rf mathsat_results_4.txt");
+  for(unsigned i = 2500; i < n; ++i){
+    unsigned r = i % 7;
+    if(r == 4){
+      mathsat_instance(i);
+      system(("echo \"test: " + std::to_string(i) + "\">> mathsat_results_4.txt").c_str());
+      system(("{ time ../../bin/mathsat " + (MATHSAT_PREFIX + std::to_string(i)) + SMT_SUFFIX + "; } 2>> mathsat_results_4.txt").c_str());
+      system(("rm " + (MATHSAT_PREFIX + std::to_string(i)) + SMT_SUFFIX).c_str());
+    }
+  }
+}
+
+void mathsat_process_5(unsigned n){
+  system("rm -rf mathsat_results_5.txt");
+  for(unsigned i = 2500; i < n; ++i){
+    unsigned r = i % 7;
+    if(r == 5){
+      mathsat_instance(i);
+      system(("echo \"test: " + std::to_string(i) + "\">> mathsat_results_5.txt").c_str());
+      system(("{ time ../../bin/mathsat " + (MATHSAT_PREFIX + std::to_string(i)) + SMT_SUFFIX + "; } 2>> mathsat_results_5.txt").c_str());
+      system(("rm " + (MATHSAT_PREFIX + std::to_string(i)) + SMT_SUFFIX).c_str());
+    }
+  }
+}
+
+void mathsat_process_6(unsigned n){
+  system("rm -rf mathsat_results_6.txt");
+  for(unsigned i = 2500; i < n; ++i){
+    unsigned r = i % 7;
+    if(r == 6){
+      mathsat_instance(i);
+      system(("echo \"test: " + std::to_string(i) + "\">> mathsat_results_6.txt").c_str());
+      system(("{ time ../../bin/mathsat " + (MATHSAT_PREFIX + std::to_string(i)) + SMT_SUFFIX + "; } 2>> mathsat_results_6.txt").c_str());
+      system(("rm " + (MATHSAT_PREFIX + std::to_string(i)) + SMT_SUFFIX).c_str());
     }
   }
 }
