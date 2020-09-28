@@ -1,0 +1,92 @@
+let SessionLoad = 1
+let s:so_save = &so | let s:siso_save = &siso | set so=0 siso=0
+let v:this_session=expand("<sfile>:p")
+silent only
+cd ~/Documents/GithubProjects/master-thesis/Write\ Ups/thesis
+if expand('%') == '' && !&modified && line('$') <= 1 && getline(1) == ''
+  let s:wipebuf = bufnr('%')
+endif
+set shortmess=aoO
+badd +9 dedication_acknowledgments.tex
+badd +3 euf_conclusion.tex
+badd +69 euf_evaluation.tex
+badd +2 oct_evaluation.tex
+badd +31 oct_conclusion.tex
+badd +182 comb_evaluation.tex
+badd +33 comb_conclusion.tex
+badd +685 references.bib
+badd +1 comb_algorithm.tex
+badd +27 comb_implementation.tex
+badd +1 combination.tex
+badd +0 comb_octagonalization.tex
+badd +12 comb_abstract.tex
+argglobal
+%argdel
+$argadd dedication_acknowledgments.tex
+edit combination.tex
+set splitbelow splitright
+wincmd _ | wincmd |
+vsplit
+1wincmd h
+wincmd w
+set nosplitbelow
+set nosplitright
+wincmd t
+set winminheight=0
+set winheight=1
+set winminwidth=0
+set winwidth=1
+exe 'vert 1resize ' . ((&columns * 76 + 77) / 154)
+exe 'vert 2resize ' . ((&columns * 77 + 77) / 154)
+argglobal
+setlocal fdm=manual
+setlocal fde=0
+setlocal fmr={{{,}}}
+setlocal fdi=#
+setlocal fdl=0
+setlocal fml=1
+setlocal fdn=20
+setlocal fen
+silent! normal! zE
+let s:l = 6 - ((4 * winheight(0) + 7) / 14)
+if s:l < 1 | let s:l = 1 | endif
+exe s:l
+normal! zt
+6
+normal! 0
+wincmd w
+argglobal
+if bufexists("comb_octagonalization.tex") | buffer comb_octagonalization.tex | else | edit comb_octagonalization.tex | endif
+setlocal fdm=manual
+setlocal fde=0
+setlocal fmr={{{,}}}
+setlocal fdi=#
+setlocal fdl=0
+setlocal fml=1
+setlocal fdn=20
+setlocal fen
+silent! normal! zE
+let s:l = 10 - ((2 * winheight(0) + 7) / 14)
+if s:l < 1 | let s:l = 1 | endif
+exe s:l
+normal! zt
+10
+normal! 0
+wincmd w
+2wincmd w
+exe 'vert 1resize ' . ((&columns * 76 + 77) / 154)
+exe 'vert 2resize ' . ((&columns * 77 + 77) / 154)
+tabnext 1
+if exists('s:wipebuf') && getbufvar(s:wipebuf, '&buftype') isnot# 'terminal'
+  silent exe 'bwipe ' . s:wipebuf
+endif
+unlet! s:wipebuf
+set winheight=1 winwidth=20 winminheight=1 winminwidth=1 shortmess=filnxtToOFIc
+let s:sx = expand("<sfile>:p:r")."x.vim"
+if file_readable(s:sx)
+  exe "source " . fnameescape(s:sx)
+endif
+let &so = s:so_save | let &siso = s:siso_save
+doautoall SessionLoadPost
+unlet SessionLoad
+" vim: set ft=vim :

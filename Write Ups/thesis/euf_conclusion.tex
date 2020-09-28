@@ -1,13 +1,39 @@
 \section{Conclusions}
 
-The approach introduced by Prof. Kapur
-is an alternative procedure to compute interpolants
-for the EUF theories. Additionally, this formulas
+This chapter discussed the new approach
+for interpolant generation introduced by
+Prof. Kapur for the EUF theory. We 
+proposed a modification of his algorithm
+and proved its correctness. The 
+implementation and testing work confirms 
+that the approach produces stronger interpolants
+compared to other interpolant generation
+algorithms (iZ3, Mathsat).
 
-The experimental section shows extensively the 
-behaviour of the implementation presented. Perfo
+The performance comparison section indicates
+that of our implementation appears to be slower 
+than iZ3 and Mathsat.
+This can be due the quadratic step 
+by the Phase II in Kapur's algorithm
+and both iZ3 and Mathsat might be able
+to find the linear refutational proof 
+discussed in \ref{performance_test_lemma}.
 
-TODO: keep working here.
+On the other hand, it is important to 
+highlight that the algorithm have different
+output specification since Prof. Kapur algorithm
+is able to find a uniform interpolant.
+
+There are several places
+where the current implementation can be
+improved. Currently, the data structures
+for flattening introduce additional constants
+that might not be needed since the implementation
+used a recursive scan of the arguments of each
+expression without checking for term sharing.
+Moreover, the explanation mechanism might be
+improved/changed by the proof producing mechanism
+already available in Z3. 
 
 %%% Local Variables:
 %%% mode: latex

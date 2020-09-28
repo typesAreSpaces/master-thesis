@@ -1,6 +1,37 @@
 \section{Conclusions}
 
-TODO:
+This chapter showed the implementation of the
+interpolation combination algorithm in 
+\cite{10.1007/11532231_26} and the necessary
+changes for the EUF and UTVPI algorithms
+presented in previous chapters.
+
+The performance comparison shows a slower performance
+of the implementation with respect to iZ3 and Mathsat
+when the common check is not enable. The latter was 
+done on purpose to see the behaviour of the implementation
+on the interpolantion combination component.
+On the other hand, if the common check is enabled then
+our implementation is faster than the algorithms in iZ3 and
+Mathsat. The latter suggests that iZ3 and Mathsat might
+not check for common symbols globally and the computation 
+to distinguish symbols is done locally. 
+
+Currently the implementation does not incrementally the 
+consistency of the current formula in the main loop of 
+the implementation \ref{thcomb_propagation_loop}. 
+Changing the latter to an incrementally approach will
+maintain lemmas so the computation of intermediate results
+will not be performed repetitively. 
+
+Additionally, recent approaches in theory combination
+might benefit the interpolation combination problem. 
+In \cite{10.1007/978-3-642-22119-4_1} it was proved that
+using a model-based combination approach might not require
+the propagation of disjunction since this happens internally
+at the core level of the model-based approach. This approach
+was not investigated in the thesis work since it required
+to modify the SMT solver at a non supercifial level.
 
 %%% Local Variables:
 %%% mode: latex
