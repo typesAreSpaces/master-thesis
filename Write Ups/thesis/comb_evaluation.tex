@@ -147,9 +147,37 @@ common symbols.
 The first experiment tested values for $n$ from $\{2, \dots, 8\}$.
 Since the second approach returns a result immediately after
 checking if the input is common or not, we tested the parametrized
-problem for values in $\{2, \dots, 3000\}$.
+problem for values in $\{2, \dots, 2500\}$. We show a table and a
+graph for the first and second experiments respectively.
 
-TODO: add the two graphs.
+\begin{table}[h]
+  \centering
+  \begin{tabular}{cccc}
+    \toprule
+    Parameter n        & iZ3 & Mathsat & Our implementation \\
+    \cmidrule{2-4}                                          \\
+    2 & 0.006 & 0.004 & 0.026    \\
+    3 & 0.006 & 0.008 & 0.030    \\
+    4 & 0.003 & 0.005 & 0.082    \\
+    5 & 0.01  & 0.004 & 0.706    \\
+    6 & 0.007 & 0.004 & 11.347   \\
+    7 & 0.013 & 0.004 & 213.431  \\
+    8 & 0.009 & 0.008 & 5355.216 \\
+    \bottomrule
+  \end{tabular}
+  \caption{Time in seconds obtained for the first experiment.}
+\end{table}
+
+\begin{figure}
+  \centering
+  \includegraphics[scale=0.9]{figures/thci_performance_graph_large}
+  \caption{Performance comparison graph of EUF + UTVPI 
+    interpolant generation
+    algorithms for paramatrized problem from section 
+  \ref{performance_thcomb}} 
+  \label{performance_graph_thcomb}
+\end{figure}
+
 
 %%% Local Variables:
 %%% mode: latex

@@ -1,0 +1,79 @@
+\section{Octagonalization of input formula}
+
+This section discusses a minor issue that occurs
+after purifiying an input formula from the combined
+language of any theory with UTVPI. It is trivial
+to see that, in the language of UTVPI, any linear 
+combination of more than 2 variables does not belong
+to the UTVPI language by definition. On the other hand,
+purification will introduce equations with an additional 
+fresh variable, so some valid input formulas in the 
+UTVPI language might not be recognized as such.
+
+\begin{example} \label{example_octagonalization_issue}
+  Let us consider the following A-part 
+  input formula for the
+  combined theory of EUF and UTVPI: 
+  $f(x) + g(y, 29) \leq 120$.
+
+  The formula introcuded by
+  purification does not conform the UTVPI language:
+  $\mathfrak{a_1} = g(y, 29), 
+  \mathfrak{a_2} = f(x), 
+  \mathfrak{a_3} = \mathfrak{a_1} + \mathfrak{a_2},
+  \mathfrak{a_3} \leq 120$
+\end{example}
+
+In some cases, the purified formula can be modified by 
+propagating/eliminating unnecessary constants introduced
+by purification. An equisatisfiable formula to the 
+above shown in example \ref{example_octagonalization_issue}:
+$\mathfrak{a_1} = g(y, 29), 
+\mathfrak{a_2} = f(x), 
+\mathfrak{a_1} + \mathfrak{a_2} \leq 120$.
+
+\begin{definition}
+ An input formula in the combined language of theories including
+ the $UTVPI$ theory is \emph{octagonizable} if the $UTVPI$
+ component of the purified formula conforms the restrictions
+ of the $UTVPI$ language.
+\end{definition}
+
+\begin{lemma}
+  An input formula $\varphi$ in the combined language 
+  of $EUF$ and $UTVPI$ is \emph{octanizable} if 
+  and only if for every subterm of $\varphi$, the purified
+  equation introduced by purification containing three 
+  constants can be replaced by an equivalent equation
+  with only two constants.
+\end{lemma}
+
+\begin{proof}
+  The left to right implication is straightforward to prove 
+  since there are no equalities with three constants and 
+  the equalities with at most two constants can be replaced
+  by two inequalities with at most two constants, thus the formula
+  comforms the language constraint in the UTVPI theory.
+
+  Let us prove the right to left implication. 
+  Since the EUF language does not contain addition nor subtraction,
+  all the equalities produced by purification will contain at most
+  three constanst. By hypothesis, these equations can be replaced
+  by equations with at most two constants, which can be replaced
+  by two inequalities respectively by the UTVPI theory.
+  Hence the UTVPI part of the purified output
+  in additions with the latter inequalities conform the UTVPI
+  language constraint.
+\end{proof}
+
+Our implementation propagates constants in the integer domain 
+and eliminates unnecessary constants using the Z3 tactic
+called \emph{solver-eqs}. The tactic solver-eqs eliminates 
+variables using Gaussian elimination \cite{z3-strategies}.
+This transformation happens before the formula is applied to
+the UTVPI interpolant algorithm.
+
+%%% Local Variables:
+%%% mode: latex
+%%% TeX-master: "main"
+%%% End:
