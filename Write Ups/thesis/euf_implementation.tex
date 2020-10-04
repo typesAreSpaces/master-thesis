@@ -222,12 +222,12 @@ inference rules with the following lemmas:
   derivation:
 
   \begin{itemize}
-    \item Case: the last inference rule in the proof 
-      tree was Reflexivity. The ExtendedExplain 
+    \item Case 1. The last inference rule in the proof 
+      tree was Reflexivity: The ExtendedExplain 
       algorithm returns an empty list. Thus, the
       statement is vacuously true.
-    \item Case: the last inference rule in the proof 
-      tree was Symmetry. Line 8 of ExtendedExplain
+    \item Case 2. The last inference rule in the proof 
+      tree was Symmetry: Line 8 of ExtendedExplain
       returns a list of common equations $c$ and a list
       of uncommon equations $u$. 
       By Lemma \ref{existence_horn_in_explain}
@@ -241,12 +241,12 @@ inference rules with the following lemmas:
       should return a list of common equation for 
       these subproofs. Thus, the final list contains
       only common equations.
-    \item Case: the last inference rule in the proof 
-      tree was Transitivity. The proof follows similarly
+    \item Case 3. The last inference rule in the proof 
+      tree was Transitivity: The proof follows similarly
       to the previous case applied to the two subproofs
       for the Transitivity rule.
-    \item Case: the last inference rule in the proof 
-      tree was Congruence. The proof follwos similarly
+    \item Case 4. The last inference rule in the proof 
+      tree was Congruence: The proof follwos similarly
       to the previous case applied $n$ times for each
       subproof in the Congruence rule.
   \end{itemize}
@@ -407,8 +407,8 @@ equivalence relation.
   $\mathcal{E}$ with the equations in the antecedent of $h$.
 
   If there exists an explanation 
-  $\mathfrak{p} := \{\mathfrak{a}_1 = \mathfrak{b}_1 
-  \dots \mathfrak{a}_n = \mathfrak{b}_n\}$ 
+  $\mathfrak{p} := \{\mathfrak{a}_1 = \mathfrak{b}_1,
+  \dots, \mathfrak{a}_n = \mathfrak{b}_n\}$ 
   for the query $H \models_{\mathcal{E^{'}}} c = d$,
   then the explanation for the query 
   $H \models_{\mathcal{E}} (\bigwedge_i a_i = b_i) 
