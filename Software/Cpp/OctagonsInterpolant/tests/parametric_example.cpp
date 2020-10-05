@@ -24,11 +24,11 @@ void octi_process_2(unsigned);
 
 int main(){
 
-  unsigned n = 10000;
+  //unsigned n = 10000;
   //unsigned n = 100;
   //unsigned n = 10;
 
-#if 1
+#if 0
   //std::thread iz3(iz3_process, n);
   //std::thread mathsat(mathsat_process, n);
   std::thread octi_0(octi_process_0, n);
@@ -41,6 +41,10 @@ int main(){
   octi_1.join();
   octi_2.join();
 #endif 
+
+  octi_instance(9999);
+  mathsat_instance(9999);
+  iz3_instance(9999);
 
   return 0;
 }

@@ -48,6 +48,7 @@ int main(){
   //thci_2.join();
   //thci_3.join();
 
+#if 0
   std::thread mathsat_0(mathsat_process_0, n);
   std::thread mathsat_1(mathsat_process_1, n);
   std::thread mathsat_2(mathsat_process_2, n);
@@ -63,6 +64,9 @@ int main(){
   mathsat_4.join();
   mathsat_5.join();
   mathsat_6.join();
+#endif
+
+  thci_instance(6);
 
   return 0;
 }
