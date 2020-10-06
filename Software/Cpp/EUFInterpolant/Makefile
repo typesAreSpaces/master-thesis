@@ -28,7 +28,8 @@ DEPS = $(wildcard $(IDIR)/*.h)
 #all: bin/eufi
 #all: tests/cong_closure_expl_test
 #all: tests/current_progress
-all: tests/parametric_example
+#all: tests/parametric_example
+all: tests/benchmarks
 #all: valgrind_run
 
 # --------------------------------
@@ -60,16 +61,25 @@ tester: $(OBJS)
 	./$(param1)
 	rm -rf tests/*.o $(param1)
 
+.PHONY: tester_with_threads
+tester_with_threads: $(OBJS)
+	$(CC) -g -o $(param1) ./$(param1).cpp \
+		$(Z3DIR)/build/libz3.$(Z3EXT) \
+		-lpthread -pthread $(FLAGS) 
+	./$(param1)
+	rm -rf $(param1)
+
 .PHONY: tests/current_progress
 tests/current_progress: $(OBJS)
 	make tester param1=$@
 
 .PHONY: tests/parametric_example
 tests/parametric_example:
-	$(CC) -g -o ./$@ ./$@.cpp \
-		-pthread $(FLAGS)
-	./$@
-	rm -rf ./$@
+	make tester_with_threads param1=$@
+
+.PHONY: tests/benchmarks
+tests/benchmarks:
+	make tester_with_threads param1=$@
 
 .PHONY: valgrind_run
 valgrind_run: $(OBJS)
