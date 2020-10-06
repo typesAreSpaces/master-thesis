@@ -28,7 +28,8 @@ DEPS = $(wildcard $(IDIR)/*.h)
 #all: bin/octi
 #all: tests/test_octagon_parser
 #all: tests/current_progress
-all: tests/parametric_example
+#all: tests/parametric_example
+all: tests/benchmarks
 
 # --------------------------------
 #  Build
@@ -58,6 +59,14 @@ tester: $(OBJS)
 	./$(param1)
 	rm -rf tests/*.o $(param1)
 
+.PHONY: tester_with_threads
+tester_with_threads: $(OBJS)
+	$(CC) -g -o $(param1) ./$(param1).cpp \
+		$(Z3DIR)/build/libz3.$(Z3EXT) \
+		-lpthread -pthread $(FLAGS) 
+	./$(param1)
+	rm -rf $(param1)
+
 .PHONY: tests/test_octagon_parser
 tests/test_octagon_parser: $(OBJS) 
 	make tester param1=$@
@@ -76,11 +85,12 @@ tests/current_progress: $(OBJS)
 
 .PHONY: tests/parametric_example
 tests/parametric_example:
-	$(CC) -g -o ./$@ $@.cpp \
-		-pthread $(FLAGS)
-	./$@
-	rm -rf ./$@
+	make tester_with_threads param1=$@
 
+.PHONY: tests/benchmarks
+tests/benchmarks:
+	make tester_with_threads param1=$@
+	
 # ---------------------------------------------
 
 .PHONY: clean
