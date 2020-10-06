@@ -1,3 +1,4 @@
+#include <algorithm>
 #include <iostream>
 #include <fstream>
 #include <z3++.h>
@@ -13,6 +14,18 @@
 #define EUFI_PREFIX    "eufi_instance_"
 #define SMT_SUFFIX     ".smt2"
 #define TXT_SUFFIX     ".txt"
+
+class Symbols {
+
+  std::set<std::string> symbols;
+
+  void traverse(z3::expr const &);
+
+  public:
+  Symbols(z3::context & ctx, z3::expr_vector const &);
+
+  std::set<std::string> get_symbols() const;
+};
 
 class EUFSignature {
 
@@ -34,10 +47,11 @@ class EUFSignature {
   unsigned const max_num_a_lits;
   unsigned const max_ground_position;
   unsigned const limit_search;
+  unsigned num_vars_to_elim;
 
-  z3::sort_vector k_ary_sort(z3::sort const &, unsigned);
-  std::list<z3::expr_vector> allCandidates(unsigned);
-  std::vector<z3::expr_vector> cartesianProd(
+  z3::sort_vector KArySort(z3::sort const &, unsigned);
+  std::list<z3::expr_vector> AllCandidates(unsigned);
+  std::vector<z3::expr_vector> CartesianProd(
       std::list<z3::expr_vector>);
 
   void BuildGroundTerms(unsigned);
@@ -57,6 +71,8 @@ class EUFSignature {
   void EUFIInstance()    const;
   bool IsValidInstance() const;
 
+  void UpdateNumVarsToElim();
+
   std::string MyName() const;
 };
 
@@ -71,20 +87,6 @@ int main(){
   z3::context ctx;
   z3::sort sort_A = ctx.uninterpreted_sort("A");
 
-#if 0
-  EUFSignature S(ctx, sort_A,
-      10,    // num_constants
-      5,     // num_func_names
-      3,     // max_arity
-      10,    // max_num_a_lists
-      100,   // max_ground_position
-      1000); // limit_search
-
-  S.iZ3Instance();
-  S.MathsatInstance();
-  S.EUFIInstance();
-#endif
-
   //iZ3Benchmark(ctx, sort_A);
   MathsatBenchmark(ctx, sort_A);
   //EUFIBenchmark(ctx, sort_A);
@@ -92,14 +94,36 @@ int main(){
   return 0;
 }
 
-z3::sort_vector EUFSignature::k_ary_sort(z3::sort const & s, unsigned n){
+Symbols::Symbols(z3::context & ctx, z3::expr_vector const & input) : 
+  symbols({})
+{
+  for(auto const & lit : input)
+    traverse(lit);
+}
+
+void Symbols::traverse(z3::expr const & e){
+  if(e.is_app()){
+    unsigned num_args = e.num_args();
+    std::string f_name = e.decl().name().str();
+    if(f_name != "=" && f_name != "distinct")
+      symbols.insert(f_name);
+    for(unsigned i = 0; i < num_args; ++i)
+      traverse(e.arg(i));
+  }
+}
+
+std::set<std::string> Symbols::get_symbols() const {
+  return symbols;
+}
+
+z3::sort_vector EUFSignature::KArySort(z3::sort const & s, unsigned n){
   z3::sort_vector ans(ctx);
   for(unsigned i = 0; i < n; ++i)
     ans.push_back(s);
   return ans;
 }
 
-std::list<z3::expr_vector > EUFSignature::allCandidates(unsigned arity){
+std::list<z3::expr_vector > EUFSignature::AllCandidates(unsigned arity){
   std::list<z3::expr_vector > ans({});
 
   for(unsigned index = 0; index < arity; index++)
@@ -108,7 +132,7 @@ std::list<z3::expr_vector > EUFSignature::allCandidates(unsigned arity){
   return ans;
 }
 
-std::vector<z3::expr_vector> EUFSignature::cartesianProd(std::list<z3::expr_vector> candidates){
+std::vector<z3::expr_vector> EUFSignature::CartesianProd(std::list<z3::expr_vector> candidates){
   // ans_size can get really large
   // at most O(n^n)
   // so be aware of 
@@ -145,7 +169,7 @@ void EUFSignature::BuildGroundTerms(unsigned max_ground_position){
   while(true){
     for(auto const & f_name : func_names){
       unsigned current_arity = f_name.arity();
-      auto const & lol = cartesianProd(allCandidates(current_arity));
+      auto const & lol = CartesianProd(AllCandidates(current_arity));
       for(auto const & input : lol){
         grounded_terms.push_back(f_name(input));
         if(grounded_terms.size() >= max_ground_position)
@@ -205,9 +229,17 @@ void EUFSignature::BuildBPart(z3::solver & sol,
     }
 
     current_check = sol.check();
-    if(num_iter > limit_search)
+    if(++num_iter > limit_search){
+#if DEBUG
+      std::cout << "Not valid B-part instance" << std::endl;
+#endif
+      is_valid_instance = false;
       return;
+    }
   }
+#if DEBUG
+  std::cout << "Valid B-part instance" << std::endl;
+#endif
 }
 
 void EUFSignature::iZ3Instance() const {
@@ -306,7 +338,8 @@ EUFSignature::EUFSignature(z3::context & ctx, z3::sort const & sort_A,
   is_valid_instance(true),
   num_constants(num_constants), num_func_names(num_func_names),
   max_arity(max_arity), max_num_a_lits(max_num_a_lits),
-  max_ground_position(max_ground_position), limit_search(limit_search)
+  max_ground_position(max_ground_position), limit_search(limit_search),
+  num_vars_to_elim(0)
 {
   for(unsigned i = 0; i < num_constants; ++i)
     constants.push_back(ctx.constant(
@@ -314,7 +347,7 @@ EUFSignature::EUFSignature(z3::context & ctx, z3::sort const & sort_A,
   for(unsigned i = 0; i < num_func_names; ++i)
     func_names.push_back(ctx.function(
           ("f_" + std::to_string(i)).c_str(), 
-          k_ary_sort(sort_A, rand() % max_arity + 1), sort_A));
+          KArySort(sort_A, rand() % max_arity + 2), sort_A));
 
   BuildGroundTerms(max_ground_position);
   BuildAPart(max_num_a_lits, max_ground_position);
@@ -325,13 +358,15 @@ EUFSignature::EUFSignature(z3::context & ctx, z3::sort const & sort_A,
   is_valid_instance = sol.check() == z3::sat;
   if(is_valid_instance){
 #if DEBUG
-    std::cout << "Valid instance" << std::endl;
+    std::cout << "Valid A-part instance" << std::endl;
 #endif
     BuildBPart(sol, max_ground_position, limit_search);
+    if(is_valid_instance)
+      UpdateNumVarsToElim();
   }
 #if DEBUG
   else
-    std::cout << "Not valid instance" << std::endl;
+    std::cout << "Not valid A-part instance" << std::endl;
 #endif
 }
 
@@ -343,6 +378,28 @@ std::ostream & operator << (std::ostream & os, EUFSignature const & eufs){
   return os;
 }
 
+void EUFSignature::UpdateNumVarsToElim(){
+  std::set<std::string> a_symbols = Symbols(ctx, a_part).get_symbols();
+  std::set<std::string> b_symbols = Symbols(ctx, b_part).get_symbols();
+
+#if DEBUG
+  std::cout << "Symbols in A-part" << std::endl;
+  for(auto const & a : a_symbols)
+    std::cout << a << std::endl;
+  std::cout << "Symbols in B-part" << std::endl;
+  for(auto const & b : b_symbols)
+    std::cout << b << std::endl;
+#endif
+
+  std::set<std::string> result({});
+  std::set_difference(
+      a_symbols.begin(), a_symbols.end(),
+      b_symbols.begin(), b_symbols.end(),
+      std::inserter(result, result.end())
+      );
+  num_vars_to_elim = result.size();
+}
+
 std::string EUFSignature::MyName() const {
   return 
     std::to_string(num_constants) 
@@ -351,6 +408,7 @@ std::string EUFSignature::MyName() const {
     + "_" + std::to_string(max_num_a_lits)
     + "_" + std::to_string(max_ground_position)
     + "_" + std::to_string(limit_search)
+    + "_" + std::to_string(num_vars_to_elim)
     ;
 }
 
@@ -359,13 +417,13 @@ void iZ3Benchmark(z3::context & ctx, z3::sort const & sort_A){
   system(("rm -rf " + file_name).c_str());
 
   for(unsigned i = 0; i < 1000; ++i){
-    EUFSignature S(ctx, sort_A,
-        10,    // num_constants
-        5,     // num_func_names
-        3,     // max_arity
-        10,    // max_num_a_lists
-        100,   // max_ground_position
-        1000); // limit_search
+    //EUFSignature S(ctx, sort_A, 
+    //num_constants, num_func_names, 
+    //max_arity, max_num_a_lists, 
+    //max_ground_position, limit_search);
+    EUFSignature S(ctx, sort_A, 10, 5, 3, 10, 100, 1000);
+    //EUFSignature S(ctx, sort_A, 20, 10, 3, 40, 100, 1000);
+
     if(!S.IsValidInstance()){
       --i;
       continue;
@@ -382,13 +440,12 @@ void MathsatBenchmark(z3::context & ctx, z3::sort const & sort_A){
   system(("rm -rf " + file_name).c_str());
 
   for(unsigned i = 0; i < 1000; ++i){
-    EUFSignature S(ctx, sort_A,
-        10,    // num_constants
-        5,     // num_func_names
-        3,     // max_arity
-        10,    // max_num_a_lists
-        100,   // max_ground_position
-        1000); // limit_search
+    //EUFSignature S(ctx, sort_A, 
+    //num_constants, num_func_names, 
+    //max_arity, max_num_a_lists, 
+    //max_ground_position, limit_search);
+    //EUFSignature S(ctx, sort_A, 10, 5, 3, 10, 100, 1000);
+    EUFSignature S(ctx, sort_A, 20, 10, 3, 40, 100, 1000);
     if(!S.IsValidInstance()){
       --i;
       continue;
@@ -405,13 +462,12 @@ void EUFIBenchmark(z3::context & ctx, z3::sort const & sort_A){
   system(("rm -rf " + file_name).c_str());
 
   for(unsigned i = 0; i < 1000; ++i){
-    EUFSignature S(ctx, sort_A,
-        10,    // num_constants
-        5,     // num_func_names
-        3,     // max_arity
-        10,    // max_num_a_lists
-        100,   // max_ground_position
-        1000); // limit_search
+    //EUFSignature S(ctx, sort_A, 
+    //num_constants, num_func_names, 
+    //max_arity, max_num_a_lists, 
+    //max_ground_position, limit_search);
+    EUFSignature S(ctx, sort_A, 10, 5, 3, 10, 100, 1000);
+    //EUFSignature S(ctx, sort_A, 20, 10, 3, 40, 100, 1000);
     if(!S.IsValidInstance()){
       --i;
       continue;
