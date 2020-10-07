@@ -2,6 +2,7 @@
 
 void notAnOctagonNotATest(z3::context &);
 void combinedOctagonTest(z3::context &);
+void profKapurTest(z3::context &);
 void actualTest(z3::context &);
 void itSatsNotATest(z3::context &);
 void actualExample(z3::context &);
@@ -17,7 +18,8 @@ int main(){
   z3::context ctx;  
 
   //notAnOctagonNotATest(ctx);
-  combinedOctagonTest(ctx);
+  //combinedOctagonTest(ctx);
+  profKapurTest(ctx);
   //actualTest(ctx);
   //itSatsNotATest(ctx);
   //actualExample(ctx);
@@ -91,6 +93,42 @@ void combinedOctagonTest(z3::context & ctx){
   formula_b.push_back(0 == g(b));
   formula_b.push_back(x1 <= y1);
   formula_b.push_back(1 <= y3);
+  try { 
+    ThCombInterpolatorWithExpressions test(formula_a, formula_b);
+    std::cout << "Interpolant:" << std::endl;
+    std::cout << test << std::endl;
+  }
+  catch(char * const e){
+    std::cout << e << std::endl;
+  }
+  //std::cout << test << std::endl;
+}
+
+void profKapurTest(z3::context & ctx){
+  z3::sort int_sort =  ctx.int_sort();
+
+  // e1 = f(x1), e2 = f(x2), f(e1) = e2, x1 + e1 <= 0 <= x2 + e2, e4 = x2 + 3 
+  // where e1, e2, e4, need to be eliminated.
+
+  z3::expr x1 = ctx.constant("x1", int_sort);
+  z3::expr x2 = ctx.constant("x2", int_sort);
+  z3::expr e1 = ctx.constant("e1", int_sort);
+  z3::expr e2 = ctx.constant("e2", int_sort);
+  z3::expr e4 = ctx.constant("e4", int_sort);
+
+  z3::func_decl f = ctx.function("f", int_sort, int_sort);
+
+  z3::expr_vector formula_a(ctx); 
+  formula_a.push_back(e1 == f(x1));
+  formula_a.push_back(e2 == f(x2));
+  formula_a.push_back(f(e1) == e2);
+  formula_a.push_back(x1 + e1 <= 0);
+  formula_a.push_back(0 <= x2 + e2);
+  formula_a.push_back(e4 == x2 + 3);
+
+  z3::expr_vector formula_b(ctx); 
+  formula_b.push_back(f(x2) != f(f(x1)));
+
   try { 
     ThCombInterpolatorWithExpressions test(formula_a, formula_b);
     std::cout << "Interpolant:" << std::endl;
@@ -192,7 +230,7 @@ void actualExample(z3::context & ctx){
   formula_b.push_back(x1 <= b);
   formula_b.push_back(y1 == b);
   formula_b.push_back(f(y1) != 0);
-  
+
   ThCombInterpolatorWithExpressions test(formula_a, formula_b);
   std::cout << test << std::endl;
 }
