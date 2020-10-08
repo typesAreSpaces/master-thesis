@@ -8,7 +8,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h> 
-#define DEBUG 1
+#define DEBUG 0
 #define IZ3_PREFIX     "iz3_instance_"
 #define MATHSAT_PREFIX "mathsat_instance_"
 #define OCTI_PREFIX    "octi_instance_"
@@ -34,6 +34,8 @@ class OCTSignature {
   std::set<unsigned> ids;
   z3::expr_vector a_part;
   z3::expr_vector b_part;
+  z3::expr term_1;
+  z3::expr term_2;
 
   bool is_valid_instance;
 
@@ -45,6 +47,7 @@ class OCTSignature {
 
   void BuildAPart();
   void BuildBPart(z3::solver &);
+  z3::expr RandomLHS(int, int, bool);
 
   public:
   OCTSignature(z3::context &,
@@ -74,8 +77,8 @@ int main(){
   z3::sort sort_A = ctx.uninterpreted_sort("A");
 
   //iZ3Benchmark(ctx, sort_A);
-  MathsatBenchmark(ctx, sort_A);
-  //OCTIBenchmark(ctx, sort_A);
+  //MathsatBenchmark(ctx, sort_A);
+  OCTIBenchmark(ctx, sort_A);
 
   return 0;
 }
@@ -110,18 +113,16 @@ std::set<std::string> Symbols::get_symbols() const {
 void OCTSignature::BuildAPart(){
   unsigned counter_a_part = 0;
   while(counter_a_part < num_ineqs){
+
     int term_1_coeff = rand() % 3 - 1;
     int term_2_coeff = rand() % 3 - 1;
     if(term_1_coeff == 0 && term_2_coeff == 0)
       continue;
-    auto const & term_1 = term_1_coeff*ctx.int_const(
-        ("x_" + std::to_string(rand() % num_constants)).c_str());
-    auto const & term_2 = term_2_coeff*ctx.int_const(
-        ("x_" + std::to_string(rand() % num_constants)).c_str());
-    auto const & new_lhs = (rand() % 2 == 0) ?
-      term_1 + term_2 : term_1 - term_2;
+
+    auto const & new_lhs = RandomLHS(term_1_coeff, term_2_coeff, rand() % 2 == 0);
     int rnd_limit = 2*(rand() % max_limit) - max_limit;
     auto const & new_ineq = new_lhs <= rnd_limit;
+
     if(term_1.id() != term_2.id() 
         && ids.find(new_ineq.id()) == ids.end()){
       ids.insert(new_ineq.id());
@@ -138,18 +139,16 @@ void OCTSignature::BuildBPart(z3::solver & sol){
   unsigned num_iter = 0;
 
   while(current_check != z3::unsat){
+
     int term_1_coeff = rand() % 3 - 1;
     int term_2_coeff = rand() % 3 - 1;
     if(term_1_coeff == 0 && term_2_coeff == 0)
       continue;
-    auto const & term_1 = term_1_coeff*ctx.int_const(
-        ("x_" + std::to_string(rand() % num_constants)).c_str());
-    auto const & term_2 = term_2_coeff*ctx.int_const(
-        ("x_" + std::to_string(rand() % num_constants)).c_str());
-    auto const & new_lhs = (rand() % 2 == 0) ?
-      term_1 + term_2 : term_1 - term_2;
+
+    auto const & new_lhs = RandomLHS(term_1_coeff, term_2_coeff, rand() % 2 == 0);
     int rnd_limit = 2*(rand() % max_limit) - max_limit;
     auto const & new_ineq = new_lhs <= rnd_limit;
+
     local_sol.push();
     local_sol.add(new_ineq);
     auto current_local_check = local_sol.check();
@@ -175,6 +174,62 @@ void OCTSignature::BuildBPart(z3::solver & sol){
 #if DEBUG
   std::cout << "Valid B-part instance" << std::endl;
 #endif
+}
+
+z3::expr OCTSignature::RandomLHS(int term_1_coeff, int term_2_coeff, bool is_addition){
+  term_1 = ctx.int_const(
+      ("x_" + std::to_string(rand() % num_constants)).c_str());
+  term_2 = ctx.int_const(
+      ("x_" + std::to_string(rand() % num_constants)).c_str());
+  switch(term_1_coeff) {
+    case -1:
+      switch(term_2_coeff){
+        case -1:
+          if(is_addition)
+            return -term_1 - term_2;
+          return -term_1 + term_2;
+        case 0:
+          return -term_1;
+        case 1:
+          if(is_addition)
+            return -term_1 + term_2;
+          return -term_1 - term_2;
+        default:
+          throw "Error @ OCTSignature::RandomLHS";
+      }
+    case 0:
+      switch(term_2_coeff){
+        case -1:
+          if(is_addition)
+            return -term_2;
+          return term_2;
+        case 0:
+          throw "Error @ OCTSignature::RandomLHS";
+        case 1:
+          if(is_addition)
+            return term_2;
+          return -term_2;
+        default:
+          throw "Error @ OCTSignature::RandomLHS";
+      }
+    case 1:
+      switch(term_2_coeff){
+        case -1:
+          if(is_addition)
+            return term_1 - term_2;
+          return term_1 + term_2;
+        case 0:
+          return term_1;
+        case 1:
+          if(is_addition)
+            return term_1 + term_2;
+          return term_1 - term_2;
+        default:
+          throw "Error @ OCTSignature::RandomLHS";
+      }
+    default:
+      throw "Error @ OCTSignature::RandomLHS";
+  }
 }
 
 void OCTSignature::iZ3Instance() const {
@@ -260,6 +315,7 @@ OCTSignature::OCTSignature(z3::context & ctx,
     unsigned limit_search
     ) : 
   ctx(ctx), ids({}), a_part(ctx), b_part(ctx),
+  term_1(ctx), term_2(ctx),
   is_valid_instance(true),
   num_constants(num_constants), num_ineqs(num_ineqs), 
   max_limit(max_limit), limit_search(limit_search),
@@ -365,7 +421,7 @@ void MathsatBenchmark(z3::context & ctx, z3::sort const & sort_A){
 }
 
 void OCTIBenchmark(z3::context & ctx, z3::sort const & sort_A){
-  std::string file_name = "eufi_benchmark.txt";
+  std::string file_name = "octi_benchmark.txt";
   system(("rm -rf " + file_name).c_str());
 
   for(unsigned i = 0; i < 1000; ++i){
@@ -378,7 +434,7 @@ void OCTIBenchmark(z3::context & ctx, z3::sort const & sort_A){
     }
     S.OCTIInstance();
     system(("echo \"test: " + S.MyName() + "\">> " + file_name).c_str());
-    system(("{ time ./bin/eufi " + (OCTI_PREFIX + S.MyName()) + SMT_SUFFIX + "; } 2>> " + file_name).c_str());
+    system(("{ time ./bin/octi " + (OCTI_PREFIX + S.MyName()) + SMT_SUFFIX + "; } 2>> " + file_name).c_str());
     system(("rm " + (OCTI_PREFIX + S.MyName()) + SMT_SUFFIX).c_str());
   }
 }
