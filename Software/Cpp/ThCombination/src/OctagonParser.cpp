@@ -11,7 +11,11 @@ OctagonParser::OctagonParser(z3::expr_vector const & assertions) :
 
   for(auto const & assertion : assertions){
     auto const & inequality = assertion.arg(0);
-    auto const & bound = assertion.arg(1).get_numeral_int();
+    int bound = 0;
+    if(assertion.arg(1).num_args() == 0)
+      bound = assertion.arg(1).get_numeral_int();
+    else
+      bound = -assertion.arg(1).arg(0).get_numeral_int();
 #if DEBUG_OCT_PAR_CONST
     std::cout << "Processing current assertion: " << assertion << std::endl;
 #endif

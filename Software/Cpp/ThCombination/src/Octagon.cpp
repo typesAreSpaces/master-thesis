@@ -1,5 +1,17 @@
 #include "Octagon.h"
 
+std::ostream & operator << (std::ostream & os, enum Coeff const & sign){
+  switch(sign){
+    case NEG:
+      return os << "NEG";
+    case ZERO:
+      return os << "ZERO";
+    case POS:
+      return os << "POS";
+  }
+  throw "Error @ operator << (std::ostream &, enum Coeff const &)";
+}
+
 UtvpiPosition Var::max_utvpi_value = sqrt(std::numeric_limits<UtvpiPosition>::max());
 
 Var::Var(VarValue value) : 
@@ -27,11 +39,11 @@ bool operator !=(Var const & a, VarValue v){
   return a.value != v;
 }
 
-Octagon::Octagon(Coeff coeff1, VarValue value1, Coeff coeff2, VarValue value2) :
-  coeff1(value1 < value2 ? coeff2 : coeff1), 
-  coeff2(value1 < value2 ? coeff1 : coeff2),
-  var1  (value1 < value2 ? value2 : value1), 
-  var2  (value1 < value2 ? value1 : value2)
+Octagon::Octagon(Coeff _coeff1, VarValue _value1, Coeff _coeff2, VarValue _value2) :
+  coeff1(_value1 < _value2 ? _coeff2 : _coeff1), 
+  coeff2(_value1 < _value2 ? _coeff1 : _coeff2),
+  var1  (_value1 < _value2 ? _value2 : _value1), 
+  var2  (_value1 < _value2 ? _value1 : _value2)
 {
   Octagon_return;
 }
@@ -101,11 +113,10 @@ UtvpiPosition Octagon::getUtviPosition() const {
   // Note: initial_group_position *should not* overflow
   // since var1 is a square root of UtviPosition
   UtvpiPosition initial_group_position = 2*(var1.value-1)*(var1.value-1) + 1; 
-  UtvpiPosition sign_a_offset, sign_b_offset;
+  UtvpiPosition sign_a_offset = 0, sign_b_offset = 0;
 
   switch(coeff1){
     case NEG:
-      sign_a_offset = 0;
       break;
     case ZERO:
       return 0;
@@ -118,7 +129,6 @@ UtvpiPosition Octagon::getUtviPosition() const {
       sign_b_offset = 1 + 2*(var2.value-1);
       break;
     case ZERO:
-      sign_b_offset = 0;
       break;
     case POS:
       sign_b_offset = 1 + 2*(var2.value-1) + 1;
