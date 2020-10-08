@@ -65,20 +65,19 @@ class OCTSignature {
   std::string MyName() const;
 };
 
-void iZ3Benchmark(z3::context &, z3::sort const &);
-void MathsatBenchmark(z3::context &, z3::sort const &);
-void OCTIBenchmark(z3::context &, z3::sort const &);
+void iZ3Benchmark(z3::context &);
+void MathsatBenchmark(z3::context &);
+void OCTIBenchmark(z3::context &);
 
 int main(){
   /* initialize random seed: */
   srand(time(NULL));
 
   z3::context ctx;
-  z3::sort sort_A = ctx.uninterpreted_sort("A");
 
-  //iZ3Benchmark(ctx, sort_A);
-  //MathsatBenchmark(ctx, sort_A);
-  OCTIBenchmark(ctx, sort_A);
+  //iZ3Benchmark(ctx);
+  //MathsatBenchmark(ctx);
+  OCTIBenchmark(ctx);
 
   return 0;
 }
@@ -381,7 +380,7 @@ std::string OCTSignature::MyName() const {
     ;
 }
 
-void iZ3Benchmark(z3::context & ctx, z3::sort const & sort_A){
+void iZ3Benchmark(z3::context & ctx){
   std::string file_name = "iz3_benchmark.txt";
   system(("rm -rf " + file_name).c_str());
 
@@ -401,7 +400,7 @@ void iZ3Benchmark(z3::context & ctx, z3::sort const & sort_A){
   }
 }
 
-void MathsatBenchmark(z3::context & ctx, z3::sort const & sort_A){
+void MathsatBenchmark(z3::context & ctx){
   std::string file_name = "mathsat_benchmark.txt";
   system(("rm -rf " + file_name).c_str());
 
@@ -420,7 +419,7 @@ void MathsatBenchmark(z3::context & ctx, z3::sort const & sort_A){
   }
 }
 
-void OCTIBenchmark(z3::context & ctx, z3::sort const & sort_A){
+void OCTIBenchmark(z3::context & ctx){
   std::string file_name = "octi_benchmark.txt";
   system(("rm -rf " + file_name).c_str());
 
