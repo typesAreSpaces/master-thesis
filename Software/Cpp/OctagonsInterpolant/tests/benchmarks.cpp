@@ -65,19 +65,29 @@ class OCTSignature {
   std::string MyName() const;
 };
 
-void iZ3Benchmark(z3::context &);
-void MathsatBenchmark(z3::context &);
-void OCTIBenchmark(z3::context &);
+void iZ3Benchmark(OCTSignature const &);
+void MathsatBenchmark(OCTSignature const &);
+void OCTIBenchmark(OCTSignature const &);
 
 int main(){
   /* initialize random seed: */
   srand(time(NULL));
 
   z3::context ctx;
+  unsigned num_tests = 10000;
 
-  //iZ3Benchmark(ctx);
-  //MathsatBenchmark(ctx);
-  OCTIBenchmark(ctx);
+  for(unsigned i = 0; i < num_tests; ++i){
+    //OCTSignature S(ctx, 
+    //num_constants, num_ineqs, max_limit);
+    OCTSignature S(ctx, 10, 5, 3, 1000);
+    if(!S.IsValidInstance()){
+      --i;
+      continue;
+    }
+    iZ3Benchmark(S);
+    MathsatBenchmark(S);
+    OCTIBenchmark(S);
+  }
 
   return 0;
 }
@@ -380,60 +390,33 @@ std::string OCTSignature::MyName() const {
     ;
 }
 
-void iZ3Benchmark(z3::context & ctx){
-  std::string file_name = "iz3_benchmark.txt";
-  system(("rm -rf " + file_name).c_str());
+void iZ3Benchmark(OCTSignature const & S){
+  std::string file_name = "./results/iz3_benchmark.txt";
+  system(("test -f " + file_name + " || touch " + file_name).c_str());
 
-  for(unsigned i = 0; i < 1000; ++i){
-    //OCTSignature S(ctx, 
-    //num_constants, num_ineqs, max_limit);
-    OCTSignature S(ctx, 10, 5, 3, 1000);
+  S.iZ3Instance();
+  system(("echo \"test: " + S.MyName() + "\">> " + file_name).c_str());
+  system(("{ ../../bin/precision-time ../../bin/z3-interp " + (IZ3_PREFIX + S.MyName()) + SMT_SUFFIX + "; } 2>> " + file_name).c_str());
+  system(("rm " + (IZ3_PREFIX + S.MyName()) + SMT_SUFFIX).c_str());
 
-    if(!S.IsValidInstance()){
-      --i;
-      continue;
-    }
-    S.iZ3Instance();
-    system(("echo \"test: " + S.MyName() + "\">> " + file_name).c_str());
-    system(("{ time ../../bin/z3-interp " + (IZ3_PREFIX + S.MyName()) + SMT_SUFFIX + "; } 2>> " + file_name).c_str());
-    system(("rm " + (IZ3_PREFIX + S.MyName()) + SMT_SUFFIX).c_str());
-  }
 }
 
-void MathsatBenchmark(z3::context & ctx){
-  std::string file_name = "mathsat_benchmark.txt";
-  system(("rm -rf " + file_name).c_str());
+void MathsatBenchmark(OCTSignature const & S){
+  std::string file_name = "./results/mathsat_benchmark.txt";
+  system(("test -f " + file_name + " || touch " + file_name).c_str());
 
-  for(unsigned i = 0; i < 1000; ++i){
-    //OCTSignature S(ctx, 
-    //num_constants, num_ineqs, max_limit);
-    OCTSignature S(ctx, 10, 5, 3, 1000);
-    if(!S.IsValidInstance()){
-      --i;
-      continue;
-    }
-    S.MathsatInstance();
-    system(("echo \"test: " + S.MyName() + "\">> " + file_name).c_str());
-    system(("{ time ../../bin/mathsat " + (MATHSAT_PREFIX + S.MyName()) + SMT_SUFFIX + "; } 2>> " + file_name).c_str());
-    system(("rm " + (MATHSAT_PREFIX + S.MyName()) + SMT_SUFFIX).c_str());
-  }
+  S.MathsatInstance();
+  system(("echo \"test: " + S.MyName() + "\">> " + file_name).c_str());
+  system(("{ ../../bin/precision-time ../../bin/mathsat " + (MATHSAT_PREFIX + S.MyName()) + SMT_SUFFIX + "; } 2>> " + file_name).c_str());
+  system(("rm " + (MATHSAT_PREFIX + S.MyName()) + SMT_SUFFIX).c_str());
 }
 
-void OCTIBenchmark(z3::context & ctx){
-  std::string file_name = "octi_benchmark.txt";
-  system(("rm -rf " + file_name).c_str());
+void OCTIBenchmark(OCTSignature const & S){
+  std::string file_name = "./results/octi_benchmark.txt";
+  system(("test -f " + file_name + " || touch " + file_name).c_str());
 
-  for(unsigned i = 0; i < 1000; ++i){
-    //OCTSignature S(ctx, 
-    //num_constants, num_ineqs, max_limit);
-    OCTSignature S(ctx, 10, 5, 3, 1000);
-    if(!S.IsValidInstance()){
-      --i;
-      continue;
-    }
-    S.OCTIInstance();
-    system(("echo \"test: " + S.MyName() + "\">> " + file_name).c_str());
-    system(("{ time ./bin/octi " + (OCTI_PREFIX + S.MyName()) + SMT_SUFFIX + "; } 2>> " + file_name).c_str());
-    system(("rm " + (OCTI_PREFIX + S.MyName()) + SMT_SUFFIX).c_str());
-  }
+  S.OCTIInstance();
+  system(("echo \"test: " + S.MyName() + "\">> " + file_name).c_str());
+  system(("{ ../../bin/precision-time ./bin/octi " + (OCTI_PREFIX + S.MyName()) + SMT_SUFFIX + "; } 2>> " + file_name).c_str());
+  system(("rm " + (OCTI_PREFIX + S.MyName()) + SMT_SUFFIX).c_str());
 }

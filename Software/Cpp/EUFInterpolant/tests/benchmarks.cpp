@@ -76,9 +76,9 @@ class EUFSignature {
   std::string MyName() const;
 };
 
-void iZ3Benchmark(z3::context &, z3::sort const &);
-void MathsatBenchmark(z3::context &, z3::sort const &);
-void EUFIBenchmark(z3::context &, z3::sort const &);
+void iZ3Benchmark(EUFSignature const &);
+void MathsatBenchmark(EUFSignature const &);
+void EUFIBenchmark(EUFSignature const &);
 
 int main(){
   /* initialize random seed: */
@@ -86,10 +86,24 @@ int main(){
 
   z3::context ctx;
   z3::sort sort_A = ctx.uninterpreted_sort("A");
+  unsigned num_tests = 100;
 
-  //iZ3Benchmark(ctx, sort_A);
-  MathsatBenchmark(ctx, sort_A);
-  //EUFIBenchmark(ctx, sort_A);
+  for(unsigned i = 0; i < num_tests; ++i){
+    //EUFSignature S(ctx, sort_A, 
+    //num_constants, num_func_names, 
+    //max_arity, max_num_a_lists, 
+    //max_ground_position, limit_search);
+    //EUFSignature S(ctx, sort_A, 10, 5, 3, 10, 100, 1000);
+    EUFSignature S(ctx, sort_A, 20, 10, 3, 40, 100, 1000);
+
+    if(!S.IsValidInstance()){
+      --i;
+      continue;
+    }
+    iZ3Benchmark(S);
+    MathsatBenchmark(S);
+    EUFIBenchmark(S);
+  }
 
   return 0;
 }
@@ -412,69 +426,33 @@ std::string EUFSignature::MyName() const {
     ;
 }
 
-void iZ3Benchmark(z3::context & ctx, z3::sort const & sort_A){
-  std::string file_name = "iz3_benchmark.txt";
-  system(("rm -rf " + file_name).c_str());
+void iZ3Benchmark(EUFSignature const & S){
+  std::string file_name = "./results/iz3_benchmark.txt";
+  system(("test -f " + file_name + " || touch " + file_name).c_str());
 
-  for(unsigned i = 0; i < 1000; ++i){
-    //EUFSignature S(ctx, sort_A, 
-    //num_constants, num_func_names, 
-    //max_arity, max_num_a_lists, 
-    //max_ground_position, limit_search);
-    EUFSignature S(ctx, sort_A, 10, 5, 3, 10, 100, 1000);
-    //EUFSignature S(ctx, sort_A, 20, 10, 3, 40, 100, 1000);
+  S.iZ3Instance();
+  system(("echo \"test: " + S.MyName() + "\">> " + file_name).c_str());
+  system(("{ ../../bin/precision-time ../../bin/z3-interp " + (IZ3_PREFIX + S.MyName()) + SMT_SUFFIX + "; } 2>> " + file_name).c_str());
+  system(("rm " + (IZ3_PREFIX + S.MyName()) + SMT_SUFFIX).c_str());
 
-    if(!S.IsValidInstance()){
-      --i;
-      continue;
-    }
-    S.iZ3Instance();
-    system(("echo \"test: " + S.MyName() + "\">> " + file_name).c_str());
-    system(("{ time ../../bin/z3-interp " + (IZ3_PREFIX + S.MyName()) + SMT_SUFFIX + "; } 2>> " + file_name).c_str());
-    system(("rm " + (IZ3_PREFIX + S.MyName()) + SMT_SUFFIX).c_str());
-  }
 }
 
-void MathsatBenchmark(z3::context & ctx, z3::sort const & sort_A){
-  std::string file_name = "mathsat_benchmark.txt";
-  system(("rm -rf " + file_name).c_str());
+void MathsatBenchmark(EUFSignature const & S){
+  std::string file_name = "./results/mathsat_benchmark.txt";
+  system(("test -f " + file_name + " || touch " + file_name).c_str());
 
-  for(unsigned i = 0; i < 1000; ++i){
-    //EUFSignature S(ctx, sort_A, 
-    //num_constants, num_func_names, 
-    //max_arity, max_num_a_lists, 
-    //max_ground_position, limit_search);
-    //EUFSignature S(ctx, sort_A, 10, 5, 3, 10, 100, 1000);
-    EUFSignature S(ctx, sort_A, 20, 10, 3, 40, 100, 1000);
-    if(!S.IsValidInstance()){
-      --i;
-      continue;
-    }
-    S.MathsatInstance();
-    system(("echo \"test: " + S.MyName() + "\">> " + file_name).c_str());
-    system(("{ time ../../bin/mathsat " + (MATHSAT_PREFIX + S.MyName()) + SMT_SUFFIX + "; } 2>> " + file_name).c_str());
-    system(("rm " + (MATHSAT_PREFIX + S.MyName()) + SMT_SUFFIX).c_str());
-  }
+  S.MathsatInstance();
+  system(("echo \"test: " + S.MyName() + "\">> " + file_name).c_str());
+  system(("{ ../../bin/precision-time ../../bin/mathsat " + (MATHSAT_PREFIX + S.MyName()) + SMT_SUFFIX + "; } 2>> " + file_name).c_str());
+  system(("rm " + (MATHSAT_PREFIX + S.MyName()) + SMT_SUFFIX).c_str());
 }
 
-void EUFIBenchmark(z3::context & ctx, z3::sort const & sort_A){
-  std::string file_name = "eufi_benchmark.txt";
-  system(("rm -rf " + file_name).c_str());
+void EUFIBenchmark(EUFSignature const & S){
+  std::string file_name = "./results/eufi_benchmark.txt";
+  system(("test -f " + file_name + " || touch " + file_name).c_str());
 
-  for(unsigned i = 0; i < 1000; ++i){
-    //EUFSignature S(ctx, sort_A, 
-    //num_constants, num_func_names, 
-    //max_arity, max_num_a_lists, 
-    //max_ground_position, limit_search);
-    EUFSignature S(ctx, sort_A, 10, 5, 3, 10, 100, 1000);
-    //EUFSignature S(ctx, sort_A, 20, 10, 3, 40, 100, 1000);
-    if(!S.IsValidInstance()){
-      --i;
-      continue;
-    }
-    S.EUFIInstance();
-    system(("echo \"test: " + S.MyName() + "\">> " + file_name).c_str());
-    system(("{ time ./bin/eufi " + (EUFI_PREFIX + S.MyName()) + SMT_SUFFIX + "; } 2>> " + file_name).c_str());
-    system(("rm " + (EUFI_PREFIX + S.MyName()) + SMT_SUFFIX).c_str());
-  }
+  S.EUFIInstance();
+  system(("echo \"test: " + S.MyName() + "\">> " + file_name).c_str());
+  system(("{ ../../bin/precision-time ./bin/eufi " + (EUFI_PREFIX + S.MyName()) + SMT_SUFFIX + "; } 2>> " + file_name).c_str());
+  system(("rm " + (EUFI_PREFIX + S.MyName()) + SMT_SUFFIX).c_str());
 }
