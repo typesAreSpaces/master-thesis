@@ -11,9 +11,10 @@
 \contentsline {figure}{\numberline {2.8}{\ignorespaces Example of extended proof trace by PicoSAT for problem \ref {dpll_figure}}}{25}{figure.2.8}%
 \contentsline {figure}{\numberline {2.9}{\ignorespaces Example of extended proof trace by PicoSAT for problem \ref {dpll_figure}}}{26}{figure.2.9}%
 \addvspace {10\p@ }
-\contentsline {figure}{\numberline {3.1}{\ignorespaces Performance comparison graph of EUF interpolant generation algorithms for paramatrized problem from section \ref {performance_euf}}}{52}{figure.3.1}%
+\contentsline {figure}{\numberline {3.1}{\ignorespaces Performance comparison graph of EUF interpolant generation algorithms for paramatrized problem from section \ref {performance_euf}}}{53}{figure.3.1}%
+\contentsline {figure}{\numberline {3.2}{\ignorespaces Performance comparison graph of EUF interpolant generation algorithms for paramatrized problem from section \ref {performance_euf}}}{54}{figure.3.2}%
 \addvspace {10\p@ }
-\contentsline {figure}{\numberline {4.1}{\ignorespaces Performance comparison graph of Oct interpolant generation algorithms for paramatrized problem from section \ref {performance_oct}}}{63}{figure.4.1}%
+\contentsline {figure}{\numberline {4.1}{\ignorespaces Performance comparison graph of Oct interpolant generation algorithms for paramatrized problem from section \ref {performance_oct}}}{65}{figure.4.1}%
 \addvspace {10\p@ }
-\contentsline {figure}{\numberline {5.1}{\ignorespaces Performance comparison graph of EUF + UTVPI interpolant generation algorithms for paramatrized problem from section \ref {performance_thcomb}}}{77}{figure.5.1}%
+\contentsline {figure}{\numberline {5.1}{\ignorespaces Performance comparison graph of EUF + UTVPI interpolant generation algorithms for paramatrized problem from section \ref {performance_thcomb}}}{79}{figure.5.1}%
 \addvspace {10\p@ }

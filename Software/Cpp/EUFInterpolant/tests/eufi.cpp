@@ -30,7 +30,7 @@ int main(int argc, char ** argv){
         
         try {
           EUFInterpolantWithExpressions test(part_a_vec, part_b_vec);
-          std::cout << test << std::endl;
+          //std::cout << test << std::endl;
         } 
         catch(char const * e){
           std::cerr << e << std::endl;

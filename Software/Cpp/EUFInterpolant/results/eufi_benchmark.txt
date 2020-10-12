@@ -1,254 +1,227 @@
-test: 20_10_3_40_100_1000_0
-.070958403
-test: 20_10_3_40_100_1000_0
-.067600701
-test: 20_10_3_40_100_1000_2
-.073699683
-test: 20_10_3_40_100_1000_2
-.467095277
-test: 20_10_3_40_100_1000_0
-.058716629
-test: 20_10_3_40_100_1000_4
-eufi: src/UnionFind.cpp:57: virtual EqClass UnionFind::find(EqClass): Assertion `x < size' failed.
-../../bin/precision-time: line 3: 1656342 Aborted                 (core dumped) $@
-.228327008
-test: 20_10_3_40_100_1000_4
-.335981721
 test: 20_10_3_40_100_1000_1
 eufi: src/UnionFind.cpp:57: virtual EqClass UnionFind::find(EqClass): Assertion `x < size' failed.
-../../bin/precision-time: line 3: 1656412 Aborted                 (core dumped) $@
-.222972977
-test: 20_10_3_40_100_1000_14
-.030316611
-test: 20_10_3_40_100_1000_3
-.211109424
-test: 20_10_3_40_100_1000_0
-.052699970
+../../bin/precision-time: line 3: 66305 Aborted                 (core dumped) $@
+.228029923
 test: 20_10_3_40_100_1000_1
-.052209522
-test: 20_10_3_40_100_1000_0
-.049335172
+.017970662
+test: 20_10_3_40_100_1000_1
+.061201612
 test: 20_10_3_40_100_1000_4
-.193938333
+eufi: src/UnionFind.cpp:57: virtual EqClass UnionFind::find(EqClass): Assertion `x < size' failed.
+../../bin/precision-time: line 3: 66405 Aborted                 (core dumped) $@
+.216344941
+test: 20_10_3_40_100_1000_0
+.014905490
+test: 20_10_3_40_100_1000_0
+.014902249
+test: 20_10_3_40_100_1000_0
+.012649373
+test: 20_10_3_40_100_1000_0
+.013267082
+test: 20_10_3_40_100_1000_2
+.019106506
+test: 20_10_3_40_100_1000_5
+.068023849
+test: 20_10_3_40_100_1000_0
+.014909120
+test: 20_10_3_40_100_1000_2
+.014484101
+test: 20_10_3_40_100_1000_0
+.015852518
+test: 20_10_3_40_100_1000_5
+.030750060
+test: 20_10_3_40_100_1000_2
+.059965820
+test: 20_10_3_40_100_1000_0
+.016344095
+test: 20_10_3_40_100_1000_1
+.430933402
+test: 20_10_3_40_100_1000_0
+.014568605
+test: 20_10_3_40_100_1000_0
+.014454117
+test: 20_10_3_40_100_1000_0
+.013655597
+test: 20_10_3_40_100_1000_2
+.018409775
+test: 20_10_3_40_100_1000_2
+.063160614
 test: 20_10_3_40_100_1000_12
 eufi: src/UnionFind.cpp:57: virtual EqClass UnionFind::find(EqClass): Assertion `x < size' failed.
-../../bin/precision-time: line 3: 1656634 Aborted                 (core dumped) $@
-.225095720
-test: 20_10_3_40_100_1000_1
-.498028494
-test: 20_10_3_40_100_1000_1
-.058208588
+../../bin/precision-time: line 3: 66991 Aborted                 (core dumped) $@
+.218838767
 test: 20_10_3_40_100_1000_0
-.045678767
+.018176342
+test: 20_10_3_40_100_1000_3
+.066550404
+test: 20_10_3_40_100_1000_0
+.015415220
+test: 20_10_3_40_100_1000_1
+.034852863
+test: 20_10_3_40_100_1000_0
+.016851472
+test: 20_10_3_40_100_1000_1
+.013859939
 test: 20_10_3_40_100_1000_2
-.073875991
-test: 20_10_3_40_100_1000_16
-eufi: src/UnionFind.cpp:57: virtual EqClass UnionFind::find(EqClass): Assertion `x < size' failed.
-../../bin/precision-time: line 3: 1656793 Aborted                 (core dumped) $@
-.222965888
-test: 20_10_3_40_100_1000_0
-.065334888
-test: 20_10_3_40_100_1000_0
-.066251061
+.030635768
 test: 20_10_3_40_100_1000_1
-.393717504
-test: 20_10_3_40_100_1000_4
-.075104628
-test: 20_10_3_40_100_1000_0
-.053688021
-test: 20_10_3_40_100_1000_4
-.238519505
-test: 20_10_3_40_100_1000_7
-eufi: src/UnionFind.cpp:57: virtual EqClass UnionFind::find(EqClass): Assertion `x < size' failed.
-../../bin/precision-time: line 3: 1657012 Aborted                 (core dumped) $@
-.232147061
-test: 20_10_3_40_100_1000_0
-.059630353
-test: 20_10_3_40_100_1000_0
-.070857830
-test: 20_10_3_40_100_1000_1
-.347979070
-test: 20_10_3_40_100_1000_5
-../../bin/precision-time: line 3: 1657141 Segmentation fault      (core dumped) $@
-.383086259
-test: 20_10_3_40_100_1000_9
-eufi: src/UnionFind.cpp:57: virtual EqClass UnionFind::find(EqClass): Assertion `x < size' failed.
-../../bin/precision-time: line 3: 1657180 Aborted                 (core dumped) $@
-.230509765
-test: 20_10_3_40_100_1000_0
-.046049102
-test: 20_10_3_40_100_1000_0
-.077396167
-test: 20_10_3_40_100_1000_1
-1.061467078
-test: 20_10_3_40_100_1000_0
-.059750095
-test: 20_10_3_40_100_1000_0
-.062201971
-test: 20_10_3_40_100_1000_2
-.260876185
-test: 20_10_3_40_100_1000_16
-.016688149
-test: 20_10_3_40_100_1000_0
-.049825681
-test: 20_10_3_40_100_1000_13
-eufi: src/UnionFind.cpp:57: virtual EqClass UnionFind::find(EqClass): Assertion `x < size' failed.
-../../bin/precision-time: line 3: 1657462 Aborted                 (core dumped) $@
-.221822406
-test: 20_10_3_40_100_1000_0
-.071131462
-test: 20_10_3_40_100_1000_9
-eufi: src/UnionFind.cpp:57: virtual EqClass UnionFind::find(EqClass): Assertion `x < size' failed.
-../../bin/precision-time: line 3: 1657530 Aborted                 (core dumped) $@
-.225934032
-test: 20_10_3_40_100_1000_15
-eufi: src/UnionFind.cpp:57: virtual EqClass UnionFind::find(EqClass): Assertion `x < size' failed.
-../../bin/precision-time: line 3: 1657567 Aborted                 (core dumped) $@
-.228794794
-test: 20_10_3_40_100_1000_17
-eufi: src/UnionFind.cpp:57: virtual EqClass UnionFind::find(EqClass): Assertion `x < size' failed.
-../../bin/precision-time: line 3: 1657604 Aborted                 (core dumped) $@
-.229177162
-test: 20_10_3_40_100_1000_8
-.147334669
-test: 20_10_3_40_100_1000_1
-.119418030
-test: 20_10_3_40_100_1000_0
-.071861970
+.606488007
 test: 20_10_3_40_100_1000_3
-.223551903
-test: 20_10_3_40_100_1000_0
-.070890760
-test: 20_10_3_40_100_1000_0
-.099374776
+.021895451
 test: 20_10_3_40_100_1000_1
-.033866974
-test: 20_10_3_40_100_1000_12
-eufi: src/UnionFind.cpp:57: virtual EqClass UnionFind::find(EqClass): Assertion `x < size' failed.
-../../bin/precision-time: line 3: 1657859 Aborted                 (core dumped) $@
-.223281707
-test: 20_10_3_40_100_1000_7
-eufi: src/UnionFind.cpp:57: virtual EqClass UnionFind::find(EqClass): Assertion `x < size' failed.
-../../bin/precision-time: line 3: 1657896 Aborted                 (core dumped) $@
-.230023441
-test: 20_10_3_40_100_1000_2
-.041725177
-test: 20_10_3_40_100_1000_1
-.057550272
-test: 20_10_3_40_100_1000_1
-.254046383
-test: 20_10_3_40_100_1000_0
-.048173021
-test: 20_10_3_40_100_1000_1
-.209086618
-test: 20_10_3_40_100_1000_1
-.097909560
-test: 20_10_3_40_100_1000_3
-.967362963
-test: 20_10_3_40_100_1000_0
-.056398652
-test: 20_10_3_40_100_1000_3
-eufi: src/UnionFind.cpp:57: virtual EqClass UnionFind::find(EqClass): Assertion `x < size' failed.
-../../bin/precision-time: line 3: 1658177 Aborted                 (core dumped) $@
-.229127075
-test: 20_10_3_40_100_1000_10
-../../bin/precision-time: line 3: 1658214 Segmentation fault      (core dumped) $@
-.307771171
-test: 20_10_3_40_100_1000_3
-.446179278
-test: 20_10_3_40_100_1000_2
-eufi: src/UnionFind.cpp:57: virtual EqClass UnionFind::find(EqClass): Assertion `x < size' failed.
-../../bin/precision-time: line 3: 1658283 Aborted                 (core dumped) $@
-.236942370
-test: 20_10_3_40_100_1000_0
-.075249737
-test: 20_10_3_40_100_1000_7
-eufi: src/UnionFind.cpp:57: virtual EqClass UnionFind::find(EqClass): Assertion `x < size' failed.
-../../bin/precision-time: line 3: 1658374 Aborted                 (core dumped) $@
-.228627475
-test: 20_10_3_40_100_1000_7
-eufi: src/UnionFind.cpp:57: virtual EqClass UnionFind::find(EqClass): Assertion `x < size' failed.
-../../bin/precision-time: line 3: 1658411 Aborted                 (core dumped) $@
-.227889188
-test: 20_10_3_40_100_1000_11
-eufi: src/UnionFind.cpp:57: virtual EqClass UnionFind::find(EqClass): Assertion `x < size' failed.
-../../bin/precision-time: line 3: 1658450 Aborted                 (core dumped) $@
-.234993894
-test: 20_10_3_40_100_1000_0
-.042781273
-test: 20_10_3_40_100_1000_0
-.048092881
-test: 20_10_3_40_100_1000_5
-eufi: src/UnionFind.cpp:57: virtual EqClass UnionFind::find(EqClass): Assertion `x < size' failed.
-../../bin/precision-time: line 3: 1658547 Aborted                 (core dumped) $@
-.231095656
-test: 20_10_3_40_100_1000_2
-.044699184
-test: 20_10_3_40_100_1000_0
-.034149735
-test: 20_10_3_40_100_1000_11
-eufi: src/UnionFind.cpp:57: virtual EqClass UnionFind::find(EqClass): Assertion `x < size' failed.
-../../bin/precision-time: line 3: 1658698 Aborted                 (core dumped) $@
-.225274656
-test: 20_10_3_40_100_1000_0
-.034731647
-test: 20_10_3_40_100_1000_10
-eufi: src/UnionFind.cpp:57: virtual EqClass UnionFind::find(EqClass): Assertion `x < size' failed.
-../../bin/precision-time: line 3: 1658784 Aborted                 (core dumped) $@
-.228999984
-test: 20_10_3_40_100_1000_2
-eufi: src/UnionFind.cpp:57: virtual EqClass UnionFind::find(EqClass): Assertion `x < size' failed.
-../../bin/precision-time: line 3: 1658822 Aborted                 (core dumped) $@
-.235807605
-test: 20_10_3_40_100_1000_1
-.058537883
-test: 20_10_3_40_100_1000_1
-.047129244
-test: 20_10_3_40_100_1000_0
-.062101998
-test: 20_10_3_40_100_1000_4
-eufi: src/UnionFind.cpp:57: virtual EqClass UnionFind::find(EqClass): Assertion `x < size' failed.
-../../bin/precision-time: line 3: 1658967 Aborted                 (core dumped) $@
-.236049294
-test: 20_10_3_40_100_1000_3
-eufi: src/UnionFind.cpp:57: virtual EqClass UnionFind::find(EqClass): Assertion `x < size' failed.
-../../bin/precision-time: line 3: 1659026 Aborted                 (core dumped) $@
-.232740893
-test: 20_10_3_40_100_1000_3
-.077941705
-test: 20_10_3_40_100_1000_5
-.428846585
-test: 20_10_3_40_100_1000_3
-eufi: src/UnionFind.cpp:57: virtual EqClass UnionFind::find(EqClass): Assertion `x < size' failed.
-../../bin/precision-time: line 3: 1659129 Aborted                 (core dumped) $@
-.224129289
-test: 20_10_3_40_100_1000_0
-.074404136
+.020393390
 test: 20_10_3_40_100_1000_6
-.094948326
-test: 20_10_3_40_100_1000_2
-.805525769
+.032946918
+test: 20_10_3_40_100_1000_7
+.206009337
+test: 20_10_3_40_100_1000_4
+.028023502
+test: 20_10_3_40_100_1000_17
+../../bin/precision-time: line 3: 67426 Segmentation fault      (core dumped) $@
+.294970589
 test: 20_10_3_40_100_1000_0
-.066105263
+.016238497
+test: 20_10_3_40_100_1000_5
+.062768428
+test: 20_10_3_40_100_1000_1
+.212113578
+test: 20_10_3_40_100_1000_3
+.066562663
+test: 20_10_3_40_100_1000_0
+.017751517
+test: 20_10_3_40_100_1000_2
+eufi: src/UnionFind.cpp:57: virtual EqClass UnionFind::find(EqClass): Assertion `x < size' failed.
+../../bin/precision-time: line 3: 67617 Aborted                 (core dumped) $@
+.220972722
+test: 20_10_3_40_100_1000_15
+.016671254
+test: 20_10_3_40_100_1000_1
+.683105223
+test: 20_10_3_40_100_1000_3
+.100520366
+test: 20_10_3_40_100_1000_0
+.018682991
+test: 20_10_3_40_100_1000_16
+.057359632
+test: 20_10_3_40_100_1000_16
+eufi: src/UnionFind.cpp:57: virtual EqClass UnionFind::find(EqClass): Assertion `x < size' failed.
+../../bin/precision-time: line 3: 67811 Aborted                 (core dumped) $@
+.222267145
+test: 20_10_3_40_100_1000_2
+.085663061
+test: 20_10_3_40_100_1000_2
+.029955070
+test: 20_10_3_40_100_1000_1
+.013401338
+test: 20_10_3_40_100_1000_6
+eufi: src/UnionFind.cpp:57: virtual EqClass UnionFind::find(EqClass): Assertion `x < size' failed.
+../../bin/precision-time: line 3: 67940 Aborted                 (core dumped) $@
+.218286230
+test: 20_10_3_40_100_1000_1
+.019404216
+test: 20_10_3_40_100_1000_0
+.018392819
+test: 20_10_3_40_100_1000_1
+.014473873
+test: 20_10_3_40_100_1000_1
+.079272724
+test: 20_10_3_40_100_1000_1
+.034818080
+test: 20_10_3_40_100_1000_0
+.017622110
+test: 20_10_3_40_100_1000_0
+.016286618
+test: 20_10_3_40_100_1000_0
+.016683081
+test: 20_10_3_40_100_1000_3
+eufi: src/UnionFind.cpp:57: virtual EqClass UnionFind::find(EqClass): Assertion `x < size' failed.
+../../bin/precision-time: line 3: 68219 Aborted                 (core dumped) $@
+.219887887
+test: 20_10_3_40_100_1000_2
+.032661827
+test: 20_10_3_40_100_1000_2
+.022060973
+test: 20_10_3_40_100_1000_2
+.020535847
+test: 20_10_3_40_100_1000_0
+.014450326
+test: 20_10_3_40_100_1000_6
+.029948710
+test: 20_10_3_40_100_1000_13
+../../bin/precision-time: line 3: 68407 Segmentation fault      (core dumped) $@
+.286403230
+test: 20_10_3_40_100_1000_0
+.017068119
+test: 20_10_3_40_100_1000_5
+eufi: src/UnionFind.cpp:57: virtual EqClass UnionFind::find(EqClass): Assertion `x < size' failed.
+../../bin/precision-time: line 3: 68475 Aborted                 (core dumped) $@
+.224272676
+test: 20_10_3_40_100_1000_1
+.029202438
+test: 20_10_3_40_100_1000_0
+.013895258
+test: 20_10_3_40_100_1000_2
+.126353069
+test: 20_10_3_40_100_1000_0
+.016168258
+test: 20_10_3_40_100_1000_0
+.014828709
+test: 20_10_3_40_100_1000_4
+.054998733
+test: 20_10_3_40_100_1000_0
+.015489630
+test: 20_10_3_40_100_1000_5
+.028908307
+test: 20_10_3_40_100_1000_0
+.015118429
+test: 20_10_3_40_100_1000_1
+.016714455
+test: 20_10_3_40_100_1000_0
+.015322328
+test: 20_10_3_40_100_1000_0
+.016716504
+test: 20_10_3_40_100_1000_12
+eufi: src/UnionFind.cpp:57: virtual EqClass UnionFind::find(EqClass): Assertion `x < size' failed.
+../../bin/precision-time: line 3: 68879 Aborted                 (core dumped) $@
+.219469635
+test: 20_10_3_40_100_1000_5
+.022620358
+test: 20_10_3_40_100_1000_0
+.016092828
 test: 20_10_3_40_100_1000_1
 eufi: src/UnionFind.cpp:57: virtual EqClass UnionFind::find(EqClass): Assertion `x < size' failed.
-../../bin/precision-time: line 3: 1659325 Aborted                 (core dumped) $@
-.227589346
+../../bin/precision-time: line 3: 68976 Aborted                 (core dumped) $@
+.217218141
 test: 20_10_3_40_100_1000_0
-.059321735
+.015988293
 test: 20_10_3_40_100_1000_2
-.116501898
-test: 20_10_3_40_100_1000_0
-.074042323
+.020293000
+test: 20_10_3_40_100_1000_13
+.496104452
+test: 20_10_3_40_100_1000_2
+.021657044
+test: 20_10_3_40_100_1000_1
+.016191291
+test: 20_10_3_40_100_1000_1
+../../bin/precision-time: line 3: 69166 Segmentation fault      (core dumped) $@
+.339584742
 test: 20_10_3_40_100_1000_5
-.053463928
-test: 20_10_3_40_100_1000_3
-.044611750
-test: 20_10_3_40_100_1000_7
-eufi: src/UnionFind.cpp:57: virtual EqClass UnionFind::find(EqClass): Assertion `x < size' failed.
-../../bin/precision-time: line 3: 1659513 Aborted                 (core dumped) $@
-.227459550
-test: 20_10_3_40_100_1000_7
-.083746913
+.178064945
 test: 20_10_3_40_100_1000_0
-.047678510
+.015098369
+test: 20_10_3_40_100_1000_5
+.013368381
+test: 20_10_3_40_100_1000_6
+eufi: src/UnionFind.cpp:57: virtual EqClass UnionFind::find(EqClass): Assertion `x < size' failed.
+../../bin/precision-time: line 3: 69293 Aborted                 (core dumped) $@
+.222574859
+test: 20_10_3_40_100_1000_1
+.023515499
+test: 20_10_3_40_100_1000_1
+.014040174
+test: 20_10_3_40_100_1000_3
+eufi: src/UnionFind.cpp:57: virtual EqClass UnionFind::find(EqClass): Assertion `x < size' failed.
+../../bin/precision-time: line 3: 69393 Aborted                 (core dumped) $@
+.223585243
+test: 20_10_3_40_100_1000_0
+.017588675

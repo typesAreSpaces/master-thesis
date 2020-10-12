@@ -37,7 +37,8 @@ if __name__ == "__main__":
             np.zeros(num_tests, dtype=float), np.zeros(num_tests, dtype=float), num_tests)
 
     fig, ax = plt.subplots()
-    num_test_points = np.arange(0,num_tests)
+    num_test_points = np.arange(0, num_tests)
+
 
     ax.scatter(num_test_points, data_eufi[1], marker='x', color='red', label='EUF Uniform Interpolator')
     ax.scatter(num_test_points, data_mathsat[1], marker='o', color='blue', label='Mathsat')
