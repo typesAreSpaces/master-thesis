@@ -31,19 +31,16 @@ The propagation of new equalities and disjunction of equalities
 requires the additional step to split these formulas into
 the correct part of the interpolant pair. Among the major
 contributions of \cite{10.1007/11532231_26} was the introduction
-of the class of equality interpolanting theories, which
-facilites the splitting of a propagated formula since
-it is clear that A-local/B-local terms should be included in the
-A-part/B-part of the interpolant pair respectively.
+of the class of equality interpolanting theories.
 
 \begin{definition}
   A theory $\cal{T}$ is \emph{equality interpolanting}
-  if for every $a$ (A-local term) and  $b$ (B-local term)
-  and $\psi$ a formula in $\cal{T}$ such that
-  $\psi \models_{\cal{T}} a = b$, then there exits a term $t$
+  if for every $A$, $B$ in $\cal{T}$ and every AB-mixed
+  equality $a = b$ such that $A \land B \models_{\cal{T}} a = b$,
+  there exits a term $t$
   in $\cal{T}$ (called interpolanting term)
-  such that $\psi \models_{\cal{T}} a = t$ and 
-  $\psi \models_{\cal{T}} b = t$
+  such that $A \land B \models_{\cal{T}} a = t$ and 
+  $A \land B \models_{\cal{T}} b = t$.
 \end{definition}
 
 The relevance of the existance of the interpolating term for 
@@ -54,11 +51,10 @@ respectively. If t
 Deciding where to include AB-common terms to either the 
 A-part or the B-part of the interpolantion pair affects 
 the final result since the interpolant will be \emph{closer} 
-to the A-part or to the B-part respectively. The original
-paper includes AB-common terms to the B-part. However,
-the implementation work includes AB-common terms to the
-A-part since the interpolantion algorithms implemented
-focus the attention on this part.
+to the A-part or to the B-part respectively. The authors in 
+\cite{10.1007/11532231_26} include AB-common terms to the B-part. 
+However, the implementation work includes AB-common terms to the
+A-part due to the interest in uniform interpolants.
 
 %%% Local Variables:
 %%% mode: latex

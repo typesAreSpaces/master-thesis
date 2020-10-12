@@ -81,11 +81,6 @@ Leonardo de~Moura and Nikolaj Bj{\o}rner.
   Algorithms for the Construction and Analysis of Systems}, pages 337--340,
   Berlin, Heidelberg, 2008. Springer Berlin Heidelberg.
 
-\bibitem{z3-strategies}
-Leonardo de~Moura and Nikolaj Bjorner.
-\newblock Z3-strategies.
-\newblock {https://rise4fun.com/z3/tutorialcontent/strategies}, 2020.
-
 \bibitem{Moura_proofsand}
 Leonardo de~Moura and Nikolaj Bjørner.
 \newblock Proofs and refutations and z3, 01 2008.

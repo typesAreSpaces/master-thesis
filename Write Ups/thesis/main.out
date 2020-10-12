@@ -43,22 +43,20 @@
 \BOOKMARK [2][-]{subsection.4.3.2}{Performance comparison with iZ3 and MathSat}{section.4.3}% 43
 \BOOKMARK [1][-]{section.4.4}{Conclusions}{chapter.4}% 44
 \BOOKMARK [0][-]{chapter.5}{Interpolation algorithm for the theory combination of EUF and UTVPI}{}% 45
-\BOOKMARK [1][-]{section.5.1}{Algorithm}{chapter.5}% 46
+\BOOKMARK [1][-]{section.5.1}{Yorsh - Musuvathi Interpolation Combination Framework}{chapter.5}% 46
 \BOOKMARK [1][-]{section.5.2}{Implementation}{chapter.5}% 47
-\BOOKMARK [1][-]{section.5.3}{Octagonalization of input formula}{chapter.5}% 48
-\BOOKMARK [1][-]{section.5.4}{Evaluation}{chapter.5}% 49
-\BOOKMARK [2][-]{subsection.5.4.1}{Detailed evaluation of a complete example}{section.5.4}% 50
-\BOOKMARK [2][-]{subsection.5.4.2}{A parametrized example}{section.5.4}% 51
-\BOOKMARK [2][-]{subsection.5.4.3}{Performance evaluation}{section.5.4}% 52
-\BOOKMARK [1][-]{section.5.5}{Conclusions}{chapter.5}% 53
-\BOOKMARK [0][-]{chapter.6}{Future Work}{}% 54
-\BOOKMARK [0][-]{chapter*.10}{Appendix A}{}% 55
-\BOOKMARK [1][-]{section.6.1}{Theorems about Interpolants}{chapter*.10}% 56
-\BOOKMARK [2][-]{subsection.6.1.1}{Interpolants are closed under conjunction and disjunction}{section.6.1}% 57
-\BOOKMARK [2][-]{subsection.6.1.2}{Interpolants distribute conjunctions over disjunctions in the A-part}{section.6.1}% 58
-\BOOKMARK [0][-]{chapter*.11}{Appendix B}{}% 59
-\BOOKMARK [1][-]{section.6.2}{Trace for example in theory combination chapter}{chapter*.11}% 60
-\BOOKMARK [0][-]{chapter*.12}{Appendix C}{}% 61
-\BOOKMARK [1][-]{section.6.3}{Congruence Closure with Explanation operation header}{chapter*.12}% 62
-\BOOKMARK [1][-]{section.6.4}{Hornsat \(Gallier's data structure\) header}{chapter*.12}% 63
-\BOOKMARK [0][-]{chapter*.13}{References}{}% 64
+\BOOKMARK [1][-]{section.5.3}{Evaluation}{chapter.5}% 48
+\BOOKMARK [2][-]{subsection.5.3.1}{Detailed evaluation of a complete example}{section.5.3}% 49
+\BOOKMARK [1][-]{section.5.4}{A uniform interpolant generation algorithm for the combined theory of EUF and UTVPI}{chapter.5}% 50
+\BOOKMARK [1][-]{section.5.5}{Conclusions}{chapter.5}% 51
+\BOOKMARK [0][-]{chapter.6}{Future Work}{}% 52
+\BOOKMARK [0][-]{chapter*.10}{Appendix A}{}% 53
+\BOOKMARK [1][-]{section.6.1}{Theorems about Interpolants}{chapter*.10}% 54
+\BOOKMARK [2][-]{subsection.6.1.1}{Interpolants are closed under conjunction and disjunction}{section.6.1}% 55
+\BOOKMARK [2][-]{subsection.6.1.2}{Interpolants distribute conjunctions over disjunctions in the A-part}{section.6.1}% 56
+\BOOKMARK [0][-]{chapter*.11}{Appendix B}{}% 57
+\BOOKMARK [1][-]{section.6.2}{Trace for example in theory combination chapter}{chapter*.11}% 58
+\BOOKMARK [0][-]{chapter*.12}{Appendix C}{}% 59
+\BOOKMARK [1][-]{section.6.3}{Congruence Closure with Explanation operation header}{chapter*.12}% 60
+\BOOKMARK [1][-]{section.6.4}{Hornsat \(Gallier's data structure\) header}{chapter*.12}% 61
+\BOOKMARK [0][-]{chapter*.13}{References}{}% 62

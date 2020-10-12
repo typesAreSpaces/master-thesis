@@ -24,16 +24,24 @@ badd +1 modified_congruence_closure_with_explanation_algorithms_merge.tex
 badd +1 modified_congruence_closure_with_explanation_algorithms_propagate.tex
 badd +62 euf_evaluation.tex
 badd +1 euf_performance.tex
-badd +1 euf_performance_2.tex
+badd +8 euf_performance_2.tex
 badd +6 euf_conclusion.tex
-badd +7 octagonal.tex
+badd +8 octagonal.tex
 badd +22 oct_abstract.tex
 badd +1 euf_theorem.tex
 badd +31 oct_algorithm.tex
 badd +198 oct_implementation.tex
-badd +73 oct_evaluation.tex
+badd +50 oct_evaluation.tex
 badd +1 oct_performance_1.tex
-badd +2 oct_performance_2.tex
+badd +1 oct_performance_2.tex
+badd +6 combination.tex
+badd +56 comb_abstract.tex
+badd +26 comb_algorithm.tex
+badd +78 comb_implementation.tex
+badd +1 comb_evaluation.tex
+badd +1 th_comb_example_interp.txt
+badd +102 comb_performance.tex
+badd +48 theories.tex
 argglobal
 %argdel
 $argadd euf.tex
@@ -50,14 +58,6 @@ split
 wincmd w
 wincmd w
 wincmd w
-wincmd _ | wincmd |
-split
-1wincmd k
-wincmd _ | wincmd |
-vsplit
-1wincmd h
-wincmd w
-wincmd w
 set nosplitbelow
 set nosplitright
 wincmd t
@@ -65,18 +65,13 @@ set winminheight=0
 set winheight=1
 set winminwidth=0
 set winwidth=1
-exe '1resize ' . ((&lines * 17 + 42) / 85)
-exe 'vert 1resize ' . ((&columns * 41 + 146) / 293)
-exe '2resize ' . ((&lines * 18 + 42) / 85)
-exe 'vert 2resize ' . ((&columns * 41 + 146) / 293)
-exe '3resize ' . ((&lines * 46 + 42) / 85)
-exe 'vert 3resize ' . ((&columns * 41 + 146) / 293)
-exe '4resize ' . ((&lines * 27 + 42) / 85)
-exe 'vert 4resize ' . ((&columns * 20 + 146) / 293)
-exe '5resize ' . ((&lines * 27 + 42) / 85)
-exe 'vert 5resize ' . ((&columns * 230 + 146) / 293)
-exe '6resize ' . ((&lines * 55 + 42) / 85)
-exe 'vert 6resize ' . ((&columns * 251 + 146) / 293)
+exe '1resize ' . ((&lines * 5 + 9) / 19)
+exe 'vert 1resize ' . ((&columns * 100 + 101) / 202)
+exe '2resize ' . ((&lines * 5 + 9) / 19)
+exe 'vert 2resize ' . ((&columns * 100 + 101) / 202)
+exe '3resize ' . ((&lines * 5 + 9) / 19)
+exe 'vert 3resize ' . ((&columns * 100 + 101) / 202)
+exe 'vert 4resize ' . ((&columns * 101 + 101) / 202)
 argglobal
 setlocal fdm=manual
 setlocal fde=0
@@ -87,7 +82,7 @@ setlocal fml=1
 setlocal fdn=20
 setlocal fen
 silent! normal! zE
-let s:l = 8 - ((0 * winheight(0) + 8) / 17)
+let s:l = 8 - ((0 * winheight(0) + 2) / 5)
 if s:l < 1 | let s:l = 1 | endif
 exe s:l
 normal! zt
@@ -108,12 +103,12 @@ silent! normal! zE
 10,110fold
 10
 normal! zc
-let s:l = 2 - ((0 * winheight(0) + 9) / 18)
+let s:l = 5 - ((1 * winheight(0) + 2) / 5)
 if s:l < 1 | let s:l = 1 | endif
 exe s:l
 normal! zt
-2
-normal! 0
+5
+normal! 02|
 wincmd w
 argglobal
 if bufexists("references.bib") | buffer references.bib | else | edit references.bib | endif
@@ -126,83 +121,51 @@ setlocal fml=1
 setlocal fdn=20
 setlocal fen
 silent! normal! zE
-let s:l = 109 - ((1 * winheight(0) + 23) / 46)
+let s:l = 220 - ((1 * winheight(0) + 2) / 5)
 if s:l < 1 | let s:l = 1 | endif
 exe s:l
 normal! zt
-109
-normal! 018|
+220
+normal! 016|
 wincmd w
 argglobal
-if bufexists("octagonal.tex") | buffer octagonal.tex | else | edit octagonal.tex | endif
+if bufexists("comb_evaluation.tex") | buffer comb_evaluation.tex | else | edit comb_evaluation.tex | endif
 setlocal fdm=manual
 setlocal fde=0
 setlocal fmr={{{,}}}
 setlocal fdi=#
-setlocal fdl=0
+setlocal fdl=4
 setlocal fml=1
 setlocal fdn=20
 setlocal fen
 silent! normal! zE
-let s:l = 8 - ((1 * winheight(0) + 13) / 27)
-if s:l < 1 | let s:l = 1 | endif
-exe s:l
-normal! zt
-8
-normal! 03|
-wincmd w
-argglobal
-if bufexists("euf_performance_2.tex") | buffer euf_performance_2.tex | else | edit euf_performance_2.tex | endif
-setlocal fdm=manual
-setlocal fde=0
-setlocal fmr={{{,}}}
-setlocal fdi=#
-setlocal fdl=2
-setlocal fml=1
-setlocal fdn=20
-setlocal fen
-silent! normal! zE
-99,101fold
-99
+25,25fold
+26,26fold
+5,33fold
+3,33fold
+3
+normal! zo
+5
+normal! zo
+25
 normal! zc
-let s:l = 8 - ((7 * winheight(0) + 13) / 27)
+26
+normal! zc
+let s:l = 36 - ((7 * winheight(0) + 8) / 17)
 if s:l < 1 | let s:l = 1 | endif
 exe s:l
 normal! zt
-8
-normal! 028|
+36
+normal! 025|
 wincmd w
-argglobal
-if bufexists("oct_performance_2.tex") | buffer oct_performance_2.tex | else | edit oct_performance_2.tex | endif
-setlocal fdm=manual
-setlocal fde=0
-setlocal fmr={{{,}}}
-setlocal fdi=#
-setlocal fdl=0
-setlocal fml=1
-setlocal fdn=20
-setlocal fen
-silent! normal! zE
-let s:l = 1 - ((0 * winheight(0) + 27) / 55)
-if s:l < 1 | let s:l = 1 | endif
-exe s:l
-normal! zt
-1
-normal! 0
-wincmd w
-6wincmd w
-exe '1resize ' . ((&lines * 17 + 42) / 85)
-exe 'vert 1resize ' . ((&columns * 41 + 146) / 293)
-exe '2resize ' . ((&lines * 18 + 42) / 85)
-exe 'vert 2resize ' . ((&columns * 41 + 146) / 293)
-exe '3resize ' . ((&lines * 46 + 42) / 85)
-exe 'vert 3resize ' . ((&columns * 41 + 146) / 293)
-exe '4resize ' . ((&lines * 27 + 42) / 85)
-exe 'vert 4resize ' . ((&columns * 20 + 146) / 293)
-exe '5resize ' . ((&lines * 27 + 42) / 85)
-exe 'vert 5resize ' . ((&columns * 230 + 146) / 293)
-exe '6resize ' . ((&lines * 55 + 42) / 85)
-exe 'vert 6resize ' . ((&columns * 251 + 146) / 293)
+4wincmd w
+exe '1resize ' . ((&lines * 5 + 9) / 19)
+exe 'vert 1resize ' . ((&columns * 100 + 101) / 202)
+exe '2resize ' . ((&lines * 5 + 9) / 19)
+exe 'vert 2resize ' . ((&columns * 100 + 101) / 202)
+exe '3resize ' . ((&lines * 5 + 9) / 19)
+exe 'vert 3resize ' . ((&columns * 100 + 101) / 202)
+exe 'vert 4resize ' . ((&columns * 101 + 101) / 202)
 tabnext 1
 if exists('s:wipebuf') && getbufvar(s:wipebuf, '&buftype') isnot# 'terminal'
   silent exe 'bwipe ' . s:wipebuf

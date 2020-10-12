@@ -1,4 +1,4 @@
-\section{Algorithm}
+\section{Yorsh - Musuvathi Interpolation Combination Framework}
 
 The algorithm implements a Nelson-Oppen framework. In order to 
 integrate interpolants to the latter, the algorithm includes a 
@@ -21,11 +21,9 @@ definition:
         \item if $c \in B$, then $p(c) := \top$
       \end{itemize}
     \item otherwise, $c$ is a result of resolution, i.e. 
-      \begin{prooftree}
-        \hypo{c_1[= x \lor c_1^{'}]}
-        \hypo{c_2 [= \neg x \lor c_2^{'}]}
-        \infer2{c [= c_1^{'} \lor c_2^{'}]}
-      \end{prooftree}
+      let $c_1, c_2$ be two clauses of the form $x \lor c_1^{'}$,
+      $\neg x \lor c_2^{'}$ respectively. The partial interpolant 
+      for $c$ is defined as follows:
       \begin{itemize}
         \item if $x \in A$ and $x \not \in B$ (x is A-local), then $p(c) := p(c_1) \lor p(c_2)$
         \item if $x \not \in A$ and $x \in B$ (x is B-local), then $p(c) := p(c_1) \land p(c_2)$

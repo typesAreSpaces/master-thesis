@@ -15,10 +15,9 @@ thesis work:
     handles as Horn clauses with a false head term.
   \item UTVPI case: negations of literals in this theory are either
     disequalities or strict inequalities. The disequalities are purified
-    an appended to the EUF component, and the strict inequalities are 
-    appended as a disjunction of two non-strict inequalities following
-    the axioms of number theory with addition and a total order relation
-    \cite{DBLP:books/daglib/0076838}.
+    an appended to the EUF component; strict inequalities of the form
+    $x > y$ are replaced by non-strict inequalities of the 
+    form $x \geq y + 1$.
 \end{itemize}
 
 The main loop of the procedure is shown below:

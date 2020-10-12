@@ -1,28 +1,55 @@
 \chapter{Future Work}
 
 Regarding implemenation work, the are several improvements that were not explored 
-in the thesis work since many of them do not change the overal complexity 
-of the implementation, but definitely these consume more resources.
-These particular improvements are the following:
+in the thesis work since many of them do not change the overall time complexity 
+of the implementation, but these consume additional memory resources. 
+These improvements are the following:
+
+Major improvements:
 
 \begin{itemize}
   \item Improve hash function for terms: during testing the congruence closure
-    algorithm, it was evident that dealing with a large of terms, collisions
+    algorithm, it was evident that dealing with a large number of terms, collisions
     happened  to the point that some terms were merged since the signature
-    function indicated to do so, but this should not happen. Nonetheless, for
-    a typical verification problem the implementation will not find any problems.
-  \item The space needed to encode curry nodes \emph{can be significally reduced
-    } up to an order of \bigO{n}. The reason for this current allocation schema
-    is that it exists a double bonding effect while performing curryification 
+    function indicated to do so, but this merges should not happen. 
+    Intrinsically, the current implementation relies on the hash function 
+    provided by Z3, which might not be optimized
+    for a large number of terms or it might
+    be that their decision procedures
+    encode internal information differently.
+    Nonetheless, for
+    a typical verification problem the implementation will not 
+    find any problems since these
+    issues were noticed while dealing with
+    instance problems involving graph terms
+    of more than 1000000 nodes.
+  \item Regarding the theory combination 
+    of EUF and UTPVI, it will interesting 
+    to explore a
+    more specific interpolation 
+    combination approach. The thesis 
+    culminated with a 
+    uniform interpolant algorithm for the
+    combine theory, but the author agrees 
+    a better job can be done to avoid 
+    propagating disjunctions of the equalities
+    by extending the signature, 
+    consequently the the interpolation 
+    procedures, for both of the theories 
+    involved or propagate these disjunctions as
+    using a compact representation.
+\end{itemize}
+
+Minor improvements:
+
+\begin{itemize}
+  \item The space needed to encode curry nodes \emph{can be significally 
+    reduced} up to an order of \bigO{n}. The reason for 
+    this current allocation schema is that it exists a 
+    double bonding effect while performing curryification 
     of all the terms in the arguments of function applications.
 \end{itemize}
 
-Regarding potential extension of the systems, it will interesting to explore a
-more specific interpolation combination approach as in \cite{10.1007/978-3-540-69738-1_25}.
-The Nelson-Oppen framework seems to be adequate if the goal is to combine several theories
-or be as general as possible. The reason why the hierarchical reasoning approach
-was not implemented was because the authors did not make any claim about the possibility
-to use non-convex theories. Perhaps, this is not a real limitation of the approach.
 
 %%% Local Variables:
 %%% mode: latex
