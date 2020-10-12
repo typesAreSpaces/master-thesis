@@ -1,22 +1,24 @@
 This theory appears heavily in formal methods dealing
-with abstract domains introduced in \cite{journals/corr/abs-cs-0703084}.
+with abstract domains, introduced in 
+\cite{journals/corr/abs-cs-0703084}, which have been useful
+for efficient linear invariant discovery, safety analysis, and
+static analysis of programs.
 The decision problem consists of checking the satisfiability
 of a particular fragment of $LIA(\mathbb{Z})$. The fragment 
 consists on conjunctions of inequalities with at most
 two variables which integers coefficients are restricted
-to $\{-1, 0, 1\}$. Efficient algorithms are found in the literature
-for both the satisfiability problem \cite{10.1007/11559306_9} as well as 
-for interpolation \cite{10.1007/978-3-642-02959-2_15} of the theory. 
-Eventhough this fragment looks severely constrained, 
-it has been used for a range of applications where problems can 
-be modelled using this particular kind of literals.
+to $\{-1, 0, 1\}$. Efficient algorithms are found in the literature 
+for both the satisfiability problem \cite{10.1007/11559306_9} as 
+well as  for interpolation 
+\cite{10.1007/978-3-642-02959-2_15} of the theory. 
 
 The algorithm in \cite{KAPUR2017} follows a similar approach to the
-interpolation algorithm for EUF in the sense that the attention is
-given to one of the formulas in the interpolation pair \footnote {
-This implementation uses the first formula of the pair. }
-Other approaches towards interpolation follow graph-based algorithms.
-The idea combines the reduction of UTVPI formulas to difference 
+uniform interpolation algorithm for EUF in the sense 
+that the attention is given to one of 
+the formulas in the interpolation pair \footnote {This implementation uses the first formula of the pair. }.
+Other approaches towards interpolation follow graph-based 
+algorithms which idea combines the reduction of 
+UTVPI formulas to difference 
 logic \cite{journals/corr/abs-cs-0703084} and a cycle 
 detection of maximal size \cite{10.1007/978-3-642-02959-2_15}.
 

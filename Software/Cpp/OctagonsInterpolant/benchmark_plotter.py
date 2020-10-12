@@ -25,7 +25,7 @@ def parse_info(file_name, _num_elim_vars_data, _data, num_tests):
     return (_num_elim_vars_data, _data)
 
 if __name__ == "__main__":
-    num_tests = 10000
+    num_tests = 100
 
     steps = np.arange(0, num_tests)
     num_constants, num_ineqs, num_vars_to_elim = parse_meta_data("results/iz3_benchmark.txt")

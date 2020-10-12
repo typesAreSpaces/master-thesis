@@ -1,22 +1,63 @@
 \section{Implementation}
 
-In order to obtain a bijection between UTVPI inequalities and
-natural numbers, first we define an ordering on the inequalities
-and notice some invariants of the latter. 
-
-We encode the term $\pm x_m \pm x_n$ using the point
-$(\pm m, \pm n) \in \mathbb{Z}^2$. Let $TermToPoint$ be the map
-that $\pm x_m \pm x_n \mapsto (\pm m, \pm n)$.The variable $x_0$ is a
+The signature used by the 
+implementation to encode UTVPI formulas
+is $\{x_0, x_1, \\ \dots, x_n, +,
+-, \leq \}$, thus all the variables are indexed by a natural number. 
+The variable $x_0$ is a
 \emph{dummy variable} that acts as a place holder for 0. 
-Additionally, we will restrict the terms/pairs such that the absolute
-value of the first index variable is strictly greater than the
-absolute value of the second index variable \footnote{This condition also
-  avoids the problem of keeping track of variable duplication in 
-the inequality.} since addition is commutative, except for the point
-(0, 0) which encodes the inequality with no variables.
 
-We define the following orderings relevant for the terms of the form
-$\pm x_m \pm x_n$.
+The thesis work introduces the following data structures
+in order to obtain an efficient implementation:
+
+\begin{itemize}
+  \item Indexing data structure
+    which encodes inequalities of the input formula 
+    using natural numbers. The latter is obtained
+    by introducing an effective enumeration on the
+    UTVPI terms in a given UTVPI signature. The
+    latter is represented with a function
+    $Position : \text{ UTVPI term } \rightarrow \mathbb{N}$.
+  \item Array of numbers $Bounds$ indexed by the 
+    numeral representation of the inequalities 
+    representing the minimum bound of 
+    the encoded inequality, i.e. given an UTVPI
+    inequality $a_1 x_1 + a_2 x_2 \leq c$,
+    then $Bounds[Position(a_1 x_1 + a_2 x_2)] = c$
+  \item Data structure to keep 
+    track of the signs of variables to be eliminated
+    in the inequalities for efficient matching.
+  \item Data structure to represent an UTVPI
+    term in normal form endowed with addition and subtraction 
+    operations and the $Position$ function mentioned
+    in the first item.
+\end{itemize}
+
+\subsection{Normal Forms and Ordering of UTVPI terms}
+
+Normal forms helps us to avoid the ambiguity introduced
+by the commutativity of addition and neutrality of adding
+by 0.
+Also, normal forms allow the data
+structures mentioned above to keep track of less UTVPI terms.
+The normal form of a UTVPI term is simply defined by the
+following function: 
+\begin{equation*}
+  norm(\pm x_m \pm x_n) = 
+  \begin{cases} 
+    \pm x_{max(m, n)} \pm x_{min(m, n)} & \text{if } m \neq n \\
+    \pm x_{n} + x_0  & otherwise
+  \end{cases}
+\end{equation*}
+
+In order to obtain a bijection between UTVPI terms and
+natural numbers, first we define an ordering on the normal forms 
+of UTVPI terms. 
+We encode the UTVPI term $\pm x_m \pm x_n$ using the point
+$(\pm m, \pm n) \in \mathbb{Z}^2$ and let $TermToPoint$ be a 
+map such that $\pm x_m \pm x_n \mapsto (\pm m, \pm n)$. 
+We define the following orderings relevant to the 
+UTVPI term ordering:
 
 \begin{definition} 
   Let $\succ_m$ be an ordering on the integers such that $a \succ_m b$
@@ -27,42 +68,139 @@ $\pm x_m \pm x_n$.
   $(m_1, n_1) \succ_p (m_2, n_2)$ if and only if $m_1 \succ_m m_2$
   or ($m_1 = m_2$ and $n_1 \succ_m n_2$).
 
-  Let $\succ_t$ be an ordering on terms of the form $\pm x_m \pm x_n$
-  such that $t_1 \succ_t t_2$ if and only if $TermToPoint(t_1) \succ_p TermToPoint(t_2)$
+  Let $\succ_t$ be an ordering on UTVPI terms of the 
+  form $\pm x_m \pm x_n$ such that $t_1 \succ_t t_2$ 
+  if and only if $TermToPoint(t_1) \succ_p TermToPoint(t_2)$.
 \end{definition}
 
-\begin{example}
-  The first 32 elements (in ascending order w.r.t. $\succ_t$) of UTVPI inequalities
-  \footnote{For readability purposes we include the bound for the UTVPI term }
-  are the following:
+\begin{example} \label{example_oct}
+  The first 32 elements (in ascending order w.r.t. $\prec_t$) of UTVPI
+  terms are the following:
+  \begin{itemize}
 
-  $x_{0} + x_{0} \leq b_{0}$
+    \item $x_0 + x_0$
 
-  $-x_{1} + x_{0} \leq b_{1}, x_{1} + x_{0} \leq b_{2}$ 
+    \item $-x_1 + x_0, x_1 + x_0$ 
 
-  $-x_{2} + x_{0} \leq b_{3}, -x_{2} - x_{1} \leq b_{4}, -x_{2} + x_{1} \leq b_{5}, x_{2} + x_{0} \leq b_{6}, x_{2} - x_{1} \leq b_{7}, x_{2} + x_{1} \leq b_{8}$
+    \item $-x_{2} + x_{0}, -x_{2} - x_{1}, -x_{2} + x_{1},
+      x_{2} + x_{0}, x_{2} - x_{1}, x_{2} + x_{1}$
 
-  $-x_{3} + x_{0} \leq b_{9}, -x_{3} - x_{1} \leq b_{10}, -x_{3} + x_{1} \leq b_{11}, -x_{3} - x_{2} \leq b_{12}, -x_{3} + x_{2} \leq b_{13},x_{3} + x_{0} \leq b_{14}, x_{3} - x_{1} \leq b_{15}, x_{3} + x_{1} \leq b_{16}, x_{3} - x_{2} \leq b_{17}, x_{3} + x_{2} \leq b_{18}$
+    \item $-x_{3} + x_{0}, -x_{3} - x_{1}, 
+      -x_{3} + x_{1}, -x_{3} - x_{2}, 
+      -x_{3} + x_{2},
+      x_{3} + x_{0}, x_{3} - x_{1}, x_{3} + x_{1}, 
+      x_{3} - x_{2}, x_{3} + x_{2}, 
+      $
+  \end{itemize}
 \end{example}
 
-From the example, we notice that we can group/order the inequalities by groups using the first
-index. The first element of the $i^{th}$ group corresponds to the $2(i-1)^2 + 1$ element in the 
-$\succ_t$ order. The observation follows from an inductive argument since there are 
-$2(1 + 2(i-1))$ elements in the $i^{th}$ group. It is also straight forward to find the
-position of the first element in the second half of any group. With the above information
-it is possible to find the map between UTVPI terms and naturals numbers.
+\subsection{Bijection between normalized UTVPI terms and 
+natural numbers}
 
-This bijection allows us to implement a data 
-structure based on a vector of integers extended
-with $\pm \infty$ which encodes the upper bounds 
-for the $i^{th}$ inequality present in the 
-input formula. For initialization purpose all 
+Let $T$ be the set of normalized UTVPI terms.
+Using the previous ordering $\succ_t$ on $T$   
+makes clear that, since $|T| \leq 
+|\mathbb{Z}^2|$, then $T$ is countable and thus 
+there exists a bijection between $T$ and 
+$\mathbb{N}$. In order to construct an 
+explicit bijection, we notice the following facts.
+
+We can arrange ordered partitions $P$ of $T$ such 
+that two normalized UTVPI terms $\pm x_{m_1} \pm x_{m_2}$
+and $\pm x_{n_1} \pm x_{n_2}$ belong to the same partition
+if $|m_1| = |m_2|$.
+
+The example \ref{example_oct} arranged the normalized 
+UTVPI terms into this ordered partitions listing them
+by items. We notice that each partition
+contains $2(1 + 2(i-1))$ elements except the
+partition containg $x_0 + x_0$ using the 
+following lemma.
+
+\begin{lemma}
+  The $i^{th}$ ordered partition of $P$ contains 
+  $2(1 + 2(i-1))$ elements.
+\end{lemma}
+
+\begin{proof}
+  Let $A$ be the $i^{th}$ ordered partition from 
+  $P$. We notice that $A$ contains two
+  disjoint subsets with the same number of elements.
+  The first one is $\{-x_i + x_0\} \cup 
+  \{-x_i \pm x_j | 1 \leq j < i \}$
+  and the second one is 
+  $\{x_i + x_0\} \cup \{x_i \pm x_j | 1 \leq j < i \}$.
+  The cardinality of each of these subsets of $A$
+  is $1 + 2(i-1)$. Thus $|A| = 2(1 + 2(i-1))$. Hence
+  the assertion holds true.
+\end{proof}
+
+Using the previous lemma, it is easy to see
+that the first element of the $i^{th}$ ordered partition 
+is $2(i-1)^2 + 1$ by taking the sums of all the 
+cardinalities of all the previous ordered partitions
+and including the first ordered partition 
+$\{ x_0 + x_0 \}$. Let $t$ be the $n^{th}$ normalized 
+UTVPI term. The latter means that $t$ belongs
+to the 
+$\floor{\sqrt{\frac{n-1}{2}} + 1}^{th}$ ordered 
+partition. Let $i = \floor{\sqrt{\frac{n-1}{2}} + 1}$.
+Hence $t$ is
+of the form $\pm x_i \pm x_j$ for some $j < i$.
+To find the signs of and index $j$ of $t$, 
+we can check if $d := n - 2(i-1)^2 -1$ 
+(the distance between the $t$ and the
+first element of its ordered partition) 
+if greater than or equal to $1 + 2(i-1)$. The last 
+condition just detects if $t$ belongs to the second
+half or to the first half of the $i^{th}$ ordered
+partition, which will indicate the first sign of $t$.
+The second sign and index $j$ can be obtained by checking
+the parity of $d$ and by computing $(d-1)/2$.
+The formal algorithm for this construction is shown in Algorithm 9 of 
+this subsection. 
+
+Similarly, given a normalized UTVPI term $\pm x_m \pm x_n$
+we can compute its position in the enumeration using the
+signs and index information using the previous formulas.
+The formal algorithm for this construction is shown in Algorithm 10
+of this subsection.
+
+This explicit bijection allows us to implement a data 
+structure $Bounds$ based on an array of integers extended
+with $\pm \infty$ to encode upper bounds indexed by the
+natural number representing the normalized UTVPI term
+from an UTVPI inequality.
+For initialization purposes, all 
 the entries in this vector are set to
-$\infty$ and these values are updated accordingly 
-to keep track to the minimum possible value 
+$+\infty$ and these values are updated accordingly 
+to keep track of the minimum possible value 
 for the inequality after the application of the 
 inference rules mentioned at the
 introduction of the section.
+
+\begin{example}
+  Let us consider the input formula 
+  $\alpha_1 = \{x_1 - x_2 \geq -4, -x_2 - x_3 \geq 5, 
+  x_2 + x_5 \geq 4, x_2 + x_4 \geq -3\}$
+
+  The normalized input is $\{-x_2 + x_1 \geq -4, -x_3 - x_2 \geq 5, 
+  x_5 + x_2 \geq 4, x_4 + x_2 \geq -3\}$.
+
+  With the above information, the data structure $Bounds$ initially contains
+  the following entries:
+
+  \begin{itemize}
+    \item[] $Bounds[5] = -4$, since $position(-x_2 + x_1) = 5$
+    \item[] $Bounds[12] = 5$, since $position(-x_3 - x_2) = 12$
+    \item[] $Bounds[46] = 4$, since $position(x_5 + x_2) = 46$
+    \item[] $Bounds[30] = -3$, since $position(x_4 + x_2) = 30$
+    \item[] $Bounds[i] = +\infty$, where $i \in \mathbb{N} \setminus \{5, 12, 46, 30\}$
+  \end{itemize}
+
+
+  
+\end{example}
 
 \begin{algorithm}[!ht]
   \caption{UTVPI constructor}

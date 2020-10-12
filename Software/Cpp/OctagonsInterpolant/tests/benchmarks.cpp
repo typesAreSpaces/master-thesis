@@ -74,12 +74,14 @@ int main(){
   srand(time(NULL));
 
   z3::context ctx;
-  unsigned num_tests = 10000;
+  unsigned num_tests = 100;
 
   for(unsigned i = 0; i < num_tests; ++i){
     //OCTSignature S(ctx, 
-    //num_constants, num_ineqs, max_limit);
-    OCTSignature S(ctx, 10, 5, 3, 1000);
+    //num_constants, num_ineqs, max_limit,
+    //limit_search);
+    //OCTSignature S(ctx, 10, 5, 3, 1000);
+    OCTSignature S(ctx, 10, 200, 10, 1000);
     if(!S.IsValidInstance()){
       --i;
       continue;

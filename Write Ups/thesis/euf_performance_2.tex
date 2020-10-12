@@ -1,23 +1,23 @@
 \subsection{Performance comparison with iZ3 and MathSat}\label{performance_euf}
 
-This section discusses a benchmark for interpolant generation
+This section discusses a benchmark of interpolant generation
 for the EUF theory.
 which it will allows us to test 
-our implementation and constrast the execution with 
-other interpolant generation
-algorithms from Z3 and MathSat.
+our implementation and constrast the execution 
+time with other interpolant generation
+algorithms from Z3 and Mathsat.
 
 \subsubsection{Benchmark description}
 
-The bench mark uses the following parameters:
+The benchmark uses the following parameters:
 
 \begin{itemize}
-  \item[] $i$ stands for the number of constants
-  \item[] $j$ stands for the number of function symbols
+  \item $i$ stands for the number of constants
+  \item $j$ stands for the number of function symbols
     with arity between 2 and 3
-  \item[] $k$ stands for limit for random terms to consider
+  \item $k$ stands for limit for random terms to consider
     in the problem
-  \item[] $n$ stands for the equations/disequations in the
+  \item $n$ stands for the equations/disequations in the
     A-part
 \end{itemize}
 
@@ -53,11 +53,13 @@ Next we randomly generate a second set of consistent
 equations/disequations (B-Part) until the $A-part$ and the
 $B-part$ are inconsistent using a second $z3: :solver$.
 
+\subsubsection{Experimental results}
+
 We designed this problem because it is not trivial to 
 compute a  uniform/interpolant due to randomness of the
 problem. This problem was executed $100$ times
-with parameters (i=10, j=5, k=100, n = 10) and 
-(i=20, j=10, k=100, n = 40)
+with parameters (i = 10, j = 5, k = 100, n = 10) and 
+(i = 20, j = 10, k = 100, n = 40)
 using a computer desktop
 equipped with an Intel i7-9700 @ 4.70 GHz processor 
 and 16Gb of RAM. 
@@ -80,7 +82,7 @@ tested algorithms.
   \centering
   \includegraphics[scale=0.9]{figures/eufi_performance_graph_10_5_3_10_100}
   \caption{Performance comparison graph of EUF interpolant generation
-  algorithms for paramatrized problem from section \ref{performance_euf}} 
+  algorithms for the benchmark (i = 10, j = 5, k = 100, n = 10)}
   \label{performance_graph_euf}
 \end{figure}
 
@@ -88,8 +90,9 @@ tested algorithms.
   \centering
   \includegraphics[scale=0.9]{figures/eufi_performance_graph_20_10_3_40_100}
   \caption{Performance comparison graph of EUF interpolant generation
-  algorithms for paramatrized problem from section \ref{performance_euf}} 
-  \label{performance_graph_euf}
+  algorithms for the benchmark (i = 20, j = 10, k = 100, n = 40)} 
+
+  \label{performance_graph_euf_2}
 \end{figure}
 
 %%% Local Variables:

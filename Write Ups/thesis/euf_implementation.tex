@@ -191,11 +191,34 @@ Conditional Congruence Closure Algorithm: \label{ccc_algorithm} \\
 
   \item[] Step 3. For all the common equations $a = b$ 
     in the Horn clauses $h \in H$, Merge $a$ and $b$ in 
-    $\mathcal{E}$.
+    $\mathcal{E}$. Update Gallier's data structure
+    accordingly.
 
   \item[] Step 4. Return $\mathcal{E}$ as the conditional
     congruence closure for $H$.
 \end{itemize}
+
+
+We notice that the algorithm proposed to compute the 
+conditional congruence closure does not call the Explain
+operator of the Congruence Closure with Explanation since
+the latter will be used to construct common Horn clauses
+from induced conditional equivalence class. The Find and Merge
+operation takes $\mathcal{O}(1)$ amortized cost. Thus, 
+the amount of work related to the congruence closure
+in the proposed algorithm take $\mathcal{O}(n \log n)$ time complexity
+where $n$ denotes the number of equations in the graph term 
+of the Horn clauses $H$.
+However, the amount of work required by the \emph{unionupdate}
+operation of Gallier data structure is $\mathcal{O}(
+(2 m + n)\floor{n} + 1)$ where $m$ is the number of nodes 
+in the graph representation of the Horn clauses $H$. In 
+the worst-case scenario there can be at most $O(n^2)$
+of these Horn clauses due to the Phase II of Kapur's algorithm.
+Therefore, the time complexity of the conditional
+congruence closure algorithm proposed is
+$\mathcal{O}((m^2 + n)\log n)$.
+
 
 Remark: the only equations asserted into the 
 conditional equivalence class of the algorithm
@@ -556,6 +579,14 @@ inference rules with the following lemmas:
 
   \end{proof}
 
+
+  The time complexity of this algorithm follows the reasoning as
+  the complexity analysis for the conditional congruence closure
+  algorithm previously proposed. If $n$ is the number of terms in
+  graph of terms and $m$ is the number of nodes in the graph 
+  representation of the Horn clauses $H$, then the algorithm 
+  runs in $\mathcal{O}((m + n) \log n)$ time.
+  
 %%% Local Variables:
 %%% mode: latex
 %%% TeX-master: "main"
