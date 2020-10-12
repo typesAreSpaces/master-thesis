@@ -13,49 +13,50 @@
 \BOOKMARK [2][-]{subsection.2.2.2}{Ordered commutative rings}{section.2.2}% 13
 \BOOKMARK [1][-]{section.2.3}{Interpolants}{chapter.2}% 14
 \BOOKMARK [2][-]{subsection.2.3.1}{Craig interpolation theorem}{section.2.3}% 15
-\BOOKMARK [1][-]{section.2.4}{Decision Procedures}{chapter.2}% 16
-\BOOKMARK [2][-]{subsection.2.4.1}{Satisfiability and Satisfiability Modulo Theories}{section.2.4}% 17
-\BOOKMARK [2][-]{subsection.2.4.2}{Congruence Closure}{section.2.4}% 18
-\BOOKMARK [2][-]{subsection.2.4.3}{Satisfiability of Horn clauses with ground equations}{section.2.4}% 19
-\BOOKMARK [2][-]{subsection.2.4.4}{Nelson-Oppen framework for theory and interpolation combination}{section.2.4}% 20
-\BOOKMARK [1][-]{section.2.5}{General system description}{chapter.2}% 21
-\BOOKMARK [2][-]{subsection.2.5.1}{Minor modifications to Z3}{section.2.5}% 22
-\BOOKMARK [2][-]{subsection.2.5.2}{PicoSAT/TraceCheck Proof Format}{section.2.5}% 23
-\BOOKMARK [0][-]{chapter.3}{Interpolation algorithm for the theory of EUF}{}% 24
-\BOOKMARK [1][-]{section.3.1}{Algorithm}{chapter.3}% 25
-\BOOKMARK [1][-]{section.3.2}{Implementation}{chapter.3}% 26
-\BOOKMARK [2][-]{subsection.3.2.1}{New conditional elimination step in Kapur's algorithm}{section.3.2}% 27
-\BOOKMARK [2][-]{subsection.3.2.2}{Invariants of the proposed conditional elimination step}{section.3.2}% 28
-\BOOKMARK [2][-]{subsection.3.2.3}{New conditional replacement step in Kapur's algorithm}{section.3.2}% 29
-\BOOKMARK [2][-]{subsection.3.2.4}{An additional application: checking membership of ground Horn clauses with Explanations}{section.3.2}% 30
-\BOOKMARK [1][-]{section.3.3}{Evaluation}{chapter.3}% 31
-\BOOKMARK [2][-]{subsection.3.3.1}{Detailed evaluation of examples}{section.3.3}% 32
-\BOOKMARK [2][-]{subsection.3.3.2}{Performance comparison with iZ3 and MathSat}{section.3.3}% 33
-\BOOKMARK [1][-]{section.3.4}{Conclusions}{chapter.3}% 34
-\BOOKMARK [0][-]{chapter.4}{Interpolation algorithm for UTVPI Formulas}{}% 35
-\BOOKMARK [1][-]{section.4.1}{Algorithm}{chapter.4}% 36
-\BOOKMARK [1][-]{section.4.2}{Implementation}{chapter.4}% 37
-\BOOKMARK [1][-]{section.4.3}{Evaluation}{chapter.4}% 38
-\BOOKMARK [2][-]{subsection.4.3.1}{Detailed evaluation of examples}{section.4.3}% 39
-\BOOKMARK [2][-]{subsection.4.3.2}{Performance comparison with iZ3 and MathSat}{section.4.3}% 40
-\BOOKMARK [1][-]{section.4.4}{Conclusions}{chapter.4}% 41
-\BOOKMARK [0][-]{chapter.5}{Interpolation algorithm for the theory combination of EUF and UTVPI}{}% 42
-\BOOKMARK [1][-]{section.5.1}{Algorithm}{chapter.5}% 43
-\BOOKMARK [1][-]{section.5.2}{Implementation}{chapter.5}% 44
-\BOOKMARK [1][-]{section.5.3}{Octagonalization of input formula}{chapter.5}% 45
-\BOOKMARK [1][-]{section.5.4}{Evaluation}{chapter.5}% 46
-\BOOKMARK [2][-]{subsection.5.4.1}{Detailed evaluation of a complete example}{section.5.4}% 47
-\BOOKMARK [2][-]{subsection.5.4.2}{A parametrized example}{section.5.4}% 48
-\BOOKMARK [2][-]{subsection.5.4.3}{Performance evaluation}{section.5.4}% 49
-\BOOKMARK [1][-]{section.5.5}{Conclusions}{chapter.5}% 50
-\BOOKMARK [0][-]{chapter.6}{Future Work}{}% 51
-\BOOKMARK [0][-]{chapter*.6}{Appendix A}{}% 52
-\BOOKMARK [1][-]{section.6.1}{Theorems about Interpolants}{chapter*.6}% 53
-\BOOKMARK [2][-]{subsection.6.1.1}{Interpolants are closed under conjunction and disjunction}{section.6.1}% 54
-\BOOKMARK [2][-]{subsection.6.1.2}{Interpolants distribute conjunctions over disjunctions in the A-part}{section.6.1}% 55
-\BOOKMARK [0][-]{chapter*.7}{Appendix B}{}% 56
-\BOOKMARK [1][-]{section.6.2}{Trace for example in theory combination chapter}{chapter*.7}% 57
-\BOOKMARK [0][-]{chapter*.8}{Appendix C}{}% 58
-\BOOKMARK [1][-]{section.6.3}{Congruence Closure with Explanation operation header}{chapter*.8}% 59
-\BOOKMARK [1][-]{section.6.4}{Hornsat \(Gallier's data structure\) header}{chapter*.8}% 60
-\BOOKMARK [0][-]{chapter*.9}{References}{}% 61
+\BOOKMARK [2][-]{subsection.2.3.2}{Uniform Interpolant}{section.2.3}% 16
+\BOOKMARK [1][-]{section.2.4}{Decision Procedures}{chapter.2}% 17
+\BOOKMARK [2][-]{subsection.2.4.1}{Satisfiability and Satisfiability Modulo Theories}{section.2.4}% 18
+\BOOKMARK [2][-]{subsection.2.4.2}{Congruence Closure}{section.2.4}% 19
+\BOOKMARK [2][-]{subsection.2.4.3}{Satisfiability of Horn clauses with ground equations}{section.2.4}% 20
+\BOOKMARK [2][-]{subsection.2.4.4}{Nelson-Oppen framework for theory and interpolation combination}{section.2.4}% 21
+\BOOKMARK [1][-]{section.2.5}{General system description}{chapter.2}% 22
+\BOOKMARK [2][-]{subsection.2.5.1}{Minor modifications to Z3}{section.2.5}% 23
+\BOOKMARK [2][-]{subsection.2.5.2}{PicoSAT/TraceCheck Proof Format}{section.2.5}% 24
+\BOOKMARK [0][-]{chapter.3}{Interpolation algorithm for the theory of EUF}{}% 25
+\BOOKMARK [1][-]{section.3.1}{Kapur's Interpolation Generation Algorithm for EUF}{chapter.3}% 26
+\BOOKMARK [1][-]{section.3.2}{Implementation}{chapter.3}% 27
+\BOOKMARK [2][-]{subsection.3.2.1}{New conditional elimination step in Kapur's algorithm}{section.3.2}% 28
+\BOOKMARK [2][-]{subsection.3.2.2}{Invariants of the proposed conditional elimination step}{section.3.2}% 29
+\BOOKMARK [2][-]{subsection.3.2.3}{New conditional replacement step in Kapur's algorithm}{section.3.2}% 30
+\BOOKMARK [2][-]{subsection.3.2.4}{An additional application: checking membership of ground Horn clauses with Explanations}{section.3.2}% 31
+\BOOKMARK [1][-]{section.3.3}{Evaluation}{chapter.3}% 32
+\BOOKMARK [2][-]{subsection.3.3.1}{Detailed evaluation of examples}{section.3.3}% 33
+\BOOKMARK [2][-]{subsection.3.3.2}{Performance comparison with iZ3 and MathSat}{section.3.3}% 34
+\BOOKMARK [1][-]{section.3.4}{Conclusions}{chapter.3}% 35
+\BOOKMARK [0][-]{chapter.4}{Interpolation algorithm for UTVPI Formulas}{}% 36
+\BOOKMARK [1][-]{section.4.1}{Algorithm}{chapter.4}% 37
+\BOOKMARK [1][-]{section.4.2}{Implementation}{chapter.4}% 38
+\BOOKMARK [1][-]{section.4.3}{Evaluation}{chapter.4}% 39
+\BOOKMARK [2][-]{subsection.4.3.1}{Detailed evaluation of examples}{section.4.3}% 40
+\BOOKMARK [2][-]{subsection.4.3.2}{Performance comparison with iZ3 and MathSat}{section.4.3}% 41
+\BOOKMARK [1][-]{section.4.4}{Conclusions}{chapter.4}% 42
+\BOOKMARK [0][-]{chapter.5}{Interpolation algorithm for the theory combination of EUF and UTVPI}{}% 43
+\BOOKMARK [1][-]{section.5.1}{Algorithm}{chapter.5}% 44
+\BOOKMARK [1][-]{section.5.2}{Implementation}{chapter.5}% 45
+\BOOKMARK [1][-]{section.5.3}{Octagonalization of input formula}{chapter.5}% 46
+\BOOKMARK [1][-]{section.5.4}{Evaluation}{chapter.5}% 47
+\BOOKMARK [2][-]{subsection.5.4.1}{Detailed evaluation of a complete example}{section.5.4}% 48
+\BOOKMARK [2][-]{subsection.5.4.2}{A parametrized example}{section.5.4}% 49
+\BOOKMARK [2][-]{subsection.5.4.3}{Performance evaluation}{section.5.4}% 50
+\BOOKMARK [1][-]{section.5.5}{Conclusions}{chapter.5}% 51
+\BOOKMARK [0][-]{chapter.6}{Future Work}{}% 52
+\BOOKMARK [0][-]{chapter*.7}{Appendix A}{}% 53
+\BOOKMARK [1][-]{section.6.1}{Theorems about Interpolants}{chapter*.7}% 54
+\BOOKMARK [2][-]{subsection.6.1.1}{Interpolants are closed under conjunction and disjunction}{section.6.1}% 55
+\BOOKMARK [2][-]{subsection.6.1.2}{Interpolants distribute conjunctions over disjunctions in the A-part}{section.6.1}% 56
+\BOOKMARK [0][-]{chapter*.8}{Appendix B}{}% 57
+\BOOKMARK [1][-]{section.6.2}{Trace for example in theory combination chapter}{chapter*.8}% 58
+\BOOKMARK [0][-]{chapter*.9}{Appendix C}{}% 59
+\BOOKMARK [1][-]{section.6.3}{Congruence Closure with Explanation operation header}{chapter*.9}% 60
+\BOOKMARK [1][-]{section.6.4}{Hornsat \(Gallier's data structure\) header}{chapter*.9}% 61
+\BOOKMARK [0][-]{chapter*.10}{References}{}% 62

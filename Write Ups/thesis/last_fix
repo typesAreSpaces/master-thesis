@@ -1,0 +1,152 @@
+let SessionLoad = 1
+let s:so_save = &so | let s:siso_save = &siso | set so=0 siso=0
+let v:this_session=expand("<sfile>:p")
+silent only
+cd ~/Documents/GithubProjects/master-thesis/Write\ Ups/thesis
+if expand('%') == '' && !&modified && line('$') <= 1 && getline(1) == ''
+  let s:wipebuf = bufnr('%')
+endif
+set shortmess=aoO
+badd +4 euf.tex
+badd +1 references.bib
+badd +246 euf_algorithm.tex
+badd +1 main.tex
+badd +1 algpseudocode.sty
+badd +1 booktabs.sty
+badd +2 abstract.tex
+badd +5 preliminaries.tex
+badd +136 craig_interpolation.tex
+badd +35 first_order_logic.tex
+badd +517 euf_implementation.tex
+badd +1 a.tex
+badd +2 modified_unsatisfiability_testing_for_grounded_horn_clauses.tex
+badd +1 modified_congruence_closure_with_explanation_algorithms_merge.tex
+badd +0 modified_congruence_closure_with_explanation_algorithms_propagate.tex
+badd +49 euf_evaluation.tex
+badd +0 euf_performance.tex
+argglobal
+%argdel
+$argadd euf.tex
+edit euf.tex
+set splitbelow splitright
+wincmd _ | wincmd |
+vsplit
+1wincmd h
+wincmd _ | wincmd |
+split
+wincmd _ | wincmd |
+split
+2wincmd k
+wincmd w
+wincmd w
+wincmd w
+set nosplitbelow
+set nosplitright
+wincmd t
+set winminheight=0
+set winheight=1
+set winminwidth=0
+set winwidth=1
+exe '1resize ' . ((&lines * 17 + 28) / 56)
+exe 'vert 1resize ' . ((&columns * 75 + 76) / 152)
+exe '2resize ' . ((&lines * 18 + 28) / 56)
+exe 'vert 2resize ' . ((&columns * 75 + 76) / 152)
+exe '3resize ' . ((&lines * 17 + 28) / 56)
+exe 'vert 3resize ' . ((&columns * 75 + 76) / 152)
+exe 'vert 4resize ' . ((&columns * 76 + 76) / 152)
+argglobal
+setlocal fdm=manual
+setlocal fde=0
+setlocal fmr={{{,}}}
+setlocal fdi=#
+setlocal fdl=0
+setlocal fml=1
+setlocal fdn=20
+setlocal fen
+silent! normal! zE
+let s:l = 7 - ((0 * winheight(0) + 8) / 17)
+if s:l < 1 | let s:l = 1 | endif
+exe s:l
+normal! zt
+7
+normal! 0
+wincmd w
+argglobal
+if bufexists("main.tex") | buffer main.tex | else | edit main.tex | endif
+setlocal fdm=manual
+setlocal fde=0
+setlocal fmr={{{,}}}
+setlocal fdi=#
+setlocal fdl=1
+setlocal fml=1
+setlocal fdn=20
+setlocal fen
+silent! normal! zE
+10,110fold
+10
+normal! zc
+let s:l = 2 - ((1 * winheight(0) + 9) / 18)
+if s:l < 1 | let s:l = 1 | endif
+exe s:l
+normal! zt
+2
+normal! 0
+wincmd w
+argglobal
+if bufexists("references.bib") | buffer references.bib | else | edit references.bib | endif
+setlocal fdm=manual
+setlocal fde=0
+setlocal fmr={{{,}}}
+setlocal fdi=#
+setlocal fdl=0
+setlocal fml=1
+setlocal fdn=20
+setlocal fen
+silent! normal! zE
+let s:l = 109 - ((9 * winheight(0) + 8) / 17)
+if s:l < 1 | let s:l = 1 | endif
+exe s:l
+normal! zt
+109
+normal! 018|
+wincmd w
+argglobal
+if bufexists("euf_performance.tex") | buffer euf_performance.tex | else | edit euf_performance.tex | endif
+setlocal fdm=manual
+setlocal fde=0
+setlocal fmr={{{,}}}
+setlocal fdi=#
+setlocal fdl=0
+setlocal fml=1
+setlocal fdn=20
+setlocal fen
+silent! normal! zE
+let s:l = 1 - ((0 * winheight(0) + 27) / 54)
+if s:l < 1 | let s:l = 1 | endif
+exe s:l
+normal! zt
+1
+normal! 0
+wincmd w
+4wincmd w
+exe '1resize ' . ((&lines * 17 + 28) / 56)
+exe 'vert 1resize ' . ((&columns * 75 + 76) / 152)
+exe '2resize ' . ((&lines * 18 + 28) / 56)
+exe 'vert 2resize ' . ((&columns * 75 + 76) / 152)
+exe '3resize ' . ((&lines * 17 + 28) / 56)
+exe 'vert 3resize ' . ((&columns * 75 + 76) / 152)
+exe 'vert 4resize ' . ((&columns * 76 + 76) / 152)
+tabnext 1
+if exists('s:wipebuf') && getbufvar(s:wipebuf, '&buftype') isnot# 'terminal'
+  silent exe 'bwipe ' . s:wipebuf
+endif
+unlet! s:wipebuf
+set winheight=1 winwidth=20 winminheight=1 winminwidth=1 shortmess=filnxtToOFIc
+let s:sx = expand("<sfile>:p:r")."x.vim"
+if file_readable(s:sx)
+  exe "source " . fnameescape(s:sx)
+endif
+let &so = s:so_save | let &siso = s:siso_save
+doautoall SessionLoadPost
+unlet SessionLoad
+" vim: set ft=vim :

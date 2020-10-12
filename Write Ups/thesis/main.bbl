@@ -124,6 +124,11 @@ Jean~H. Gallier.
   with equations.
 \newblock {\em Journal of Symbolic Computation}, 4(2):233 -- 254, 1987.
 
+\bibitem{ghilardi2020compactly}
+Silvio Ghilardi, Alessandro Gianola, and Deepak Kapur.
+\newblock Compactly representing uniform interpolants for euf using
+  (conditional) dags, 2020.
+
 \bibitem{10.1145/982962.964021}
 Thomas~A. Henzinger, Ranjit Jhala, Rupak Majumdar, and Kenneth~L. McMillan.
 \newblock Abstractions from proofs.
@@ -139,6 +144,13 @@ Deepak Kapur.
 \newblock A new algorithm for computing (strongest) interpolants over
   quantifier-free theory of equality over uninterpreted symbols.
 \newblock {\em Manuscript}, 2017.
+
+\bibitem{KAPUR2019}
+Deepak Kapur.
+\newblock Conditional congruence closure over uninterpreted and interpreted
+  symbols.
+\newblock {\em Journal of Systems Science and Complexity}, 32:317--355, 02
+  2019.
 
 \bibitem{10.5555/2898950}
 Donald~E. Knuth.
@@ -231,6 +243,12 @@ Robert Nieuwenhuis and Albert Oliveras.
 \newblock Proof-producing congruence closure.
 \newblock In J{\"u}rgen Giesl, editor, {\em Term Rewriting and Applications},
   pages 453--468, Berlin, Heidelberg, 2005. Springer Berlin Heidelberg.
+
+\bibitem{pitts1992}
+Andrew~M. Pitts.
+\newblock On an interpretation of second order quantification in first order
+  intuitionistic propositional logic.
+\newblock {\em J. Symbolic Logic}, 57(1):33--52, 03 1992.
 
 \bibitem{10.2307/1990888}
 H.~G. Rice.

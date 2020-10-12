@@ -1,19 +1,19 @@
 \babel@toc {english}{}
 \addvspace {10\p@ }
 \addvspace {10\p@ }
-\contentsline {figure}{\numberline {2.1}{\ignorespaces Example of DPLL execution on $\{\{\neg P\}, \{P, Q, \neg R\}, \{R\}, \{P, \neg Q\} \}$}}{15}{figure.2.1}%
-\contentsline {figure}{\numberline {2.2}{\ignorespaces Example of resolution proof}}{16}{figure.2.2}%
+\contentsline {figure}{\numberline {2.1}{\ignorespaces Example of DPLL execution on $\{\{\neg P\}, \{P, Q, \neg R\}, \{R\}, \{P, \neg Q\} \}$}}{16}{figure.2.1}%
+\contentsline {figure}{\numberline {2.2}{\ignorespaces Example of resolution proof}}{17}{figure.2.2}%
 \contentsline {figure}{\numberline {2.3}{\ignorespaces General System Diagram}}{21}{figure.2.3}%
-\contentsline {figure}{\numberline {2.4}{\ignorespaces EUF Interpolator Diagram}}{21}{figure.2.4}%
-\contentsline {figure}{\numberline {2.5}{\ignorespaces UTVPI Interpolator Diagram}}{21}{figure.2.5}%
-\contentsline {figure}{\numberline {2.6}{\ignorespaces Problematic SMT query for resolution proofs}}{23}{figure.2.6}%
-\contentsline {figure}{\numberline {2.7}{\ignorespaces Z3 proof of figure \ref {query_proof_problem}}}{23}{figure.2.7}%
-\contentsline {figure}{\numberline {2.8}{\ignorespaces Example of extended proof trace by PicoSAT for problem \ref {dpll_figure}}}{24}{figure.2.8}%
-\contentsline {figure}{\numberline {2.9}{\ignorespaces Example of extended proof trace by PicoSAT for problem \ref {dpll_figure}}}{25}{figure.2.9}%
+\contentsline {figure}{\numberline {2.4}{\ignorespaces EUF Interpolator Diagram}}{22}{figure.2.4}%
+\contentsline {figure}{\numberline {2.5}{\ignorespaces UTVPI Interpolator Diagram}}{22}{figure.2.5}%
+\contentsline {figure}{\numberline {2.6}{\ignorespaces Problematic SMT query for resolution proofs}}{24}{figure.2.6}%
+\contentsline {figure}{\numberline {2.7}{\ignorespaces Z3 proof of figure \ref {query_proof_problem}}}{24}{figure.2.7}%
+\contentsline {figure}{\numberline {2.8}{\ignorespaces Example of extended proof trace by PicoSAT for problem \ref {dpll_figure}}}{25}{figure.2.8}%
+\contentsline {figure}{\numberline {2.9}{\ignorespaces Example of extended proof trace by PicoSAT for problem \ref {dpll_figure}}}{26}{figure.2.9}%
 \addvspace {10\p@ }
-\contentsline {figure}{\numberline {3.1}{\ignorespaces Performance comparison graph of EUF interpolant generation algorithms for paramatrized problem from section \ref {performance_euf}}}{50}{figure.3.1}%
+\contentsline {figure}{\numberline {3.1}{\ignorespaces Performance comparison graph of EUF interpolant generation algorithms for paramatrized problem from section \ref {performance_euf}}}{52}{figure.3.1}%
 \addvspace {10\p@ }
-\contentsline {figure}{\numberline {4.1}{\ignorespaces Performance comparison graph of Oct interpolant generation algorithms for paramatrized problem from section \ref {performance_oct}}}{61}{figure.4.1}%
+\contentsline {figure}{\numberline {4.1}{\ignorespaces Performance comparison graph of Oct interpolant generation algorithms for paramatrized problem from section \ref {performance_oct}}}{63}{figure.4.1}%
 \addvspace {10\p@ }
-\contentsline {figure}{\numberline {5.1}{\ignorespaces Performance comparison graph of EUF + UTVPI interpolant generation algorithms for paramatrized problem from section \ref {performance_thcomb}}}{75}{figure.5.1}%
+\contentsline {figure}{\numberline {5.1}{\ignorespaces Performance comparison graph of EUF + UTVPI interpolant generation algorithms for paramatrized problem from section \ref {performance_thcomb}}}{77}{figure.5.1}%
 \addvspace {10\p@ }

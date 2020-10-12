@@ -105,6 +105,35 @@ be relevant (for example, lisp programs). This is formalize as follows:
   used for interpolation is empty.
 \end{example}
 
+\subsection{Uniform Interpolant}
+
+A uniform interpolant is a particular kind of interpolant for an inconsistent
+pair of formulas. Introduced in \cite{pitts1992} as a 
+construction to provide an interpretation
+for second order intuitionistic proposositional logic 
+\emph{$IpC^2$}
+\footnote{I.e. $IpC^2$ quantifies over 
+propositional variables.}
+using intuitionistic propositional logic \emph{IpC}.
+Our notion of uniform interpolant is taken 
+from \cite{ghilardi2020compactly}
+where the authors provide the following definition:
+
+\begin{definition}
+  Fix a theory $T$ and an existential formula $\exists \cev{e} . \phi(\cev{e}, \cev{z})$; call \emph{residue} of $\exists \cev{e} . \phi(\cev{e}, \cev{z})$ the following set of
+  quantifier-free formulae:
+
+  \begin{equation*}
+    Res(\exists \cev{e} . \phi(\cev{e}, \cev{z})) = \{ \theta(\cev{z}, \cev{y}) | T \models \exists \cev{e} . \phi(\cev{e}, \cev{z}) \rightarrow \theta(\cev{z}, \cev{y}) \} =\{ \theta(\cev{z}, \cev{y}) | T \models \phi(\cev{e}, \cev{z}) \rightarrow \theta(\cev{z}, \cev{y}) \}
+  \end{equation*}
+
+  A quantifier-free formula $\psi(\cev{y})$ is said to be a \emph{T-uniform interpolant} 
+  of $\exists \cev{e} . \phi(\cev{e}, \cev{z})$ if and only if $\psi(\cev{y}) \in Res(\exists \cev{e} \phi(\cev{e}, \cev{y}))$ and 
+  $\psi(\cev{z})$ implies (modulo T)
+  all the other formulae in $Res(\exists \cev{e} \phi(\cev{e}, \cev{y}))$.
+
+\end{definition}
+
 %%% Local Variables:
 %%% mode: latex
 %%% TeX-master: "main"

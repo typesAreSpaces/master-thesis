@@ -23,6 +23,13 @@ The rules of composition distinguish two objects, \emph{terms} and \emph{formula
   \item If $x$ is a variable and $\psi, \varphi$ are formulas, then $\neg \psi, \forall x . \psi, \exists x . \psi$ and $\psi \square \varphi$ are formulas where $\square \in \{\rightarrow, \land, \lor\}$
 \end{itemize}
 No other expression in the language can be considered terms nor formulas if such expressions are not obtained by the previous rules.
+
+For notation purposes, we compactly represent a tuple $\langle x_1, \dots, x_n \rangle$ of variables as
+$\cev{x}$. Abusing the notation, a formula of the form 
+$\forall \cev{x} . \phi(\cev{x})$ (resp. $\exists \cev{x} . \phi(\cev{x})$)
+denotes the formula $\forall x_1 . \forall x_2 \dots \forall x_n . \phi(x_1, \dots, x_n)$
+(resp. $\exists x_1 . \exists x_2 \dots \exists x_n . \phi(x_1, \dots, x_n)$)
+
 \end{definition}
 
 \subsection{Semantics}
