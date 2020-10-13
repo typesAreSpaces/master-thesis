@@ -1,7 +1,13 @@
 \section{Yorsh - Musuvathi Interpolation Combination Framework}
 
-The algorithm implements a Nelson-Oppen framework. In order to 
-integrate interpolants to the latter, the algorithm includes a 
+The algorithm extends a Nelson-Oppen framework which allows the Yorsh-Musuvathi
+framework to produce an Interpolant
+for combined theories using Interpolant
+generation algorithm for each of the 
+theories involved. 
+In order to 
+integrate interpolants to the latter, 
+the algorithm includes a 
 \emph{partial interpolant} every time a disjunction of equalities 
 (conflict clause) is propagated. These \emph{partial interpolants} are 
 computed from an unsatisfiability proof obtained by including the 

@@ -38,6 +38,13 @@ Major improvements:
     procedures, for both of the theories 
     involved or propagate these disjunctions as
     using a compact representation.
+  \item Currently the implementation for combined EUF and UTVPI 
+    theory does not incrementally check the 
+    consistency of the current formula in the main loop of 
+    the implementation \ref{thcomb_propagation_loop}. 
+    Changing the latter to an incrementally approach will
+    maintain lemmas so the computation of intermediate results
+    will not be performed repetitively. 
 \end{itemize}
 
 Minor improvements:

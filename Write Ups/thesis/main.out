@@ -48,15 +48,18 @@
 \BOOKMARK [1][-]{section.5.3}{Evaluation}{chapter.5}% 48
 \BOOKMARK [2][-]{subsection.5.3.1}{Detailed evaluation of a complete example}{section.5.3}% 49
 \BOOKMARK [1][-]{section.5.4}{A uniform interpolant generation algorithm for the combined theory of EUF and UTVPI}{chapter.5}% 50
-\BOOKMARK [1][-]{section.5.5}{Conclusions}{chapter.5}% 51
-\BOOKMARK [0][-]{chapter.6}{Future Work}{}% 52
-\BOOKMARK [0][-]{chapter*.10}{Appendix A}{}% 53
-\BOOKMARK [1][-]{section.6.1}{Theorems about Interpolants}{chapter*.10}% 54
-\BOOKMARK [2][-]{subsection.6.1.1}{Interpolants are closed under conjunction and disjunction}{section.6.1}% 55
-\BOOKMARK [2][-]{subsection.6.1.2}{Interpolants distribute conjunctions over disjunctions in the A-part}{section.6.1}% 56
-\BOOKMARK [0][-]{chapter*.11}{Appendix B}{}% 57
-\BOOKMARK [1][-]{section.6.2}{Trace for example in theory combination chapter}{chapter*.11}% 58
-\BOOKMARK [0][-]{chapter*.12}{Appendix C}{}% 59
-\BOOKMARK [1][-]{section.6.3}{Congruence Closure with Explanation operation header}{chapter*.12}% 60
-\BOOKMARK [1][-]{section.6.4}{Hornsat \(Gallier's data structure\) header}{chapter*.12}% 61
-\BOOKMARK [0][-]{chapter*.13}{References}{}% 62
+\BOOKMARK [2][-]{subsection.5.4.1}{A tableux-like uniform interpolant generation algorithm for EUF}{section.5.4}% 51
+\BOOKMARK [2][-]{subsection.5.4.2}{Our proposed uniform interpolant generation algorithm for EUF + UTVPI}{section.5.4}% 52
+\BOOKMARK [2][-]{subsection.5.4.3}{Termination, Correctness and Completeness of the proposed algorithm}{section.5.4}% 53
+\BOOKMARK [1][-]{section.5.5}{Conclusions}{chapter.5}% 54
+\BOOKMARK [0][-]{chapter.6}{Future Work}{}% 55
+\BOOKMARK [0][-]{chapter*.10}{Appendix A}{}% 56
+\BOOKMARK [1][-]{section.6.1}{Theorems about Interpolants}{chapter*.10}% 57
+\BOOKMARK [2][-]{subsection.6.1.1}{Interpolants are closed under conjunction and disjunction}{section.6.1}% 58
+\BOOKMARK [2][-]{subsection.6.1.2}{Interpolants distribute conjunctions over disjunctions in the A-part}{section.6.1}% 59
+\BOOKMARK [0][-]{chapter*.11}{Appendix B}{}% 60
+\BOOKMARK [1][-]{section.6.2}{Trace for example in theory combination chapter}{chapter*.11}% 61
+\BOOKMARK [0][-]{chapter*.12}{Appendix C}{}% 62
+\BOOKMARK [1][-]{section.6.3}{Congruence Closure with Explanation operation header}{chapter*.12}% 63
+\BOOKMARK [1][-]{section.6.4}{Hornsat \(Gallier's data structure\) header}{chapter*.12}% 64
+\BOOKMARK [0][-]{chapter*.13}{References}{}% 65

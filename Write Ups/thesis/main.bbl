@@ -39,6 +39,18 @@ Jerry~R. Burch and David~L. Dill.
 \newblock In David~L. Dill, editor, {\em Computer Aided Verification}, pages
   68--80, Berlin, Heidelberg, 1994. Springer Berlin Heidelberg.
 
+\bibitem{10.1007/978-3-030-29436-6_9}
+Diego Calvanese, Silvio Ghilardi, Alessandro Gianola, Marco Montali, and Andrey
+  Rivkin.
+\newblock Model completeness, covers and superposition.
+\newblock In Pascal Fontaine, editor, {\em Automated Deduction -- CADE 27},
+  pages 142--160, Cham, 2019. Springer International Publishing.
+
+\bibitem{chang2013model}
+C.C. Chang and H.J. Keisler.
+\newblock {\em Model Theory: Third Edition}.
+\newblock Dover Books on Mathematics. Dover Publications, 2013.
+
 \bibitem{10.1007/978-3-642-36742-7_9}
 J{\"u}rgen Christ, Jochen Hoenicke, and Alexander Nutz.
 \newblock Proof tree preserving interpolation.
