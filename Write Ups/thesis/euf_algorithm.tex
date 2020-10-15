@@ -9,7 +9,7 @@ In preparation to discuss Kapur's algorithm we need to provide the
 following definitions.
 
 \begin{definition} 
-  Let $f$ be a $n-ary$ function symbol and $a_1, \dots, a_n,
+  Let $f$ be an $n-ary$ function symbol and $a_1, \dots, a_n,
   b$ terms from the EUF language. We say 
   \begin{equation*}
     f(a_1, \dots, a_n) = b
@@ -64,7 +64,7 @@ is preserved under equalities. Formally, we mean the following:
   uncommon constant}.
 \end{definition}
 
-Since congruence closure algorithms are revelant to Kapur's algorithm, we introduce the 
+Since congruence closure algorithms are relevant to Kapur's algorithm, we introduce the 
 following definition for notation purposes:
 
 \begin{definition}
@@ -75,11 +75,11 @@ following definition for notation purposes:
 
 \end{definition}
 
-The interpolating formula produced by Kapur's algorith is a conjunction of equations
+The interpolating formula produced by Kapur's algorithm is a conjunction of equations
 and Horn clauses. A Horn clause if a disjunction of literals which contain at most
 one non-negated literal.
 Due to its relevance in the procedure in the EUF theory, for a Horn clause $h$
-we denote $antecedent(h)$ to be the conjuntion of disequations in the disjunction of $h$ 
+we denote $antecedent(h)$ to be the conjunction of disequations in the disjunction of $h$ 
 and $head(h)$ to be either the equation in the disjunction if such is present in $h$ 
 or the particle $\bot$ otherwise.
 
@@ -88,8 +88,8 @@ are the following:
 
 \begin{itemize}
   \item \textbf{Flattening:} 
-    For each subterm $t$ in the input formula assign a fresh unique constant $\mathfrak{a}_t$. 
-    Additionally, for each subterm $t$ generate new equations of the form:
+    For each sub-term $t$ in the input formula assign a fresh unique constant $\mathfrak{a}_t$. 
+    Additionally, for each sub-term $t$ generate new equations of the form:
     \begin{itemize}
       \item $c = \mathfrak{a}_c$, if $t$ is a constant $c$
       \item $f(\mathfrak{a}_{t_1}, \dots, \mathfrak{a}_{t_n}) 
@@ -165,7 +165,7 @@ to introduce the following definitions:
   $a$ is common and $b$ is uncommon. A \emph{dependency pair}
   for a horn clause $h := \bigwedge_i (a_i = b_i) \rightarrow c = d$
   is a pair $(min(c, d, \succ), \{max(c, d, \succ)\} \cup \{ u | u$ 
-  is an uncommon term appering in antecedent(h) $\})$.
+  is an uncommon term appearing in antecedent(h) $\})$.
   The first element of a dependency pair is denoted as the
   target of $h$ and the second element the source of $h$.
 
@@ -185,7 +185,7 @@ equations, its source is never empty.
   is the directed graph $G_H = (V, E)$ where
   \begin{itemize}
     \item $V := \{(target_i, source_i) | (target_i, source_i)$ 
-      is a valid depency pair from $H \}$
+      is a valid dependency pair from $H \}$
     \item $E := \{(target_i, source_i) \rightarrow (target_j, source_j) | 
         \{target_i\} \cup source_i \subseteq source_j
       \}$ 
@@ -208,7 +208,7 @@ by the following theorem:
   \rightarrow (target_n, source_n) \rightarrow (target_1, source_1)$.
   Since $\subseteq$ is transitive we can conclude that 
   $target_1 \in source_1$, which leads to a contradiction since all
-  the nodes in a dependency graph are valid depency pairs.
+  the nodes in a dependency graph are valid dependency pairs.
 \end{proof}
 
 Thus, given a set of Horn clauses $H$, we can compute its
@@ -221,7 +221,7 @@ is useful because it provides a more compact
 representation of the interpolant that the user 
 might be able quicker to obtain.
 Additionally, the user might be just 
-interested in a particular subformula of 
+interested in a particular sub-formula of 
 the interpolant, so the
 latter representation offers such feature. This algorithm 
 allows a flexible implementation 

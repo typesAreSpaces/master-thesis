@@ -8,7 +8,7 @@ language. The overall architecture of the system is the following:
 \input{utvpi_architecture}
 
 All the decision procedures mentioned in this chapter
-were implemented with the exception of the SAT/SMT algorithms.
+were implemented except for the SAT/SMT algorithms.
 For the latter, PicoSAT/TraceCheck\cite{picosat08} and Z3 
 \cite{10.1007/978-3-540-78800-3_24} were chosen as the 
 libraries to work with these algorithms. 
@@ -21,7 +21,7 @@ output by PicoSAT/TraceCheck.
 Z3 standard input is SMTLib2 \cite{BarFT-SMTLIB}. This grammar
 does not provide a standard specification regarding a suitable
 format to work with interpolants. Interpolation software
-read interpolant formulas based on the order of appereance
+read interpolant formulas based on the order of appearance
 in a conjunction \cite{mcmillan2011interpolants}. In our case
 we require two conjuncts of conjunctions of literals in the
 EUF theory, UTVPI theory or combined theory. 
@@ -36,7 +36,7 @@ based of the definitions in \cite{10.1007/11532231_26} because
 it is necessary to constantly check this conditions for splitting
 purposes. Another reason for the latter is justified because the 
 implemented congruence closure algorithm takes as an additional
-criteria to maintain as representative term an AB-common term.
+criterion to maintain as representative term an AB-common term.
 A similar change was implemented in the congruence closure implementation
 of Z3. Nonetheless, it was irrelevant since Z3's internal structure
 separates the abstract syntax tree, which is part of its API
@@ -49,15 +49,15 @@ and a separate implementation was necessary.
 
 We used PicoSAT/TraceCheck to reconstruct a resolution-based proof 
 necessary for Pudlak's algorithm in the interpolation combination 
-component. Given that Z3 provides a user friendly proof-producing 
+component. Given that Z3 provides a user-friendly proof-producing 
 API \cite{Moura_proofsand}, why did the implementation
 work require another SAT solver to obtain the resolution-proof?
 
 There are several reasons for the latter. First, the author of the
 thesis was not able to find an appropriate configuration of parameters
 for the SMT solver to provide such proofs. In order to grasp an idea
-of the latter, it was implemented a Z3 proof parser that render
-a pdf rendered by \LaTeX. Many examples indicated that
+of the latter, it was implemented a Z3 proof parser that generates 
+a pdf compiled by \LaTeX. Many examples indicated that
 Z3 selects more convenient theories to work with some problems. For
 instance, the formula in pure propositional logic shown in figure 
 \ref{query_proof_problem} used proof rules from EUF \footnote{Z3 uses

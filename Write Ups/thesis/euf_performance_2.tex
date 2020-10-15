@@ -1,9 +1,8 @@
 \subsection{Performance comparison with iZ3 and MathSat}\label{performance_euf}
 
 This section discusses a benchmark of interpolant generation
-for the EUF theory.
-which it will allows us to test 
-our implementation and constrast the execution 
+for the EUF theory, which it will allow us to test 
+our implementation and contrast the execution 
 time with other interpolant generation
 algorithms from Z3 and Mathsat.
 
@@ -17,7 +16,7 @@ The benchmark uses the following parameters:
     with arity between 2 and 3
   \item $k$ stands for limit for random terms to consider
     in the problem
-  \item $n$ stands for the equations/disequations in the
+  \item $n$ stands for the equations/dis-equations in the
     A-part
 \end{itemize}
 
@@ -32,25 +31,25 @@ where $i, j$ are random integer numbers. Using the $S$, we
 enumerate the grounded terms $G$ in $S$ and assign a natural 
 number to each number denoting its position in the enumeration.
 
-We generate $n$ random equations/disequations from the signature $S$ 
+We generate $n$ random equations/dis-equations from the signature $S$ 
 such that this
 collection of formulas is consistent for the $A-part$ of
 the input problem. 
 The latter is implemented using a $z3: :solver$ to ensure 
 this condition.
-The equations/disequations are of the form
+The equations/dis-equations are of the form:
 
 \begin{equation*}
   position(k_1, S) = position(k_2, S) \text{ , or } position(k_1, S) \neq position(k_2, S) 
 \end{equation*}
 
 where $position(k, S)$ denotes the $k^{th}$ element in $G$. The 
-integers $k_1, k_2$ are choosen uniformly at random from a
+integers $k_1, k_2$ are chosen uniformly at random from a
 distribution of integer values $\{0, \dots, k\}$, 
 where $k$ is a parameter of the benchmark.
 
 Next we randomly generate a second set of consistent 
-equations/disequations (B-Part) until the $A-part$ and the
+equations/dis-equations (B-Part) until the $A-part$ and the
 $B-part$ are inconsistent using a second $z3: :solver$.
 
 \subsubsection{Experimental results}
@@ -62,7 +61,7 @@ with parameters (i = 10, j = 5, k = 100, n = 10) and
 (i = 20, j = 10, k = 100, n = 40)
 using a computer desktop
 equipped with an Intel i7-9700 @ 4.70 GHz processor 
-and 16Gb of RAM. 
+and 16 GB of RAM. 
 
 The following graph reports the time needed
 by our implementation, iZ3, and the interpolation 

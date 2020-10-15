@@ -1,6 +1,6 @@
 Theory combination techniques involve 
 reusing the algorithms for verification 
-problems of some of the theories involved 
+problems of the theories involved 
 by either purifying terms over the 
 theories, or reducing the original problem 
 into a base theory, or a combination of these two. 
@@ -14,7 +14,7 @@ model-based theory combination techniques
 \footnote{
   An interesting property of model-based theory combination 
   is that it is not needed to propagate disjunctions, even if
-  the theories are not convex. The reason for this is because
+  the theories are not convex. The reason is due to 
   the \emph{disjunctiviness} of the problem is handled 
   \emph{lazily} by the
   SAT solver.
@@ -37,7 +37,7 @@ of the class of equality interpolanting theories.
   A theory $\cal{T}$ is \emph{equality interpolanting}
   if for every $A$, $B$ in $\cal{T}$ and every AB-mixed
   equality $a = b$ such that $A \land B \models_{\cal{T}} a = b$,
-  there exits a term $t$
+  there exists a term $t$
   in $\cal{T}$ (called interpolanting term)
   such that $A \land B \models_{\cal{T}} a = t$ and 
   $A \land B \models_{\cal{T}} b = t$.
@@ -46,7 +46,7 @@ of the class of equality interpolanting theories.
 The relevance of the existance of the interpolating term for 
 a deduced AB-mixed equality becomes relevant in the context 
 of splitting a formula into a suitable A-part and B-part 
-respectively. If t
+respectively.
 
 Deciding where to include AB-common terms to either the 
 A-part or the B-part of the interpolantion pair affects 

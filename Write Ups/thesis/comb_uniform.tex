@@ -44,7 +44,7 @@ Some definitions are needed before discussing the tableux rules in
 \cite{ghilardi2020compactly}.
 
 \begin{definition}
-  A term $t$(resp. literal $L$) is $\cev{e}$-free when there is no ocurrence
+  A term $t$(resp. literal $L$) is $\cev{e}$-free when there is no occurrence
   of variables to eliminate in $t$ (resp. $L$).
 
   Two flat terms $t, u$ of the form 
@@ -55,7 +55,7 @@ Some definitions are needed before discussing the tableux rules in
   $a_i$ is identical to $b_i$ or both $a_i$ and $b_i$ are $\cev{e}$-free.
 
   The \emph{difference set of two compatible terms} like above is the
-  set of disequalities $a_i \neq b_i$ such that $a_i$ is not identical
+  set of dis-equalities $a_i \neq b_i$ such that $a_i$ is not identical
   to $b_i$.
 \end{definition}
 
@@ -63,7 +63,7 @@ The algorithm in \cite{ghilardi2020compactly} provides the following
 tableux rules:
 
 \begin{itemize}
-  \item[] 1. Simplication rules:
+  \item[] 1. Simplification rules:
     \begin{itemize}
       \item 1.0) If an atom like $t = t$ belong to $\psi$, just remove it; if a
       literal like $t \neq t$ occurs somewhere, delete $\psi$, replace $\phi$
@@ -79,14 +79,14 @@ tableux rules:
   \item[] 3.  e-Free Literal rule: if $\psi$ contains a literal $L(\cev{y}, \cev{z})$
     move it to $\phi(\cev{y}, \cev{z})$.
   \item[] 4.  If $\psi$ contains a pair of atoms $t = a$ and $u = b$, where
-    $t$ and $u$ are compatible flat terms, and not disequality from the difference
+    $t$ and $u$ are compatible flat terms, and not dis-equality from the difference
     set of $t, u$ belongs to $\phi$, then non-deterministically apply one of the
     following alternatives:
     \begin{itemize}
       \item 4.0) Remove from $\psi$ the atom $f(b_1, \dots, b_n) = b$, add
       to $\psi$ the atom $b = a$ and add to $\phi$ all the equalities
       $a_i = b_i$ such that $a_i \neq b_i$ is in the difference set of $t, u$;
-      \item 4.1) Add to $\phi$ one of the disequalities form the difference
+      \item 4.1) Add to $\phi$ one of the dis-equalities form the difference
       set of $t, u$.
     \end{itemize}
 \end{itemize}
@@ -102,7 +102,7 @@ We use the data structures discussed in Chapter 4 to deal with UTVPI formulas,
 hence we keep a normal form representation of the UTVPI inequalities in the
 formula state inside the proposed tableux-like algorithm.
 The previous rules of the uniform interpolant generation algorithm
-for EUF involving propoagation of equations suits the UTVPI component as well. 
+for EUF involving propagation of equations suits the UTVPI component as well. 
 The additional rules are the following:
 
 \begin{itemize}
@@ -150,7 +150,7 @@ Remark \label{my_remark}: Notice that if no transformation applies to the formul
 the following types of formulas for the EUF component according to \cite{ghilardi2020compactly} 
 
 \begin{itemize}
-  \item $\psi$ only contains disequalities of the kind $e_i \neq a$ and equalities of
+  \item $\psi$ only contains dis-equalities of the kind $e_i \neq a$ and equalities of
     the kind $f(a_1, \dots, a_n) = a$. If $\psi$ contains equalities of the
     kind $f(a_1, \dots, a_n) = a$ it means that at least one $a_i$ must belong
     to $\cev{e}$. If $\psi$ contains two equalities of the form
@@ -161,7 +161,7 @@ the following types of formulas for the EUF component according to \cite{ghilard
 
 Similarly, the following types of formulas for the UTVPI component exists in the
 formula state if no transformation apply: bounded only by an upper bound, 
-bounded only by an lower bound, and fully Bounded with $\pm$ infinity. The
+bounded only by a lower bound, and fully Bounded with $\pm$ infinity. The
 latter follows directly from the normal form representation of UTVPI inequalities
 induced by the data structures introduced in Chapter 4. Otherwise, rules
 8 and 9 should have applied.
@@ -182,14 +182,14 @@ proposed algorithm}
   involving UTVPI expressions, we first notice that there is a 
   $\mathcal{O}(n^2)$ bound over all the UTVPI expressions
   for UTVPI signature $S$ where $n$ is the number of distinct
-  variables in $S$. The rules relaxes the bounds of all the
+  variables in $S$. The rules relax the bounds of all the
   bounds in the inequalities, which does not induce a negative
   cycle, otherwise the input formula could not be satisfiable.
 \end{proof} 
 
 Before proving the correctness of the tableux algorithm 
 for the theory combination of EUF and UTVPI we first state
-an important result relating the existance of uniform 
+an important result relating the existence of uniform 
 interpolant in a concept denoted extensions.
 
 \begin{lemma} \cite{10.1007/978-3-030-29436-6_9} \label{cover_extension_lemma}
@@ -253,7 +253,7 @@ $\bigvee_{i=1}^k \exists \cev{y_i} . (\delta_i(\cev{y_i}, \cev{z}) \land \phi_i(
 
   To address the second item of the lemma, given a
   model $\cal{M}$ such that $\cal{M} \models \alpha$, finding
-  an isomorphic embbeding $\cal{N}$ such that $\mathcal{N} \models
+  an isomorphic embedding $\cal{N}$ such that $\mathcal{N} \models
   \exists \cev{e} . \phi(\cev{e}, \cev{z})$ is equivalent
   , using Robinson Lemma \cite{chang2013model}, to prove that
   there is a model for $\Delta(\mathcal{M}) 
@@ -262,7 +262,7 @@ $\bigvee_{i=1}^k \exists \cev{y_i} . (\delta_i(\cev{y_i}, \cev{z}) \land \phi_i(
 
   In \cite{ghilardi2020compactly}, we can obtain a model for the
   EUF component using the model induced by the canonical 
-  form obtained by orieting the equations in $\psi$. In other
+  form obtained by orienting the equations in $\psi$. In other
   to obtain a model for the UTVPI component, we noticed that
   we need to find a model for the three kinds of 
   UTVPI inequalities $\psi$. According to our remark 
@@ -282,10 +282,10 @@ $\bigvee_{i=1}^k \exists \cev{y_i} . (\delta_i(\cev{y_i}, \cev{z}) \land \phi_i(
   are unsatisfiable. 
 
   With the latter, we can find a model $\mathcal{N}$
-  satisfiying $\exists \cev{e} . 
+  satisfying $\exists \cev{e} . 
   \psi(\cev{e}, \cev{y}, \cev{z})$
   with the desired conditions. 
-  Therefore $\alpha$ is an uniform interpolant
+  Therefore, $\alpha$ is an uniform interpolant
   for $\exists \cev{e}. \phi(\cev{e}, \cev{z})$.
 
 \end{proof}

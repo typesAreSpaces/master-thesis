@@ -5,7 +5,7 @@ implementation to encode UTVPI formulas
 is $\{x_0, x_1, \\ \dots, x_n, +,
 -, \leq \}$, thus all the variables are indexed by a natural number. 
 The variable $x_0$ is a
-\emph{dummy variable} that acts as a place holder for 0. 
+\emph{dummy variable} that acts as a place-holder for 0. 
 
 The thesis work introduces the following data structures
 in order to obtain an efficient implementation:
@@ -114,7 +114,7 @@ The example \ref{example_oct} arranged the normalized
 UTVPI terms into this ordered partitions listing them
 by items. We notice that each partition
 contains $2(1 + 2(i-1))$ elements except the
-partition containg $x_0 + x_0$ using the 
+partition containing $x_0 + x_0$ using the 
 following lemma.
 
 \begin{lemma}
@@ -131,7 +131,7 @@ following lemma.
   and the second one is 
   $\{x_i + x_0\} \cup \{x_i \pm x_j | 1 \leq j < i \}$.
   The cardinality of each of these subsets of $A$
-  is $1 + 2(i-1)$. Thus $|A| = 2(1 + 2(i-1))$. Hence
+  is $1 + 2(i-1)$. Thus, $|A| = 2(1 + 2(i-1))$. Hence,
   the assertion holds true.
 \end{proof}
 
@@ -145,7 +145,7 @@ UTVPI term. The latter means that $t$ belongs
 to the 
 $\floor{\sqrt{\frac{n-1}{2}} + 1}^{th}$ ordered 
 partition. Let $i = \floor{\sqrt{\frac{n-1}{2}} + 1}$.
-Hence $t$ is
+Hence, $t$ is
 of the form $\pm x_i \pm x_j$ for some $j < i$.
 To find the signs of and index $j$ of $t$, 
 we can check if $d := n - 2(i-1)^2 -1$ 

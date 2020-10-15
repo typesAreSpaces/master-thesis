@@ -4,7 +4,7 @@ Following the notation in \cite{10.1007/11532231_26}, we denote
 $\mathcal{V}(\psi)$ to be the set of non-logical symbols, variables
 and constants of formula $\psi$. Given an instance for the interpolation
 problem $(A, B)$ \footnote{For the rest of the thesis, we will denote the 
-  first formula of an interpolantion problem as the A-part 
+  first formula of an interpolation problem as the A-part 
 and the second component as the B-part}, 
 we distinguish the following categories:
 
@@ -52,7 +52,7 @@ are met:
   $\beta$.
 \end{itemize}
 
-The \emph{interpolantion problem} can be stated naturally as 
+The \emph{interpolation problem} can be stated naturally as 
 follows: given two logical formulas $\alpha, \beta$ such that 
 $\models_{\mathcal{T}} \alpha \rightarrow \beta$, find
 the interpolant for the pair $(\alpha, \beta)$.
@@ -77,9 +77,9 @@ Relaxed definitions are considered to the interpolation
 problem when dealing with specific
 theories \cite{10.1007/11532231_26} in a way that interpreted 
 function can be also part of the interpolant. The latter is 
-justified since otherwise, many interpolation formulas might
-not exists in different theories or the interpolants obtained might not 
-be relevant (for example, lisp programs). This is formalize as follows:
+justified since otherwise, many interpolation formulas might not exist
+in different theories or the interpolants obtained might not 
+be relevant (for example, lisp programs). This is formalized as follows:
 
 \begin{definition} \cite{10.1007/11532231_26}
   Let $\mathcal{T}$ be a first-order theory of a signature $\Sigma$ and 
@@ -99,7 +99,7 @@ be relevant (for example, lisp programs). This is formalize as follows:
   interpolant simplify because the symbol $1$ only appears on the
   A-part. However, if $\Sigma_{\mathcal{LIA(\mathbb{Z})}}$ contains the
   interpreted symbols of $LIA(\mathbb{Z})$ (i.e. $+, *, 0, 1, 2, \dots$),
-  then $c + 1 = 1$ becomes a \emph{theory-spefic} interpolant. 
+  then $c + 1 = 1$ becomes a \emph{theory-specific} interpolant. 
 
   Notice that $c = 0$ is an interpolant even if the set of interpreted symbols 
   used for interpolation is empty.
@@ -110,7 +110,7 @@ be relevant (for example, lisp programs). This is formalize as follows:
 A uniform interpolant is a particular kind of interpolant for an inconsistent
 pair of formulas. Introduced in \cite{pitts1992} as a 
 construction to provide an interpretation
-for second order intuitionistic proposositional logic 
+for second order intuitionistic propositional logic 
 \emph{$IpC^2$}
 \footnote{I.e. $IpC^2$ quantifies over 
 propositional variables.}

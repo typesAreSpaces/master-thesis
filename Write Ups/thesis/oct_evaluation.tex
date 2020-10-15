@@ -11,14 +11,14 @@ The output obtained by our implementation is
 (and ($\leq$ (- (- x6) x1) 0)
 ($\leq$ (+ (- x6) x3) (- 9))
 ($\leq$ (- (- x5) x1) 7)
-($\leq$ (+ (- x5) x3) (- 2)))).
+($\leq$ (+ (- x5) x3) (- 2))))
 and produced the following trace
 for this problem:
 
 \verbatiminput{../../Software/Cpp/OctagonsInterpolant/tests/traces/example1.txt}
 
 The Z3 SMT solver provides mechanisms to modify the arithmetic engine 
-and several plugins to specialize algorithm for specific theories. It contains a
+and several plug-ins to specialize algorithm for specific theories. It contains a
 proper specialization to work with UTVPI queries for satisfiability checking. 
 However,  the interpolation APIs do not include mechanisms to specialize the 
 interpolation algorithm for UTPVI formulas, i.e. Z3 does produce interpolant
@@ -49,11 +49,11 @@ For the next example, let us consider $\alpha_2 = \{
   x_4 - x_6 + 4 \geq 0
 \}$. 
 
-Our implementation produced the followint output
+Our implementation produced the following output
 (and
 ($\leq$ (+ (- x3) x2) 4)
 ($\leq$ (+ x4 x3) (- 6))
-($\leq$ (- (- x5) x4) 1)).
+($\leq$ (- (- x5) x4) 1))
 and obtained the following trace:
 
 \verbatiminput{../../Software/Cpp/OctagonsInterpolant/tests/traces/example2.txt}

@@ -1,6 +1,6 @@
 \chapter{Future Work}
 
-Regarding implemenation work, the are several improvements that were not explored 
+Regarding implementation work, there are several improvements that were not explored 
 in the thesis work since many of them do not change the overall time complexity 
 of the implementation, but these consume additional memory resources. 
 These improvements are the following:
@@ -9,12 +9,12 @@ Major improvements:
 
 \begin{itemize}
   \item Improve hash function for terms: during testing the congruence closure
-    algorithm, it was evident that dealing with a large number of terms, collisions
+    algorithm, it was evident that dealing with numerous terms, collisions
     happened  to the point that some terms were merged since the signature
     function indicated to do so, but this merges should not happen. 
     Intrinsically, the current implementation relies on the hash function 
     provided by Z3, which might not be optimized
-    for a large number of terms or it might
+    for many terms or it might
     be that their decision procedures
     encode internal information differently.
     Nonetheless, for
@@ -24,7 +24,7 @@ Major improvements:
     instance problems involving graph terms
     of more than 1000000 nodes.
   \item Regarding the theory combination 
-    of EUF and UTPVI, it will interesting 
+    of EUF and UTPVI, it will be interesting 
     to explore a
     more specific interpolation 
     combination approach. The thesis 
@@ -34,7 +34,7 @@ Major improvements:
     a better job can be done to avoid 
     propagating disjunctions of the equalities
     by extending the signature, 
-    consequently the the interpolation 
+    consequently the interpolation 
     procedures, for both of the theories 
     involved or propagate these disjunctions as
     using a compact representation.
@@ -42,7 +42,7 @@ Major improvements:
     theory does not incrementally check the 
     consistency of the current formula in the main loop of 
     the implementation \ref{thcomb_propagation_loop}. 
-    Changing the latter to an incrementally approach will
+    Changing the latter to an incremental approach will
     maintain lemmas so the computation of intermediate results
     will not be performed repetitively. 
 \end{itemize}
@@ -50,10 +50,10 @@ Major improvements:
 Minor improvements:
 
 \begin{itemize}
-  \item The space needed to encode curry nodes \emph{can be significally 
+  \item The space needed to encode curry nodes \emph{can be significantly 
     reduced} up to an order of \bigO{n}. The reason for 
     this current allocation schema is that it exists a 
-    double bonding effect while performing curryification 
+    double bonding effect while performing curryfication 
     of all the terms in the arguments of function applications.
 \end{itemize}
 

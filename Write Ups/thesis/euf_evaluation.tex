@@ -17,7 +17,7 @@ the interpolant of $\alpha_1; U_1$:
 
 The interface offered by SMT solvers with interpolation features usually provide the 
 conventional A-part, B-part format. In order to compare the results with the implementation two 
-instances were tested so we can obtain interpolants from both systems:
+instances were tested, so we can obtain interpolants from both systems:
 
 \begin{itemize}
 \item Problem instance: A-part : $\{f(z_1, v) = s_1, f(z_2, v) 
@@ -26,7 +26,7 @@ instances were tested so we can obtain interpolants from both systems:
 \begin{itemize}
 \item Z3: (or (= s2 s1) (not (= z2 z1)))
 \item Mathsat: (not (and (= z1 z2) (not (= s1 s2))))
-\item Our implemenation: ($\rightarrow$ (= z1 z2) (= s1 s2))
+\item Our implementation: ($\rightarrow$ (= z1 z2) (= s1 s2))
 \end{itemize}
 
 \item Problem instance: A-part : $\{f(z_1, v) = s_1, f(z_2, v) 
@@ -35,7 +35,7 @@ instances were tested so we can obtain interpolants from both systems:
 \begin{itemize}
 \item Z3: (or (= (f s1 s1) t) (not (= z1 y1)) (not (= y2 y1)))
 \item Mathsat: (not (and (not (= t (f s1 s1))) (and (= z1 y1) (= z1 y2))))
-\item Our implemenation: ($\rightarrow$ (and (= y1 y2) (= z1 y2) (= z1 y2)) (= t (f s1 s1))))
+\item Our implementation: ($\rightarrow$ (and (= y1 y2) (= z1 y2) (= z1 y2)) (= t (f s1 s1))))
 \end{itemize}
 
 \end{itemize}
@@ -43,7 +43,7 @@ instances were tested so we can obtain interpolants from both systems:
 Clearly, the interpolant obtained by just eliminating the symbol $v$ implies
 the outputs produced by Z3 and Mathsat for the previous problem instances.
 
-\subsubsection{Simple example with disequality}
+\subsubsection{Simple example with dis-equality}
 
 Let us consider another example from \cite{KAPUR2017} 
 $\alpha_2 = \{f(x_1) \neq f(x_2)\}$

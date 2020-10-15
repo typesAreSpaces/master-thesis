@@ -7,44 +7,57 @@ if expand('%') == '' && !&modified && line('$') <= 1 && getline(1) == ''
   let s:wipebuf = bufnr('%')
 endif
 set shortmess=aoO
-badd +8 euf.tex
+badd +2 euf.tex
 badd +1 references.bib
-badd +1 euf_algorithm.tex
+badd +256 euf_algorithm.tex
 badd +1 main.tex
 badd +1 algpseudocode.sty
 badd +1 booktabs.sty
 badd +2 abstract.tex
-badd +5 preliminaries.tex
-badd +136 craig_interpolation.tex
-badd +35 first_order_logic.tex
-badd +593 euf_implementation.tex
+badd +4 preliminaries.tex
+badd +140 craig_interpolation.tex
+badd +10 first_order_logic.tex
+badd +581 euf_implementation.tex
 badd +1 a.tex
 badd +2 modified_unsatisfiability_testing_for_grounded_horn_clauses.tex
 badd +1 modified_congruence_closure_with_explanation_algorithms_merge.tex
 badd +1 modified_congruence_closure_with_explanation_algorithms_propagate.tex
-badd +62 euf_evaluation.tex
+badd +60 euf_evaluation.tex
 badd +1 euf_performance.tex
-badd +8 euf_performance_2.tex
-badd +6 euf_conclusion.tex
-badd +8 octagonal.tex
-badd +22 oct_abstract.tex
+badd +95 euf_performance_2.tex
+badd +14 euf_conclusion.tex
+badd +7 octagonal.tex
+badd +1 oct_abstract.tex
 badd +1 euf_theorem.tex
-badd +31 oct_algorithm.tex
-badd +198 oct_implementation.tex
-badd +50 oct_evaluation.tex
+badd +26 oct_algorithm.tex
+badd +299 oct_implementation.tex
+badd +58 oct_evaluation.tex
 badd +1 oct_performance_1.tex
-badd +1 oct_performance_2.tex
-badd +6 combination.tex
-badd +56 comb_abstract.tex
-badd +33 comb_algorithm.tex
-badd +4 comb_implementation.tex
-badd +38 comb_evaluation.tex
+badd +83 oct_performance_2.tex
+badd +1 combination.tex
+badd +49 comb_abstract.tex
+badd +1 comb_algorithm.tex
+badd +2 comb_implementation.tex
+badd +4 comb_evaluation.tex
 badd +1 th_comb_example_interp.txt
 badd +102 comb_performance.tex
-badd +48 theories.tex
-badd +2 comb_performance_2.tex
-badd +6 comb_uniform.tex
-badd +41 future_work.tex
+badd +1 theories.tex
+badd +1 comb_performance_2.tex
+badd +288 comb_uniform.tex
+badd +1 future_work.tex
+badd +1 introduction.tex
+badd +34 verification.tex
+badd +5 sat-smt.tex
+badd +80 congruence-closure.tex
+badd +3 sat-horn.tex
+badd +66 nelson-oppen-framework.tex
+badd +171 tools.tex
+badd +10 euf_abstract.tex
+badd +23 oct_conclusion.tex
+badd +11 comb_conclusion.tex
+badd +119 appendix_a.tex
+badd +1 appendix_b.tex
+badd +0 appendix_c.tex
 argglobal
 %argdel
 $argadd euf.tex
@@ -65,11 +78,11 @@ set winminheight=0
 set winheight=1
 set winminwidth=0
 set winwidth=1
-exe '1resize ' . ((&lines * 27 + 28) / 56)
-exe 'vert 1resize ' . ((&columns * 71 + 71) / 143)
-exe '2resize ' . ((&lines * 26 + 28) / 56)
-exe 'vert 2resize ' . ((&columns * 71 + 71) / 143)
-exe 'vert 3resize ' . ((&columns * 71 + 71) / 143)
+exe '1resize ' . ((&lines * 41 + 42) / 85)
+exe 'vert 1resize ' . ((&columns * 71 + 146) / 293)
+exe '2resize ' . ((&lines * 41 + 42) / 85)
+exe 'vert 2resize ' . ((&columns * 71 + 146) / 293)
+exe 'vert 3resize ' . ((&columns * 221 + 146) / 293)
 argglobal
 setlocal fdm=manual
 setlocal fde=0
@@ -83,7 +96,7 @@ silent! normal! zE
 10,110fold
 10
 normal! zc
-let s:l = 159 - ((11 * winheight(0) + 13) / 27)
+let s:l = 159 - ((4 * winheight(0) + 20) / 41)
 if s:l < 1 | let s:l = 1 | endif
 exe s:l
 normal! zt
@@ -101,7 +114,7 @@ setlocal fml=1
 setlocal fdn=20
 setlocal fen
 silent! normal! zE
-let s:l = 2 - ((1 * winheight(0) + 13) / 26)
+let s:l = 2 - ((0 * winheight(0) + 20) / 41)
 if s:l < 1 | let s:l = 1 | endif
 exe s:l
 normal! zt
@@ -109,7 +122,7 @@ normal! zt
 normal! 019|
 wincmd w
 argglobal
-if bufexists("comb_uniform.tex") | buffer comb_uniform.tex | else | edit comb_uniform.tex | endif
+if bufexists("appendix_c.tex") | buffer appendix_c.tex | else | edit appendix_c.tex | endif
 setlocal fdm=manual
 setlocal fde=0
 setlocal fmr={{{,}}}
@@ -119,19 +132,18 @@ setlocal fml=1
 setlocal fdn=20
 setlocal fen
 silent! normal! zE
-let s:l = 22 - ((21 * winheight(0) + 27) / 54)
+let s:l = 1 - ((0 * winheight(0) + 41) / 83)
 if s:l < 1 | let s:l = 1 | endif
 exe s:l
 normal! zt
-22
+1
 normal! 0
 wincmd w
-3wincmd w
-exe '1resize ' . ((&lines * 27 + 28) / 56)
-exe 'vert 1resize ' . ((&columns * 71 + 71) / 143)
-exe '2resize ' . ((&lines * 26 + 28) / 56)
-exe 'vert 2resize ' . ((&columns * 71 + 71) / 143)
-exe 'vert 3resize ' . ((&columns * 71 + 71) / 143)
+exe '1resize ' . ((&lines * 41 + 42) / 85)
+exe 'vert 1resize ' . ((&columns * 71 + 146) / 293)
+exe '2resize ' . ((&lines * 41 + 42) / 85)
+exe 'vert 2resize ' . ((&columns * 71 + 146) / 293)
+exe 'vert 3resize ' . ((&columns * 221 + 146) / 293)
 tabnext 1
 if exists('s:wipebuf') && getbufvar(s:wipebuf, '&buftype') isnot# 'terminal'
   silent exe 'bwipe ' . s:wipebuf

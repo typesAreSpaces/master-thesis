@@ -8,12 +8,12 @@ or not in the combined theory, i.e. a theory resulting
 after putting together two (or more) axiomatizations.
 
 In \cite{10.1145/357073.357079} the authors defined a procedure
-to achieve the above problem. The key idea is to \emph{purify} (
-or separate) the subformulas by including additional constant 
-symbols equating subterms such that the resulting formula 
+to achieve the above problem. The key idea is to \emph{purify} 
+the sub-formulas by including additional constant 
+symbols equating sub-terms such that the resulting formula 
 can be splitted into components of the appropriate language 
 for each theory solvers to work with. The separation naturally
-will hide relevant information to the solvers and they 
+will hide relevant information to the solvers, and they 
 might not be able to decide satisfiability correctly.
 The authors noticed that to solve the above problem it is enough to 
 share disjunction of equalities between the combined theories of shared
@@ -40,7 +40,7 @@ need to share disjunctions of equalities as mentioned before
     \item The conjunctive fragment of equality logic is convex since
       it can always decide the membership of an equation in the 
       equivalence relation. 
-    \item The theory of UTVPI over the intergers is not 
+    \item The theory of UTVPI over the integers is not 
       convex. To see the latter consider
       $1 \leq x \land x \leq 2 \models_{UTVPI(\mathbb{Z})} 1 = x \lor 2 = x$.
       However, it is not the case that 
@@ -57,7 +57,7 @@ until some theory reaches the unsatisfiable state, which is expected since
 an interpolant is a pair a mutually contradicting formulas.
 
 This framework was implemented in the thesis work. This framework was chosen
-in particular since it allows to work with non-convex theories (in our case
+in particular since it allows working with non-convex theories (in our case
 for the theory of UTVPI over $\mathbb{Z}$).
 
 %%% Local Variables:

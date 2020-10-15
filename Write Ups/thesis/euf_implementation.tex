@@ -19,7 +19,7 @@ a `modify the smaller subtree' strategy. This means that
 when two nodes $u, v$ in the abstract syntax tree are
 meant to be merged, the representative of the new 
 combined equivalence class is the node which has a bigger
-numbers of predecessors nodes in the abstract
+number of predecessors nodes in the abstract
 syntax tree pointing to the
 equivalence class of the node. The idea was to update the least
 amount of nodes that possibly can change representatives
@@ -73,7 +73,7 @@ extension of \cite{DOWLING1984267} which adapts a
 congruence closure algorithm from 
 \cite{10.1145/322186.322198, 10.1145/322217.322228} in order
 to update the union-find data structure maintaining the
-equivalence relation between all the subterms in the input
+equivalence relation between all the sub-terms in the input
 formula. The implementation of the congruence closure
 algorithm in \cite{10.1007/978-3-540-32033-3_33}
 extends the usual $Find, Merge$ operations on the 
@@ -148,7 +148,7 @@ points by implementing the following:
     for the Gallier data structure in order to propagate 
     the equational information achieved during
     merges and updates due to congruence. The modified 
-    algorithms appears below in pseudo-code notation:
+    algorithms appear below in pseudo-code notation:
 
     \input{modified_unsatisfiability_testing_for_grounded_horn_clauses}
     \input{modified_congruence_closure_with_explanation_algorithms_merge}
@@ -158,7 +158,7 @@ points by implementing the following:
     procedure, which given as input an equation $a = b$ and a
     conditional equivalence relation $\mathcal{E}$ obtained
     from a set of equations and a set of Horn clauses
-    in a EUF language $\mathfrak{L}$,
+    in an EUF language $\mathfrak{L}$,
     it returns a list $C$ of common equations in $\mathfrak{L}$
     such that
     $\models_{\mathcal{E}} (\bigwedge_{h \in C} h) \rightarrow a = b$
@@ -266,7 +266,7 @@ inference rules with the following lemmas:
   when the $numargs$ field of a Horn clause becomes
   zero. The latter assert the consequent of such Horn clause.
   Since $u$ is not common, then such Horn clause 
-  should exists in $H$.
+  should exist in $H$.
 \end{proof}
 
 \begin{lemma}\label{extended_explain_common_lemma}
@@ -315,7 +315,7 @@ inference rules with the following lemmas:
       to the previous case applied to the two subproofs
       for the Transitivity rule.
     \item Case 4. The last inference rule in the proof 
-      tree was Congruence: The proof follwos similarly
+      tree was Congruence: The proof follows similarly
       to the previous case applied $n$ times for each
       subproof in the Congruence rule.
   \end{itemize}
@@ -355,7 +355,7 @@ inference rules with the following lemmas:
 
   Our algorithm notices that Horn clause 10.
   contains only common equations in the
-  antecedent. Hence $x = a$ is added to the
+  antecedent. Hence, $x = a$ is added to the
   conditional congruence closure $\mathcal{E}$.
   With the latter $x = e_3$ is also added by
   the \emph{numargs} of Horn clause 10 reaches
@@ -364,7 +364,7 @@ inference rules with the following lemmas:
   x = a$ belong to $\mathcal{E}$.
   The last equation decreases the 
   \emph{numargs} entry of the Horn clause
-  8. Hence $\bot$ in $\mathcal{E}$.
+  8. Thus, $\bot$ in $\mathcal{E}$.
 
   Using ExtendedExplain, we can compute the
   common antecedent $x$ 
@@ -502,12 +502,12 @@ inference rules with the following lemmas:
   conditional elimination step we are able to 
   extend an equivalence relation to a conditional
   equivalence relation that includes the set 
-  of consequences from the aforementioned common equations.
+  of consequences of the aforementioned common equations.
   In a more general setting, we can specify an arbitrary
   set of equations, or property, 
   that are meant to enlarge the theory
   to a conditional equivalence relation for 
-  specific purposes. In order to reuse the ExtendedExplain
+  specific purposes. To reuse the ExtendedExplain
   procedure and associated lemmas, we replace the $common$
   predicate for any predicate of interest.
 
@@ -570,7 +570,7 @@ inference rules with the following lemmas:
     as root node and derived equations from $\mathcal{E}$
     as leaves, where $\{a^{'}_i = b^{'}_i\} \subseteq 
     antecedent(h)$ for each $1 \leq i \leq m$. 
-    Thus $\models antecedent(h) 
+    Thus, $\models antecedent(h) 
     \rightarrow a^{'}_i = b^{'}_i$ for each $1 \leq i \leq m$.
     Let $\mathfrak{p^{'}}$ be $\mathfrak{p} \setminus \bigcup_{i=1}^m\{a_i = b_i\}$.
     Therefore, by transitivity, we have that $\mathfrak{p^{'}}$
@@ -578,7 +578,6 @@ inference rules with the following lemmas:
     h$.
 
   \end{proof}
-
 
   The time complexity of this algorithm follows the reasoning as
   the complexity analysis for the conditional congruence closure
