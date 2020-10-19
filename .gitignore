@@ -9,4 +9,5 @@ proof
 proof-temp
 .*
 *.idx
+Write\ Ups/thesis/reviews/*
 !/.gitignore
