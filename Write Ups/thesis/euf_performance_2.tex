@@ -52,6 +52,68 @@ Next we randomly generate a second set of consistent
 equations/dis-equations (B-Part) until the $A-part$ and the
 $B-part$ are inconsistent using a second $z3: :solver$.
 
+\begin{figure}[!ht]
+  \centering
+  \begin{BVerbatim}[fontsize=\tiny]
+    A part formulas:
+    (ast-vector
+      (distinct (f_0 x_6 x_0 x_0 x_0) (f_0 x_9 x_8 x_0 x_0))
+      (= (f_0 x_8 x_1 x_0 x_0) (f_0 x_1 x_0 x_0 x_0))
+      (= (f_0 x_5 x_2 x_0 x_0) (f_0 x_4 x_5 x_0 x_0))
+      (distinct (f_0 x_6 x_2 x_0 x_0) (f_0 x_9 x_3 x_0 x_0))
+      (distinct (f_0 x_4 x_7 x_0 x_0) x_7)
+      (= (f_0 x_5 x_5 x_0 x_0) (f_0 x_8 x_1 x_0 x_0))
+      (= (f_0 x_2 x_6 x_0 x_0) (f_0 x_9 x_3 x_0 x_0))
+      (= x_7 (f_0 x_1 x_6 x_0 x_0))
+      (= (f_0 x_1 x_4 x_0 x_0) (f_0 x_6 x_3 x_0 x_0))
+    (= x_8 (f_0 x_2 x_6 x_0 x_0)))
+    B part formulas:
+    (ast-vector
+      (= (f_0 x_6 x_8 x_0 x_0) (f_0 x_9 x_7 x_0 x_0))
+      (distinct (f_0 x_2 x_6 x_0 x_0) (f_0 x_7 x_0 x_0 x_0))
+      (distinct (f_0 x_7 x_7 x_0 x_0) x_4)
+      (distinct (f_0 x_6 x_6 x_0 x_0) (f_0 x_3 x_8 x_0 x_0))
+      (= (f_0 x_2 x_5 x_0 x_0) (f_0 x_7 x_6 x_0 x_0))
+      (= (f_0 x_6 x_0 x_0 x_0) (f_0 x_2 x_3 x_0 x_0))
+      (= (f_0 x_3 x_3 x_0 x_0) (f_0 x_6 x_5 x_0 x_0))
+      (distinct (f_0 x_8 x_8 x_0 x_0) (f_0 x_5 x_1 x_0 x_0))
+      (distinct (f_0 x_7 x_8 x_0 x_0) (f_0 x_9 x_1 x_0 x_0))
+      (= (f_0 x_8 x_8 x_0 x_0) (f_0 x_7 x_2 x_0 x_0))
+      (distinct (f_0 x_2 x_1 x_0 x_0) (f_0 x_3 x_2 x_0 x_0))
+      (= (f_0 x_5 x_3 x_0 x_0) (f_0 x_7 x_4 x_0 x_0))
+      (distinct (f_0 x_1 x_2 x_0 x_0) (f_0 x_5 x_3 x_0 x_0))
+      (= (f_0 x_1 x_7 x_0 x_0) (f_0 x_3 x_6 x_0 x_0))
+      (distinct (f_0 x_3 x_2 x_0 x_0) (f_0 x_8 x_7 x_0 x_0))
+      (= (f_0 x_2 x_8 x_0 x_0) x_4)
+      (= (f_0 x_2 x_2 x_0 x_0) (f_0 x_8 x_3 x_0 x_0))
+      (= (f_0 x_1 x_1 x_0 x_0) (f_0 x_8 x_8 x_0 x_0))
+      (distinct (f_0 x_3 x_2 x_0 x_0) (f_0 x_8 x_3 x_0 x_0))
+      (= (f_0 x_2 x_8 x_0 x_0) (f_0 x_6 x_3 x_0 x_0))
+      (distinct (f_0 x_5 x_6 x_0 x_0) (f_0 x_0 x_1 x_0 x_0))
+      (= (f_0 x_7 x_3 x_0 x_0) (f_0 x_7 x_0 x_0 x_0))
+      (distinct (f_0 x_0 x_3 x_0 x_0) (f_0 x_8 x_3 x_0 x_0))
+      (distinct (f_0 x_8 x_2 x_0 x_0) (f_0 x_2 x_7 x_0 x_0))
+      (distinct (f_0 x_9 x_1 x_0 x_0) (f_0 x_5 x_0 x_0 x_0))
+      (distinct (f_0 x_0 x_4 x_0 x_0) (f_0 x_0 x_5 x_0 x_0))
+      (distinct (f_0 x_5 x_5 x_0 x_0) (f_0 x_2 x_8 x_0 x_0))
+      (= (f_0 x_6 x_3 x_0 x_0) (f_0 x_3 x_0 x_0 x_0))
+      (= (f_0 x_3 x_8 x_0 x_0) (f_0 x_0 x_8 x_0 x_0))
+      (distinct (f_0 x_8 x_0 x_0 x_0) (f_0 x_5 x_5 x_0 x_0))
+      (= (f_0 x_6 x_6 x_0 x_0) (f_0 x_4 x_5 x_0 x_0))
+      (distinct (f_0 x_4 x_3 x_0 x_0) x_5)
+      (distinct x_8 (f_0 x_3 x_3 x_0 x_0))
+      (= (f_0 x_6 x_3 x_0 x_0) (f_0 x_3 x_6 x_0 x_0))
+      (= (f_0 x_4 x_1 x_0 x_0) (f_0 x_5 x_6 x_0 x_0))
+      (= x_7 (f_0 x_0 x_3 x_0 x_0))
+      (distinct (f_0 x_1 x_3 x_0 x_0) (f_0 x_8 x_2 x_0 x_0))
+      (= (f_0 x_2 x_1 x_0 x_0) (f_0 x_6 x_8 x_0 x_0))
+      (= x_3 (f_0 x_9 x_7 x_0 x_0))
+      (= (f_0 x_3 x_7 x_0 x_0) x_8)
+    (= (f_0 x_3 x_7 x_0 x_0) (f_0 x_6 x_2 x_0 x_0)))
+  \end{BVerbatim}
+  \caption{Typical example of benchmark used}
+\end{figure}
+
 \subsubsection{Experimental results}
 
 We designed this problem because it is not trivial to 

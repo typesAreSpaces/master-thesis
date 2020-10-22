@@ -47,9 +47,12 @@ if __name__ == "__main__":
     ax.set_ylabel('Time in milliseconds')
     ax.set_title('Performance comparison of interpolant generation algorithms for UTVPI \n\
             Number of Constants: ' + num_constants + ' Number of Inequalities: ' + num_ineqs)
-
-    legend = ax.legend(loc='upper left', shadow=True, fontsize='x-large')
+    ax.set_ylim(0, 10)
+    # plt.legend(bbox_to_anchor=(0., 1.02, 1., .102), loc='lower left', ncol=2, mode="expand", borderaxespad=0.)
+    # plt.legend(bbox_to_anchor=(1.05, 1), loc='upper left', borderaxespad=0.)
+    # legend = ax.legend(loc='upper left', shadow=True, fontsize='x-large')
+    legend = ax.legend(bbox_to_anchor=(1.05, 1), loc='upper left', borderaxespad=0.)
     plt.savefig("results/plots/octi_performance_graph_" 
             + num_constants + "_" 
             + num_ineqs + "_" 
-            + str(num_tests) + ".png", dpi=500)
+            + str(num_tests) + ".png", dpi=400, bbox_inches='tight')

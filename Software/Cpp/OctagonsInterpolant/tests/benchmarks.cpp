@@ -81,7 +81,7 @@ int main(){
     //num_constants, num_ineqs, max_limit,
     //limit_search);
     //OCTSignature S(ctx, 10, 5, 3, 1000);
-    OCTSignature S(ctx, 10, 200, 10, 1000);
+    OCTSignature S(ctx, 10, 20, 10, 1000);
     if(!S.IsValidInstance()){
       --i;
       continue;
