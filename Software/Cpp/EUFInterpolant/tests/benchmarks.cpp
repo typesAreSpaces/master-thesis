@@ -86,8 +86,13 @@ int main(){
 
   z3::context ctx;
   z3::sort sort_A = ctx.uninterpreted_sort("A");
-  unsigned num_tests = 100;
 
+  EUFSignature S(ctx, sort_A, 10, 5, 3, 10, 100, 1000);
+  //EUFSignature S(ctx, sort_A, 20, 10, 3, 40, 100, 1000);
+  std::cout << S << std::endl;
+
+#if 0
+  unsigned num_tests = 100;
   for(unsigned i = 0; i < num_tests; ++i){
     //EUFSignature S(ctx, sort_A, 
     //num_constants, num_func_names, 
@@ -104,6 +109,7 @@ int main(){
     MathsatBenchmark(S);
     EUFIBenchmark(S);
   }
+#endif
 
   return 0;
 }
