@@ -34,8 +34,8 @@ badd +299 oct_implementation.tex
 badd +74 oct_evaluation.tex
 badd +1 oct_performance_1.tex
 badd +64 oct_performance_2.tex
-badd +1 combination.tex
-badd +49 comb_abstract.tex
+badd +4 combination.tex
+badd +1 comb_abstract.tex
 badd +1 comb_algorithm.tex
 badd +2 comb_implementation.tex
 badd +4 comb_evaluation.tex
@@ -53,7 +53,7 @@ badd +3 sat-horn.tex
 badd +66 nelson-oppen-framework.tex
 badd +171 tools.tex
 badd +10 euf_abstract.tex
-badd +23 oct_conclusion.tex
+badd +6 oct_conclusion.tex
 badd +11 comb_conclusion.tex
 badd +119 appendix_a.tex
 badd +1 appendix_b.tex
@@ -72,6 +72,10 @@ split
 1wincmd k
 wincmd w
 wincmd w
+wincmd _ | wincmd |
+split
+1wincmd k
+wincmd w
 set nosplitbelow
 set nosplitright
 wincmd t
@@ -80,10 +84,13 @@ set winheight=1
 set winminwidth=0
 set winwidth=1
 exe '1resize ' . ((&lines * 27 + 28) / 56)
-exe 'vert 1resize ' . ((&columns * 46 + 46) / 93)
+exe 'vert 1resize ' . ((&columns * 46 + 71) / 143)
 exe '2resize ' . ((&lines * 26 + 28) / 56)
-exe 'vert 2resize ' . ((&columns * 46 + 46) / 93)
-exe 'vert 3resize ' . ((&columns * 46 + 46) / 93)
+exe 'vert 2resize ' . ((&columns * 46 + 71) / 143)
+exe '3resize ' . ((&lines * 26 + 28) / 56)
+exe 'vert 3resize ' . ((&columns * 96 + 71) / 143)
+exe '4resize ' . ((&lines * 27 + 28) / 56)
+exe 'vert 4resize ' . ((&columns * 96 + 71) / 143)
 argglobal
 setlocal fdm=manual
 setlocal fde=0
@@ -133,19 +140,40 @@ setlocal fml=1
 setlocal fdn=20
 setlocal fen
 silent! normal! zE
-let s:l = 1 - ((0 * winheight(0) + 27) / 54)
+let s:l = 4 - ((3 * winheight(0) + 13) / 26)
 if s:l < 1 | let s:l = 1 | endif
 exe s:l
 normal! zt
-1
+4
 normal! 0
 wincmd w
-3wincmd w
+argglobal
+if bufexists("comb_abstract.tex") | buffer comb_abstract.tex | else | edit comb_abstract.tex | endif
+setlocal fdm=manual
+setlocal fde=0
+setlocal fmr={{{,}}}
+setlocal fdi=#
+setlocal fdl=0
+setlocal fml=1
+setlocal fdn=20
+setlocal fen
+silent! normal! zE
+let s:l = 55 - ((13 * winheight(0) + 13) / 27)
+if s:l < 1 | let s:l = 1 | endif
+exe s:l
+normal! zt
+55
+normal! 028|
+wincmd w
+4wincmd w
 exe '1resize ' . ((&lines * 27 + 28) / 56)
-exe 'vert 1resize ' . ((&columns * 46 + 46) / 93)
+exe 'vert 1resize ' . ((&columns * 46 + 71) / 143)
 exe '2resize ' . ((&lines * 26 + 28) / 56)
-exe 'vert 2resize ' . ((&columns * 46 + 46) / 93)
-exe 'vert 3resize ' . ((&columns * 46 + 46) / 93)
+exe 'vert 2resize ' . ((&columns * 46 + 71) / 143)
+exe '3resize ' . ((&lines * 26 + 28) / 56)
+exe 'vert 3resize ' . ((&columns * 96 + 71) / 143)
+exe '4resize ' . ((&lines * 27 + 28) / 56)
+exe 'vert 4resize ' . ((&columns * 96 + 71) / 143)
 tabnext 1
 if exists('s:wipebuf') && getbufvar(s:wipebuf, '&buftype') isnot# 'terminal'
   silent exe 'bwipe ' . s:wipebuf
