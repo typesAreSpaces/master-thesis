@@ -52,9 +52,9 @@
 \contentsline {chapter}{\numberline {5}Interpolation algorithm for the theory combination of EUF and UTVPI}{73}{chapter.5}%
 \contentsline {section}{\numberline {5.1}Yorsh-Musuvathi Interpolation Combination Framework}{74}{section.5.1}%
 \contentsline {section}{\numberline {5.2}Implementation}{75}{section.5.2}%
-\contentsline {section}{\numberline {5.3}Evaluation}{76}{section.5.3}%
-\contentsline {subsection}{\numberline {5.3.1}Detailed evaluation of a complete example}{76}{subsection.5.3.1}%
-\contentsline {subsubsection}{A simple example}{76}{section*.9}%
+\contentsline {section}{\numberline {5.3}Evaluation}{77}{section.5.3}%
+\contentsline {subsection}{\numberline {5.3.1}Detailed evaluation of a complete example}{77}{subsection.5.3.1}%
+\contentsline {subsubsection}{A simple example}{77}{section*.9}%
 \contentsline {section}{\numberline {5.4}A uniform interpolant generation algorithm for the combined theory of EUF and UTVPI}{80}{section.5.4}%
 \contentsline {subsection}{\numberline {5.4.1}A tableux-like uniform interpolant generation algorithm for EUF}{80}{subsection.5.4.1}%
 \contentsline {subsection}{\numberline {5.4.2}Our proposed uniform interpolant generation algorithm for EUF + UTVPI}{82}{subsection.5.4.2}%
