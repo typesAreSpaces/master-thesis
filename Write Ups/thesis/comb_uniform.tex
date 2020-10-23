@@ -1,8 +1,27 @@
-\section{A uniform interpolant generation algorithm for the 
-combined theory of EUF and UTVPI}
+\section{A partially sound 
+  uniform interpolant generation algorithm 
+  for the combined theory of EUF and UTVPI}
 
-This section introduces a uniform interpolant
-generation algorithm for the aforementioned theories.
+TODO: keep working towards removing uniform interpolant
+whenever is not updated.
+
+This section introduces a partially sound uniform interpolant
+generation algorithm for the aforementioned theories in the
+sense that it produces an uniform interpolant if for
+all variables $x$ to eliminate in the UTVPI components
+of the input formula $\psi$, either:
+\begin{itemize}
+  \item $\psi \models_{EUF + UTVPI} x \leq n_1$
+    and $\psi \models_{EUF + UTVPI} -x \leq n_2$ where
+    $n_1, n_2 \in \mathbb{Z}$, or
+  \item There exists $a_1 x + a_2 y$ with $y$ a common
+    variable such that \\
+    $\psi \models_{EUF + UTVPI} a_1 x + a_2 y \leq n_1$ and
+    $\psi \models_{EUF + UTVPI} -a_1 x - a_2 y \leq n_2$, 
+    where $a_1, a_2 \in \{-1, 0, 1\}$ and 
+    $n_1, n_2 \in \mathbb{Z}$
+\end{itemize}
+
 The algorithm is a tableux-like algorithm which specifies
 formula state and reduction rules.
 It extends the approach in \cite{ghilardi2020compactly}
@@ -91,7 +110,9 @@ tableux rules:
     \end{itemize}
 \end{itemize}
 
-\subsection{Our proposed uniform interpolant generation algorithm for EUF + UTVPI}
+\subsection{Our proposed partially sound 
+uniform interpolant generation algorithm 
+for EUF + UTVPI}
 
 Our algorithm first purifies a given satisfiable input formula and 
 uses an extended tableux-like algorithm
@@ -166,7 +187,7 @@ latter follows directly from the normal form representation of UTVPI inequalitie
 induced by the data structures introduced in Chapter 4. Otherwise, rules
 8 and 9 should have applied.
 
-\subsection{Termination, Correctness and Completeness of the
+\subsection{Termination, and partial soundness of the
 proposed algorithm}
 
 \begin{lemma}

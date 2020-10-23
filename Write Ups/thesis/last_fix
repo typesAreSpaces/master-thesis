@@ -14,8 +14,8 @@ badd +1 main.tex
 badd +1 algpseudocode.sty
 badd +1 booktabs.sty
 badd +2 abstract.tex
-badd +4 preliminaries.tex
-badd +140 craig_interpolation.tex
+badd +10 preliminaries.tex
+badd +137 craig_interpolation.tex
 badd +10 first_order_logic.tex
 badd +581 euf_implementation.tex
 badd +1 a.tex
@@ -34,8 +34,8 @@ badd +299 oct_implementation.tex
 badd +74 oct_evaluation.tex
 badd +1 oct_performance_1.tex
 badd +64 oct_performance_2.tex
-badd +4 combination.tex
-badd +1 comb_abstract.tex
+badd +6 combination.tex
+badd +23 comb_abstract.tex
 badd +1 comb_algorithm.tex
 badd +2 comb_implementation.tex
 badd +4 comb_evaluation.tex
@@ -43,7 +43,7 @@ badd +1 th_comb_example_interp.txt
 badd +102 comb_performance.tex
 badd +1 theories.tex
 badd +1 comb_performance_2.tex
-badd +288 comb_uniform.tex
+badd +1 comb_uniform.tex
 badd +1 future_work.tex
 badd +178 introduction.tex
 badd +34 verification.tex
@@ -84,13 +84,13 @@ set winheight=1
 set winminwidth=0
 set winwidth=1
 exe '1resize ' . ((&lines * 27 + 28) / 56)
-exe 'vert 1resize ' . ((&columns * 46 + 71) / 143)
+exe 'vert 1resize ' . ((&columns * 71 + 71) / 143)
 exe '2resize ' . ((&lines * 26 + 28) / 56)
-exe 'vert 2resize ' . ((&columns * 46 + 71) / 143)
+exe 'vert 2resize ' . ((&columns * 71 + 71) / 143)
 exe '3resize ' . ((&lines * 26 + 28) / 56)
-exe 'vert 3resize ' . ((&columns * 96 + 71) / 143)
+exe 'vert 3resize ' . ((&columns * 71 + 71) / 143)
 exe '4resize ' . ((&lines * 27 + 28) / 56)
-exe 'vert 4resize ' . ((&columns * 96 + 71) / 143)
+exe 'vert 4resize ' . ((&columns * 71 + 71) / 143)
 argglobal
 setlocal fdm=manual
 setlocal fde=0
@@ -140,40 +140,76 @@ setlocal fml=1
 setlocal fdn=20
 setlocal fen
 silent! normal! zE
-let s:l = 4 - ((3 * winheight(0) + 13) / 26)
+let s:l = 3 - ((2 * winheight(0) + 13) / 26)
 if s:l < 1 | let s:l = 1 | endif
 exe s:l
 normal! zt
-4
+3
 normal! 0
 wincmd w
 argglobal
-if bufexists("comb_abstract.tex") | buffer comb_abstract.tex | else | edit comb_abstract.tex | endif
+if bufexists("comb_uniform.tex") | buffer comb_uniform.tex | else | edit comb_uniform.tex | endif
 setlocal fdm=manual
 setlocal fde=0
 setlocal fmr={{{,}}}
 setlocal fdi=#
-setlocal fdl=0
+setlocal fdl=4
 setlocal fml=1
 setlocal fdn=20
 setlocal fen
 silent! normal! zE
-let s:l = 55 - ((13 * winheight(0) + 13) / 27)
+47,47fold
+48,50fold
+51,53fold
+54,55fold
+56,57fold
+58,59fold
+70,72fold
+87,89fold
+90,91fold
+92,93fold
+85,94fold
+95,97fold
+98,99fold
+105,107fold
+108,109fold
+100,110fold
+34,112fold
+130,134fold
+135,139fold
+140,146fold
+153,155fold
+147,157fold
+164,166fold
+158,167fold
+174,180fold
+117,189fold
+223,224fold
+225,230fold
+190,317fold
+1,317fold
+1
+normal! zo
+117
+normal! zo
+190
+normal! zo
+let s:l = 5 - ((4 * winheight(0) + 13) / 27)
 if s:l < 1 | let s:l = 1 | endif
 exe s:l
 normal! zt
-55
-normal! 028|
+5
+normal! 024|
 wincmd w
 4wincmd w
 exe '1resize ' . ((&lines * 27 + 28) / 56)
-exe 'vert 1resize ' . ((&columns * 46 + 71) / 143)
+exe 'vert 1resize ' . ((&columns * 71 + 71) / 143)
 exe '2resize ' . ((&lines * 26 + 28) / 56)
-exe 'vert 2resize ' . ((&columns * 46 + 71) / 143)
+exe 'vert 2resize ' . ((&columns * 71 + 71) / 143)
 exe '3resize ' . ((&lines * 26 + 28) / 56)
-exe 'vert 3resize ' . ((&columns * 96 + 71) / 143)
+exe 'vert 3resize ' . ((&columns * 71 + 71) / 143)
 exe '4resize ' . ((&lines * 27 + 28) / 56)
-exe 'vert 4resize ' . ((&columns * 96 + 71) / 143)
+exe 'vert 4resize ' . ((&columns * 71 + 71) / 143)
 tabnext 1
 if exists('s:wipebuf') && getbufvar(s:wipebuf, '&buftype') isnot# 'terminal'
   silent exe 'bwipe ' . s:wipebuf

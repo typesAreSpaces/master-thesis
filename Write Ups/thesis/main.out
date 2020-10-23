@@ -43,14 +43,14 @@
 \BOOKMARK [2][-]{subsection.4.3.2}{Performance comparison with iZ3 and MathSat}{section.4.3}% 43
 \BOOKMARK [1][-]{section.4.4}{Conclusions}{chapter.4}% 44
 \BOOKMARK [0][-]{chapter.5}{Interpolation algorithm for the theory combination of EUF and UTVPI}{}% 45
-\BOOKMARK [1][-]{section.5.1}{Yorsh-Musuvathi Interpolation Combination Framework}{chapter.5}% 46
-\BOOKMARK [1][-]{section.5.2}{Implementation}{chapter.5}% 47
-\BOOKMARK [1][-]{section.5.3}{Evaluation}{chapter.5}% 48
-\BOOKMARK [2][-]{subsection.5.3.1}{Detailed evaluation of a complete example}{section.5.3}% 49
-\BOOKMARK [1][-]{section.5.4}{A uniform interpolant generation algorithm for the combined theory of EUF and UTVPI}{chapter.5}% 50
-\BOOKMARK [2][-]{subsection.5.4.1}{A tableux-like uniform interpolant generation algorithm for EUF}{section.5.4}% 51
-\BOOKMARK [2][-]{subsection.5.4.2}{Our proposed uniform interpolant generation algorithm for EUF + UTVPI}{section.5.4}% 52
-\BOOKMARK [2][-]{subsection.5.4.3}{Termination, Correctness and Completeness of the proposed algorithm}{section.5.4}% 53
+\BOOKMARK [1][-]{section.5.1}{A partially sound uniform interpolant generation algorithm for the combined theory of EUF and UTVPI}{chapter.5}% 46
+\BOOKMARK [2][-]{subsection.5.1.1}{A tableux-like uniform interpolant generation algorithm for EUF}{section.5.1}% 47
+\BOOKMARK [2][-]{subsection.5.1.2}{Our proposed partially sound uniform interpolant generation algorithm for EUF + UTVPI}{section.5.1}% 48
+\BOOKMARK [2][-]{subsection.5.1.3}{Termination, and partial soundness of the proposed algorithm}{section.5.1}% 49
+\BOOKMARK [1][-]{section.5.2}{Yorsh-Musuvathi Interpolation Combination Framework}{chapter.5}% 50
+\BOOKMARK [1][-]{section.5.3}{Implementation}{chapter.5}% 51
+\BOOKMARK [1][-]{section.5.4}{Evaluation}{chapter.5}% 52
+\BOOKMARK [2][-]{subsection.5.4.1}{Detailed evaluation of a complete example}{section.5.4}% 53
 \BOOKMARK [1][-]{section.5.5}{Conclusions}{chapter.5}% 54
 \BOOKMARK [0][-]{chapter.6}{Future Work}{}% 55
 \BOOKMARK [0][-]{chapter*.10}{Appendix A}{}% 56
