@@ -13,7 +13,7 @@ badd +256 euf_algorithm.tex
 badd +1 main.tex
 badd +1 algpseudocode.sty
 badd +1 booktabs.sty
-badd +2 abstract.tex
+badd +6 abstract.tex
 badd +10 preliminaries.tex
 badd +137 craig_interpolation.tex
 badd +10 first_order_logic.tex
@@ -34,16 +34,16 @@ badd +299 oct_implementation.tex
 badd +74 oct_evaluation.tex
 badd +1 oct_performance_1.tex
 badd +64 oct_performance_2.tex
-badd +6 combination.tex
-badd +23 comb_abstract.tex
-badd +1 comb_algorithm.tex
-badd +2 comb_implementation.tex
-badd +4 comb_evaluation.tex
+badd +3 combination.tex
+badd +75 comb_abstract.tex
+badd +45 comb_algorithm.tex
+badd +1 comb_implementation.tex
+badd +41 comb_evaluation.tex
 badd +1 th_comb_example_interp.txt
 badd +102 comb_performance.tex
 badd +1 theories.tex
 badd +1 comb_performance_2.tex
-badd +1 comb_uniform.tex
+badd +367 comb_uniform.tex
 badd +1 future_work.tex
 badd +178 introduction.tex
 badd +34 verification.tex
@@ -54,11 +54,11 @@ badd +66 nelson-oppen-framework.tex
 badd +171 tools.tex
 badd +10 euf_abstract.tex
 badd +6 oct_conclusion.tex
-badd +11 comb_conclusion.tex
+badd +2 comb_conclusion.tex
 badd +119 appendix_a.tex
 badd +1 appendix_b.tex
 badd +1 appendix_c.tex
-badd +1 \[Grammarous]
+badd +5 comb_uniform_example.tex
 argglobal
 %argdel
 $argadd euf.tex
@@ -75,6 +75,10 @@ wincmd w
 wincmd _ | wincmd |
 split
 1wincmd k
+wincmd _ | wincmd |
+vsplit
+1wincmd h
+wincmd w
 wincmd w
 set nosplitbelow
 set nosplitright
@@ -83,14 +87,16 @@ set winminheight=0
 set winheight=1
 set winminwidth=0
 set winwidth=1
-exe '1resize ' . ((&lines * 27 + 28) / 56)
-exe 'vert 1resize ' . ((&columns * 71 + 71) / 143)
-exe '2resize ' . ((&lines * 26 + 28) / 56)
-exe 'vert 2resize ' . ((&columns * 71 + 71) / 143)
-exe '3resize ' . ((&lines * 26 + 28) / 56)
-exe 'vert 3resize ' . ((&columns * 71 + 71) / 143)
-exe '4resize ' . ((&lines * 27 + 28) / 56)
-exe 'vert 4resize ' . ((&columns * 71 + 71) / 143)
+exe '1resize ' . ((&lines * 41 + 42) / 85)
+exe 'vert 1resize ' . ((&columns * 97 + 146) / 293)
+exe '2resize ' . ((&lines * 41 + 42) / 85)
+exe 'vert 2resize ' . ((&columns * 97 + 146) / 293)
+exe '3resize ' . ((&lines * 41 + 42) / 85)
+exe 'vert 3resize ' . ((&columns * 72 + 146) / 293)
+exe '4resize ' . ((&lines * 41 + 42) / 85)
+exe 'vert 4resize ' . ((&columns * 122 + 146) / 293)
+exe '5resize ' . ((&lines * 41 + 42) / 85)
+exe 'vert 5resize ' . ((&columns * 195 + 146) / 293)
 argglobal
 setlocal fdm=manual
 setlocal fde=0
@@ -104,7 +110,7 @@ silent! normal! zE
 10,110fold
 10
 normal! zc
-let s:l = 159 - ((13 * winheight(0) + 13) / 27)
+let s:l = 159 - ((1 * winheight(0) + 20) / 41)
 if s:l < 1 | let s:l = 1 | endif
 exe s:l
 normal! zt
@@ -122,7 +128,7 @@ setlocal fml=1
 setlocal fdn=20
 setlocal fen
 silent! normal! zE
-let s:l = 1 - ((0 * winheight(0) + 13) / 26)
+let s:l = 1 - ((0 * winheight(0) + 20) / 41)
 if s:l < 1 | let s:l = 1 | endif
 exe s:l
 normal! zt
@@ -140,7 +146,7 @@ setlocal fml=1
 setlocal fdn=20
 setlocal fen
 silent! normal! zE
-let s:l = 3 - ((2 * winheight(0) + 13) / 26)
+let s:l = 3 - ((0 * winheight(0) + 20) / 41)
 if s:l < 1 | let s:l = 1 | endif
 exe s:l
 normal! zt
@@ -148,68 +154,52 @@ normal! zt
 normal! 0
 wincmd w
 argglobal
-if bufexists("comb_uniform.tex") | buffer comb_uniform.tex | else | edit comb_uniform.tex | endif
+if bufexists("comb_conclusion.tex") | buffer comb_conclusion.tex | else | edit comb_conclusion.tex | endif
 setlocal fdm=manual
 setlocal fde=0
 setlocal fmr={{{,}}}
 setlocal fdi=#
-setlocal fdl=4
+setlocal fdl=0
 setlocal fml=1
 setlocal fdn=20
 setlocal fen
 silent! normal! zE
-47,47fold
-48,50fold
-51,53fold
-54,55fold
-56,57fold
-58,59fold
-70,72fold
-87,89fold
-90,91fold
-92,93fold
-85,94fold
-95,97fold
-98,99fold
-105,107fold
-108,109fold
-100,110fold
-34,112fold
-130,134fold
-135,139fold
-140,146fold
-153,155fold
-147,157fold
-164,166fold
-158,167fold
-174,180fold
-117,189fold
-223,224fold
-225,230fold
-190,317fold
-1,317fold
+let s:l = 1 - ((0 * winheight(0) + 20) / 41)
+if s:l < 1 | let s:l = 1 | endif
+exe s:l
+normal! zt
 1
-normal! zo
-117
-normal! zo
-190
-normal! zo
-let s:l = 5 - ((4 * winheight(0) + 13) / 27)
+normal! 0
+wincmd w
+argglobal
+if bufexists("comb_uniform_example.tex") | buffer comb_uniform_example.tex | else | edit comb_uniform_example.tex | endif
+setlocal fdm=manual
+setlocal fde=0
+setlocal fmr={{{,}}}
+setlocal fdi=#
+setlocal fdl=0
+setlocal fml=1
+setlocal fdn=20
+setlocal fen
+silent! normal! zE
+let s:l = 5 - ((0 * winheight(0) + 20) / 41)
 if s:l < 1 | let s:l = 1 | endif
 exe s:l
 normal! zt
 5
-normal! 024|
+normal! 0
 wincmd w
 4wincmd w
-exe '1resize ' . ((&lines * 27 + 28) / 56)
-exe 'vert 1resize ' . ((&columns * 71 + 71) / 143)
-exe '2resize ' . ((&lines * 26 + 28) / 56)
-exe 'vert 2resize ' . ((&columns * 71 + 71) / 143)
-exe '3resize ' . ((&lines * 26 + 28) / 56)
-exe 'vert 3resize ' . ((&columns * 71 + 71) / 143)
-exe '4resize ' . ((&lines * 27 + 28) / 56)
-exe 'vert 4resize ' . ((&columns * 71 + 71) / 143)
+exe '1resize ' . ((&lines * 41 + 42) / 85)
+exe 'vert 1resize ' . ((&columns * 97 + 146) / 293)
+exe '2resize ' . ((&lines * 41 + 42) / 85)
+exe 'vert 2resize ' . ((&columns * 97 + 146) / 293)
+exe '3resize ' . ((&lines * 41 + 42) / 85)
+exe 'vert 3resize ' . ((&columns * 72 + 146) / 293)
+exe '4resize ' . ((&lines * 41 + 42) / 85)
+exe 'vert 4resize ' . ((&columns * 122 + 146) / 293)
+exe '5resize ' . ((&lines * 41 + 42) / 85)
+exe 'vert 5resize ' . ((&columns * 195 + 146) / 293)
 tabnext 1
 if exists('s:wipebuf') && getbufvar(s:wipebuf, '&buftype') isnot# 'terminal'
   silent exe 'bwipe ' . s:wipebuf

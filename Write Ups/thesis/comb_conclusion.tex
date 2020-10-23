@@ -8,10 +8,21 @@ presented in previous chapters.
 
 In addition, a new algorithm for the uniform interpolant
 generation for the combined theory of EUF + UTVPI 
-was introduced. The implementation of this algorithm
-is will be considered in the future if the rules 8 and 9
+was introduced if the input formula satisfies particular
+requirements. The implementation of this algorithm
+will be considered in the future if the rules 8 and 9
 can be replaced for propagation rules that
-avoid splitting.
+avoid splitting. 
+
+If the input formula in the combined theory 
+satisfies the weakening conditions mentioned in
+\ref{weakening_conditions}, then both
+the proposed algorithm and the implemented algorithm
+produces uniform interpolants. The former will 
+output a disjunction of conjunctions of equalities 
+and inequalities of UTVPI terms, where the latter outputs
+a conjunction of Horn clauses with inequalities of
+UTVPI terms.
 
 %%% Local Variables:
 %%% mode: latex

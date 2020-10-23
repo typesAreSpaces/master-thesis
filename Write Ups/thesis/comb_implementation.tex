@@ -1,13 +1,14 @@
 \section{Implementation}
 
-The thesis implementation uses the Yorsh-Musuvathi framework to reuse the uniform interpolant generation algorithms for the EUF
+The thesis implementation uses the Yorsh-Musuvathi framework to reuse the 
+uniform interpolant generation algorithms for the EUF
 and UTVPI theory.
 The implementation maintains a map data structure that 
 keeps track of the \emph{partial interpolants}. This ensures
 that the base case for the above formula $p(c)$ is replaced
 by previous clauses as required in \cite{10.1007/11532231_26}.
 
-Since introducting negations is necessary to compute partial interpolants,
+Since introducing negations is necessary to compute partial interpolants,
 we noticed the following interaction with the theories involved in the
 thesis work:
 
