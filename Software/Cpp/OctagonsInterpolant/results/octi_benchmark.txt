@@ -298,3 +298,48 @@ test: 10_20_10_4
 test: 10_20_10_8
 ./bin/octi: symbol lookup error: ./bin/octi: undefined symbol: Z3_is_common
 .006473199
+test: 10_20_10_9
+./bin/octi: symbol lookup error: ./bin/octi: undefined symbol: Z3_is_common
+.007184919
+test: 10_20_10_8
+./bin/octi: symbol lookup error: ./bin/octi: undefined symbol: Z3_is_common
+.006690671
+test: 10_20_10_3
+./bin/octi: symbol lookup error: ./bin/octi: undefined symbol: Z3_is_common
+.006502412
+test: 10_20_10_6
+./bin/octi: symbol lookup error: ./bin/octi: undefined symbol: Z3_is_common
+.006523827
+test: 10_20_10_9
+./bin/octi: symbol lookup error: ./bin/octi: undefined symbol: Z3_is_common
+.006426644
+test: 10_20_10_9
+./bin/octi: symbol lookup error: ./bin/octi: undefined symbol: Z3_is_common
+.006459088
+test: 10_20_10_7
+./bin/octi: symbol lookup error: ./bin/octi: undefined symbol: Z3_is_common
+.006531374
+test: 10_20_10_8
+./bin/octi: symbol lookup error: ./bin/octi: undefined symbol: Z3_is_common
+.006620162
+test: 10_20_10_4
+./bin/octi: symbol lookup error: ./bin/octi: undefined symbol: Z3_is_common
+.006334476
+test: 10_20_10_1
+./bin/octi: symbol lookup error: ./bin/octi: undefined symbol: Z3_is_common
+.006536852
+test: 10_20_10_9
+./bin/octi: symbol lookup error: ./bin/octi: undefined symbol: Z3_is_common
+.006445715
+test: 10_20_10_6
+./bin/octi: symbol lookup error: ./bin/octi: undefined symbol: Z3_is_common
+.006535965
+test: 10_20_10_5
+./bin/octi: symbol lookup error: ./bin/octi: undefined symbol: Z3_is_common
+.006327506
+test: 10_20_10_3
+./bin/octi: symbol lookup error: ./bin/octi: undefined symbol: Z3_is_common
+.006403720
+test: 10_20_10_2
+./bin/octi: symbol lookup error: ./bin/octi: undefined symbol: Z3_is_common
+.006581338
