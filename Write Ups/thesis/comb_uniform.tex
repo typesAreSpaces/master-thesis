@@ -166,27 +166,18 @@ The additional rules are the following:
 
   \item[] 8.  Propagate fully bounded uncommon UTVPI inequalities: 
     if there are two UTVPI inequalities 
-    in $\psi$ of the form $a_i e_i + a_j e_j \leq k_1$ and -$a_i e_i - a_j e_j \leq k_2$, 
-    where $\{a_i, a_j\} \subseteq \{1, -1\}$ and $i > j$ 
+    in $\psi$ of the form $a_i e_i + a_j e_j \leq k_1$ and 
+    $-a_i e_i - a_j e_j \leq k_2$, 
+    where $a_i \in \{1, -1\}, a_j \in \{1, 0, -1\}$ and $i > j$ or $e_i$ is uncommon
+    and $e_j$ is common
     then  non-deterministically apply the following rule:
     \begin{itemize}
       \item Remove both $a_i e_i + a_j e_j \leq k_1$ and $-a_i e_i - a_j e_j \leq k_2$
-        from $\psi$ and replacing every $e_i$ by $e_j = l + a_j a_i e_i$ where $
-        l \in \{a_j k_2, a_j k_2 + 1, \dots, a_j k_1 - 1, a_j k_1\}$.
+        from $\psi$ and replace every $e_i$ by $l - a_i a_j e_j$ where $
+        l \in \{- a_j k_2, -a_j k_2 + 1, \dots, a_j k_1 - 1, a_j k_1\}$.
     \end{itemize}
 
-  \item[] 9. Propagate fully bounded uncommon UTVPI terms: 
-    if there are two UTVPI inequalities 
-    in $\psi$ of the form $a_i e_i + a_j e_j \leq k_1$ and 
-    -$a_i e_i - a_j e_j \leq k_2$, 
-    where $\{a_i, a_j\} \subseteq \{1, -1\}$ and $i > j$ 
-    then  non-deterministically apply the following rule:
-    \begin{itemize}
-      \item Remove both $a_i e_i + a_j e_j \leq k_1$ and $-a_i e_i - a_j e_j \leq k_2$
-        from $\psi$ and replacing every $e_i$ by $e_j = l + a_j a_i e_i$ where $
-        l \in \{a_j k_2, a_j k_2 + 1, \dots, a_j k_1 - 1, a_j k_1\}$.
-    \end{itemize}
-\end{itemize} 
+  \end{itemize} 
 
 Remark \label{my_remark}: Notice that if no 
 transformation applies 
