@@ -1,9 +1,7 @@
 \begin{abstract}
-  This thesis discusses the implementation
-  for the uniform interpolation problem of the 
-  following theories: (quantifier-free) equalitiy with uninterpreted
+  This thesis discusses algorithms for the uniform interpolation problem and presents implementations for the following theories: (quantifier-free) equalitiy with uninterpreted
   functions (EUF), unit two variable per 
-  inequality (UTVPI), and theoretical aspects for the 
+  inequality (UTVPI), and theoretic aspects for the 
   combination of the two previous theories. 
   The uniform interpolation algorithms implemented in this thesis were 
   originally proposed in \cite{KAPUR2017}. 
@@ -13,7 +11,7 @@
   \cite{10.1007/978-3-642-00768-2_34, mcmillan2011interpolants, 10.1007/978-3-540-24730-2_2}. 
   The approach taken in \cite{KAPUR2017} relies on quantifier-elimination heuristics 
   to construct a uniform interpolant using one of the two formulas involved 
-  in the interpolation problem. The latter makes possible to study the complexity 
+  in the interpolation problem. The latter makes it possible to study the complexity 
   of the algorithms obtained. 
   On the other hand, the combination method implemented 
   in this thesis uses a Nelson-Oppen framework, thus we still require for 
@@ -22,9 +20,9 @@
 
   The implementation uses Z3 \cite{10.1007/978-3-540-78800-3_24} for parsing 
   purposes and satisfiability checking in the combination component of the 
-  thesis. Minor modifications were  applied to the Z3's enode data structure 
+  thesis. Minor modifications were  applied to Z3's enode data structure 
   in order to label and distinguish formulas efficiently (i.e. distinguish 
-  A-part, B-part). Thus, the project can easily be integrated to the Z3 solver 
+  A-part, B-part). Thus, the project can easily be integrated into the Z3 solver 
   to extend its functionality for verification purposes using the Z3 plug-in module.
 
 \clearpage %(required for 1-page abstract)
