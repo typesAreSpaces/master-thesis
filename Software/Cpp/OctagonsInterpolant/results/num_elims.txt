@@ -1,0 +1,2633 @@
+make tester_with_threads param1=tests/benchmarks
+make[1]: Entering directory '/home/jose/Documents/GithubProjects/master-thesis/Software/Cpp/OctagonsInterpolant'
+g++ -g -o tests/benchmarks ./tests/benchmarks.cpp \
+	/home/jose/Documents/GithubProjects/z3__/build/libz3.so \
+	-lpthread -pthread -I./src -I./include -std=c++11 -Wall -O3 
+./tests/benchmarks
+unsat
+(interpolants
+ (<= (- 8) (+ (* (- 1) x_8) (* (- 1) x_4))))
+(:arith-add-rows     25
+ :arith-assert-lower 11
+ :arith-assert-upper 10
+ :arith-conflicts    1
+ :arith-pivots       8
+ :conflicts          1
+ :max-memory         1.20
+ :memory             1.20
+ :mk-bool-var        22
+ :num-allocs         21638
+ :num-checks         1
+ :rlimit-count       1484
+ :time               0.00)
+unsat
+(<= (+ x_4 x_8) 8)
+(ast-vector
+  (<= (- x_4) 0)
+  (<= x_4 3)
+  (<= (- x_8) (- 2))
+  (<= (- x_8 x_4) 2)
+  (<= (+ x_8 x_4) 10))
+17
+unsat
+(interpolants
+ (and (<= x_8 (- 8)) (>= x_2 0)))
+(:arith-add-rows     7
+ :arith-assert-lower 10
+ :arith-assert-upper 11
+ :arith-conflicts    1
+ :arith-pivots       5
+ :conflicts          1
+ :max-memory         1.09
+ :memory             1.09
+ :mk-bool-var        22
+ :num-allocs         17935
+ :num-checks         1
+ :rlimit-count       980
+ :time               0.00)
+unsat
+(<= (+ x_8 (* (- 1) x_2)) (- 10))
+(ast-vector
+  (<= x_8 (- 10))
+  (<= (- x_2) 0)
+  (<= x_2 0))
+7
+unsat
+(interpolants
+ (<= x_7 (- 4)))
+(:arith-assert-lower 10
+ :arith-assert-upper 11
+ :arith-conflicts    1
+ :conflicts          1
+ :max-memory         1.09
+ :memory             1.09
+ :mk-bool-var        22
+ :num-allocs         17846
+ :num-checks         1
+ :rlimit-count       836
+ :time               0.00)
+unsat
+(<= x_7 (- 4))
+(ast-vector
+  (<= x_7 (- 12)))
+35
+unsat
+(interpolants
+ (and (>= x_3 (- 4)) (>= (+ x_1 (* (- 1) x_7)) 4) (>= x_5 (- 2))))
+(:arith-add-rows     14
+ :arith-assert-lower 11
+ :arith-assert-upper 12
+ :arith-conflicts    1
+ :arith-pivots       6
+ :conflicts          1
+ :max-memory         1.10
+ :memory             1.10
+ :mk-bool-var        24
+ :num-allocs         17975
+ :num-checks         1
+ :rlimit-count       1215
+ :time               0.00)
+unsat
+(<= (+ x_7 (* (- 1) x_5)) 2)
+(ast-vector
+  (<= (- x_3) 4)
+  (<= x_3 8)
+  (<= x_7 3)
+  (<= (+ x_7 x_3) 6)
+  (<= (- x_7 x_1) (- 4))
+  (<= (+ x_7 x_1) 4)
+  (<= (- x_5) 2)
+  (<= x_5 0))
+17
+unsat
+(interpolants
+ (<= 12 (+ x_6 (* (- 1) x_0))))
+(:arith-add-rows     14
+ :arith-assert-lower 6
+ :arith-assert-upper 16
+ :arith-conflicts    1
+ :arith-pivots       5
+ :conflicts          1
+ :max-memory         1.09
+ :memory             1.09
+ :mk-bool-var        23
+ :num-allocs         17813
+ :num-checks         1
+ :rlimit-count       1096
+ :time               0.00)
+unsat
+(<= 12 (+ x_6 (* (- 1) x_0)))
+(ast-vector
+  (<= x_4 2)
+  (<= (- x_6) (- 2))
+  (<= x_6 6)
+  (<= x_0 6)
+  (<= (- x_0 x_4) (- 2))
+  (<= (+ x_0 x_4) (- 2))
+  (<= (- x_0 x_6) (- 12))
+  (<= (+ x_0 x_6) 6))
+11
+unsat
+(interpolants
+ (>= x_3 (- 2)))
+(:arith-add-rows     38
+ :arith-assert-lower 15
+ :arith-assert-upper 12
+ :arith-conflicts    1
+ :arith-pivots       7
+ :conflicts          1
+ :max-memory         1.12
+ :memory             1.12
+ :mk-bool-var        28
+ :num-allocs         18087
+ :num-checks         1
+ :rlimit-count       1817
+ :time               0.00)
+unsat
+(<= (- 2) x_3)
+(ast-vector
+  (<= (- x_6) 4)
+  (<= (- x_3) 2)
+  (<= (+ x_3 x_6) 4)
+  (<= x_2 (- 6))
+  (<= (+ x_2 x_6) 2)
+  (<= (- x_2 x_5) 4)
+  (<= (+ (- x_9) x_6) 4)
+  (<= (+ (- x_9) x_3) 2)
+  (<= (- (- x_9) x_5) 6)
+  (<= (+ (- x_9) x_5) (- 10))
+  (<= (- x_0) 6)
+  (<= (- x_0 x_9) 4)
+  (<= (+ x_4 x_2) 2)
+  (<= (- x_4 x_9) 4)
+  (<= (- x_7 x_5) (- 2)))
+6
+unsat
+(interpolants
+ (and (>= x_4 0) (>= (+ x_1 (* (- 1) x_4)) 0)))
+(:arith-add-rows     24
+ :arith-assert-lower 10
+ :arith-assert-upper 15
+ :arith-conflicts    1
+ :arith-pivots       9
+ :conflicts          1
+ :max-memory         1.10
+ :memory             1.10
+ :mk-bool-var        26
+ :num-allocs         17955
+ :num-checks         1
+ :rlimit-count       1419
+ :time               0.00)
+unsat
+(<= 0 x_1)
+(ast-vector
+  (<= (- x_6) 6)
+  (<= (- x_8) 6)
+  (<= (+ (- x_8) x_1) (- 6))
+  (<= (+ x_3 x_6) 0)
+  (<= (- x_4) 0)
+  (<= x_4 6)
+  (<= (- x_4 x_1) 0)
+  (<= (+ (- x_5) x_3) (- 6))
+  (<= x_5 (- 2))
+  (<= (+ x_5 x_6) (- 8))
+  (<= (+ x_5 x_8) 0)
+  (<= (- x_5 x_3) 6))
+6
+unsat
+(interpolants
+ (>= x_7 0))
+(:arith-assert-lower 17
+ :arith-assert-upper 6
+ :arith-conflicts    1
+ :conflicts          1
+ :max-memory         1.11
+ :memory             1.11
+ :mk-bool-var        24
+ :num-allocs         18067
+ :num-checks         1
+ :rlimit-count       843
+ :time               0.00)
+unsat
+(<= 0 x_7)
+(ast-vector
+  (<= (- x_7) (- 14))
+  (<= x_8 0)
+  (<= (- x_4) (- 12))
+  (<= (- (- x_4) x_7) (- 4)))
+7
+unsat
+(interpolants
+ (<= x_3 2))
+(:arith-assert-lower 9
+ :arith-assert-upper 15
+ :arith-conflicts    1
+ :conflicts          1
+ :max-memory         1.11
+ :memory             1.11
+ :mk-bool-var        25
+ :num-allocs         17832
+ :num-checks         1
+ :rlimit-count       831
+ :time               0.00)
+unsat
+(<= x_3 2)
+(ast-vector
+  (<= x_1 (- 12))
+  (<= x_3 2)
+  (<= (+ x_3 x_1) (- 14))
+  (<= x_7 (- 2))
+  (<= (+ x_7 x_3) 12)
+  (<= (- x_5) 6)
+  (<= (+ x_5 x_7) 2))
+6
+unsat
+(interpolants
+ (<= x_0 (- 18)))
+(:arith-add-rows     9
+ :arith-assert-lower 8
+ :arith-assert-upper 13
+ :arith-conflicts    1
+ :arith-pivots       6
+ :conflicts          1
+ :max-memory         1.09
+ :memory             1.09
+ :mk-bool-var        22
+ :num-allocs         17752
+ :num-checks         1
+ :rlimit-count       1014
+ :time               0.00)
+unsat
+(<= x_0 (- 18))
+(ast-vector
+  (<= x_0 (- 18)))
+40
+unsat
+(interpolants
+ (and (<= 4 (+ x_4 (* (- 1) x_9))) (>= x_9 0)))
+(:arith-add-rows     17
+ :arith-assert-lower 7
+ :arith-assert-upper 14
+ :arith-conflicts    1
+ :arith-pivots       7
+ :conflicts          1
+ :max-memory         1.09
+ :memory             1.09
+ :mk-bool-var        22
+ :num-allocs         17836
+ :num-checks         1
+ :rlimit-count       1152
+ :time               0.00)
+unsat
+(<= 2 (+ x_9 x_4))
+(ast-vector
+  (<= (- x_9) 0)
+  (<= x_9 0)
+  (<= (- (- x_4) x_9) (- 2))
+  (<= (+ (- x_4) x_9) (- 4))
+  (<= x_4 6)
+  (<= (+ x_4 x_9) 6))
+19
+unsat
+(interpolants
+ (<= 4 x_2))
+(:arith-add-rows     2
+ :arith-assert-lower 8
+ :arith-assert-upper 16
+ :arith-conflicts    1
+ :arith-pivots       1
+ :conflicts          1
+ :max-memory         1.10
+ :memory             1.10
+ :mk-bool-var        25
+ :num-allocs         17869
+ :num-checks         1
+ :rlimit-count       867
+ :time               0.00)
+unsat
+(<= 4 x_2)
+(ast-vector
+  (<= (- x_2) (- 4))
+  (<= (- x_3) (- 6))
+  (<= x_0 6)
+  (<= (- x_0 x_2) (- 8))
+  (<= (- x_0 x_3) 2))
+16
+unsat
+(interpolants
+ (and (<= x_3 (- 4)) (<= x_8 0)))
+(:arith-add-rows     19
+ :arith-assert-lower 10
+ :arith-assert-upper 11
+ :arith-conflicts    1
+ :arith-pivots       8
+ :conflicts          1
+ :max-memory         1.09
+ :memory             1.09
+ :mk-bool-var        22
+ :num-allocs         17951
+ :num-checks         1
+ :rlimit-count       1212
+ :time               0.00)
+unsat
+(<= (+ x_8 x_3) (- 4))
+(ast-vector
+  (<= (- x_8) 6)
+  (<= x_8 0)
+  (<= x_3 (- 4)))
+12
+unsat
+(interpolants
+ (and (<= x_2 (- 10)) (>= (+ x_7 x_2) (- 2))))
+(:arith-add-rows     9
+ :arith-assert-lower 13
+ :arith-assert-upper 14
+ :arith-conflicts    1
+ :arith-pivots       3
+ :conflicts          1
+ :max-memory         1.11
+ :memory             1.11
+ :mk-bool-var        28
+ :num-allocs         18051
+ :num-checks         1
+ :rlimit-count       1261
+ :time               0.00)
+unsat
+(<= 8 x_7)
+(ast-vector
+  (<= (+ (- x_3) x_5) 8)
+  (<= x_3 (- 4))
+  (<= (- x_1 x_7) (- 10))
+  (<= (- (- x_2) x_7) 2)
+  (<= x_2 (- 10))
+  (<= x_9 4)
+  (<= (- x_9 x_2) 6)
+  (<= (- x_0) 4)
+  (<= (+ (- x_0) x_1) (- 2))
+  (<= (+ (- x_0) x_2) (- 10))
+  (<= (- x_4) 6)
+  (<= (- (- x_4) x_5) (- 6))
+  (<= (+ (- x_4) x_5) 6)
+  (<= (+ (- x_4) x_3) (- 8))
+  (<= (+ (- x_4) x_7) 4)
+  (<= (- (- x_4) x_2) (- 4))
+  (<= (- (- x_4) x_9) (- 10)))
+0
+unsat
+(interpolants
+ (<= x_2 4))
+(:arith-add-rows     18
+ :arith-assert-lower 13
+ :arith-assert-upper 11
+ :arith-conflicts    1
+ :arith-pivots       5
+ :conflicts          1
+ :max-memory         1.11
+ :memory             1.11
+ :mk-bool-var        25
+ :num-allocs         17942
+ :num-checks         1
+ :rlimit-count       1247
+ :time               0.00)
+unsat
+(<= (- 8) (+ x_9 (* (- 1) x_2)))
+(ast-vector
+  (<= x_7 (- 10))
+  (<= (- x_1) (- 8))
+  (<= (+ x_1 x_7) 4)
+  (<= (- x_9) 8)
+  (<= x_9 (- 4))
+  (<= x_0 (- 8))
+  (<= (- x_0 x_1) (- 10))
+  (<= (- x_0 x_9) 8)
+  (<= (- (- x_2) x_9) 6)
+  (<= (+ (- x_2) x_9) 8)
+  (<= (- x_2 x_9) 8)
+  (<= (+ x_2 x_0) (- 8))
+  (<= (- x_5) (- 10)))
+7
+unsat
+(interpolants
+ (<= x_4 2))
+(:arith-add-rows     22
+ :arith-assert-lower 15
+ :arith-assert-upper 7
+ :arith-conflicts    1
+ :arith-pivots       7
+ :conflicts          1
+ :max-memory         1.10
+ :memory             1.10
+ :mk-bool-var        23
+ :num-allocs         18010
+ :num-checks         1
+ :rlimit-count       1308
+ :time               0.00)
+unsat
+(<= x_4 2)
+(ast-vector
+  (<= (- x_9) 4)
+  (<= (- x_4) (- 2))
+  (<= x_4 2))
+24
+unsat
+(interpolants
+ (<= (- 2) x_0))
+(:arith-assert-lower 11
+ :arith-assert-upper 13
+ :arith-conflicts    1
+ :conflicts          1
+ :max-memory         1.09
+ :memory             1.09
+ :mk-bool-var        25
+ :num-allocs         17911
+ :num-checks         1
+ :rlimit-count       905
+ :time               0.00)
+unsat
+(<= (- 2) x_0)
+(ast-vector
+  (<= (- x_5) (- 6))
+  (<= x_5 8)
+  (<= (- x_0) 2)
+  (<= x_1 (- 4))
+  (<= x_6 (- 2))
+  (<= (- x_6 x_1) 6))
+17
+unsat
+(interpolants
+ (and (>= x_4 (- 2)) (>= x_1 4)))
+(:arith-add-rows     4
+ :arith-assert-lower 18
+ :arith-assert-upper 9
+ :arith-conflicts    1
+ :arith-pivots       2
+ :conflicts          1
+ :max-memory         1.12
+ :memory             1.12
+ :mk-bool-var        28
+ :num-allocs         18028
+ :num-checks         1
+ :rlimit-count       1036
+ :time               0.00)
+unsat
+(<= (- 2) x_4)
+(ast-vector
+  (<= (- x_5) (- 6))
+  (<= x_5 8)
+  (<= (- x_4) 2)
+  (<= x_4 (- 2))
+  (<= (- x_4 x_5) (- 6))
+  (<= (+ (- x_0) x_5) (- 2))
+  (<= (- (- x_2) x_5) (- 2))
+  (<= (+ (- x_2) x_4) 2)
+  (<= (- x_2 x_5) 2)
+  (<= (- x_1) (- 8))
+  (<= (- (- x_1) x_4) 4)
+  (<= x_3 8))
+3
+unsat
+(interpolants
+ (>= x_3 6))
+(:arith-assert-lower 15
+ :arith-assert-upper 12
+ :arith-conflicts    1
+ :conflicts          1
+ :max-memory         1.11
+ :memory             1.11
+ :mk-bool-var        28
+ :num-allocs         18038
+ :num-checks         1
+ :rlimit-count       1055
+ :time               0.00)
+unsat
+(<= 6 x_3)
+(ast-vector
+  (<= (- x_4) (- 2))
+  (<= (+ (- x_4) x_6) 2)
+  (<= (- x_8) (- 4))
+  (<= (- x_3) (- 6))
+  (<= x_9 6)
+  (<= (- x_9 x_4) 0)
+  (<= (- x_9 x_8) (- 8))
+  (<= x_1 4)
+  (<= (- x_1 x_4) 4)
+  (<= (- (- x_5) x_6) (- 10))
+  (<= x_5 4))
+0
+unsat
+(interpolants
+ (<= x_5 4))
+(:arith-assert-lower 13
+ :arith-assert-upper 8
+ :arith-conflicts    1
+ :conflicts          1
+ :max-memory         1.09
+ :memory             1.09
+ :mk-bool-var        22
+ :num-allocs         17951
+ :num-checks         1
+ :rlimit-count       741
+ :time               0.00)
+unsat
+(<= x_5 4)
+(ast-vector
+  (<= (- x_5) 8)
+  (<= x_5 4))
+5
+unsat
+(interpolants
+ (<= 20 (+ (* (- 1) x_3) (* (- 1) x_6))))
+(:arith-add-rows     45
+ :arith-assert-lower 15
+ :arith-assert-upper 9
+ :arith-conflicts    1
+ :arith-pivots       12
+ :conflicts          1
+ :max-memory         1.22
+ :memory             1.22
+ :mk-bool-var        25
+ :num-allocs         22066
+ :num-checks         1
+ :rlimit-count       1986
+ :time               0.00)
+unsat
+(<= (+ x_3 x_6) (- 20))
+(ast-vector
+  (<= (- x_8) (- 8))
+  (<= (- x_0) 8)
+  (<= (+ (- x_0) x_8) 2)
+  (<= x_0 6)
+  (<= x_3 (- 8))
+  (<= (- x_3 x_0) (- 20))
+  (<= (+ (- x_7) x_3) (- 14))
+  (<= x_7 2)
+  (<= (- x_7 x_2) 2)
+  (<= (- x_6) 2)
+  (<= (- (- x_6) x_7) 6)
+  (<= (+ (- x_6) x_7) (- 2))
+  (<= (+ x_6 x_3) (- 20)))
+10
+unsat
+(interpolants
+ (and (<= 14 (+ (* (- 1) x_7) (* (- 1) x_4)))
+     (>= (+ x_2 x_7) 0)
+     (<= (+ x_5 (* (- 1) x_6)) (- 2))
+     (>= (+ x_3 (* (- 1) x_2)) (- 4))))
+(:arith-add-rows     65
+ :arith-assert-lower 19
+ :arith-assert-upper 9
+ :arith-conflicts    1
+ :arith-pivots       14
+ :conflicts          1
+ :max-memory         1.23
+ :memory             1.23
+ :mk-bool-var        29
+ :num-allocs         22232
+ :num-checks         1
+ :rlimit-count       2562
+ :time               0.00)
+unsat
+(<= 16 (+ x_6 (* (- 1) x_4)))
+(ast-vector
+  (<= (- x_6) 0)
+  (<= (+ (- x_6) x_5) (- 2))
+  (<= (- x_6 x_5) 6)
+  (<= (- x_2 x_3) 4)
+  (<= (- (- x_7) x_2) 0)
+  (<= x_7 4)
+  (<= (- x_7 x_5) (- 4))
+  (<= (- (- x_1) x_5) 0)
+  (<= (- (- x_1) x_6) 0)
+  (<= x_1 4)
+  (<= (- x_1 x_6) (- 10))
+  (<= (- x_0) 2)
+  (<= (- (- x_0) x_6) 8)
+  (<= x_4 2)
+  (<= (- x_4 x_7) (- 10))
+  (<= (+ x_4 x_7) (- 14)))
+5
+unsat
+(interpolants
+ (and (>= x_2 (- 6)) (<= (+ x_2 x_7) (- 4))))
+(:arith-assert-lower 11
+ :arith-assert-upper 11
+ :arith-conflicts    1
+ :conflicts          1
+ :max-memory         1.09
+ :memory             1.09
+ :mk-bool-var        23
+ :num-allocs         17929
+ :num-checks         1
+ :rlimit-count       864
+ :time               0.00)
+unsat
+(<= x_7 (- 8))
+(ast-vector
+  (<= (- x_2) (- 4))
+  (<= x_7 (- 2))
+  (<= (+ x_7 x_2) (- 4))
+  (<= (- x_3) (- 4))
+  (<= (+ x_3 x_7) 2))
+4
+unsat
+(interpolants
+ (>= x_1 10))
+(:arith-add-rows     16
+ :arith-assert-lower 17
+ :arith-assert-upper 10
+ :arith-conflicts    1
+ :arith-pivots       6
+ :conflicts          1
+ :max-memory         1.12
+ :memory             1.12
+ :mk-bool-var        28
+ :num-allocs         18013
+ :num-checks         1
+ :rlimit-count       1298
+ :time               0.00)
+unsat
+(<= 10 x_1)
+(ast-vector
+  (<= (- x_1) (- 10))
+  (<= (- x_7) (- 2))
+  (<= (+ (- x_7) x_1) (- 4))
+  (<= x_3 2)
+  (<= (- x_3 x_7) 10)
+  (<= (- x_6) 0)
+  (<= (- (- x_6) x_1) 8)
+  (<= x_5 2)
+  (<= (- x_5 x_6) (- 2))
+  (<= (- x_0) 0)
+  (<= (- (- x_2) x_7) (- 10))
+  (<= (- (- x_2) x_0) 0)
+  (<= x_2 8))
+2
+unsat
+(interpolants
+ (<= x_2 (- 10)))
+(:arith-add-rows     4
+ :arith-assert-lower 17
+ :arith-assert-upper 6
+ :arith-conflicts    1
+ :arith-pivots       3
+ :conflicts          1
+ :max-memory         1.12
+ :memory             1.12
+ :mk-bool-var        24
+ :num-allocs         18007
+ :num-checks         1
+ :rlimit-count       939
+ :time               0.00)
+unsat
+(<= x_2 (- 12))
+(ast-vector
+  (<= x_2 (- 12))
+  (<= (- x_9) (- 8))
+  (<= (- (- x_9) x_2) 8)
+  (<= (- x_0) (- 10))
+  (<= (+ (- x_0) x_2) 2)
+  (<= (+ (- x_6) x_2) (- 2)))
+11
+unsat
+(interpolants
+ (>= x_4 10))
+(:arith-assert-lower 19
+ :arith-assert-upper 11
+ :arith-conflicts    1
+ :conflicts          1
+ :max-memory         1.12
+ :memory             1.12
+ :mk-bool-var        31
+ :num-allocs         18002
+ :num-checks         1
+ :rlimit-count       1010
+ :time               0.00)
+unsat
+(<= 10 x_4)
+(ast-vector
+  (<= x_9 0)
+  (<= (- x_4) (- 10))
+  (<= (- x_5) (- 4))
+  (<= (- (- x_5) x_4) 4)
+  (<= (+ (- x_5) x_4) 0)
+  (<= (- x_3) (- 6))
+  (<= (- (- x_1) x_3) 0)
+  (<= (- x_8) (- 6))
+  (<= x_7 (- 6))
+  (<= x_6 0))
+0
+unsat
+(interpolants
+ (<= 14 (+ (* (- 1) x_4) x_9)))
+(:arith-add-rows     14
+ :arith-assert-lower 11
+ :arith-assert-upper 11
+ :arith-conflicts    1
+ :arith-pivots       6
+ :conflicts          1
+ :max-memory         1.09
+ :memory             1.09
+ :mk-bool-var        23
+ :num-allocs         17836
+ :num-checks         1
+ :rlimit-count       1163
+ :time               0.00)
+unsat
+(<= 14 (+ x_9 (* (- 1) x_4)))
+(ast-vector
+  (<= (- x_1) (- 6))
+  (<= x_4 (- 18))
+  (<= (- x_4 x_9) (- 14))
+  (<= (- x_4 x_1) (- 2)))
+12
+unsat
+(interpolants
+ (<= (+ x_6 (* (- 1) x_3)) 6))
+(:arith-add-rows     9
+ :arith-assert-lower 9
+ :arith-assert-upper 17
+ :arith-conflicts    1
+ :arith-pivots       6
+ :conflicts          1
+ :max-memory         1.11
+ :memory             1.11
+ :mk-bool-var        27
+ :num-allocs         17895
+ :num-checks         1
+ :rlimit-count       1096
+ :time               0.00)
+unsat
+(<= (+ x_6 (* (- 1) x_3)) 6)
+(ast-vector
+  (<= x_8 (- 8))
+  (<= x_5 (- 4))
+  (<= x_6 (- 10))
+  (<= (- x_6 x_8) (- 8))
+  (<= (+ x_2 x_8) (- 2))
+  (<= (+ (- x_3) x_6) 6)
+  (<= (- x_3 x_6) 2))
+6
+unsat
+(interpolants
+ (>= x_1 (- 6)))
+(:arith-assert-lower 16
+ :arith-assert-upper 8
+ :arith-conflicts    1
+ :conflicts          1
+ :max-memory         1.11
+ :memory             1.11
+ :mk-bool-var        25
+ :num-allocs         18064
+ :num-checks         1
+ :rlimit-count       860
+ :time               0.00)
+unsat
+(<= 0 x_1)
+(ast-vector
+  (<= (- x_1) 0)
+  (<= (- x_9) (- 10))
+  (<= (- (- x_9) x_1) 6)
+  (<= (- x_2) 5)
+  (<= (- x_2 x_1) 2)
+  (<= (- x_2 x_9) (- 6))
+  (<= (- x_7) 4)
+  (<= (+ (- x_5) x_1) (- 8)))
+12
+unsat
+(interpolants
+ (>= x_1 2))
+(:arith-assert-lower 12
+ :arith-assert-upper 14
+ :arith-conflicts    1
+ :conflicts          1
+ :max-memory         1.12
+ :memory             1.12
+ :mk-bool-var        27
+ :num-allocs         18013
+ :num-checks         1
+ :rlimit-count       993
+ :time               0.00)
+unsat
+(<= 2 x_1)
+(ast-vector
+  (<= (- x_3) 6)
+  (<= x_2 (- 8))
+  (<= (+ x_2 x_3) (- 4))
+  (<= x_7 (- 2))
+  (<= (+ x_7 x_3) (- 4))
+  (<= (- x_5) 6)
+  (<= (- (- x_6) x_5) (- 2))
+  (<= (- x_6 x_7) 0)
+  (<= (- x_1) (- 2))
+  (<= x_1 8)
+  (<= (+ x_1 x_7) (- 10))
+  (<= (+ (- x_4) x_2) (- 2))
+  (<= (- x_4 x_1) 0)
+  (<= (- x_9) 8)
+  (<= (- (- x_9) x_2) 4)
+  (<= (- x_8 x_1) 6))
+0
+unsat
+(interpolants
+ (and (<= (- 2) x_8) (>= x_5 0)))
+(:arith-add-rows     15
+ :arith-assert-lower 12
+ :arith-assert-upper 11
+ :arith-conflicts    1
+ :arith-pivots       6
+ :conflicts          1
+ :max-memory         1.11
+ :memory             1.11
+ :mk-bool-var        24
+ :num-allocs         18066
+ :num-checks         1
+ :rlimit-count       1220
+ :time               0.00)
+unsat
+(<= (- 6) (+ x_5 x_1))
+(ast-vector
+  (<= (- x_8) 2)
+  (<= x_8 (- 2))
+  (<= (- x_3) 2)
+  (<= x_3 0)
+  (<= (- x_5) 0)
+  (<= (- x_5 x_3) 2)
+  (<= (- (- x_1) x_3) 6)
+  (<= (- x_1 x_8) 2)
+  (<= (+ x_1 x_8) 12)
+  (<= (- (- x_9) x_5) 6)
+  (<= (- x_9 x_5) 2))
+15
+unsat
+(interpolants
+ (and (<= (- 8) (+ (* (- 1) x_9) (* (- 1) x_7))) (>= (+ x_9 x_3) 8)))
+(:arith-add-rows     7
+ :arith-assert-lower 18
+ :arith-assert-upper 7
+ :arith-conflicts    1
+ :arith-pivots       2
+ :conflicts          1
+ :max-memory         1.13
+ :memory             1.13
+ :mk-bool-var        26
+ :num-allocs         18057
+ :num-checks         1
+ :rlimit-count       1132
+ :time               0.00)
+unsat
+(<= x_7 x_3)
+(ast-vector
+  (<= (- x_9) (- 2))
+  (<= (- x_5) (- 4))
+  (<= (- (- x_5) x_9) (- 4))
+  (<= (- x_6) (- 6))
+  (<= (- x_4) 0)
+  (<= (- (- x_4) x_9) 6)
+  (<= x_7 4)
+  (<= (- x_7 x_9) (- 4))
+  (<= (+ x_7 x_9) 8)
+  (<= (- x_7 x_4) 4)
+  (<= (- (- x_3) x_9) (- 8))
+  (<= (- (- x_3) x_4) (- 4)))
+4
+unsat
+(interpolants
+ (<= 4 x_1))
+(:arith-assert-lower 17
+ :arith-assert-upper 6
+ :arith-conflicts    1
+ :conflicts          1
+ :max-memory         1.11
+ :memory             1.11
+ :mk-bool-var        24
+ :num-allocs         18209
+ :num-checks         1
+ :rlimit-count       996
+ :time               0.00)
+unsat
+(<= 4 x_1)
+(ast-vector
+  (<= (- x_1) (- 4))
+  (<= (- (- x_9) x_1) 6)
+  (<= (+ (- x_9) x_1) (- 8))
+  (<= x_5 (- 8))
+  (<= (- x_5 x_1) (- 4)))
+19
+unsat
+(interpolants
+ (<= x_6 (- 8)))
+(:arith-assert-lower 9
+ :arith-assert-upper 13
+ :arith-conflicts    1
+ :conflicts          1
+ :max-memory         1.09
+ :memory             1.09
+ :mk-bool-var        23
+ :num-allocs         17793
+ :num-checks         1
+ :rlimit-count       766
+ :time               0.00)
+unsat
+(<= x_6 (- 8))
+(ast-vector
+  (<= (- x_4) (- 6))
+  (<= (- (- x_9) x_4) (- 2))
+  (<= x_6 (- 8))
+  (<= (- x_6 x_4) 6))
+8
+unsat
+(interpolants
+ (>= (+ x_2 (* (- 1) x_9)) 2))
+(:arith-assert-lower 9
+ :arith-assert-upper 13
+ :arith-conflicts    1
+ :conflicts          1
+ :max-memory         1.09
+ :memory             1.09
+ :mk-bool-var        23
+ :num-allocs         17960
+ :num-checks         1
+ :rlimit-count       855
+ :time               0.00)
+unsat
+(<= 8 (+ x_2 (* (- 1) x_9)))
+(ast-vector
+  (<= (- x_2) 2)
+  (<= x_2 (- 2))
+  (<= x_9 4)
+  (<= (- x_9 x_2) (- 8))
+  (<= (+ x_9 x_2) (- 10))
+  (<= x_8 (- 2))
+  (<= (- x_8 x_2) (- 10)))
+11
+unsat
+(interpolants
+ (and (<= 18 (+ (* (- 1) x_9) x_6)) (>= x_0 0) (<= x_6 4)))
+(:arith-add-rows     37
+ :arith-assert-lower 11
+ :arith-assert-upper 12
+ :arith-conflicts    1
+ :arith-pivots       10
+ :conflicts          1
+ :max-memory         1.20
+ :memory             1.20
+ :mk-bool-var        24
+ :num-allocs         22019
+ :num-checks         1
+ :rlimit-count       1760
+ :time               0.00)
+unsat
+(<= (+ x_9 (* (- 1) x_0)) (- 6))
+(ast-vector
+  (<= (- x_6) (- 4))
+  (<= x_6 4)
+  (<= x_9 (- 12))
+  (<= (- x_9 x_6) (- 18))
+  (<= x_1 (- 8))
+  (<= (- x_1 x_6) (- 2))
+  (<= (- x_0) 0)
+  (<= (+ (- x_0) x_9) 10))
+18
+unsat
+(interpolants
+ (<= x_9 0))
+(:arith-assert-lower 14
+ :arith-assert-upper 11
+ :arith-conflicts    1
+ :conflicts          1
+ :max-memory         1.12
+ :memory             1.12
+ :mk-bool-var        26
+ :num-allocs         17944
+ :num-checks         1
+ :rlimit-count       887
+ :time               0.00)
+unsat
+(<= x_9 0)
+(ast-vector
+  (<= (- x_1) (- 10))
+  (<= (- x_8) 2)
+  (<= (- x_2) 8)
+  (<= (+ (- x_2) x_1) (- 10))
+  (<= x_9 0)
+  (<= x_7 (- 4))
+  (<= (+ x_7 x_1) (- 6))
+  (<= (- x_5 x_8) 8))
+0
+unsat
+(interpolants
+ (<= x_9 0))
+(:arith-assert-lower 7
+ :arith-assert-upper 15
+ :arith-conflicts    1
+ :conflicts          1
+ :max-memory         1.09
+ :memory             1.09
+ :mk-bool-var        23
+ :num-allocs         17872
+ :num-checks         1
+ :rlimit-count       778
+ :time               0.00)
+unsat
+(<= x_9 0)
+(ast-vector
+  (<= x_9 0)
+  (<= x_0 0)
+  (<= (+ x_0 x_9) (- 10)))
+4
+unsat
+(interpolants
+ (>= x_3 0))
+(:arith-assert-lower 10
+ :arith-assert-upper 11
+ :arith-conflicts    1
+ :conflicts          1
+ :max-memory         1.09
+ :memory             1.09
+ :mk-bool-var        22
+ :num-allocs         17874
+ :num-checks         1
+ :rlimit-count       723
+ :time               0.00)
+unsat
+(<= 8 x_3)
+(ast-vector
+  (<= (- x_3) (- 8)))
+8
+unsat
+(interpolants
+ (and (<= x_7 (- 24)) (<= x_1 0)))
+(:arith-add-rows     33
+ :arith-assert-lower 7
+ :arith-assert-upper 15
+ :arith-conflicts    1
+ :arith-pivots       10
+ :conflicts          1
+ :max-memory         1.09
+ :memory             1.09
+ :mk-bool-var        23
+ :num-allocs         17818
+ :num-checks         1
+ :rlimit-count       1547
+ :time               0.00)
+unsat
+(<= (+ x_7 x_1) (- 24))
+(ast-vector
+  (<= x_7 (- 24))
+  (<= (+ (- x_2) x_7) (- 2))
+  (<= x_2 (- 8))
+  (<= (+ x_2 x_7) (- 10))
+  (<= x_1 0)
+  (<= (+ (- x_4) x_7) (- 10))
+  (<= x_4 0)
+  (<= (+ x_4 x_7) 2))
+12
+unsat
+(interpolants
+ (and (<= x_9 (- 2)) (>= x_7 0)))
+(:arith-add-rows     8
+ :arith-assert-lower 11
+ :arith-assert-upper 13
+ :arith-conflicts    1
+ :arith-pivots       3
+ :conflicts          1
+ :max-memory         1.10
+ :memory             1.10
+ :mk-bool-var        25
+ :num-allocs         18034
+ :num-checks         1
+ :rlimit-count       1063
+ :time               0.00)
+unsat
+(<= (+ x_9 (* (- 1) x_7)) (- 4))
+(ast-vector
+  (<= x_9 (- 4))
+  (<= x_4 (- 10))
+  (<= (+ x_4 x_9) 14)
+  (<= (- x_5) 8)
+  (<= x_5 (- 6))
+  (<= (+ x_5 x_9) 2)
+  (<= (- x_2) (- 1))
+  (<= (+ (- x_2) x_9) 12)
+  (<= (+ (- x_2) x_4) 0)
+  (<= (- (- x_2) x_5) 8)
+  (<= (+ x_2 x_9) 0)
+  (<= (- x_7) 0))
+11
+unsat
+(interpolants
+ (and (<= x_7 (- 4)) (>= x_1 2)))
+(:arith-add-rows     15
+ :arith-assert-lower 13
+ :arith-assert-upper 10
+ :arith-conflicts    1
+ :arith-pivots       6
+ :conflicts          1
+ :max-memory         1.09
+ :memory             1.09
+ :mk-bool-var        24
+ :num-allocs         17972
+ :num-checks         1
+ :rlimit-count       1212
+ :time               0.00)
+unsat
+(<= (+ x_7 (* (- 1) x_1)) (- 6))
+(ast-vector
+  (<= x_7 (- 4))
+  (<= (- x_5) 6)
+  (<= (- x_1) (- 2))
+  (<= x_1 2)
+  (<= (- x_4) (- 10))
+  (<= (- (- x_4) x_7) 4)
+  (<= (+ (- x_4) x_5) (- 4))
+  (<= (- x_2) (- 26))
+  (<= (- (- x_2) x_7) (- 12))
+  (<= (+ (- x_2) x_5) (- 20))
+  (<= (- (- x_2) x_4) (- 20)))
+37
+unsat
+(interpolants
+ (and (>= x_5 6) (>= (+ x_7 (* (- 1) x_5)) 8)))
+(:arith-add-rows     22
+ :arith-assert-lower 7
+ :arith-assert-upper 14
+ :arith-conflicts    1
+ :arith-pivots       8
+ :conflicts          1
+ :max-memory         1.09
+ :memory             1.09
+ :mk-bool-var        22
+ :num-allocs         17859
+ :num-checks         1
+ :rlimit-count       1258
+ :time               0.00)
+unsat
+(<= 20 (+ x_7 x_5))
+(ast-vector
+  (<= (- x_5) (- 6))
+  (<= (- (- x_5) x_7) (- 8))
+  (<= (- x_5 x_7) (- 8)))
+27
+unsat
+(interpolants
+ (<= x_4 6))
+(:arith-assert-lower 12
+ :arith-assert-upper 12
+ :arith-conflicts    1
+ :conflicts          1
+ :max-memory         1.11
+ :memory             1.11
+ :mk-bool-var        25
+ :num-allocs         17930
+ :num-checks         1
+ :rlimit-count       848
+ :time               0.00)
+unsat
+(<= x_4 6)
+(ast-vector
+  (<= (- x_2) 2)
+  (<= (- x_1) (- 10))
+  (<= (- (- x_1) x_2) 6)
+  (<= (+ (- x_1) x_2) 2)
+  (<= (- x_4) (- 2))
+  (<= x_4 6)
+  (<= (- x_7) 2))
+6
+unsat
+(interpolants
+ (<= 8 x_8))
+(:arith-add-rows     7
+ :arith-assert-lower 14
+ :arith-assert-upper 15
+ :arith-conflicts    1
+ :arith-pivots       3
+ :conflicts          1
+ :max-memory         1.12
+ :memory             1.12
+ :mk-bool-var        30
+ :num-allocs         18049
+ :num-checks         1
+ :rlimit-count       1191
+ :time               0.00)
+unsat
+(<= 8 x_8)
+(ast-vector
+  (<= (- x_9) (- 2))
+  (<= (- x_4) 6)
+  (<= (- (- x_7) x_4) (- 4))
+  (<= x_7 (- 10))
+  (<= (- x_7 x_4) (- 4))
+  (<= (- x_8) (- 8))
+  (<= (- (- x_8) x_9) (- 2))
+  (<= (- x_8 x_4) 16)
+  (<= (- (- x_3) x_9) (- 10))
+  (<= (- (- x_6) x_3) (- 6))
+  (<= (- x_6 x_8) (- 8)))
+9
+unsat
+(interpolants
+ (and (<= x_5 (- 2)) (>= x_8 (- 2))))
+(:arith-add-rows     15
+ :arith-assert-lower 7
+ :arith-assert-upper 15
+ :arith-conflicts    1
+ :arith-pivots       5
+ :conflicts          1
+ :max-memory         1.09
+ :memory             1.09
+ :mk-bool-var        23
+ :num-allocs         17878
+ :num-checks         1
+ :rlimit-count       1121
+ :time               0.00)
+unsat
+(<= x_5 x_8)
+(ast-vector
+  (<= (- x_8) 2)
+  (<= x_8 0)
+  (<= x_5 (- 2))
+  (<= x_7 16)
+  (<= (+ x_7 x_8) 6))
+14
+unsat
+(interpolants
+ (and (<= x_7 (- 16)) (>= (+ x_7 (* (- 1) x_0)) 4)))
+(:arith-add-rows     18
+ :arith-assert-lower 9
+ :arith-assert-upper 12
+ :arith-conflicts    1
+ :arith-pivots       5
+ :conflicts          1
+ :max-memory         1.09
+ :memory             1.09
+ :mk-bool-var        22
+ :num-allocs         17934
+ :num-checks         1
+ :rlimit-count       1246
+ :time               0.00)
+unsat
+(<= (+ x_7 x_0) (- 36))
+(ast-vector
+  (<= x_7 (- 16))
+  (<= x_0 6)
+  (<= (- x_0 x_7) (- 4))
+  (<= (+ x_0 x_7) 10))
+38
+unsat
+(interpolants
+ (<= x_7 6))
+(:arith-assert-lower 11
+ :arith-assert-upper 11
+ :arith-conflicts    1
+ :conflicts          1
+ :max-memory         1.09
+ :memory             1.09
+ :mk-bool-var        23
+ :num-allocs         17995
+ :num-checks         1
+ :rlimit-count       844
+ :time               0.00)
+unsat
+(<= x_7 6)
+(ast-vector
+  (<= x_7 (- 8))
+  (<= (- x_1 x_7) 2))
+45
+unsat
+(interpolants
+ (and (<= x_4 (- 4)) (<= (+ x_3 (* (- 1) x_4)) 0)))
+(:arith-add-rows     14
+ :arith-assert-lower 12
+ :arith-assert-upper 9
+ :arith-conflicts    1
+ :arith-pivots       10
+ :conflicts          1
+ :max-memory         1.09
+ :memory             1.09
+ :mk-bool-var        22
+ :num-allocs         18000
+ :num-checks         1
+ :rlimit-count       1093
+ :time               0.00)
+unsat
+(<= (+ x_3 x_4) (- 8))
+(ast-vector
+  (<= (+ (- x_4) x_3) 0)
+  (<= x_4 (- 4)))
+13
+unsat
+(interpolants
+ (and (<= x_1 (- 4)) (>= x_0 10) (<= (+ x_0 x_2) (- 6))))
+(:arith-add-rows     8
+ :arith-assert-lower 14
+ :arith-assert-upper 10
+ :arith-conflicts    1
+ :arith-pivots       5
+ :conflicts          1
+ :max-memory         1.11
+ :memory             1.11
+ :mk-bool-var        25
+ :num-allocs         18132
+ :num-checks         1
+ :rlimit-count       1089
+ :time               0.00)
+unsat
+(<= (+ x_1 x_2) (- 26))
+(ast-vector
+  (<= (- x_0) (- 10))
+  (<= (- x_7) 10)
+  (<= x_7 4)
+  (<= (+ (- x_8) x_0) 2)
+  (<= (- x_8 x_0) 8)
+  (<= x_1 (- 10))
+  (<= (- x_1 x_7) 6)
+  (<= x_2 14)
+  (<= (+ x_2 x_0) (- 6)))
+4
+unsat
+(interpolants
+ (<= (+ x_8 x_7) 6))
+(:arith-add-rows     18
+ :arith-assert-lower 18
+ :arith-assert-upper 9
+ :arith-conflicts    1
+ :arith-pivots       7
+ :conflicts          1
+ :max-memory         1.12
+ :memory             1.12
+ :mk-bool-var        28
+ :num-allocs         18217
+ :num-checks         1
+ :rlimit-count       1435
+ :time               0.00)
+unsat
+(<= (+ x_8 x_7) 6)
+(ast-vector
+  (<= x_1 6)
+  (<= x_8 0)
+  (<= (+ x_8 x_1) 2)
+  (<= (- (- x_0) x_1) (- 6))
+  (<= (- (- x_2) x_1) 8)
+  (<= (+ x_7 x_8) 6)
+  (<= (- x_5 x_2) (- 2))
+  (<= (- x_9) (- 6)))
+11
+unsat
+(interpolants
+ (<= x_8 (- 2)))
+(:arith-assert-lower 8
+ :arith-assert-upper 13
+ :arith-conflicts    1
+ :conflicts          1
+ :max-memory         1.09
+ :memory             1.09
+ :mk-bool-var        22
+ :num-allocs         17877
+ :num-checks         1
+ :rlimit-count       801
+ :time               0.00)
+unsat
+(<= x_8 (- 2))
+(ast-vector
+  (<= x_8 (- 2)))
+15
+unsat
+(interpolants
+ (>= x_4 0))
+(:arith-assert-lower 12
+ :arith-assert-upper 10
+ :arith-conflicts    1
+ :conflicts          1
+ :max-memory         1.09
+ :memory             1.09
+ :mk-bool-var        23
+ :num-allocs         17965
+ :num-checks         1
+ :rlimit-count       837
+ :time               0.00)
+unsat
+(<= 0 x_4)
+(ast-vector
+  (<= (- x_4) 0)
+  (<= (- x_8) 4)
+  (<= x_8 (- 4)))
+130
+unsat
+(interpolants
+ (>= x_5 2))
+(:arith-assert-lower 12
+ :arith-assert-upper 12
+ :arith-conflicts    1
+ :conflicts          1
+ :max-memory         1.12
+ :memory             1.12
+ :mk-bool-var        25
+ :num-allocs         18006
+ :num-checks         1
+ :rlimit-count       937
+ :time               0.00)
+unsat
+(<= 2 x_5)
+(ast-vector
+  (<= x_4 6)
+  (<= (- x_6) 4)
+  (<= (- x_5) (- 2))
+  (<= (- (- x_5) x_6) (- 4))
+  (<= (- x_8) 12)
+  (<= (+ (- x_8) x_4) 14)
+  (<= (- (- x_8) x_6) 4)
+  (<= x_8 12)
+  (<= (+ x_8 x_6) 10)
+  (<= (- x_1) 2)
+  (<= x_1 (- 2))
+  (<= (- x_9) (- 1))
+  (<= (+ (- x_9) x_4) 8)
+  (<= (- (- x_9) x_6) (- 2))
+  (<= (- (- x_9) x_8) 4)
+  (<= (+ (- x_9) x_8) 6)
+  (<= (+ (- x_9) x_1) (- 6)))
+26
+unsat
+(interpolants
+ (<= 16 x_5))
+(:arith-add-rows     13
+ :arith-assert-lower 13
+ :arith-assert-upper 8
+ :arith-conflicts    1
+ :arith-pivots       7
+ :conflicts          1
+ :max-memory         1.20
+ :memory             1.20
+ :mk-bool-var        22
+ :num-allocs         21628
+ :num-checks         1
+ :rlimit-count       1132
+ :time               0.00)
+unsat
+(<= 16 x_5)
+(ast-vector
+  (<= (- x_5) (- 16)))
+22
+unsat
+(interpolants
+ (<= x_1 2))
+(:arith-assert-lower 16
+ :arith-assert-upper 9
+ :arith-conflicts    1
+ :conflicts          1
+ :max-memory         1.11
+ :memory             1.11
+ :mk-bool-var        26
+ :num-allocs         17978
+ :num-checks         1
+ :rlimit-count       835
+ :time               0.00)
+unsat
+(<= x_1 2)
+(ast-vector
+  (<= (- x_1) 10)
+  (<= x_1 2)
+  (<= (- x_6) (- 10))
+  (<= (- (- x_3) x_1) 2)
+  (<= x_3 (- 4))
+  (<= (- x_8) 4)
+  (<= x_5 (- 2)))
+2
+unsat
+(interpolants
+ (<= x_1 (- 10)))
+(:arith-assert-lower 10
+ :arith-assert-upper 12
+ :arith-conflicts    1
+ :conflicts          1
+ :max-memory         1.09
+ :memory             1.09
+ :mk-bool-var        23
+ :num-allocs         17934
+ :num-checks         1
+ :rlimit-count       797
+ :time               0.00)
+unsat
+(<= x_1 (- 10))
+(ast-vector
+  (<= x_1 (- 10))
+  (<= (- x_8) 0)
+  (<= (+ x_8 x_1) 2)
+  (<= (- x_5) 4)
+  (<= (+ (- x_5) x_1) (- 6)))
+6
+unsat
+(interpolants
+ (>= x_8 4))
+(:arith-assert-lower 11
+ :arith-assert-upper 15
+ :arith-conflicts    1
+ :conflicts          1
+ :max-memory         1.11
+ :memory             1.11
+ :mk-bool-var        27
+ :num-allocs         17951
+ :num-checks         1
+ :rlimit-count       954
+ :time               0.00)
+unsat
+(<= 4 x_8)
+(ast-vector
+  (<= (- x_8) (- 4))
+  (<= x_8 6)
+  (<= x_0 4)
+  (<= x_9 4)
+  (<= (+ x_9 x_0) (- 4))
+  (<= (- x_1) (- 4))
+  (<= (+ (- x_1) x_0) 22)
+  (<= (+ x_1 x_0) (- 2))
+  (<= (- x_7) (- 2))
+  (<= (- (- x_7) x_9) 0)
+  (<= (- (- x_7) x_1) 12))
+12
+unsat
+(interpolants
+ (and (<= x_6 (- 8)) (>= (+ x_2 x_6) 10)))
+(:arith-add-rows     14
+ :arith-assert-lower 10
+ :arith-assert-upper 15
+ :arith-conflicts    1
+ :arith-pivots       5
+ :conflicts          1
+ :max-memory         1.10
+ :memory             1.10
+ :mk-bool-var        26
+ :num-allocs         17893
+ :num-checks         1
+ :rlimit-count       1209
+ :time               0.00)
+unsat
+(<= 18 x_2)
+(ast-vector
+  (<= (- x_2) 2)
+  (<= x_3 6)
+  (<= (+ x_3 x_2) 8)
+  (<= (- (- x_9) x_2) 6)
+  (<= (- x_9 x_3) (- 2))
+  (<= (- (- x_6) x_2) (- 10))
+  (<= (+ (- x_6) x_3) 6)
+  (<= x_6 (- 8))
+  (<= (+ x_6 x_3) 8)
+  (<= (- x_4) (- 10))
+  (<= (+ (- x_4) x_3) 18)
+  (<= (+ (- x_4) x_6) 2))
+7
+unsat
+(interpolants
+ (>= x_4 0))
+(:arith-add-rows     17
+ :arith-assert-lower 16
+ :arith-assert-upper 8
+ :arith-conflicts    1
+ :arith-pivots       4
+ :conflicts          1
+ :max-memory         1.12
+ :memory             1.12
+ :mk-bool-var        25
+ :num-allocs         18051
+ :num-checks         1
+ :rlimit-count       1318
+ :time               0.00)
+unsat
+(<= 5 x_4)
+(ast-vector
+  (<= (- x_5) (- 6))
+  (<= x_5 8)
+  (<= (- x_4) (- 7))
+  (<= (- (- x_4) x_5) (- 4))
+  (<= (- x_9 x_4) 2))
+13
+unsat
+(interpolants
+ (and (<= x_3 4) (>= (+ x_8 (* (- 1) x_4)) 6) (>= (+ x_3 x_4) 6)))
+(:arith-add-rows     12
+ :arith-assert-lower 13
+ :arith-assert-upper 10
+ :arith-conflicts    1
+ :arith-pivots       5
+ :conflicts          1
+ :max-memory         1.11
+ :memory             1.11
+ :mk-bool-var        24
+ :num-allocs         17966
+ :num-checks         1
+ :rlimit-count       1136
+ :time               0.00)
+unsat
+(<= 4 (+ x_8 (* (- 1) x_3)))
+(ast-vector
+  (<= x_8 8)
+  (<= (- (- x_2) x_8) 0)
+  (<= (+ (- x_2) x_8) 8)
+  (<= (- x_1) (- 6))
+  (<= x_1 6)
+  (<= x_3 4)
+  (<= (- (- x_4) x_3) (- 6))
+  (<= (- x_4 x_8) (- 6)))
+16
+unsat
+(interpolants
+ (>= x_9 (- 4)))
+(:arith-assert-lower 13
+ :arith-assert-upper 8
+ :arith-conflicts    1
+ :conflicts          1
+ :max-memory         1.09
+ :memory             1.09
+ :mk-bool-var        22
+ :num-allocs         17899
+ :num-checks         1
+ :rlimit-count       660
+ :time               0.00)
+unsat
+(<= (- 4) x_9)
+(ast-vector
+  (<= (- x_9) 0))
+4
+unsat
+(interpolants
+ (<= x_1 (- 4)))
+(:arith-assert-lower 10
+ :arith-assert-upper 13
+ :arith-conflicts    1
+ :conflicts          1
+ :max-memory         1.09
+ :memory             1.09
+ :mk-bool-var        24
+ :num-allocs         17846
+ :num-checks         1
+ :rlimit-count       798
+ :time               0.00)
+unsat
+(<= x_1 (- 4))
+(ast-vector
+  (<= x_8 (- 2))
+  (<= (- x_6) (- 6))
+  (<= (+ (- x_6) x_8) (- 2))
+  (<= x_1 (- 4))
+  (<= (- x_1 x_6) (- 10)))
+5
+unsat
+(interpolants
+ (<= x_4 (- 2)))
+(:arith-add-rows     22
+ :arith-assert-lower 13
+ :arith-assert-upper 8
+ :arith-conflicts    1
+ :arith-pivots       8
+ :conflicts          1
+ :max-memory         1.09
+ :memory             1.09
+ :mk-bool-var        22
+ :num-allocs         18012
+ :num-checks         1
+ :rlimit-count       1340
+ :time               0.00)
+unsat
+(<= x_4 (- 2))
+(ast-vector
+  (<= (- x_4) 12)
+  (<= x_4 (- 2)))
+33
+unsat
+(interpolants
+ (>= x_9 0))
+(:arith-assert-lower 10
+ :arith-assert-upper 12
+ :arith-conflicts    1
+ :conflicts          1
+ :max-memory         1.09
+ :memory             1.09
+ :mk-bool-var        23
+ :num-allocs         18016
+ :num-checks         1
+ :rlimit-count       867
+ :time               0.00)
+unsat
+(<= 0 x_9)
+(ast-vector
+  (<= (- x_9) (- 8))
+  (<= (- x_2) (- 6))
+  (<= (- (- x_2) x_9) 2))
+30
+unsat
+(interpolants
+ (>= x_1 4))
+(:arith-assert-lower 12
+ :arith-assert-upper 19
+ :arith-conflicts    1
+ :conflicts          1
+ :max-memory         1.12
+ :memory             1.12
+ :mk-bool-var        32
+ :num-allocs         17782
+ :num-checks         1
+ :rlimit-count       987
+ :time               0.00)
+unsat
+(<= 4 x_1)
+(ast-vector
+  (<= (- x_3) (- 2))
+  (<= x_3 2)
+  (<= (- x_9) (- 6))
+  (<= x_4 (- 10))
+  (<= (+ x_4 x_3) 0)
+  (<= (- x_1) (- 4))
+  (<= x_1 4)
+  (<= (- x_8) (- 4))
+  (<= x_5 (- 10))
+  (<= (+ x_5 x_1) (- 4))
+  (<= x_0 0)
+  (<= (+ (- x_2) x_3) (- 2)))
+2
+unsat
+(interpolants
+ (<= (+ x_4 (* (- 1) x_9)) (- 10)))
+(:arith-assert-lower 15
+ :arith-assert-upper 8
+ :arith-conflicts    1
+ :conflicts          1
+ :max-memory         1.10
+ :memory             1.10
+ :mk-bool-var        24
+ :num-allocs         18070
+ :num-checks         1
+ :rlimit-count       947
+ :time               0.00)
+unsat
+(<= (+ x_4 (* (- 1) x_9)) (- 10))
+(ast-vector
+  (<= x_5 14)
+  (<= (- x_4) 6)
+  (<= (- x_9) 4)
+  (<= (+ (- x_9) x_5) (- 6))
+  (<= (+ (- x_9) x_4) (- 10))
+  (<= x_9 8)
+  (<= (- x_2) (- 2))
+  (<= (- x_2 x_4) 8)
+  (<= (- x_1) (- 14))
+  (<= (- (- x_1) x_5) (- 22))
+  (<= (+ (- x_1) x_5) (- 2))
+  (<= (- (- x_1) x_9) (- 2))
+  (<= (+ (- x_1) x_2) (- 20)))
+12
+unsat
+(interpolants
+ (<= 4 x_8))
+(:arith-add-rows     9
+ :arith-assert-lower 12
+ :arith-assert-upper 13
+ :arith-conflicts    1
+ :arith-pivots       4
+ :conflicts          1
+ :max-memory         1.11
+ :memory             1.11
+ :mk-bool-var        26
+ :num-allocs         18002
+ :num-checks         1
+ :rlimit-count       1152
+ :time               0.00)
+unsat
+(<= 4 x_8)
+(ast-vector
+  (<= x_1 6)
+  (<= (- x_8) (- 4))
+  (<= (- (- x_8) x_0) (- 2))
+  (<= (+ (- x_8) x_1) 8)
+  (<= x_8 8)
+  (<= (- x_7) (- 14))
+  (<= (- (- x_7) x_0) (- 12))
+  (<= (- x_7 x_0) 0))
+16
+unsat
+(interpolants
+ (<= x_3 (- 10)))
+(:arith-assert-lower 12
+ :arith-assert-upper 9
+ :arith-conflicts    1
+ :conflicts          1
+ :max-memory         1.10
+ :memory             1.10
+ :mk-bool-var        22
+ :num-allocs         18067
+ :num-checks         1
+ :rlimit-count       866
+ :time               0.00)
+unsat
+(<= x_3 (- 10))
+(ast-vector
+  (<= x_3 (- 18)))
+16
+unsat
+(interpolants
+ (and (<= x_2 6) (>= (+ x_1 (* (- 1) x_3)) 2)))
+(:arith-add-rows     32
+ :arith-assert-lower 15
+ :arith-assert-upper 11
+ :arith-conflicts    1
+ :arith-pivots       13
+ :conflicts          1
+ :max-memory         1.11
+ :memory             1.11
+ :mk-bool-var        27
+ :num-allocs         18091
+ :num-checks         1
+ :rlimit-count       1723
+ :time               0.00)
+unsat
+(<= (+ x_2 (+ (* (- 1) x_1) x_3)) 4)
+(ast-vector
+  (<= (- x_9) 6)
+  (<= x_2 6)
+  (<= x_4 (- 4))
+  (<= (+ (- x_1) x_4) (- 8))
+  (<= x_1 (- 2))
+  (<= (- x_1 x_9) (- 10))
+  (<= (+ x_1 x_2) 6)
+  (<= (- x_8) (- 2))
+  (<= (+ (- x_8) x_2) (- 10))
+  (<= (- x_3) 10)
+  (<= (+ (- x_3) x_1) 10)
+  (<= (- (- x_3) x_8) (- 6))
+  (<= (- x_3 x_1) (- 2)))
+13
+unsat
+(interpolants
+ (>= x_4 6))
+(:arith-assert-lower 10
+ :arith-assert-upper 15
+ :arith-conflicts    1
+ :conflicts          1
+ :max-memory         1.10
+ :memory             1.10
+ :mk-bool-var        26
+ :num-allocs         17861
+ :num-checks         1
+ :rlimit-count       875
+ :time               0.00)
+unsat
+(<= 6 x_4)
+(ast-vector
+  (<= (- x_2) 8)
+  (<= x_2 (- 2))
+  (<= (- x_1) (- 4))
+  (<= (- x_4) (- 6))
+  (<= (- x_7) 2)
+  (<= (- (- x_7) x_4) 8)
+  (<= (- x_7 x_4) 4)
+  (<= (- x_6) (- 4)))
+4
+unsat
+(interpolants
+ (<= 14 x_1))
+(:arith-add-rows     6
+ :arith-assert-lower 6
+ :arith-assert-upper 15
+ :arith-conflicts    1
+ :arith-pivots       3
+ :conflicts          1
+ :max-memory         1.09
+ :memory             1.09
+ :mk-bool-var        22
+ :num-allocs         17815
+ :num-checks         1
+ :rlimit-count       915
+ :time               0.00)
+unsat
+(<= 14 x_1)
+(ast-vector
+  (<= (- x_1) (- 14)))
+16
+unsat
+(interpolants
+ (>= x_1 (- 8)))
+(:arith-assert-lower 11
+ :arith-assert-upper 14
+ :arith-conflicts    1
+ :conflicts          1
+ :max-memory         1.12
+ :memory             1.12
+ :mk-bool-var        26
+ :num-allocs         17864
+ :num-checks         1
+ :rlimit-count       901
+ :time               0.00)
+unsat
+(<= (- 8) x_1)
+(ast-vector
+  (<= x_3 4)
+  (<= (- x_9) 2)
+  (<= (+ (- x_9) x_3) 6)
+  (<= (- x_1) 8)
+  (<= x_1 (- 4))
+  (<= (- x_4) (- 4))
+  (<= (+ (- x_4) x_3) (- 12))
+  (<= (- (- x_4) x_9) (- 8))
+  (<= (+ (- x_4) x_9) (- 8))
+  (<= x_8 4)
+  (<= (+ x_8 x_1) (- 14))
+  (<= (- x_6) (- 6))
+  (<= (- (- x_6) x_3) (- 4)))
+7
+unsat
+(interpolants
+ (<= (+ x_8 (* (- 1) x_0)) 8))
+(:arith-assert-lower 9
+ :arith-assert-upper 12
+ :arith-conflicts    1
+ :conflicts          1
+ :max-memory         1.09
+ :memory             1.09
+ :mk-bool-var        22
+ :num-allocs         17916
+ :num-checks         1
+ :rlimit-count       799
+ :time               0.00)
+unsat
+(<= (+ x_8 (* (- 1) x_0)) 8)
+(ast-vector
+  (<= x_8 0)
+  (<= (+ (- x_0) x_8) 8)
+  (<= x_0 0)
+  (<= (+ x_0 x_8) (- 4)))
+38
+unsat
+(interpolants
+ (and (<= (+ x_7 (* (- 1) x_5)) (- 10)) (<= x_5 6)))
+(:arith-add-rows     5
+ :arith-assert-lower 14
+ :arith-assert-upper 10
+ :arith-conflicts    1
+ :arith-pivots       3
+ :conflicts          1
+ :max-memory         1.12
+ :memory             1.12
+ :mk-bool-var        25
+ :num-allocs         18032
+ :num-checks         1
+ :rlimit-count       1050
+ :time               0.00)
+unsat
+(<= x_7 (- 4))
+(ast-vector
+  (<= (- x_9) (- 10))
+  (<= (- (- x_9) x_7) (- 4))
+  (<= (- x_5) 2)
+  (<= (- (- x_5) x_7) 8)
+  (<= (+ (- x_5) x_7) (- 10))
+  (<= (- (- x_5) x_9) 6)
+  (<= x_5 6)
+  (<= (- x_2) 8)
+  (<= x_2 4)
+  (<= (- x_2 x_9) (- 2))
+  (<= (+ (- x_0) x_5) (- 12))
+  (<= (+ (- x_0) x_2) 0)
+  (<= (- x_0 x_5) 16))
+7
+unsat
+(interpolants
+ (<= 2 x_9))
+(:arith-add-rows     3
+ :arith-assert-lower 13
+ :arith-assert-upper 8
+ :arith-conflicts    1
+ :arith-pivots       1
+ :conflicts          1
+ :max-memory         1.09
+ :memory             1.09
+ :mk-bool-var        22
+ :num-allocs         17958
+ :num-checks         1
+ :rlimit-count       850
+ :time               0.00)
+unsat
+(<= 2 x_9)
+(ast-vector
+  (<= (- x_9) (- 6)))
+16
+unsat
+(interpolants
+ (and (>= (+ x_5 x_6) 8)
+     (<= (+ x_6 x_2) 0)
+     (>= (+ x_2 x_8) 0)
+     (>= x_3 8)
+     (>= x_1 (- 4))))
+(:arith-add-rows     33
+ :arith-assert-lower 18
+ :arith-assert-upper 6
+ :arith-conflicts    1
+ :arith-pivots       7
+ :conflicts          1
+ :max-memory         1.20
+ :memory             1.20
+ :mk-bool-var        25
+ :num-allocs         22099
+ :num-checks         1
+ :rlimit-count       1587
+ :time               0.00)
+unsat
+(<= 12 (+ x_5 (+ x_3 (+ x_8 x_1))))
+(ast-vector
+  (<= (- x_5) (- 2))
+  (<= (- (- x_6) x_5) (- 8))
+  (<= (- x_3) (- 8))
+  (<= (- (- x_3) x_6) 6)
+  (<= (- x_3 x_5) 4)
+  (<= (- x_2) 0)
+  (<= x_2 16)
+  (<= (+ x_2 x_6) 0)
+  (<= (- (- x_8) x_2) 0)
+  (<= (- x_1) 4))
+5
+unsat
+(interpolants
+ (<= x_6 0))
+(:arith-assert-lower 17
+ :arith-assert-upper 12
+ :arith-conflicts    1
+ :conflicts          1
+ :max-memory         1.12
+ :memory             1.12
+ :mk-bool-var        30
+ :num-allocs         18106
+ :num-checks         1
+ :rlimit-count       997
+ :time               0.00)
+unsat
+(<= x_6 0)
+(ast-vector
+  (<= (- x_3) 4)
+  (<= x_3 2)
+  (<= x_1 2)
+  (<= (+ x_1 x_3) 4)
+  (<= (- x_7) 2)
+  (<= (- (- x_7) x_1) 6)
+  (<= (- x_4) 0)
+  (<= (- x_9) (- 8))
+  (<= x_9 8)
+  (<= x_6 (- 2))
+  (<= (+ x_6 x_3) (- 8))
+  (<= (+ x_6 x_1) (- 10))
+  (<= (+ (- x_5) x_6) (- 4))
+  (<= x_5 (- 4)))
+6
+unsat
+(interpolants
+ (<= (- 6) x_0))
+(:arith-add-rows     6
+ :arith-assert-lower 15
+ :arith-assert-upper 6
+ :arith-conflicts    1
+ :arith-pivots       2
+ :conflicts          1
+ :max-memory         1.09
+ :memory             1.09
+ :mk-bool-var        22
+ :num-allocs         18057
+ :num-checks         1
+ :rlimit-count       914
+ :time               0.00)
+unsat
+(<= (- 6) x_0)
+(ast-vector
+  (<= (- x_0) 6)
+  (<= x_0 4))
+97
+unsat
+(interpolants
+ (and (<= x_5 (- 4)) (>= (+ x_7 (* (- 1) x_8)) 6)))
+(:arith-add-rows     28
+ :arith-assert-lower 8
+ :arith-assert-upper 15
+ :arith-conflicts    1
+ :arith-pivots       8
+ :conflicts          1
+ :max-memory         1.10
+ :memory             1.10
+ :mk-bool-var        24
+ :num-allocs         17856
+ :num-checks         1
+ :rlimit-count       1570
+ :time               0.00)
+unsat
+(<= 14 (+ x_7 (+ (* (- 1) x_8) (* (- 2) x_5))))
+(ast-vector
+  (<= x_7 6)
+  (<= x_8 (- 4))
+  (<= (- x_8 x_7) (- 6))
+  (<= (+ x_8 x_1) (- 2))
+  (<= x_5 (- 4))
+  (<= (+ x_5 x_7) (- 12)))
+20
+unsat
+(interpolants
+ (and (<= 0 (+ (* (- 1) x_1) (* (- 1) x_9)))
+     (<= (+ x_6 x_7) 6)
+     (>= x_8 2)
+     (<= (+ x_8 (* (- 1) x_6)) (- 8))
+     (>= (+ x_9 (* (- 1) x_6)) 2)))
+(:arith-add-rows     18
+ :arith-assert-lower 14
+ :arith-assert-upper 13
+ :arith-conflicts    1
+ :arith-pivots       5
+ :conflicts          1
+ :max-memory         1.22
+ :memory             1.22
+ :mk-bool-var        28
+ :num-allocs         22136
+ :num-checks         1
+ :rlimit-count       1522
+ :time               0.00)
+unsat
+(<= (+ x_1 x_7) (- 2))
+(ast-vector
+  (<= (- x_9) (- 2))
+  (<= (- x_8) (- 10))
+  (<= (- (- x_6) x_8) 0)
+  (<= (+ (- x_6) x_8) (- 8))
+  (<= (- x_6 x_9) (- 2))
+  (<= x_1 8)
+  (<= (- x_1 x_9) (- 2))
+  (<= (+ x_1 x_9) 0)
+  (<= (+ (- x_0) x_1) 10)
+  (<= (+ x_0 x_1) 8)
+  (<= x_7 (- 10))
+  (<= (+ x_7 x_6) 6)
+  (<= (+ (- x_2) x_7) (- 2))
+  (<= x_5 6))
+5
+unsat
+(interpolants
+ (and (<= 8 (+ x_2 x_1)) (>= (+ x_5 x_9) 6) (<= x_1 (- 4))))
+(:arith-add-rows     13
+ :arith-assert-lower 15
+ :arith-assert-upper 9
+ :arith-conflicts    1
+ :arith-pivots       6
+ :conflicts          1
+ :max-memory         1.11
+ :memory             1.11
+ :mk-bool-var        25
+ :num-allocs         18018
+ :num-checks         1
+ :rlimit-count       1223
+ :time               0.00)
+unsat
+(<= 4 (+ (* 2 x_5) (+ x_2 x_9)))
+(ast-vector
+  (<= (- (- x_1) x_6) 6)
+  (<= x_1 (- 6))
+  (<= (- x_2) (- 6))
+  (<= (+ (- x_2) x_6) (- 4))
+  (<= (- (- x_2) x_1) (- 8))
+  (<= (- (- x_2) x_5) 2)
+  (<= (- x_9) (- 2))
+  (<= (- (- x_9) x_6) 6)
+  (<= (- (- x_9) x_1) (- 4))
+  (<= (- (- x_9) x_5) (- 6))
+  (<= (+ x_8 x_6) (- 8)))
+4
+unsat
+(interpolants
+ (<= x_9 (- 4)))
+(:arith-assert-lower 10
+ :arith-assert-upper 18
+ :arith-conflicts    1
+ :conflicts          1
+ :max-memory         1.12
+ :memory             1.12
+ :mk-bool-var        29
+ :num-allocs         17744
+ :num-checks         1
+ :rlimit-count       969
+ :time               0.00)
+unsat
+(<= x_9 (- 4))
+(ast-vector
+  (<= x_9 (- 4))
+  (<= (- x_4) 8)
+  (<= (+ (- x_4) x_9) 2)
+  (<= x_6 (- 4))
+  (<= (+ x_8 x_9) 4)
+  (<= (- x_2) 4)
+  (<= (+ x_2 x_4) 8)
+  (<= (+ (- x_0) x_9) 8)
+  (<= x_0 4)
+  (<= (+ x_0 x_2) 2))
+3
+unsat
+(interpolants
+ (>= x_6 (- 2)))
+(:arith-assert-lower 10
+ :arith-assert-upper 13
+ :arith-conflicts    1
+ :conflicts          1
+ :max-memory         1.10
+ :memory             1.10
+ :mk-bool-var        24
+ :num-allocs         17847
+ :num-checks         1
+ :rlimit-count       871
+ :time               0.00)
+unsat
+(<= (- 2) x_6)
+(ast-vector
+  (<= (- x_5) (- 2))
+  (<= x_5 8)
+  (<= x_7 (- 18))
+  (<= (+ x_7 x_5) (- 12))
+  (<= (+ x_1 x_7) (- 20))
+  (<= (- x_6) 2))
+33
+unsat
+(interpolants
+ (>= x_8 8))
+(:arith-assert-lower 9
+ :arith-assert-upper 12
+ :arith-conflicts    1
+ :conflicts          1
+ :max-memory         1.09
+ :memory             1.09
+ :mk-bool-var        22
+ :num-allocs         17778
+ :num-checks         1
+ :rlimit-count       711
+ :time               0.00)
+unsat
+(<= 8 x_8)
+(ast-vector
+  (<= (- x_8) (- 8))
+  (<= x_8 10))
+15
+unsat
+(interpolants
+ (<= 10 x_8))
+(:arith-add-rows     12
+ :arith-assert-lower 13
+ :arith-assert-upper 8
+ :arith-conflicts    1
+ :arith-pivots       5
+ :conflicts          1
+ :max-memory         1.09
+ :memory             1.09
+ :mk-bool-var        22
+ :num-allocs         17964
+ :num-checks         1
+ :rlimit-count       1036
+ :time               0.00)
+unsat
+(<= 20 x_8)
+(ast-vector
+  (<= (- x_8) (- 20)))
+41
+unsat
+(interpolants
+ (<= 30 (+ (* (- 2) x_2) (* (- 2) x_1))))
+(:arith-add-rows     13
+ :arith-assert-lower 14
+ :arith-assert-upper 8
+ :arith-conflicts    1
+ :arith-pivots       6
+ :conflicts          1
+ :max-memory         1.21
+ :memory             1.21
+ :mk-bool-var        23
+ :num-allocs         21628
+ :num-checks         1
+ :rlimit-count       1229
+ :time               0.00)
+unsat
+(<= (+ x_1 x_2) (- 18))
+(ast-vector
+  (<= x_1 0)
+  (<= x_2 (- 18))
+  (<= (- x_2 x_1) (- 8))
+  (<= x_8 4))
+16
+unsat
+(interpolants
+ (<= (+ x_9 x_8) 0))
+(:arith-assert-lower 13
+ :arith-assert-upper 8
+ :arith-conflicts    1
+ :conflicts          1
+ :max-memory         1.09
+ :memory             1.09
+ :mk-bool-var        22
+ :num-allocs         18018
+ :num-checks         1
+ :rlimit-count       801
+ :time               0.00)
+unsat
+(<= (+ x_9 x_8) 0)
+(ast-vector
+  (<= x_9 (- 4))
+  (<= x_8 0)
+  (<= (+ x_8 x_9) 0))
+9
+unsat
+(interpolants
+ (and (<= 14 x_5) (<= x_9 6)))
+(:arith-add-rows     11
+ :arith-assert-lower 18
+ :arith-assert-upper 6
+ :arith-conflicts    1
+ :arith-pivots       5
+ :conflicts          1
+ :max-memory         1.10
+ :memory             1.10
+ :mk-bool-var        25
+ :num-allocs         18092
+ :num-checks         1
+ :rlimit-count       1167
+ :time               0.00)
+unsat
+(<= (+ x_9 (* (- 1) x_5)) (- 8))
+(ast-vector
+  (<= (- x_9) 0)
+  (<= x_9 6)
+  (<= (- x_5) (- 14))
+  (<= x_2 (- 2))
+  (<= (- x_2 x_9) (- 2))
+  (<= (- x_4) (- 10))
+  (<= (+ (- x_4) x_9) (- 6))
+  (<= (- x_0) (- 12))
+  (<= (- (- x_0) x_2) 12)
+  (<= (- (- x_0) x_4) 4)
+  (<= (- x_8) 0))
+9
+unsat
+(interpolants
+ (<= x_3 (- 18)))
+(:arith-add-rows     19
+ :arith-assert-lower 9
+ :arith-assert-upper 12
+ :arith-conflicts    1
+ :arith-pivots       6
+ :conflicts          1
+ :max-memory         1.09
+ :memory             1.09
+ :mk-bool-var        22
+ :num-allocs         17923
+ :num-checks         1
+ :rlimit-count       1162
+ :time               0.00)
+unsat
+(<= x_3 (- 18))
+(ast-vector
+  (<= x_3 (- 18)))
+15
+unsat
+(interpolants
+ (and (<= x_8 (- 10)) (>= (+ x_8 (* (- 1) x_5)) 0)))
+(:arith-add-rows     12
+ :arith-assert-lower 16
+ :arith-assert-upper 9
+ :arith-conflicts    1
+ :arith-pivots       6
+ :conflicts          1
+ :max-memory         1.12
+ :memory             1.12
+ :mk-bool-var        26
+ :num-allocs         18108
+ :num-checks         1
+ :rlimit-count       1253
+ :time               0.00)
+unsat
+(<= (+ x_8 x_5) (- 20))
+(ast-vector
+  (<= x_8 (- 10))
+  (<= (- x_2) (- 8))
+  (<= (- (- x_2) x_8) 0)
+  (<= (- x_6) 0)
+  (<= (- (- x_6) x_8) 8)
+  (<= (- (- x_0) x_2) 2)
+  (<= (- (- x_0) x_6) 8)
+  (<= (+ x_0 x_8) 0)
+  (<= (- x_0 x_2) 0)
+  (<= (- x_0 x_6) (- 2))
+  (<= x_5 0)
+  (<= (- x_5 x_8) 0))
+19
+unsat
+(interpolants
+ (and (>= x_1 4) (>= x_4 0)))
+(:arith-add-rows     17
+ :arith-assert-lower 17
+ :arith-assert-upper 6
+ :arith-conflicts    1
+ :arith-pivots       6
+ :conflicts          1
+ :max-memory         1.10
+ :memory             1.10
+ :mk-bool-var        24
+ :num-allocs         18032
+ :num-checks         1
+ :rlimit-count       1202
+ :time               0.00)
+unsat
+(<= 10 (+ x_4 x_1))
+(ast-vector
+  (<= (- x_4) 0)
+  (<= x_4 4)
+  (<= (- (- x_6) x_4) (- 10))
+  (<= (- x_1) (- 10))
+  (<= (+ (- x_3) x_6) 4)
+  (<= (- x_2) (- 2))
+  (<= (- (- x_2) x_4) 8)
+  (<= (- (- x_2) x_1) (- 2))
+  (<= (- x_2 x_1) (- 8))
+  (<= (- x_2 x_3) (- 2)))
+1
+unsat
+(interpolants
+ (<= x_9 (- 4)))
+(:arith-assert-lower 10
+ :arith-assert-upper 11
+ :arith-conflicts    1
+ :conflicts          1
+ :max-memory         1.09
+ :memory             1.09
+ :mk-bool-var        22
+ :num-allocs         17842
+ :num-checks         1
+ :rlimit-count       756
+ :time               0.00)
+unsat
+(<= x_9 (- 4))
+(ast-vector
+  (<= (- x_9) 8)
+  (<= x_9 (- 4)))
+8
+unsat
+(interpolants
+ (and (<= 12 x_2) (>= x_3 (- 6))))
+(:arith-add-rows     4
+ :arith-assert-lower 12
+ :arith-assert-upper 8
+ :arith-conflicts    1
+ :arith-pivots       4
+ :conflicts          1
+ :max-memory         1.10
+ :memory             1.10
+ :mk-bool-var        21
+ :num-allocs         17888
+ :num-checks         1
+ :rlimit-count       896
+ :time               0.00)
+unsat
+(<= 18 (+ x_3 x_2))
+(ast-vector
+  (<= (- x_3) (- 6))
+  (<= x_3 8)
+  (<= (- x_2) (- 12)))
+32
+unsat
+(interpolants
+ (<= x_4 (- 8)))
+(:arith-assert-lower 10
+ :arith-assert-upper 13
+ :arith-conflicts    1
+ :conflicts          1
+ :max-memory         1.09
+ :memory             1.09
+ :mk-bool-var        24
+ :num-allocs         17812
+ :num-checks         1
+ :rlimit-count       834
+ :time               0.00)
+unsat
+(<= x_4 (- 8))
+(ast-vector
+  (<= x_9 (- 4))
+  (<= (- x_6) (- 6))
+  (<= (+ (- x_6) x_9) 8)
+  (<= x_4 (- 8))
+  (<= (- x_5) (- 10)))
+6
+unsat
+(interpolants
+ (and (<= (- 10) (+ x_1 x_0))
+     (<= (+ x_0 (* (- 1) x_3)) (- 4))
+     (<= (+ x_2 x_4) (- 10))
+     (>= (+ x_1 x_2) 2)
+     (<= x_1 6)))
+(:arith-add-rows     51
+ :arith-assert-lower 14
+ :arith-assert-upper 10
+ :arith-conflicts    1
+ :arith-pivots       14
+ :conflicts          1
+ :max-memory         1.19
+ :memory             1.19
+ :mk-bool-var        25
+ :num-allocs         22054
+ :num-checks         1
+ :rlimit-count       2312
+ :time               0.00)
+unsat
+(<= (- 2) (+ x_3 (* (- 1) x_4)))
+(ast-vector
+  (<= (- x_1) 0)
+  (<= x_1 6)
+  (<= (- x_2) 6)
+  (<= (- (- x_2) x_1) (- 2))
+  (<= (+ (- x_2) x_1) 6)
+  (<= (- (- x_0) x_1) 10)
+  (<= (- x_3) 6)
+  (<= (+ (- x_3) x_0) (- 4))
+  (<= x_3 8)
+  (<= (- x_3 x_1) (- 4))
+  (<= (+ x_4 x_2) (- 10)))
+2
+unsat
+(interpolants
+ (<= 4 x_7))
+(:arith-add-rows     12
+ :arith-assert-lower 10
+ :arith-assert-upper 11
+ :arith-conflicts    1
+ :arith-pivots       6
+ :conflicts          1
+ :max-memory         1.09
+ :memory             1.09
+ :mk-bool-var        22
+ :num-allocs         17923
+ :num-checks         1
+ :rlimit-count       1117
+ :time               0.00)
+unsat
+(<= 4 x_7)
+(ast-vector
+  (<= (- x_7) (- 8)))
+55
+unsat
+(interpolants
+ (<= x_7 (- 8)))
+(:arith-assert-lower 9
+ :arith-assert-upper 13
+ :arith-conflicts    1
+ :conflicts          1
+ :max-memory         1.09
+ :memory             1.09
+ :mk-bool-var        23
+ :num-allocs         17812
+ :num-checks         1
+ :rlimit-count       819
+ :time               0.00)
+unsat
+(<= x_7 (- 8))
+(ast-vector
+  (<= x_7 (- 8))
+  (<= (- x_8) (- 2)))
+16
+unsat
+(interpolants
+ (<= x_7 4))
+(:arith-assert-lower 6
+ :arith-assert-upper 15
+ :arith-conflicts    1
+ :conflicts          1
+ :max-memory         1.09
+ :memory             1.09
+ :mk-bool-var        22
+ :num-allocs         17840
+ :num-checks         1
+ :rlimit-count       787
+ :time               0.00)
+unsat
+(<= x_7 4)
+(ast-vector
+  (<= x_7 (- 14)))
+26
+unsat
+(interpolants
+ (<= 18 (+ (* (- 1) x_2) x_9)))
+(:arith-add-rows     10
+ :arith-assert-lower 10
+ :arith-assert-upper 11
+ :arith-conflicts    1
+ :arith-pivots       7
+ :conflicts          1
+ :max-memory         1.09
+ :memory             1.09
+ :mk-bool-var        22
+ :num-allocs         18007
+ :num-checks         1
+ :rlimit-count       1080
+ :time               0.00)
+unsat
+(<= (+ x_2 (* (- 1) x_9)) (- 26))
+(ast-vector
+  (<= x_2 (- 16))
+  (<= (- x_9) (- 10))
+  (<= (+ (- x_9) x_2) (- 26)))
+27
+rm -rf tests/benchmarks
+make[1]: Leaving directory '/home/jose/Documents/GithubProjects/master-thesis/Software/Cpp/OctagonsInterpolant'
