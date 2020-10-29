@@ -26,14 +26,14 @@ badd +60 euf_evaluation.tex
 badd +1 euf_performance.tex
 badd +95 euf_performance_2.tex
 badd +14 euf_conclusion.tex
-badd +7 octagonal.tex
+badd +3 octagonal.tex
 badd +1 oct_abstract.tex
 badd +1 euf_theorem.tex
 badd +26 oct_algorithm.tex
 badd +299 oct_implementation.tex
 badd +74 oct_evaluation.tex
 badd +1 oct_performance_1.tex
-badd +64 oct_performance_2.tex
+badd +1 oct_performance_2.tex
 badd +3 combination.tex
 badd +75 comb_abstract.tex
 badd +45 comb_algorithm.tex
@@ -54,7 +54,7 @@ badd +66 nelson-oppen-framework.tex
 badd +171 tools.tex
 badd +10 euf_abstract.tex
 badd +6 oct_conclusion.tex
-badd +2 comb_conclusion.tex
+badd +1 comb_conclusion.tex
 badd +119 appendix_a.tex
 badd +1 appendix_b.tex
 badd +1 appendix_c.tex
@@ -75,10 +75,6 @@ wincmd w
 wincmd _ | wincmd |
 split
 1wincmd k
-wincmd _ | wincmd |
-vsplit
-1wincmd h
-wincmd w
 wincmd w
 set nosplitbelow
 set nosplitright
@@ -87,16 +83,14 @@ set winminheight=0
 set winheight=1
 set winminwidth=0
 set winwidth=1
-exe '1resize ' . ((&lines * 41 + 42) / 85)
-exe 'vert 1resize ' . ((&columns * 97 + 146) / 293)
-exe '2resize ' . ((&lines * 41 + 42) / 85)
-exe 'vert 2resize ' . ((&columns * 97 + 146) / 293)
-exe '3resize ' . ((&lines * 41 + 42) / 85)
-exe 'vert 3resize ' . ((&columns * 72 + 146) / 293)
-exe '4resize ' . ((&lines * 41 + 42) / 85)
-exe 'vert 4resize ' . ((&columns * 122 + 146) / 293)
-exe '5resize ' . ((&lines * 41 + 42) / 85)
-exe 'vert 5resize ' . ((&columns * 195 + 146) / 293)
+exe '1resize ' . ((&lines * 19 + 20) / 40)
+exe 'vert 1resize ' . ((&columns * 71 + 71) / 143)
+exe '2resize ' . ((&lines * 18 + 20) / 40)
+exe 'vert 2resize ' . ((&columns * 71 + 71) / 143)
+exe '3resize ' . ((&lines * 18 + 20) / 40)
+exe 'vert 3resize ' . ((&columns * 71 + 71) / 143)
+exe '4resize ' . ((&lines * 19 + 20) / 40)
+exe 'vert 4resize ' . ((&columns * 71 + 71) / 143)
 argglobal
 setlocal fdm=manual
 setlocal fde=0
@@ -110,7 +104,7 @@ silent! normal! zE
 10,110fold
 10
 normal! zc
-let s:l = 159 - ((1 * winheight(0) + 20) / 41)
+let s:l = 159 - ((0 * winheight(0) + 9) / 19)
 if s:l < 1 | let s:l = 1 | endif
 exe s:l
 normal! zt
@@ -128,7 +122,7 @@ setlocal fml=1
 setlocal fdn=20
 setlocal fen
 silent! normal! zE
-let s:l = 1 - ((0 * winheight(0) + 20) / 41)
+let s:l = 1 - ((0 * winheight(0) + 9) / 18)
 if s:l < 1 | let s:l = 1 | endif
 exe s:l
 normal! zt
@@ -136,7 +130,7 @@ normal! zt
 normal! 016|
 wincmd w
 argglobal
-if bufexists("combination.tex") | buffer combination.tex | else | edit combination.tex | endif
+if bufexists("octagonal.tex") | buffer octagonal.tex | else | edit octagonal.tex | endif
 setlocal fdm=manual
 setlocal fde=0
 setlocal fmr={{{,}}}
@@ -146,7 +140,7 @@ setlocal fml=1
 setlocal fdn=20
 setlocal fen
 silent! normal! zE
-let s:l = 3 - ((0 * winheight(0) + 20) / 41)
+let s:l = 3 - ((0 * winheight(0) + 9) / 18)
 if s:l < 1 | let s:l = 1 | endif
 exe s:l
 normal! zt
@@ -154,52 +148,46 @@ normal! zt
 normal! 0
 wincmd w
 argglobal
-if bufexists("comb_conclusion.tex") | buffer comb_conclusion.tex | else | edit comb_conclusion.tex | endif
+if bufexists("oct_performance_2.tex") | buffer oct_performance_2.tex | else | edit oct_performance_2.tex | endif
 setlocal fdm=manual
 setlocal fde=0
 setlocal fmr={{{,}}}
 setlocal fdi=#
-setlocal fdl=0
+setlocal fdl=3
 setlocal fml=1
 setlocal fdn=20
 setlocal fen
 silent! normal! zE
-let s:l = 1 - ((0 * winheight(0) + 20) / 41)
-if s:l < 1 | let s:l = 1 | endif
-exe s:l
-normal! zt
+13,14fold
+15,16fold
+17,25fold
+8,33fold
+51,57fold
+59,66fold
+68,75fold
+77,84fold
+34,105fold
+1,105fold
 1
-normal! 0
-wincmd w
-argglobal
-if bufexists("comb_uniform_example.tex") | buffer comb_uniform_example.tex | else | edit comb_uniform_example.tex | endif
-setlocal fdm=manual
-setlocal fde=0
-setlocal fmr={{{,}}}
-setlocal fdi=#
-setlocal fdl=0
-setlocal fml=1
-setlocal fdn=20
-setlocal fen
-silent! normal! zE
-let s:l = 5 - ((0 * winheight(0) + 20) / 41)
+normal! zo
+34
+normal! zo
+let s:l = 98 - ((9 * winheight(0) + 9) / 19)
 if s:l < 1 | let s:l = 1 | endif
 exe s:l
 normal! zt
-5
+98
 normal! 0
 wincmd w
 4wincmd w
-exe '1resize ' . ((&lines * 41 + 42) / 85)
-exe 'vert 1resize ' . ((&columns * 97 + 146) / 293)
-exe '2resize ' . ((&lines * 41 + 42) / 85)
-exe 'vert 2resize ' . ((&columns * 97 + 146) / 293)
-exe '3resize ' . ((&lines * 41 + 42) / 85)
-exe 'vert 3resize ' . ((&columns * 72 + 146) / 293)
-exe '4resize ' . ((&lines * 41 + 42) / 85)
-exe 'vert 4resize ' . ((&columns * 122 + 146) / 293)
-exe '5resize ' . ((&lines * 41 + 42) / 85)
-exe 'vert 5resize ' . ((&columns * 195 + 146) / 293)
+exe '1resize ' . ((&lines * 19 + 20) / 40)
+exe 'vert 1resize ' . ((&columns * 71 + 71) / 143)
+exe '2resize ' . ((&lines * 18 + 20) / 40)
+exe 'vert 2resize ' . ((&columns * 71 + 71) / 143)
+exe '3resize ' . ((&lines * 18 + 20) / 40)
+exe 'vert 3resize ' . ((&columns * 71 + 71) / 143)
+exe '4resize ' . ((&lines * 19 + 20) / 40)
+exe 'vert 4resize ' . ((&columns * 71 + 71) / 143)
 tabnext 1
 if exists('s:wipebuf') && getbufvar(s:wipebuf, '&buftype') isnot# 'terminal'
   silent exe 'bwipe ' . s:wipebuf

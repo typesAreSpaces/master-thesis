@@ -48,7 +48,7 @@ Regardless, the benchmark
 was used with the purpose to compare their execution time
 on normal interpolants.
 
-\begin{figure}
+\begin{figure}[!ht]
   \centering
   \includegraphics[scale=0.6]{figures/octi_performance_graph_10_5_100}
   \caption{Performance comparison graph of UTVPI interpolant generation
@@ -56,7 +56,7 @@ on normal interpolants.
   \label{performance_graph_oct}
 \end{figure}
 
-\begin{figure}
+\begin{figure}[!ht]
   \centering
   \includegraphics[scale=0.6]{figures/octi_performance_graph_10_5_10000}
   \caption{Performance comparison graph of UTVPI interpolant generation
@@ -65,7 +65,7 @@ on normal interpolants.
   \label{performance_graph_oct_2}
 \end{figure}
 
-\begin{figure}
+\begin{figure}[!ht]
   \centering
   \includegraphics[scale=0.6]{figures/octi_performance_graph_10_20_100.png}
   \caption{Performance comparison graph of UTVPI interpolant generation
@@ -74,9 +74,25 @@ on normal interpolants.
   \label{performance_graph_oct_3}
 \end{figure}
 
-\begin{figure}
+\begin{figure}[!ht]
   \centering
   \includegraphics[scale=0.6]{figures/octi_performance_graph_10_20_10000.png}
+  \caption{Performance comparison graph of UTVPI interpolant generation
+  algorithms for the benchmark (l = 1000, m = 10, n = 20)} 
+
+  \label{performance_graph_oct_4}
+\end{figure}
+
+The last graph compares an upper bound of the number of addition
+operations required by iZ3 and our implementation. The upper
+bound in iZ3 denotes the number of row operations since the
+internal implementation in Z3 uses a matrix representation
+of the linear terms where the upper bound for our implementation
+counts the number of additions used to compute the interpolants.
+
+\begin{figure}[!ht]
+  \centering
+  \includegraphics[scale=0.6]{figures/octi_performance_add_ops_10_20_100.png}
   \caption{Performance comparison graph of UTVPI interpolant generation
   algorithms for the benchmark (l = 1000, m = 10, n = 20)} 
 
