@@ -1,7 +1,7 @@
 #include "OctagonInterpolant.h"
 
 OctagonInterpolant::OctagonInterpolant(z3::expr_vector const & assertions) :
-  OctagonParser(assertions), result(assertions.ctx())
+  OctagonParser(assertions), result(assertions.ctx()), num_elims(0)
 {
   // Optional:
   // Sort positions
@@ -32,6 +32,7 @@ OctagonInterpolant::OctagonInterpolant(z3::expr_vector const & assertions) :
 
 void OctagonInterpolant::elimination(UtvpiPosition pos_position, UtvpiPosition neg_position,
     VarValue v){
+  num_elims++;
   Octagon oct1(pos_position), oct2(neg_position);
   Bound new_bound = bounds[pos_position] + bounds[neg_position];
 #if _DEBUG_ELIM_

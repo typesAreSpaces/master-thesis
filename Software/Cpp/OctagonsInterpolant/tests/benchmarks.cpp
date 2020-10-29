@@ -265,6 +265,7 @@ void OCTSignature::iZ3Instance() const {
 
   out << "(check-sat)" << std::endl;
   out << "(get-interpolant a_part b_part)" << std::endl;
+  out << "(get-info :all-statistics)" << std::endl;
 
   out.close();
 }

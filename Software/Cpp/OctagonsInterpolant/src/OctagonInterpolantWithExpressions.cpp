@@ -6,5 +6,6 @@ OctagonInterpolantWithExpressions::OctagonInterpolantWithExpressions(z3::expr_ve
 }
 
 std::ostream & operator << (std::ostream & os, OctagonInterpolantWithExpressions const & octiexp){
-  return os << octiexp.removePrefix(octiexp.getInterpolant());
+  return os << octiexp.removePrefix(octiexp.getInterpolant()) << std::endl << 
+    octiexp.num_elims;
 }
