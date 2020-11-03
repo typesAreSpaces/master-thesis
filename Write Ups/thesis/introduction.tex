@@ -48,7 +48,7 @@ following two applications:
     the methodology provides sound results, it is certainly not complete.
     Several abstractions do not capture the
     semantics of programs due to the \emph{over-approximation} approach.
-    Interpolation techniques can be used to strength predicate
+    Interpolation techniques can be used to strengthen predicate
     abstractions by using interpolants constructed from valid 
     traces in the abstract model \cite{10.1145/876638.876643,
     10.1007/978-3-540-45069-6_1, 10.1145/982962.964021}.
@@ -91,17 +91,17 @@ into the following categories:
     theory. 
     In \cite{10.1007/11532231_26} the authors provide a Nelson-Oppen framework
     to compute interpolants. For the convex-case, the approach only 
-    exchange equalities as required by the Nelson-Oppen framework. For
+    exchanges equalities as required by the Nelson-Oppen framework. For
     the non-convex case, the authors require a resolution-based refutation proof
     to compute interpolants using Pudlak's algorithm. The introduction of the
     class of \emph{equality interpolating theories} is 
     considered among the most relevant contributions of the paper 
-    by the verification community. This is property about theories which states
+    by the verification community. This is a property about theories which states
     that if a theory is capable of proving a mixed equality $a = b$ (an equality
     which contains symbols from the two formulas in the interpolating problem)
-    then it exists a common term in the language of the theory $t$ (known as
+    then there exists a common term in the language of the theory $t$ (known as
     the interpolating-term) such that 
-    the theory can prove $a = t$ and $t = b$. The property facilities 
+    the theory can prove $a = t$ and $t = b$. The property facilitates 
     formula-splitting for interpolation purposes.
     In \cite{10.1007/978-3-642-00768-2_34} the authors modify a 
     resolution-based refutation proof by introducing common-terms in 
@@ -115,7 +115,7 @@ into the following categories:
       the theory solvers keep track of the interpolating-term 
       and propagate this term whenever
     possible}. 
-    However, this results is not generalizable
+    However, this result is not generalizable
     to non-convex theories due to internal constraints.
 
   \item Reduction-based approach: This method transforms the interpolation
@@ -126,7 +126,7 @@ into the following categories:
     ($LIA(\mathbb{Q})/LIA(\mathbb{R})$). 
     Additionally, they integrate the procedure with a 
     \emph{hierarchical reasoning} approach in order to incorporate 
-    the signature of theory for (quantifier-free) equalities with uninterpreted 
+    the signature of a theory for (quantifier-free) equalities with uninterpreted 
     functions.
 \end{itemize}
 
@@ -138,7 +138,7 @@ into the following categories:
     decision procedures 
     used in the thesis work.
   \item Chapters 3 discusses Kapur's uniform 
-    interpolanting algorithm for the theory of EUF.
+    interpolating algorithm for the theory of EUF.
     A modification to the Phase III of 
     Kapur's algorithm is proposed by introducing a 
     data structure for Horn clause processing. 
@@ -190,7 +190,7 @@ The contributions of the thesis can be summarized as follows:
     interpolation algorithm for the theory UTVPI
     proposed in \cite{KAPUR2017}.
   \item[4.] Implementation of the combination 
-    procedure for interpolating
+    procedure for the interpolating
     algorithm proposed in 
     \cite{10.1007/11532231_26} in order to 
     combine the implementations of item 1 and item 3.

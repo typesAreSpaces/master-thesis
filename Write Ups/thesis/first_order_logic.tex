@@ -36,7 +36,12 @@ denotes the formula $\forall x_1 . \forall x_2 \dots \forall x_n . \phi(x_1, \do
 
 \subsection{Semantics}
 
-In order to define a notion of truth in a first-order language is necessary to associate for each non-logical symbol (since logical symbols have established semantics from propositional logic) a denotation or mathematical object and an \emph{assignment} to the collection of variables. The two previous components are part of an \emph{structure} \cite{DBLP:books/daglib/0076838} (or interpretation \cite{DBLP:books/daglib/0080654}) for a first-order language.
+In order to define a notion of truth in a first-order language, it is necessary to 
+associate for each non-logical symbol (since logical symbols have established 
+semantics from propositional logic) a denotation or mathematical object and 
+an \emph{assignment} to the collection of variables. The two previous 
+components are part of a \emph{structure} \cite{DBLP:books/daglib/0076838} 
+(or interpretation \cite{DBLP:books/daglib/0080654}) for a first-order language.
 
 \begin{definition}
   Given a first-order language $\mathfrak{L}$, an interpretation $\mathfrak{I}$ is a pair $(\mathfrak{A}, \mathfrak{J})$, where $\mathfrak{A}$ is a non-empty domain (set of elements) and $\mathfrak{J}$ is a map that associates to the non-logical symbols from $\mathfrak{L}$ the following elements:
@@ -86,7 +91,11 @@ Notice that the extension of $s$ depends on the interpretation used.
     \item $   \models_{\mathfrak{I}, s}  \exists x . \psi$ if and only if exits $d \in \mathfrak{A},    \models_{\mathfrak{I}, s_{x \mapsto d}} \psi$, where $s_{x \mapsto d}$ is defined as in the previous item.
   \end{itemize}
 
-  If an interpretation and assignment satisfies a formula, then we say that the interpretation and the assignment are a model for the respective formula. A collection of formulas are satisfied by an interpretation and assignment if these model each formula in the collection.
+  If an interpretation and assignment satisfies a formula, then we 
+  say that the interpretation and the assignment are a model for the 
+  respective formula. A collection of formulas is satisfied by 
+  an interpretation and assignment if these model each formula 
+  in the collection.
 
   A formula $\psi$ is said to be a \emph{valid} 
   formula of the interpretation $\mathfrak{I}$ 

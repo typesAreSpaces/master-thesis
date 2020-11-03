@@ -1,14 +1,17 @@
 \subsection{Satisfiability and Satisfiability Modulo Theories}
 
-The satisfiability problem consists on finding a 
+The satisfiability problem consists of finding a 
 propositional assignment for a propositional formula. 
 This problem is at the core level of complexity theory, 
 defining an important class of problems known as 
-NP, which is a class whose
+NP, which includes problems whose
 algorithms seem to be intractable.
-Developments in algorithms and heuristics \cite{10.5555/2898950, 
-935565} have made possible to use satisfiability algorithms 
-to solve real-world problems in verification \footnote{These
+Developments in algorithms and heuristics 
+\cite{10.5555/2898950, 
+935565} have made it possible to use satisfiability 
+algorithms 
+to solve real-world problems in 
+verification \footnote{These
   advances do not provide an answer to the well-known P vs. NP
   problem. There are results indicating a class of problem instances
   for many of the SAT algorithms which cannot be solved in less that
@@ -16,9 +19,9 @@ to solve real-world problems in verification \footnote{These
 }.
 
 The DPLL algorithm \cite{10.1145/368273.368557} 
-(and other extensions) is the frequent algorithm
+(and other extensions) is the algorithm
 found in many SAT solvers. Fundamentally, it is a search-based algorithm
-which implements of operators (decide, unit-propagation, backtrack)
+which implements operators (decide, unit-propagation, backtrack)
 to find a satisfiable assignment. If the algorithm is not able to
 find a satisfying assignment for a formula, then it is possible to 
 extract a \emph{resolution proof} based on the traces of the search
@@ -58,8 +61,9 @@ operations.
   structure of the DPLL execution on figure \ref{dpll_figure}, i.e.
   if we rotate the proof-tree and mark the nodes by the pivots used
   we obtained a similar tree obtained by the execution of the DPLL
-  algorithm. This fact becomes relevant becomes it enables us 
-  to construct a resolution proof from the traces of a SAT solver used
+  algorithm. This fact becomes relevant because it enables us 
+  to construct a resolution proof from the traces of a SAT 
+  solver used
   in the theory combination part of the implementation. 
 
   \begin{figure}
@@ -86,7 +90,7 @@ variables but with terms of more complex signatures
 \cite{10.5555/1391237}. If we are given a boolean combination 
 of formulas from any theory that is capable of deciding the 
 satisfiability of any conjunction of formulas in the theory, 
-by using a \emph{lazy framework} integration with a SAT solver is 
+by using a \emph{lazy framework} integration with a SAT solver it is 
 possible to find either a model or declare unsatisfiable such boolean
 combination as follows: (i) first abstract the literals in the boolean
 combination to (pseudo) boolean propositions; (ii) find a satisfying

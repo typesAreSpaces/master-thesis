@@ -5,7 +5,7 @@ $\mathcal{V}(\psi)$ to be the set of non-logical symbols, variables
 and constants of formula $\psi$. Given an instance for the interpolation
 problem $(A, B)$ \footnote{For the rest of the thesis, we will denote the 
   first formula of an interpolation problem as the A-part 
-and the second component as the B-part}, 
+and the second component as the B-part.}, 
 we distinguish the following categories:
 
 \begin{itemize}
@@ -60,12 +60,12 @@ the interpolant for the pair $(\alpha, \beta)$.
 In his celebrated result \cite{10.2307/2963594}, Craig proved that for every pair
 $(\alpha, \beta)$ of formulas in first-order logic such that
 $\models \alpha \rightarrow \beta$, an interpolation formula exists. Nonetheless,
-there are many logics and theories that this result does not hold \cite{komori1978}.
+there are many logics and theories for which this result does not hold \cite{komori1978}.
 
 Usually, we see the interpolation problem defined differently in the literature, 
 where it is considered $\beta^{'}$ to be $\neg \beta$ and 
 the problem requires that the pair $(\alpha, \beta^{'})$
-is mutually contradictory (unsatisfiable). This definition was popularized by 
+be mutually contradictory (unsatisfiable). This definition was popularized by 
 McMillan \cite{10.1007/978-3-540-24730-2_2}. This shift of attention explains 
 partially the further development in interpolation generation algorithms 
 since many of these relied on SMT solvers that provided refutation proofs 
@@ -73,10 +73,10 @@ in order to (re)construct interpolants for different theories (and their
 combination) \cite{10.1007/978-3-642-02959-2_17, 
 10.1007/978-3-642-36742-7_9, mcmillan2011interpolants}.
 
-Relaxed definitions are considered to the interpolation 
+Relaxed definitions are considered for the interpolation 
 problem when dealing with specific
-theories \cite{10.1007/11532231_26} in a way that interpreted 
-function can be also part of the interpolant. The latter is 
+theories \cite{10.1007/11532231_26}, permitting interpreted
+functions to be included in the interpolant. The latter is 
 justified since otherwise, many interpolation formulas might not exist
 in different theories or the interpolants obtained might not 
 be relevant (for example, lisp programs). This is formalized as follows:
@@ -120,7 +120,8 @@ from \cite{ghilardi2020compactly}
 where the authors provide the following definition:
 
 \begin{definition}
-  Fix a theory $T$ and an existential formula $\exists \cev{e} . \phi(\cev{e}, \cev{z})$; call \emph{residue} of $\exists \cev{e} . \phi(\cev{e}, \cev{z})$ the following set of
+  Given a theory $T$ and an existential formula $\exists \cev{e} . \phi(\cev{e}, \cev{z})$; the 
+  \emph{residue} of $\exists \cev{e} . \phi(\cev{e}, \cev{z})$ is the following set of
   quantifier-free formulae:
 
   \begin{equation*}

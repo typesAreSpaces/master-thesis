@@ -46,13 +46,13 @@ extends the traditional Union-Find data structure with
 a \emph{proof-forest}, which consists of an additional 
 representation of the underlying equivalence relation that 
 does not compress paths whenever a call to the Find 
-operation is made. For efficient reasons, the Find 
-operation uses the path compression and weighted union.
+operation is made. For efficiency reasons, the Find 
+operation uses path compression and weighted union.
 
 The main observation in \cite{10.1007/978-3-540-32033-3_33} 
 is that, in order to recover an explanation between 
 two terms, by traversing the path between the two nodes 
-in the proof tree, the last edge in the path guarantees to 
+in the proof tree, the last edge in the path is guaranteed to 
 be part of the explanation. Intuitively, this follows 
 because only 
 the last Union operation was responsible for merging the 
