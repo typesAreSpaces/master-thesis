@@ -83,12 +83,16 @@ on normal interpolants.
   \label{performance_graph_oct_4}
 \end{figure}
 
-The last graph compares an upper bound of the number of addition
-operations required by iZ3 and our implementation. The upper
-bound in iZ3 denotes the number of row operations since the
+The following graph compares an upper bound of the number of 
+addition operations required by iZ3 and our implementation. 
+The upper bound in iZ3 denotes the number of row 
+operations since the
 internal implementation in Z3 uses a matrix representation
 of the linear terms where the upper bound for our implementation
 counts the number of additions used to compute the interpolants.
+The former is obtained using the z3-statistics feature
+from Z3; the latter is computed by introducing appropriate
+logging variables in our implementation.
 
 \begin{figure}[!ht]
   \centering
