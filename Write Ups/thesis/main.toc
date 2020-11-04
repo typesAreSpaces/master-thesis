@@ -1,0 +1,74 @@
+\babel@toc {english}{}
+\contentsline {chapter}{List of Figures}{xi}{chapter*.2}%
+\contentsline {chapter}{\numberline {1}Introduction}{1}{chapter.1}%
+\contentsline {section}{\numberline {1.1}Background}{2}{section.1.1}%
+\contentsline {section}{\numberline {1.2}Related work}{3}{section.1.2}%
+\contentsline {section}{\numberline {1.3}Outline of the thesis}{4}{section.1.3}%
+\contentsline {section}{\numberline {1.4}Contributions}{5}{section.1.4}%
+\contentsline {chapter}{\numberline {2}Preliminaries}{7}{chapter.2}%
+\contentsline {section}{\numberline {2.1}First-Order Predicate Logic}{7}{section.2.1}%
+\contentsline {subsection}{\numberline {2.1.1}Language}{7}{subsection.2.1.1}%
+\contentsline {subsection}{\numberline {2.1.2}Semantics}{9}{subsection.2.1.2}%
+\contentsline {section}{\numberline {2.2}Mathematical Theories}{11}{section.2.2}%
+\contentsline {subsection}{\numberline {2.2.1}Equality with uninterpreted functions}{11}{subsection.2.2.1}%
+\contentsline {subsection}{\numberline {2.2.2}Ordered commutative rings}{12}{subsection.2.2.2}%
+\contentsline {section}{\numberline {2.3}Interpolants}{13}{section.2.3}%
+\contentsline {subsection}{\numberline {2.3.1}Craig interpolation theorem}{14}{subsection.2.3.1}%
+\contentsline {subsection}{\numberline {2.3.2}Uniform Interpolant}{15}{subsection.2.3.2}%
+\contentsline {section}{\numberline {2.4}Decision Procedures}{16}{section.2.4}%
+\contentsline {subsection}{\numberline {2.4.1}Satisfiability and Satisfiability Modulo Theories}{16}{subsection.2.4.1}%
+\contentsline {subsection}{\numberline {2.4.2}Congruence Closure}{18}{subsection.2.4.2}%
+\contentsline {subsection}{\numberline {2.4.3}Satisfiability of Horn clauses with ground equations}{20}{subsection.2.4.3}%
+\contentsline {subsection}{\numberline {2.4.4}Nelson-Oppen framework for theory and interpolation combination}{21}{subsection.2.4.4}%
+\contentsline {section}{\numberline {2.5}General system description}{22}{section.2.5}%
+\contentsline {subsection}{\numberline {2.5.1}Minor modifications to Z3}{23}{subsection.2.5.1}%
+\contentsline {subsection}{\numberline {2.5.2}PicoSAT/TraceCheck Proof Format}{24}{subsection.2.5.2}%
+\contentsline {chapter}{\numberline {3}Uniform Interpolation algorithm for the theory of EUF}{28}{chapter.3}%
+\contentsline {section}{\numberline {3.1}Kapur's Uniform Interpolation Generation \\ Algorithm for EUF}{29}{section.3.1}%
+\contentsline {section}{\numberline {3.2}Implementation}{34}{section.3.2}%
+\contentsline {subsection}{\numberline {3.2.1}New conditional elimination step in Kapur's algorithm}{36}{subsection.3.2.1}%
+\contentsline {subsection}{\numberline {3.2.2}Invariants of the proposed conditional elimination step}{41}{subsection.3.2.2}%
+\contentsline {subsection}{\numberline {3.2.3}New conditional replacement step in Kapur's algorithm}{44}{subsection.3.2.3}%
+\contentsline {subsection}{\numberline {3.2.4}An additional application: checking membership of ground Horn clauses with Explanations}{48}{subsection.3.2.4}%
+\contentsline {section}{\numberline {3.3}Evaluation}{49}{section.3.3}%
+\contentsline {subsection}{\numberline {3.3.1}Detailed evaluation of examples}{49}{subsection.3.3.1}%
+\contentsline {subsubsection}{Symbol elimination example}{50}{section*.3}%
+\contentsline {subsubsection}{Simple example with dis-equality}{52}{section*.4}%
+\contentsline {subsection}{\numberline {3.3.2}Performance comparison with iZ3 and MathSat}{53}{subsection.3.3.2}%
+\contentsline {subsubsection}{Benchmark description}{53}{section*.5}%
+\contentsline {subsubsection}{Experimental results}{54}{section*.6}%
+\contentsline {section}{\numberline {3.4}Conclusions}{55}{section.3.4}%
+\contentsline {chapter}{\numberline {4}Uniform Interpolation algorithm for UTVPI Formulas}{58}{chapter.4}%
+\contentsline {section}{\numberline {4.1}Kapur's Uniform Interpolant Algorithm for the UTVPI theory}{59}{section.4.1}%
+\contentsline {section}{\numberline {4.2}Implementation}{59}{section.4.2}%
+\contentsline {subsection}{\numberline {4.2.1}Normal Forms and Ordering of UTVPI terms}{60}{subsection.4.2.1}%
+\contentsline {subsection}{\numberline {4.2.2}Bijection between normalized UTVPI terms and natural numbers}{61}{subsection.4.2.2}%
+\contentsline {section}{\numberline {4.3}Evaluation}{63}{section.4.3}%
+\contentsline {subsection}{\numberline {4.3.1}Detailed evaluation of examples}{63}{subsection.4.3.1}%
+\contentsline {subsection}{\numberline {4.3.2}Performance comparison with iZ3 and MathSat}{69}{subsection.4.3.2}%
+\contentsline {subsubsection}{Benchmark description}{69}{section*.7}%
+\contentsline {subsubsection}{Experimental results}{70}{section*.8}%
+\contentsline {section}{\numberline {4.4}Conclusions}{73}{section.4.4}%
+\contentsline {chapter}{\numberline {5}Interpolation algorithm for the theory combination of EUF and UTVPI}{74}{chapter.5}%
+\contentsline {section}{\numberline {5.1}A partially sound uniform interpolant generation algorithm for the combined theory of EUF and UTVPI}{76}{section.5.1}%
+\contentsline {subsection}{\numberline {5.1.1}A tableux-like uniform interpolant generation algorithm for EUF}{76}{subsection.5.1.1}%
+\contentsline {subsection}{\numberline {5.1.2}Our proposed partially sound uniform interpolant generation algorithm for EUF + UTVPI}{78}{subsection.5.1.2}%
+\contentsline {subsection}{\numberline {5.1.3}Termination, and partial soundness of the proposed algorithm}{80}{subsection.5.1.3}%
+\contentsline {subsection}{\numberline {5.1.4}Illustrating Example}{82}{subsection.5.1.4}%
+\contentsline {section}{\numberline {5.2}Yorsh-Musuvathi Interpolation Combination Framework}{83}{section.5.2}%
+\contentsline {section}{\numberline {5.3}Implementation}{84}{section.5.3}%
+\contentsline {section}{\numberline {5.4}Evaluation}{86}{section.5.4}%
+\contentsline {subsection}{\numberline {5.4.1}Detailed evaluation of a complete example}{86}{subsection.5.4.1}%
+\contentsline {subsubsection}{A simple example}{86}{section*.9}%
+\contentsline {section}{\numberline {5.5}Conclusions}{89}{section.5.5}%
+\contentsline {chapter}{\numberline {6}Future Work}{90}{chapter.6}%
+\contentsline {chapter}{Appendix A}{92}{chapter*.10}%
+\contentsline {section}{\numberline {6.1}Theorems about Interpolants}{92}{section.6.1}%
+\contentsline {subsection}{\numberline {6.1.1}Interpolants are closed under conjunction and disjunction}{92}{subsection.6.1.1}%
+\contentsline {subsection}{\numberline {6.1.2}Interpolants distribute conjunctions over disjunctions in the A-part}{93}{subsection.6.1.2}%
+\contentsline {chapter}{Appendix B}{95}{chapter*.11}%
+\contentsline {section}{\numberline {6.2}Trace for example in theory combination chapter}{95}{section.6.2}%
+\contentsline {chapter}{Appendix C}{105}{chapter*.12}%
+\contentsline {section}{\numberline {6.3}Congruence Closure with Explanation operation header}{105}{section.6.3}%
+\contentsline {section}{\numberline {6.4}Hornsat (Gallier's data structure) header}{107}{section.6.4}%
+\contentsline {chapter}{References}{109}{chapter*.13}%
