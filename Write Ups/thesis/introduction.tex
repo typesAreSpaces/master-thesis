@@ -1,27 +1,43 @@
 \chapter{Introduction}
 
-Modern society is witness to the impact computer software 
+Modern society is witness to the tremendous impact computer software 
 has had in recent years. The benefits of this massive 
 automation is endless. On the other hand, when software 
 fails, it becomes a catastrophe ranging from economic loss
 to threats to human life. 
 
-Due to strict and ambitious agendas, many software products
-are shipped with unseen and unintentional bugs which might potentially put
+Due to strict and ambitious schedules and emphasis 
+on profitability, 
+many software products
+are shipped with unseen and unintentional 
+bugs which might potentially put
 at risk people's lives. Several approaches have been 
 used to improve software quality. However, many of these approaches 
-offer partial coverage or might take an abysmal amount of human effort. Thus, these approaches cannot be considered practical. 
-Formal methods aim to bring a unique combination of automation, rigor, and 
-efficiency (whenever efficient algorithms exit for the verification task). 
-This thesis discusses a particular problem in software verification
-known as \emph{the interpolation problem} for the theories of the quantifier-free
-fragment of equality with uninterpreted functions (EUF) and unit two variable per
-inequality (UTVPI) and their combination. These two theories have been 
-studied extensively and researchers have found several applications for them. 
+offer partial coverage or might take an abysmal amount 
+of human effort. Thus, these approaches cannot be 
+considered practical. 
+Formal methods aim to bring a unique combination 
+of automation, rigor, and 
+efficiency (whenever efficient algorithms exit 
+for the verification task). 
+This thesis discusses a particular problem in 
+software verification
+known as \emph{the interpolation problem} for 
+the theories of the quantifier-free
+fragment of equality with uninterpreted functions 
+(EUF) and unit two variable per
+inequality (UTVPI) and their combination. These two 
+theories have been 
+studied extensively and researchers have found 
+several applications including verification of 
+hardware \cite{dilleuf} and useful 
+abstract interpretation domains 
+\cite{journals/corr/abs-cs-0703084}.
 
-\section{Background}
+\section{Problem Statement}
 
-An interpolant of a pair of logical formulas $(\alpha, \beta)$ 
+An interpolant of a mutually inconsistent
+pair of logical formulas $(\alpha, \beta)$ 
 is a logical formula $\gamma$
 such that $\alpha$ implies $\gamma$, $\beta \land \gamma$ is logically
 inconsistent, and $\gamma$ only has common symbols of $\alpha$ and $\beta$.
@@ -36,99 +52,101 @@ errors, crashes) of such software. In Chapter
 \ref{preliminaries}, an extensive review of the formal concept 
 is provided.
 
-Even though interpolants are not a direct concern in verification
-problems, these problems are found in the core algorithms of the 
+Even though interpolants are not an 
+immediate concern in verification
+problems, their use is found in the 
+core algorithms of the 
 following two applications:
 
 \begin{itemize}
   \item Refinement of abstract models: In order to improve 
     coverage and decrease the complexity in verification problems,
-    abstract interpretation has become a proper technique to 
-    accomplish the latter together with model checking. Despite the fact that 
+    abstract interpretation has become an 
+    effective technique to 
+    accomplish the latter together with 
+    model checking. Despite the fact that 
     the methodology provides sound results, it is certainly not complete.
     Several abstractions do not capture the
     semantics of programs due to the \emph{over-approximation} approach.
-    Interpolation techniques can be used to strengthen predicate
+    Interpolation techniques can be used 
+    to strengthen predicate
     abstractions by using interpolants constructed from valid 
     traces in the abstract model \cite{10.1145/876638.876643,
     10.1007/978-3-540-45069-6_1, 10.1145/982962.964021}.
   \item Invariant generation: following the same idea as in the previous
-    case, \emph{if a fixed point is obtained in the refinement process},
-    we can obtain a logical invariant of computer programs 
-    \footnote{The interpolation
-      generation approach discussed can be understood as a \emph{lazy framework}
-      similarly to SAT/SMT algorithms. The former is
-      about the production of interpolants, the latter is for 
-      assignments/models respectively. Both \emph{block/learn} the formulas
-    in order to find their results.}
-    Situations where this happens might be due to the finiteness of possible 
-    states in the program. It is worth mentioning that the 
-    invariant problem as stated in \cite{10.1145/363235.363259} 
-    is undecidable \cite{10.2307/1990888, 10.1145/371282.371285}.
+    case, \emph{if a fixed point} \cite{10.1007/11691372_33} 
+    \emph{is obtained in the refinement process},
+    we can obtain a logical invariant of computer programs.
+    The interpolation generation approach in this application can 
+    be understood as a \emph{lazy framework}
+    similar to SAT/SMT algorithms. The former is
+    about the production of interpolants, the latter is for 
+    assignments/models respectively. Both \emph{block/learn} 
+    new formulas in order to find their results.
 \end{itemize}
 
 \section{Related work}
 
-There are several interpolation algorithms for the theories
-involved in the thesis work. The approaches can be classified
-into the following categories:
+There are several existing interpolation algorithms for the theories
+discussed in the thesis work. On the one hand, there are algorithms
+relying on refutational proofs. The interpolant is constructed using a
+recursive function over the structure of the proof
+tree. In \cite{10.1007/978-3-540-24730-2_2,mcmillan2011interpolants}
+the author defines an interpolation calculus. This particular
+approach uses a proof tree produced by the SMT solver Z3 
+and does not need to modify any of Z3's internal mechanisms.
+Among the advantages of this approach is that
+theory combination is given for free since the SMT solver takes 
+care of this problem. On the other hand, the decision procedures
+involved in Z3 are not sufficiently integrated with its proof-producing 
+mechanism in the sense that it is possible to find 
+intermediate formulas in a proof-tree without explanation
+introduced as lemmas. 
+The latter impairs the interpolation calculus aforementioned 
+because it derives an interpolant by following specific 
+rules of inference.
 
-\begin{itemize}
-  \item Proof-based approach: This category relies on the availability
-    of a refutation proof.  The interpolant is constructed using a
-    recursive function over the structure of the proof
-    tree. In \cite{10.1007/978-3-540-24730-2_2,mcmillan2011interpolants}
-    the author defines an interpolation calculus. This particular
-    approach uses a proof tree produced by the SMT solver Z3 
-    and does not need to modify any of Z3's internal mechanisms.
-    Among the advantages of this approach is that
-    theory combination is given for free since the SMT solver takes care of this
-    problem. On the other hand, the theories integrated into Z3 are not sufficiently integrated with its
-    proof-producing mechanism in the sense that it is possible to find $\mathcal{T}-lemmas$
-    as black-boxes which introduces incompleteness in the
-    interpolation calculus. For completeness, these lemmas are 
-    solved separately by another interpolation algorithm for the respective
-    theory. 
-    In \cite{10.1007/11532231_26} the authors provide a Nelson-Oppen framework
-    to compute interpolants. For the convex-case, the approach only 
-    exchanges equalities as required by the Nelson-Oppen framework. For
-    the non-convex case, the authors require a resolution-based refutation proof
-    to compute interpolants using Pudlak's algorithm. The introduction of the
-    class of \emph{equality interpolating theories} is 
-    considered among the most relevant contributions of the paper 
-    by the verification community. This is a property about theories which states
-    that if a theory is capable of proving a mixed equality $a = b$ (an equality
-    which contains symbols from the two formulas in the interpolating problem)
-    then there exists a common term in the language of the theory $t$ (known as
-    the interpolating-term) such that 
-    the theory can prove $a = t$ and $t = b$. The property facilitates 
-    formula-splitting for interpolation purposes.
-    In \cite{10.1007/978-3-642-00768-2_34} the authors modify a 
-    resolution-based refutation proof by introducing common-terms in 
-    the proof in order to produce interpolants in what is called
-    colorable-proofs, which are proof trees which do not contain AB-mixed
-    literals. This is pointed as an improvement to the approach followed 
-    in \cite{10.1007/11532231_26} which executes a similar idea but it is done 
-    progressively as the proof-tree is built and does not require 
-   \emph{equality propagating} theory solvers
-    \footnote{The authors in \cite{10.1007/11532231_26} require that 
-      the theory solvers keep track of the interpolating-term 
-      and propagate this term whenever
-    possible}. 
-    However, this result is not generalizable
-    to non-convex theories due to internal constraints.
+In \cite{10.1007/11532231_26} the authors introduced a Nelson-Oppen 
+framework to compute interpolants. For the convex-case, the approach 
+only exchanges equalities as required by the Nelson-Oppen framework. For
+the non-convex case, the authors require a resolution-based refutation proof
+to compute interpolants using Pudlak's algorithm. They introduced a 
+special class of theories known as 
+\emph{equality interpolating theories}. 
+A theory $\mathcal{T}$ belongs to this class
+if whenever $\mathcal{T}$ a mixed equality $a = b$ (an equality
+which contains symbols from the two formulas in the interpolating problem)
+is proved,
+then there exists a common term $t$ in the language of $\mathcal{T}$ 
+(known as the interpolating-term) such that 
+$\mathcal{T} \models a = t$ and $\mathcal{T} \models t = b$. 
+The property facilitates 
+formula-splitting for interpolation purposes.
+In \cite{10.1007/978-3-642-00768-2_34} the authors modify a 
+resolution-based refutation proof by introducing common-terms in 
+the proof in order to produce interpolants in what is called
+colorable-proofs, which are proof trees which do not contain AB-mixed
+literals. This is pointed as an improvement to the approach followed 
+in \cite{10.1007/11532231_26} which executes a similar idea but it is done 
+progressively as the proof-tree is built and does not require 
+\emph{equality propagating} theory solvers
+\footnote{The authors in \cite{10.1007/11532231_26} require that 
+  the theory solvers keep track of the interpolating-term 
+  and propagate this term whenever
+possible}. 
+However, this result is not generalizable
+to non-convex theories due to internal constraints.
 
-  \item Reduction-based approach: This method transforms the interpolation
-    problem into a query for some solver related to the theory. 
-    An example of this approach can be found in \cite{10.1007/978-3-540-69738-1_25}
-    where the authors use a linear-inequality solver to provide an interpolant
-    for the theory of linear inequalities over the rational/real numbers 
-    ($LIA(\mathbb{Q})/LIA(\mathbb{R})$). 
-    Additionally, they integrate the procedure with a 
-    \emph{hierarchical reasoning} approach in order to incorporate 
-    the signature of a theory for (quantifier-free) equalities with uninterpreted 
-    functions.
-\end{itemize}
+Reduction-based approaches transforms the interpolation
+problem into a query for some solver related to the theory. 
+An example of this approach can be found in \cite{10.1007/978-3-540-69738-1_25}
+where the authors use a linear-inequality solver to provide an interpolant
+for the theory of linear inequalities over the rational/real numbers 
+($LIA(\mathbb{Q})/LIA(\mathbb{R})$). 
+Additionally, they integrate the procedure with a 
+\emph{hierarchical reasoning} approach in order to incorporate 
+the signature of a theory for (quantifier-free) equalities with uninterpreted 
+functions.
 
 \section{Outline of the thesis}
 

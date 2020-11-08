@@ -10,11 +10,6 @@ Armin Biere.
 \newblock Picosat essentials.
 \newblock {\em JSAT}, 4:75--97, 05 2008.
 
-\bibitem{10.1145/371282.371285}
-Andreas Blass and Yuri Gurevich.
-\newblock Inadequacy of computable loop invariants.
-\newblock {\em ACM Trans. Comput. Logic}, 2(1):1–11, January 2001.
-
 \bibitem{10.1007/978-3-642-22119-4_1}
 Maria~Paola Bonacina and Moa Johansson.
 \newblock On interpolation in decision procedures.
@@ -32,6 +27,11 @@ Roberto Bruttomesso, Silvio Ghilardi, and Silvio Ranise.
 \newblock Quantifier-free interpolation in combinations of equality
   interpolating theories.
 \newblock {\em ACM Trans. Comput. Logic}, 15(1), March 2014.
+
+\bibitem{dilleuf}
+Jerry Burch and David Dill.
+\newblock Automatic verification of pipelined microprocessor control.
+\newblock 11 1997.
 
 \bibitem{10.1007/3-540-58179-0_44}
 Jerry~R. Burch and David~L. Dill.
@@ -149,10 +149,12 @@ Thomas~A. Henzinger, Ranjit Jhala, Rupak Majumdar, and Kenneth~L. McMillan.
 \newblock Abstractions from proofs.
 \newblock {\em SIGPLAN Not.}, 39(1):232–244, January 2004.
 
-\bibitem{10.1145/363235.363259}
-C.~A.~R. Hoare.
-\newblock An axiomatic basis for computer programming.
-\newblock {\em Commun. ACM}, 12(10):576–580, October 1969.
+\bibitem{10.1007/11691372_33}
+Ranjit Jhala and K.~L. McMillan.
+\newblock A practical and complete approach to predicate refinement.
+\newblock In {\em Proceedings of the 12th International Conference on Tools and
+  Algorithms for the Construction and Analysis of Systems}, TACAS'06, page
+  459–473, Berlin, Heidelberg, 2006. Springer-Verlag.
 
 \bibitem{KAPUR2017}
 Deepak Kapur.
@@ -264,12 +266,6 @@ Andrew~M. Pitts.
 \newblock On an interpretation of second order quantification in first order
   intuitionistic propositional logic.
 \newblock {\em J. Symbolic Logic}, 57(1):33--52, 03 1992.
-
-\bibitem{10.2307/1990888}
-H.~G. Rice.
-\newblock Classes of recursively enumerable sets and their decision problems.
-\newblock {\em Transactions of the American Mathematical Society},
-  74(2):358--366, 1953.
 
 \bibitem{10.1007/978-3-540-69738-1_25}
 Andrey Rybalchenko and Viorica Sofronie-Stokkermans.

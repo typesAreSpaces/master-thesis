@@ -27,12 +27,10 @@ find a satisfying assignment for a formula, then it is possible to
 extract a \emph{resolution proof} based on the traces of the search
 operations.
 
-\begin{example}
+%\begin{example}
 
   \begin{figure}
-
     \centering
-
     \begin{tikzpicture}[->]
       \node(p) at (6, 5) [circle, draw] {P};
       \node(q) at (4,4) [circle, draw] {Q};
@@ -57,33 +55,33 @@ operations.
 
   \end{figure}
 
-  We can see that the following resolution proof resembles the
-  structure of the DPLL execution on figure \ref{dpll_figure}, i.e.
-  if we rotate the proof-tree and mark the nodes by the pivots used
-  we obtained a similar tree obtained by the execution of the DPLL
-  algorithm. This fact becomes relevant because it enables us 
-  to construct a resolution proof from the traces of a SAT 
-  solver used
-  in the theory combination part of the implementation. 
+  %We can see that the following resolution proof resembles the
+  %structure of the DPLL execution on figure \ref{dpll_figure}, i.e.
+  %if we rotate the proof-tree and mark the nodes by the pivots used
+  %we obtained a similar tree obtained by the execution of the DPLL
+  %algorithm. This fact becomes relevant because it enables us 
+  %to construct a resolution proof from the traces of a SAT 
+  %solver used
+  %in the theory combination part of the implementation. 
 
-  \begin{figure}
-    \centering
-    \begin{prooftree}
-      \hypo[]{\neg P}
-      \hypo[]{P \lor Q \lor \neg R}
-      \infer2[$res_P$]{Q \lor \neg R}
-      \hypo[]{R}
-      \infer2[$res_R$]{Q}
-      \hypo[]{P \lor \neg Q}
-      \infer2[$res_Q$]{P}
-      \hypo[]{\neg P}
-      \infer2[$res_P$]{\bot}
-    \end{prooftree}
-    \caption{Example of resolution proof} 
-    \label{example_resolution_proof}
-  \end{figure}
+  %\begin{figure}
+    %\centering
+    %\begin{prooftree}
+      %\hypo[]{\neg P}
+      %\hypo[]{P \lor Q \lor \neg R}
+      %\infer2[$res_P$]{Q \lor \neg R}
+      %\hypo[]{R}
+      %\infer2[$res_R$]{Q}
+      %\hypo[]{P \lor \neg Q}
+      %\infer2[$res_Q$]{P}
+      %\hypo[]{\neg P}
+      %\infer2[$res_P$]{\bot}
+    %\end{prooftree}
+    %\caption{Example of resolution proof} 
+    %\label{example_resolution_proof}
+  %\end{figure}
 
-\end{example}
+%\end{example}
 
 We can extend this approach to work not only with propositional
 variables but with terms of more complex signatures 

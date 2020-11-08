@@ -1,28 +1,23 @@
 \section{Decision Procedures} \label{decision_procedures}
 
-Given a theory $\mathcal{T}$ in a formula $\psi$ in 
-the language of the theory, is it possible to know 
+Given a theory $\mathcal{T}$ and a formula $\psi$ in 
+the language of $\mathcal{T}$, is it possible to know 
 $\models_{\mathcal{T}} \psi$? The last question is 
-known as the verification of the decision problem for 
-the respective theory $\mathcal{T}$. This question has 
+known as the decision problem for 
+$\mathcal{T}$. This question has 
 been studied extensively for many theories of interest 
 \cite{borger2001classical}. 
 
 Regarding the decidability of the theories 
-mentioned in Section \ref{math_theories}, it is known that 
-EUF is undecidable \cite{borger2001classical}, and the theory
-of ordered commutative rings is undecidable when the
-structure uses integers as the domain and the semantics
-of the arithmetical operations \cite{DBLP:books/daglib/0076838} 
-(on the other hand, this theory can be decidable if we
-keep the same structure but use the reals as the domain
-\cite{DBLP:books/daglib/0076838}).
+discussed in the thesis work, it is known that 
+the quantified EUF theory is undecidable \cite{borger2001classical}
 Nonetheless, the quantifier-free fragment of EUF and 
 the restriction imposed in the decision problem for 
 the UTVPI theory allow efficient algorithms to decide 
 validity and satisfiability in their respective theories 
 \cite{10.1145/322186.322198, 10.1145/322217.322228, 
-10.1007/11559306_9}.
+10.1007/11559306_9}. The ordered abelian group theory
+is decidable as well \cite{DBLP:books/daglib/0076838}.
 
 In the rest of this section we review some decision 
 problems and provide references to their respective

@@ -12,38 +12,33 @@ For some theories it is enough to provide a collection of formulas (known as the
     \item (Reflexivity) $\forall x . x = x$
     \item (Symmetry) $\forall x . \forall y . x = y \rightarrow y = x$
     \item (Transitivity) $\forall x . \forall y . \forall z. (x = y \land y = z) \rightarrow x = z$
-    \item (Congruence) $\forall x_1  \dots \forall x_n . \forall y_1 \dots \forall y_n . (x_1 = y_1 \land \dots \land x_n = y_n) \rightarrow f(x_1, \dots, x_n) = f(y_1, \dots, y_n) $
+    \item (Congruence) For every function $f$ term of n-arity, 
+      where $n > 0$ and $2n$ variables $x_1, \dots, x_n, 
+      y_1, \dots, y_n$ 
+      we have that
+      $\forall x_1  \dots \forall x_n . \forall y_1 \dots \forall y_n . (x_1 = y_1 \land \dots \land x_n = y_n) \rightarrow f(x_1, \dots, x_n) = f(y_1, \dots, y_n)$
   \end{itemize}
 \end{definition}
 
-We notice that the congruence axiom is not a first-order logic axiom, but rather an axiom-scheme since it is necessary to \emph{instantiate} such axiom for every arity of the function symbols in a given language.
+\subsection{Ordered abelian groups}
 
-\subsection{Ordered commutative rings}
-
-In order to describe the UTVPI theory we will first introduce the language and theory of an ordered commutative ring.
+In order to describe the UTVPI theory we will first 
+introduce the language and theory of an ordered abelian group.
 
 \begin{definition}
-  Let $\mathfrak{L}_{Ord-R} = \{, \{0, 1 \}, \{ = , \leq \}, \{+, -, * \}, \}$ be the 
-  language of an ordered commutative ring $R$. The axioms of the theory are:
+  Let $\mathfrak{L}_{Ord-G} = \{\{0 \}, \{ = , 
+  \leq \}, \{+, -\}, \}$ be the 
+  language of an ordered abelian group $G$. 
+  The axioms of the theory are:
   \begin{itemize}
     \item $\forall x . \forall y . \forall z . x + (y + z) = (x + y) + z$
     \item $\forall x . \forall y .  x + y = y + x$
     \item $\forall x . x + 0 = x$
     \item $\forall x . x + (- x) = 0$
-    \item $\forall x . \forall y . \forall z. x * (y * z) = (x * y) * z$
-    \item $\forall x . x * 1 = x$
-    \item $\forall x . \forall y .  x * y = y * x$
-    \item $\forall x . \forall y . \forall z . x * (y + z) = x * y + x * z$
-    \item $\forall x . \forall y . \forall z . (y + z) * x = y*x + z * x$
     \item $\forall x . \forall y . \forall z . x \leq y \rightarrow x + z \leq y + z$
-    \item $\forall x . \forall y . (0 \leq x \land 0 \leq y) \rightarrow 0 \leq x * y$.
     \item $0 \neq 1 \land 0 \leq 1$ 
   \end{itemize}
 \end{definition}
-
-Section \ref{decision_procedures} discusses computability 
-aspects for the theories of interest that are relevant 
-for verification.
 
 %%% Local Variables:
 %%% mode: latex
