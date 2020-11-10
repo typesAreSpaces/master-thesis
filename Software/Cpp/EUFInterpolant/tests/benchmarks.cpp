@@ -92,21 +92,21 @@ int main(){
   //std::cout << S << std::endl;
 
 #if 1
-  unsigned num_tests = 100;
+  unsigned num_tests = 2;
   for(unsigned i = 0; i < num_tests; ++i){
     //EUFSignature S(ctx, sort_A, 
     //num_constants, num_func_names, 
     //max_arity, max_num_a_lists, 
     //max_ground_position, limit_search);
-    //EUFSignature S(ctx, sort_A, 10, 5, 3, 10, 100, 1000);
-    EUFSignature S(ctx, sort_A, 20, 10, 3, 40, 100, 1000);
+    EUFSignature S(ctx, sort_A, 10, 5, 3, 10, 100, 1000);
+    //EUFSignature S(ctx, sort_A, 20, 10, 3, 40, 100, 1000);
 
     if(!S.IsValidInstance()){
       --i;
       continue;
     }
-    iZ3Benchmark(S);
-    MathsatBenchmark(S);
+    //iZ3Benchmark(S);
+    //MathsatBenchmark(S);
     EUFIBenchmark(S);
   }
 #endif
@@ -440,7 +440,7 @@ void iZ3Benchmark(EUFSignature const & S){
   S.iZ3Instance();
   system(("echo \"test: " + S.MyName() + "\">> " + file_name).c_str());
   system(("{ ../../bin/precision-time ../../bin/z3-interp " + (IZ3_PREFIX + S.MyName()) + SMT_SUFFIX + "; } 2>> " + file_name).c_str());
-  system(("rm " + (IZ3_PREFIX + S.MyName()) + SMT_SUFFIX).c_str());
+  //system(("rm " + (IZ3_PREFIX + S.MyName()) + SMT_SUFFIX).c_str());
 
 }
 
@@ -461,5 +461,5 @@ void EUFIBenchmark(EUFSignature const & S){
   S.EUFIInstance();
   system(("echo \"test: " + S.MyName() + "\">> " + file_name).c_str());
   system(("{ ../../bin/precision-time ./bin/eufi " + (EUFI_PREFIX + S.MyName()) + SMT_SUFFIX + "; } 2>> " + file_name).c_str());
-  system(("rm " + (EUFI_PREFIX + S.MyName()) + SMT_SUFFIX).c_str());
+  //system(("rm " + (EUFI_PREFIX + S.MyName()) + SMT_SUFFIX).c_str());
 }

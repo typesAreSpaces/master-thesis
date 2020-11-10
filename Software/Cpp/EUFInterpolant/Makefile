@@ -42,6 +42,13 @@ $(ODIR)/%.o: $(SDIR)/%.cpp $(DEPS)
 
 #  Binaries
 
+bin/eufiz3: $(OBJS) ./tests/eufiz3.cpp
+	$(CC) -g -c -o ./tests/eufiz3.o ./tests/eufiz3.cpp \
+		$(FLAGS) /home/jose/Documents/GithubProjects/z3-interp-plus/build/libz3.so
+	$(CC) -g -o ./$@ $(OBJS) ./tests/eufiz3.o \
+		$(FLAGS) -lpthread /home/jose/Documents/GithubProjects/z3-interp-plus/build/libz3.so
+	rm -rf tests/*.o
+
 bin/eufi: $(OBJS) ./tests/eufi.cpp
 	$(CC) -g -c -o ./tests/eufi.o ./tests/eufi.cpp \
 		$(FLAGS)
