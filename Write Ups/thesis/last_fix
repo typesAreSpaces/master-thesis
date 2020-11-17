@@ -8,61 +8,13 @@ if expand('%') == '' && !&modified && line('$') <= 1 && getline(1) == ''
 endif
 set shortmess=aoO
 badd +7 euf.tex
-badd +1 references.bib
-badd +358 euf_algorithm.tex
+badd +0 references.bib
 badd +1 main.tex
-badd +1 algpseudocode.sty
-badd +1 booktabs.sty
-badd +56 abstract.tex
-badd +7 preliminaries.tex
-badd +194 craig_interpolation.tex
-badd +140 first_order_logic.tex
-badd +138 euf_implementation.tex
-badd +1 a.tex
-badd +2 modified_unsatisfiability_testing_for_grounded_horn_clauses.tex
-badd +1 modified_congruence_closure_with_explanation_algorithms_merge.tex
-badd +1 modified_congruence_closure_with_explanation_algorithms_propagate.tex
-badd +60 euf_evaluation.tex
-badd +1 euf_performance.tex
-badd +95 euf_performance_2.tex
-badd +14 euf_conclusion.tex
-badd +3 octagonal.tex
-badd +1 oct_abstract.tex
-badd +1 euf_theorem.tex
-badd +26 oct_algorithm.tex
-badd +299 oct_implementation.tex
-badd +74 oct_evaluation.tex
-badd +1 oct_performance_1.tex
-badd +1 oct_performance_2.tex
-badd +1 combination.tex
-badd +7 comb_abstract.tex
-badd +45 comb_algorithm.tex
-badd +1 comb_implementation.tex
-badd +41 comb_evaluation.tex
-badd +1 th_comb_example_interp.txt
-badd +102 comb_performance.tex
-badd +22 theories.tex
-badd +1 comb_performance_2.tex
-badd +367 comb_uniform.tex
-badd +1 future_work.tex
-badd +141 introduction.tex
-badd +30 verification.tex
-badd +1 sat-smt.tex
-badd +80 congruence-closure.tex
-badd +3 sat-horn.tex
-badd +38 nelson-oppen-framework.tex
-badd +171 tools.tex
-badd +1 euf_abstract.tex
-badd +6 oct_conclusion.tex
-badd +1 comb_conclusion.tex
-badd +119 appendix_a.tex
-badd +1 appendix_b.tex
-badd +1 appendix_c.tex
-badd +5 comb_uniform_example.tex
-badd +16 utvpi_architecture.tex
+badd +0 algpseudocode.sty
+badd +0 booktabs.sty
+badd +1 euf_implementation.tex
 argglobal
 %argdel
-$argadd euf.tex
 edit main.tex
 set splitbelow splitright
 wincmd _ | wincmd |
@@ -81,10 +33,10 @@ set winheight=1
 set winminwidth=0
 set winwidth=1
 exe '1resize ' . ((&lines * 27 + 28) / 56)
-exe 'vert 1resize ' . ((&columns * 46 + 144) / 289)
+exe 'vert 1resize ' . ((&columns * 61 + 144) / 289)
 exe '2resize ' . ((&lines * 26 + 28) / 56)
-exe 'vert 2resize ' . ((&columns * 46 + 144) / 289)
-exe 'vert 3resize ' . ((&columns * 242 + 144) / 289)
+exe 'vert 2resize ' . ((&columns * 61 + 144) / 289)
+exe 'vert 3resize ' . ((&columns * 227 + 144) / 289)
 argglobal
 setlocal fdm=manual
 setlocal fde=0
@@ -95,13 +47,13 @@ setlocal fml=1
 setlocal fdn=20
 setlocal fen
 silent! normal! zE
-10,110fold
-let s:l = 32 - ((11 * winheight(0) + 13) / 27)
+10,111fold
+let s:l = 1 - ((0 * winheight(0) + 13) / 27)
 if s:l < 1 | let s:l = 1 | endif
 exe s:l
 normal! zt
-32
-normal! 013|
+1
+normal! 0
 wincmd w
 argglobal
 if bufexists("references.bib") | buffer references.bib | else | edit references.bib | endif
@@ -114,12 +66,12 @@ setlocal fml=1
 setlocal fdn=20
 setlocal fen
 silent! normal! zE
-let s:l = 500 - ((0 * winheight(0) + 13) / 26)
+let s:l = 1 - ((0 * winheight(0) + 13) / 26)
 if s:l < 1 | let s:l = 1 | endif
 exe s:l
 normal! zt
-500
-normal! 07|
+1
+normal! 0
 wincmd w
 argglobal
 if bufexists("euf_implementation.tex") | buffer euf_implementation.tex | else | edit euf_implementation.tex | endif
@@ -127,52 +79,66 @@ setlocal fdm=manual
 setlocal fde=0
 setlocal fmr={{{,}}}
 setlocal fdi=#
-setlocal fdl=3
+setlocal fdl=4
 setlocal fml=1
 setlocal fdn=20
 setlocal fen
 silent! normal! zE
 52,58fold
 85,91fold
-182,190fold
-191,205fold
-261,264fold
-265,268fold
-269,273fold
-274,275fold
-66,304fold
-371,374fold
-375,389fold
-390,393fold
-394,397fold
-453,453fold
-454,459fold
-460,461fold
-462,462fold
-305,466fold
-516,519fold
-520,526fold
-527,528fold
-467,572fold
-573,669fold
-1,669fold
+111,112fold
+113,113fold
+135,156fold
+162,162fold
+163,163fold
+164,165fold
+182,192fold
+193,199fold
+209,211fold
+212,213fold
+214,215fold
+216,231fold
+285,290fold
+291,294fold
+295,304fold
+305,306fold
+66,366fold
+441,443fold
+444,454fold
+439,455fold
+456,474fold
+549,549fold
+552,559fold
+560,561fold
+562,562fold
+367,580fold
+635,641fold
+642,654fold
+656,658fold
+581,704fold
+705,809fold
+1,809fold
 1
 normal! zo
 66
 normal! zo
-let s:l = 166 - ((46 * winheight(0) + 27) / 54)
+367
+normal! zo
+581
+normal! zo
+let s:l = 759 - ((48 * winheight(0) + 27) / 54)
 if s:l < 1 | let s:l = 1 | endif
 exe s:l
 normal! zt
-166
-normal! 011|
+759
+normal! 06|
 wincmd w
 3wincmd w
 exe '1resize ' . ((&lines * 27 + 28) / 56)
-exe 'vert 1resize ' . ((&columns * 46 + 144) / 289)
+exe 'vert 1resize ' . ((&columns * 61 + 144) / 289)
 exe '2resize ' . ((&lines * 26 + 28) / 56)
-exe 'vert 2resize ' . ((&columns * 46 + 144) / 289)
-exe 'vert 3resize ' . ((&columns * 242 + 144) / 289)
+exe 'vert 2resize ' . ((&columns * 61 + 144) / 289)
+exe 'vert 3resize ' . ((&columns * 227 + 144) / 289)
 tabnext 1
 if exists('s:wipebuf') && getbufvar(s:wipebuf, '&buftype') isnot# 'terminal'
   silent exe 'bwipe ' . s:wipebuf

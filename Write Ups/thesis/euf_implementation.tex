@@ -124,7 +124,7 @@ are the edges in the
 path from $a$ to $c$ in $t$ and the path from $b$ to $c$ in $t$.
 
 \begin{example}
-  Let $\{, b, c, d, e, f, g\}$ be nodes in a union-find data
+  Let $\{a, b, c, d, e, f, g\}$ be nodes in a union-find data
   structure and let us consider the following sequence of 
   merge operations: 1. Merge(b,d), 2. Merge(e,g), 3. Merge(a,c), 
   4. Merge(h,i), 5. Merge(a,b), 6. Merge(e,f), 7. Merge(a, e).
@@ -179,40 +179,57 @@ Gallier's data structure and the congruence
 closure algorithm with explanations is twofold: 
 
 \begin{itemize}
-  \item[] 1. First, we want to introduce 
-    common equations from the antecedents of 
-    the Horn clauses obtained during Phase II
-    to a conditional equivalence relation as well
-    as updating the conditional equivalence relation 
+  \item[] 1. We merge the nodes 
+    in an equivalence
+    relation corresponding to the left hand side 
+    and right hand side terms of
+    common equations inside the antecedents of 
+    the Horn clauses obtained in Phase II.
+    Additionally, we update the equivalence relation 
     structure by using the equation propagation mechanism
     from the congruence closure algorithm and 
     the implicational propagation component 
     from Gallier's structure.
-  \item[] 2. Additionally, we want to find all the common
-    Horn clauses provable from the original input 
-    of equations. The Explain operator in 
+  \item[] 2. The Explain operator from
     \cite{10.1007/978-3-540-32033-3_33} is recursively 
-    used to construct 
-    the antecedent of such Horn clauses during the 
-    conditional replacement step. The Explain operator 
-    traverses a proof-tree data structure containing the nodes
-    that were used to combine equivalence classes 
-    in the underlying union-find data structure.
-    Thus, the MERGE operation in \cite{GALLIER1987233} is
-    required to update the proof tree 
-    \footnote{This structure is used in order to retrieve
-    explanations.}
+    used to construct the antecedent of Horn clauses during the 
+    conditional replacement step. 
+    Thus, the MERGE operation in \cite{GALLIER1987233}
+    updates the proof-tree data structure
     from \cite{10.1007/978-3-540-32033-3_33} as well.
 \end{itemize}
 
 The thesis work accomplishes the previous
 points by implementing the following:
 
-1. In addition to the parsing procedure
-and initialization of the Gallier data structure,
-we assert into the union-find data structure 
-every common equation in the 
-antecedent of a Horn clause.
+1. The data structures used are
+the following:
+
+\begin{itemize}
+  \item Union-find data structure: a set of disjoint
+    trees which root serves as the representative 
+    element for each equivalence class.
+  \item Proof-tree data structure: a directed graph of pointers
+    of elements in the union-fund data structure.
+  \item Graph of terms: a abstract syntax tree encoding
+    information about the terms in the input formula.
+  \item Graph of Horn clauses: a directed graph of equations
+    where two nodes $a, b$ are connected if there
+    exists a Horn clause $h$ in input formula such that 
+    $a \in antecedent(h)$ and $b = head(h)$. Following
+    \cite{GALLIER1987233}, this data structure uses
+    for each Horn clause $h$: a field number $numargs$ keeping 
+    track of the number of equations $a = b$ in the antecedent of $h$
+    such that $a$ and $b$ do not belong to the same 
+    equivalence class; a field equation $poslit$ which stores
+    the head equation of the Horn clause $h$.
+    For each equation $a = b$ in the abstract syntax tree of the 
+    input formula, there is an array of Horn clauses $clauselist$ 
+    which keeps track of the Horn clauses $h$ such that
+    $a = b \in antecedent(h)$.
+    in the antecedent 
+
+\end{itemize}
 
 2. The implemented C++ class for 
 the congruence closure with explanation 
@@ -225,80 +242,125 @@ class implementation
 for the Gallier data structure in order to propagate 
 the equational information achieved during
 merges and updates due to congruence. The modified 
-algorithms appear below in pseudo-code notation:
+algorithms appear below in pseudo-code notation (Algorithm 1, Algorithm 2, and Algorithm 3):
 
 \input{modified_unsatisfiability_testing_for_grounded_horn_clauses}
 \input{modified_congruence_closure_with_explanation_algorithms_merge}
 \input{modified_congruence_closure_with_explanation_algorithms_propagate}
 
 3. We implemented the \emph{ExtendedExplain}
-procedure, which given as input an equation $a = b$ and a
-conditional equivalence relation $\mathcal{E}$ obtained
-from a set of equations and a set of Horn clauses
-in an EUF language $\mathfrak{L}$,
-it returns a list $C$ of common equations in $\mathfrak{L}$
+procedure, which given as input an equation $a = b$ 
+and a temporal equivalence relation 
+$\mathcal{E}$ obtained from a set of equations 
+and a set of Horn clauses in an EUF language 
+$\mathfrak{L}$, it returns a set $C$ of non-trivial 
+common equations \footnote{We denote a trivial equation to be an 
+equation of the form $x = x$ for any term $x$ in some EUF
+language.} in $\mathfrak{L}$
 such that
-$\models_{\mathcal{E}} (\bigwedge_{h \in C} h) \rightarrow a = b$
-if the equation $a = b$ is belongs to the 
-conditional equivalence relation $\mathcal{E}$ ; 
-and it returns an empty list
-otherwise. 
+$\models_{\mathcal{E}} (\bigwedge_{h \in C} h) 
+\rightarrow a = b$ if the equation $a = b$ 
+belongs to the 
+temporal equivalence relation $\mathcal{E}$ ; 
+it returns an empty set otherwise. 
 The pseudo-code
 for the ExtendedExplain procedure is shown 
-below:
+below (Algorithm 4):
 
 \input{auxiliary_function_extended_explain}
 
+Using the data structures aforementioned 
+we compute a (union-find) equivalence class 
+data structure, denoted \emph{temporal equivalence
+class}
+that together with the Horn clauses in $\psi$
+obtained from Phase II
+will help us to obtain common Horn clauses.
+The input of this procedure is the Horn clauses $H$
+in $\psi$. The procedure is the following:
 
-Using the modified Gallier algorithm for Unsatisfiability testing of
-grounded Horn clauses endowed with the congruence
-closure with explanations procedure we compute the conditional
-congruence closure (Phase III of Kapur's algorithm) induced
-by a set of Horn clauses $H$ as follows:
-
-Conditional Congruence Closure Algorithm: \label{ccc_algorithm} \\
+Temporal Equivalence Class Algorithm: 
+\label{ccc_algorithm} \\
 \begin{itemize} 
-  \item[] Step 1. Let $\mathcal{E}$ be an empty equivalence class
-    for all the terms in the term tree of the Horn clauses in $H$,
-    i.e. there is an equivalence class for each term in $H$.
+  \item[] Step 1. Let $\mathcal{E}$ be the collection 
+    of equivalence classes for each distinct term 
+    in the abstract 
+    syntaxt tree of 
+    the Horn clauses in $H$.
 
-  \item[] Step 2. Insert all the Horn clauses in $H$ to the Gallier
-    data structure and update $\mathcal{E}$ according to Gallier's
-    algorithm.
+  \item[] Step 2. Insert all the Horn clauses 
+    in $H$ to the Gallier
+    data structure.
 
-  \item[] Step 3. For all the common equations $a = b$ 
-    in the Horn clauses $h \in H$, Merge $a$ and $b$ in 
-    $\mathcal{E}$. Update Gallier's data structure
+  \item[] Step 3. Merge the nodes in the 
+    temporal equivalence class $\mathcal{E}$ 
+    corresponding 
+    to the left hand side term 
+    and right hand side term of the
+    common equations appearing 
+    in the antecedent of the Horn clauses 
+    $h \in H$. Update Gallier's data structure
     accordingly.
 
-  \item[] Step 4. Return $\mathcal{E}$ as the conditional
-    congruence closure for $H$.
+  \item[] Step 4. Return $\mathcal{E}$ as the
+    temporal equivalence class for $H$.
 \end{itemize}
 
+\begin{example}
+  Let us consider a simple example where the input 
+  of Horn clause is $H = \{ 
+    1. a = b \land c = d \rightarrow a = c,
+    2. c = e \rightarrow e = d
+  \}$; $\{d, f\}$ are uncommon symbols.
 
-We notice that the algorithm proposed to compute the 
-conditional congruence closure does not call the Explain
-operator of the Congruence Closure with Explanation since
-the latter will be used to construct common Horn clauses
-from induced conditional equivalence class. The Find and Merge
+  The initial temporal equivalence class is 
+  $\{\{a\}, \{b\}, \{c\}, \{d\}, \{e\}, \{f\}\}$.
+
+  Since $a = b$ and $c = e$ are common equations, 
+  the temporal equivalence class updates to 
+  $\{\{a, b\}, \{c, e\}, \{d\}, \{f\}\}$.
+  The second Horn clause in $H$ reaches the 
+  $numargs$ to 0, hence the antecedent of such
+  Horn clause is added to the temporal 
+  equivalence class resulting in the following:
+  $\{\{a, b\}, \{c, e, d\}, \{f\}\}$.
+
+  Since $c = d$, then the $numargs$ field of 
+  the first Horn clauses 
+  reaches 0, thus the equation $a = f$ is 
+  processed by the algorithm. The final 
+  temporal equivalence class is
+  $\{\{a, b, f\}, \{c, e, d\}\}$.
+\end{example}
+
+The Find and Merge
 operation takes $\mathcal{O}(1)$ amortized cost. Thus, 
-the amount of work related to the congruence closure
-in the proposed algorithm take $\mathcal{O}(n \log n)$ time complexity
-where $n$ denotes the number of equations in the graph term 
+the amount of work related to the temporal 
+equivalence class
+in the proposed algorithm take 
+$\mathcal{O}(n \log n)$ 
+time complexity
+where $n$ denotes the number of equations in 
+the graph term 
 of the Horn clauses $H$.
-However, the amount of work required by the \emph{unionupdate}
-operation of Gallier data structure is $\mathcal{O}(
-(2 m + n)\floor{n} + 1)$ where $m$ is the number of nodes 
-in the graph representation of the Horn clauses $H$. In 
-the worst-case scenario there can be at most $O(n^2)$
-of these Horn clauses due to the Phase II of Kapur's algorithm.
+However, the amount of work required by the 
+\emph{unionupdate}
+operation of Gallier data structure is 
+$\mathcal{O}((2 m + n)\floor{\log n} + 1)$ 
+where $m$ is the number of nodes 
+in the graph representation of the Horn clauses $H$. 
+In the setting of replacing Phase III of the 
+algorithm for uniform interpolation,
+there can be at most $O(n^2)$
+of these Horn clauses due to Phase II of Kapur's 
+algorithm.
 Therefore, the time complexity of the conditional
 congruence closure algorithm proposed is
 $\mathcal{O}((m^2 + n)\log n)$.
 
 
 Remark: the only equations asserted into the 
-conditional equivalence class of the algorithm
+temporal equivalence class of the algorithm
 above are only the common equations from 
 antecedents in Horn clauses from $H$.
 
@@ -308,14 +370,14 @@ conditional elimination step}
 For the next lemmas, unless stated otherwise, let
 $H$ be the Horn clauses obtained
 after executing Phase II of Kapur's algorithm, and
-$\mathcal{E}$ be the conditional equivalence class
+$\mathcal{E}$ be the temporal equivalence class
 computed by \ref{ccc_algorithm} using the Horn clauses
 $H$.
 
-We can prove that if the equation $t_1 = t_2$ belongs
-to the conditional equivalence class $E$, 
-then ExtendedExplain returns
-a list of common equations $C$ such that
+If the equation $t_1 = t_2$ belongs
+to the temporal equivalence class $E$, 
+we can prove that ExtendedExplain returns
+a set of common equations $C$ such that
 $\models_{\mathcal{E}} (\bigwedge_{h \in C} h) \rightarrow a = b$
 using the axiomatization introduced in \ref{euf_axioms} as 
 inference rules with the following lemmas:
@@ -323,78 +385,93 @@ inference rules with the following lemmas:
 \begin{lemma} \label{existence_horn_in_explain}
   Let $\mathcal{L}$ be some EUF language, 
   and $t_1, t_2$ terms in 
-  $\mathcal{L}$ such that
+  $\mathcal{L}$ such that \\
   $\models_{\mathcal{E}} t_1 = t_2$.
-  If $\exists \text{ uncommon } a = b \in$
-  $Explain(t_1, t_2)$, then $\exists h \in H$ such 
-  that $h$ is of the form 
+  If there is an uncommon equation $a = b \in$
+  $Explain(t_1, t_2)$, then there exists $h \in H$ 
+  such that $h$ is of the form 
   $\bigwedge_i (c_i = d_i) \rightarrow a = b$.
 \end{lemma}
 
-\begin{proof}
-  By the definition of the Explain operator in \ref{explain_def},
+\begin{proof} Let us suppose by contradition that
+  there is no $h \in H$ with the above description.
+  By the definition of the Explain operator in 
+  \ref{explain_def},
   we see that the such operator will return a
-  list of all the asserted equations in the conditional
-  equivalence relation. By inspection of the proposed
-  algorithm, assertions into the conditional equivalence
+  list of all the asserted equations in the
+  equivalence relation, thus $a = b$ belongs to 
+  the temporal equivalence class. 
+  By inspection of the proposed
+  algorithm, assertions into the temporal equivalence
   relation only happen in two places: when an equation 
-  in the antecedent of a horn clause of $H$ is common, 
-  and while updating the underlying union-find data structure
-  when the $numargs$ field of a Horn clause becomes
-  zero. The latter assert the consequent of such Horn clause.
-  Since $u$ is not common, then such Horn clause 
-  should exist in $H$.
+  in the antecedent of a Horn clause of $H$ is common, 
+  or when asserting the head equation of a Horn clause
+  $h \in H$ such that its $numargs$ field becomes
+  zero.
+  Since there is no Horn clause with head equaiton 
+  $a = b$, then $a = b$ was added when 
+  the algorithm processed common equations
+  in the antecedent of some Horn clause. But that
+  implies that $a = b$ is a common equation. 
+  Contradiction, thus there exists a Horn clause
+  $h \in H$ containing $a=b$ in its head equation.
 \end{proof}
 
 \begin{lemma}\label{extended_explain_common_lemma}
 
   Let $\mathcal{L}$ be some EUF language 
   and $t_1, t_2$ terms in 
-  $\mathcal{L}$ such that
+  $\mathcal{L}$ such that \\
   $\models_{\mathcal{E}} t_1 = t_2$.
-
   The list of equations returned by $ExtendedExplain(t_1, t_2, 
   H, \mathcal{E})$ contains only common equations.
 \end{lemma}
 
 \begin{proof} 
-  If $t_1, t_2$ belong to the same equivalence relation,
-  then there exists a closed derivation (proof tree) 
-  with $t_1 = t_2$ as root node and the asserted
-  equations introduced by the modified algorithm
-  as leaves.
-
-  The proof proceeds by induction on the complexity of the 
-  derivation:
-
+  If $t_1 = t_2$ belongs to the temporal equivalence
+  class $\mathcal{E}$, then there is a derivation 
+  in with $t_1 = t_2$ as the last formula in the
+  derivation sequence.
+  Let us prove the statement by induction 
+  on the length $n$ of the derivation sequence:
+  
   \begin{itemize}
-    \item Case 1. The last inference rule in the proof 
-      tree was Reflexivity: The ExtendedExplain 
-      algorithm returns an empty list. Thus, the
-      statement is vacuously true.
-    \item Case 2. The last inference rule in the proof 
-      tree was Symmetry: Line 8 of ExtendedExplain
-      returns a list of common equations $c$ and a list
-      of uncommon equations $u$. 
-      By Lemma \ref{existence_horn_in_explain}
-      we see that there exists a Horn clause in $H$ for
-      every uncommon equation in $u$. Line 9 of 
-      ExtendedExplain applies recursively to each of 
-      these equations. Since these equations belong
-      to the conditional equivalence relation, there
-      exists a derivation for the latter.
-      By the inductive invariant, ExtendedExplain
-      should return a list of common equation for 
-      these subproofs. Thus, the final list contains
-      only common equations.
-    \item Case 3. The last inference rule in the proof 
-      tree was Transitivity: The proof follows similarly
-      to the previous case applied to the two subproofs
-      for the Transitivity rule.
-    \item Case 4. The last inference rule in the proof 
-      tree was Congruence: The proof follows similarly
-      to the previous case applied $n$ times for each
-      subproof in the Congruence rule.
+    \item Case $n = 1$. We distinguish two cases:
+      \begin{itemize}
+        \item $t_1, t_2$ are the same terms: In
+          line 6, the ExtendedExplain algorithm will return 
+          the empty set. Hence, the statement holds true.
+        \item $t_1, t_2$ are different terms: Then the equation
+          $t_1 = t_2$ was introduced as a fact in the
+          induced theory, i.e. the equation $t_1 = t_2$
+          was added to the temporal 
+          equivalence class as a common equation belonging to 
+          the antecedent of some Horn clause $h \in H$
+          during the procedure building the temporal 
+          equivalence class. Line 8 of the ExtendedExplain
+          procedure does not contain uncommon equations.
+          Line 9 returns only the set $c$ of 
+          common equations.
+      \end{itemize}
+    \item Case $n > 1$. Then Line 8 in the
+      ExtendedExplain algorithm sets $\{c, u\}$
+      to be the 
+      common equations ($c$) and uncommon equations ($u$)
+      from the Explanation of $t_1, t_2$.
+      Pick an uncommon equation $a = b$ from the 
+      previous list. By lemma \ref{existence_horn_in_explain}, there
+      exists a Horn clause $h \in H$ such that
+      $head(h)$ is $a = b$. Since $a = b$ belongs
+      to the temporal conditional equivalence 
+      class, then there exists a derivation for 
+      this equation which is shorter that
+      the derivation for $t_1 = t_2$. Applying
+      the inductive hypothesis we see that
+      ExtendedExplain returns a set of common equations
+      for $ExtendedExplain(a, b, H, \mathcal{E})$.
+      Applying the latter to the rest of uncommon equations
+      in $u$ we obtain a set of common equations, which is
+      the result of Line 9 of the ExtendedExplain procedure. 
   \end{itemize}
 \end{proof}
 
@@ -402,7 +479,7 @@ inference rules with the following lemmas:
   Let $H$ be a set of Horn clauses produced by 
   Phase II of Kapur's algorithm, $\mathcal{E}$ the 
   equivalence relation obtained in Phase I of Kapur's 
-  algorithm, and $\mathcal{E^{'}}$ the conditional 
+  algorithm, and $\mathcal{E^{'}}$ the temporal 
   equivalence relation obtained after the modified
   conditional elimination algorithm. Then
   $H \models_{\mathcal{E^{'}}} a = b$ if and only if
@@ -412,62 +489,99 @@ inference rules with the following lemmas:
 \end{corollary}
 
 \begin{example}
-  Let us consider the input equations $\{
-    1. f(f(x)) = f(x), \\ 2. x = f(f(x)), 
-  3. f(a) \neq a\}$ 
+  Let us consider the input equations $\{ \\
+    1. f(f(f(f(x)))) = f(f(f(f(f(x))))), 2. x = f(f(x)), 
+    3. f(a) \neq a
+  \}$ 
   with the 
   set of symbols to eliminate to be 
   $\{ f \}$.
   Flattening introduces the following
   new equisatisfiable equations:
-  $\{4. f(x) = e_1, 5. f(e_1) = e_2, 
-    5. f(a) = e_3, 6. x = e_2, 7. e_2 = e_1, 
-  8. e_3 = a \rightarrow \bot \}$. 
+  $\{
+    4. f(x) = e_1, 5. f(e_1) = e_2, 
+    6. f(e_2) = e_3, 7. f(e_3) = e_4,
+    8. f(e_4) = e_5, 9. f(a) = e_6,
+    10. x = e_2, 11. e_4 = e_5, 
+    12. e_6 = a \rightarrow \bot 
+  \}$. 
+  Phase I simplifies the above set of equations
+  using congruence closure and replacing subterms
+  by representatives. The equations produced are 
+  the following:
+  $\{
+    12. e_6 = a \rightarrow \bot, 13. f(x) = x, 
+    14. f(a) = e_6
+  \}$.
   Phase II introduces the following 
   Horn clauses $H$:
-  $\{9. x = e_1 \rightarrow e_1 = e_2,
-    10. x = a \rightarrow x = e_3,
-    11. e_1 = a \rightarrow e_2 = e_3
+  $\{
+    12. e_6 = a \rightarrow \bot, 13. f(x) = x, 
+    15. x = a \rightarrow x = e_6,
   \}$.
 
-  Our algorithm notices that Horn clause 10.
-  contains only common equations in the
-  antecedent. Hence, $x = a$ is added to the
-  conditional congruence closure $\mathcal{E}$.
-  With the latter $x = e_3$ is also added by
-  the \emph{numargs} of Horn clause 10 reaches
+  Our algorithm notices that Horn clause 15
+  contains the common equation $x = a$ in the
+  antecedent. Hence, the nodes representing 
+  the nodes of the terms $x$ and $a$ are merged in
+  the temporal equivalence relation $\mathcal{E}$.
+  With the latter, the nodes representing $x$ and 
+  $e_3$ is also merged because
+  the \emph{numargs} of Horn clause 15 reaches
   0. By transitivity, our algorithm
-  includes $e_3 = a$ since both $x = e_3,
+  merges the nodes for the terms $e_3$ and 
+  $a$ in $\mathcal{E}$ 
+  since both $x = e_3,
   x = a$ belong to $\mathcal{E}$.
   The last equation decreases the 
   \emph{numargs} entry of the Horn clause
-  8. Thus, $\bot$ in $\mathcal{E}$.
+  12. Thus, $\bot$ in $\mathcal{E}$ since
+  the \emph{numargs} of Horn clause 12 reaches 0.
 
-  Using ExtendedExplain, we can compute the
-  common antecedent $x$ 
-  for the Horn clause in Corollary
-  \ref{commonantecedentcorollary} using 
-  ExtendedExplain as follows:
+  Since $\bot$ is considered a common symbol,
+  we can find a common Horn clause $h$ 
+  in $\mathcal{E}$ which contains common equations
+  in its antecedent. Since Horn clause 12 has
+  $\bot$ as head, we compute ExtendedExplain
+  on its antecedent as follows:
+  
+   %\begin{itemize}
+    %\item $ExtendedExplain(e_6 = a) \rightarrow \bot$
+    %\item $\bigwedge \{ExtendedExplain(x = e_3), 
+      %ExtendedExplain(x = a)\} \rightarrow \bot$, since
+      %$x = e_3$ was added to
+      %$\mathcal{E}$ by the congruence closure, 
+      %$x = a$ was added to 
+      %$\mathcal{E}$ at the beginning of the algorithm 
+      %because it is
+      %a common equation in the antecedent of a 
+      %Horn clause in $H$,
+      %and $Explain(e_3 = a) = \{x = e_3, x = a\}$
+    %\item $\bigwedge(\{x = a\} \cup \{x = a\}) \rightarrow \bot$, 
+      %since $Explain(x = e_3) = \{x = a\}$
+    %\item $x = a \rightarrow \bot$, after simplification
+  %\end{itemize}
 
-  \begin{itemize}
-    \item $ExtendedExplain(e_3 = a) \rightarrow \bot$
-    \item $\bigwedge \{ExtendedExplain(x = e_3), ExtendedExplain(x = a)\} \rightarrow \bot$, since
-      $x = e_3$ was added to
-      $\mathcal{E}$ by the congruence closure, $x = a$ was added to 
-      $\mathcal{E}$ at the beginning of the algorithm because it is
-      a common equation in the antecedent of a Horn clause in $H$,
-      and $Explain(e_3 = a) = \{x = e_3, x = a\}$
-    \item $\bigwedge(\{x = a\} \cup \{x = a\}) \rightarrow \bot$, 
-      since $Explain(x = e_3) = \{x = a\}$
-    \item $x = a \rightarrow \bot$, after simplification
-  \end{itemize}
+  \begin{equation*}
+    \begin{aligned}
+      h &:= (ExtendedExplain(e_6 = a) 
+      \rightarrow \bot) \\
+      &= (\bigwedge \{ExtendedExplain(x = e_3), 
+      ExtendedExplain(x = a)\} \rightarrow \bot) \\
+      &= (\bigwedge(\{x = a\} \cup \{x = a\}) \rightarrow \bot) \\
+      &= (x = a \rightarrow \bot)
+    \end{aligned}
+  \end{equation*}
+
+  Hence the common Horn clause obtained from $H$
+  is $(x = a \rightarrow \bot)$.
 
 \end{example}
 
 \subsection{New conditional replacement
 step in Kapur's algorithm}
 
-Once the conditional equivalence relation is built after 
+Once the temporal equivalence relation is built after 
 the execution of the previous step, we can compute conditional
 replacements as follows. For the latter, we will require 
 the following auxiliary functions:
@@ -492,12 +606,14 @@ process the original equations are shown below:
   Let $Eqs := \{f(\mathfrak{a}_{i, 1}, \dots, \mathfrak{a}_{i, n}) 
   = \mathfrak{a}_i\}$ be the set of equations produced
   in Phase I of Kapur's algorithms, $H$ the set of 
-  Horn clauses obtained in Phase II, and $\mathcal{E^{'}}$ the 
-  conditional equivalence
-  relation obtained by the proposed conditional replacement
-  step.
-  Executing the proposed conditional replacement step
-  on $Eqs, H, \mathcal{E}$ produces common Horn clauses.
+  Horn clauses obtained in Phase II, and 
+  $\mathcal{E^{'}}$ the 
+  temporal equivalence
+  relation obtained by the proposed 
+  conditional replacement step.
+  Executing the proposed conditional elimination step
+  on $Eqs, H, \mathcal{E^{'}}$ 
+  produces common Horn clauses.
 \end{lemma}
 
 \begin{proof}
@@ -505,31 +621,47 @@ process the original equations are shown below:
   in \ref{conditional_replacement_part_1_impl},
   we noticed the antecedents of the Horn clauses 
   constructed are obtained using the ExtendedExplain 
-  procedure, which from lemma \ref{extended_explain_common_lemma} 
-  it produces a list of only common equations.
+  procedure, which from lemma 
+  \ref{extended_explain_common_lemma} 
+  it produces a set of common equations.
 
-  Additionally, the equations in the consequent part 
-  of the Horn clauses produced in the conditional replacement 
+  Additionally, the equations in the 
+  consequent part 
+  of the Horn clauses produced in the 
+  conditional replacement 
   procedure are of the form:
 
   \begin{itemize}
     \item $\sigma_x = \sigma_y$, 
       where $\exists t_1, t_2 \in TERMS$
       such that $\sigma_x \in Candidates(t_1)$ and 
-      $\sigma_y \in Candidates(t_2)$
+      $\sigma_y \in Candidates(t_2)$. Since the
+      function $Candidates$ returns a set of 
+      common equations, then all the above 
+      equations are common.
     \item $\sigma_x = f(arguments_{f})$, 
       where $\exists t, f(t_1, \dots, t_n) \in TERMS$
+      with $f$ a common symbol,
       such that $\sigma_x \in Candidates(t)$ and
-      $f(arguments_f) \in \{f(\hat{t_1}, \dots, \hat{t_n})
-        | \text{ f is a common functional symbol },
-        \hat{t_i} \in Candidates(t_i) \text{ for } 1 \leq i \leq n
-      \}$
-    \item $f_x(arguments_x) = f_y(arguments_y)$, using the same
-      definition for $f(arguments_f)$ from previous item
+      $f(arguments_f) \in 
+      \{f(\hat{t_1}, \dots, \hat{t_n})
+        |
+        \hat{t_i} \in Candidates(t_i) \text{ for } 
+        1 \leq i \leq n
+      \}$. Similarly to the previous case, the
+      function $Candidates$ returns a set of 
+      common terms, thus the elements returned
+      by this case are common as well.
+    \item $f_x(arguments_x) = f_y(arguments_y)$, 
+      using the same
+      definition for $f(arguments_f)$ from 
+      the previous item.
   \end{itemize}
 
-  It is easy to see that the above equations are common if any
-  of the involved sets are not empty. Therefore, the algorithm 
+  It is easy to see that the above 
+  equations are common if any
+  of the involved sets are not empty. 
+  Therefore, the algorithm 
   only produces common Horn clauses.
 \end{proof}
 
@@ -545,7 +677,7 @@ equal to 0.
   obtained at the end of Phase II of Kapur's 
   algorithm with $numargs$ entry equal to 0 
   and $\mathcal{E^{'}}$ the associated
-  conditional equivalence relation obtained 
+  temporal equivalence relation obtained 
   at the end of the conditional elimination 
   procedure. 
   If $h \in H$ is of the form $\bigwedge_i (a_i = b_i) 
@@ -561,10 +693,10 @@ equal to 0.
   We observe that if the $numargs$ entry of a Horn clause
   $h \in H$ is equal to 0, then 
   all the equations in the antecedent of $h$ belong 
-  to the conditional equivalence relation. Thus, 
+  to the temporal equivalence relation. Thus, 
   there exists a proof in $\mathcal{E^{'}}$ for
   each of these equations. From the latter, the consequent
-  of $h$ also belongs to the conditional equivalence
+  of $h$ also belongs to the temporal equivalence
   relation. Using Lemmas \ref{extended_explain_common_lemma}
   and \ref{conditional_replacement_lemma} we can conclude that
   the Horn clause in the statement is a common Horn clause.
@@ -583,27 +715,35 @@ of consequences of the aforementioned common equations.
 In a more general setting, we can specify an arbitrary
 set of equations, or property, 
 that are meant to enlarge the theory
-to a conditional equivalence relation for 
+to a temporal equivalence relation for 
 specific purposes. To reuse the ExtendedExplain
 procedure and associated lemmas, we replace the $common$
 predicate for any predicate of interest.
 
-In particular, given an equivalence relation $\mathcal{E}$, a 
-set of Horn clauses $H$, and Horn clause $h$ of the form 
+In particular, given an equivalence relation 
+$\mathcal{E}$, a 
+set of Horn clauses $H$, and Horn clause $h$ 
+of the form 
 $\bigwedge (a_i = b_i) \rightarrow c = d$, we can 
-find an explanation to the query $H \models_{\mathcal{E}} h$
+find an explanation to the query 
+$H \models_{\mathcal{E}} h$
 by conditionally extending $H$ with the equations
-from the antecedent of $h$ and then retrieving an explanation
-of the membership of the consequent of $h$ in the conditional 
+from the antecedent of $h$ and then 
+retrieving an explanation
+of the membership of the consequent 
+of $h$ in the conditional 
 equivalence relation.
 
 \begin{lemma}
-  Let $H$ be a set of Horn clauses, $h$ a Horn clause of the
+  Let $H$ be a set of Horn clauses, $h$ a 
+  Horn clause of the
   form $(\bigwedge_i a_i = b_i) \rightarrow c = d$, 
   $\mathcal{E}$ an equivalence relation between terms 
-  of a language in EUF, and $\mathcal{E^{'}}$ the associated
-  conditional equivalence relation obtained from extending
-  $\mathcal{E}$ with the equations in the antecedent of $h$.
+  of a language in EUF, and $\mathcal{E^{'}}$ the 
+  associated temporal equivalence relation 
+  obtained from extending
+  $\mathcal{E}$ with the equations in the 
+  antecedent of $h$.
 
   If there exists an explanation 
   $\mathfrak{p} := \{\mathfrak{a}_1 = \mathfrak{b}_1,
