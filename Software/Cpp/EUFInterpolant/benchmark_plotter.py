@@ -39,20 +39,22 @@ if __name__ == "__main__":
     fig, ax = plt.subplots()
     num_test_points = np.arange(0, num_tests)
 
-
     ax.scatter(num_test_points, data_eufi[1], marker='x', color='red', label='EUF Uniform Interpolator')
     ax.scatter(num_test_points, data_mathsat[1], marker='o', color='blue', label='Mathsat')
     ax.scatter(num_test_points, data_iz3[1], marker='+', color='green', label='iZ3')
 
+    ax.set_ylim(0, 12.5)
     ax.set_xlabel('# of random cases used')
     ax.set_ylabel('Time in milliseconds')
     ax.set_title('Performance comparison of interpolant generation algorithms for EUF \n\
             Number of Constants: ' + num_constants + ' Number of (Dis)Equalities: ' + max_a_lists)
 
-    legend = ax.legend(loc='upper left', shadow=True, fontsize='x-large')
+    # legend = ax.legend(loc='upper left', shadow=True, fontsize='x-large')
+    print(num_constants)
+    legend = ax.legend(bbox_to_anchor=(1.05, 1), loc='upper left', borderaxespad=0.)
     plt.savefig("results/plots/eufi_performance_graph_" 
             + num_constants + "_" 
             + num_func_names + "_" 
             + max_arity + "_" 
             + max_a_lists + "_" 
-            + str(num_tests) + ".png", dpi=500)
+            + str(num_tests) + ".png", dpi=500, bbox_inches='tight')

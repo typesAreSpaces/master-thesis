@@ -33,43 +33,43 @@
 \contentsline {section}{\numberline {3.3}Evaluation}{53}{section.3.3}%
 \contentsline {subsection}{\numberline {3.3.1}Detailed evaluation of examples}{53}{subsection.3.3.1}%
 \contentsline {subsubsection}{Symbol elimination example}{53}{section*.3}%
-\contentsline {subsubsection}{Simple example with dis-equality}{56}{section*.4}%
-\contentsline {subsubsection}{Comparison of Interpolants and Uniform Interpolants}{56}{section*.5}%
+\contentsline {subsubsection}{Simple example with dis-equality}{55}{section*.4}%
+\contentsline {subsubsection}{Comparison of Craig Interpolants and Uniform Interpolants}{56}{section*.5}%
 \contentsline {subsection}{\numberline {3.3.2}Performance comparison with iZ3 and MathSat}{57}{subsection.3.3.2}%
 \contentsline {subsubsection}{Benchmark description}{57}{section*.6}%
-\contentsline {subsubsection}{Experimental results}{59}{section*.7}%
-\contentsline {section}{\numberline {3.4}Conclusions}{61}{section.3.4}%
-\contentsline {chapter}{\numberline {4}Uniform Interpolation algorithm for UTVPI Formulas}{63}{chapter.4}%
-\contentsline {section}{\numberline {4.1}Kapur's Uniform Interpolant Algorithm for the UTVPI theory}{64}{section.4.1}%
-\contentsline {section}{\numberline {4.2}Implementation}{64}{section.4.2}%
-\contentsline {subsection}{\numberline {4.2.1}Normal Forms and Ordering of UTVPI terms}{65}{subsection.4.2.1}%
-\contentsline {subsection}{\numberline {4.2.2}Bijection between normalized UTVPI terms and natural numbers}{66}{subsection.4.2.2}%
-\contentsline {section}{\numberline {4.3}Evaluation}{68}{section.4.3}%
-\contentsline {subsection}{\numberline {4.3.1}Detailed evaluation of examples}{68}{subsection.4.3.1}%
-\contentsline {subsection}{\numberline {4.3.2}Performance comparison with iZ3 and MathSat}{74}{subsection.4.3.2}%
-\contentsline {subsubsection}{Benchmark description}{74}{section*.8}%
-\contentsline {subsubsection}{Experimental results}{75}{section*.9}%
-\contentsline {section}{\numberline {4.4}Conclusions}{78}{section.4.4}%
-\contentsline {chapter}{\numberline {5}Interpolation algorithm for the theory combination of EUF and UTVPI}{79}{chapter.5}%
-\contentsline {section}{\numberline {5.1}A partially sound uniform interpolant generation algorithm for the combined theory of EUF and UTVPI}{81}{section.5.1}%
-\contentsline {subsection}{\numberline {5.1.1}A tableux-like uniform interpolant generation algorithm for EUF}{81}{subsection.5.1.1}%
-\contentsline {subsection}{\numberline {5.1.2}Our proposed partially sound uniform interpolant generation algorithm for EUF + UTVPI}{83}{subsection.5.1.2}%
-\contentsline {subsection}{\numberline {5.1.3}Termination, and partial soundness of the proposed algorithm}{85}{subsection.5.1.3}%
-\contentsline {subsection}{\numberline {5.1.4}Illustrating Example}{87}{subsection.5.1.4}%
-\contentsline {section}{\numberline {5.2}Yorsh-Musuvathi Interpolation Combination Framework}{88}{section.5.2}%
-\contentsline {section}{\numberline {5.3}Implementation}{89}{section.5.3}%
-\contentsline {section}{\numberline {5.4}Evaluation}{91}{section.5.4}%
-\contentsline {subsection}{\numberline {5.4.1}Detailed evaluation of a complete example}{91}{subsection.5.4.1}%
-\contentsline {subsubsection}{A simple example}{91}{section*.10}%
-\contentsline {section}{\numberline {5.5}Conclusions}{94}{section.5.5}%
-\contentsline {chapter}{\numberline {6}Future Work}{95}{chapter.6}%
-\contentsline {chapter}{Appendix A}{97}{chapter*.11}%
-\contentsline {section}{\numberline {6.1}Theorems about Interpolants}{97}{section.6.1}%
-\contentsline {subsection}{\numberline {6.1.1}Interpolants are closed under conjunction and disjunction}{97}{subsection.6.1.1}%
-\contentsline {subsection}{\numberline {6.1.2}Interpolants distribute conjunctions over disjunctions in the A-part}{98}{subsection.6.1.2}%
-\contentsline {chapter}{Appendix B}{100}{chapter*.12}%
-\contentsline {section}{\numberline {6.2}Trace for example in theory combination chapter}{100}{section.6.2}%
-\contentsline {chapter}{Appendix C}{110}{chapter*.13}%
-\contentsline {section}{\numberline {6.3}Congruence Closure with Explanation operation header}{110}{section.6.3}%
-\contentsline {section}{\numberline {6.4}Hornsat (Gallier's data structure) header}{112}{section.6.4}%
-\contentsline {chapter}{References}{114}{chapter*.14}%
+\contentsline {subsubsection}{Experimental results}{58}{section*.7}%
+\contentsline {section}{\numberline {3.4}Conclusions}{59}{section.3.4}%
+\contentsline {chapter}{\numberline {4}Uniform Interpolation algorithm for UTVPI Formulas}{62}{chapter.4}%
+\contentsline {section}{\numberline {4.1}Kapur's Uniform Interpolant Algorithm for the UTVPI theory}{63}{section.4.1}%
+\contentsline {section}{\numberline {4.2}Implementation}{63}{section.4.2}%
+\contentsline {subsection}{\numberline {4.2.1}Normal Forms and Ordering of UTVPI terms}{64}{subsection.4.2.1}%
+\contentsline {subsection}{\numberline {4.2.2}Bijection between normalized UTVPI terms and natural numbers}{65}{subsection.4.2.2}%
+\contentsline {section}{\numberline {4.3}Evaluation}{67}{section.4.3}%
+\contentsline {subsection}{\numberline {4.3.1}Detailed evaluation of examples}{67}{subsection.4.3.1}%
+\contentsline {subsection}{\numberline {4.3.2}Performance comparison with iZ3 and MathSat}{73}{subsection.4.3.2}%
+\contentsline {subsubsection}{Benchmark description}{73}{section*.8}%
+\contentsline {subsubsection}{Experimental results}{74}{section*.9}%
+\contentsline {section}{\numberline {4.4}Conclusions}{77}{section.4.4}%
+\contentsline {chapter}{\numberline {5}Interpolation algorithm for the theory combination of EUF and UTVPI}{78}{chapter.5}%
+\contentsline {section}{\numberline {5.1}A partially sound uniform interpolant generation algorithm for the combined theory of EUF and UTVPI}{80}{section.5.1}%
+\contentsline {subsection}{\numberline {5.1.1}A tableux-like uniform interpolant generation algorithm for EUF}{80}{subsection.5.1.1}%
+\contentsline {subsection}{\numberline {5.1.2}Our proposed partially sound uniform interpolant generation algorithm for EUF + UTVPI}{82}{subsection.5.1.2}%
+\contentsline {subsection}{\numberline {5.1.3}Termination, and partial soundness of the proposed algorithm}{84}{subsection.5.1.3}%
+\contentsline {subsection}{\numberline {5.1.4}Illustrating Example}{86}{subsection.5.1.4}%
+\contentsline {section}{\numberline {5.2}Yorsh-Musuvathi Interpolation Combination Framework}{87}{section.5.2}%
+\contentsline {section}{\numberline {5.3}Implementation}{88}{section.5.3}%
+\contentsline {section}{\numberline {5.4}Evaluation}{90}{section.5.4}%
+\contentsline {subsection}{\numberline {5.4.1}Detailed evaluation of a complete example}{90}{subsection.5.4.1}%
+\contentsline {subsubsection}{A simple example}{90}{section*.10}%
+\contentsline {section}{\numberline {5.5}Conclusions}{93}{section.5.5}%
+\contentsline {chapter}{\numberline {6}Future Work}{94}{chapter.6}%
+\contentsline {chapter}{Appendix A}{96}{chapter*.11}%
+\contentsline {section}{\numberline {6.1}Theorems about Interpolants}{96}{section.6.1}%
+\contentsline {subsection}{\numberline {6.1.1}Interpolants are closed under conjunction and disjunction}{96}{subsection.6.1.1}%
+\contentsline {subsection}{\numberline {6.1.2}Interpolants distribute conjunctions over disjunctions in the A-part}{97}{subsection.6.1.2}%
+\contentsline {chapter}{Appendix B}{99}{chapter*.12}%
+\contentsline {section}{\numberline {6.2}Trace for example in theory combination chapter}{99}{section.6.2}%
+\contentsline {chapter}{Appendix C}{109}{chapter*.13}%
+\contentsline {section}{\numberline {6.3}Congruence Closure with Explanation operation header}{109}{section.6.3}%
+\contentsline {section}{\numberline {6.4}Hornsat (Gallier's data structure) header}{111}{section.6.4}%
+\contentsline {chapter}{References}{113}{chapter*.14}%
