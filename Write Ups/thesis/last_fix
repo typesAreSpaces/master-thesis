@@ -8,21 +8,26 @@ if expand('%') == '' && !&modified && line('$') <= 1 && getline(1) == ''
 endif
 set shortmess=aoO
 badd +7 euf.tex
-badd +0 references.bib
+badd +1 references.bib
 badd +1 main.tex
-badd +0 algpseudocode.sty
-badd +0 booktabs.sty
-badd +1 euf_implementation.tex
+badd +1 algpseudocode.sty
+badd +1 booktabs.sty
+badd +796 euf_implementation.tex
+badd +1 euf_evaluation.tex
+badd +25 euf_interp_vs_uni_interp.tex
 argglobal
 %argdel
 edit main.tex
 set splitbelow splitright
 wincmd _ | wincmd |
 vsplit
-1wincmd h
+wincmd _ | wincmd |
+vsplit
+2wincmd h
 wincmd _ | wincmd |
 split
 1wincmd k
+wincmd w
 wincmd w
 wincmd w
 set nosplitbelow
@@ -33,10 +38,11 @@ set winheight=1
 set winminwidth=0
 set winwidth=1
 exe '1resize ' . ((&lines * 27 + 28) / 56)
-exe 'vert 1resize ' . ((&columns * 61 + 144) / 289)
+exe 'vert 1resize ' . ((&columns * 50 + 76) / 152)
 exe '2resize ' . ((&lines * 26 + 28) / 56)
-exe 'vert 2resize ' . ((&columns * 61 + 144) / 289)
-exe 'vert 3resize ' . ((&columns * 227 + 144) / 289)
+exe 'vert 2resize ' . ((&columns * 50 + 76) / 152)
+exe 'vert 3resize ' . ((&columns * 50 + 76) / 152)
+exe 'vert 4resize ' . ((&columns * 50 + 76) / 152)
 argglobal
 setlocal fdm=manual
 setlocal fde=0
@@ -47,13 +53,13 @@ setlocal fml=1
 setlocal fdn=20
 setlocal fen
 silent! normal! zE
-10,111fold
-let s:l = 1 - ((0 * winheight(0) + 13) / 27)
+10,112fold
+let s:l = 46 - ((24 * winheight(0) + 13) / 27)
 if s:l < 1 | let s:l = 1 | endif
 exe s:l
 normal! zt
-1
-normal! 0
+46
+normal! 021|
 wincmd w
 argglobal
 if bufexists("references.bib") | buffer references.bib | else | edit references.bib | endif
@@ -74,71 +80,60 @@ normal! zt
 normal! 0
 wincmd w
 argglobal
-if bufexists("euf_implementation.tex") | buffer euf_implementation.tex | else | edit euf_implementation.tex | endif
+if bufexists("euf_evaluation.tex") | buffer euf_evaluation.tex | else | edit euf_evaluation.tex | endif
 setlocal fdm=manual
 setlocal fde=0
 setlocal fmr={{{,}}}
 setlocal fdi=#
-setlocal fdl=4
+setlocal fdl=5
 setlocal fml=1
 setlocal fdn=20
 setlocal fen
 silent! normal! zE
-52,58fold
-85,91fold
-111,112fold
-113,113fold
-135,156fold
-162,162fold
-163,163fold
-164,165fold
-182,192fold
-193,199fold
-209,211fold
-212,213fold
-214,215fold
-216,231fold
-285,290fold
-291,294fold
-295,304fold
-305,306fold
-66,366fold
-441,443fold
-444,454fold
-439,455fold
-456,474fold
-549,549fold
-552,559fold
-560,561fold
-562,562fold
-367,580fold
-635,641fold
-642,654fold
-656,658fold
-581,704fold
-705,809fold
-1,809fold
-1
-normal! zo
-66
-normal! zo
-367
-normal! zo
-581
-normal! zo
-let s:l = 759 - ((48 * winheight(0) + 27) / 54)
+28,28fold
+29,29fold
+30,30fold
+23,32fold
+40,40fold
+41,41fold
+42,42fold
+33,44fold
+8,49fold
+50,71fold
+3,71fold
+1,71fold
+let s:l = 68 - ((37 * winheight(0) + 27) / 54)
 if s:l < 1 | let s:l = 1 | endif
 exe s:l
 normal! zt
-759
-normal! 06|
+68
+normal! 0
 wincmd w
-3wincmd w
+argglobal
+if bufexists("euf_interp_vs_uni_interp.tex") | buffer euf_interp_vs_uni_interp.tex | else | edit euf_interp_vs_uni_interp.tex | endif
+setlocal fdm=manual
+setlocal fde=0
+setlocal fmr={{{,}}}
+setlocal fdi=#
+setlocal fdl=0
+setlocal fml=1
+setlocal fdn=20
+setlocal fen
+silent! normal! zE
+let s:l = 32 - ((28 * winheight(0) + 27) / 54)
+if s:l < 1 | let s:l = 1 | endif
+exe s:l
+normal! zt
+32
+normal! 0114|
+wincmd w
+4wincmd w
 exe '1resize ' . ((&lines * 27 + 28) / 56)
-exe 'vert 1resize ' . ((&columns * 61 + 144) / 289)
+exe 'vert 1resize ' . ((&columns * 50 + 76) / 152)
 exe '2resize ' . ((&lines * 26 + 28) / 56)
-exe 'vert 2resize ' . ((&columns * 61 + 144) / 289)
-exe 'vert 3resize ' . ((&columns * 227 + 144) / 289)
+exe 'vert 2resize ' . ((&columns * 50 + 76) / 152)
+exe 'vert 3resize ' . ((&columns * 50 + 76) / 152)
+exe 'vert 4resize ' . ((&columns * 50 + 76) / 152)
 tabnext 1
 if exists('s:wipebuf') && getbufvar(s:wipebuf, '&buftype') isnot# 'terminal'
   silent exe 'bwipe ' . s:wipebuf
