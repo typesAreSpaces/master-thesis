@@ -1,0 +1,64 @@
+\subsection{Comparison of Craig Interpolants and Uniform Interpolants}
+
+This section compares the Craig Interpolants 
+obtained by Z3 and Mathsat for contradicting 
+pairs of formulas and the uniform 
+interpolant obtained by our implementation.
+The problem instances were designed in a way that 
+the symbols to eliminate are the 
+same for each input problem for our 
+implementation.
+
+\begin{table}[h]
+  \centering
+  \begin{tabular}{c|cc}
+    \toprule 
+
+  \multicolumn{3}{c}{A-part: $x_0 + x_1 \leq -4 \land -x_2 + x_0 \leq -10 \land -x_0 \leq -8$} \\
+
+    \hline
+
+    \multirow{6}{*}{SMT Solvers} & \multicolumn{2}{c}{B-parts} \\
+
+    \cmidrule{2-3} \\
+
+    {} & 
+    \makecell{$x_1 - x_2 \leq 6 \land$ \\
+   $-x_1 - x_2 \leq - 8 \land$ \\
+  $- x_1 \leq - 4$} & 
+    \makecell{$x_1 \leq - 10$ \\
+      $- x_1 + x_2 \leq 2$} \\
+
+    \cmidrule{2-3} \\
+
+    {} & \multicolumn{2}{c}{Interpolants} \\
+
+    \hline
+
+    Z3 & 
+    \makecell{$x_1 \leq -12$} & 
+    \makecell{$30 \leq -1*x_1 + x_2$} \\
+
+    \hline
+
+    Mathsat & 
+    \makecell{$x_1 \leq -12$} & 
+    \makecell{$x_1 + (-1)*x_2 \leq -30$}\\
+
+    \hline
+
+    Our implementation & \multicolumn{2}{c}{\makecell{$x_1 \leq -12 \land -x_2 \leq -18$}} \\
+
+    \hline
+  \end{tabular}
+  \caption{Comparing Craig Interpolants and Uniform Interpolants for
+  $\{x_0 + x_1 \leq -4 \land -x_2 + x_0 \leq -10 \land -x_0 \leq -8, \{x_0\}\}$.}
+\end{table}
+
+We can easily check that the output produced by Z3 and Mathsat are implied from the output of
+our implementation. 
+
+%%% Local Variables:
+%%% mode: latex
+%%% TeX-master: "main"
+%%% End:
