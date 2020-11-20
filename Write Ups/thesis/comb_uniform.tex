@@ -68,29 +68,6 @@ with the following meaning:
     that contain variables to eliminate.
 \end{itemize}
 
-Some definitions are needed before discussing 
-the tableux rules in 
-\cite{ghilardi2020compactly}.
-
-\begin{definition}
-  A term $t$ (resp. literal $L$) is $\cev{e}$-free 
-  when there is no occurrence
-  of variables to eliminate in $t$ (resp. $L$).
-
-  Two flat terms $t, u$ of the form 
-  \begin{equation*}
-    t := f(a_1, \dots, a_n), u := f(b_1, \dots, b_n)
-  \end{equation*}
-  are said to be \emph{compatible} if and only if every $i = 1, \dots, n$, either
-  $a_i$ is identical to $b_i$ or both $a_i$ and $b_i$ are $\cev{e}$-free.
-
-  The \emph{difference set of two compatible terms} like 
-  above is the
-  set of dis-equalities $a_i \neq b_i$ such that 
-  $a_i$ is not identical
-  to $b_i$.
-\end{definition}
-
 The algorithm in \cite{ghilardi2020compactly} provides 
 the following tableux rules:
 
@@ -139,32 +116,36 @@ in Chapter 4 to deal with UTVPI formulas,
 hence we keep a normal form representation 
 of the UTVPI inequalities in the
 formula state inside the proposed 
-tableux-like algorithm.
+tableux-like algorithm. The rules of 
+inference proposed by Kapur to compute
+uniform interpolants for the UTVPI 
+theory are encoded as transition rules
+for the current tableux-like algorithm.
 The previous rules of the uniform interpolant 
 generation algorithm
 for EUF involving propagation of equations 
 suits the UTVPI component as well. 
-The additional rules are the following:
+There is an additional rule to consider:
 
 \begin{itemize}
-  \item[] 5. Eliminate uncommon UTVPI terms: 
-    if there are UTVPI inequalities of the form $a_i x + a_j e_j \leq k_1$
-    and $a_k y - a_j e_j \leq k_2$ in $\psi$, then introduce to $\phi$ the 
-    UTVPI inequality $a_i x + a_k y \leq k_1 + k_2$.
+  %\item[] 5. Eliminate uncommon UTVPI terms: 
+    %if there are UTVPI inequalities of the form $a_i x + a_j e_j \leq k_1$
+    %and $a_k y - a_j e_j \leq k_2$ in $\psi$, then introduce to $\phi$ the 
+    %UTVPI inequality $a_i x + a_k y \leq k_1 + k_2$.
 
-  \item[] 6. Normalize UTVPI inequalities:
-    if there is a UTVPI inequality of the form $a_i x + a_i x \leq k$ in 
-    the formula state, then remove it and insert to $\psi$ the UTVPI
-    inequality $a_i x \leq \floor{k/2}$
+  %\item[] 6. Normalize UTVPI inequalities:
+    %if there is a UTVPI inequality of the form $a_i x + a_i x \leq k$ in 
+    %the formula state, then remove it and insert to $\psi$ the UTVPI
+    %inequality $a_i x \leq \floor{k/2}$
 
-  \item[] 7.  Normalize bounds:
-    if there are two UTVPI inequalities of the form $a_i x + a_j y \leq k_1$,
-    $a_i x + a_j y \leq k_2$ in 
-    the formula state with $\{k_1, k_2\} \in \mathbb{N}$, 
-    then remove them both and insert to $\psi$ the UTVPI
-    inequality $a_i x + a_j y \leq min(k_1, k_2)$
+  %\item[] 7.  Normalize bounds:
+    %if there are two UTVPI inequalities of the form $a_i x + a_j y \leq k_1$,
+    %$a_i x + a_j y \leq k_2$ in 
+    %the formula state with $\{k_1, k_2\} \in \mathbb{N}$, 
+    %then remove them both and insert to $\psi$ the UTVPI
+    %inequality $a_i x + a_j y \leq min(k_1, k_2)$
 
-  \item[] 8.  Propagate fully bounded uncommon UTVPI inequalities: 
+  \item[] 5.  Propagate fully bounded uncommon UTVPI inequalities: 
     if there are two UTVPI inequalities 
     in $\psi$ of the form $a_i e_i + a_j e_j \leq k_1$ and 
     $-a_i e_i - a_j e_j \leq k_2$, 
@@ -211,8 +192,9 @@ in Chapter 4. Otherwise, rules
 proposed algorithm}
 
 \begin{lemma}
-  The non-deterministic procedure presented above 
-  always terminates.
+  The non-deterministic procedure presented 
+  above for the combined theory of EUF + 
+  UTVPI always terminates.
 \end{lemma}
 
 \begin{proof}
@@ -334,7 +316,7 @@ $\bigvee_{i=1}^k \exists \cev{y_i} . (\delta_i(\cev{y_i}, \cev{z}) \land \phi_i(
         a_1 x + a_2 y \leq n_1$, where $y$ is common.
         Thus, we can generate a canonical rewrite
         system for each of the branches that the
-        rule 9. in the proposed algorithm by 
+        rule 5. in the proposed algorithm by 
         adding rules of the form 
         $x \rightarrow a_1(a_2 y + i)$ where
         $i \in \{n_2, \dots, n_1\}$. A model 

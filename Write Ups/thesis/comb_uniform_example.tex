@@ -3,7 +3,7 @@ Example}
 
 Let us consider the following input formula in the
 combined theory satisfying the weakening conditions in 
-\ref{weakening_conditions}: $\{y - x \leq 0 , -y + x \leq 10
+\ref{weakening_conditions}: $\{y - x \leq 0 , -y + x \leq 10,
 y + x \leq 20, -y - x \leq -10, -e + x \leq 0, e - y \leq 0, f(e) = x\}$ with symbols to eliminate to be $\{e\}$.
 
 The normal form produced for the UTVPI component of the
@@ -11,46 +11,42 @@ proposed algorithm is the following
 conjunction of inequalities:
 
 $\{
-  x \leq 15,
+  x \leq 10,
   -x \leq -5,
   y \leq 10,
   y + x \leq 20,
   y - x \leq 0,
-  -y \leq 0,
-  -y + x \leq 10,
+  -y \leq -5,
+  -y + x \leq 0,
   -y - x \leq -10,
   e \leq 10,
-  e + x \leq 25,
-  e - x \leq 5,
+  e + x \leq 20,
+  e - x \leq 0,
   e + y \leq 20,
-  e - y \leq 10,
+  e - y \leq 0,
   -e \leq -5,
-  -e + x \leq 10,
+  -e + x \leq 0,
   -e - x\leq -10,
-  -e + y \leq 5,
-  -e - \leq -5
+  -e + y \leq 0,
+  -e - y \leq -10
   \}$
 
-Since the above contains $e \leq 10$ and $-e \leq -5$
-then by rule 8. of the proposed algorithm we make 5 
-branches propagating the equation $e = i$ where 
-$i \in \{5, \dots, 10\}$.
 
-The final output produced by the algorith is hence
-$(f(5) = x \land \delta) \lor (f(6) = x \land \delta)
-\lor (f(7) = x \land \delta)
-\lor (f(8) = x \land \delta)
-\lor (f(9) = x \land \delta)
-\lor (f(10) = x \land \delta)
-$ where $\delta$ is 
-$x \leq 15 
-\land -x \leq 5 
+Since the above contains $e - x \leq 0, e - y \leq 0, -e + x \leq 0, -e + y \leq 0$ 
+then by rule 5. of the proposed algorithm we make 1
+branch propagating the equation $e = x$.
+
+The final output produced by the algorith is 
+$f(x) = x \land x \leq 10
+\land -x \leq -5 
 \land y \leq 10 
 \land y + x \leq 20
 \land y - x \leq 0
-\land -y \leq 0
-\land -y + x \leq 10
-\land -y - x \leq -10$.
+\land -y \leq -5
+\land -y + x \leq 0
+\land -y - x \leq -10$
+
+\input{comb_interp_vs_uni_interp}
 
 %%% Local Variables:
 %%% mode: latex

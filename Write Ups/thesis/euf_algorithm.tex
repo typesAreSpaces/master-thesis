@@ -32,6 +32,27 @@ of uncommon symbols. The following definition extends
 the concept of uncommon symbols to uncommon terms.
 
 \begin{definition}
+  A term $t$ (resp. literal $L$) is $\cev{e}$-free 
+  when there is no occurrence
+  of variables to eliminate in $t$ (resp. $L$).
+
+  Two flat terms $t, u$ of the form 
+  \begin{equation*}
+    t := f(a_1, \dots, a_n), u := f(b_1, \dots, b_n)
+  \end{equation*}
+  are said to be \emph{compatible} if and only if every $i = 1, \dots, n$, either
+  $a_i$ is identical to $b_i$ or both $a_i$ and $b_i$ are $\cev{e}$-free.
+
+  The \emph{difference set of two compatible terms} like 
+  above is the
+  set of dis-equalities $a_i \neq b_i$ such that 
+  $a_i$ is not identical
+  to $b_i$.
+\end{definition}
+
+
+
+\begin{definition}
   A term $t$ in the EUF language is \emph{uncommon} if:
   \begin{itemize}
     \item Case 1. $t$ is constant: $t$ is an uncommon term if
