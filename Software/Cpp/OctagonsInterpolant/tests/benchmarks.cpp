@@ -44,14 +44,18 @@ class OCTSignature {
   unsigned const max_limit;
   unsigned const limit_search;
   unsigned num_vars_to_elim;
+  std::vector<unsigned> allowed_symbols_in_B_part;
 
   void BuildAPart();
   void BuildBPart(z3::solver &);
   z3::expr RandomLHS(int, int, bool);
+  z3::expr RandomLHSForB(int, int, bool);
 
   public:
   OCTSignature(z3::context &,
       unsigned, unsigned, unsigned, unsigned);
+  OCTSignature(z3::context &,
+      unsigned, unsigned, unsigned, unsigned, std::vector<unsigned> const &, unsigned);
 
   friend std::ostream & operator << (std::ostream &, OCTSignature const &);
 
@@ -69,7 +73,31 @@ void iZ3Benchmark(OCTSignature const &);
 void MathsatBenchmark(OCTSignature const &);
 void OCTIBenchmark(OCTSignature const &);
 
+void CompareUIWithCraigI(){
+  /* initialize random seed: */
+  srand(time(NULL));
+
+  z3::context ctx;
+  unsigned num_tests = 2;
+
+  for(unsigned i = 0; i < num_tests; ++i){
+    //OCTSignature S(ctx, 
+    //num_constants, num_ineqs, max_limit,
+    //limit_search);
+    std::vector<unsigned> allowed_symbols_in_B_part({1, 1, 2});
+    OCTSignature S(ctx, 3, 3, 10, 1000, allowed_symbols_in_B_part, 5);
+    if(!S.IsValidInstance()){
+      --i;
+      continue;
+    }
+    //iZ3Benchmark(S);
+    //MathsatBenchmark(S);
+    //OCTIBenchmark(S);
+  }
+}
+
 int main(){
+#if 1
   /* initialize random seed: */
   srand(time(NULL));
 
@@ -90,6 +118,9 @@ int main(){
     MathsatBenchmark(S);
     OCTIBenchmark(S);
   }
+#else
+  CompareUIWithCraigI();
+#endif
 
   return 0;
 }
@@ -146,6 +177,8 @@ void OCTSignature::BuildAPart(){
 void OCTSignature::BuildBPart(z3::solver & sol){
   auto current_check = sol.check();
   z3::solver local_sol(ctx);
+  b_part.resize(0);
+  current_check = z3::sat;
 
   unsigned num_iter = 0;
 
@@ -156,7 +189,7 @@ void OCTSignature::BuildBPart(z3::solver & sol){
     if(term_1_coeff == 0 && term_2_coeff == 0)
       continue;
 
-    auto const & new_lhs = RandomLHS(term_1_coeff, term_2_coeff, rand() % 2 == 0);
+    auto const & new_lhs = RandomLHSForB(term_1_coeff, term_2_coeff, rand() % 2 == 0);
     int rnd_limit = 2*(rand() % max_limit) - max_limit;
     auto const & new_ineq = new_lhs <= rnd_limit;
 
@@ -240,6 +273,62 @@ z3::expr OCTSignature::RandomLHS(int term_1_coeff, int term_2_coeff, bool is_add
       }
     default:
       throw "Error @ OCTSignature::RandomLHS";
+  }
+}
+
+z3::expr OCTSignature::RandomLHSForB(int term_1_coeff, int term_2_coeff, bool is_addition){
+  term_1 = ctx.int_const(
+      ("x_" + std::to_string(allowed_symbols_in_B_part[rand() % num_constants])).c_str());
+  term_2 = ctx.int_const(
+      ("x_" + std::to_string(allowed_symbols_in_B_part[rand() % num_constants])).c_str());
+  switch(term_1_coeff) {
+    case -1:
+      switch(term_2_coeff){
+        case -1:
+          if(is_addition)
+            return -term_1 - term_2;
+          return -term_1 + term_2;
+        case 0:
+          return -term_1;
+        case 1:
+          if(is_addition)
+            return -term_1 + term_2;
+          return -term_1 - term_2;
+        default:
+          throw "Error @ OCTSignature::RandomLHSForB";
+      }
+    case 0:
+      switch(term_2_coeff){
+        case -1:
+          if(is_addition)
+            return -term_2;
+          return term_2;
+        case 0:
+          throw "Error @ OCTSignature::RandomLHSForB";
+        case 1:
+          if(is_addition)
+            return term_2;
+          return -term_2;
+        default:
+          throw "Error @ OCTSignature::RandomLHSForB";
+      }
+    case 1:
+      switch(term_2_coeff){
+        case -1:
+          if(is_addition)
+            return term_1 - term_2;
+          return term_1 + term_2;
+        case 0:
+          return term_1;
+        case 1:
+          if(is_addition)
+            return term_1 + term_2;
+          return term_1 - term_2;
+        default:
+          throw "Error @ OCTSignature::RandomLHSForB";
+      }
+    default:
+      throw "Error @ OCTSignature::RandomLHSForB";
   }
 }
 
@@ -330,7 +419,7 @@ OCTSignature::OCTSignature(z3::context & ctx,
   is_valid_instance(true),
   num_constants(num_constants), num_ineqs(num_ineqs), 
   max_limit(max_limit), limit_search(limit_search),
-  num_vars_to_elim(0)
+  num_vars_to_elim(0), allowed_symbols_in_B_part({})
 {
 
   BuildAPart();
@@ -343,9 +432,53 @@ OCTSignature::OCTSignature(z3::context & ctx,
 #if DEBUG
     std::cout << "Valid A-part instance" << std::endl;
 #endif
+    for(unsigned i = 0; i < num_constants; i++)
+      allowed_symbols_in_B_part.push_back(i);
     BuildBPart(sol);
     if(is_valid_instance)
       UpdateNumVarsToElim();
+  }
+#if DEBUG
+  else
+    std::cout << "Not valid A-part instance" << std::endl;
+#endif
+}
+
+OCTSignature::OCTSignature(z3::context & ctx, 
+    unsigned num_constants,
+    unsigned num_ineqs, unsigned max_limit,
+    unsigned limit_search, 
+    std::vector<unsigned> const & allowed_symbols_in_B_part,
+    unsigned repetitions
+    ) :
+  ctx(ctx), ids({}), a_part(ctx), b_part(ctx),
+  term_1(ctx), term_2(ctx),
+  is_valid_instance(true),
+  num_constants(num_constants), num_ineqs(num_ineqs), 
+  max_limit(max_limit), limit_search(limit_search),
+  num_vars_to_elim(0), 
+  allowed_symbols_in_B_part(allowed_symbols_in_B_part)
+{
+  BuildAPart();
+
+  z3::solver sol(ctx);
+  for(auto const & eq : a_part)
+    sol.add(eq);
+  is_valid_instance = sol.check() == z3::sat;
+  if(is_valid_instance){
+#if DEBUG
+    std::cout << "Valid A-part instance" << std::endl;
+#endif
+    while(repetitions-->0){
+      sol.reset();
+      for(auto const & eq : a_part)
+        sol.add(eq);
+      BuildBPart(sol);
+      if(is_valid_instance)
+        UpdateNumVarsToElim();
+      std::cout << "Iteration " << repetitions << std::endl;
+      std::cout << *this << std::endl;
+    }
   }
 #if DEBUG
   else

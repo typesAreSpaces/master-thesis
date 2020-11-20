@@ -4,6 +4,7 @@ void example1(z3::context &);
 void example2(z3::context &);
 void example3(z3::context &);
 void example4(z3::context &);
+void example5(z3::context &);
 
 int main(){
   z3::context ctx;
@@ -11,7 +12,8 @@ int main(){
   //example1(ctx);
   //example2(ctx);
   //example3(ctx);
-  example4(ctx);
+  //example4(ctx);
+  example5(ctx);
 
   return 0;
 }
@@ -104,6 +106,26 @@ void example4(z3::context & ctx){
 
   try {
     OctagonInterpolantWithUncomSymbols _a(assertions, {"x2", "x3", "x4", "x5", "x6"});
+    std::cout << _a.removePrefix(_a.getInterpolant()) << std::endl;
+  }
+  catch(char const * e){
+    std::cout << e << std::endl;
+  }
+}
+
+void example5(z3::context & ctx){
+
+  z3::expr x0 = ctx.int_const("x0");
+  z3::expr x1 = ctx.int_const("x1");
+  z3::expr x2 = ctx.int_const("x2");
+
+  z3::expr_vector assertions(ctx);
+  assertions.push_back(x0 + x1 <= -4);
+  assertions.push_back(-x2 + x0 <= -10);
+  assertions.push_back(-x0 <= -8);
+
+  try {
+    OctagonInterpolantWithUncomSymbols _a(assertions, {"x0"});
     std::cout << _a.removePrefix(_a.getInterpolant()) << std::endl;
   }
   catch(char const * e){
