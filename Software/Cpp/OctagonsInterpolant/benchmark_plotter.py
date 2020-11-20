@@ -25,7 +25,7 @@ def parse_info(file_name, _num_elim_vars_data, _data, num_tests):
     return (_num_elim_vars_data, _data)
 
 if __name__ == "__main__":
-    num_tests = 100
+    num_tests = 10000
 
     steps = np.arange(0, num_tests)
     num_constants, num_ineqs, num_vars_to_elim = parse_meta_data("results/iz3_benchmark.txt")
@@ -47,7 +47,7 @@ if __name__ == "__main__":
     ax.set_ylabel('Time in milliseconds')
     ax.set_title('Performance comparison of interpolant generation algorithms for UTVPI \n\
             Number of Constants: ' + num_constants + ' Number of Inequalities: ' + num_ineqs)
-    ax.set_ylim(0, 10)
+    ax.set_ylim(0, 30)
     # plt.legend(bbox_to_anchor=(0., 1.02, 1., .102), loc='lower left', ncol=2, mode="expand", borderaxespad=0.)
     # plt.legend(bbox_to_anchor=(1.05, 1), loc='upper left', borderaxespad=0.)
     # legend = ax.legend(loc='upper left', shadow=True, fontsize='x-large')

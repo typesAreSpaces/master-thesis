@@ -74,14 +74,14 @@ int main(){
   srand(time(NULL));
 
   z3::context ctx;
-  unsigned num_tests = 100;
+  unsigned num_tests = 10000;
 
   for(unsigned i = 0; i < num_tests; ++i){
     //OCTSignature S(ctx, 
     //num_constants, num_ineqs, max_limit,
     //limit_search);
-    //OCTSignature S(ctx, 10, 5, 3, 1000);
-    OCTSignature S(ctx, 10, 20, 10, 1000);
+    OCTSignature S(ctx, 10, 5, 3, 1000);
+    //OCTSignature S(ctx, 10, 20, 10, 1000);
     if(!S.IsValidInstance()){
       --i;
       continue;
@@ -265,7 +265,6 @@ void OCTSignature::iZ3Instance() const {
 
   out << "(check-sat)" << std::endl;
   out << "(get-interpolant a_part b_part)" << std::endl;
-  out << "(get-info :all-statistics)" << std::endl;
 
   out.close();
 }

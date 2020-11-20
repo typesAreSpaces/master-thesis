@@ -35,13 +35,19 @@ in order to obtain an efficient implementation:
 
 \subsection{Normal Forms and Ordering of UTVPI terms}
 
-Normal forms helps us to avoid the ambiguity introduced
-by the commutativity of addition and neutrality of adding
-by 0.
+Normal forms helps us to avoid the 
+ambiguity introduced
+by the commutativity of addition and 
+neutrality of adding by 0.
 Also, normal forms allow the data
-structures mentioned above to keep track of less UTVPI terms.
-The normal form of a UTVPI term is simply defined by the
-following function: 
+structures mentioned above to keep 
+track of less UTVPI terms, otherwise you 
+will need to 
+represent $2n^2$ terms instead of $4n^2$ 
+UTVPI terms.
+
+The normal form of a UTVPI term is simply 
+defined by the following function: 
 \begin{equation*}
   norm(\pm x_m \pm x_n) = 
   \begin{cases} 
@@ -107,8 +113,10 @@ explicit bijection, we notice the following facts.
 
 We can arrange ordered partitions $P$ of $T$ such 
 that two normalized UTVPI terms $\pm x_{m_1} \pm x_{m_2}$
-and $\pm x_{n_1} \pm x_{n_2}$ belong to the same partition
-if $|m_1| = |m_2|$.
+and $\pm x_{n_1} \pm x_{n_2}$ belong to the same 
+partition if $|m_1| = |m_2|$, where 
+$|| : \mathbb{Z} \rightarrow \mathbb{N}$ denotes
+the absolute value function.
 
 The example \ref{example_oct} arranged the normalized 
 UTVPI terms into this ordered partitions listing them
