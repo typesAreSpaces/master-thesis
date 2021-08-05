@@ -1,0 +1,76 @@
+In previous chapters, we discussed uniform 
+interpolanting algorithms
+for the EUF and UTVPI theories respectively. 
+This was possible since
+each theory satisfies the Uniform Interpolant 
+Property (UIP). Nonetheless, 
+as shown in \cite{10.1007/978-3-030-51074-9_11}, the UIP does 
+not hold for combined theory of EUF and integer 
+difference logic (IDL). The same counter-example applies for the
+theory combination of EUF and UTPVI. Hence, there cannot be
+an algorithm for computing the uniform interpolant for this 
+combined theory. Thus, this chapter discusses interpolation
+algorithm for the combined theory of EUF and UTVPI and conditions
+in which the output obtained is a uniform interpolant.
+
+Theory combination techniques involve 
+reusing the algorithms for verification 
+problems of the theories involved 
+by either purifying terms over the 
+theories, or reducing the original problem 
+into a base theory, or a combination of these two. 
+Usually the approaches following the first approach 
+aforementioned rely on a Nelson-Oppen
+framework \cite{10.1007/11532231_26, 
+10.1007/978-3-642-22119-4_1, 10.1145/2490253}
+
+Despite possibly more efficient approaches using
+model-based theory combination techniques 
+\footnote{
+  An interesting property of model-based theory combination 
+  is that it is not needed to propagate disjunctions, even if
+  the theories are not convex. The reason is due to 
+  the \emph{disjunctiviness} of the problem is handled 
+  \emph{lazily} by the
+  SAT solver.
+} \cite{10.1007/978-3-642-22119-4_1}, the latter requires 
+operations which many SMT solvers do not provide 
+proper API to implement these.
+Hence, the approach used in the thesis work follows 
+\cite{10.1007/11532231_26} since it does not require extensive
+modification to the decision procedures
+used. Many of the necessary modifications 
+were implemented on top of Z3 and PicoSAT/TraceCheck.
+
+The propagation of new equalities and disjunction of equalities
+requires the additional step to split these formulas into
+the correct part of the interpolant pair. Among the major
+contributions of \cite{10.1007/11532231_26} was the introduction
+of the class of equality interpolanting theories.
+
+\begin{definition}
+  A theory $\cal{T}$ is \emph{equality interpolating}
+  if for every $A$, $B$ in $\cal{T}$ and every AB-mixed
+  equality $a = b$ such that $A \land B \models_{\cal{T}} a = b$,
+  there exists a term $t$
+  in $\cal{T}$ (called interpolanting term)
+  such that $A \land B \models_{\cal{T}} a = t$ and 
+  $A \land B \models_{\cal{T}} b = t$.
+\end{definition}
+
+The relevance of the existance of the interpolating term for 
+a deduced AB-mixed equality becomes relevant in the context 
+of splitting a formula into a suitable A-part and B-part 
+respectively. 
+Deciding where to include AB-common terms to either the 
+A-part or the B-part of the interpolantion pair affects 
+the final result since the interpolant will be \emph{closer} 
+to the A-part or to the B-part respectively. The authors in 
+\cite{10.1007/11532231_26} include AB-common terms to the B-part. 
+However, this implementation work includes AB-common terms to the
+A-part due to the interest in uniform interpolants.
+
+%%% Local Variables:
+%%% mode: latex
+%%% TeX-master: "main"
+%%% End:

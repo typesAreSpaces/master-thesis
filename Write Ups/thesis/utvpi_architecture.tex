@@ -1,0 +1,31 @@
+\begin{figure}
+
+  \centering
+
+  \begin{tikzpicture}
+    \node[module]                        (I0) {\tiny Input};
+    \node[module, right=3mm of I0]       (I1) {\tiny Parser (Z3)};
+    \node[module, right=3mm of I1]       (I9) {\tiny Preprocessor};
+    \node[module, right=3mm of I9]       (I8) {\tiny Indexing table};
+    \node[module, right=3mm of I8]       (I4) {\tiny Matching and Variable elimination};
+    \node[module, above=2mm of I4]       (I3) {\tiny UTVPI Interpolator};
+    \node[module, below=3mm of I4] (I6) {\tiny Simplifier};
+    \node[module, right=3mm of I4] (I7) {\tiny Output};
+    \draw[->, dashed] (I4)--(I6);
+    \node[fit=(I8) (I4) (I6), draw, inner sep=0.5mm]           (fitThCombInternal) {};
+    \node[fit=(I3) (fitThCombInternal), draw, inner sep=0.5mm] (fitThComb)         {};
+    \draw[->] (I0)--(I1);
+    \draw[->] (I1)--(I9);
+    \draw[->] (I9)--(I8);
+    \draw[->] (I8)--(I4);
+    \draw[->] (I6)--(I7);
+  \end{tikzpicture}
+
+  \caption{UTVPI Interpolator Diagram} \label{utvpi_architecture}
+
+\end{figure}
+
+%%% Local Variables:
+%%% mode: latex
+%%% TeX-master: "main"
+%%% End:

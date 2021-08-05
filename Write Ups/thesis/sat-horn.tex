@@ -1,0 +1,36 @@
+\subsection{Satisfiability of Horn clauses with ground equations}
+
+In \cite{GALLIER1987233} it was proposed an algorithm 
+for testing the unsatisfiability
+of ground Horn clauses with equality. The main idea was 
+to interleave two algorithms: \emph{implicational propagation}
+(propositional satisfiability of Horn clauses) that 
+updates the truth value of equations in the antecedent 
+of the input Horn clauses \cite{DOWLING1984267}; and 
+\emph{equational propagation} (congruence closure for 
+grounded equations) to update the state of a 
+Union-Find data structure \cite{10.1145/364099.364331}
+that keeps the minimal equivalence relation defined 
+by grounded equations in the input Horn clauses.
+
+The author in \cite{GALLIER1987233} defined two 
+variations of his algorithms by adapting
+the Congruence Closure algorithms in 
+\cite{10.1145/322217.322228, 10.1145/322186.322198}.
+Additionally, modifications in the data structures 
+used by the original algorithms were needed
+to make the interleaving mechanism more efficient.
+
+Our implementation uses the equality propagation
+mechanism in the algorithm proposed by Gallier
+when we have to deal with Horn clauses with ground
+equations. In addition, we also needed to design
+some modifications of the original formulation so
+it can integrate with the congruence closure with
+explanation algorithm mentioned in the previous 
+section.
+
+%%% Local Variables:
+%%% mode: latex
+%%% TeX-master: "main"
+%%% End:

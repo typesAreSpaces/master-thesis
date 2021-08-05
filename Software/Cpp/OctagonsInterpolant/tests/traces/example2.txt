@@ -1,0 +1,28 @@
+Processing
+(+ c_x2 a_x1)
+Updating structure with
+x_2 + x_1 <= 3
+Processing
+(- (- c_x3) a_x1)
+Updating structure with
+- x_3 - x_2 <= 1
+Processing
+(+ c_x4 c_x3)
+Updating structure with
+x_4 + x_3 <= -6
+Processing
+(- (- c_x5) c_x4)
+Updating structure with
+- x_5 - x_4 <= 1
+Removing this var: x_0
+Removing this var: x_1
+Removing this var: x_2
+Reducing x_2 + x_1 and - x_3 - x_2
+Result: - x_3 + x_1
+Removing this var: x_3
+Removing this var: x_4
+Removing this var: x_5
+(ast-vector
+  (<= (+ (- x3) x2) 4)
+  (<= (+ x4 x3) (- 6))
+  (<= (- (- x5) x4) 1))

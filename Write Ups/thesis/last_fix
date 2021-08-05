@@ -1,0 +1,159 @@
+let SessionLoad = 1
+let s:so_save = &so | let s:siso_save = &siso | set so=0 siso=0
+let v:this_session=expand("<sfile>:p")
+silent only
+cd ~/Documents/GithubProjects/master-thesis/Write\ Ups/thesis
+if expand('%') == '' && !&modified && line('$') <= 1 && getline(1) == ''
+  let s:wipebuf = bufnr('%')
+endif
+set shortmess=aoO
+badd +5 euf.tex
+badd +1 references.bib
+badd +1 main.tex
+badd +1 algpseudocode.sty
+badd +1 booktabs.sty
+badd +796 euf_implementation.tex
+badd +75 euf_evaluation.tex
+badd +3 euf_interp_vs_uni_interp.tex
+badd +71 ~/Documents/GithubProjects/master-thesis/Software/Cpp/EUFInterpolant/tests/traces/current_progress_example1.txt
+badd +154 euf_performance_2.tex
+badd +29 euf_conclusion.tex
+badd +1 octagonal.tex
+badd +118 oct_implementation.tex
+badd +77 oct_evaluation.tex
+badd +1 oct_performance_2.tex
+badd +2 oct_interp_vs_uni_interp.tex
+badd +1 combination.tex
+badd +337 comb_uniform.tex
+badd +1 euf_abstract.tex
+badd +32 euf_algorithm.tex
+badd +55 comb_uniform_example.tex
+badd +1 comb_interp_vs_uni_interp.tex
+argglobal
+%argdel
+edit main.tex
+set splitbelow splitright
+wincmd _ | wincmd |
+vsplit
+1wincmd h
+wincmd _ | wincmd |
+split
+1wincmd k
+wincmd w
+wincmd w
+wincmd _ | wincmd |
+split
+1wincmd k
+wincmd w
+set nosplitbelow
+set nosplitright
+wincmd t
+set winminheight=0
+set winheight=1
+set winminwidth=0
+set winwidth=1
+exe '1resize ' . ((&lines * 27 + 28) / 56)
+exe 'vert 1resize ' . ((&columns * 41 + 144) / 289)
+exe '2resize ' . ((&lines * 26 + 28) / 56)
+exe 'vert 2resize ' . ((&columns * 41 + 144) / 289)
+exe '3resize ' . ((&lines * 26 + 28) / 56)
+exe 'vert 3resize ' . ((&columns * 247 + 144) / 289)
+exe '4resize ' . ((&lines * 27 + 28) / 56)
+exe 'vert 4resize ' . ((&columns * 247 + 144) / 289)
+argglobal
+setlocal fdm=manual
+setlocal fde=0
+setlocal fmr={{{,}}}
+setlocal fdi=#
+setlocal fdl=1
+setlocal fml=1
+setlocal fdn=20
+setlocal fen
+silent! normal! zE
+10,112fold
+10
+normal! zc
+let s:l = 46 - ((36 * winheight(0) + 13) / 27)
+if s:l < 1 | let s:l = 1 | endif
+exe s:l
+normal! zt
+46
+normal! 0
+wincmd w
+argglobal
+if bufexists("references.bib") | buffer references.bib | else | edit references.bib | endif
+setlocal fdm=manual
+setlocal fde=0
+setlocal fmr={{{,}}}
+setlocal fdi=#
+setlocal fdl=0
+setlocal fml=1
+setlocal fdn=20
+setlocal fen
+silent! normal! zE
+let s:l = 1 - ((0 * winheight(0) + 13) / 26)
+if s:l < 1 | let s:l = 1 | endif
+exe s:l
+normal! zt
+1
+normal! 0
+wincmd w
+argglobal
+if bufexists("comb_uniform_example.tex") | buffer comb_uniform_example.tex | else | edit comb_uniform_example.tex | endif
+setlocal fdm=manual
+setlocal fde=0
+setlocal fmr={{{,}}}
+setlocal fdi=#
+setlocal fdl=0
+setlocal fml=1
+setlocal fdn=20
+setlocal fen
+silent! normal! zE
+let s:l = 52 - ((19 * winheight(0) + 13) / 26)
+if s:l < 1 | let s:l = 1 | endif
+exe s:l
+normal! zt
+52
+normal! 015|
+wincmd w
+argglobal
+if bufexists("comb_interp_vs_uni_interp.tex") | buffer comb_interp_vs_uni_interp.tex | else | edit comb_interp_vs_uni_interp.tex | endif
+setlocal fdm=manual
+setlocal fde=0
+setlocal fmr={{{,}}}
+setlocal fdi=#
+setlocal fdl=0
+setlocal fml=1
+setlocal fdn=20
+setlocal fen
+silent! normal! zE
+let s:l = 16 - ((15 * winheight(0) + 13) / 27)
+if s:l < 1 | let s:l = 1 | endif
+exe s:l
+normal! zt
+16
+normal! 052|
+wincmd w
+4wincmd w
+exe '1resize ' . ((&lines * 27 + 28) / 56)
+exe 'vert 1resize ' . ((&columns * 41 + 144) / 289)
+exe '2resize ' . ((&lines * 26 + 28) / 56)
+exe 'vert 2resize ' . ((&columns * 41 + 144) / 289)
+exe '3resize ' . ((&lines * 26 + 28) / 56)
+exe 'vert 3resize ' . ((&columns * 247 + 144) / 289)
+exe '4resize ' . ((&lines * 27 + 28) / 56)
+exe 'vert 4resize ' . ((&columns * 247 + 144) / 289)
+tabnext 1
+if exists('s:wipebuf') && getbufvar(s:wipebuf, '&buftype') isnot# 'terminal'
+  silent exe 'bwipe ' . s:wipebuf
+endif
+unlet! s:wipebuf
+set winheight=1 winwidth=20 winminheight=1 winminwidth=1 shortmess=filnxtToOFIc
+let s:sx = expand("<sfile>:p:r")."x.vim"
+if file_readable(s:sx)
+  exe "source " . fnameescape(s:sx)
+endif
+let &so = s:so_save | let &siso = s:siso_save
+doautoall SessionLoadPost
+unlet SessionLoad
+" vim: set ft=vim :

@@ -1,28 +1,29 @@
-IDIR=./include/
-SDIR=./src/
-ODIR=./obj/
+IDIR=./include
+SDIR=./src
+ODIR=./obj
 CC=g++
-DEPS=$(wildcard $(IDIR)*.h)
-SRC=$(wildcard $(SDIR)*.cpp)
-OBJS=$(patsubst $(SDIR)%.cpp, $(ODIR)%.o, $(SRC))
+DEPS=$(wildcard $(IDIR)/*.h)
+SRC=$(wildcard $(SDIR)/*.cpp)
+OBJS=$(patsubst $(SDIR)/%.cpp, $(ODIR)/%.o, $(SRC))
 CFLAGS= -I$(IDIR)
-TESTS=$(wildcard ./examples/*)
 
-all: main
+all: hornsat
 
-$(ODIR)%.o: $(SDIR)%.cpp $(DEPS)
-	$(CC) -c -o $@ $< $(CFLAGS)
+$(ODIR)/%.o: $(SDIR)/%.cpp $(DEPS)
+	$(CC) -g -c -o $@ $< $(CFLAGS)
 
-main: $(OBJS)
-	$(CC) -o $@ $^
+hornsat: $(OBJS)
+	$(CC) -g -o $@ $^
+
+run: hornsat
+	./hornsat
 
 .PHONY: clean
-
 clean:
-	rm $(ODIR)*.o ./*\~
+	rm -rf $(ODIR)/*.o ./*\~ hornsat
 
 test:
 	for test in $(TESTS); do\
 		echo 'Test: '$$test; \
-		./main < $$test; \
+		./hornsat < $$test; \
 	done

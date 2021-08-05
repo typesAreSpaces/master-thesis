@@ -1,0 +1,183 @@
+\section{General system description}
+
+The algorithms implemented in this thesis used the C++ programming
+language. The overall architecture of the system is the following:
+
+\input{general_architecture}
+\input{euf_architecture}
+\input{utvpi_architecture}
+
+All the decision procedures mentioned in this chapter
+were implemented except for the SAT/SMT algorithms.
+For the latter, PicoSAT/TraceCheck\cite{picosat08} and Z3 
+\cite{10.1007/978-3-540-78800-3_24} were chosen as the 
+libraries to work with these algorithms. 
+The rest of this section discusses some minor modifications 
+implemented in the above mentioned Z3 and the proof format 
+output by PicoSAT/TraceCheck.
+
+\subsection{Minor modifications to Z3}
+
+Z3 standard input is SMTLib2 \cite{BarFT-SMTLIB}. This grammar
+does not provide a standard specification regarding a suitable
+format to work with interpolants. Interpolation software
+read interpolant formulas based on the order of appearance
+in a conjunction \cite{mcmillan2011interpolants}. In our case
+we require two conjuncts of conjunctions of literals in the
+EUF theory, UTVPI theory or combined theory. 
+
+As we can notice in figures \ref{general_architecture}, \ref{euf_architecture},
+and \ref{utvpi_architecture}, there is preprocessor component which prefixes
+the names of uninterpreted symbols with the strings a\_, b\_, c\_
+to indicate that the symbol name is either an A-local, B-local, or
+common symbol respectively. We extended Z3's API with functions
+that test if a formula is A-local, B-local, AB-pure, AB-common
+based of the definitions in \cite{10.1007/11532231_26} because 
+it is necessary to constantly check this conditions for splitting
+purposes. Another reason for the latter is justified because the 
+implemented congruence closure algorithm takes as an additional
+criterion to maintain as representative term an AB-common term.
+A similar change was implemented in the congruence closure implementation
+of Z3. Nonetheless, it was irrelevant since Z3's internal structure
+separates the abstract syntax tree, which is part of its API
+with the enode data structures, which does not allow the super
+to modify it. This is the reason why it was not
+possible to work directly with Z3 congruence closure implementation
+and a separate implementation was necessary.
+
+\subsection{PicoSAT/TraceCheck Proof Format}
+
+We used PicoSAT/TraceCheck to reconstruct a resolution-based proof 
+necessary for Pudlak's algorithm in the interpolation combination 
+component. Given that Z3 provides a user-friendly proof-producing 
+API \cite{Moura_proofsand}, why did the implementation
+work require another SAT solver to obtain the resolution-proof?
+
+There are several reasons for the latter. First, the author of the
+thesis was not able to find an appropriate configuration of parameters
+for the SMT solver to provide such proofs. In order to grasp an idea
+of the latter, it was implemented a Z3 proof parser that generates 
+a pdf compiled by \LaTeX. Many examples indicated that
+Z3 selects more convenient theories to work with some problems. For
+instance, the formula in pure propositional logic shown in figure 
+\ref{query_proof_problem} used proof rules from EUF \footnote{Z3 uses
+the term monotonicity instead of congruence}.
+
+\begin{figure}
+  \centering
+  \includegraphics[scale=0.2]{figures/query_screenshot}
+  \caption{Problematic SMT query for resolution proofs} \label{query_proof_problem}
+\end{figure}
+
+
+%\includepdf[scale=0.2,pages=-,pagecommand={},width=\textwidth, angle=90]{python_proof.pdf}
+\begin{figure}
+  %\includepdf[scale=0.8,pages=-,angle=0]{python_proof.pdf}
+  \input{python_proof}
+  \caption{Z3 proof of figure \ref{query_proof_problem}} \label{smt_proof_problem}
+\end{figure}
+
+
+Thus, we opted to use the PicoSAT SAT solver 
+which implements the DPLL algorithm. 
+PicoSAT, as many SAT solvers, take as input a 
+DIMACS cnf file which consists of a
+straightforward language to denote clauses. 
+(Optional) Lines starting with the character `c'
+denote comments, and a single line starting 
+the string `p cnf' followed by
+two positive integers denote the number of 
+variables and number of clauses respectively.
+The next lines encode clauses. Each line is a 
+list of integers numbers terminating with
+0. Positive number encode non-negated literals 
+whose identifier is the number, and negative
+numbers encode the negated literal whose 
+identifier is the absolute value of the number.
+
+The proof format produced by PicoSAT consists
+of an ordered list of 
+clauses which are either from the input problem 
+(facts) or learned during the search. 
+Each line is encoded following the DIMACS format,
+but extended to include an identifying number at the
+beginning of each line (which identifies the clause), and a 
+second list of integers after the terminating zero of the clause 
+which denotes the non-ordered list of clause identifiers 
+involved in a hyper resolution step; the resulting clause 
+obtained from this step is precisely the clauses encoded by
+the line. An additional zero is used to terminate the second
+list of integers.
+
+\begin{example}
+  The following extended proof trace is obtained after running
+  the PicoSAT solver on the cnf file encoding the formula in example \ref{dpll_figure}:
+
+  \begin{figure}[ht]
+  \centering
+  $
+  \begin{matrix}
+    1 & -1 &  0 &  0 &    & \\
+    2 & -3 & 2 & 1 & 0 & 0  \\
+    3 & 3 & 0 & 0 &  &      \\
+    4 & 1 & -2 & 0 & 0 &    \\
+    6 & -2 & 0 & 1 & 4 & 0  \\
+    7 & 0 & 1 & 6 & 2 & 3   \\
+  \end{matrix}
+  $
+  \caption{Example of extended proof trace by PicoSAT for
+  problem \ref{dpll_figure}}
+\end{figure}
+As we can notice, the first four lines encode the original
+input clauses; 1 denotes variable P, 2 denotes variable Q, and 3 denotes variable R. Also, these lines do not include
+any clause identifier in the second list of number since
+they are facts. The last two lines denote clauses with
+identifier 6 and 7. Clause 6 is $\neg Q$, which is obtained
+after the hyper resolution step using clauses 1 and 4. The
+last line does not contain elements in the first list since
+this encodes the contradiction clause.
+\end{example}
+
+From the previous example we can observe the list 
+of clause identifiers for the hyper resolution step
+are not ordered in the sense that we cannot produce
+multiple resolution steps from the representation.
+In order to obtain the latter one can implement a unit
+propagation algorithm and discover such ordering.
+
+TraceCheck is a tool incorporated in the previous version
+of PicoSAT \cite{NiemetzPreinerBiere-JSAT15} to verify
+proof traces. It is also able to obtain a pure 
+resolution proof.
+The presentation of the proof trace is restricted to 
+contain only two clause identifiers in the second list
+for each clause.
+
+\begin{example}
+  The following extended proof trace is obtained after running
+  the TraceCheck on the previous proof trace:
+
+  \begin{figure}[ht]
+    \centering
+    $
+    \begin{matrix}
+      3 &3& 0& 0& \\
+      2 &1& 2& -3& 0& 0&\\
+      4& 1& -2& 0& 0&\\
+      1& -1& 0& 0&\\
+      6& -2& 0& 1& 4& 0&\\
+      7& 2& -3& 0& 1& 2& 0&\\
+      8& -3& 0& 7& 6& 0&\\
+      9& 0& 8& 3& 0&\\
+    \end{matrix}
+    $
+    \caption{Example of extended proof trace by PicoSAT for
+    problem \ref{dpll_figure}}
+  \end{figure}
+\end{example}
+
+
+%%% Local Variables:
+%%% mode: latex
+%%% TeX-master: "main"
+%%% End:

@@ -1,0 +1,41 @@
+\section{Evaluation}
+
+\subsection{Detailed evaluation of a complete example}
+
+\subsubsection{A simple example}
+
+Let us consider the following example: 
+$\alpha = \{ f(x_1) = 0, x_1 = a, y_1 \leq a\}; 
+\beta = \{x_1 \leq b, y_1 = b, f(y_1) \neq 0\}$.
+The implementation produces the following interpolant \footnote{A trace of the
+  execution can be found at the Appendix section since it is considerably
+large to include it in this section}: 
+  
+$((x_1 \neq y_1 \lor f(y_1) = 0 \lor (f(x_1) = 0 \land ((x_1 = y_1 \lor ( -x_1 + y_1 \leq 0 \land x_1 - y_1 \leq -1) \lor y_1 - x_1 \leq -1) \land (x_1 \neq y_1)))) \land (x_1 = y_1 \lor (((x_1 = y_1) \lor (-x_1 + y_1 \leq 0 \land x_1 - y_1 \leq -1) \lor y_1 - x_1 \leq -1) \land x_1 \neq y_1)))$
+
+
+%\verbatiminput{th_comb_example_interp.txt}
+
+The following SMT query verifies that the previous result obtained is 
+an interpolant of the input formula:
+
+\verbatiminput{../../Software/Cpp/ThCombination/tests/verification/verification_basic_test_actual_example.smt2}
+
+For this example these are the interpolants reported by Z3 and Mathsat
+respectively:
+
+\begin{itemize}
+  \item Z3 interpolant: (and ($\geq$ (+ x1 (* (- 1) y1)) 0) (= (f x1) 0))
+  \item Mathsat interpolant: (or (= (f y1) 0) ($\leq$ 1 (+ x1 (* (- 1) y1))))
+\end{itemize}
+
+The following SMT query verifies the strength relation between the interpolants produced:
+
+\verbatiminput{../../Software/Cpp/ThCombination/tests/verification/basic_test_actual_example_final_check.smt2}
+
+\input{comb_performance_2}
+
+%%% Local Variables:
+%%% mode: latex
+%%% TeX-master: "main"
+%%% End:

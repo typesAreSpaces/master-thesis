@@ -1,0 +1,37 @@
+\begin{algorithm}[!ht]\label{conditional_replacement_part_1_impl}
+  \caption{Conditional Replacement - Part 1}
+  \linespread{\separationline}\selectfont
+  \begin{algorithmic}[2]
+    \Procedure {Conditional Replacement} {z3::expr const \& x, z3::expr const \& y, H : Horn clauses, $\mathcal{E}$ : conditional equivalence relation }
+
+    \If {x is constant and y is constant}
+    \For {$\sigma_x$ in Candidates(x)}
+    \For {$\sigma_y$ in Candidates(y)}
+    \State {horn\_clause.add(ExtendedExplain(x, $\sigma_x$, H, $\mathcal{E}$) + ExtendedExplain(y, $\sigma_y$, H, $\mathcal{E}$), $\sigma_x = \sigma_y$)}
+    \EndFor
+    \EndFor
+    \EndIf
+
+    \If {x is constant and y is of the form $f_y(t_1^{'}, \dots, t_{k_2}^{'})$}
+    \For {$\sigma_x$ in Candidates(x)}
+    \For {$\sigma_{f_y}$ in Candidates($f_y(t_1^{'}, \dots, t_{k_2}^{'})$)}
+    \State {horn\_clause.add(ExtendedExplain(x, $\sigma_x$, H, $\mathcal{E}$) + ExtendedExplain($f_y(t_1^{'}, \dots, t_{k_2}^{'}$, H, $\mathcal{E})$, $\sigma_y$), $\sigma_x = \sigma_{f_y})$}
+    \EndFor
+    \For {$arguments_{f_y}$ in CartesianProd(AllCandidates($f_y(t_1^{'}, \dots, t_{k_2}^{'})$))}
+    \State {horn\_clause.add(ExtendedExplain(x, $\sigma_x$, H, $\mathcal{E}$) + $\sum_{i=1}^{k_2}$ ExtendedExplain($t_i^{'}$, $arguments_{f_y}[i]$, H, $\mathcal{E}$), $\sigma_x = f_y(arguments_{f_y})$)}
+    \EndFor
+    \EndFor
+    \EndIf
+
+    \If {x is of the form $f_x(t_1, \dots, t_{k_1})$ and y is a constant}
+    \State {\textbf{return} CONDITIONAL ELIMINATION(y, x);}
+    \EndIf
+
+    \EndProcedure
+  \end{algorithmic}
+\end{algorithm}
+
+%%% Local Variables:
+%%% mode: latex
+%%% TeX-master: "main"
+%%% End:

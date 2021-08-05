@@ -1,0 +1,34 @@
+\section{Conclusions}
+
+This chapter discussed the new approach
+for uniform interpolant generation introduced by
+Prof. Kapur for the EUF theory. We 
+proposed a modification of his algorithm
+and proved its correctness. The 
+implementation and testing work confirm
+that the approach produces stronger interpolants
+compared to other interpolant generation
+algorithms (iZ3, Mathsat).
+
+The performance comparison section indicates
+that of our implementation is slower 
+than iZ3. 
+On the other hand, it is important to 
+highlight that the algorithms have different
+output specification since Prof. Kapur algorithm
+computes uniform interpolants.
+
+The current implementation can be improved. 
+Currently, the data structures
+for flattening introduce additional constants
+that might not be needed since the implementation
+used a recursive scan of the arguments for each
+expression without checking term sharing.
+Moreover, the explanation mechanism can be
+improved or changed by the proof producing mechanism
+already available in Z3. 
+
+%%% Local Variables:
+%%% mode: latex
+%%% TeX-master: "main"
+%%% End:

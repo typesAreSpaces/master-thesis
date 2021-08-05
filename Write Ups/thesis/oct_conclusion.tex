@@ -1,0 +1,30 @@
+\section{Conclusions}
+
+This chapter presented the approach
+by Prof. Kapur for computing
+the uniform interpolant of a satisfiable
+formula in the UTVPI theory.
+Several examples and testing of the implementation
+indicated that the output produced by Kapur's
+algorithm produces a stronger interpolant 
+than the other ones produced by iZ3 and Mathsat.
+The performance comparison showed a closer
+difference in times compared to the performance 
+comparison obtained for the EUF theory. 
+
+In order to improve the current implementation it
+will be interesting to explore the use of heuristics to 
+determine the order in which the uncommon variable 
+should be eliminated. The current implementation uses
+a lexicographic approach based on the occurrence of the
+symbols in the input formula. Different heuristic
+can consider the number of occurrences of the uncommon
+symbols in different inequalities, a topological order
+based on the dependency of the linear combinations of
+the inequalities, etc. 
+
+
+%%% Local Variables:
+%%% mode: latex
+%%% TeX-master: "main"
+%%% End:

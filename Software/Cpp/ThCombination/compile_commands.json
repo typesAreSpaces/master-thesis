@@ -1,0 +1,530 @@
+[
+ {
+  "directory": "/home/jose/Documents/GithubProjects/master-thesis/Software/Cpp/ThCombination",
+  "arguments": [
+   "g++",
+   "-g",
+   "-c",
+   "-o",
+   "obj/Purifier.o",
+   "-I./src",
+   "-I./include",
+   "-std=c++11",
+   "-Wall",
+   "src/Purifier.cpp"
+  ],
+  "file": "src/Purifier.cpp"
+ },
+ {
+  "directory": "/home/jose/Documents/GithubProjects/master-thesis/Software/Cpp/ThCombination",
+  "arguments": [
+   "g++",
+   "-g",
+   "-c",
+   "-o",
+   "obj/Rename.o",
+   "-I./src",
+   "-I./include",
+   "-std=c++11",
+   "-Wall",
+   "src/Rename.cpp"
+  ],
+  "file": "src/Rename.cpp"
+ },
+ {
+  "directory": "/home/jose/Documents/GithubProjects/master-thesis/Software/Cpp/ThCombination",
+  "arguments": [
+   "g++",
+   "-g",
+   "-c",
+   "-o",
+   "obj/ThCombInterpolator.o",
+   "-I./src",
+   "-I./include",
+   "-std=c++11",
+   "-Wall",
+   "src/ThCombInterpolator.cpp"
+  ],
+  "file": "src/ThCombInterpolator.cpp"
+ },
+ {
+  "directory": "/home/jose/Documents/GithubProjects/master-thesis/Software/Cpp/ThCombination",
+  "arguments": [
+   "g++",
+   "-g",
+   "-c",
+   "-o",
+   "obj/Bound.o",
+   "-I./src",
+   "-I./include",
+   "-std=c++11",
+   "-Wall",
+   "src/Bound.cpp"
+  ],
+  "file": "src/Bound.cpp"
+ },
+ {
+  "directory": "/home/jose/Documents/GithubProjects/master-thesis/Software/Cpp/ThCombination",
+  "arguments": [
+   "g++",
+   "-g",
+   "-c",
+   "-o",
+   "obj/Bounds.o",
+   "-I./src",
+   "-I./include",
+   "-std=c++11",
+   "-Wall",
+   "src/Bounds.cpp"
+  ],
+  "file": "src/Bounds.cpp"
+ },
+ {
+  "directory": "/home/jose/Documents/GithubProjects/master-thesis/Software/Cpp/ThCombination",
+  "arguments": [
+   "g++",
+   "-g",
+   "-c",
+   "-o",
+   "obj/CongruenceClosure.o",
+   "-I./src",
+   "-I./include",
+   "-std=c++11",
+   "-Wall",
+   "src/CongruenceClosure.cpp"
+  ],
+  "file": "src/CongruenceClosure.cpp"
+ },
+ {
+  "directory": "/home/jose/Documents/GithubProjects/master-thesis/Software/Cpp/ThCombination",
+  "arguments": [
+   "g++",
+   "-g",
+   "-c",
+   "-o",
+   "obj/CongruenceClosureDST.o",
+   "-I./src",
+   "-I./include",
+   "-std=c++11",
+   "-Wall",
+   "src/CongruenceClosureDST.cpp"
+  ],
+  "file": "src/CongruenceClosureDST.cpp"
+ },
+ {
+  "directory": "/home/jose/Documents/GithubProjects/master-thesis/Software/Cpp/ThCombination",
+  "arguments": [
+   "g++",
+   "-g",
+   "-c",
+   "-o",
+   "obj/CongruenceClosureExplain.o",
+   "-I./src",
+   "-I./include",
+   "-std=c++11",
+   "-Wall",
+   "src/CongruenceClosureExplain.cpp"
+  ],
+  "file": "src/CongruenceClosureExplain.cpp"
+ },
+ {
+  "directory": "/home/jose/Documents/GithubProjects/master-thesis/Software/Cpp/ThCombination",
+  "arguments": [
+   "g++",
+   "-g",
+   "-c",
+   "-o",
+   "obj/CongruenceClosureNO.o",
+   "-I./src",
+   "-I./include",
+   "-std=c++11",
+   "-Wall",
+   "src/CongruenceClosureNO.cpp"
+  ],
+  "file": "src/CongruenceClosureNO.cpp"
+ },
+ {
+  "directory": "/home/jose/Documents/GithubProjects/master-thesis/Software/Cpp/ThCombination",
+  "arguments": [
+   "g++",
+   "-g",
+   "-c",
+   "-o",
+   "obj/CurryNode.o",
+   "-I./src",
+   "-I./include",
+   "-std=c++11",
+   "-Wall",
+   "src/CurryNode.cpp"
+  ],
+  "file": "src/CurryNode.cpp"
+ },
+ {
+  "directory": "/home/jose/Documents/GithubProjects/master-thesis/Software/Cpp/ThCombination",
+  "arguments": [
+   "g++",
+   "-g",
+   "-c",
+   "-o",
+   "obj/EUFInterpolant-conditionalEliminationEqs.o",
+   "-I./src",
+   "-I./include",
+   "-std=c++11",
+   "-Wall",
+   "src/EUFInterpolant-conditionalEliminationEqs.cpp"
+  ],
+  "file": "src/EUFInterpolant-conditionalEliminationEqs.cpp"
+ },
+ {
+  "directory": "/home/jose/Documents/GithubProjects/master-thesis/Software/Cpp/ThCombination",
+  "arguments": [
+   "g++",
+   "-g",
+   "-c",
+   "-o",
+   "obj/EUFInterpolant.o",
+   "-I./src",
+   "-I./include",
+   "-std=c++11",
+   "-Wall",
+   "src/EUFInterpolant.cpp"
+  ],
+  "file": "src/EUFInterpolant.cpp"
+ },
+ {
+  "directory": "/home/jose/Documents/GithubProjects/master-thesis/Software/Cpp/ThCombination",
+  "arguments": [
+   "g++",
+   "-g",
+   "-c",
+   "-o",
+   "obj/EUFInterpolantWithExpressions.o",
+   "-I./src",
+   "-I./include",
+   "-std=c++11",
+   "-Wall",
+   "src/EUFInterpolantWithExpressions.cpp"
+  ],
+  "file": "src/EUFInterpolantWithExpressions.cpp"
+ },
+ {
+  "directory": "/home/jose/Documents/GithubProjects/master-thesis/Software/Cpp/ThCombination",
+  "arguments": [
+   "g++",
+   "-g",
+   "-c",
+   "-o",
+   "obj/EUFInterpolantWithUncomSymbols.o",
+   "-I./src",
+   "-I./include",
+   "-std=c++11",
+   "-Wall",
+   "src/EUFInterpolantWithUncomSymbols.cpp"
+  ],
+  "file": "src/EUFInterpolantWithUncomSymbols.cpp"
+ },
+ {
+  "directory": "/home/jose/Documents/GithubProjects/master-thesis/Software/Cpp/ThCombination",
+  "arguments": [
+   "g++",
+   "-g",
+   "-c",
+   "-o",
+   "obj/Explanation.o",
+   "-I./src",
+   "-I./include",
+   "-std=c++11",
+   "-Wall",
+   "src/Explanation.cpp"
+  ],
+  "file": "src/Explanation.cpp"
+ },
+ {
+  "directory": "/home/jose/Documents/GithubProjects/master-thesis/Software/Cpp/ThCombination",
+  "arguments": [
+   "g++",
+   "-g",
+   "-c",
+   "-o",
+   "obj/FactoryCurryNodes.o",
+   "-I./src",
+   "-I./include",
+   "-std=c++11",
+   "-Wall",
+   "src/FactoryCurryNodes.cpp"
+  ],
+  "file": "src/FactoryCurryNodes.cpp"
+ },
+ {
+  "directory": "/home/jose/Documents/GithubProjects/master-thesis/Software/Cpp/ThCombination",
+  "arguments": [
+   "g++",
+   "-g",
+   "-c",
+   "-o",
+   "obj/HornClause.o",
+   "-I./src",
+   "-I./include",
+   "-std=c++11",
+   "-Wall",
+   "src/HornClause.cpp"
+  ],
+  "file": "src/HornClause.cpp"
+ },
+ {
+  "directory": "/home/jose/Documents/GithubProjects/master-thesis/Software/Cpp/ThCombination",
+  "arguments": [
+   "g++",
+   "-g",
+   "-c",
+   "-o",
+   "obj/HornClauses.o",
+   "-I./src",
+   "-I./include",
+   "-std=c++11",
+   "-Wall",
+   "src/HornClauses.cpp"
+  ],
+  "file": "src/HornClauses.cpp"
+ },
+ {
+  "directory": "/home/jose/Documents/GithubProjects/master-thesis/Software/Cpp/ThCombination",
+  "arguments": [
+   "g++",
+   "-g",
+   "-c",
+   "-o",
+   "obj/Hornsat.o",
+   "-I./src",
+   "-I./include",
+   "-std=c++11",
+   "-Wall",
+   "src/Hornsat.cpp"
+  ],
+  "file": "src/Hornsat.cpp"
+ },
+ {
+  "directory": "/home/jose/Documents/GithubProjects/master-thesis/Software/Cpp/ThCombination",
+  "arguments": [
+   "g++",
+   "-g",
+   "-c",
+   "-o",
+   "obj/Input.o",
+   "-I./src",
+   "-I./include",
+   "-std=c++11",
+   "-Wall",
+   "src/Input.cpp"
+  ],
+  "file": "src/Input.cpp"
+ },
+ {
+  "directory": "/home/jose/Documents/GithubProjects/master-thesis/Software/Cpp/ThCombination",
+  "arguments": [
+   "g++",
+   "-g",
+   "-c",
+   "-o",
+   "obj/Octagon.o",
+   "-I./src",
+   "-I./include",
+   "-std=c++11",
+   "-Wall",
+   "src/Octagon.cpp"
+  ],
+  "file": "src/Octagon.cpp"
+ },
+ {
+  "directory": "/home/jose/Documents/GithubProjects/master-thesis/Software/Cpp/ThCombination",
+  "arguments": [
+   "g++",
+   "-g",
+   "-c",
+   "-o",
+   "obj/OctagonInterpolant.o",
+   "-I./src",
+   "-I./include",
+   "-std=c++11",
+   "-Wall",
+   "src/OctagonInterpolant.cpp"
+  ],
+  "file": "src/OctagonInterpolant.cpp"
+ },
+ {
+  "directory": "/home/jose/Documents/GithubProjects/master-thesis/Software/Cpp/ThCombination",
+  "arguments": [
+   "g++",
+   "-g",
+   "-c",
+   "-o",
+   "obj/OctagonInterpolantWithExpressions.o",
+   "-I./src",
+   "-I./include",
+   "-std=c++11",
+   "-Wall",
+   "src/OctagonInterpolantWithExpressions.cpp"
+  ],
+  "file": "src/OctagonInterpolantWithExpressions.cpp"
+ },
+ {
+  "directory": "/home/jose/Documents/GithubProjects/master-thesis/Software/Cpp/ThCombination",
+  "arguments": [
+   "g++",
+   "-g",
+   "-c",
+   "-o",
+   "obj/OctagonInterpolantWithUncomSymbols.o",
+   "-I./src",
+   "-I./include",
+   "-std=c++11",
+   "-Wall",
+   "src/OctagonInterpolantWithUncomSymbols.cpp"
+  ],
+  "file": "src/OctagonInterpolantWithUncomSymbols.cpp"
+ },
+ {
+  "directory": "/home/jose/Documents/GithubProjects/master-thesis/Software/Cpp/ThCombination",
+  "arguments": [
+   "g++",
+   "-g",
+   "-c",
+   "-o",
+   "obj/OctagonParser.o",
+   "-I./src",
+   "-I./include",
+   "-std=c++11",
+   "-Wall",
+   "src/OctagonParser.cpp"
+  ],
+  "file": "src/OctagonParser.cpp"
+ },
+ {
+  "directory": "/home/jose/Documents/GithubProjects/master-thesis/Software/Cpp/ThCombination",
+  "arguments": [
+   "g++",
+   "-g",
+   "-c",
+   "-o",
+   "obj/RenameWithExpressions.o",
+   "-I./src",
+   "-I./include",
+   "-std=c++11",
+   "-Wall",
+   "src/RenameWithExpressions.cpp"
+  ],
+  "file": "src/RenameWithExpressions.cpp"
+ },
+ {
+  "directory": "/home/jose/Documents/GithubProjects/master-thesis/Software/Cpp/ThCombination",
+  "arguments": [
+   "g++",
+   "-g",
+   "-c",
+   "-o",
+   "obj/RenameWithUncomSymbols.o",
+   "-I./src",
+   "-I./include",
+   "-std=c++11",
+   "-Wall",
+   "src/RenameWithUncomSymbols.cpp"
+  ],
+  "file": "src/RenameWithUncomSymbols.cpp"
+ },
+ {
+  "directory": "/home/jose/Documents/GithubProjects/master-thesis/Software/Cpp/ThCombination",
+  "arguments": [
+   "g++",
+   "-g",
+   "-c",
+   "-o",
+   "obj/UnionFind.o",
+   "-I./src",
+   "-I./include",
+   "-std=c++11",
+   "-Wall",
+   "src/UnionFind.cpp"
+  ],
+  "file": "src/UnionFind.cpp"
+ },
+ {
+  "directory": "/home/jose/Documents/GithubProjects/master-thesis/Software/Cpp/ThCombination",
+  "arguments": [
+   "g++",
+   "-g",
+   "-c",
+   "-o",
+   "obj/UnionFindExplain.o",
+   "-I./src",
+   "-I./include",
+   "-std=c++11",
+   "-Wall",
+   "src/UnionFindExplain.cpp"
+  ],
+  "file": "src/UnionFindExplain.cpp"
+ },
+ {
+  "directory": "/home/jose/Documents/GithubProjects/master-thesis/Software/Cpp/ThCombination",
+  "arguments": [
+   "g++",
+   "-g",
+   "-c",
+   "-o",
+   "obj/Util.o",
+   "-I./src",
+   "-I./include",
+   "-std=c++11",
+   "-Wall",
+   "src/Util.cpp"
+  ],
+  "file": "src/Util.cpp"
+ },
+ {
+  "directory": "/home/jose/Documents/GithubProjects/master-thesis/Software/Cpp/ThCombination",
+  "arguments": [
+   "g++",
+   "-g",
+   "-c",
+   "-o",
+   "obj/VarPositions.o",
+   "-I./src",
+   "-I./include",
+   "-std=c++11",
+   "-Wall",
+   "src/VarPositions.cpp"
+  ],
+  "file": "src/VarPositions.cpp"
+ },
+ {
+  "directory": "/home/jose/Documents/GithubProjects/master-thesis/Software/Cpp/ThCombination",
+  "arguments": [
+   "g++",
+   "-g",
+   "-c",
+   "-o",
+   "obj/Z3Subterms.o",
+   "-I./src",
+   "-I./include",
+   "-std=c++11",
+   "-Wall",
+   "src/Z3Subterms.cpp"
+  ],
+  "file": "src/Z3Subterms.cpp"
+ },
+ {
+  "directory": "/home/jose/Documents/GithubProjects/master-thesis/Software/Cpp/ThCombination",
+  "arguments": [
+   "g++",
+   "-g",
+   "-c",
+   "-o",
+   "./tests/basic_test.o",
+   "-I./src",
+   "-I./include",
+   "-std=c++11",
+   "-Wall",
+   "./tests/basic_test.cpp"
+  ],
+  "file": "./tests/basic_test.cpp"
+ }
+]

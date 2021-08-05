@@ -1,0 +1,342 @@
+\section{A partially sound 
+  uniform interpolant generation algorithm 
+  for the combined theory of EUF and UTVPI}
+
+This section introduces a partially sound uniform interpolant
+generation algorithm for the aforementioned theories in the
+sense that it produces a uniform interpolant if for
+all variables $x$ to eliminate in the UTVPI components
+of the input formula $\psi$, either:
+\begin{itemize} \label{weakening_conditions}
+  \item $\psi \models_{EUF + UTVPI} x \leq n_1$
+    and $\psi \models_{EUF + UTVPI} -x \leq n_2$ where
+    $n_1, n_2 \in \mathbb{Z}$, or
+  \item There exists $a_1 x + a_2 y$ with $y$ a common
+    variable such that \\
+    $\psi \models_{EUF + UTVPI} a_1 x + a_2 y \leq n_1$ and
+    $\psi \models_{EUF + UTVPI} -a_1 x - a_2 y \leq n_2$, 
+    where $a_1, a_2 \in \{-1, 0, 1\}$ and 
+    $n_1, n_2 \in \mathbb{Z}$
+\end{itemize}
+
+The algorithm is a tableux-like algorithm which specifies
+formula state and reduction rules.
+It extends the approach in \cite{ghilardi2020compactly}
+by incorporating additional structure to handle 
+UTVPI formulas and more reduction rules to handle
+the Normalize and Elim rules introduced in the
+uniform interpolant generation algorithm for
+UTVPI theory in Chapter 4. 
+
+\subsection{A tableux-like uniform interpolant 
+  generation algorithm for EUF}
+
+In this section, we review 
+the uniform interpolant generation algorithm
+for EUF from \cite{ghilardi2020compactly}. The algorithm 
+follows a
+similar preprocessing step as the uniform interpolation 
+algorithm for EUF 
+discussed in Chapter 3. The `formula state'
+encodes a triplet $\langle \delta(\cev{y}, \cev{z}), 
+\phi(\cev{y}, \cev{z}), \psi(\cev{e}, \cev{y}, \cev{z})
+\rangle$ of the resulting formula after preprocessing 
+with the following meaning:
+
+\begin{itemize}
+  \item $\cev{e}$ encodes information about 
+    the variables to be eliminated.
+  \item $\cev{y}$ encodes information about 
+    the variables to be eliminated
+    than became common variables since the 
+    algorithm detected an equality
+    of a variable in this category with a common term.
+  \item $\cev{z}$ encodes information about the 
+    common variables. It is worth
+    mentioning that each \cev{e}, \cev{y}, and \cev{z} 
+    are indexed terms
+    which encode an ordering relation between them.
+  \item $\delta(\cev{y}, \cev{z})$ stands for the formulas 
+    that provide
+    an explicit definition for variables in 
+    $\cev{y}$ using a DAG-representation.
+  \item $\phi(\cev{y}, \cev{z})$ stands for the formulas 
+    that do not contain
+    variables to eliminate.
+  \item $\psi(\cev{e}, \cev{y}, \cev{z})$ stands 
+    for the formulas
+    that contain variables to eliminate.
+\end{itemize}
+
+The algorithm in \cite{ghilardi2020compactly} provides 
+the following tableux rules:
+
+\begin{itemize}
+  \item[] 1. Simplification rules:
+    \begin{itemize}
+      \item 1.0) If an atom like $t = t$ belong to $\psi$, just remove it; if a
+      literal like $t \neq t$ occurs somewhere, delete $\psi$, replace $\phi$
+      with $\bot$ and stop.
+    \item 1.i) If $t$ is not a variable to eliminate and $\psi$ contains
+    both $t = a$ and $t = b$, remove the latter and replace it with $b = a$.
+  \item 1.ii) If $\psi$ contains $e_i = e_j$ with $i > j$, remove it
+  and replace every $e_i$ in $\delta, \phi, \psi$ by $e_j$.
+    \end{itemize}
+  \item[] 2. DAG update rule: if $\psi$ contains $e_i = t(\cev{y}, \cev{z})$, remove
+    it, rename every $e_i$ in $\delta, \phi, \psi$ as $y_j$ (for fresh $y_j$)
+    and add $y_j = t(\cev{y}, \cev{z})$ to $\delta(\cev{y}, \cev{z})$.
+  \item[] 3.  e-Free Literal rule: if $\psi$ contains a literal $L(\cev{y}, \cev{z})$
+    move it to $\phi(\cev{y}, \cev{z})$.
+  \item[] 4.  If $\psi$ contains a pair of atoms $t = a$ and $u = b$, where
+    $t$ and $u$ are compatible flat terms, and not dis-equality from the difference
+    set of $t, u$ belongs to $\phi$, then non-deterministically apply one of the
+    following alternatives:
+    \begin{itemize}
+      \item 4.0) Remove from $\psi$ the atom $f(b_1, \dots, b_n) = b$, add
+      to $\psi$ the atom $b = a$ and add to $\phi$ all the equalities
+      $a_i = b_i$ such that $a_i \neq b_i$ is in the difference set of $t, u$;
+      \item 4.1) Add to $\phi$ one of the dis-equalities form the difference
+      set of $t, u$.
+    \end{itemize}
+\end{itemize}
+
+\subsection{Our proposed partially sound 
+uniform interpolant generation algorithm 
+for EUF + UTVPI}
+
+Our algorithm first purifies a given satisfiable 
+input formula in the
+combined theory of EUF and UTVPI and 
+uses an extended tableux-like algorithm
+using additional rules to deal with UTVPI formulas. 
+If the input formula is not satisfiable, 
+then return $\bot$ as result. 
+We use the data structures discussed 
+in Chapter 4 to deal with UTVPI formulas,
+hence we keep a normal form representation 
+of the UTVPI inequalities in the
+formula state inside the proposed 
+tableux-like algorithm. The rules of 
+inference proposed by Kapur to compute
+uniform interpolants for the UTVPI 
+theory are encoded as transition rules
+for the current tableux-like algorithm.
+The previous rules of the uniform interpolant 
+generation algorithm
+for EUF involving propagation of equations 
+suits the UTVPI component as well. 
+There is an additional rule to consider:
+
+\begin{itemize}
+  %\item[] 5. Eliminate uncommon UTVPI terms: 
+    %if there are UTVPI inequalities of the form $a_i x + a_j e_j \leq k_1$
+    %and $a_k y - a_j e_j \leq k_2$ in $\psi$, then introduce to $\phi$ the 
+    %UTVPI inequality $a_i x + a_k y \leq k_1 + k_2$.
+
+  %\item[] 6. Normalize UTVPI inequalities:
+    %if there is a UTVPI inequality of the form $a_i x + a_i x \leq k$ in 
+    %the formula state, then remove it and insert to $\psi$ the UTVPI
+    %inequality $a_i x \leq \floor{k/2}$
+
+  %\item[] 7.  Normalize bounds:
+    %if there are two UTVPI inequalities of the form $a_i x + a_j y \leq k_1$,
+    %$a_i x + a_j y \leq k_2$ in 
+    %the formula state with $\{k_1, k_2\} \in \mathbb{N}$, 
+    %then remove them both and insert to $\psi$ the UTVPI
+    %inequality $a_i x + a_j y \leq min(k_1, k_2)$
+
+  \item[] 5.  Propagate fully bounded uncommon UTVPI inequalities: 
+    if there are two UTVPI inequalities 
+    in $\psi$ of the form $a_i e_i + a_j e_j \leq k_1$ and 
+    $-a_i e_i - a_j e_j \leq k_2$, 
+    where $a_i \in \{1, -1\}, a_j \in \{1, 0, -1\}$ and $i > j$ or $e_i$ is uncommon
+    and $e_j$ is common
+    then  non-deterministically apply the following rule:
+    \begin{itemize}
+      \item Remove both $a_i e_i + a_j e_j \leq k_1$ and $-a_i e_i - a_j e_j \leq k_2$
+        from $\psi$ and replace every $e_i$ by $l - a_i a_j e_j$ where $
+        l \in \{- a_j k_2, -a_j k_2 + 1, \dots, a_j k_1 - 1, a_j k_1\}$.
+    \end{itemize}
+
+  \end{itemize} 
+
+Remark \label{my_remark}: Notice that if no 
+transformation applies 
+to the formula state, we obtain the same 
+the following types of formulas for the EUF 
+component according to \cite{ghilardi2020compactly} 
+
+\begin{itemize}
+  \item $\psi$ only contains dis-equalities of the kind $e_i \neq a$ and equalities of
+    the kind $f(a_1, \dots, a_n) = a$. If $\psi$ contains equalities of the
+    kind $f(a_1, \dots, a_n) = a$ it means that at least one $a_i$ must belong
+    to $\cev{e}$. If $\psi$ contains two equalities of the form
+    $f(a_1, \dots, a_n) = a$ and $f(b_1, \dots, b_n) = b$ then it means
+    $f(a_1, \dots, a_n)$ and $f(b_1, \dots, b_n)$ are incompatible or $a_i \neq b_i$
+    belongs to $\phi$.
+\end{itemize}
+
+Similarly, the following types of formulas for 
+the UTVPI component exists in the
+formula state if no transformation apply: bounded 
+only by an upper bound, 
+bounded only by a lower bound, and fully Bounded 
+with $\pm$ infinity. The
+latter follows directly from the normal 
+form representation of UTVPI inequalities
+induced by the data structures introduced 
+in Chapter 4. Otherwise, rules
+8 and 9 should have applied.
+
+\subsection{Termination, and partial soundness of the
+proposed algorithm}
+
+\begin{lemma}
+  The non-deterministic procedure presented 
+  above for the combined theory of EUF + 
+  UTVPI always terminates.
+\end{lemma}
+
+\begin{proof}
+  Following a similar proof as in \cite{ghilardi2020compactly}
+  it is enough to show every branch of the algorithm terminates.
+  The rules involving the EUF component are cover in
+  \cite{ghilardi2020compactly}. For the rest of the rules
+  involving UTVPI expressions, we first notice that there is a 
+  $\mathcal{O}(n^2)$ bound over all the UTVPI expressions
+  for UTVPI signature $S$ where $n$ is the number of distinct
+  variables in $S$. The rules relax the bounds of all the
+  bounds in the inequalities, which does not induce a negative
+  cycle, otherwise the input formula could not be satisfiable.
+\end{proof} 
+
+Before proving the partial soundness of the tableux algorithm 
+for the theory combination of EUF and UTVPI, we first state
+important results relating the existence of uniform 
+interpolant.
+
+\begin{lemma} \cite{ghilardi2020compactly} \label{rewriting_model_existance}
+  Let $R$ be a canonical ground rewrite system over a signature
+  $\Sigma$. There is a $\Sigma$-structure $\mathcal{M}$
+  such that for every pair of ground terms $t, u$ we have
+  that $\mathcal{M} \models t = u$ if and only if 
+  $R$-normal formal of $t$ is the same as the $R$-normal form of
+  $u$. Consequently, $R$ is consistent with a set of negative 
+  literals $S$ if and only if for every $t \neq u \in S$ 
+  the $R$-normal forms of $t$ and $u$ are different.
+\end{lemma}
+
+\begin{lemma} \cite{10.1007/978-3-030-29436-6_9} \label{cover_extension_lemma}
+  Let $T$ be a theory. 
+  A formula $\psi(\cev{y})$ is a uniform interpolant
+  in $T$ of $\exists \cev{e} . \phi (\cev{e}, \cev{y})$
+  if and only if it satisfies the following two conditions:
+
+  \begin{itemize}
+    \item[] i) $T \models \forall \cev{y}. ((\exists \cev{e} . 
+    \phi(\cev{e}, \cev{y})) \rightarrow \psi(\cev{y}))$
+  \item[] ii) for every model $\mathcal{M}$ of $T$, for every
+  tuple of elements $\cev{a}$ from the support of $\mathcal{M}$
+  such that $\mathcal{M} \models \psi(\cev{a})$ it is 
+  possible to find another model $\mathcal{N}$ of $T$
+  such that $M$ embeds into $\mathcal{N}$ and $\mathcal{N}
+  \models \exists \cev{e} . \psi (\cev{e}, \cev{a})$
+  \end{itemize}
+\end{lemma}
+
+\begin{theorem}
+  Given an input formula
+  $\psi := \exists \cev{e}. \phi(\cev{e}, \cev{z})$, 
+  if $\psi$ satisfies the weakening conditions in 
+  \ref{weakening_conditions} and the proposed algorithm
+  terminates with its branches in the formula states
+
+  $\langle 
+  \delta_1(\cev{y_1}, \cev{z}), 
+  \phi_1(\cev{y_1}, \cev{z}),
+  \psi_1(\cev{e_1}, \cev{y_1}, \cev{z})
+  \rangle, \dots, \langle 
+  \delta_k(\cev{y_k}, \cev{z}), 
+  \phi_k(\cev{y_k}, \cev{z}),
+  \psi_k(\cev{e_k}, \cev{y_k}, \cev{z})
+  \rangle$
+
+  Then the uniform interpolant of $\exists \cev{e} . \phi(\cev{e},
+\cev{z})$ in $EUF + UTVPI$ is the DAG-unravelling \footnote{
+  Unravelling means that the explicit recursive 
+  substitution of the each of the $y_i$
+  variables are substituted in $\phi_i(\cev{y_i}, \cev{z})$ using
+  the equations in $\delta_i(\cev{y_i}, \cev{z})$.
+}of the formula 
+
+$\bigvee_{i=1}^k \exists \cev{y_i} . (\delta_i(\cev{y_i}, \cev{z}) \land \phi_i(\cev{y_i}, \cev{z}))$
+
+\end{theorem}
+
+\begin{proof}
+  The proof follows the similar style of the proof of Theorem 
+  5.1 in \cite{ghilardi2020compactly}.
+  Let $\alpha$ be 
+  $\bigvee_{i=1}^k \exists \cev{y_i} . (\delta_i(\cev{y_i}, \cev{z}) \land \phi_i(\cev{y_i}, \cev{z}))$.
+  First, we notice that it is enough to prove the 
+  two items \ref{cover_extension_lemma} to show 
+  our assertion. The first item 
+  follows since $\alpha$ was obtained from the rules 
+  in the proposed algorithm.
+
+  To address the second item of the lemma, given a
+  model $\cal{M}$ such that $\cal{M} \models \alpha$, finding
+  an isomorphic embedding $\cal{N}$ such that $\mathcal{N} \models
+  \exists \cev{e} . \phi(\cev{e}, \cev{z})$ is equivalent
+  , using Robinson Lemma \cite{chang2013model}, to prove that
+  there is a model for $\Delta(\mathcal{M}) 
+  \cup \phi 
+  \cup \{ a = \mathcal{I}(a)\}_{a \in \cev{y} \cup \cev{z}}$.
+
+  Following \cite{ghilardi2020compactly}, we can obtain 
+  a model for the
+  EUF component using the model induced by the canonical 
+  form obtained by orienting the equations in $\psi$. 
+  In other to obtain a model for the 
+  UTVPI component, we noticed that if the 
+  input formula satisfies the weakening 
+  conditions in \ref{weakening_conditions}
+  then either:
+  \begin{itemize}
+      \item If the uncommon variable is bounded 
+        from below and 
+        bounded from above, 
+        then we can find a model for these variables
+        by picking an integer
+        in the respective range of the bounds.
+      \item If the above condition does not
+        hold, then there exists an UTVPI expression 
+        $a_1 x + a_2 y$ such that
+        $\psi \models_{EUF + UTVPI} n_2 \leq 
+        a_1 x + a_2 y \leq n_1$, where $y$ is common.
+        Thus, we can generate a canonical rewrite
+        system for each of the branches that the
+        rule 5. in the proposed algorithm by 
+        adding rules of the form 
+        $x \rightarrow a_1(a_2 y + i)$ where
+        $i \in \{n_2, \dots, n_1\}$. A model 
+        from this induced canonical rewrite system 
+        can be obtained by Lemma 
+        \ref{rewriting_model_existance}.
+  \end{itemize}
+  
+  With the latter, we can find a model $\mathcal{N}$
+  satisfying $\exists \cev{e} . 
+  \psi(\cev{e}, \cev{y}, \cev{z})$
+  with the desired conditions. 
+  Therefore, $\alpha$ is an uniform interpolant
+  for $\exists \cev{e}. \phi(\cev{e}, \cev{z})$.
+
+\end{proof}
+
+\input{comb_uniform_example}
+
+%%% Local Variables:
+%%% mode: latex
+%%% TeX-master: "main"
+%%% End:

@@ -1,0 +1,82 @@
+\section{Implementation}
+
+The thesis implementation uses the Yorsh-Musuvathi framework to reuse the 
+uniform interpolant generation algorithms for the EUF
+and UTVPI theory.
+The implementation maintains a map data structure that 
+keeps track of the \emph{partial interpolants}. This ensures
+that the base case for the above formula $p(c)$ is replaced
+by previous clauses as required in \cite{10.1007/11532231_26}.
+
+Since introducing negations is necessary to compute partial interpolants,
+we noticed the following interaction with the theories involved in the
+thesis work:
+
+\begin{itemize}
+  \item EUF case: negations of literals in this theory are just
+    dis-equalities, which the interpolation algorithm implemented
+    handles as Horn clauses with a false head term.
+  \item UTVPI case: negations of literals in this theory are either
+    dis-equalities or strict inequalities. The dis-equalities are purified
+    an appended to the EUF component; strict inequalities of the form
+    $x > y$ are replaced by non-strict inequalities of the 
+    form $x \geq y + 1$.
+\end{itemize}
+
+The main loop of the procedure is shown below:
+
+\begin{algorithm}[!ht] \label{thcomb_propagation_loop}
+  \caption{ Nelson-Oppen Propagation }
+  \linespread{\separationline}\selectfont
+  \begin{algorithmic}[2]
+    \Procedure { Nelson-Oppen Propagation  } { 
+      z3::expr\_vector const \& part\_A, 
+      z3::expr\_vector const \& part\_B 
+  }
+
+    \State { $T_1, T_2 = Purify(part\_A, part\_B)$}
+
+    \State DisjunctionEqualitiesIterator $\psi()$
+    \State $\psi.init()$
+    \While {true}
+
+    \If { $T_1 \models_{EUF} \bot $ }
+    \State { return $T_1$ }
+    \EndIf
+    \If { $T_2 \models_{UTVPI} \bot $ }
+    \State { return $T_2$ }
+    \EndIf
+
+    \If { $T_1 \models_{EUF} \psi.current()$ }
+
+    \If { $T_2 \models_{UTVPI} \psi.current()$ }
+    \State { continue }
+    \Else
+    \State { append $\psi.current()$ to $T_2$ }
+    \State { $\psi.init()$ }
+    \EndIf
+
+    \Else
+
+    \If { $T_2 \models_{UTVPI} \psi.current()$ }
+    \State { continue }
+    \Else
+    \State { append $\psi.current()$ to $T_2$ }
+    \State { $\psi.init()$ }
+    \EndIf
+
+    \EndIf
+
+    \State $UpdatePartialInterpolant(\psi.current())$
+    \State $\psi.next()$
+
+    \EndWhile
+
+    \EndProcedure
+  \end{algorithmic}
+\end{algorithm}
+
+%%% Local Variables:
+%%% mode: latex
+%%% TeX-master: "main"
+%%% End:

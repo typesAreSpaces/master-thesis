@@ -1,0 +1,18 @@
+\begin{algorithm}[!ht]
+  \caption{Auxiliary function - Candidates}
+  \linespread{\separationline}\selectfont
+  \begin{algorithmic}[2]
+    \Procedure {Candidates} {z3::expr const \& t}
+    \If {t is common}
+    \State {\textbf{return} $\{ t \}$}
+    \Else
+    \State {\textbf{return} $\{ t^{'} | t^{'}  \in Class(t), t^{'} \text{is common} \}$}
+    \EndIf
+    \EndProcedure
+  \end{algorithmic}
+\end{algorithm}
+
+%%% Local Variables:
+%%% mode: latex
+%%% TeX-master: "main"
+%%% End:

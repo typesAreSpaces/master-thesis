@@ -1,8 +1,220 @@
 \chapter{Introduction}
-\section{\label{section:overview}Overview}
-What???
-\section{Conclusions}
-I conclude that this is a really short thesis.
+
+Modern society is witness to the tremendous impact computer software 
+has had in recent years. The benefits of this massive 
+automation is endless. On the other hand, when software 
+fails, it becomes a catastrophe ranging from economic loss
+to threats to human life. 
+
+Due to strict and ambitious schedules and emphasis 
+on profitability, 
+many software products
+are shipped with unseen and unintentional 
+bugs which might potentially put
+at risk people's lives. Several approaches have been 
+used to improve software quality. However, many of these approaches 
+offer partial coverage or might take an abysmal amount 
+of human effort. Thus, these approaches cannot be 
+considered practical. 
+Formal methods aim to bring a unique combination 
+of automation, rigor, and 
+efficiency (whenever efficient algorithms exit 
+for the verification task). 
+This thesis discusses a particular problem in 
+software verification
+known as \emph{the interpolation problem} for 
+the theories of the quantifier-free
+fragment of equality with uninterpreted functions 
+(EUF) and unit two variable per
+inequality (UTVPI) and their combination. These two 
+theories have been 
+studied extensively and researchers have found 
+several applications including verification of 
+hardware \cite{dilleuf} and useful 
+abstract interpretation domains 
+\cite{journals/corr/abs-cs-0703084}.
+
+\section{Problem Statement}
+
+An interpolant of a mutually inconsistent
+pair of logical formulas $(\alpha, \beta)$ 
+is a logical formula $\gamma$
+such that $\alpha$ implies $\gamma$, $\beta \land \gamma$ is logically
+inconsistent, and $\gamma$ only has common symbols of $\alpha$ and $\beta$.
+Informally this means that the 
+interpolant `belongs' to the consequence of $\alpha$, 
+and `avoids' being part of the consequence of $\beta$. 
+Not surprisingly, this intuition is in software verification 
+routines where the first formula models a desirable state/property
+(termination, correctness) of a computer program, and the second 
+formula models the set of undesirable states (non-termination, 
+errors, crashes) of such software. In Chapter 
+\ref{preliminaries}, an extensive review of the formal concept 
+is provided.
+
+Even though interpolants are not an 
+immediate concern in verification
+problems, their use is found in the 
+core algorithms of the 
+following two applications:
+
+\begin{itemize}
+  \item Refinement of abstract models: In order to improve 
+    coverage and decrease the complexity in verification problems,
+    abstract interpretation has become an 
+    effective technique to 
+    accomplish the latter together with 
+    model checking. Despite the fact that 
+    the methodology provides sound results, it is certainly not complete.
+    Several abstractions do not capture the
+    semantics of programs due to the \emph{over-approximation} approach.
+    Interpolation techniques can be used 
+    to strengthen predicate
+    abstractions by using interpolants constructed from valid 
+    traces in the abstract model \cite{10.1145/876638.876643,
+    10.1007/978-3-540-45069-6_1, 10.1145/982962.964021}.
+  \item Invariant generation: following the same idea as in the previous
+    case, \emph{if a fixed point} \cite{10.1007/11691372_33} 
+    \emph{is obtained in the refinement process},
+    we can obtain a logical invariant of computer programs.
+    The interpolation generation approach in this application can 
+    be understood as a \emph{lazy framework}
+    similar to SAT/SMT algorithms. The former is
+    about the production of interpolants, the latter is for 
+    assignments/models respectively. Both \emph{block/learn} 
+    new formulas in order to find their results.
+\end{itemize}
+
+\section{Related work}
+
+There are several existing interpolation algorithms for the theories
+discussed in the thesis work. On the one hand, there are algorithms
+relying on refutational proofs. The interpolant is constructed using a
+recursive function over the structure of the proof
+tree. In \cite{10.1007/978-3-540-24730-2_2,mcmillan2011interpolants}
+the author defines an interpolation calculus. This particular
+approach uses a proof tree produced by the SMT solver Z3 
+and does not need to modify any of Z3's internal mechanisms.
+Among the advantages of this approach is that
+theory combination is given for free since the SMT solver takes 
+care of this problem. On the other hand, the decision procedures
+involved in Z3 are not sufficiently integrated with its proof-producing 
+mechanism in the sense that it is possible to find 
+intermediate formulas in a proof-tree without explanation
+introduced as lemmas. 
+The latter impairs the interpolation calculus aforementioned 
+because it derives an interpolant by following specific 
+rules of inference.
+
+In \cite{10.1007/11532231_26} the authors introduced a Nelson-Oppen 
+framework to compute interpolants. For the convex-case, the approach 
+only exchanges equalities as required by the Nelson-Oppen framework. For
+the non-convex case, the authors require a resolution-based refutation proof
+to compute interpolants using Pudlak's algorithm. They introduced a 
+special class of theories known as 
+\emph{equality interpolating theories}. 
+A theory $\mathcal{T}$ belongs to this class
+if whenever $\mathcal{T}$ a mixed equality $a = b$ (an equality
+which contains symbols from the two formulas in the interpolating problem)
+is proved,
+then there exists a common term $t$ in the language of $\mathcal{T}$ 
+(known as the interpolating-term) such that 
+$\mathcal{T} \models a = t$ and $\mathcal{T} \models t = b$. 
+The property facilitates 
+formula-splitting for interpolation purposes.
+In \cite{10.1007/978-3-642-00768-2_34} the authors modify a 
+resolution-based refutation proof by introducing common-terms in 
+the proof in order to produce interpolants in what is called
+colorable-proofs, which are proof trees which do not contain AB-mixed
+literals. This is pointed as an improvement to the approach followed 
+in \cite{10.1007/11532231_26} which executes a similar idea but it is done 
+progressively as the proof-tree is built and does not require 
+\emph{equality propagating} theory solvers
+\footnote{The authors in \cite{10.1007/11532231_26} require that 
+  the theory solvers keep track of the interpolating-term 
+  and propagate this term whenever
+possible}. 
+However, this result is not generalizable
+to non-convex theories due to internal constraints.
+
+Reduction-based approaches transforms the interpolation
+problem into a query for some solver related to the theory. 
+An example of this approach can be found in \cite{10.1007/978-3-540-69738-1_25}
+where the authors use a linear-inequality solver to provide an interpolant
+for the theory of linear inequalities over the rational/real numbers 
+($LIA(\mathbb{Q})/LIA(\mathbb{R})$). 
+Additionally, they integrate the procedure with a 
+\emph{hierarchical reasoning} approach in order to incorporate 
+the signature of a theory for (quantifier-free) equalities with uninterpreted 
+functions.
+
+\section{Outline of the thesis}
+
+\begin{itemize}
+  \item Chapter 2 provides background 
+    of definitions and descriptions of the
+    decision procedures 
+    used in the thesis work.
+  \item Chapters 3 discusses Kapur's uniform 
+    interpolating algorithm for the theory of EUF.
+    A modification to the Phase III of 
+    Kapur's algorithm is proposed by introducing a 
+    data structure for Horn clause processing. 
+    Complexity results concerning the modification 
+    proposed are reviewed. 
+    One application of this data structure
+    is discussed concerning the membership 
+    checking of ground 
+    Horn clauses in the theory of ground Horn clauses.
+    The chapter provides experimental evaluation
+    of the implementation of Kapur's algorithm 
+    using a randomized benchmark.
+  \item Chapter 4 explains Kapur's uniform interpolating
+    algorithm for the UTVPI theory. A description 
+    of the implementation work introduces an indexing
+    data structure to efficiently represent an UTVPI
+    formula. Experimental evaluation is provided at 
+    the end of the chapter using a randomized 
+    benchmark for the latter. 
+  \item Since the combined theory of EUF and UTVPI
+    does not have the uniform interpolation property 
+    \cite{10.1007/978-3-030-51074-9_11},
+    Chapter 5 discusses the implementation of
+    a theory combination algorithm for the theories
+    EUF and UTVPI using the uniform 
+    interpolation algorithm from Chapter 3 and 4. 
+    Additionally, an algorithm for computing 
+    uniform interpolants
+    is proposed which is sound if the input 
+    formula satisfies a certain property.
+
+\end{itemize} 
+
+\section{Contributions}
+
+The contributions of the thesis can be summarized as follows:
+
+\begin{itemize}
+  \item[1.] Implementation of the uniform 
+    interpolation algorithm for the theory EUF 
+    proposed in \cite{KAPUR2017}.
+  \item[2.] Formulation and implementation of a new 
+    procedure for checking unsatisfiability of 
+    grounded equations in 
+    Horn clauses using a congruence closure 
+    algorithm with explanations
+    used in the implementation of item 1.
+  \item[3.] Implementation of the uniform 
+    interpolation algorithm for the theory UTVPI
+    proposed in \cite{KAPUR2017}.
+  \item[4.] Implementation of the combination 
+    procedure for the interpolating
+    algorithm proposed in 
+    \cite{10.1007/11532231_26} in order to 
+    combine the implementations of the
+    uniform interpolation algorithm for EUF
+    and UTVPI.
+\end{itemize}
 
 %%% Local Variables:
 %%% mode: latex

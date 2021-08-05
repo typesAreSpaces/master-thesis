@@ -1,0 +1,80 @@
+\subsection{Comparison of Craig Interpolants and Uniform Interpolants}
+
+This section compares the Craig Interpolants 
+obtained by Z3 and Mathsat for contradicting 
+pairs of formulas and the uniform 
+interpolant obtained by our implementation such that
+the symbols to eliminate are the 
+same for each input problem for our 
+implementation.
+
+\begin{table}[h]
+  \centering
+  \begin{tabular}{c|cccc}
+    \toprule 
+
+  \multicolumn{5}{c}{A-part: \makecell{$y - x \leq 0 \land -y + x \leq 10 \land
+  y + x \leq 20 $ \\ $\land -y - x \leq -10 \land -e + x \leq 0\land e - y \leq 0 \land f(e) = x$}} \\
+
+    \hline
+
+    \multirow{6}{*}{SMT Solvers} & \multicolumn{4}{c}{B-parts} \\
+
+    \cmidrule{2-5} \\
+
+    {} & 
+    \makecell{$x \geq 20$} & 
+    \makecell{$x \neq y$} & 
+    \makecell{$x \neq f(x)$} & 
+    $x \neq f(y)$ \\
+
+    \cmidrule{2-5} \\
+
+    {} & \multicolumn{4}{c}{Interpolants} \\
+
+    \hline
+
+    Z3 & 
+    \makecell{$x \leq 15$} & 
+    \makecell{$
+((0 \leq -x + y) \land $ \\ $((x = y) \lor (\neg (x - y \leq 0)))))
+    $} & 
+    \makecell{$f(x)=x$} & 
+    \makecell{$
+      (((\neg (y - x \leq 0)) $ \\ 
+        $\lor (f(y) = x))$ \\ 
+    $\land (x - y \geq 0))
+    $} \\
+
+    \hline
+
+    Mathsat & 
+    \makecell{$x \leq 15$} & 
+    \makecell{$x \leq y \land y \leq x$} & 
+    \makecell{$x = f(x)$} & 
+    \makecell{$x = f(y)$}\\
+
+    \hline
+
+    Our implementation & \multicolumn{4}{c}{\makecell{$f(x) = x \land x \leq 10
+\land -x \leq -5 
+\land y \leq 10 
+\land y + x \leq 20$ \\
+$\land y - x \leq 0
+\land -y \leq -5
+\land -y + x \leq 0
+\land -y - x \leq -10$}} \\
+
+    \hline
+  \end{tabular}
+  \caption{Comparing Craig Interpolants and Uniform Interpolants for
+  $\{y - x \leq 0 \land -y + x \leq 10 \land
+  y + x \leq 20 \land -y - x \leq -10 \land -e + x \leq 0\land e - y \leq 0 \land f(e) = x, \{e\}\}$.}
+\end{table}
+
+Using Z3, we verified our implementation result implies the Craig interpolants obtained by Z3 and Mathsat.
+
+%%% Local Variables:
+%%% mode: latex
+%%% TeX-master: "main"
+%%% End:

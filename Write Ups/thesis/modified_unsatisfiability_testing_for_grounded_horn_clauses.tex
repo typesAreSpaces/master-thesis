@@ -1,0 +1,46 @@
+\begin{algorithm}[hbt!] 
+  \caption{Modified Unsatisfiability Testing for Ground Horn Clauses}
+  \linespread{\separationline}\selectfont
+  \begin{algorithmic}[1]
+    \Procedure {satisfiable}{var H : Hornclause; var queue, combine: queuetype; 
+    var GT(H) : Graph; var consistent : boolean}
+    \While {queue not empty}
+    \State node := pop(queue);
+    \For {$clause_1$ in H[node].clauselist}
+    \If {numargs[$clause_1$] = 0}
+    \State nextnode := poslitlist[$clause_1$];
+    \If {$\neg$ H[nextnode].val}
+    \If {nextnode $\neq \bot$ }
+    \State {queue := push(nextnode, queue);}
+    \State {H[nextnode].val := true;}
+    \State {u := left(H[nextnode].atom);} 
+    \State {v := right(H[nextnode].atom);}
+    \If {FIND(R, u) $\neq$ FIND(R, v)}
+    \State {combine := push((u, v), combine);}
+    \EndIf
+    \Else
+    \State {consistent := false;}
+    \EndIf
+    \EndIf
+    \EndIf
+    \EndFor
+    \If {queue is empty}
+    \State {closure(combine, queue, R);}
+    \EndIf
+    \EndWhile
+    \EndProcedure
+    \Statex
+    \Procedure {closure}{var combine, queue : queuetype; 
+    var R : partition}
+    \While {combine is not empty}
+    \State (u, v) = pop(combine)
+    \State MERGE(R, u, v, queue)
+    \EndWhile
+    \EndProcedure
+  \end{algorithmic}
+\end{algorithm}
+
+%%% Local Variables:
+%%% mode: latex
+%%% TeX-master: "main"
+%%% End:

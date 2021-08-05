@@ -1,0 +1,21 @@
+\begin{theorem}
+  Let $t$ be an uncommon term and let $H$ be a collection of Horn equations.
+  Assume $antecedent(H) \neq \{\}$. If $consequent(t) = \{\}$, then we cannot
+  conditionality eliminate $t$ from any Horn equation $h \in H$. 
+\end{theorem}
+
+\begin{proof}
+  Suppose, by contradiction, that we can conditionally eliminate the term
+  $t$ from $H$. Then, there exists $h^{'} \in H$ such that $t$ appears in the
+  consequent of $h^{'}$. But $consequent(t) = \{\}$, contradiction.
+\end{proof}
+
+\begin{corollary}
+  We cannot eliminate an uncommont term $t$ unconditionally once
+  $consequent(t) = \{\}$.
+\end{corollary}
+
+%%% Local Variables:
+%%% mode: latex
+%%% TeX-master: "main"
+%%% End:

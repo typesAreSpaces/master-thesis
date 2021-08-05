@@ -1,0 +1,37 @@
+\section{Kapur's Uniform Interpolant Algorithm for
+the UTVPI theory}
+
+The algorithm proposed \cite{KAPUR2017} uses inference rules
+to obtain the normal form of the conjunction of inequalities
+of octagon formulas as well as 
+eliminating the uncommon variables from the
+A-part of the input formula. The rules are the following:
+
+\begin{center}
+  \begin{prooftree}
+    \hypo[]{a x + a x \leq c}
+    \hypo[]{a \in \{ -1, 0, 1 \}$ and $x \in Vars}
+    \infer2[Normalize]{a x \leq \floor{\frac{c}{2}}}
+  \end{prooftree}
+
+  \begin{prooftree}
+    \hypo[]{s_1 x_1 + s_2 x_2 \leq c_1}
+    \hypo[]{- s_2 x_2 + s_3 x_3 \leq c_2}
+    \infer2[Elim]{s_1 x_1 + s_3 x_3 \leq c_1 + c_2}
+  \end{prooftree}
+\end{center}
+
+The algorithm normalizes the inequalities at the beginning as 
+a preprocessing step and applies the Normalize and Elim rule 
+whenever it is possible until no more uncommon variables 
+remain in the input formula. Hence, having an efficient 
+representation of 
+the inequalities and match detection (similar to detecting pivots for
+resolution in SAT) is important for an efficient implementation.
+
+%\input{proof_of_main_theorem_octagons}
+
+%%% Local Variables:
+%%% mode: latex
+%%% TeX-master: "main"
+%%% End:

@@ -1,0 +1,42 @@
+\begin{algorithm}[hbt!]
+  \caption{Modified Congruence Closure with Explanation Algorithms - Propagate}
+  \linespread{\separationline}\selectfont
+  \begin{algorithmic}[2]
+    \Procedure {Propagate} {\text{ }}
+    \While {Pending is non-empty}
+    \State {Remove E of the form $a$=$b$ or (apply($a_1$, $a_2$) = $a$, apply($b_1$, $b_2$) = $b$) from Pending}
+    \If {Representative($a$) $\neq$ Representative($b$) and w.l.o.g. $|$ClassList(Representative($a$))$|$ $\leq$ $|$ClassList(Representative($b$))$|$}
+    \State {$old_{repr_a}$ := Representative(a);}
+    \State {Insert edge $a \rightarrow b$ labelled with E into the proof forest;}
+    \For {each c in ClassList($old_{repr_a}$)}
+    \State {set Representative(c) to Representative(b)}
+    \State {move c from ClassList($old_{repr_a}$) to ClassList(Representative(b))}
+    \For {each pointer L in ClassList(u)}
+    \If {H[L].val = false}
+    \State {set the field H[L].lclass or H[L].rclass pointed to by p to Representative(b)}
+    \If {H[L].lclass = H[L].rclass}
+    \State {queue := push(L, queue);}
+    \State {H[L].val := true}
+    \EndIf
+    \EndIf
+    \EndFor
+    \EndFor
+    \For {each apply($c_1$, $c_2$) = c in UseList($old_{repr_a}$)}
+    \If {Lookup(Representative($c_1$), Representative($c_2$)) is some apply($d_1$, $d_2$) = d}
+    \State {add (apply($c_1$, $c_2$) = c, apply($d_1$, $d_2$) = d) to Pending;}
+    \State {remove apply($c_1$, $c_2$) = c from UseList($old_{repr_a}$);}
+    \Else
+    \State {set Lookup(Representative($c_1$), Representative($c_2$)) to apply($c_1$, $c_2$) = c;}
+    \State {move apply($c_1$, $c_2$) = c from UseList($old_{repr_a}$) to UseList(Representative(b));}
+    \EndIf
+    \EndFor 
+    \EndIf
+    \EndWhile
+    \EndProcedure
+  \end{algorithmic}
+\end{algorithm}
+
+%%% Local Variables:
+%%% mode: latex
+%%% TeX-master: "main"
+%%% End:

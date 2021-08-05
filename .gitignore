@@ -1,1 +1,13 @@
 *\~
+*.o
+*.aux
+*.log
+*.out
+*.toc
+file.cnf
+proof
+proof-temp
+.*
+*.idx
+Write\ Ups/thesis/reviews/*
+!/.gitignore

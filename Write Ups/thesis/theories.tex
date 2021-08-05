@@ -1,0 +1,46 @@
+\section{Mathematical Theories} \label{math_theories}
+
+A theory $\mathcal{T}$ is a collection of formulas that are closed under logical implication, i.e. if $\mathcal{T} \models \psi$ then $\psi \in \mathcal{T}$. This concept is quite relevant for our thesis work since we will focus on two theories, the quantifier-free fragment of the theory of equality with uninterpreted functions (EUF), and the theory of unit two variable per inequality (UTVPI). 
+
+For some theories it is enough to provide a collection of formulas (known as the axioms of the theory). For the case of the theories of interest for the thesis, the axiomatization is the following:
+
+\subsection{Equality with uninterpreted functions}
+
+\begin{definition} \label{euf_axioms}
+  Let $\mathfrak{L}_{EUF} = \{ \{c_1, \dots, c_m \}, \{ = \}, \{ f_1, \dots, f_n \} \}$ be the language of EUF. The axioms of the theory are:
+  \begin{itemize}
+    \item (Reflexivity) $\forall x . x = x$
+    \item (Symmetry) $\forall x . \forall y . x = y \rightarrow y = x$
+    \item (Transitivity) $\forall x . \forall y . \forall z. (x = y \land y = z) \rightarrow x = z$
+    \item (Congruence) For every function $f$ term of n-arity, 
+      where $n > 0$ and $2n$ variables $x_1, \dots, x_n, 
+      y_1, \dots, y_n$ 
+      we have that
+      $\forall x_1  \dots \forall x_n . \forall y_1 \dots \forall y_n . (x_1 = y_1 \land \dots \land x_n = y_n) \rightarrow f(x_1, \dots, x_n) = f(y_1, \dots, y_n)$
+  \end{itemize}
+\end{definition}
+
+\subsection{Ordered abelian groups}
+
+In order to describe the UTVPI theory we will first 
+introduce the language and theory of an ordered abelian group.
+
+\begin{definition}
+  Let $\mathfrak{L}_{Ord-G} = \{\{0 \}, \{ = , 
+  \leq \}, \{+, -\}, \}$ be the 
+  language of an ordered abelian group $G$. 
+  The axioms of the theory are:
+  \begin{itemize}
+    \item $\forall x . \forall y . \forall z . x + (y + z) = (x + y) + z$
+    \item $\forall x . \forall y .  x + y = y + x$
+    \item $\forall x . x + 0 = x$
+    \item $\forall x . x + (- x) = 0$
+    \item $\forall x . \forall y . \forall z . x \leq y \rightarrow x + z \leq y + z$
+    \item $0 \neq 1 \land 0 \leq 1$ 
+  \end{itemize}
+\end{definition}
+
+%%% Local Variables:
+%%% mode: latex
+%%% TeX-master: "main"
+%%% End:

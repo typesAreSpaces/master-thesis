@@ -1,0 +1,61 @@
+\subsubsection{Comparison of Craig Interpolants and Uniform Interpolants}
+
+The interface offered by SMT solvers with interpolation features require an inconsistent pair of formulas A and B.
+This section compares the Craig Interpolants obtained by Z3 and Mathsat for contradicting pairs of formulas and the uniform interpolant obtained by our implementation such
+that the symbols to eliminate are the same
+for each input problem for our implementation.
+
+
+\begin{table}[h]
+  \centering
+  \begin{tabular}{c|cc}
+    \toprule 
+
+    \multicolumn{3}{c}{A-part: $f(z_1, v) = s_1 \land f(z_2, v) = s_2 \land f(f(y_1, v), f(y_2, v)) = t$} \\
+
+    \hline
+
+    \multirow{6}{*}{SMT Solvers} & \multicolumn{2}{c}{B-parts} \\
+
+    \cmidrule{2-3} \\
+
+    {} & 
+    \makecell{$z_1 = z_2 \land z_2 = y_1$ \\ $\land z_2 = y_2 \land f(s_2, s_1) \neq t$} & 
+    \makecell{$z_1 = z_2 \land z_1 = y_1$ \\ $\land z_2 = y_2 \land f(s_1, s_2) \neq t$} \\
+
+    \cmidrule{2-3} \\
+
+    {} & \multicolumn{2}{c}{Interpolants} \\
+
+    \hline
+
+    Z3 & 
+    \makecell{$((f(s_2, s_1) = t) \lor (\neg (z_2 = z_1))$ \\ $\lor ((\neg (s_1 = s_2)) \land ((s_2 = s_1) \lor$ \\ $(\neg (z_2 = z_1)))) \lor (\neg (y_1 = z_1))$ \\ $\lor (\neg (y_2 = z_1)))$} & 
+    \makecell{$((f(s_1, s_2) = t) \lor ((\neg (s_1 = s_2))$ \\ $\land ((s_2 = s_1) \lor (\neg (z_2 = z_1)))) \lor$ \\ $(\neg (z_2 = z_1)) \lor (\neg (y_1 = z_1))$ \\ $\lor (\neg (y_2 = z_1)))$} \\
+
+    \hline
+
+    Mathsat & 
+    \makecell{$\neg ((\neg (t = f(s_2, s_1))) \land ((= z_2 y_1)$ \\ $\land ((= z_1 z_2) \land (= z_2 y_2))))$} & 
+    \makecell{$\neg ((\neg (t = f(s_1, s_2))) \land (((= z_1 z_2)$ \\ $ \land (= z_1 y_1)) \land (= z_1 y_2)))$}\\
+
+    \hline
+
+    Our implementation & \multicolumn{2}{c}{\makecell{$(((z_1 = y_1) \land (z_1 = y_2) \land (z_1 = y_1) \land (z_2 = y_1)) \rightarrow (t = f(s_1, s_2)))$\\
+        $( (z_1 = z_2) \rightarrow (s_1 = s_2))$ \\
+        $( ((z_2 = y_1) \land (z_1 = y_2) \land (z_1 = y_1) \land (z_2 = y_1)) \rightarrow (t = f(s_2, s_2)))$ \\
+        $( ((z_2 = y_1) \land (z_1 = y_2)) \rightarrow (t = f(s_2, s_1)))$ \\
+    $(((z_1 = y_1) \land (z_1 = y_2)) \rightarrow (t = f(s_1, s_1)))$}} \\
+
+    \hline
+  \end{tabular}
+  \caption{Comparing Craig Interpolants and Uniform Interpolants for
+  $\{f(z_1, v) = s_1 \land f(z_2, v) = s_2 \land f(f(y_1, v), f(y_2, v)) = t, \{v\}\}$.}
+\end{table}
+
+Using Z3, we verified our implementation result implies the Craig interpolants obtained by Z3 and Mathsat.
+
+%%% Local Variables:
+%%% mode: latex
+%%% TeX-master: "main"
+%%% End:
