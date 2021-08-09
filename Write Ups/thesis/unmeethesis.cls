@@ -461,14 +461,14 @@
    \clearpage%
    \mbox{\@resetpagesize}%
    \if@twoside%
-     \thispagestyle{empty}%
+     \thispagestyle{plain}%
      \mbox{}%
      \clearpage%
    \fi
 }
 
 \def\@maketitle{%
-  \thispagestyle{empty}
+  \thispagestyle{plain}
 %
   \setlength{\textheight}{648pt}
   \setlength{\textwidth}{427.5pt}
@@ -491,7 +491,7 @@
   \if@twoside%
     \setcounter{page}{1}%
   \else
-    \setcounter{page}{1}%
+    \setcounter{page}{2}%
     %\setcounter{page}{2}%
     %Rolled back counter from 2 to 1 to correct a page error D. Murrell
   \fi
@@ -619,13 +619,18 @@
     \Huge \bfseries \acknowledgname
     \@endparpenalty\@M
   \end{flushleft}}%
-{\endsinglespace\vfil\vfil\null  
-   \if@twoside%
-     \clearpage%
-     \thispagestyle{plain}%
-     \mbox{}%
-   \fi
-}
+  {
+    \begin{center}
+      iv
+    \end{center}
+  }
+%{\endsinglespace\vfil\vfil\null  
+   %\if@twoside%
+     %\clearpage%
+     %\thispagestyle{plain}%
+     %\mbox{}%
+   %\fi
+%}
 %::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 %  The following commands define the abstract title page
 %::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
@@ -641,14 +646,14 @@
    \@resetpagesize
                     % \addcontentsline{toc}{chapter}{Abstract}%
    \if@twoside%
-     \thispagestyle{empty}%
+     \thispagestyle{plain}%
      \mbox{}%
      \clearpage%
    \fi
 }
 
 \newcommand\@maketitleabstract{%
-  \thispagestyle{empty}
+  \thispagestyle{plain}
 %
   \setlength{\textheight}{614pt}
   \setlength{\textwidth}{427.5pt}
@@ -915,7 +920,7 @@
     {%
       \cleardoublepage
       \newpage
-      \thispagestyle{empty}%
+      \thispagestyle{plain}%
       \if@compatibility
         \setcounter{page}{0}
       \fi}%
